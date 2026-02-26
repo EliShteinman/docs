@@ -1,0 +1,6 @@
+apiVersion: v2
+name: redis-docs
+description: A Helm chart for deploying the Redis documentation site
+type: application
+version: 0.1.0
+appVersion: "2af6e421c"

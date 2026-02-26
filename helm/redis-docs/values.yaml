@@ -1,0 +1,110 @@
+replicaCount: 2
+
+image:
+  repository: a0533057932/redis-docs
+  tag: unprivileged
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 80
+
+containerPort: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: redis-docs.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+nginx:
+  workerConnections: 2048
+  keepaliveTimeout: 15
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+    ephemeral-storage: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+    ephemeral-storage: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 3
+  periodSeconds: 5
+
+metrics:
+  enabled: false
+  image:
+    repository: nginx/nginx-prometheus-exporter
+    tag: "1.4.0"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 10m
+      memory: 16Mi
+    limits:
+      cpu: 50m
+      memory: 32Mi
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+    labels: {}
+
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

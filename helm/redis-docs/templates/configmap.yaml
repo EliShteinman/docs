@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-nginx
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+data:
+  nginx.conf: |
+    worker_processes auto;
+
+    error_log /var/log/nginx/error.log warn;
+    pid /tmp/nginx.pid;
+
+    events {
+        worker_connections {{ .Values.nginx.workerConnections }};
+        multi_accept on;
+    }
+
+    http {
+        proxy_temp_path /tmp/proxy_temp;
+        client_body_temp_path /tmp/client_temp;
+        fastcgi_temp_path /tmp/fastcgi_temp;
+        uwsgi_temp_path /tmp/uwsgi_temp;
+        scgi_temp_path /tmp/scgi_temp;
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent"';
+
+        access_log /var/log/nginx/access.log main buffer=16k flush=5s;
+
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+
+        keepalive_timeout {{ .Values.nginx.keepaliveTimeout }};
+        keepalive_requests 1000;
+
+        open_file_cache max=10000 inactive=60s;
+        open_file_cache_valid 30s;
+        open_file_cache_min_uses 2;
+
+        gzip on;
+        gzip_vary on;
+        gzip_proxied any;
+        gzip_comp_level 4;
+        gzip_min_length 256;
+        gzip_types
+            text/plain
+            text/css
+            text/xml
+            text/javascript
+            application/json
+            application/javascript
+            application/xml
+            application/rss+xml
+            image/svg+xml;
+
+        include /etc/nginx/conf.d/*.conf;
+    }
+  default.conf: |
+    server {
+        listen 8080;
+        server_name _;
+
+        root /usr/share/nginx/html;
+        index index.html;
+
+        location / {
+            try_files $uri $uri/ $uri/index.html =404;
+        }
+
+        location ~* \.(css|js|woff2?|ttf|eot|svg|png|jpg|jpeg|gif|webp|ico|mp4)$ {
+            expires 7d;
+            add_header Cache-Control "public, immutable";
+            access_log off;
+        }
+
+        location ~* \.html$ {
+            expires 1h;
+            add_header Cache-Control "public, must-revalidate";
+        }
+
+        location = /healthz {
+            access_log off;
+            return 200 "ok\n";
+        }
+
+        location = /stub_status {
+            stub_status on;
+            allow 127.0.0.1;
+            deny all;
+            access_log off;
+        }
+
+        error_page 404 /404.html;
+        error_page 500 502 503 504 /50x.html;
+    }
