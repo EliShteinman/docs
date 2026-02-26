@@ -37,7 +37,7 @@ RUN --mount=type=secret,id=github_token \
     PRIVATE_ACCESS_TOKEN=$(cat /run/secrets/github_token) \
     make components && make hugo
 
-FROM nginx:alpine
+FROM nginxinc/nginx-unprivileged:alpine
 
 ARG GIT_COMMIT=unknown
 ARG BUILD_DATE=unknown
@@ -46,8 +46,8 @@ LABEL org.opencontainers.image.source="https://github.com/redis/docs"
 LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
 LABEL org.opencontainers.image.created="${BUILD_DATE}"
 
-COPY --from=builder /site/public /usr/share/nginx/html
+COPY --from=builder --chown=nginx:nginx /site/public /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
