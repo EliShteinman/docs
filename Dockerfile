@@ -1,4 +1,10 @@
 # syntax=docker/dockerfile:1
+
+ARG VARIANT=privileged
+
+# ============================================================
+# Builder stage (shared by both variants)
+# ============================================================
 FROM node:22-bookworm AS builder
 
 ARG HUGO_VERSION=0.143.0
@@ -37,7 +43,10 @@ RUN --mount=type=secret,id=github_token \
     PRIVATE_ACCESS_TOKEN=$(cat /run/secrets/github_token) \
     make components && make hugo
 
-FROM nginxinc/nginx-unprivileged:alpine
+# ============================================================
+# Runtime: privileged variant (nginx:alpine, port 80)
+# ============================================================
+FROM nginx:alpine AS runtime-privileged
 
 ARG GIT_COMMIT=unknown
 ARG BUILD_DATE=unknown
@@ -45,9 +54,34 @@ ARG BUILD_DATE=unknown
 LABEL org.opencontainers.image.source="https://github.com/redis/docs"
 LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
 LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.variant="privileged"
+
+COPY --from=builder /site/public /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+# ============================================================
+# Runtime: unprivileged variant (nginx-unprivileged, port 8080)
+# ============================================================
+FROM nginxinc/nginx-unprivileged:alpine AS runtime-unprivileged
+
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+
+LABEL org.opencontainers.image.source="https://github.com/redis/docs"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.variant="unprivileged"
 
 COPY --from=builder --chown=nginx:nginx /site/public /usr/share/nginx/html
 
 EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
+
+# ============================================================
+# Final stage: select variant via build arg
+# ============================================================
+FROM runtime-${VARIANT} AS final

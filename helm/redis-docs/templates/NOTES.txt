@@ -7,6 +7,11 @@ Access the documentation at:
   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
 {{- end }}
 
+{{- else if .Values.route.enabled }}
+
+Access the documentation via OpenShift Route:
+  oc get route {{ include "redis-docs.fullname" . }} -n {{ .Release.Namespace }}
+
 {{- else if contains "NodePort" .Values.service.type }}
 
 Get the application URL by running:

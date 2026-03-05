@@ -63,7 +63,7 @@ data:
     }
   default.conf: |
     server {
-        listen 8080;
+        listen {{ .Values.containerPort }};
         server_name _;
 
         root /usr/share/nginx/html;

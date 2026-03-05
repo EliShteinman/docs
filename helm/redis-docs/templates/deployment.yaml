@@ -32,7 +32,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ include "redis-docs.image" . }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -61,7 +61,7 @@ spec:
               mountPath: /tmp
         {{- if .Values.metrics.enabled }}
         - name: metrics
-          image: "{{ .Values.metrics.image.repository }}:{{ .Values.metrics.image.tag }}"
+          image: "{{ include "redis-docs.metricsImage" . }}"
           imagePullPolicy: {{ .Values.metrics.image.pullPolicy }}
           args:
             - -nginx.scrape-uri=http://127.0.0.1:{{ .Values.containerPort }}/stub_status

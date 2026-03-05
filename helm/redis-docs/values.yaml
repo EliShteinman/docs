@@ -1,7 +1,11 @@
 replicaCount: 2
 
+global:
+  registry: ""
+
 image:
-  repository: a0533057932/redis-docs
+  registry: a0533057932
+  name: redis-docs
   tag: unprivileged
   pullPolicy: IfNotPresent
 
@@ -46,6 +50,16 @@ ingress:
           pathType: Prefix
   tls: []
 
+route:
+  enabled: false
+  annotations: {}
+  host: ""
+  path: /
+  tls:
+    enabled: true
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+
 nginx:
   workerConnections: 2048
   keepaliveTimeout: 15
@@ -84,7 +98,8 @@ readinessProbe:
 metrics:
   enabled: false
   image:
-    repository: nginx/nginx-prometheus-exporter
+    registry: nginx
+    name: nginx-prometheus-exporter
     tag: "1.4.0"
     pullPolicy: IfNotPresent
   resources:

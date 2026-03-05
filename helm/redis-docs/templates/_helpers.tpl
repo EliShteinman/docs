@@ -58,3 +58,21 @@ Create the name of the service account to use.
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Return the image reference for the main container.
+Priority: global.registry > image.registry
+*/}}
+{{- define "redis-docs.image" -}}
+{{- $registry := .Values.global.registry | default .Values.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.image.name (.Values.image.tag | default .Chart.AppVersion) -}}
+{{- end }}
+
+{{/*
+Return the image reference for the metrics sidecar.
+Priority: global.registry > metrics.image.registry
+*/}}
+{{- define "redis-docs.metricsImage" -}}
+{{- $registry := .Values.global.registry | default .Values.metrics.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.metrics.image.name .Values.metrics.image.tag -}}
+{{- end }}

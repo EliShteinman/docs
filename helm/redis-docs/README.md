@@ -1,20 +1,95 @@
 # Redis Docs Helm Chart
 
-Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes.
+Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes / OpenShift.
 מותאם לרשת סגורה (air-gapped) - ללא תלויות חיצוניות.
 
 ## דרישות מקדימות
 
-- Kubernetes 1.26+
+- Kubernetes 1.26+ / OpenShift 4.x+
 - Helm 3.x
 - Private Docker registry (ברשת סגורה)
 
 ## Docker images
 
-| Image | שימוש | חובה? |
-|---|---|---|
-| `a0533057932/redis-docs` | אתר הדוקומנטציה (nginx + תוכן) | כן |
-| `nginx/nginx-prometheus-exporter:1.4.0` | מטריקות Prometheus | לא - רק אם `metrics.enabled=true` |
+| Image | תג | פורט | שימוש | חובה? |
+|---|---|---|---|---|
+| `a0533057932/redis-docs` | `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן - אחד מהשניים |
+| `a0533057932/redis-docs` | `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן - אחד מהשניים |
+| `nginx/nginx-prometheus-exporter` | `1.4.0` | 9113 | מטריקות Prometheus | לא - רק אם `metrics.enabled=true` |
+
+> ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
+
+## התקנה
+
+### רשת פתוחה - ברירת מחדל
+
+```bash
+helm install redis-docs redis-docs-0.2.0.tgz
+```
+
+### רשת פתוחה עם מטריקות
+
+```bash
+helm install redis-docs redis-docs-0.2.0.tgz \
+  --set metrics.enabled=true
+```
+
+### רשת פתוחה עם Route (OpenShift)
+
+```bash
+helm install redis-docs redis-docs-0.2.0.tgz \
+  --set route.enabled=true
+```
+
+> OpenShift ייצר כתובת אוטומטית. לכתובת מותאמת: `--set route.host=docs.apps.example.com`
+
+### רשת פתוחה עם Ingress (Kubernetes)
+
+```bash
+helm install redis-docs redis-docs-0.2.0.tgz \
+  --set ingress.enabled=true \
+  --set ingress.hosts[0].host=docs.company.internal \
+  --set ingress.hosts[0].paths[0].path=/ \
+  --set ingress.hosts[0].paths[0].pathType=Prefix
+```
+
+### רשת סגורה - דריסת registry לכל התמונות
+
+```bash
+helm install redis-docs redis-docs-0.2.0.tgz \
+  --set global.registry=registry.company.com
+```
+
+> דריסה אחת משנה את ה-registry לכל התמונות (ראשית + מטריקות).
+
+### רשת סגורה עם מטריקות
+
+```bash
+helm install redis-docs redis-docs-0.2.0.tgz \
+  --set global.registry=registry.company.com \
+  --set metrics.enabled=true
+```
+
+### דריסת registry לתמונה ספציפית
+
+```bash
+helm install redis-docs redis-docs-0.2.0.tgz \
+  --set image.registry=my-registry.com \
+  --set metrics.image.registry=other-registry.com
+```
+
+### אם ה-registry דורש הרשאות
+
+```bash
+kubectl create secret docker-registry regcred \
+  --docker-server=REGISTRY \
+  --docker-username=USER \
+  --docker-password=PASS
+
+helm install redis-docs redis-docs-0.2.0.tgz \
+  --set global.registry=REGISTRY \
+  --set imagePullSecrets[0].name=regcred
+```
 
 ## העברה לרשת סגורה
 
@@ -34,13 +109,13 @@ docker save nginx/nginx-prometheus-exporter:1.4.0 -o nginx-exporter.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.1.0.tgz
+# ייצור: redis-docs-0.2.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.1.0.tgz`
+- `redis-docs-0.2.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי)
 
@@ -60,61 +135,12 @@ docker push REGISTRY/nginx-prometheus-exporter:1.4.0
 
 > החליפו `REGISTRY` בכתובת ה-registry שלכם, לדוגמה: `registry.internal.company.com`
 
-## התקנה
-
-### בסיסי
-
-```bash
-helm install redis-docs redis-docs-0.1.0.tgz \
-  --set image.repository=REGISTRY/redis-docs
-```
-
-### עם מטריקות
-
-```bash
-helm install redis-docs redis-docs-0.1.0.tgz \
-  --set image.repository=REGISTRY/redis-docs \
-  --set metrics.enabled=true \
-  --set metrics.image.repository=REGISTRY/nginx-prometheus-exporter
-```
-
-### עם Ingress
-
-```bash
-helm install redis-docs redis-docs-0.1.0.tgz \
-  --set image.repository=REGISTRY/redis-docs \
-  --set ingress.enabled=true \
-  --set ingress.hosts[0].host=docs.company.internal \
-  --set ingress.hosts[0].paths[0].path=/ \
-  --set ingress.hosts[0].paths[0].pathType=Prefix
-```
-
-### אם ה-registry דורש הרשאות
-
-```bash
-# יצירת secret
-kubectl create secret docker-registry regcred \
-  --docker-server=REGISTRY \
-  --docker-username=USER \
-  --docker-password=PASS
-
-# התקנה עם secret
-helm install redis-docs redis-docs-0.1.0.tgz \
-  --set image.repository=REGISTRY/redis-docs \
-  --set imagePullSecrets[0].name=regcred
-```
-
 ## עדכון גרסה
 
-לעדכון תמונת Docker בלבד (ללא שינוי ב-chart):
-
 ```bash
-helm upgrade redis-docs redis-docs-0.1.0.tgz \
-  --set image.repository=REGISTRY/redis-docs \
+helm upgrade redis-docs redis-docs-0.2.0.tgz \
   --set image.tag=NEW_TAG
 ```
-
-> ה-repository וה-tag מפוצלים - אפשר לשנות רק את ה-tag בעת עדכון.
 
 ## גישה לאתר
 
@@ -129,12 +155,20 @@ kubectl port-forward svc/redis-docs 8080:80
 
 | ערך | ברירת מחדל | תיאור |
 |---|---|---|
-| `image.repository` | `a0533057932/redis-docs` | כתובת Docker image |
-| `image.tag` | `unprivileged` | תג Docker image |
+| `global.registry` | `""` | דריסת registry לכל התמונות |
+| `image.registry` | `a0533057932` | registry לתמונה הראשית |
+| `image.name` | `redis-docs` | שם התמונה הראשית |
+| `image.tag` | `unprivileged` | תג התמונה הראשית |
 | `replicaCount` | `2` | מספר pods |
-| `ingress.enabled` | `false` | הפעלת Ingress |
+| `ingress.enabled` | `false` | הפעלת Ingress (Kubernetes) |
+| `route.enabled` | `false` | הפעלת Route (OpenShift) |
+| `route.host` | `""` | hostname ל-Route (אוטומטי אם ריק) |
+| `route.tls.termination` | `edge` | סוג TLS termination |
 | `autoscaling.enabled` | `false` | הפעלת HPA (2-10 pods) |
 | `metrics.enabled` | `false` | הפעלת Prometheus metrics |
+| `metrics.image.registry` | `nginx` | registry לתמונת מטריקות |
+| `metrics.image.name` | `nginx-prometheus-exporter` | שם תמונת מטריקות |
+| `metrics.image.tag` | `1.4.0` | תג תמונת מטריקות |
 | `metrics.serviceMonitor.enabled` | `false` | הפעלת ServiceMonitor (דורש Prometheus Operator) |
 | `podDisruptionBudget.enabled` | `true` | הגנה בזמן rolling updates |
 | `nginx.workerConnections` | `2048` | מספר חיבורים מקבילים per worker |
