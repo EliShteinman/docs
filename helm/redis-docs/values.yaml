@@ -66,12 +66,12 @@ nginx:
 
 resources:
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 250m
+    memory: 256Mi
     ephemeral-storage: 128Mi
   limits:
-    cpu: 500m
-    memory: 256Mi
+    cpu: "1"
+    memory: 512Mi
     ephemeral-storage: 256Mi
 
 autoscaling:
@@ -98,9 +98,9 @@ readinessProbe:
 metrics:
   enabled: false
   image:
-    registry: nginx
-    name: nginx-prometheus-exporter
-    tag: "1.4.0"
+    registry: quay.io/martinhelmich
+    name: prometheus-nginxlog-exporter
+    tag: "v1.11.0"
     pullPolicy: IfNotPresent
   resources:
     requests:
@@ -109,6 +109,14 @@ metrics:
     limits:
       cpu: 50m
       memory: 32Mi
+  route:
+    enabled: false
+    annotations: {}
+    host: ""
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
   serviceMonitor:
     enabled: false
     interval: 30s

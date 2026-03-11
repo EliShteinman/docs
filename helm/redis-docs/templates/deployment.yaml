@@ -59,15 +59,20 @@ spec:
               mountPath: /var/run
             - name: tmp
               mountPath: /tmp
+            {{- if .Values.metrics.enabled }}
+            - name: logs
+              mountPath: /var/log/nginx
+            {{- end }}
         {{- if .Values.metrics.enabled }}
         - name: metrics
           image: "{{ include "redis-docs.metricsImage" . }}"
           imagePullPolicy: {{ .Values.metrics.image.pullPolicy }}
           args:
-            - -nginx.scrape-uri=http://127.0.0.1:{{ .Values.containerPort }}/stub_status
+            - -config-file
+            - /etc/nginxlog-exporter/config.hcl
           ports:
             - name: metrics
-              containerPort: 9113
+              containerPort: 4040
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -90,6 +95,13 @@ spec:
             capabilities:
               drop:
                 - ALL
+          volumeMounts:
+            - name: logs
+              mountPath: /var/log/nginx
+              readOnly: true
+            - name: metrics-config
+              mountPath: /etc/nginxlog-exporter
+              readOnly: true
         {{- end }}
       volumes:
         - name: nginx-conf
@@ -101,6 +113,13 @@ spec:
           emptyDir: {}
         - name: tmp
           emptyDir: {}
+        {{- if .Values.metrics.enabled }}
+        - name: logs
+          emptyDir: {}
+        - name: metrics-config
+          configMap:
+            name: {{ include "redis-docs.fullname" . }}-metrics
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

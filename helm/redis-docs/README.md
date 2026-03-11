@@ -15,7 +15,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 |---|---|---|---|---|
 | `a0533057932/redis-docs` | `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן - אחד מהשניים |
 | `a0533057932/redis-docs` | `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן - אחד מהשניים |
-| `nginx/nginx-prometheus-exporter` | `1.4.0` | 9113 | מטריקות Prometheus | לא - רק אם `metrics.enabled=true` |
+| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v4` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
 
@@ -24,20 +24,32 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 ### רשת פתוחה - ברירת מחדל
 
 ```bash
-helm install redis-docs redis-docs-0.2.0.tgz
+helm install redis-docs redis-docs-0.3.0.tgz
 ```
 
 ### רשת פתוחה עם מטריקות
 
 ```bash
-helm install redis-docs redis-docs-0.2.0.tgz \
+helm install redis-docs redis-docs-0.3.0.tgz \
   --set metrics.enabled=true
 ```
+
+### מטריקות עם Route חיצוני (לגרידה ע"י Pandora / Prometheus חיצוני)
+
+```bash
+helm install redis-docs redis-docs-0.3.0.tgz \
+  --set metrics.enabled=true \
+  --set metrics.route.enabled=true
+```
+
+> Route נפרד ייווצר עבור endpoint המטריקות על פורט 4040 בנתיב `/metrics`.
+>
+> מטריקות זמינות כוללות: `nginx_http_response_time_seconds` (histogram), `nginx_http_response_count_total`, `nginx_http_response_size_bytes`.
 
 ### רשת פתוחה עם Route (OpenShift)
 
 ```bash
-helm install redis-docs redis-docs-0.2.0.tgz \
+helm install redis-docs redis-docs-0.3.0.tgz \
   --set route.enabled=true
 ```
 
@@ -46,7 +58,7 @@ helm install redis-docs redis-docs-0.2.0.tgz \
 ### רשת פתוחה עם Ingress (Kubernetes)
 
 ```bash
-helm install redis-docs redis-docs-0.2.0.tgz \
+helm install redis-docs redis-docs-0.3.0.tgz \
   --set ingress.enabled=true \
   --set ingress.hosts[0].host=docs.company.internal \
   --set ingress.hosts[0].paths[0].path=/ \
@@ -56,7 +68,7 @@ helm install redis-docs redis-docs-0.2.0.tgz \
 ### רשת סגורה - דריסת registry לכל התמונות
 
 ```bash
-helm install redis-docs redis-docs-0.2.0.tgz \
+helm install redis-docs redis-docs-0.3.0.tgz \
   --set global.registry=registry.company.com
 ```
 
@@ -65,7 +77,7 @@ helm install redis-docs redis-docs-0.2.0.tgz \
 ### רשת סגורה עם מטריקות
 
 ```bash
-helm install redis-docs redis-docs-0.2.0.tgz \
+helm install redis-docs redis-docs-0.3.0.tgz \
   --set global.registry=registry.company.com \
   --set metrics.enabled=true
 ```
@@ -73,7 +85,7 @@ helm install redis-docs redis-docs-0.2.0.tgz \
 ### דריסת registry לתמונה ספציפית
 
 ```bash
-helm install redis-docs redis-docs-0.2.0.tgz \
+helm install redis-docs redis-docs-0.3.0.tgz \
   --set image.registry=my-registry.com \
   --set metrics.image.registry=other-registry.com
 ```
@@ -86,7 +98,7 @@ kubectl create secret docker-registry regcred \
   --docker-username=USER \
   --docker-password=PASS
 
-helm install redis-docs redis-docs-0.2.0.tgz \
+helm install redis-docs redis-docs-0.3.0.tgz \
   --set global.registry=REGISTRY \
   --set imagePullSecrets[0].name=regcred
 ```
@@ -101,21 +113,21 @@ docker pull a0533057932/redis-docs:unprivileged
 docker save a0533057932/redis-docs:unprivileged -o redis-docs.tar
 
 # מטריקות (אופציונלי)
-docker pull nginx/nginx-prometheus-exporter:1.4.0
-docker save nginx/nginx-prometheus-exporter:1.4.0 -o nginx-exporter.tar
+docker pull quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
+docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-exporter.tar
 ```
 
 ### שלב 2: אריזת Helm chart
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.2.0.tgz
+# ייצור: redis-docs-0.3.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.2.0.tgz`
+- `redis-docs-0.3.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי)
 
@@ -129,8 +141,8 @@ docker push REGISTRY/redis-docs:unprivileged
 
 # טעינת מטריקות (אופציונלי)
 docker load -i nginx-exporter.tar
-docker tag nginx/nginx-prometheus-exporter:1.4.0 REGISTRY/nginx-prometheus-exporter:1.4.0
-docker push REGISTRY/nginx-prometheus-exporter:1.4.0
+docker tag quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 REGISTRY/prometheus-nginxlog-exporter:v1.11.0
+docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 ```
 
 > החליפו `REGISTRY` בכתובת ה-registry שלכם, לדוגמה: `registry.internal.company.com`
@@ -138,7 +150,7 @@ docker push REGISTRY/nginx-prometheus-exporter:1.4.0
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.2.0.tgz \
+helm upgrade redis-docs redis-docs-0.3.0.tgz \
   --set image.tag=NEW_TAG
 ```
 
@@ -166,9 +178,11 @@ kubectl port-forward svc/redis-docs 8080:80
 | `route.tls.termination` | `edge` | סוג TLS termination |
 | `autoscaling.enabled` | `false` | הפעלת HPA (2-10 pods) |
 | `metrics.enabled` | `false` | הפעלת Prometheus metrics |
-| `metrics.image.registry` | `nginx` | registry לתמונת מטריקות |
-| `metrics.image.name` | `nginx-prometheus-exporter` | שם תמונת מטריקות |
-| `metrics.image.tag` | `1.4.0` | תג תמונת מטריקות |
+| `metrics.image.registry` | `quay.io/martinhelmich` | registry לתמונת מטריקות |
+| `metrics.image.name` | `prometheus-nginxlog-exporter` | שם תמונת מטריקות |
+| `metrics.image.tag` | `v1.11.0` | תג תמונת מטריקות |
+| `metrics.route.enabled` | `false` | הפעלת Route למטריקות (OpenShift) |
+| `metrics.route.host` | `""` | hostname ל-Route מטריקות (אוטומטי אם ריק) |
 | `metrics.serviceMonitor.enabled` | `false` | הפעלת ServiceMonitor (דורש Prometheus Operator) |
 | `podDisruptionBudget.enabled` | `true` | הגנה בזמן rolling updates |
 | `nginx.workerConnections` | `2048` | מספר חיבורים מקבילים per worker |

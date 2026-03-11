@@ -12,7 +12,7 @@ spec:
       protocol: TCP
       name: http
     {{- if .Values.metrics.enabled }}
-    - port: 9113
+    - port: 4040
       targetPort: metrics
       protocol: TCP
       name: metrics
