@@ -11,9 +11,12 @@
 | Metric | Type | Description | Labels |
 |---|---|---|---|
 | `nginx_http_response_count_total` | Counter | Total processed HTTP requests | `method`, `status` |
-| `nginx_http_response_size_bytes` | Counter | Total transferred bytes | `method`, `status` |
+| `nginx_http_response_size_bytes` | Counter | Total transferred bytes (response) | `method`, `status` |
+| `nginx_http_request_size_bytes` | Counter | Total received bytes (request) | `method`, `status` |
 | `nginx_http_response_time_seconds` | Summary | Response time summary (quantiles) | `method`, `status` |
 | `nginx_http_response_time_seconds_hist` | Histogram | Response time histogram (buckets) | `method`, `status` |
+| `nginx_http_upstream_time_seconds` | Summary | Upstream response time (reverse proxy only) | `method`, `status` |
+| `nginx_http_upstream_time_seconds_hist` | Histogram | Upstream response time histogram (reverse proxy only) | `method`, `status` |
 
 ### Histogram Buckets
 
