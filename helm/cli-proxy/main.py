@@ -26,6 +26,11 @@ def get_client(session_id: str | None) -> tuple[redis.Redis, str]:
     return client, sid
 
 
+@app.route("/healthz")
+def healthz():
+    return "ok"
+
+
 @app.route("/cli", methods=["POST"])
 def cli():
     body = request.get_json(silent=True) or {}
