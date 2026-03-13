@@ -45,13 +45,7 @@
 
     {{ partial "fonts.html" . }}
     
-    {{ if hugo.IsProduction -}}
-      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','{{ .Site.Params.tagManagerId }}');</script>
-    {{ end -}}
+    <!-- GTM removed for air-gapped deployment -->
 
     <script>window.HUGO_BASEURL = "{{ .Site.BaseURL }}"</script>
 
@@ -65,10 +59,7 @@
   <body class="antialiased tracking-[-0.01em] bg-white w-full">
     {{ partial "ai-metadata-body.html" . }}
 
-    {{ if hugo.IsProduction -}}
-      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ .Site.Params.tagManagerId }}"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    {{ end -}}
+    <!-- GTM noscript removed for air-gapped deployment -->
 
     {{/*  <header class="sticky top-0 z-50 flex flex-col items-center w-full text-xs lg:text-sm font-semibold lg:font-medium border border-b-redis-pen-300 bg-white text-midnight-900">
       {{ partial "banner.html" . }}
@@ -90,8 +81,8 @@
     {{ partial "search-modal.html" . }}
 
     {{ if .Store.Get "hasMermaid" }}
-    <script type="module">
-      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+    <script src='{{ "vendor/mermaid.min.js" | relURL }}'></script>
+    <script>
       mermaid.initialize({
         startOnLoad: true,
         theme: 'base',
