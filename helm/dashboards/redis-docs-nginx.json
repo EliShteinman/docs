@@ -3,10 +3,48 @@
     {
       "name": "DS_PROMETHEUS",
       "label": "Prometheus",
-      "description": "",
+      "description": "Prometheus datasource for nginx metrics",
       "type": "datasource",
       "pluginId": "prometheus",
       "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "heatmap",
+      "name": "Heatmap",
+      "version": ""
     }
   ],
   "annotations": {
@@ -127,7 +165,7 @@
               { "color": "blue", "value": null }
             ]
           },
-          "unit": "MBs"
+          "unit": "Bps"
         }
       },
       "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
@@ -139,8 +177,8 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(nginx_http_response_size_bytes[5m])) / 1024 / 1024",
-          "legendFormat": "MB/s"
+          "expr": "sum(rate(nginx_http_response_size_bytes[5m]))",
+          "legendFormat": "throughput"
         }
       ],
       "title": "Throughput",
@@ -195,28 +233,27 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "drawStyle": "bars",
-            "fillOpacity": 80,
-            "lineWidth": 0,
-            "stacking": { "mode": "normal" }
-          },
-          "unit": "s"
+            "scaleDistribution": { "type": "log", "log": 2 }
+          }
         }
       },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
       "id": 6,
       "options": {
-        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["mean"] },
-        "tooltip": { "mode": "multi" }
+        "calculate": false,
+        "yAxis": { "unit": "s" },
+        "color": { "scheme": "Oranges" },
+        "cellGap": 1
       },
       "targets": [
         {
-          "expr": "sum(rate(nginx_http_response_time_seconds_hist_bucket[5m])) by (le)",
-          "legendFormat": "{{le}}s"
+          "expr": "sum(increase(nginx_http_response_time_seconds_hist_bucket[5m])) by (le)",
+          "legendFormat": "{{le}}",
+          "format": "heatmap"
         }
       ],
-      "title": "Response Time Distribution (Histogram)",
-      "type": "timeseries"
+      "title": "Response Time Distribution",
+      "type": "heatmap"
     },
     {
       "collapsed": false,
@@ -327,7 +364,7 @@
             "fillOpacity": 20,
             "lineWidth": 2
           },
-          "unit": "MBs"
+          "unit": "Bps"
         }
       },
       "gridPos": { "h": 8, "w": 8, "x": 8, "y": 24 },
@@ -338,11 +375,11 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(nginx_http_response_size_bytes[5m])) / 1024 / 1024",
-          "legendFormat": "Response MB/s"
+          "expr": "sum(rate(nginx_http_response_size_bytes[5m]))",
+          "legendFormat": "Response"
         }
       ],
-      "title": "Throughput (MB/s)",
+      "title": "Throughput",
       "type": "timeseries"
     },
     {
@@ -372,7 +409,22 @@
   "schemaVersion": 39,
   "tags": ["nginx", "redis-docs"],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Datasource",
+        "multi": false,
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
@@ -382,5 +434,5 @@
   "timezone": "browser",
   "title": "Redis Docs - Nginx",
   "uid": "redis-docs-nginx",
-  "version": 1
+  "version": 2
 }
