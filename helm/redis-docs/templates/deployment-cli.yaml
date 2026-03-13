@@ -37,13 +37,13 @@ spec:
               value: "6379"
           livenessProbe:
             httpGet:
-              path: /cli
+              path: /healthz
               port: http
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /cli
+              path: /healthz
               port: http
             initialDelaySeconds: 3
             periodSeconds: 5
