@@ -16,7 +16,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 | `a0533057932/redis-docs` | `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן - אחד מהשניים |
 | `a0533057932/redis-docs` | `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן - אחד מהשניים |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` / `0.1.0` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
 | `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא - רק אם `cli.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
@@ -26,20 +26,20 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 ### רשת פתוחה - ברירת מחדל
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz
+helm install redis-docs redis-docs-0.4.0.tgz
 ```
 
 ### רשת פתוחה עם מטריקות
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set metrics.enabled=true
 ```
 
 ### מטריקות עם Route חיצוני (לגרידה ע"י Pandora / Prometheus חיצוני)
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set metrics.enabled=true \
   --set metrics.route.enabled=true
 ```
@@ -51,7 +51,7 @@ helm install redis-docs redis-docs-0.3.0.tgz \
 ### רשת פתוחה עם CLI playground
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set cli.enabled=true
 ```
 
@@ -60,7 +60,7 @@ helm install redis-docs redis-docs-0.3.0.tgz \
 ### רשת פתוחה עם Route (OpenShift)
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set route.enabled=true
 ```
 
@@ -69,7 +69,7 @@ helm install redis-docs redis-docs-0.3.0.tgz \
 ### רשת פתוחה עם Ingress (Kubernetes)
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set ingress.enabled=true \
   --set ingress.hosts[0].host=docs.company.internal \
   --set ingress.hosts[0].paths[0].path=/ \
@@ -79,16 +79,16 @@ helm install redis-docs redis-docs-0.3.0.tgz \
 ### רשת סגורה - דריסת registry לכל התמונות
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set global.registry=registry.company.com
 ```
 
-> דריסה אחת משנה את ה-registry לכל התמונות (ראשית + מטריקות).
+> דריסה אחת משנה את ה-registry לכל התמונות (ראשית + מטריקות + CLI).
 
 ### רשת סגורה עם מטריקות
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set global.registry=registry.company.com \
   --set metrics.enabled=true
 ```
@@ -96,7 +96,7 @@ helm install redis-docs redis-docs-0.3.0.tgz \
 ### דריסת registry לתמונה ספציפית
 
 ```bash
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set image.registry=my-registry.com \
   --set metrics.image.registry=other-registry.com
 ```
@@ -109,7 +109,7 @@ kubectl create secret docker-registry regcred \
   --docker-username=USER \
   --docker-password=PASS
 
-helm install redis-docs redis-docs-0.3.0.tgz \
+helm install redis-docs redis-docs-0.4.0.tgz \
   --set global.registry=REGISTRY \
   --set imagePullSecrets[0].name=regcred
 ```
@@ -138,13 +138,13 @@ docker save redis:8-alpine -o redis.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.3.0.tgz
+# ייצור: redis-docs-0.4.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.3.0.tgz`
+- `redis-docs-0.4.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
@@ -165,8 +165,8 @@ docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # טעינת CLI (אופציונלי)
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:latest
-docker push REGISTRY/redis-docs-cli:latest
+docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.1.0
+docker push REGISTRY/redis-docs-cli:0.1.0
 
 docker load -i redis.tar
 docker tag redis:8-alpine REGISTRY/redis:8-alpine
@@ -178,7 +178,7 @@ docker push REGISTRY/redis:8-alpine
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.3.0.tgz \
+helm upgrade redis-docs redis-docs-0.4.0.tgz \
   --set image.tag=NEW_TAG
 ```
 
@@ -218,5 +218,5 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.enabled` | `false` | הפעלת CLI playground (פוד נפרד עם Flask + Redis) |
 | `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
-| `cli.image.tag` | `latest` | תג תמונת CLI proxy |
+| `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.1.0`) |
 | `cli.redis.image.tag` | `8-alpine` | תג תמונת Redis sidecar |
