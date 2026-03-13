@@ -21,7 +21,7 @@
 ### Histogram Buckets
 
 ```
-0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10
+0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 30, 60
 ```
 
 ## PromQL Queries
@@ -72,4 +72,21 @@ sum(rate(nginx_http_response_count_total{status="404"}[5m])) / sum(rate(nginx_ht
 Throughput (MB/s):
 ```promql
 sum(rate(nginx_http_response_size_bytes[5m])) / 1024 / 1024
+```
+
+### Slow Responses
+
+Requests slower than 5s (per second):
+```promql
+sum(rate(nginx_http_response_time_seconds_hist_bucket{le="5"}[5m])) - sum(rate(nginx_http_response_time_seconds_hist_bucket{le="60"}[5m]))
+```
+
+Percentage of requests slower than 1s:
+```promql
+(1 - sum(rate(nginx_http_response_time_seconds_hist_bucket{le="1"}[5m])) / sum(rate(nginx_http_response_time_seconds_hist_count[5m]))) * 100
+```
+
+Average response size (bytes):
+```promql
+sum(rate(nginx_http_response_size_bytes[5m])) / sum(rate(nginx_http_response_count_total[5m]))
 ```

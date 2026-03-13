@@ -28,7 +28,7 @@ data:
 
         log_format main '$remote_addr - $remote_user [$time_local] "$request" '
                         '$status $body_bytes_sent "$http_referer" '
-                        '"$http_user_agent" $request_time';
+                        '"$http_user_agent" $request_time $gzip_ratio';
 
         access_log /var/log/nginx/access.log main buffer=16k flush=5s;
 
@@ -43,10 +43,11 @@ data:
         open_file_cache_valid 30s;
         open_file_cache_min_uses 2;
 
+        gzip_static on;
         gzip on;
         gzip_vary on;
         gzip_proxied any;
-        gzip_comp_level 4;
+        gzip_comp_level 6;
         gzip_min_length 256;
         gzip_types
             text/plain
