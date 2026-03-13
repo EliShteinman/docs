@@ -39,42 +39,89 @@ helm install redis-docs redis-docs-0.4.0.tgz -f my-values.yaml
 
 להלן דוגמאות לקבצי values לתרחישים שונים.
 
-### רשת פתוחה — OpenShift עם מטריקות + CLI
+### רשת פתוחה — OpenShift
 
 ```yaml
 # my-values.yaml
+
+# --- Replicas / Autoscaling ---
+replicaCount: 2
+# או לחלופין HPA:
+# autoscaling:
+#   enabled: true
+#   minReplicas: 2
+#   maxReplicas: 10
+#   targetCPUUtilizationPercentage: 80
+
+# --- תמונה ראשית (nginx) ---
+image:
+  registry: a0533057932
+  name: redis-docs
+  tag: unprivileged
+
+# --- Resources - תמונה ראשית ---
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi
+
+# --- Route (OpenShift) ---
 route:
   enabled: true
+  # host: docs.apps.example.com  # ריק = אוטומטי
 
+# --- מטריקות ---
 metrics:
   enabled: true
   route:
     enabled: true
+    # host: docs-metrics.apps.example.com
+  image:
+    registry: quay.io/martinhelmich
+    name: prometheus-nginxlog-exporter
+    tag: "v1.11.0"
+  resources:
+    requests:
+      cpu: 10m
+      memory: 16Mi
+    limits:
+      cpu: 50m
+      memory: 32Mi
 
+# --- CLI playground ---
 cli:
   enabled: true
+  image:
+    registry: a0533057932
+    name: redis-docs-cli
+    tag: "latest"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+  redis:
+    image:
+      registry: docker.io
+      name: redis
+      tag: "8-alpine"
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 128Mi
 ```
 
 > Route נפרד ייווצר עבור endpoint המטריקות על פורט 4040 בנתיב `/metrics`.
 >
-> מטריקות זמינות כוללות: `nginx_http_response_time_seconds` (histogram), `nginx_http_response_count_total`, `nginx_http_response_size_bytes`.
->
 > ייווצר פוד נפרד עם Flask proxy + Redis sidecar. ה-CLI יהיה זמין בנתיב `/cli`.
-
-### רשת פתוחה — OpenShift עם hostname מותאם
-
-```yaml
-# my-values.yaml
-route:
-  enabled: true
-  host: docs.apps.example.com
-
-metrics:
-  enabled: true
-  route:
-    enabled: true
-    host: docs-metrics.apps.example.com
-```
 
 ### רשת פתוחה — Kubernetes עם Ingress
 
@@ -105,36 +152,41 @@ global:
 imagePullSecrets:
   - name: regcred
 
+replicaCount: 2
+
+# --- תמונה ראשית ---
+image:
+  name: redis-docs
+  tag: unprivileged
+
+# --- Route ---
 route:
   enabled: true
 
+# --- מטריקות ---
 metrics:
   enabled: true
   route:
     enabled: true
+  image:
+    name: prometheus-nginxlog-exporter
+    tag: "v1.11.0"
 
+# --- CLI ---
 cli:
   enabled: true
   image:
-    tag: "0.1.0"
+    name: redis-docs-cli
+    tag: "0.1.0"              # ברשת סגורה: תג אמיתי (Artifactory דורש)
+  redis:
+    image:
+      name: redis
+      tag: "8-alpine"
 ```
 
-> `global.registry` משנה את ה-registry לכל התמונות (ראשית + מטריקות + CLI).
+> `global.registry` משנה את ה-registry לכל התמונות. אין צורך לציין registry לכל תמונה בנפרד.
 >
 > ברשת סגורה יש לתייג את CLI proxy כ-`0.1.0` (Artifactory דורש תג שאינו `latest`).
-
-### רשת סגורה — דריסת registry לתמונה ספציפית
-
-```yaml
-# my-values.yaml
-image:
-  registry: my-registry.com
-
-metrics:
-  enabled: true
-  image:
-    registry: other-registry.com
-```
 
 ### אם ה-registry דורש הרשאות
 
