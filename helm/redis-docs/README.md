@@ -23,82 +23,117 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 
 ## התקנה
 
-### רשת פתוחה - ברירת מחדל
+### שימוש בסיסי
 
 ```bash
 helm install redis-docs redis-docs-0.4.0.tgz
 ```
 
-### רשת פתוחה עם מטריקות
+### התקנה עם קובץ values
+
+הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set metrics.enabled=true
+helm install redis-docs redis-docs-0.4.0.tgz -f my-values.yaml
 ```
 
-### מטריקות עם Route חיצוני (לגרידה ע"י Pandora / Prometheus חיצוני)
+להלן דוגמאות לקבצי values לתרחישים שונים.
 
-```bash
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set metrics.enabled=true \
-  --set metrics.route.enabled=true
+### רשת פתוחה — OpenShift עם מטריקות + CLI
+
+```yaml
+# my-values.yaml
+route:
+  enabled: true
+
+metrics:
+  enabled: true
+  route:
+    enabled: true
+
+cli:
+  enabled: true
 ```
 
 > Route נפרד ייווצר עבור endpoint המטריקות על פורט 4040 בנתיב `/metrics`.
 >
 > מטריקות זמינות כוללות: `nginx_http_response_time_seconds` (histogram), `nginx_http_response_count_total`, `nginx_http_response_size_bytes`.
-
-### רשת פתוחה עם CLI playground
-
-```bash
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set cli.enabled=true
-```
-
+>
 > ייווצר פוד נפרד עם Flask proxy + Redis sidecar. ה-CLI יהיה זמין בנתיב `/cli`.
 
-### רשת פתוחה עם Route (OpenShift)
+### רשת פתוחה — OpenShift עם hostname מותאם
 
-```bash
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set route.enabled=true
+```yaml
+# my-values.yaml
+route:
+  enabled: true
+  host: docs.apps.example.com
+
+metrics:
+  enabled: true
+  route:
+    enabled: true
+    host: docs-metrics.apps.example.com
 ```
 
-> OpenShift ייצר כתובת אוטומטית. לכתובת מותאמת: `--set route.host=docs.apps.example.com`
+### רשת פתוחה — Kubernetes עם Ingress
 
-### רשת פתוחה עם Ingress (Kubernetes)
+```yaml
+# my-values.yaml
+ingress:
+  enabled: true
+  hosts:
+    - host: docs.company.internal
+      paths:
+        - path: /
+          pathType: Prefix
 
-```bash
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set ingress.enabled=true \
-  --set ingress.hosts[0].host=docs.company.internal \
-  --set ingress.hosts[0].paths[0].path=/ \
-  --set ingress.hosts[0].paths[0].pathType=Prefix
+metrics:
+  enabled: true
+
+cli:
+  enabled: true
 ```
 
-### רשת סגורה - דריסת registry לכל התמונות
+### רשת סגורה — דוגמה מלאה
 
-```bash
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set global.registry=registry.company.com
+```yaml
+# my-values.yaml
+global:
+  registry: registry.internal.company.com
+
+imagePullSecrets:
+  - name: regcred
+
+route:
+  enabled: true
+
+metrics:
+  enabled: true
+  route:
+    enabled: true
+
+cli:
+  enabled: true
+  image:
+    tag: "0.1.0"
 ```
 
-> דריסה אחת משנה את ה-registry לכל התמונות (ראשית + מטריקות + CLI).
+> `global.registry` משנה את ה-registry לכל התמונות (ראשית + מטריקות + CLI).
+>
+> ברשת סגורה יש לתייג את CLI proxy כ-`0.1.0` (Artifactory דורש תג שאינו `latest`).
 
-### רשת סגורה עם מטריקות
+### רשת סגורה — דריסת registry לתמונה ספציפית
 
-```bash
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set global.registry=registry.company.com \
-  --set metrics.enabled=true
-```
+```yaml
+# my-values.yaml
+image:
+  registry: my-registry.com
 
-### דריסת registry לתמונה ספציפית
-
-```bash
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set image.registry=my-registry.com \
-  --set metrics.image.registry=other-registry.com
+metrics:
+  enabled: true
+  image:
+    registry: other-registry.com
 ```
 
 ### אם ה-registry דורש הרשאות
@@ -108,10 +143,13 @@ kubectl create secret docker-registry regcred \
   --docker-server=REGISTRY \
   --docker-username=USER \
   --docker-password=PASS
+```
 
-helm install redis-docs redis-docs-0.4.0.tgz \
-  --set global.registry=REGISTRY \
-  --set imagePullSecrets[0].name=regcred
+הוסיפו ל-values:
+
+```yaml
+imagePullSecrets:
+  - name: regcred
 ```
 
 ## העברה לרשת סגורה
@@ -178,7 +216,13 @@ docker push REGISTRY/redis:8-alpine
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.4.0.tgz \
+helm upgrade redis-docs redis-docs-0.4.0.tgz -f my-values.yaml
+```
+
+או עם דריסת ערך בודד:
+
+```bash
+helm upgrade redis-docs redis-docs-0.4.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
