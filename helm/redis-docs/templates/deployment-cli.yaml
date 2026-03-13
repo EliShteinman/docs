@@ -1,0 +1,77 @@
+{{- if .Values.cli.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-cli
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cli
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "redis-docs.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: cli
+  template:
+    metadata:
+      labels:
+        {{- include "redis-docs.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: cli
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: cli-proxy
+          image: "{{ .Values.cli.image.registry }}/{{ .Values.cli.image.name }}:{{ .Values.cli.image.tag }}"
+          imagePullPolicy: {{ .Values.cli.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8090
+              protocol: TCP
+          env:
+            - name: REDIS_HOST
+              value: "localhost"
+            - name: REDIS_PORT
+              value: "6379"
+          livenessProbe:
+            httpGet:
+              path: /cli
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /cli
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.cli.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+        - name: redis
+          image: "{{ .Values.cli.redis.image.registry }}/{{ .Values.cli.redis.image.name }}:{{ .Values.cli.redis.image.tag }}"
+          imagePullPolicy: {{ .Values.cli.redis.image.pullPolicy }}
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.cli.redis.resources | nindent 12 }}
+{{- end }}

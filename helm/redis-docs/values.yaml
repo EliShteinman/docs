@@ -122,6 +122,34 @@ metrics:
     interval: 30s
     labels: {}
 
+cli:
+  enabled: false
+  image:
+    registry: a0533057932
+    name: redis-docs-cli
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+  redis:
+    image:
+      registry: docker.io
+      name: redis
+      tag: "7-alpine"
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 128Mi
+
 podDisruptionBudget:
   enabled: true
   maxUnavailable: 1
