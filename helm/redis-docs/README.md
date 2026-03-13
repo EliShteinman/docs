@@ -15,7 +15,9 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 |---|---|---|---|---|
 | `a0533057932/redis-docs` | `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן - אחד מהשניים |
 | `a0533057932/redis-docs` | `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן - אחד מהשניים |
-| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v4` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
+| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
+| `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא - רק אם `cli.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
 
@@ -45,6 +47,15 @@ helm install redis-docs redis-docs-0.3.0.tgz \
 > Route נפרד ייווצר עבור endpoint המטריקות על פורט 4040 בנתיב `/metrics`.
 >
 > מטריקות זמינות כוללות: `nginx_http_response_time_seconds` (histogram), `nginx_http_response_count_total`, `nginx_http_response_size_bytes`.
+
+### רשת פתוחה עם CLI playground
+
+```bash
+helm install redis-docs redis-docs-0.3.0.tgz \
+  --set cli.enabled=true
+```
+
+> ייווצר פוד נפרד עם Flask proxy + Redis sidecar. ה-CLI יהיה זמין בנתיב `/cli`.
 
 ### רשת פתוחה עם Route (OpenShift)
 
@@ -115,6 +126,12 @@ docker save a0533057932/redis-docs:unprivileged -o redis-docs.tar
 # מטריקות (אופציונלי)
 docker pull quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
 docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-exporter.tar
+
+# CLI playground (אופציונלי)
+docker pull a0533057932/redis-docs-cli:latest
+docker save a0533057932/redis-docs-cli:latest -o redis-docs-cli.tar
+docker pull redis:8-alpine
+docker save redis:8-alpine -o redis.tar
 ```
 
 ### שלב 2: אריזת Helm chart
@@ -129,7 +146,9 @@ helm package helm/redis-docs/
 העבירו את הקבצים הבאים:
 - `redis-docs-0.3.0.tgz`
 - `redis-docs.tar`
-- `nginx-exporter.tar` (אופציונלי)
+- `nginx-exporter.tar` (אופציונלי - מטריקות)
+- `redis-docs-cli.tar` (אופציונלי - CLI)
+- `redis.tar` (אופציונלי - CLI)
 
 ### שלב 4: טעינה ל-private registry
 
@@ -143,6 +162,15 @@ docker push REGISTRY/redis-docs:unprivileged
 docker load -i nginx-exporter.tar
 docker tag quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
+
+# טעינת CLI (אופציונלי)
+docker load -i redis-docs-cli.tar
+docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:latest
+docker push REGISTRY/redis-docs-cli:latest
+
+docker load -i redis.tar
+docker tag redis:8-alpine REGISTRY/redis:8-alpine
+docker push REGISTRY/redis:8-alpine
 ```
 
 > החליפו `REGISTRY` בכתובת ה-registry שלכם, לדוגמה: `registry.internal.company.com`
@@ -171,12 +199,12 @@ kubectl port-forward svc/redis-docs 8080:80
 | `image.registry` | `a0533057932` | registry לתמונה הראשית |
 | `image.name` | `redis-docs` | שם התמונה הראשית |
 | `image.tag` | `unprivileged` | תג התמונה הראשית |
-| `replicaCount` | `2` | מספר pods |
+| `replicaCount` | `1` | מספר pods |
 | `ingress.enabled` | `false` | הפעלת Ingress (Kubernetes) |
 | `route.enabled` | `false` | הפעלת Route (OpenShift) |
 | `route.host` | `""` | hostname ל-Route (אוטומטי אם ריק) |
 | `route.tls.termination` | `edge` | סוג TLS termination |
-| `autoscaling.enabled` | `false` | הפעלת HPA (2-10 pods) |
+| `autoscaling.enabled` | `false` | הפעלת HPA (1-10 pods) |
 | `metrics.enabled` | `false` | הפעלת Prometheus metrics |
 | `metrics.image.registry` | `quay.io/martinhelmich` | registry לתמונת מטריקות |
 | `metrics.image.name` | `prometheus-nginxlog-exporter` | שם תמונת מטריקות |
@@ -187,3 +215,8 @@ kubectl port-forward svc/redis-docs 8080:80
 | `podDisruptionBudget.enabled` | `true` | הגנה בזמן rolling updates |
 | `nginx.workerConnections` | `2048` | מספר חיבורים מקבילים per worker |
 | `nginx.keepaliveTimeout` | `15` | timeout לחיבורים idle (שניות) |
+| `cli.enabled` | `false` | הפעלת CLI playground (פוד נפרד עם Flask + Redis) |
+| `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
+| `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
+| `cli.image.tag` | `latest` | תג תמונת CLI proxy |
+| `cli.redis.image.tag` | `8-alpine` | תג תמונת Redis sidecar |
