@@ -12,11 +12,9 @@
 |---|---|---|---|
 | `nginx_http_response_count_total` | Counter | Total processed HTTP requests | `method`, `status` |
 | `nginx_http_response_size_bytes` | Counter | Total transferred bytes (response) | `method`, `status` |
-| `nginx_http_request_size_bytes` | Counter | Total received bytes (request) | `method`, `status` |
-| `nginx_http_response_time_seconds` | Summary | Response time summary (quantiles) | `method`, `status` |
+| `nginx_http_response_time_seconds` | Summary | Response time summary (quantiles p50/p90/p99) | `method`, `status` |
 | `nginx_http_response_time_seconds_hist` | Histogram | Response time histogram (buckets) | `method`, `status` |
-| `nginx_http_upstream_time_seconds` | Summary | Upstream response time (reverse proxy only) | `method`, `status` |
-| `nginx_http_upstream_time_seconds_hist` | Histogram | Upstream response time histogram (reverse proxy only) | `method`, `status` |
+| `nginx_parse_errors_total` | Counter | Log lines that could not be parsed | — |
 
 ### Histogram Buckets
 
@@ -69,24 +67,24 @@ sum(rate(nginx_http_response_count_total{status="404"}[5m])) / sum(rate(nginx_ht
 
 ### Traffic
 
-Throughput (MB/s):
+Throughput (bytes/sec):
 ```promql
-sum(rate(nginx_http_response_size_bytes[5m])) / 1024 / 1024
+sum(rate(nginx_http_response_size_bytes[5m]))
+```
+
+Average response size (bytes):
+```promql
+sum(rate(nginx_http_response_size_bytes[5m])) / sum(rate(nginx_http_response_count_total[5m]))
 ```
 
 ### Slow Responses
 
 Requests slower than 5s (per second):
 ```promql
-sum(rate(nginx_http_response_time_seconds_hist_bucket{le="5"}[5m])) - sum(rate(nginx_http_response_time_seconds_hist_bucket{le="60"}[5m]))
+sum(rate(nginx_http_response_time_seconds_hist_count[5m])) - sum(rate(nginx_http_response_time_seconds_hist_bucket{le="5"}[5m]))
 ```
 
 Percentage of requests slower than 1s:
 ```promql
 (1 - sum(rate(nginx_http_response_time_seconds_hist_bucket{le="1"}[5m])) / sum(rate(nginx_http_response_time_seconds_hist_count[5m]))) * 100
-```
-
-Average response size (bytes):
-```promql
-sum(rate(nginx_http_response_size_bytes[5m])) / sum(rate(nginx_http_response_count_total[5m]))
 ```
