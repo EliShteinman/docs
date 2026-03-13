@@ -100,6 +100,13 @@ data:
             access_log off;
         }
 
+        {{- if .Values.cli.enabled }}
+        location = /cli {
+            proxy_pass http://{{ include "redis-docs.fullname" . }}-cli:8090/cli;
+            proxy_set_header Content-Type "application/json";
+        }
+        {{- end }}
+
         error_page 404 /404.html;
         error_page 500 502 503 504 /50x.html;
     }

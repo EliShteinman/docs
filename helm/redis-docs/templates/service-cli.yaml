@@ -1,0 +1,19 @@
+{{- if .Values.cli.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-cli
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cli
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8090
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "redis-docs.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: cli
+{{- end }}
