@@ -18,8 +18,6 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.1.0` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
 | `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא - רק אם `cli.enabled=true` |
-| `bitnami/kubectl` | `1.31` | — | המרת PFX→PEM עבור Route | לא - רק אם Route + PFX |
-
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
 
 ## התקנה
@@ -191,17 +189,31 @@ cli:
 
 ### תעודת אבטחה (TLS)
 
-הצ'ארט תומך בשלוש דרכים לספק תעודת אבטחה:
+הצ'ארט תומך בשתי דרכים לספק תעודת אבטחה:
 
-#### אופציה 1: תעודה בפורמט PEM (cert + key)
+#### אופציה 1: הדבקת תעודה ישירות
+
+הדביקו את הטקסט של התעודה, המפתח, וה-CA (אופציונלי) ישירות ב-values:
 
 ```yaml
 # my-values.yaml
 tls:
   enabled: true
-  certificate: "<base64 של קובץ CER/CRT>"
-  privateKey: "<base64 של קובץ KEY>"
-  caCertificate: "<base64 של CA - אופציונלי>"
+  certificate: |
+    -----BEGIN CERTIFICATE-----
+    MIIDxTCCAq2gAwIBAgIQAqxcJmoLQJuPC3nyrkYldzANBgkqhkiG9w0BAQUFAMDx
+    ... (הדביקו כאן את כל הטקסט של התעודה)
+    -----END CERTIFICATE-----
+  privateKey: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7o4qne60TB3pq
+    ... (הדביקו כאן את כל הטקסט של המפתח)
+    -----END PRIVATE KEY-----
+  caCertificate: |
+    -----BEGIN CERTIFICATE-----
+    MIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh
+    ... (אופציונלי — הדביקו כאן את כל הטקסט של ה-CA)
+    -----END CERTIFICATE-----
 
 route:
   enabled: true
@@ -211,47 +223,17 @@ route:
     termination: edge
 ```
 
-להמרה ל-base64:
-
-```bash
-cat my-cert.crt | base64 -w 0
-cat my-cert.key | base64 -w 0
-```
-
-#### אופציה 2: תעודה בפורמט PFX
-
-```yaml
-# my-values.yaml
-tls:
-  enabled: true
-  pfx:
-    data: "<base64 של קובץ PFX>"
-    password: "the-password"
-
-route:
-  enabled: true
-  host: docs.apps.example.com
-```
-
-להמרה ל-base64:
-
-```bash
-cat my-cert.pfx | base64 -w 0
-```
-
-> PFX נתמך גם ב-Route וגם ב-Ingress. כאשר Route מופעל עם PFX, הצ'ארט מריץ אוטומטית hook Job שממיר את ה-PFX לפורמט PEM ומעדכן את ה-Route.
+> **שימו לב:** השדות `certificate` ו-`privateKey` הם חובה. השדה `caCertificate` אופציונלי.
 >
-> ה-Job דורש image עם `kubectl` ו-`openssl` (ברירת מחדל: `bitnami/kubectl:1.31`). ברשת סגורה, יש לדחוף את התמונה ל-registry הפנימי ולהגדיר:
+> אם קיבלתם קובץ PFX, חלצו ממנו את הטקסטים:
 >
-> ```yaml
-> pfxConverter:
->   image:
->     registry: registry.internal.company.com
->     name: kubectl
->     tag: "1.31"
+> ```bash
+> openssl pkcs12 -in my-cert.pfx -clcerts -nokeys    # → certificate
+> openssl pkcs12 -in my-cert.pfx -nocerts -nodes      # → privateKey
+> openssl pkcs12 -in my-cert.pfx -cacerts -nokeys     # → caCertificate
 > ```
 
-#### אופציה 3: שימוש ב-Secret קיים
+#### אופציה 2: שימוש ב-Secret קיים
 
 ```yaml
 # my-values.yaml
@@ -380,11 +362,9 @@ kubectl port-forward svc/redis-docs 8080:80
 | `route.tls.termination` | `edge` | סוג TLS termination |
 | `tls.enabled` | `false` | הפעלת תעודת אבטחה |
 | `tls.existingSecret` | `""` | שם Secret קיים עם תעודה |
-| `tls.certificate` | `""` | תעודה בפורמט PEM (base64) |
-| `tls.privateKey` | `""` | מפתח פרטי בפורמט PEM (base64) |
-| `tls.caCertificate` | `""` | CA certificate (base64, אופציונלי) |
-| `tls.pfx.data` | `""` | קובץ PFX (base64) |
-| `tls.pfx.password` | `""` | סיסמת PFX |
+| `tls.certificate` | `""` | טקסט התעודה (חובה) |
+| `tls.privateKey` | `""` | טקסט המפתח הפרטי (חובה) |
+| `tls.caCertificate` | `""` | טקסט תעודת CA (אופציונלי) |
 | `autoscaling.enabled` | `false` | הפעלת HPA (1-10 pods) |
 | `metrics.enabled` | `false` | הפעלת Prometheus metrics |
 | `metrics.image.registry` | `quay.io/martinhelmich` | registry לתמונת מטריקות |
@@ -401,6 +381,3 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
 | `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.1.0`) |
 | `cli.redis.image.tag` | `8-alpine` | תג תמונת Redis sidecar |
-| `pfxConverter.image.registry` | `docker.io/bitnami` | registry לתמונת PFX converter |
-| `pfxConverter.image.name` | `kubectl` | שם תמונת PFX converter |
-| `pfxConverter.image.tag` | `1.31` | תג תמונת PFX converter |

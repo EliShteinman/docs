@@ -30,15 +30,14 @@ spec:
     {{- end }}
     {{- if and .Values.tls.enabled .Values.tls.certificate }}
     certificate: |-
-{{ .Values.tls.certificate | b64dec | indent 6 }}
+{{ .Values.tls.certificate | indent 6 }}
     key: |-
-{{ .Values.tls.privateKey | b64dec | indent 6 }}
+{{ .Values.tls.privateKey | indent 6 }}
     {{- if .Values.tls.caCertificate }}
     caCertificate: |-
-{{ .Values.tls.caCertificate | b64dec | indent 6 }}
+{{ .Values.tls.caCertificate | indent 6 }}
     {{- end }}
     {{- end }}
-    {{- /* PFX certificates: converted to PEM and patched by pfx-converter-job hook */}}
     {{- if .Values.route.tls.destinationCACertificate }}
     destinationCACertificate: |
       {{ .Values.route.tls.destinationCACertificate | nindent 6 }}

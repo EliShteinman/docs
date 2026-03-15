@@ -43,14 +43,10 @@ tls:
   enabled: false
   # Use an existing Kubernetes TLS secret instead of creating one
   existingSecret: ""
-  # PEM format certificates (base64 encoded)
+  # PEM format certificates (paste the text block as-is)
   certificate: ""
   privateKey: ""
   caCertificate: ""
-  # PFX/PKCS12 format (base64 encoded)
-  pfx:
-    data: ""
-    password: ""
   # Enable TLS termination at nginx level (passthrough mode)
   # When false, TLS terminates at ingress/route level
   nginxTermination: false
@@ -166,12 +162,6 @@ cli:
       limits:
         cpu: 200m
         memory: 128Mi
-
-pfxConverter:
-  image:
-    registry: docker.io/bitnami
-    name: kubectl
-    tag: "1.31"
 
 podDisruptionBudget:
   enabled: true

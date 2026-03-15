@@ -87,12 +87,3 @@ Priority: global.registry > metrics.image.registry
 {{- $registry := .Values.global.registry | default .Values.metrics.image.registry -}}
 {{- printf "%s/%s:%s" $registry .Values.metrics.image.name .Values.metrics.image.tag -}}
 {{- end }}
-
-{{/*
-Return the image reference for the PFX converter job.
-Priority: global.registry > pfxConverter.image.registry
-*/}}
-{{- define "redis-docs.pfxConverterImage" -}}
-{{- $registry := .Values.global.registry | default .Values.pfxConverter.image.registry -}}
-{{- printf "%s/%s:%s" $registry .Values.pfxConverter.image.name .Values.pfxConverter.image.tag -}}
-{{- end }}
