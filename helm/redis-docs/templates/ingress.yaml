@@ -13,7 +13,7 @@ spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
-  {{- if or .Values.ingress.tls (and .Values.tls.enabled (or .Values.tls.certificate .Values.tls.pfx.data .Values.tls.existingSecret)) }}
+  {{- if or .Values.ingress.tls (and .Values.tls.enabled (or .Values.tls.certificate .Values.tls.existingSecret)) }}
   tls:
     {{- if .Values.ingress.tls }}
     {{- range .Values.ingress.tls }}
