@@ -1,0 +1,51 @@
+{{- if and .Values.route.enabled .Values.route.tls.enabled .Values.tls.enabled .Values.tls.pfx.data (not .Values.tls.certificate) -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-pfx-converter
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-pfx-converter
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: [{{ include "redis-docs.tlsSecretName" . | quote }}]
+    verbs: ["get"]
+  - apiGroups: ["route.openshift.io"]
+    resources: ["routes"]
+    resourceNames: [{{ include "redis-docs.fullname" . | quote }}]
+    verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-pfx-converter
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "redis-docs.fullname" . }}-pfx-converter
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "redis-docs.fullname" . }}-pfx-converter
+    namespace: {{ .Release.Namespace }}
+{{- end }}

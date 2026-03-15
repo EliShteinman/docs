@@ -38,6 +38,7 @@ spec:
 {{ .Values.tls.caCertificate | b64dec | indent 6 }}
     {{- end }}
     {{- end }}
+    {{- /* PFX certificates: converted to PEM and patched by pfx-converter-job hook */}}
     {{- if .Values.route.tls.destinationCACertificate }}
     destinationCACertificate: |
       {{ .Values.route.tls.destinationCACertificate | nindent 6 }}
