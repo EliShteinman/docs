@@ -69,6 +69,17 @@ Priority: global.registry > image.registry
 {{- end }}
 
 {{/*
+Return the TLS secret name.
+*/}}
+{{- define "redis-docs.tlsSecretName" -}}
+{{- if .Values.tls.existingSecret -}}
+{{- .Values.tls.existingSecret -}}
+{{- else -}}
+{{- printf "%s-tls" (include "redis-docs.fullname" .) -}}
+{{- end -}}
+{{- end }}
+
+{{/*
 Return the image reference for the metrics sidecar.
 Priority: global.registry > metrics.image.registry
 */}}

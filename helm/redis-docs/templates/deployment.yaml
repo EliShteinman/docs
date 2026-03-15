@@ -38,6 +38,11 @@ spec:
             - name: http
               containerPort: {{ .Values.containerPort }}
               protocol: TCP
+            {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
+            - name: https
+              containerPort: {{ .Values.tls.httpsPort }}
+              protocol: TCP
+            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
@@ -59,6 +64,11 @@ spec:
               mountPath: /var/run
             - name: tmp
               mountPath: /tmp
+            {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
+            - name: tls-certs
+              mountPath: /etc/nginx/ssl
+              readOnly: true
+            {{- end }}
             {{- if .Values.metrics.enabled }}
             - name: logs
               mountPath: /var/log/nginx
@@ -113,6 +123,11 @@ spec:
           emptyDir: {}
         - name: tmp
           emptyDir: {}
+        {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
+        - name: tls-certs
+          secret:
+            secretName: {{ include "redis-docs.tlsSecretName" . }}
+        {{- end }}
         {{- if .Values.metrics.enabled }}
         - name: logs
           emptyDir: {}

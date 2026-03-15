@@ -39,6 +39,23 @@ service:
 
 containerPort: 8080
 
+tls:
+  enabled: false
+  # Use an existing Kubernetes TLS secret instead of creating one
+  existingSecret: ""
+  # PEM format certificates (base64 encoded)
+  certificate: ""
+  privateKey: ""
+  caCertificate: ""
+  # PFX/PKCS12 format (base64 encoded)
+  pfx:
+    data: ""
+    password: ""
+  # Enable TLS termination at nginx level (passthrough mode)
+  # When false, TLS terminates at ingress/route level
+  nginxTermination: false
+  httpsPort: 8443
+
 ingress:
   enabled: false
   className: ""

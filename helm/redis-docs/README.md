@@ -26,7 +26,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-0.4.0.tgz
+helm install redis-docs redis-docs-0.5.0.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -34,7 +34,7 @@ helm install redis-docs redis-docs-0.4.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-0.4.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-0.5.0.tgz -f my-values.yaml
 ```
 
 להלן דוגמאות לקבצי values לתרחישים שונים.
@@ -188,6 +188,84 @@ cli:
 >
 > ברשת סגורה יש לתייג את CLI proxy כ-`0.1.0` (Artifactory דורש תג שאינו `latest`).
 
+### תעודת אבטחה (TLS)
+
+הצ'ארט תומך בשלוש דרכים לספק תעודת אבטחה:
+
+#### אופציה 1: תעודה בפורמט PEM (cert + key)
+
+```yaml
+# my-values.yaml
+tls:
+  enabled: true
+  certificate: "<base64 של קובץ CER/CRT>"
+  privateKey: "<base64 של קובץ KEY>"
+  caCertificate: "<base64 של CA - אופציונלי>"
+
+route:
+  enabled: true
+  host: docs.apps.example.com
+  tls:
+    enabled: true
+    termination: edge
+```
+
+להמרה ל-base64:
+
+```bash
+cat my-cert.crt | base64 -w 0
+cat my-cert.key | base64 -w 0
+```
+
+#### אופציה 2: תעודה בפורמט PFX
+
+```yaml
+# my-values.yaml
+tls:
+  enabled: true
+  pfx:
+    data: "<base64 של קובץ PFX>"
+    password: "the-password"
+
+route:
+  enabled: true
+  host: docs.apps.example.com
+```
+
+להמרה ל-base64:
+
+```bash
+cat my-cert.pfx | base64 -w 0
+```
+
+> **שימו לב:** OpenShift Route דורש פורמט PEM. אם יש לכם רק PFX, המירו אותו:
+>
+> ```bash
+> # חילוץ certificate
+> openssl pkcs12 -in my-cert.pfx -clcerts -nokeys -out cert.crt
+> # חילוץ private key
+> openssl pkcs12 -in my-cert.pfx -nocerts -nodes -out cert.key
+> ```
+>
+> לאחר ההמרה השתמשו באופציה 1.
+>
+> הפורמט PFX נשמר כ-Secret בקלאסטר ומתאים למצבים שבהם האפליקציה צריכה גישה ישירה לקובץ.
+
+#### אופציה 3: שימוש ב-Secret קיים
+
+```yaml
+# my-values.yaml
+tls:
+  enabled: true
+  existingSecret: "my-tls-secret"
+
+route:
+  enabled: true
+  host: docs.apps.example.com
+```
+
+> ה-Secret צריך להכיל `tls.crt` ו-`tls.key` (סוג `kubernetes.io/tls`).
+
 ### אם ה-registry דורש הרשאות
 
 ```bash
@@ -228,13 +306,13 @@ docker save redis:8-alpine -o redis.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.4.0.tgz
+# ייצור: redis-docs-0.5.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.4.0.tgz`
+- `redis-docs-0.5.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
@@ -268,13 +346,13 @@ docker push REGISTRY/redis:8-alpine
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.4.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-0.5.0.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-0.4.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-0.5.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
@@ -300,6 +378,13 @@ kubectl port-forward svc/redis-docs 8080:80
 | `route.enabled` | `false` | הפעלת Route (OpenShift) |
 | `route.host` | `""` | hostname ל-Route (אוטומטי אם ריק) |
 | `route.tls.termination` | `edge` | סוג TLS termination |
+| `tls.enabled` | `false` | הפעלת תעודת אבטחה |
+| `tls.existingSecret` | `""` | שם Secret קיים עם תעודה |
+| `tls.certificate` | `""` | תעודה בפורמט PEM (base64) |
+| `tls.privateKey` | `""` | מפתח פרטי בפורמט PEM (base64) |
+| `tls.caCertificate` | `""` | CA certificate (base64, אופציונלי) |
+| `tls.pfx.data` | `""` | קובץ PFX (base64) |
+| `tls.pfx.password` | `""` | סיסמת PFX |
 | `autoscaling.enabled` | `false` | הפעלת HPA (1-10 pods) |
 | `metrics.enabled` | `false` | הפעלת Prometheus metrics |
 | `metrics.image.registry` | `quay.io/martinhelmich` | registry לתמונת מטריקות |

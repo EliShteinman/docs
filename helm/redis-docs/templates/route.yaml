@@ -21,12 +21,26 @@ spec:
     name: {{ include "redis-docs.fullname" . }}
     weight: 100
   port:
-    targetPort: http
+    targetPort: {{ if and .Values.tls.enabled .Values.tls.nginxTermination }}https{{ else }}http{{ end }}
   {{- if .Values.route.tls.enabled }}
   tls:
     termination: {{ .Values.route.tls.termination }}
     {{- if .Values.route.tls.insecureEdgeTerminationPolicy }}
     insecureEdgeTerminationPolicy: {{ .Values.route.tls.insecureEdgeTerminationPolicy }}
+    {{- end }}
+    {{- if and .Values.tls.enabled .Values.tls.certificate }}
+    certificate: |-
+{{ .Values.tls.certificate | b64dec | indent 6 }}
+    key: |-
+{{ .Values.tls.privateKey | b64dec | indent 6 }}
+    {{- if .Values.tls.caCertificate }}
+    caCertificate: |-
+{{ .Values.tls.caCertificate | b64dec | indent 6 }}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.route.tls.destinationCACertificate }}
+    destinationCACertificate: |
+      {{ .Values.route.tls.destinationCACertificate | nindent 6 }}
     {{- end }}
   {{- end }}
   wildcardPolicy: None
