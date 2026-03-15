@@ -11,6 +11,12 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
+    - port: 443
+      targetPort: https
+      protocol: TCP
+      name: https
+    {{- end }}
     {{- if .Values.metrics.enabled }}
     - port: 4040
       targetPort: metrics
