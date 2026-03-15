@@ -167,6 +167,12 @@ cli:
         cpu: 200m
         memory: 128Mi
 
+pfxConverter:
+  image:
+    registry: docker.io/bitnami
+    name: kubectl
+    tag: "1.31"
+
 podDisruptionBudget:
   enabled: true
   maxUnavailable: 1

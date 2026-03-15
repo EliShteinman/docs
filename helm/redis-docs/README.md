@@ -18,6 +18,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.1.0` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
 | `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא - רק אם `cli.enabled=true` |
+| `bitnami/kubectl` | `1.31` | — | המרת PFX→PEM עבור Route | לא - רק אם Route + PFX |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
 
@@ -26,7 +27,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-0.5.0.tgz
+helm install redis-docs redis-docs-0.6.0.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -34,7 +35,7 @@ helm install redis-docs redis-docs-0.5.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-0.5.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-0.6.0.tgz -f my-values.yaml
 ```
 
 להלן דוגמאות לקבצי values לתרחישים שונים.
@@ -238,18 +239,17 @@ route:
 cat my-cert.pfx | base64 -w 0
 ```
 
-> **שימו לב:** OpenShift Route דורש פורמט PEM. אם יש לכם רק PFX, המירו אותו:
+> PFX נתמך גם ב-Route וגם ב-Ingress. כאשר Route מופעל עם PFX, הצ'ארט מריץ אוטומטית hook Job שממיר את ה-PFX לפורמט PEM ומעדכן את ה-Route.
 >
-> ```bash
-> # חילוץ certificate
-> openssl pkcs12 -in my-cert.pfx -clcerts -nokeys -out cert.crt
-> # חילוץ private key
-> openssl pkcs12 -in my-cert.pfx -nocerts -nodes -out cert.key
+> ה-Job דורש image עם `kubectl` ו-`openssl` (ברירת מחדל: `bitnami/kubectl:1.31`). ברשת סגורה, יש לדחוף את התמונה ל-registry הפנימי ולהגדיר:
+>
+> ```yaml
+> pfxConverter:
+>   image:
+>     registry: registry.internal.company.com
+>     name: kubectl
+>     tag: "1.31"
 > ```
->
-> לאחר ההמרה השתמשו באופציה 1.
->
-> הפורמט PFX נשמר כ-Secret בקלאסטר ומתאים למצבים שבהם האפליקציה צריכה גישה ישירה לקובץ.
 
 #### אופציה 3: שימוש ב-Secret קיים
 
@@ -306,13 +306,13 @@ docker save redis:8-alpine -o redis.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.5.0.tgz
+# ייצור: redis-docs-0.6.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.5.0.tgz`
+- `redis-docs-0.6.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
@@ -346,13 +346,13 @@ docker push REGISTRY/redis:8-alpine
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.5.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-0.6.0.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-0.5.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-0.6.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
@@ -401,3 +401,6 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
 | `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.1.0`) |
 | `cli.redis.image.tag` | `8-alpine` | תג תמונת Redis sidecar |
+| `pfxConverter.image.registry` | `docker.io/bitnami` | registry לתמונת PFX converter |
+| `pfxConverter.image.name` | `kubectl` | שם תמונת PFX converter |
+| `pfxConverter.image.tag` | `1.31` | תג תמונת PFX converter |
