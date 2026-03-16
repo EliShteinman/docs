@@ -87,3 +87,28 @@ Priority: global.registry > metrics.image.registry
 {{- $registry := .Values.global.registry | default .Values.metrics.image.registry -}}
 {{- printf "%s/%s:%s" $registry .Values.metrics.image.name .Values.metrics.image.tag -}}
 {{- end }}
+
+{{/*
+Return the image reference for the CLI proxy container.
+Priority: global.registry > cli.image.registry
+*/}}
+{{- define "redis-docs.cliImage" -}}
+{{- $registry := .Values.global.registry | default .Values.cli.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.cli.image.name .Values.cli.image.tag -}}
+{{- end }}
+
+{{/*
+Return the image reference for the CLI Redis sidecar.
+Priority: global.registry > cli.redis.image.registry
+*/}}
+{{- define "redis-docs.cliRedisImage" -}}
+{{- $registry := .Values.global.registry | default .Values.cli.redis.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.cli.redis.image.name .Values.cli.redis.image.tag -}}
+{{- end }}
+
+{{/*
+Sanitize PEM certificate text by stripping Windows carriage returns.
+*/}}
+{{- define "redis-docs.cleanPem" -}}
+{{- . | replace "\r" "" -}}
+{{- end }}

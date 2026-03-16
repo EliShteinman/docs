@@ -30,12 +30,12 @@ spec:
     {{- end }}
     {{- if and .Values.tls.enabled .Values.tls.certificate }}
     certificate: |-
-{{ .Values.tls.certificate | indent 6 }}
+{{ include "redis-docs.cleanPem" .Values.tls.certificate | indent 6 }}
     key: |-
-{{ .Values.tls.privateKey | indent 6 }}
+{{ include "redis-docs.cleanPem" .Values.tls.privateKey | indent 6 }}
     {{- if .Values.tls.caCertificate }}
     caCertificate: |-
-{{ .Values.tls.caCertificate | indent 6 }}
+{{ include "redis-docs.cleanPem" .Values.tls.caCertificate | indent 6 }}
     {{- end }}
     {{- end }}
     {{- if .Values.route.tls.destinationCACertificate }}
