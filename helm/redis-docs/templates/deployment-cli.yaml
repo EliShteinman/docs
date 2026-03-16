@@ -24,7 +24,7 @@ spec:
       {{- end }}
       containers:
         - name: cli-proxy
-          image: "{{ .Values.cli.image.registry }}/{{ .Values.cli.image.name }}:{{ .Values.cli.image.tag }}"
+          image: {{ include "redis-docs.cliImage" . }}
           imagePullPolicy: {{ .Values.cli.image.pullPolicy }}
           ports:
             - name: http
@@ -56,7 +56,7 @@ spec:
               drop:
                 - ALL
         - name: redis
-          image: "{{ .Values.cli.redis.image.registry }}/{{ .Values.cli.redis.image.name }}:{{ .Values.cli.redis.image.tag }}"
+          image: {{ include "redis-docs.cliRedisImage" . }}
           imagePullPolicy: {{ .Values.cli.redis.image.pullPolicy }}
           ports:
             - name: redis
