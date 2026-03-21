@@ -41,7 +41,7 @@ ENV PATH="/venv/bin:$PATH"
 
 RUN --mount=type=secret,id=github_token \
     PRIVATE_ACCESS_TOKEN=$(cat /run/secrets/github_token) \
-    make components && make hugo
+    make components && make ndjson
 
 RUN find /site/public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.json" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
     -exec gzip -9 -k {} \;
