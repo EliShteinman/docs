@@ -74,4 +74,48 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.cli.redis.resources | nindent 12 }}
+        {{- if .Values.cli.jupyter.enabled }}
+        - name: jupyter
+          image: {{ include "redis-docs.cliJupyterImage" . }}
+          imagePullPolicy: {{ .Values.cli.jupyter.image.pullPolicy }}
+          ports:
+            - name: jupyter
+              containerPort: 8888
+              protocol: TCP
+          env:
+            - name: REDIS_HOST
+              value: "localhost"
+            - name: REDIS_PORT
+              value: "6379"
+          command: ["jupyter"]
+          args:
+            - "notebook"
+            - "--ip=0.0.0.0"
+            - "--port=8888"
+            - "--no-browser"
+            - "--NotebookApp.token=''"
+            - "--NotebookApp.password=''"
+            - "--NotebookApp.allow_origin='*'"
+            - "--NotebookApp.disable_check_xsrf=True"
+          livenessProbe:
+            httpGet:
+              path: /api/status
+              port: jupyter
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/status
+              port: jupyter
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.cli.jupyter.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+        {{- end }}
 {{- end }}

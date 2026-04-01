@@ -162,6 +162,32 @@ cli:
       limits:
         cpu: 200m
         memory: 128Mi
+  jupyter:
+    enabled: false
+    image:
+      registry: docker.io
+      name: jupyter/minimal-notebook
+      tag: "latest"
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+aiServices:
+  litellm:
+    enabled: false
+    # URL of your LiteLLM / OpenAI-compatible endpoint
+    url: "http://litellm.default.svc.cluster.local:4000/v1/chat/completions"
+    model: "gpt-3.5-turbo"
+    # API key managed server-side - user won't be asked for one
+    apiKey: ""
+  binder:
+    # BinderHub / JupyterHub URL for interactive notebooks
+    url: "https://redis.io/binder/"
 
 podDisruptionBudget:
   enabled: true
