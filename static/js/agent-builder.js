@@ -929,12 +929,14 @@ public class ${formData.agentName.replace(/\s+/g, '')}
 
         // Check if we have a specific Binder link for this configuration
         if (formData.programmingLanguage === 'python' && formData.llmModel === 'openai') {
+            var rtBinder = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.binder) || {};
+            var binderBase = (rtBinder.jupyter && rtBinder.jupyter.enabled) ? rtBinder.jupyter.url : (rtBinder.url || 'https://staging.learn.redis.com/binder/');
             let binderUrl = null;
 
             if (formData.agentType === 'recommendation') {
-                binderUrl = 'https://staging.learn.redis.com/binder/v2/gh/redis/binder-launchers/agent_recommendation_openai?urlpath=%2Fdoc%2Ftree%2Fdemo.ipynb';
+                binderUrl = binderBase + 'v2/gh/redis/binder-launchers/agent_recommendation_openai?urlpath=%2Fdoc%2Ftree%2Fdemo.ipynb';
             } else if (formData.agentType === 'conversational') {
-                binderUrl = 'https://staging.learn.redis.com/binder/v2/gh/redis/binder-launchers/agent_conversational_openai?urlpath=%2Fdoc%2Ftree%2Fdemo.ipynb';
+                binderUrl = binderBase + 'v2/gh/redis/binder-launchers/agent_conversational_openai?urlpath=%2Fdoc%2Ftree%2Fdemo.ipynb';
             }
 
             if (binderUrl) {
@@ -967,8 +969,14 @@ public class ${formData.agentName.replace(/\s+/g, '')}
         elements.codeChatMessages.innerHTML = '';
         codeChatState.conversationHistory = [];
 
-        // Check if we need to ask for API key
-        if (!codeChatState.apiKey && !codeChatState.hasAskedForKey) {
+        // Check if runtime config provides an API key (LiteLLM with server-side key)
+        const rtCfg = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.litellm) || {};
+        const hasServerKey = rtCfg.enabled && rtCfg.apiKey;
+
+        if (hasServerKey) {
+            // Server-side API key configured - skip asking the user
+            addCodeChatMessage('Hi! I can help you understand and work with your generated code. What would you like to know?', 'bot');
+        } else if (!codeChatState.apiKey && !codeChatState.hasAskedForKey) {
             addCodeChatMessage('Hi! I can help you understand and work with your generated code.', 'bot');
             addCodeChatMessage('To provide you with the best assistance, please enter your OpenAI API key. This will enable me to give you detailed, context-aware help about your code.', 'bot');
             addCodeChatMessage('You can get an OpenAI API key from: https://platform.openai.com/api-keys', 'bot');
@@ -1221,15 +1229,21 @@ Please help the user understand, modify, debug, or deploy this code. Provide spe
                 { role: 'user', content: userMessage }
             ];
 
-            // Make the API call using fetch with custom base URL
-            const response = await fetch('https://d34j1iks5zrrtk.cloudfront.net/v1/chat/completions', {
+            // Use runtime config if available (LiteLLM / local endpoint), fallback to default
+            const rtConfig = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.litellm) || {};
+            const chatUrl = rtConfig.enabled ? rtConfig.url : 'https://d34j1iks5zrrtk.cloudfront.net/v1/chat/completions';
+            const chatModel = rtConfig.enabled ? rtConfig.model : 'gpt-3.5-turbo';
+            const chatApiKey = (rtConfig.enabled && rtConfig.apiKey) ? rtConfig.apiKey : codeChatState.apiKey;
+
+            // Make the API call using fetch
+            const response = await fetch(chatUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${codeChatState.apiKey}`
+                    'Authorization': `Bearer ${chatApiKey}`
                 },
                 body: JSON.stringify({
-                    model: 'gpt-3.5-turbo',
+                    model: chatModel,
                     messages: messages,
                     max_tokens: 1000,
                     temperature: 0.7
