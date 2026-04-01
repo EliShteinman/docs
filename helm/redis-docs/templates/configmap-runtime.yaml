@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-runtime
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+data:
+  runtime-config.js: |
+    window.RUNTIME_CONFIG = {
+      aiServices: {
+        litellm: {
+          enabled: {{ .Values.aiServices.litellm.enabled }},
+          url: "{{ .Values.aiServices.litellm.url }}",
+          model: "{{ .Values.aiServices.litellm.model }}",
+          apiKey: "{{ .Values.aiServices.litellm.apiKey }}"
+        },
+        binder: {
+          url: "{{ .Values.aiServices.binder.url }}",
+          jupyter: {
+            enabled: {{ and .Values.cli.enabled .Values.cli.jupyter.enabled }},
+            url: "/jupyter/"
+          }
+        }
+      }
+    };

@@ -15,6 +15,7 @@ spec:
     metadata:
       annotations:
         checksum/nginx-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/runtime-config: {{ include (print $.Template.BasePath "/configmap-runtime.yaml") . | sha256sum }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -64,6 +65,10 @@ spec:
               mountPath: /var/run
             - name: tmp
               mountPath: /tmp
+            - name: runtime-config
+              mountPath: /usr/share/nginx/html/js/runtime-config.js
+              subPath: runtime-config.js
+              readOnly: true
             {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
             - name: tls-certs
               mountPath: /etc/nginx/ssl
@@ -123,6 +128,9 @@ spec:
           emptyDir: {}
         - name: tmp
           emptyDir: {}
+        - name: runtime-config
+          configMap:
+            name: {{ include "redis-docs.fullname" . }}-runtime
         {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
         - name: tls-certs
           secret:

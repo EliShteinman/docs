@@ -107,6 +107,15 @@ Priority: global.registry > cli.redis.image.registry
 {{- end }}
 
 {{/*
+Return the image reference for the Jupyter sidecar.
+Priority: global.registry > cli.jupyter.image.registry
+*/}}
+{{- define "redis-docs.cliJupyterImage" -}}
+{{- $registry := .Values.global.registry | default .Values.cli.jupyter.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.cli.jupyter.image.name .Values.cli.jupyter.image.tag -}}
+{{- end }}
+
+{{/*
 Sanitize PEM certificate text by stripping Windows carriage returns.
 */}}
 {{- define "redis-docs.cleanPem" -}}
