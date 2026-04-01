@@ -18,6 +18,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.1.0` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
 | `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא - רק אם `cli.enabled=true` |
+| `jupyter/minimal-notebook` | `latest` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא - רק אם `cli.jupyter.enabled=true` |
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
 
 ## התקנה
@@ -25,7 +26,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-0.6.0.tgz
+helm install redis-docs redis-docs-0.8.0.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -33,7 +34,7 @@ helm install redis-docs redis-docs-0.6.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-0.6.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-0.8.0.tgz -f my-values.yaml
 ```
 
 להלן דוגמאות לקבצי values לתרחישים שונים.
@@ -171,7 +172,7 @@ metrics:
     name: prometheus-nginxlog-exporter
     tag: "v1.11.0"
 
-# --- CLI ---
+# --- CLI + Jupyter ---
 cli:
   enabled: true
   image:
@@ -181,11 +182,30 @@ cli:
     image:
       name: redis
       tag: "8-alpine"
+  jupyter:
+    enabled: true
+    image:
+      name: jupyter/minimal-notebook
+      tag: "latest"
+
+# --- שירותי AI (אופציונלי) ---
+aiServices:
+  litellm:
+    enabled: true
+    url: "http://litellm.internal:4000/v1/chat/completions"
+    model: "gpt-3.5-turbo"
+    apiKey: "sk-internal-key"
+  binder:
+    url: "https://redis.io/binder/"
 ```
 
 > `global.registry` משנה את ה-registry לכל התמונות. אין צורך לציין registry לכל תמונה בנפרד.
 >
 > ברשת סגורה יש לתייג את CLI proxy כ-`0.1.0` (Artifactory דורש תג שאינו `latest`).
+>
+> כשהJupyter מופעל, הוא רץ כcontainer נוסף בפוד ה-CLI ומשתמש ב-Redis על localhost.
+>
+> `aiServices.litellm` מפנה את צ'אט ה-AI ב-Agent Builder ל-LiteLLM פנימי במקום CloudFront חיצוני. כש-`apiKey` מוגדר, המשתמש לא יתבקש להזין מפתח.
 
 ### תעודת אבטחה (TLS)
 
@@ -282,23 +302,28 @@ docker pull a0533057932/redis-docs-cli:latest
 docker save a0533057932/redis-docs-cli:latest -o redis-docs-cli.tar
 docker pull redis:8-alpine
 docker save redis:8-alpine -o redis.tar
+
+# Jupyter kernel server (אופציונלי)
+docker pull jupyter/minimal-notebook:latest
+docker save jupyter/minimal-notebook:latest -o jupyter.tar
 ```
 
 ### שלב 2: אריזת Helm chart
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.6.0.tgz
+# ייצור: redis-docs-0.8.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.6.0.tgz`
+- `redis-docs-0.8.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
 - `redis.tar` (אופציונלי - CLI)
+- `jupyter.tar` (אופציונלי - Jupyter)
 
 ### שלב 4: טעינה ל-private registry
 
@@ -321,6 +346,11 @@ docker push REGISTRY/redis-docs-cli:0.1.0
 docker load -i redis.tar
 docker tag redis:8-alpine REGISTRY/redis:8-alpine
 docker push REGISTRY/redis:8-alpine
+
+# טעינת Jupyter (אופציונלי)
+docker load -i jupyter.tar
+docker tag jupyter/minimal-notebook:latest REGISTRY/jupyter/minimal-notebook:latest
+docker push REGISTRY/jupyter/minimal-notebook:latest
 ```
 
 > החליפו `REGISTRY` בכתובת ה-registry שלכם, לדוגמה: `registry.internal.company.com`
@@ -328,13 +358,13 @@ docker push REGISTRY/redis:8-alpine
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.6.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-0.8.0.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-0.6.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-0.8.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
@@ -381,3 +411,11 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
 | `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.1.0`) |
 | `cli.redis.image.tag` | `8-alpine` | תג תמונת Redis sidecar |
+| `cli.jupyter.enabled` | `false` | הפעלת Jupyter kernel server (container נוסף בפוד CLI) |
+| `cli.jupyter.image.name` | `jupyter/minimal-notebook` | שם תמונת Jupyter |
+| `cli.jupyter.image.tag` | `latest` | תג תמונת Jupyter |
+| `aiServices.litellm.enabled` | `false` | הפעלת LiteLLM endpoint (במקום CloudFront חיצוני) |
+| `aiServices.litellm.url` | `""` | URL ל-LiteLLM (OpenAI-compatible) |
+| `aiServices.litellm.model` | `gpt-3.5-turbo` | שם המודל לשליחה |
+| `aiServices.litellm.apiKey` | `""` | API key צד שרת (דילוג על שאלת המשתמש) |
+| `aiServices.binder.url` | `https://redis.io/binder/` | URL ל-BinderHub / JupyterHub |
