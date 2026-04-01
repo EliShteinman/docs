@@ -54,6 +54,7 @@
     {{ if .Params.math }}
         {{ partial "mathjax.html" }}
     {{ end }}
+    <script src='{{ "js/runtime-config.js" | relURL }}'></script>
   </head>
   <body class="antialiased tracking-[-0.01em] bg-white w-full">
     {{ partial "ai-metadata-body.html" . }}
@@ -125,8 +126,9 @@
     <!-- Script AND CSS are loaded dynamically on first "Run here" click to prevent:
          1. Auto-initialization of cells
          2. Thebe CSS from hiding/breaking code display before activation -->
-    <!-- <script type="text/javascript" src="https://unpkg.com/thebe@0.9.0-rc.12/lib/index.js"></script> -->
-    <!-- <link rel="stylesheet" href="https://unpkg.com/thebe@0.9.0-rc.12/lib/thebe.css" /> -->
+    <!-- Thebe vendored locally for air-gapped deployment -->
+    <!-- <script type="text/javascript" src='{{ "vendor/thebe.js" | relURL }}'></script> -->
+    <!-- <link rel="stylesheet" href='{{ "vendor/thebe.css" | relURL }}' /> -->
 
     <!-- Thebe configuration for Redis BinderHub -->
     <script type="text/x-thebe-config">
@@ -1016,12 +1018,12 @@
             // Load Thebe CSS first
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = 'https://unpkg.com/thebe@0.9.0-rc.12/lib/thebe.css';
+            link.href = window.HUGO_BASEURL + 'vendor/thebe.css';
             document.head.appendChild(link);
 
             // Then load Thebe script
             const script = document.createElement('script');
-            script.src = 'https://unpkg.com/thebe@0.9.0-rc.12/lib/index.js';
+            script.src = window.HUGO_BASEURL + 'vendor/thebe.js';
             script.onload = function() {
               thebeLoaded = true;
               thebeLoading = false;
@@ -1590,6 +1592,14 @@
                   if (!window.thebeBinderRef || !window.thebeKernelName) {
                     console.error('[Thebe] Missing binder ref or kernel name. Interactive notebooks require both.');
                     return; // Skip bootstrap
+                  }
+
+                  // Override binder URL from runtime config (Helm) if available
+                  var rtBinder = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.binder) || {};
+                  if (rtBinder.jupyter && rtBinder.jupyter.enabled && config.binderOptions) {
+                    config.binderOptions.binderUrl = rtBinder.jupyter.url;
+                  } else if (rtBinder.url && config.binderOptions) {
+                    config.binderOptions.binderUrl = rtBinder.url;
                   }
 
                   // Update binder ref to use dynamic value from source file

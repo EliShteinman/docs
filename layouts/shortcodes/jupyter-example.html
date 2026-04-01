@@ -261,7 +261,8 @@
                 </button>
                 {{/* Run in browser link (opens BinderHub notebook) */}}
                 {{ if $binder }}
-                <a href="https://redis.io/binder/v2/gh/redis/binder-launchers/{{ $binder }}?urlpath=%2Fdoc%2Ftree%2Fdemo.ipynb"
+                <a class="binder-link" href="https://redis.io/binder/v2/gh/redis/binder-launchers/{{ $binder }}?urlpath=%2Fdoc%2Ftree%2Fdemo.ipynb"
+                   data-binder-path="v2/gh/redis/binder-launchers/{{ $binder }}?urlpath=%2Fdoc%2Ftree%2Fdemo.ipynb"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="text-xs text-slate-300 hover:text-white underline whitespace-nowrap flex items-center gap-1 mr-2"
@@ -392,6 +393,17 @@
 <script>
   window.thebeBinderRef = "{{ $binder }}";
   window.thebeKernelName = "{{ $kernelName }}";
+
+  // Override binder links with runtime config URL if available
+  document.addEventListener('DOMContentLoaded', function() {
+    var rt = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.binder) || {};
+    var base = (rt.jupyter && rt.jupyter.enabled) ? rt.jupyter.url : rt.url;
+    if (base) {
+      document.querySelectorAll('a.binder-link[data-binder-path]').forEach(function(link) {
+        link.href = base + link.getAttribute('data-binder-path');
+      });
+    }
+  });
 </script>
 {{- .Page.Store.Set "thebeGlobalsEmitted" true -}}
 {{- end -}}
