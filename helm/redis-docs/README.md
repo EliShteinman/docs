@@ -26,7 +26,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-0.8.0.tgz
+helm install redis-docs redis-docs-0.9.0.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -34,7 +34,7 @@ helm install redis-docs redis-docs-0.8.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-0.8.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-0.9.0.tgz -f my-values.yaml
 ```
 
 להלן דוגמאות לקבצי values לתרחישים שונים.
@@ -312,13 +312,13 @@ docker save jupyter/minimal-notebook:latest -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.8.0.tgz
+# ייצור: redis-docs-0.9.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.8.0.tgz`
+- `redis-docs-0.9.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
@@ -358,13 +358,13 @@ docker push REGISTRY/jupyter/minimal-notebook:latest
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.8.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-0.9.0.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-0.8.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-0.9.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
