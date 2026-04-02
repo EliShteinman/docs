@@ -9,6 +9,39 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 - Helm 3.x
 - Private Docker registry (ברשת סגורה)
 
+## ארכיטקטורה
+
+הצ'ארט פורס שני פודים עיקריים:
+
+### פוד 1 — `redis-docs` (אתר הדוקומנטציה)
+
+| Container | תיאור | פורט |
+|---|---|---|
+| `nginx` | שרת האתר הראשי (unprivileged) | 8080 |
+| `metrics` (אופציונלי) | sidecar — prometheus-nginxlog-exporter | 4040 |
+
+nginx משמש גם כ-reverse proxy:
+- `/cli` → מופנה ל-CLI proxy בפוד השני (פורט 8090)
+- `/jupyter/` → מופנה ל-Jupyter בפוד השני (פורט 8888), כולל תמיכה ב-WebSocket
+
+### פוד 2 — `redis-docs-cli` (CLI playground)
+
+נוצר רק כאשר `cli.enabled=true`.
+
+| Container | תיאור | פורט |
+|---|---|---|
+| `cli-proxy` | Flask proxy להרצת פקודות Redis | 8090 |
+| `redis` | Redis sidecar — מקומי ל-pod (localhost) | 6379 |
+| `jupyter` (אופציונלי) | Jupyter kernel server להרצת קוד אינטראקטיבי | 8888 |
+
+כל הקונטיינרים בפוד זה מתקשרים על `localhost`.
+
+### הגדרות Runtime
+
+קובץ `configmap-runtime.yaml` מזריק קובץ JS לתוך nginx, המכיל הגדרות דינמיות:
+- `aiServices.litellm` — כתובת LiteLLM endpoint (במקום CloudFront חיצוני)
+- `aiServices.binder.url` — כתובת BinderHub / JupyterHub
+
 ## Docker images
 
 | Image | תג | פורט | שימוש | חובה? |
@@ -16,7 +49,7 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 | `a0533057932/redis-docs` | `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן - אחד מהשניים |
 | `a0533057932/redis-docs` | `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן - אחד מהשניים |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.1.0` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` / `0.2.0` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
 | `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא - רק אם `cli.enabled=true` |
 | `jupyter/minimal-notebook` | `latest` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא - רק אם `cli.jupyter.enabled=true` |
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
@@ -177,7 +210,7 @@ cli:
   enabled: true
   image:
     name: redis-docs-cli
-    tag: "0.1.0"              # ברשת סגורה: תג אמיתי (Artifactory דורש)
+    tag: "0.2.0"              # ברשת סגורה: תג אמיתי (Artifactory דורש)
   redis:
     image:
       name: redis
@@ -201,7 +234,7 @@ aiServices:
 
 > `global.registry` משנה את ה-registry לכל התמונות. אין צורך לציין registry לכל תמונה בנפרד.
 >
-> ברשת סגורה יש לתייג את CLI proxy כ-`0.1.0` (Artifactory דורש תג שאינו `latest`).
+> ברשת סגורה יש לתייג את CLI proxy כ-`0.2.0` (Artifactory דורש תג שאינו `latest`).
 >
 > כשהJupyter מופעל, הוא רץ כcontainer נוסף בפוד ה-CLI ומשתמש ב-Redis על localhost.
 >
@@ -340,8 +373,8 @@ docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # טעינת CLI (אופציונלי)
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.1.0
-docker push REGISTRY/redis-docs-cli:0.1.0
+docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.2.0
+docker push REGISTRY/redis-docs-cli:0.2.0
 
 docker load -i redis.tar
 docker tag redis:8-alpine REGISTRY/redis:8-alpine
@@ -377,45 +410,121 @@ kubectl port-forward svc/redis-docs 8080:80
 # פתחו http://localhost:8080
 ```
 
+## דשבורד Grafana
+
+קובץ דשבורד מוכן לייבוא נמצא בנתיב `helm/dashboards/redis-docs-nginx.json`.
+
+### ייבוא הדשבורד
+
+1. פתחו את Grafana ולחצו על **Dashboards** → **Import**
+2. בחרו את הקובץ `redis-docs-nginx.json` או הדביקו את תוכנו
+3. הגדירו את שני ה-inputs הנדרשים:
+
+| Input | סוג | תיאור | דוגמה |
+|---|---|---|---|
+| `DS_PROMETHEUS` | datasource | מקור נתונים מסוג Prometheus | `Prometheus` |
+| `VAL_JOB` | variable | שם ה-job ב-Prometheus | `redis-docs` |
+
+> הדשבורד דורש שה-Prometheus datasource יהיה מוגדר מראש ב-Grafana.
+>
+> שם ה-job תלוי באופן שבו ServiceMonitor / scrape config מוגדרים בקלאסטר.
+
 ## ערכים עיקריים
 
 | ערך | ברירת מחדל | תיאור |
 |---|---|---|
 | `global.registry` | `""` | דריסת registry לכל התמונות |
+| `replicaCount` | `1` | מספר pods |
 | `image.registry` | `a0533057932` | registry לתמונה הראשית |
 | `image.name` | `redis-docs` | שם התמונה הראשית |
 | `image.tag` | `unprivileged` | תג התמונה הראשית |
-| `replicaCount` | `1` | מספר pods |
-| `ingress.enabled` | `false` | הפעלת Ingress (Kubernetes) |
-| `route.enabled` | `false` | הפעלת Route (OpenShift) |
-| `route.host` | `""` | hostname ל-Route (אוטומטי אם ריק) |
-| `route.tls.termination` | `edge` | סוג TLS termination |
+| `image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונה |
+| `imagePullSecrets` | `[]` | שמות Secrets למשיכת תמונות |
+| `nameOverride` | `""` | דריסת שם הצ'ארט |
+| `fullnameOverride` | `""` | דריסת השם המלא של הצ'ארט |
+| `serviceAccount.create` | `true` | יצירת ServiceAccount |
+| `serviceAccount.annotations` | `{}` | annotations ל-ServiceAccount |
+| `serviceAccount.name` | `""` | שם ServiceAccount (אוטומטי אם ריק) |
+| `podAnnotations` | `{}` | annotations לפודים |
+| `podSecurityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root ברמת הפוד |
+| `podSecurityContext.seccompProfile.type` | `RuntimeDefault` | פרופיל seccomp |
+| `securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות |
+| `securityContext.readOnlyRootFilesystem` | `true` | מערכת קבצים לקריאה בלבד |
+| `securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root |
+| `service.type` | `ClusterIP` | סוג השירות |
+| `service.port` | `80` | פורט השירות |
+| `containerPort` | `8080` | פורט הקונטיינר (nginx) |
 | `tls.enabled` | `false` | הפעלת תעודת אבטחה |
 | `tls.existingSecret` | `""` | שם Secret קיים עם תעודה |
-| `tls.certificate` | `""` | טקסט התעודה (חובה) |
-| `tls.privateKey` | `""` | טקסט המפתח הפרטי (חובה) |
+| `tls.certificate` | `""` | טקסט התעודה (PEM) |
+| `tls.privateKey` | `""` | טקסט המפתח הפרטי (PEM) |
 | `tls.caCertificate` | `""` | טקסט תעודת CA (אופציונלי) |
-| `autoscaling.enabled` | `false` | הפעלת HPA (1-10 pods) |
+| `tls.nginxTermination` | `false` | TLS termination ברמת nginx (passthrough) |
+| `tls.httpsPort` | `8443` | פורט HTTPS כש-nginxTermination מופעל |
+| `ingress.enabled` | `false` | הפעלת Ingress (Kubernetes) |
+| `ingress.className` | `""` | Ingress class name |
+| `ingress.annotations` | `{}` | annotations ל-Ingress |
+| `route.enabled` | `false` | הפעלת Route (OpenShift) |
+| `route.annotations` | `{}` | annotations ל-Route |
+| `route.host` | `""` | hostname ל-Route (אוטומטי אם ריק) |
+| `route.path` | `/` | נתיב ל-Route |
+| `route.tls.termination` | `edge` | סוג TLS termination |
+| `route.tls.insecureEdgeTerminationPolicy` | `Redirect` | מדיניות לתעבורה לא מוצפנת |
+| `nginx.workerConnections` | `2048` | מספר חיבורים מקבילים per worker |
+| `nginx.keepaliveTimeout` | `15` | timeout לחיבורים idle (שניות) |
+| `resources.requests.cpu` | `250m` | בקשת CPU מינימלית |
+| `resources.requests.memory` | `256Mi` | בקשת זיכרון מינימלית |
+| `resources.requests.ephemeral-storage` | `128Mi` | בקשת אחסון זמני |
+| `resources.limits.cpu` | `1` | מגבלת CPU |
+| `resources.limits.memory` | `512Mi` | מגבלת זיכרון |
+| `resources.limits.ephemeral-storage` | `256Mi` | מגבלת אחסון זמני |
+| `livenessProbe` | `httpGet /healthz` | בדיקת חיות (initialDelay: 5s, period: 10s) |
+| `readinessProbe` | `httpGet /healthz` | בדיקת מוכנות (initialDelay: 3s, period: 5s) |
+| `autoscaling.enabled` | `false` | הפעלת HPA |
+| `autoscaling.minReplicas` | `1` | מינימום pods ב-HPA |
+| `autoscaling.maxReplicas` | `10` | מקסימום pods ב-HPA |
+| `autoscaling.targetCPUUtilizationPercentage` | `80` | סף CPU להגדלה |
+| `autoscaling.targetMemoryUtilizationPercentage` | `80` | סף זיכרון להגדלה |
+| `podDisruptionBudget.enabled` | `true` | הגנה בזמן rolling updates |
 | `metrics.enabled` | `false` | הפעלת Prometheus metrics |
 | `metrics.image.registry` | `quay.io/martinhelmich` | registry לתמונת מטריקות |
 | `metrics.image.name` | `prometheus-nginxlog-exporter` | שם תמונת מטריקות |
 | `metrics.image.tag` | `v1.11.0` | תג תמונת מטריקות |
+| `metrics.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת מטריקות |
 | `metrics.route.enabled` | `false` | הפעלת Route למטריקות (OpenShift) |
+| `metrics.route.annotations` | `{}` | annotations ל-Route מטריקות |
 | `metrics.route.host` | `""` | hostname ל-Route מטריקות (אוטומטי אם ריק) |
+| `metrics.route.tls.enabled` | `true` | הפעלת TLS ב-Route מטריקות |
+| `metrics.route.tls.termination` | `edge` | סוג TLS termination למטריקות |
+| `metrics.route.tls.insecureEdgeTerminationPolicy` | `Redirect` | מדיניות לתעבורה לא מוצפנת (מטריקות) |
 | `metrics.serviceMonitor.enabled` | `false` | הפעלת ServiceMonitor (דורש Prometheus Operator) |
-| `podDisruptionBudget.enabled` | `true` | הגנה בזמן rolling updates |
-| `nginx.workerConnections` | `2048` | מספר חיבורים מקבילים per worker |
-| `nginx.keepaliveTimeout` | `15` | timeout לחיבורים idle (שניות) |
+| `metrics.serviceMonitor.interval` | `30s` | מרווח scraping |
+| `metrics.serviceMonitor.labels` | `{}` | labels נוספים ל-ServiceMonitor |
 | `cli.enabled` | `false` | הפעלת CLI playground (פוד נפרד עם Flask + Redis) |
+| `cli.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (CLI) |
+| `cli.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (CLI) |
 | `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
-| `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.1.0`) |
+| `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.2.0`) |
+| `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI |
+| `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי CLI proxy |
+| `cli.redis.image.registry` | `docker.io` | registry לתמונת Redis |
 | `cli.redis.image.tag` | `8-alpine` | תג תמונת Redis sidecar |
+| `cli.redis.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Redis |
+| `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי Redis sidecar |
 | `cli.jupyter.enabled` | `false` | הפעלת Jupyter kernel server (container נוסף בפוד CLI) |
+| `cli.jupyter.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (Jupyter) |
+| `cli.jupyter.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (Jupyter) |
+| `cli.jupyter.image.registry` | `docker.io` | registry לתמונת Jupyter |
 | `cli.jupyter.image.name` | `jupyter/minimal-notebook` | שם תמונת Jupyter |
 | `cli.jupyter.image.tag` | `latest` | תג תמונת Jupyter |
+| `cli.jupyter.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Jupyter |
+| `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | משאבי Jupyter |
 | `aiServices.litellm.enabled` | `false` | הפעלת LiteLLM endpoint (במקום CloudFront חיצוני) |
 | `aiServices.litellm.url` | `""` | URL ל-LiteLLM (OpenAI-compatible) |
 | `aiServices.litellm.model` | `gpt-3.5-turbo` | שם המודל לשליחה |
 | `aiServices.litellm.apiKey` | `""` | API key צד שרת (דילוג על שאלת המשתמש) |
 | `aiServices.binder.url` | `https://redis.io/binder/` | URL ל-BinderHub / JupyterHub |
+| `nodeSelector` | `{}` | node selector לתזמון פודים |
+| `tolerations` | `[]` | tolerations לתזמון פודים |
+| `affinity` | `{}` | affinity rules לתזמון פודים |
