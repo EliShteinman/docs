@@ -16,6 +16,27 @@ pool = redis.ConnectionPool(
 sessions: dict[str, redis.Redis] = {}
 
 
+def normalize_result(result):
+    """Convert redis-py Python types to RESP-like values for the CLI frontend."""
+    if result is True:
+        return "OK"
+    if result is False:
+        return "(nil)"
+    if isinstance(result, bytes):
+        return result.decode("utf-8", errors="replace")
+    if isinstance(result, dict):
+        flat = []
+        for k, v in result.items():
+            flat.append(normalize_result(k))
+            flat.append(normalize_result(v))
+        return flat
+    if isinstance(result, (list, tuple)):
+        return [normalize_result(item) for item in result]
+    if isinstance(result, set):
+        return [normalize_result(item) for item in result]
+    return result
+
+
 def get_client(session_id: str | None) -> tuple[redis.Redis, str]:
     if session_id and session_id in sessions:
         return sessions[session_id], session_id
@@ -46,8 +67,11 @@ def cli():
             replies.append({"error": True, "value": "empty command"})
             continue
         try:
+            cmd_upper = parts[0].upper()
             result = client.execute_command(*parts)
-            replies.append({"error": False, "value": result})
+            if cmd_upper == "PING" and result is True:
+                result = "PONG"
+            replies.append({"error": False, "value": normalize_result(result)})
         except redis.RedisError as e:
             replies.append({"error": True, "value": str(e)})
 
