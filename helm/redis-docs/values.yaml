@@ -137,6 +137,12 @@ metrics:
 
 cli:
   enabled: false
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
   image:
     registry: a0533057932
     name: redis-docs-cli
@@ -164,6 +170,12 @@ cli:
         memory: 128Mi
   jupyter:
     enabled: false
+    securityContext:
+      allowPrivilegeEscalation: false
+      runAsNonRoot: true
+      capabilities:
+        drop:
+          - ALL
     image:
       registry: docker.io
       name: jupyter/minimal-notebook
