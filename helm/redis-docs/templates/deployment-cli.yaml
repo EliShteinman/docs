@@ -50,11 +50,7 @@ spec:
           resources:
             {{- toYaml .Values.cli.resources | nindent 12 }}
           securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - ALL
+            {{- toYaml .Values.cli.securityContext | nindent 12 }}
         - name: redis
           image: {{ include "redis-docs.cliRedisImage" . }}
           imagePullPolicy: {{ .Values.cli.redis.image.pullPolicy }}
@@ -97,6 +93,9 @@ spec:
             - "--NotebookApp.password=''"
             - "--NotebookApp.allow_origin='*'"
             - "--NotebookApp.disable_check_xsrf=True"
+          volumeMounts:
+            - name: jupyter-home
+              mountPath: /home/jovyan
           livenessProbe:
             httpGet:
               path: /api/status
@@ -112,10 +111,11 @@ spec:
           resources:
             {{- toYaml .Values.cli.jupyter.resources | nindent 12 }}
           securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - ALL
+            {{- toYaml .Values.cli.jupyter.securityContext | nindent 12 }}
         {{- end }}
+      {{- if .Values.cli.jupyter.enabled }}
+      volumes:
+        - name: jupyter-home
+          emptyDir: {}
+      {{- end }}
 {{- end }}
