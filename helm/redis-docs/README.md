@@ -51,7 +51,7 @@ nginx משמש גם כ-reverse proxy:
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.2.0` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
 | `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא - רק אם `cli.enabled=true` |
-| `jupyter/minimal-notebook` | `latest` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא - רק אם `cli.jupyter.enabled=true` |
+| `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא - רק אם `cli.jupyter.enabled=true` |
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
 
 ## התקנה
@@ -59,7 +59,7 @@ nginx משמש גם כ-reverse proxy:
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-0.9.0.tgz
+helm install redis-docs redis-docs-0.10.1.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -67,7 +67,7 @@ helm install redis-docs redis-docs-0.9.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-0.9.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-0.10.1.tgz -f my-values.yaml
 ```
 
 להלן דוגמאות לקבצי values לתרחישים שונים.
@@ -219,7 +219,7 @@ cli:
     enabled: true
     image:
       name: jupyter/minimal-notebook
-      tag: "latest"
+      tag: "2026-04-02"
 
 # --- שירותי AI (אופציונלי) ---
 aiServices:
@@ -337,21 +337,21 @@ docker pull redis:8-alpine
 docker save redis:8-alpine -o redis.tar
 
 # Jupyter kernel server (אופציונלי)
-docker pull jupyter/minimal-notebook:latest
-docker save jupyter/minimal-notebook:latest -o jupyter.tar
+docker pull quay.io/jupyter/minimal-notebook:2026-04-02
+docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 ```
 
 ### שלב 2: אריזת Helm chart
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.9.0.tgz
+# ייצור: redis-docs-0.10.1.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.9.0.tgz`
+- `redis-docs-0.10.1.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
@@ -382,8 +382,8 @@ docker push REGISTRY/redis:8-alpine
 
 # טעינת Jupyter (אופציונלי)
 docker load -i jupyter.tar
-docker tag jupyter/minimal-notebook:latest REGISTRY/jupyter/minimal-notebook:latest
-docker push REGISTRY/jupyter/minimal-notebook:latest
+docker tag quay.io/jupyter/minimal-notebook:2026-04-02 REGISTRY/jupyter/minimal-notebook:2026-04-02
+docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ```
 
 > החליפו `REGISTRY` בכתובת ה-registry שלכם, לדוגמה: `registry.internal.company.com`
@@ -391,13 +391,13 @@ docker push REGISTRY/jupyter/minimal-notebook:latest
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.9.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-0.10.1.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-0.9.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-0.10.1.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
@@ -515,9 +515,9 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.jupyter.enabled` | `false` | הפעלת Jupyter kernel server (container נוסף בפוד CLI) |
 | `cli.jupyter.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (Jupyter) |
 | `cli.jupyter.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (Jupyter) |
-| `cli.jupyter.image.registry` | `docker.io` | registry לתמונת Jupyter |
+| `cli.jupyter.image.registry` | `quay.io` | registry לתמונת Jupyter |
 | `cli.jupyter.image.name` | `jupyter/minimal-notebook` | שם תמונת Jupyter |
-| `cli.jupyter.image.tag` | `latest` | תג תמונת Jupyter |
+| `cli.jupyter.image.tag` | `2026-04-02` | תג תמונת Jupyter |
 | `cli.jupyter.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Jupyter |
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | משאבי Jupyter |
 | `aiServices.litellm.enabled` | `false` | הפעלת LiteLLM endpoint (במקום CloudFront חיצוני) |
