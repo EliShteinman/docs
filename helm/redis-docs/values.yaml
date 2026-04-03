@@ -177,9 +177,9 @@ cli:
         drop:
           - ALL
     image:
-      registry: docker.io
+      registry: quay.io
       name: jupyter/minimal-notebook
-      tag: "latest"
+      tag: "2026-04-02"
       pullPolicy: IfNotPresent
     resources:
       requests:
