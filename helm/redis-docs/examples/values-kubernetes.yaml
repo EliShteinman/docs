@@ -1,0 +1,24 @@
+# =============================================================================
+# Redis Docs — Kubernetes Ingress deployment with metrics
+# =============================================================================
+# Usage:
+#   helm install redis-docs redis-docs-0.11.0.tgz -f values-kubernetes.yaml
+# =============================================================================
+
+replicaCount: 1
+
+image:
+  registry: a0533057932
+  name: redis-docs
+  tag: unprivileged
+
+ingress:
+  enabled: true
+  hosts:
+    - host: docs.company.internal
+      paths:
+        - path: /
+          pathType: Prefix
+
+metrics:
+  enabled: true
