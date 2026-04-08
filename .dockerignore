@@ -1,11 +1,16 @@
 .env
+PRIVATE_ACCESS_TOKEN
 .venv
 venv
 node_modules
 public
 resources
 examples
+helm
 .DS_Store
 .idea
 .vscode
 .hugo_build.lock
+.github
+*.tgz
+*.tar

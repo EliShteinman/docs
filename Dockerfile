@@ -5,9 +5,9 @@ ARG VARIANT=privileged
 # ============================================================
 # Builder stage (shared by both variants)
 # ============================================================
-FROM node:22-bookworm AS builder
+FROM node:24-trixie AS builder
 
-ARG HUGO_VERSION=0.143.0
+ARG HUGO_VERSION=0.143.1
 ARG TARGETARCH
 ARG GIT_COMMIT=unknown
 ARG BUILD_DATE=unknown
@@ -39,8 +39,14 @@ COPY . .
 
 ENV PATH="/venv/bin:$PATH"
 
-RUN --mount=type=secret,id=github_token \
-    PRIVATE_ACCESS_TOKEN=$(cat /run/secrets/github_token) \
+RUN sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
+
+RUN find content/operate/kubernetes -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > kubernetes-versions && \
+    find content/operate/rs -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > rs-versions && \
+    find content/integrate/redis-data-integration -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > rdi-versions && \
+    find content/develop/ai/redisvl -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > redisvl-versions
+
+RUN --mount=type=secret,id=PRIVATE_ACCESS_TOKEN,env=PRIVATE_ACCESS_TOKEN \
     make components && make ndjson
 
 RUN find /site/public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.json" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \

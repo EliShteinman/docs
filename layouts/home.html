@@ -463,7 +463,7 @@
                   <li><a href="./develop/tools/insight/" class="text-redis-yellow-500 hover:underline">→ Redis Insight GUI</a></li>
                   <li><a href="./develop/tools/redis-for-vscode/" class="text-redis-yellow-500 hover:underline">→ Redis for VS Code</a></li>
                   <li><a href="./integrate/redis-mcp/" class="text-redis-yellow-500 hover:underline">→ Redis MCP</a></li>
-                  <li><a href="https://redis.io/try/sandbox/" class="text-redis-yellow-500 hover:underline">→ Try Redis Sandbox</a></li>
+                  <li><a href="https://redis.io/try/sandbox/" data-external-link="sandbox" class="text-redis-yellow-500 hover:underline">→ Try Redis Sandbox</a></li>
                 </ul>
               </div>
             </div>
@@ -522,22 +522,22 @@
           <h2 class="text-xl font-sans font-medium mb-6">Explore additional resources</h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-            <a href="https://redis.io/tutorials/" class="border border-redis-pen-700 rounded-md p-3 hover:bg-redis-pen-600 transition-colors group" style="background-color: #0C212C;">
+            <a href="https://redis.io/tutorials/" data-external-link="tutorials" class="border border-redis-pen-700 rounded-md p-3 hover:bg-redis-pen-600 transition-colors group" style="background-color: #0C212C;">
               <h3 class="text-sm font-medium mb-1 group-hover:text-redis-yellow-500">Tutorials</h3>
               <p class="text-xs text-gray-400">Step-by-step guides and examples</p>
             </a>
 
-            <a href="https://university.redis.io/academy" class="border border-redis-pen-700 rounded-md p-3 hover:bg-redis-pen-600 transition-colors group" style="background-color: #0C212C;">
+            <a href="https://university.redis.io/academy" data-external-link="university" class="border border-redis-pen-700 rounded-md p-3 hover:bg-redis-pen-600 transition-colors group" style="background-color: #0C212C;">
               <h3 class="text-sm font-medium mb-1 group-hover:text-redis-yellow-500">Redis University</h3>
               <p class="text-xs text-gray-400">Free courses and certifications</p>
             </a>
 
-            <a href="https://redis.io/blog/" class="border border-redis-pen-700 rounded-md p-3 hover:bg-redis-pen-600 transition-colors group" style="background-color: #0C212C;">
+            <a href="https://redis.io/blog/" data-external-link="blog" class="border border-redis-pen-700 rounded-md p-3 hover:bg-redis-pen-600 transition-colors group" style="background-color: #0C212C;">
               <h3 class="text-sm font-medium mb-1 group-hover:text-redis-yellow-500">Blog</h3>
               <p class="text-xs text-gray-400">Latest updates and insights</p>
             </a>
 
-            <a href="https://support.redislabs.com/hc/en-us" class="border border-redis-pen-700 rounded-md p-3 hover:bg-redis-pen-600 transition-colors group" style="background-color: #0C212C;">
+            <a href="https://support.redislabs.com/hc/en-us" data-external-link="support" class="border border-redis-pen-700 rounded-md p-3 hover:bg-redis-pen-600 transition-colors group" style="background-color: #0C212C;">
               <h3 class="text-sm font-medium mb-1 group-hover:text-redis-yellow-500">Redis Knowledge Base</h3>
               <p class="text-xs text-gray-400">Search support articles</p>
             </a>
@@ -562,23 +562,23 @@
             </div>
 
             <!-- GitHub Contributions -->
-            <div class="border border-redis-pen-700 rounded-md p-4" style="background-color: #0C212C;">
+            <div class="border border-redis-pen-700 rounded-md p-4" data-external-card="github" style="background-color: #0C212C;">
               <svg class="w-6 h-6 text-white opacity-60 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <h3 class="text-base font-medium mb-2">Contribute on GitHub</h3>
               <p class="text-sm text-gray-300 mb-3">Provide feedback or contribute to our documentation</p>
-              <a href="https://github.com/redis/docs/" class="text-redis-yellow-500 hover:underline text-xs" target="_blank" rel="noopener noreferrer">View repository →</a>
+              <a href="https://github.com/redis/docs/" data-external-link="github" class="text-redis-yellow-500 hover:underline text-xs" target="_blank" rel="noopener noreferrer">View repository →</a>
             </div>
 
             <!-- AI Chatbot Feedback -->
-            <div class="border border-redis-pen-700 rounded-md p-4" style="background-color: #0C212C;">
+            <div class="border border-redis-pen-700 rounded-md p-4" data-external-card="chatbot" style="background-color: #0C212C;">
               <svg class="w-6 h-6 text-white opacity-60 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <h3 class="text-base font-medium mb-2">Improve our AI chatbot</h3>
               <p class="text-sm text-gray-300 mb-3">Provide feedback on AI chatbot answers to help us improve</p>
-              <a href="https://redis.io/chat" class="text-redis-yellow-500 hover:underline text-xs" target="_blank" rel="noopener noreferrer">Try the chatbot →</a>
+              <a href="https://redis.io/chat" data-external-link="chatbot" class="text-redis-yellow-500 hover:underline text-xs" target="_blank" rel="noopener noreferrer">Try the chatbot →</a>
             </div>
 
             <!-- AI Agent Resources -->
@@ -602,6 +602,24 @@
       document.getElementById('dropdownChevron').classList.toggle('rotate-180');
       document.getElementById('dropdown').classList.toggle('hidden');
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var links = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.externalLinks) || {};
+      document.querySelectorAll('[data-external-link]').forEach(function(el) {
+        var key = el.getAttribute('data-external-link');
+        var cfg = links[key];
+        if (!cfg) return;
+
+        if (cfg.url) {
+          el.href = cfg.url;
+        }
+
+        if (cfg.enabled === false) {
+          var target = el.closest('[data-external-card]') || el.closest('li') || el;
+          target.style.display = 'none';
+        }
+      });
+    });
   </script>
 </main>
 {{ end }}

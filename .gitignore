@@ -17,6 +17,7 @@ package-lock.json
 .DS_Store
 .idea
 .env
+PRIVATE_ACCESS_TOKEN
 dist/
 *.tar
 # Rust docs demos
