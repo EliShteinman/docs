@@ -21,5 +21,14 @@ data:
             url: "/jupyter/"
           }
         }
+      },
+      externalLinks: {
+        sandbox:    { enabled: {{ .Values.externalLinks.sandbox.enabled }},    url: "{{ .Values.externalLinks.sandbox.url }}" },
+        tutorials:  { enabled: {{ .Values.externalLinks.tutorials.enabled }},  url: "{{ .Values.externalLinks.tutorials.url }}" },
+        university: { enabled: {{ .Values.externalLinks.university.enabled }}, url: "{{ .Values.externalLinks.university.url }}" },
+        blog:       { enabled: {{ .Values.externalLinks.blog.enabled }},       url: "{{ .Values.externalLinks.blog.url }}" },
+        support:    { enabled: {{ .Values.externalLinks.support.enabled }},    url: "{{ .Values.externalLinks.support.url }}" },
+        github:     { enabled: {{ .Values.externalLinks.github.enabled }},     url: "{{ .Values.externalLinks.github.url }}" },
+        chatbot:    { enabled: {{ .Values.externalLinks.chatbot.enabled }},    url: "{{ .Values.externalLinks.chatbot.url }}" }
       }
     };
