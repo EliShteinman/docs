@@ -1,8 +1,13 @@
 # =============================================================================
 # Redis Docs — Kubernetes Ingress deployment with metrics
 # =============================================================================
-# Usage:
-#   helm install redis-docs redis-docs-0.11.0.tgz -f values-kubernetes.yaml
+#
+# Installation:
+#   helm install redis-docs ./helm/redis-docs -f helm/redis-docs/examples/values-kubernetes.yaml
+#
+# Before using, replace the following:
+#   docs.company.internal  → your ingress hostname
+#
 # =============================================================================
 
 replicaCount: 1
