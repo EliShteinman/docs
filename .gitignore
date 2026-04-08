@@ -19,3 +19,6 @@ package-lock.json
 .env
 dist/
 *.tar
+# Rust docs demos
+/content/develop/use-cases/rate-limiter/rust/target/
+/content/develop/use-cases/rate-limiter/rust/Cargo.lock
