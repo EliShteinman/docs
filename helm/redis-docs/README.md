@@ -97,7 +97,7 @@ helm install redis-docs redis-docs-0.11.0.tgz -f my-values.yaml
 
 להלן דוגמה לתרחיש פריסה טיפוסי. ראו גם קבצי דוגמה מוכנים בתיקייה `examples/`.
 
-### OpenShift — רשת סגורה עם מטריקות ו-TLS
+### OpenShift — רשת סגורה עם מטריקות
 
 ```yaml
 # my-values.yaml
@@ -126,36 +126,42 @@ metrics:
     tag: "v1.11.0"
   route:
     enabled: true
-    # host: docs-metrics.apps.example.com  # ריק = אוטומטי
+    # host ריק = OpenShift מייצר hostname אוטומטי + תעודה אוטומטית
 
-# --- Route אוטומטי ---
+# --- Route (בחרו אחת מ-3 האפשרויות) ---
+
+# אפשרות א: Route אוטומטי + TLS אוטומטי של OpenShift
 route:
   enabled: true
-  # host: docs.apps.example.com  # ריק = אוטומטי
+  tls:
+    enabled: true
+    termination: edge
 
-# --- Route מותאם אישית עם TLS ---
+# אפשרות ב: Route אוטומטי ללא TLS (HTTP בלבד)
+# route:
+#   enabled: true
+
+# אפשרות ג: Route מותאם אישית + תעודה שלכם
 # route:
 #   enabled: true
 #   host: docs.apps.example.com
 #   tls:
 #     enabled: true
 #     termination: edge
-
-# --- תעודת אבטחה ---
-tls:
-  enabled: true
-  certificate: |
-    -----BEGIN CERTIFICATE-----
-    ... (הדביקו כאן את התעודה)
-    -----END CERTIFICATE-----
-  privateKey: |
-    -----BEGIN PRIVATE KEY-----
-    ... (הדביקו כאן את המפתח)
-    -----END PRIVATE KEY-----
-  caCertificate: |
-    -----BEGIN CERTIFICATE-----
-    ... (אופציונלי — תעודת CA)
-    -----END CERTIFICATE-----
+# tls:
+#   enabled: true
+#   certificate: |
+#     -----BEGIN CERTIFICATE-----
+#     ... (הדביקו כאן את התעודה)
+#     -----END CERTIFICATE-----
+#   privateKey: |
+#     -----BEGIN PRIVATE KEY-----
+#     ... (הדביקו כאן את המפתח)
+#     -----END PRIVATE KEY-----
+#   caCertificate: |
+#     -----BEGIN CERTIFICATE-----
+#     ... (אופציונלי — תעודת CA)
+#     -----END CERTIFICATE-----
 
 # --- לינקים חיצוניים ---
 externalLinks:
@@ -179,7 +185,12 @@ externalLinks:
 >
 > ברשת סגורה מומלץ להשתמש בתג עם commit hash (Artifactory דורש תג שאינו `latest`).
 >
-> Route ללא `host` — OpenShift ייצור hostname אוטומטי. עם `host` — הגדרה ידנית.
+> **Route — 3 אפשרויות:**
+> - **אפשרות א** — OpenShift מייצר hostname ותעודת TLS אוטומטית. הדרך הפשוטה ביותר.
+> - **אפשרות ב** — HTTP בלבד, ללא הצפנה.
+> - **אפשרות ג** — hostname מותאם + תעודה שלכם. דורש הגדרת `tls.certificate` ו-`tls.privateKey`.
+>
+> המטריקות מקבלות Route אוטומטי עם TLS של OpenShift תמיד (ללא תלות באפשרות שנבחרה לאתר).
 >
 > `externalLinks` — ניתן לדרוס URL לשירות פנימי חלופי (`url:`) או להסתיר (`enabled: false`).
 
