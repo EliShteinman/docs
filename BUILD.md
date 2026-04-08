@@ -1,4 +1,4 @@
-# בניית Docker Image — Redis Docs
+# בנייה אופליינית — Redis Docs
 
 ## דרישות
 
@@ -94,3 +94,19 @@ docker run -p 8080:8080 a0533057932/redis-docs:unprivileged
 docker run -p 80:80 a0533057932/redis-docs:latest
 # פתחו http://localhost
 ```
+
+## קבצי Vendor (מחליפי CDN)
+
+האתר המקורי טוען סקריפטים מ-CDN חיצוניים. לצורך פריסה אופליינית, כל הקבצים הוכנסו לתיקייה `static/vendor/`:
+
+| קובץ | גרסה | מקור מקורי | תיאור |
+|------|-------|-----------|-------|
+| `highlight.min.js` | v11.11.1 | cdnjs.cloudflare.com | הדגשת תחביר בדוגמאות קוד |
+| `marked.min.js` | v9.1.6 | cdn.jsdelivr.net | פרסור Markdown (Agent Builder) |
+| `mathjax-tex-mml-chtml.js` | v3.x | cdn.jsdelivr.net | נוסחאות מתמטיות |
+| `mermaid.min.js` | v11.14.0 | cdn.jsdelivr.net | דיאגרמות (flowcharts, sequence) |
+| `redoc.standalone.js` | latest | cdn.redoc.ly | תצוגת OpenAPI/Swagger |
+| `thebe.js` | 0.9.0-rc.12 | unpkg.com | הרצת קוד אינטראקטיבית (Jupyter) |
+| `thebe.css` | 0.9.0-rc.12 | unpkg.com | עיצוב Thebe |
+
+> לעדכון: הורידו את הגרסה החדשה מהמקור המקורי, החליפו את הקובץ ב-`static/vendor/`, ועדכנו טבלה זו.

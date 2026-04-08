@@ -77,7 +77,7 @@ nginx משמש גם כ-reverse proxy:
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
 > ל-`docker run` רגיל השתמשו בתג `latest` או `<HASH>`.
 > ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
-> לתיעוד בניית האימג'ים ראו את ה-README בשורש הפרויקט.
+> לתיעוד בניית האימג'ים ראו `BUILD.md` בשורש הפרויקט.
 
 ## התקנה
 
