@@ -1,0 +1,81 @@
+# =============================================================================
+# Redis Docs — OpenShift air-gapped deployment with metrics
+# =============================================================================
+# Usage:
+#   helm install redis-docs redis-docs-0.11.0.tgz -f values-openshift-airgapped.yaml
+#
+# This file is a complete, ready-to-use values file.
+# Replace REGISTRY with your private registry address.
+# Replace <HASH> with the Docker image commit hash.
+# =============================================================================
+
+# --- Replicas ---
+replicaCount: 1
+
+# --- Global registry override ---
+# Overrides the registry for ALL images (main, metrics, CLI, Redis, Jupyter).
+global:
+  registry: REGISTRY
+
+# --- Image pull credentials ---
+imagePullSecrets:
+  - name: regcred
+
+# --- Main image ---
+image:
+  name: redis-docs
+  tag: "<HASH>-unprivileged"
+  pullPolicy: IfNotPresent
+
+# --- Resources (main) ---
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi
+
+# --- Route (OpenShift) ---
+# Automatic hostname + automatic TLS certificate from OpenShift.
+route:
+  enabled: true
+  tls:
+    enabled: true
+    termination: edge
+
+# --- Metrics ---
+metrics:
+  enabled: true
+  image:
+    name: prometheus-nginxlog-exporter
+    tag: "v1.11.0"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 10m
+      memory: 16Mi
+    limits:
+      cpu: 50m
+      memory: 32Mi
+  route:
+    enabled: true
+    # Automatic hostname + automatic TLS from OpenShift.
+
+# --- External links ---
+# Override URLs to internal services, or disable links that are unreachable.
+externalLinks:
+  github:
+    url: "https://gitlab.internal.company.com/infra/redis-docs"
+  support:
+    url: "https://support.internal.company.com"
+  sandbox:
+    enabled: false
+  tutorials:
+    enabled: false
+  university:
+    enabled: false
+  blog:
+    enabled: false
+  chatbot:
+    enabled: false
