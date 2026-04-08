@@ -1,29 +1,34 @@
 # =============================================================================
 # Redis Docs — TLS with PEM certificates (OpenShift)
 # =============================================================================
-# Usage:
-#   helm install redis-docs redis-docs-0.11.0.tgz -f values-tls-pem.yaml
 #
-# Paste your certificate, private key, and (optionally) CA certificate below.
+# Installation:
+#   helm install redis-docs ./helm/redis-docs -f helm/redis-docs/examples/values-tls-pem.yaml
+#
+# Before using, replace the following:
+#   docs.apps.example.com  → your Route hostname
+#   Certificate/key blocks → your actual PEM certificate and private key
+#
 # If you have a PFX file, extract with:
 #   openssl pkcs12 -in my-cert.pfx -clcerts -nokeys    # certificate
 #   openssl pkcs12 -in my-cert.pfx -nocerts -nodes      # privateKey
 #   openssl pkcs12 -in my-cert.pfx -cacerts -nokeys     # caCertificate
+#
 # =============================================================================
 
 tls:
   enabled: true
   certificate: |
     -----BEGIN CERTIFICATE-----
-    ... (paste your certificate here)
+    ... paste your certificate here ...
     -----END CERTIFICATE-----
   privateKey: |
     -----BEGIN PRIVATE KEY-----
-    ... (paste your private key here)
+    ... paste your private key here ...
     -----END PRIVATE KEY-----
   caCertificate: |
     -----BEGIN CERTIFICATE-----
-    ... (optional — paste your CA certificate here)
+    ... optional — paste your CA certificate here ...
     -----END CERTIFICATE-----
 
 route:

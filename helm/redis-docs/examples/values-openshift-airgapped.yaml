@@ -1,33 +1,32 @@
 # =============================================================================
 # Redis Docs — OpenShift air-gapped deployment with metrics
 # =============================================================================
-# Usage:
-#   helm install redis-docs redis-docs-0.11.0.tgz -f values-openshift-airgapped.yaml
 #
-# This file is a complete, ready-to-use values file.
-# Replace REGISTRY with your private registry address.
-# Replace <HASH> with the Docker image commit hash.
+# Installation:
+#   helm install redis-docs ./helm/redis-docs -f helm/redis-docs/examples/values-openshift-airgapped.yaml
+#
+# Before using, replace the following:
+#   registry.internal.company.com  → your private registry address
+#   79955fdb5-unprivileged         → your Docker image tag
+#   regcred                        → your image pull secret name
+#   gitlab.internal.company.com    → your internal Git URL
+#   support.internal.company.com   → your internal support URL
+#
 # =============================================================================
 
-# --- Replicas ---
 replicaCount: 1
 
-# --- Global registry override ---
-# Overrides the registry for ALL images (main, metrics, CLI, Redis, Jupyter).
 global:
-  registry: REGISTRY
+  registry: registry.internal.company.com
 
-# --- Image pull credentials ---
 imagePullSecrets:
   - name: regcred
 
-# --- Main image ---
 image:
   name: redis-docs
-  tag: "<HASH>-unprivileged"
+  tag: "79955fdb5-unprivileged"
   pullPolicy: IfNotPresent
 
-# --- Resources (main) ---
 resources:
   requests:
     cpu: 250m
@@ -36,15 +35,13 @@ resources:
     cpu: "1"
     memory: 512Mi
 
-# --- Route (OpenShift) ---
-# Automatic hostname + automatic TLS certificate from OpenShift.
+# Automatic hostname + automatic TLS certificate from OpenShift
 route:
   enabled: true
   tls:
     enabled: true
     termination: edge
 
-# --- Metrics ---
 metrics:
   enabled: true
   image:
@@ -60,10 +57,7 @@ metrics:
       memory: 32Mi
   route:
     enabled: true
-    # Automatic hostname + automatic TLS from OpenShift.
 
-# --- External links ---
-# Override URLs to internal services, or disable links that are unreachable.
 externalLinks:
   github:
     url: "https://gitlab.internal.company.com/infra/redis-docs"
