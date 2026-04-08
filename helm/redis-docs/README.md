@@ -95,170 +95,74 @@ helm install redis-docs redis-docs-0.11.0.tgz
 helm install redis-docs redis-docs-0.11.0.tgz -f my-values.yaml
 ```
 
-להלן דוגמאות לקבצי values לתרחישים שונים.
+להלן דוגמה לתרחיש פריסה טיפוסי. ראו גם קבצי דוגמה מוכנים בתיקייה `examples/`.
 
-### רשת פתוחה — OpenShift
+### OpenShift — רשת סגורה עם מטריקות ו-TLS
 
 ```yaml
 # my-values.yaml
 
-# --- Replicas / Autoscaling ---
-replicaCount: 2
-# או לחלופין HPA:
-# autoscaling:
-#   enabled: true
-#   minReplicas: 2
-#   maxReplicas: 10
-#   targetCPUUtilizationPercentage: 80
+# --- רפליקה אחת ---
+replicaCount: 1
 
-# --- תמונה ראשית (nginx) ---
+# --- דריסת registry גלובלי ---
+global:
+  registry: registry.internal.company.com
+
+# --- הרשאות משיכה ---
+imagePullSecrets:
+  - name: regcred
+
+# --- תמונה ראשית (דריסת תג ספציפי) ---
 image:
-  registry: a0533057932
   name: redis-docs
-  tag: unprivileged
+  tag: "79955fdb5-unprivileged"
 
-# --- Resources - תמונה ראשית ---
-resources:
-  requests:
-    cpu: 250m
-    memory: 256Mi
-  limits:
-    cpu: "1"
-    memory: 512Mi
+# --- מטריקות (דריסת תמונה ותג) ---
+metrics:
+  enabled: true
+  image:
+    name: prometheus-nginxlog-exporter
+    tag: "v1.11.0"
+  route:
+    enabled: true
+    # host: docs-metrics.apps.example.com  # ריק = אוטומטי
 
-# --- Route (OpenShift) ---
+# --- Route אוטומטי ---
 route:
   enabled: true
   # host: docs.apps.example.com  # ריק = אוטומטי
 
-# --- מטריקות ---
-metrics:
+# --- Route מותאם אישית עם TLS ---
+# route:
+#   enabled: true
+#   host: docs.apps.example.com
+#   tls:
+#     enabled: true
+#     termination: edge
+
+# --- תעודת אבטחה ---
+tls:
   enabled: true
-  route:
-    enabled: true
-    # host: docs-metrics.apps.example.com
-  image:
-    registry: quay.io/martinhelmich
-    name: prometheus-nginxlog-exporter
-    tag: "v1.11.0"
-  resources:
-    requests:
-      cpu: 10m
-      memory: 16Mi
-    limits:
-      cpu: 50m
-      memory: 32Mi
-
-# --- CLI playground ---
-cli:
-  enabled: true
-  image:
-    registry: a0533057932
-    name: redis-docs-cli
-    tag: "latest"
-  resources:
-    requests:
-      cpu: 50m
-      memory: 64Mi
-    limits:
-      cpu: 200m
-      memory: 128Mi
-  redis:
-    image:
-      registry: docker.io
-      name: redis
-      tag: "8-alpine"
-    resources:
-      requests:
-        cpu: 50m
-        memory: 64Mi
-      limits:
-        cpu: 200m
-        memory: 128Mi
-```
-
-> Route נפרד ייווצר עבור endpoint המטריקות על פורט 4040 בנתיב `/metrics`.
->
-> ייווצר פוד נפרד עם Flask proxy + Redis sidecar. ה-CLI יהיה זמין בנתיב `/cli`.
-
-### רשת פתוחה — Kubernetes עם Ingress
-
-```yaml
-# my-values.yaml
-ingress:
-  enabled: true
-  hosts:
-    - host: docs.company.internal
-      paths:
-        - path: /
-          pathType: Prefix
-
-metrics:
-  enabled: true
-
-cli:
-  enabled: true
-```
-
-### רשת סגורה — דוגמה מלאה
-
-```yaml
-# my-values.yaml
-global:
-  registry: registry.internal.company.com
-
-imagePullSecrets:
-  - name: regcred
-
-replicaCount: 2
-
-# --- תמונה ראשית ---
-image:
-  name: redis-docs
-  tag: unprivileged
-
-# --- Route ---
-route:
-  enabled: true
-
-# --- מטריקות ---
-metrics:
-  enabled: true
-  route:
-    enabled: true
-  image:
-    name: prometheus-nginxlog-exporter
-    tag: "v1.11.0"
-
-# --- CLI + Jupyter ---
-cli:
-  enabled: true
-  image:
-    name: redis-docs-cli
-    tag: "0.2.0"              # ברשת סגורה: תג אמיתי (Artifactory דורש)
-  redis:
-    image:
-      name: redis
-      tag: "8-alpine"
-  jupyter:
-    enabled: true
-    image:
-      name: jupyter/minimal-notebook
-      tag: "2026-04-02"
-
-# --- שירותי AI (אופציונלי) ---
-aiServices:
-  litellm:
-    enabled: true
-    url: "http://litellm.internal:4000/v1/chat/completions"
-    model: "gpt-3.5-turbo"
-    apiKey: "sk-internal-key"
-  binder:
-    url: "https://redis.io/binder/"
+  certificate: |
+    -----BEGIN CERTIFICATE-----
+    ... (הדביקו כאן את התעודה)
+    -----END CERTIFICATE-----
+  privateKey: |
+    -----BEGIN PRIVATE KEY-----
+    ... (הדביקו כאן את המפתח)
+    -----END PRIVATE KEY-----
+  caCertificate: |
+    -----BEGIN CERTIFICATE-----
+    ... (אופציונלי — תעודת CA)
+    -----END CERTIFICATE-----
 
 # --- לינקים חיצוניים ---
-# הסתרת לינקים שלא נגישים ברשת סגורה
 externalLinks:
+  github:
+    url: "https://gitlab.internal.company.com/infra/redis-docs"
+  support:
+    url: "https://support.internal.company.com"
   sandbox:
     enabled: false
   tutorials:
@@ -267,23 +171,17 @@ externalLinks:
     enabled: false
   blog:
     enabled: false
-  support:
-    enabled: false
-  github:
-    enabled: false
   chatbot:
     enabled: false
 ```
 
-> `global.registry` משנה את ה-registry לכל התמונות. אין צורך לציין registry לכל תמונה בנפרד.
+> `global.registry` דורס את ה-registry לכל התמונות. דריסת `image.name` ו-`image.tag` מאפשרת שליטה מלאה על כל תמונה.
 >
-> ברשת סגורה יש לתייג את CLI proxy כ-`0.2.0` (Artifactory דורש תג שאינו `latest`).
+> ברשת סגורה מומלץ להשתמש בתג עם commit hash (Artifactory דורש תג שאינו `latest`).
 >
-> כשהJupyter מופעל, הוא רץ כcontainer נוסף בפוד ה-CLI ומשתמש ב-Redis על localhost.
+> Route ללא `host` — OpenShift ייצור hostname אוטומטי. עם `host` — הגדרה ידנית.
 >
-> `aiServices.litellm` מפנה את צ'אט ה-AI ב-Agent Builder ל-LiteLLM פנימי במקום CloudFront חיצוני. כש-`apiKey` מוגדר, המשתמש לא יתבקש להזין מפתח.
->
-> `externalLinks` — ברשת סגורה מומלץ להסתיר את כל הלינקים החיצוניים. ניתן גם לדרוס URL לשירות פנימי חלופי עם `url:`.
+> `externalLinks` — ניתן לדרוס URL לשירות פנימי חלופי (`url:`) או להסתיר (`enabled: false`).
 
 ### תעודת אבטחה (TLS)
 
