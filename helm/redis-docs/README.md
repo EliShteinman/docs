@@ -41,25 +41,50 @@ nginx משמש גם כ-reverse proxy:
 קובץ `configmap-runtime.yaml` מזריק קובץ JS לתוך nginx, המכיל הגדרות דינמיות:
 - `aiServices.litellm` — כתובת LiteLLM endpoint (במקום CloudFront חיצוני)
 - `aiServices.binder.url` — כתובת BinderHub / JupyterHub
+- `externalLinks` — שליטה על לינקים חיצוניים בדף הבית
+
+### לינקים חיצוניים (externalLinks)
+
+דף הבית מכיל 7 לינקים לשירותים חיצוניים שאינם חלק מאתר הדוקומנטציה:
+
+| מזהה | ברירת מחדל | תיאור |
+|------|-----------|-------|
+| `sandbox` | `https://redis.io/try/sandbox/` | Redis Sandbox אינטראקטיבי |
+| `tutorials` | `https://redis.io/tutorials/` | טוטוריאלים (אתר חיצוני) |
+| `university` | `https://university.redis.io/academy` | Redis University |
+| `blog` | `https://redis.io/blog/` | בלוג (אתר חיצוני) |
+| `support` | `https://support.redislabs.com/hc/en-us` | פורטל תמיכה (Zendesk) |
+| `github` | `https://github.com/redis/docs/` | מאגר קוד ב-GitHub |
+| `chatbot` | `https://redis.io/chat` | צ'אטבוט AI |
+
+כל לינק תומך ב:
+- **`enabled`** — `true` / `false` — הצגה או הסתרה של הלינק
+- **`url`** — דריסת הכתובת לשירות פנימי חלופי
+
+ברשת סגורה, ניתן להסתיר לינקים שלא נגישים או להפנות אותם לשירות פנימי מקביל.
 
 ## Docker images
 
 | Image | תג | פורט | שימוש | חובה? |
 |---|---|---|---|---|
-| `a0533057932/redis-docs` | `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן - אחד מהשניים |
-| `a0533057932/redis-docs` | `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן - אחד מהשניים |
-| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא - רק אם `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.2.0` | 8090 | CLI playground proxy (Flask) | לא - רק אם `cli.enabled=true` |
-| `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא - רק אם `cli.enabled=true` |
-| `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא - רק אם `cli.jupyter.enabled=true` |
-> ל-Kubernetes/OpenShift השתמשו בתג `unprivileged`. ל-`docker run` רגיל השתמשו בתג `latest`.
+| `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן — אחד מהשניים |
+| `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן — אחד מהשניים |
+| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא — רק אם `metrics.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` / `0.2.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
+| `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
+| `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא — רק אם `cli.jupyter.enabled=true` |
+
+> ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
+> ל-`docker run` רגיל השתמשו בתג `latest` או `<HASH>`.
+> ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
+> לתיעוד בניית האימג'ים ראו את ה-README בשורש הפרויקט.
 
 ## התקנה
 
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-0.10.1.tgz
+helm install redis-docs redis-docs-0.11.0.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -67,7 +92,7 @@ helm install redis-docs redis-docs-0.10.1.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-0.10.1.tgz -f my-values.yaml
+helm install redis-docs redis-docs-0.11.0.tgz -f my-values.yaml
 ```
 
 להלן דוגמאות לקבצי values לתרחישים שונים.
@@ -230,6 +255,24 @@ aiServices:
     apiKey: "sk-internal-key"
   binder:
     url: "https://redis.io/binder/"
+
+# --- לינקים חיצוניים ---
+# הסתרת לינקים שלא נגישים ברשת סגורה
+externalLinks:
+  sandbox:
+    enabled: false
+  tutorials:
+    enabled: false
+  university:
+    enabled: false
+  blog:
+    enabled: false
+  support:
+    enabled: false
+  github:
+    enabled: false
+  chatbot:
+    enabled: false
 ```
 
 > `global.registry` משנה את ה-registry לכל התמונות. אין צורך לציין registry לכל תמונה בנפרד.
@@ -239,6 +282,8 @@ aiServices:
 > כשהJupyter מופעל, הוא רץ כcontainer נוסף בפוד ה-CLI ומשתמש ב-Redis על localhost.
 >
 > `aiServices.litellm` מפנה את צ'אט ה-AI ב-Agent Builder ל-LiteLLM פנימי במקום CloudFront חיצוני. כש-`apiKey` מוגדר, המשתמש לא יתבקש להזין מפתח.
+>
+> `externalLinks` — ברשת סגורה מומלץ להסתיר את כל הלינקים החיצוניים. ניתן גם לדרוס URL לשירות פנימי חלופי עם `url:`.
 
 ### תעודת אבטחה (TLS)
 
@@ -345,13 +390,13 @@ docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.10.1.tgz
+# ייצור: redis-docs-0.11.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.10.1.tgz`
+- `redis-docs-0.11.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
@@ -391,13 +436,13 @@ docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.10.1.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-0.11.0.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-0.10.1.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-0.11.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
@@ -525,6 +570,20 @@ kubectl port-forward svc/redis-docs 8080:80
 | `aiServices.litellm.model` | `gpt-3.5-turbo` | שם המודל לשליחה |
 | `aiServices.litellm.apiKey` | `""` | API key צד שרת (דילוג על שאלת המשתמש) |
 | `aiServices.binder.url` | `https://redis.io/binder/` | URL ל-BinderHub / JupyterHub |
+| `externalLinks.sandbox.enabled` | `true` | הצגת לינק ל-Redis Sandbox |
+| `externalLinks.sandbox.url` | `https://redis.io/try/sandbox/` | כתובת Redis Sandbox |
+| `externalLinks.tutorials.enabled` | `true` | הצגת לינק לטוטוריאלים |
+| `externalLinks.tutorials.url` | `https://redis.io/tutorials/` | כתובת טוטוריאלים |
+| `externalLinks.university.enabled` | `true` | הצגת לינק ל-Redis University |
+| `externalLinks.university.url` | `https://university.redis.io/academy` | כתובת Redis University |
+| `externalLinks.blog.enabled` | `true` | הצגת לינק לבלוג |
+| `externalLinks.blog.url` | `https://redis.io/blog/` | כתובת הבלוג |
+| `externalLinks.support.enabled` | `true` | הצגת לינק לפורטל תמיכה |
+| `externalLinks.support.url` | `https://support.redislabs.com/hc/en-us` | כתובת פורטל תמיכה |
+| `externalLinks.github.enabled` | `true` | הצגת לינק ל-GitHub |
+| `externalLinks.github.url` | `https://github.com/redis/docs/` | כתובת מאגר GitHub |
+| `externalLinks.chatbot.enabled` | `true` | הצגת לינק לצ'אטבוט |
+| `externalLinks.chatbot.url` | `https://redis.io/chat` | כתובת צ'אטבוט AI |
 | `nodeSelector` | `{}` | node selector לתזמון פודים |
 | `tolerations` | `[]` | tolerations לתזמון פודים |
 | `affinity` | `{}` | affinity rules לתזמון פודים |

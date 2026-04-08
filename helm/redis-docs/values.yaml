@@ -201,6 +201,32 @@ aiServices:
     # BinderHub / JupyterHub URL for interactive notebooks
     url: "https://redis.io/binder/"
 
+# -- External links on the home page.
+# Each entry supports `enabled` (show/hide) and `url` (override target).
+# Set enabled=false to hide links that are unreachable in air-gapped deployments.
+externalLinks:
+  sandbox:
+    enabled: true
+    url: "https://redis.io/try/sandbox/"
+  tutorials:
+    enabled: true
+    url: "https://redis.io/tutorials/"
+  university:
+    enabled: true
+    url: "https://university.redis.io/academy"
+  blog:
+    enabled: true
+    url: "https://redis.io/blog/"
+  support:
+    enabled: true
+    url: "https://support.redislabs.com/hc/en-us"
+  github:
+    enabled: true
+    url: "https://github.com/redis/docs/"
+  chatbot:
+    enabled: true
+    url: "https://redis.io/chat"
+
 podDisruptionBudget:
   enabled: true
   maxUnavailable: 1
