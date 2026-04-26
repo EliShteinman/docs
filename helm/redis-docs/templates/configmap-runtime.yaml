@@ -1,3 +1,34 @@
+{{- /*
+  Build the effective external-links map by composing three layers:
+    1. Defaults from files/external-links.yaml (all `enabled: true` upstream)
+    2. Global kill-switch: .Values.externalLinks.enabled — if false, force every
+       link's enabled to false (URL is preserved so an override can re-enable).
+    3. Per-link overrides: .Values.externalLinks.overrides.<key> — wins over
+       both layers above. May set `enabled`, `url`, or both.
+*/ -}}
+{{- $defaults := .Files.Get "files/external-links.yaml" | fromYaml -}}
+{{- $globalEnabled := .Values.externalLinks.enabled -}}
+{{- $overrides := .Values.externalLinks.overrides | default dict -}}
+{{- $effective := dict -}}
+{{- range $key, $entry := $defaults.links -}}
+  {{- $resolved := dict "enabled" $entry.enabled -}}
+  {{- if hasKey $entry "url" -}}
+    {{- $_ := set $resolved "url" $entry.url -}}
+  {{- end -}}
+  {{- if eq $globalEnabled false -}}
+    {{- $_ := set $resolved "enabled" false -}}
+  {{- end -}}
+  {{- if hasKey $overrides $key -}}
+    {{- $override := index $overrides $key -}}
+    {{- if hasKey $override "enabled" -}}
+      {{- $_ := set $resolved "enabled" $override.enabled -}}
+    {{- end -}}
+    {{- if hasKey $override "url" -}}
+      {{- $_ := set $resolved "url" $override.url -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $_ := set $effective $key $resolved -}}
+{{- end -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -22,13 +53,5 @@ data:
           }
         }
       },
-      externalLinks: {
-        sandbox:    { enabled: {{ .Values.externalLinks.sandbox.enabled }},    url: "{{ .Values.externalLinks.sandbox.url }}" },
-        tutorials:  { enabled: {{ .Values.externalLinks.tutorials.enabled }},  url: "{{ .Values.externalLinks.tutorials.url }}" },
-        university: { enabled: {{ .Values.externalLinks.university.enabled }}, url: "{{ .Values.externalLinks.university.url }}" },
-        blog:       { enabled: {{ .Values.externalLinks.blog.enabled }},       url: "{{ .Values.externalLinks.blog.url }}" },
-        support:    { enabled: {{ .Values.externalLinks.support.enabled }},    url: "{{ .Values.externalLinks.support.url }}" },
-        github:     { enabled: {{ .Values.externalLinks.github.enabled }},     url: "{{ .Values.externalLinks.github.url }}" },
-        chatbot:    { enabled: {{ .Values.externalLinks.chatbot.enabled }},    url: "{{ .Values.externalLinks.chatbot.url }}" }
-      }
+      externalLinks: {{ $effective | toJson }}
     };

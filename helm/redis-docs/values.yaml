@@ -201,31 +201,34 @@ aiServices:
     # BinderHub / JupyterHub URL for interactive notebooks
     url: "https://redis.io/binder/"
 
-# -- External links on the home page.
-# Each entry supports `enabled` (show/hide) and `url` (override target).
-# Set enabled=false to hide links that are unreachable in air-gapped deployments.
+# -- External links shown across the docs site (home page cards, top header
+#    nav, dropdown menus). The full default list with descriptions and
+#    upstream URLs lives in `files/external-links.yaml` inside the chart;
+#    this section is for per-deployment customization only.
+#
+#    Precedence (highest wins):
+#      1. overrides.<key>           — re-enable / disable / replace URL of a single link
+#      2. enabled (global)          — kill-switch for the whole set
+#      3. files/external-links.yaml — chart defaults (all `enabled: true`)
+#
+#    Default below is `enabled: false` (airgap-first): every external link is
+#    hidden unless you explicitly opt in, either by flipping `enabled: true`
+#    here or by re-enabling specific keys via `overrides`.
 externalLinks:
-  sandbox:
-    enabled: true
-    url: "https://redis.io/try/sandbox/"
-  tutorials:
-    enabled: true
-    url: "https://redis.io/tutorials/"
-  university:
-    enabled: true
-    url: "https://university.redis.io/academy"
-  blog:
-    enabled: true
-    url: "https://redis.io/blog/"
-  support:
-    enabled: true
-    url: "https://support.redislabs.com/hc/en-us"
-  github:
-    enabled: true
-    url: "https://github.com/redis/docs/"
-  chatbot:
-    enabled: true
-    url: "https://redis.io/chat"
+  enabled: false
+  overrides: {}
+  # Examples:
+  #   overrides:
+  #     tutorials:
+  #       enabled: true                                        # opt this one back in
+  #     github:
+  #       enabled: true
+  #       url: "https://gitlab.internal.company.com/redis-docs"  # also replace the URL
+  #     nav-search:
+  #       enabled: false                                       # explicitly keep hidden
+  #
+  # See `helm/redis-docs/files/external-links.yaml` for the full list of keys
+  # and their default URLs.
 
 podDisruptionBudget:
   enabled: true

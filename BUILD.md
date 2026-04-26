@@ -111,3 +111,55 @@ docker run -p 80:80 a0533057932/redis-docs:latest
 | `codemirror-javascript.js` | 5.65.16 | unpkg.com | מצב הדגשת תחביר JavaScript ל-Thebe (mode/javascript/javascript.js) |
 
 > לעדכון: הורידו את הגרסה החדשה מהמקור המקורי, החליפו את הקובץ ב-`static/vendor/`, ועדכנו טבלה זו.
+
+## ניהול לינקים חיצוניים
+
+האתר מכיל עשרות לינקים ל-`redis.io` — בדף הבית, בתפריט העליון, בתפריטי ה-dropdown ובפוטר. רוב הלינקים האלו לא יעבדו בפריסה airgap. הצ'ארט מספק מנגנון תלת-שכבתי לניהול שלהם:
+
+### שכבה 1 — `helm/redis-docs/files/external-links.yaml`
+
+קובץ פנימי בצ'ארט שמכיל את **רשימת כל הלינקים** עם ה-URL המקורי שלהם, תיאור, ו-`enabled: true` כברירת מחדל. הקובץ הזה הוא reference upstream; אין לערוך אותו עבור deployment ספציפי.
+
+מבנה כל ערך:
+
+```yaml
+links:
+  <key>:
+    description: "מה הלינק הזה מייצג ב-UI"
+    url: "https://redis.io/..."
+    enabled: true
+```
+
+מפתחות מתחילים ב-`nav-` עבור התפריט העליון, או בלי תחילית עבור כפתורי דף הבית.
+
+### שכבה 2 — Kill-switch גלובלי (ב-`values.yaml`)
+
+```yaml
+externalLinks:
+  enabled: false   # מסתיר את כל הלינקים בבת אחת. ברירת מחדל: false (airgap-first)
+```
+
+### שכבה 3 — `overrides` פר-לינק (ב-`values.yaml`)
+
+```yaml
+externalLinks:
+  enabled: false
+  overrides:
+    tutorials:
+      enabled: true                                       # להפעיל לינק יחיד גם כשה-kill-switch פעיל
+    github:
+      enabled: true
+      url: "https://gitlab.internal.company.com/redis-docs"  # להחליף URL
+    nav-search:
+      enabled: false                                       # להשאיר מוסתר במפורש
+```
+
+### סדר עדיפויות (הגבוה דורס)
+
+1. `overrides.<key>.enabled` / `overrides.<key>.url`
+2. `externalLinks.enabled` (kill-switch)
+3. `files/external-links.yaml` (defaults)
+
+### איך זה מגיע לדפדפן
+
+`templates/configmap-runtime.yaml` ממזג את שלוש השכבות בזמן `helm install/upgrade` ופולט `runtime-config.js` ל-ConfigMap. הקובץ נטען בראש כל דף (מ-`baseof.html`), מאכלס את `window.RUNTIME_CONFIG.externalLinks`, וה-JS המשותף ב-`layouts/partials/external-links.html` מחיל את ההגדרות על כל אלמנט שמסומן ב-`data-external-link="<key>"`.
