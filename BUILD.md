@@ -108,5 +108,6 @@ docker run -p 80:80 a0533057932/redis-docs:latest
 | `redoc.standalone.js` | latest | cdn.redoc.ly | תצוגת OpenAPI/Swagger |
 | `thebe.js` | 0.9.0-rc.12 | unpkg.com | הרצת קוד אינטראקטיבית (Jupyter) |
 | `thebe.css` | 0.9.0-rc.12 | unpkg.com | עיצוב Thebe |
+| `codemirror-javascript.js` | 5.65.16 | unpkg.com | מצב הדגשת תחביר JavaScript ל-Thebe (mode/javascript/javascript.js) |
 
 > לעדכון: הורידו את הגרסה החדשה מהמקור המקורי, החליפו את הקובץ ב-`static/vendor/`, ועדכנו טבלה זו.
