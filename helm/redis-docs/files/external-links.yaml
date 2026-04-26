@@ -253,3 +253,240 @@ families:
           nav-mobile-menu:
             description: "Mobile hamburger button + the entire <nav> drawer it opens"
             enabled: true
+
+  # ───────────────────────────────────────────────────────────────────────
+  # footer — bottom site footer (layouts/partials/footer.html), present on every page
+  #
+  # The footer logo (top-left of footer) is NOT in the catalog: it always
+  # points to "/" (the internal docs home), like the top-header logo, and
+  # is not configurable per deployment.
+  #
+  # Note: the four `legal` links are rendered twice in footer.html — once
+  # for desktop (top section) and once for mobile (bottom strip). Both
+  # locations share the same key, so a single override controls both.
+  # ───────────────────────────────────────────────────────────────────────
+  footer:
+    description: "Bottom site footer present on every page (social icons, legal, solutions, industries, compare, company, community, cloud partners, services)"
+    enabled: true
+    sub-families:
+
+      social:
+        description: "Social media icon row (Facebook, YouTube, LinkedIn, Instagram, Twitter/X, GitHub)"
+        enabled: true
+        links:
+          footer-social-facebook:
+            description: "Footer social row: Facebook"
+            url: "https://www.facebook.com/Redisinc"
+            enabled: true
+          footer-social-youtube:
+            description: "Footer social row: YouTube"
+            url: "https://www.youtube.com/c/redisinc"
+            enabled: true
+          footer-social-linkedin:
+            description: "Footer social row: LinkedIn"
+            url: "https://www.linkedin.com/company/redisinc/"
+            enabled: true
+          footer-social-instagram:
+            description: "Footer social row: Instagram"
+            url: "https://www.instagram.com/redisinc/"
+            enabled: true
+          footer-social-twitter:
+            description: "Footer social row: Twitter / X"
+            url: "https://twitter.com/Redisinc"
+            enabled: true
+          footer-social-github:
+            description: "Footer social row: GitHub (redis org)"
+            url: "https://github.com/redis/"
+            enabled: true
+
+      legal:
+        description: "Legal links (Trust, Privacy, Terms of use, Legal notices) — rendered twice (desktop block + mobile strip), single key controls both copies"
+        enabled: true
+        links:
+          footer-legal-trust:
+            description: "Footer legal: 'Trust' (trust.redis.io)"
+            url: "https://trust.redis.io/"
+            enabled: true
+          footer-legal-privacy:
+            description: "Footer legal: 'Privacy'"
+            url: "https://redis.io/legal/privacy-policy/"
+            enabled: true
+          footer-legal-terms:
+            description: "Footer legal: 'Terms of use'"
+            url: "https://redis.io/legal/redis-website-terms-of-use/"
+            enabled: true
+          footer-legal-notices:
+            description: "Footer legal: 'Legal notices'"
+            url: "https://redis.io/legal/"
+            enabled: true
+
+      solutions:
+        description: "'Use Cases' column — Redis solutions / use cases links"
+        enabled: true
+        links:
+          footer-solutions-vector-database:
+            description: "Footer Use Cases: 'Vector database'"
+            url: "https://redis.io/solutions/vector-database/"
+            enabled: true
+          footer-solutions-feature-stores:
+            description: "Footer Use Cases: 'Feature stores'"
+            url: "https://redis.io/solutions/feature-stores/"
+            enabled: true
+          footer-solutions-semantic-cache:
+            description: "Footer Use Cases: 'Semantic cache' (links to redis-for-ai/, same upstream URL as nav-redis-for-ai but separate key — different UI element)"
+            url: "https://redis.io/redis-for-ai/"
+            enabled: true
+          footer-solutions-caching:
+            description: "Footer Use Cases: 'Caching'"
+            url: "https://redis.io/solutions/caching/"
+            enabled: true
+          footer-solutions-nosql:
+            description: "Footer Use Cases: 'NoSQL database'"
+            url: "https://redis.io/nosql/what-is-nosql/"
+            enabled: true
+          footer-solutions-leaderboards:
+            description: "Footer Use Cases: 'Leaderboards'"
+            url: "https://redis.io/solutions/leaderboards/"
+            enabled: true
+          footer-solutions-deduplication:
+            description: "Footer Use Cases: 'Data deduplication'"
+            url: "https://redis.io/solutions/deduplication/"
+            enabled: true
+          footer-solutions-messaging:
+            description: "Footer Use Cases: 'Messaging'"
+            url: "https://redis.io/solutions/messaging/"
+            enabled: true
+          footer-solutions-auth-token-storage:
+            description: "Footer Use Cases: 'Authentication token storage'"
+            url: "https://redis.io/solutions/authentication-token-storage/"
+            enabled: true
+          footer-solutions-fast-data-ingest:
+            description: "Footer Use Cases: 'Fast-data ingest'"
+            url: "https://redis.io/solutions/fast-data-ingest/"
+            enabled: true
+          footer-solutions-query-caching:
+            description: "Footer Use Cases: 'Query caching'"
+            url: "https://redis.io/solutions/query-caching-with-redis-enterprise/"
+            enabled: true
+          footer-solutions-all:
+            description: "Footer Use Cases: 'All solutions' index"
+            url: "https://redis.io/solutions"
+            enabled: true
+
+      industries:
+        description: "'Industries' column — vertical-market landing pages"
+        enabled: true
+        links:
+          footer-industries-financial:
+            description: "Footer Industries: 'Financial Services'"
+            url: "https://redis.io/industries/financial-services/"
+            enabled: true
+          footer-industries-gaming:
+            description: "Footer Industries: 'Gaming'"
+            url: "https://redis.io/industries/gaming/"
+            enabled: true
+          footer-industries-healthcare:
+            description: "Footer Industries: 'Healthcare'"
+            url: "https://redis.io/industries/healthcare/"
+            enabled: true
+          footer-industries-retail:
+            description: "Footer Industries: 'Retail'"
+            url: "https://redis.io/industries/retail/"
+            enabled: true
+          footer-industries-all:
+            description: "Footer Industries: 'All industries' index"
+            url: "https://redis.io/industries/"
+            enabled: true
+
+      compare:
+        description: "'Compare' column — Redis-vs-X marketing comparison pages"
+        enabled: true
+        links:
+          footer-compare-elasticache:
+            description: "Footer Compare: 'Redis vs Elasticache'"
+            url: "https://redis.io/compare/elasticache/"
+            enabled: true
+          footer-compare-memcached:
+            description: "Footer Compare: 'Redis vs Memcached'"
+            url: "https://redis.io/compare/memcached/"
+            enabled: true
+          footer-compare-memory-store:
+            description: "Footer Compare: 'Redis vs Memory Store'"
+            url: "https://redis.io/compare/memorystore/"
+            enabled: true
+          footer-compare-open-source:
+            description: "Footer Compare: 'Redis vs. Open Source'"
+            url: "https://redis.io/compare/open-source"
+            enabled: true
+
+      company:
+        description: "'Company' column — about Redis Inc."
+        enabled: true
+        links:
+          footer-company-mission:
+            description: "Footer Company: 'Mission & values'"
+            url: "https://redis.io/company/"
+            enabled: true
+          footer-company-leadership:
+            description: "Footer Company: 'Leadership' (team page)"
+            url: "https://redis.io/company/team/"
+            enabled: true
+          footer-company-careers:
+            description: "Footer Company: 'Careers'"
+            url: "https://redis.io/careers/"
+            enabled: true
+          footer-company-news:
+            description: "Footer Company: 'News' (separate key from footer-community-news although they share the same upstream URL — independent toggles per section)"
+            url: "https://redis.io/company/news/"
+            enabled: true
+
+      community:
+        description: "'Connect' column — community engagement links"
+        enabled: true
+        links:
+          footer-community-community:
+            description: "Footer Connect: 'Community'"
+            url: "https://redis.io/community/"
+            enabled: true
+          footer-community-events:
+            description: "Footer Connect: 'Events & webinars'"
+            url: "https://redis.io/events/"
+            enabled: true
+          footer-community-news:
+            description: "Footer Connect: 'News' (same URL as footer-company-news, separate key for per-section control)"
+            url: "https://redis.io/company/news/"
+            enabled: true
+
+      cloud-partners:
+        description: "'Partners' column — public cloud provider integrations"
+        enabled: true
+        links:
+          footer-cloud-partners-aws:
+            description: "Footer Partners: 'Amazon Web Services'"
+            url: "https://redis.io/cloud-partners/aws/"
+            enabled: true
+          footer-cloud-partners-google:
+            description: "Footer Partners: 'Google Cloud'"
+            url: "https://redis.io/cloud-partners/google/"
+            enabled: true
+          footer-cloud-partners-azure:
+            description: "Footer Partners: 'Microsoft Azure'"
+            url: "https://redis.io/cloud-partners/azure/"
+            enabled: true
+          footer-cloud-partners-all:
+            description: "Footer Partners: 'All partners' index"
+            url: "https://redis.io/partners/"
+            enabled: true
+
+      services:
+        description: "'Support' column — services + customer support entry points"
+        enabled: true
+        links:
+          footer-services-professional:
+            description: "Footer Support: 'Professional services'"
+            url: "https://redis.io/services/professional-services/"
+            enabled: true
+          footer-services-support:
+            description: "Footer Support: 'Support'"
+            url: "https://redis.io/support/"
+            enabled: true
