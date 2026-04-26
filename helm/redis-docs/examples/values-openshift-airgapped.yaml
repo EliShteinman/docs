@@ -9,6 +9,7 @@
 #   registry.internal.company.com  → your private registry address
 #   0f24bb8a2-unprivileged         → your Docker image tag
 #   regcred                        → your image pull secret name
+#   docs.intranet.company.com      → the public hostname of this deployment
 #   gitlab.internal.company.com    → your internal Git URL
 #   support.internal.company.com   → your internal support URL
 #
@@ -58,10 +59,43 @@ metrics:
   route:
     enabled: true
 
-# External links — kill-switch is on by default; selectively re-enable a few
-# items pointing at internal mirrors. Every other link stays hidden.
+# Canonical public URL of this deployment.
+#
+# Used at HTTP response time by nginx sub_filter to replace `__DOCS_BASE_URL__`
+# placeholders in .md and .json outputs (the AI / RAG-facing formats), so
+# consumers that ingest the markdown without HTML context still see
+# fully-qualified links pointing at the right host.
+#
+# Leave empty (or comment out the line) to auto-detect from the request's
+# Host header — useful when the same image is exposed at multiple hostnames.
+canonicalURL: "https://docs.intranet.company.com"
+
+# External links — controlled by a five-layer hierarchy:
+#   overrides.<key>  →  families.<fam>.sub-families.<sub>  →  families.<fam>
+#   →  externalLinks.enabled  →  catalog default (always true)
+# Per-link override wins absolutely; an explicit value at any level beats
+# its parents. The full link catalog ships at files/external-links.yaml.
 externalLinks:
-  enabled: false
+  enabled: false               # master kill-switch on (airgap default)
+
+  # Uncomment to re-enable whole groups of links at once. Anything not
+  # explicitly enabled here stays hidden by the master kill-switch above.
+  #
+  # families:
+  #   home:
+  #     enabled: true          # restore the home-page cards
+  #   header:
+  #     sub-families:
+  #       main-nav:
+  #         enabled: true      # restore the Redis-for-AI / Docs / Pricing strip
+  #   footer:
+  #     sub-families:
+  #       legal:
+  #         enabled: true      # restore Trust / Privacy / Terms / Legal notices
+
+  # Per-link tweaks. Use to re-enable a single link inside a hidden family
+  # or replace its target with an internal mirror. Wins over every layer
+  # above it.
   overrides:
     github:
       enabled: true
