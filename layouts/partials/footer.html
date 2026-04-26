@@ -2,7 +2,7 @@
   class="relative z-50 flex justify-center bg-redis-ink-900 px-0 py-24 text-gray-300 border-t border-t-white border-opacity-30 text-[13px] font-sans">
   <div class="flex w-full max-w-7xl flex-col gap-6 px-4 md:flex-row lg:px-8">
     <div class="flex flex-col gap-8 md:max-w-[40%] md:flex-[40%]">
-      <a class="relative hover:text-white w-[82px] mb-4" href="https://redis.io/">
+      <a class="relative hover:text-white w-[82px] mb-4" href='{{ "/" | relURL }}'>
         {{ partial "icons/logo-script.html" }}
       </a>
       <div class="flex flex-col justify-between mt-8 lg:mt-0 lg:mr-8 gap-8">
@@ -11,51 +11,51 @@
         </div>
         */}}
         <div class="flex flex-row gap-5 order-first">
-          <a class="hover:text-white" href="https://www.facebook.com/Redisinc">
+          <a class="hover:text-white" href="https://www.facebook.com/Redisinc" data-external-link="footer-social-facebook">
             {{ partial "icons/Facebook.html" }}
           </a>
-          <a class="hover:text-white" href="https://www.youtube.com/c/redisinc">
+          <a class="hover:text-white" href="https://www.youtube.com/c/redisinc" data-external-link="footer-social-youtube">
             {{ partial "icons/Youtube.html" }}
           </a>
-          <a class="hover:text-white" href="https://www.linkedin.com/company/redisinc/">
+          <a class="hover:text-white" href="https://www.linkedin.com/company/redisinc/" data-external-link="footer-social-linkedin">
             {{ partial "icons/LinkedIn.html" }}
           </a>
-          <a class="hover:text-white" href="https://www.instagram.com/redisinc/">
+          <a class="hover:text-white" href="https://www.instagram.com/redisinc/" data-external-link="footer-social-instagram">
             {{ partial "icons/Instagram.html" }}
           </a>
-          <a class="hover:text-white" href="https://twitter.com/Redisinc">
+          <a class="hover:text-white" href="https://twitter.com/Redisinc" data-external-link="footer-social-twitter">
             {{ partial "icons/X.html" }}
           </a>
-          <a class="hover:text-white" href="https://github.com/redis/">
+          <a class="hover:text-white" href="https://github.com/redis/" data-external-link="footer-social-github">
             {{ partial "icons/Github.html" }}
           </a>
         </div>
       </div>
       <div class="hidden flex-col gap-4 md:flex">
-        <a class="hover:text-white" href="https://trust.redis.io/">Trust</a>
-        <a class="hover:text-white" href="https://redis.io/legal/privacy-policy/">Privacy</a>
-        <a class="hover:text-white" href="https://redis.io/legal/redis-website-terms-of-use/">Terms of use</a>
-        <a class="hover:text-white" href="https://redis.io/legal/">Legal notices</a>
+        <a class="hover:text-white" href="https://trust.redis.io/" data-external-link="footer-legal-trust">Trust</a>
+        <a class="hover:text-white" href="https://redis.io/legal/privacy-policy/" data-external-link="footer-legal-privacy">Privacy</a>
+        <a class="hover:text-white" href="https://redis.io/legal/redis-website-terms-of-use/" data-external-link="footer-legal-terms">Terms of use</a>
+        <a class="hover:text-white" href="https://redis.io/legal/" data-external-link="footer-legal-notices">Legal notices</a>
       </div>
     </div>
     <div class="flex flex-col gap-8 md:max-w-[15%] md:flex-[15%]">
       <div>
         <h3 class="font-medium text-base uppercase text-white">Use Cases</h3>
         <div class="flex flex-col gap-4 pt-4">
-          <a class="hover:text-white" href="https://redis.io/solutions/vector-database/">Vector database</a>
-          <a class="hover:text-white" href="https://redis.io/solutions/feature-stores/">Feature stores</a><a
-            class="hover:text-white" href="https://redis.io/redis-for-ai/">Semantic cache</a>
-          <a class="hover:text-white" href="https://redis.io/solutions/caching/">Caching</a><a
-            class="hover:text-white" href="https://redis.io/nosql/what-is-nosql/">NoSQL database</a>
-          <a class="hover:text-white" href="https://redis.io/solutions/leaderboards/">Leaderboards</a>
-          <a class="hover:text-white" href="https://redis.io/solutions/deduplication/">Data deduplication</a>
-          <a class="hover:text-white" href="https://redis.io/solutions/messaging/">Messaging</a>
+          <a class="hover:text-white" href="https://redis.io/solutions/vector-database/" data-external-link="footer-solutions-vector-database">Vector database</a>
+          <a class="hover:text-white" href="https://redis.io/solutions/feature-stores/" data-external-link="footer-solutions-feature-stores">Feature stores</a><a
+            class="hover:text-white" href="https://redis.io/redis-for-ai/" data-external-link="footer-solutions-semantic-cache">Semantic cache</a>
+          <a class="hover:text-white" href="https://redis.io/solutions/caching/" data-external-link="footer-solutions-caching">Caching</a><a
+            class="hover:text-white" href="https://redis.io/nosql/what-is-nosql/" data-external-link="footer-solutions-nosql">NoSQL database</a>
+          <a class="hover:text-white" href="https://redis.io/solutions/leaderboards/" data-external-link="footer-solutions-leaderboards">Leaderboards</a>
+          <a class="hover:text-white" href="https://redis.io/solutions/deduplication/" data-external-link="footer-solutions-deduplication">Data deduplication</a>
+          <a class="hover:text-white" href="https://redis.io/solutions/messaging/" data-external-link="footer-solutions-messaging">Messaging</a>
           <a class="hover:text-white"
-            href="https://redis.io/solutions/authentication-token-storage/">Authentication token storage</a>
-          <a class="hover:text-white" href="https://redis.io/solutions/fast-data-ingest/">Fast-data ingest</a>
+            href="https://redis.io/solutions/authentication-token-storage/" data-external-link="footer-solutions-auth-token-storage">Authentication token storage</a>
+          <a class="hover:text-white" href="https://redis.io/solutions/fast-data-ingest/" data-external-link="footer-solutions-fast-data-ingest">Fast-data ingest</a>
           <a class="hover:text-white"
-            href="https://redis.io/solutions/query-caching-with-redis-enterprise/">Query caching</a>
-          <a class="hover:text-white" href="https://redis.io/solutions">All solutions</a>
+            href="https://redis.io/solutions/query-caching-with-redis-enterprise/" data-external-link="footer-solutions-query-caching">Query caching</a>
+          <a class="hover:text-white" href="https://redis.io/solutions" data-external-link="footer-solutions-all">All solutions</a>
         </div>
       </div>
     </div>
@@ -63,62 +63,62 @@
       <div>
         <h3 class="font-medium text-base uppercase text-white">Industries</h3>
         <div class="flex flex-col gap-4 pt-4">
-          <a class="hover:text-white" href="https://redis.io/industries/financial-services/">Financial
+          <a class="hover:text-white" href="https://redis.io/industries/financial-services/" data-external-link="footer-industries-financial">Financial
             Services</a>
-          <a class="hover:text-white" href="https://redis.io/industries/gaming/">Gaming</a><a
-            class="hover:text-white" href="https://redis.io/industries/healthcare/">Healthcare</a>
-          <a class="hover:text-white" href="https://redis.io/industries/retail/">Retail</a>
-          <a class="hover:text-white" href="https://redis.io/industries/">All industries</a>
+          <a class="hover:text-white" href="https://redis.io/industries/gaming/" data-external-link="footer-industries-gaming">Gaming</a><a
+            class="hover:text-white" href="https://redis.io/industries/healthcare/" data-external-link="footer-industries-healthcare">Healthcare</a>
+          <a class="hover:text-white" href="https://redis.io/industries/retail/" data-external-link="footer-industries-retail">Retail</a>
+          <a class="hover:text-white" href="https://redis.io/industries/" data-external-link="footer-industries-all">All industries</a>
         </div>
       </div>
       <div>
         <h3 class="font-medium text-base uppercase text-white">Compare</h3>
         <div class="flex flex-col gap-4 pt-4">
-          <a class="hover:text-white" href="https://redis.io/compare/elasticache/">Redis vs Elasticache</a>
-          <a class="hover:text-white" href="https://redis.io/compare/memcached/">Redis vs Memcached</a>
-          <a class="hover:text-white" href="https://redis.io/compare/memorystore/">Redis vs Memory Store</a>
-          <a class="hover:text-white" href="https://redis.io/compare/open-source">Redis vs. Open Source</a>
+          <a class="hover:text-white" href="https://redis.io/compare/elasticache/" data-external-link="footer-compare-elasticache">Redis vs Elasticache</a>
+          <a class="hover:text-white" href="https://redis.io/compare/memcached/" data-external-link="footer-compare-memcached">Redis vs Memcached</a>
+          <a class="hover:text-white" href="https://redis.io/compare/memorystore/" data-external-link="footer-compare-memory-store">Redis vs Memory Store</a>
+          <a class="hover:text-white" href="https://redis.io/compare/open-source" data-external-link="footer-compare-open-source">Redis vs. Open Source</a>
         </div>
       </div>
       <div>
         <h3 class="font-medium text-base uppercase text-white">Company</h3>
         <div class="flex flex-col gap-4 pt-4">
-          <a class="hover:text-white" href="https://redis.io/company/">Mission &amp; values</a><a
-            class="hover:text-white" href="https://redis.io/company/team/">Leadership</a>
-          <a class="hover:text-white" href="https://redis.io/careers/">Careers</a><a
-            class="hover:text-white" href="https://redis.io/company/news/">News</a>
+          <a class="hover:text-white" href="https://redis.io/company/" data-external-link="footer-company-mission">Mission &amp; values</a><a
+            class="hover:text-white" href="https://redis.io/company/team/" data-external-link="footer-company-leadership">Leadership</a>
+          <a class="hover:text-white" href="https://redis.io/careers/" data-external-link="footer-company-careers">Careers</a><a
+            class="hover:text-white" href="https://redis.io/company/news/" data-external-link="footer-company-news">News</a>
         </div>
       </div>
       <div>
         <h3 class="font-medium text-base uppercase text-white">Connect</h3>
         <div class="flex flex-col gap-4 pt-4">
-          <a class="hover:text-white" href="https://redis.io/community/">Community</a><a
-            class="hover:text-white" href="https://redis.io/events/">Events &amp; webinars</a>
-          <a class="hover:text-white" href="https://redis.io/company/news/">News</a>
+          <a class="hover:text-white" href="https://redis.io/community/" data-external-link="footer-community-community">Community</a><a
+            class="hover:text-white" href="https://redis.io/events/" data-external-link="footer-community-events">Events &amp; webinars</a>
+          <a class="hover:text-white" href="https://redis.io/company/news/" data-external-link="footer-community-news">News</a>
         </div>
       </div>
       <div>
         <h3 class="font-medium text-base uppercase text-white">Partners</h3>
         <div class="flex flex-col gap-4 pt-4">
-          <a class="hover:text-white" href="https://redis.io/cloud-partners/aws/">Amazon Web Services</a>
-          <a class="hover:text-white" href="https://redis.io/cloud-partners/google/">Google Cloud</a>
-          <a class="hover:text-white" href="https://redis.io/cloud-partners/azure/">Microsoft Azure</a>
-          <a class="hover:text-white" href="https://redis.io/partners/">All partners</a>
+          <a class="hover:text-white" href="https://redis.io/cloud-partners/aws/" data-external-link="footer-cloud-partners-aws">Amazon Web Services</a>
+          <a class="hover:text-white" href="https://redis.io/cloud-partners/google/" data-external-link="footer-cloud-partners-google">Google Cloud</a>
+          <a class="hover:text-white" href="https://redis.io/cloud-partners/azure/" data-external-link="footer-cloud-partners-azure">Microsoft Azure</a>
+          <a class="hover:text-white" href="https://redis.io/partners/" data-external-link="footer-cloud-partners-all">All partners</a>
         </div>
       </div>
       <div>
         <h3 class="font-medium text-base uppercase text-white">Support</h3>
         <div class="flex flex-col gap-4 pt-4">
-          <a class="hover:text-white" href="https://redis.io/services/professional-services/">Professional
-            services</a><a class="hover:text-white" href="https://redis.io/support/">Support</a>
+          <a class="hover:text-white" href="https://redis.io/services/professional-services/" data-external-link="footer-services-professional">Professional
+            services</a><a class="hover:text-white" href="https://redis.io/support/" data-external-link="footer-services-support">Support</a>
         </div>
       </div>
     </div>
     <div class="absolute bottom-0 left-0 flex w-full flex-row gap-8 p-4 md:hidden">
-      <a class="hover:text-white" href="https://trust.redis.io/">Trust</a>
-      <a class="hover:text-white" href="https://redis.io/legal/privacy-policy/">Privacy</a>
-      <a class="hover:text-white" href="https://redis.io/legal/redis-website-terms-of-use/">Terms of use</a>
-      <a class="hover:text-white" href="https://redis.io/legal/">Legal notices</a>
+      <a class="hover:text-white" href="https://trust.redis.io/" data-external-link="footer-legal-trust">Trust</a>
+      <a class="hover:text-white" href="https://redis.io/legal/privacy-policy/" data-external-link="footer-legal-privacy">Privacy</a>
+      <a class="hover:text-white" href="https://redis.io/legal/redis-website-terms-of-use/" data-external-link="footer-legal-terms">Terms of use</a>
+      <a class="hover:text-white" href="https://redis.io/legal/" data-external-link="footer-legal-notices">Legal notices</a>
     </div>
   </div>
 </footer>
