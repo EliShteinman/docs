@@ -1,0 +1,38 @@
+{{/*
+  external-links.html
+
+  Applies the merged external-links runtime config (window.RUNTIME_CONFIG.
+  externalLinks, populated by helm/.../configmap-runtime.yaml from the chart
+  catalog + global kill-switch + per-link overrides) to every element on the
+  current page that carries `data-external-link="<key>"`.
+
+  For each matched element:
+    - if cfg.url is set, replace the element's href with it.
+    - if cfg.enabled === false, hide the element. The hide target walks up to
+      the closest [data-external-card] or <li> ancestor when present, so a
+      link inside a card or list item collapses cleanly instead of leaving an
+      empty wrapper behind.
+
+  Included from baseof.html so the same handler runs on every page (home,
+  docs sections, command pages, etc.) — the top-header marketing nav lives
+  in baseof for all pages, not just home.
+*/}}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var links = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.externalLinks) || {};
+    document.querySelectorAll('[data-external-link]').forEach(function(el) {
+      var key = el.getAttribute('data-external-link');
+      var cfg = links[key];
+      if (!cfg) return;
+
+      if (cfg.url) {
+        el.href = cfg.url;
+      }
+
+      if (cfg.enabled === false) {
+        var target = el.closest('[data-external-card]') || el.closest('li') || el;
+        target.style.display = 'none';
+      }
+    });
+  });
+</script>

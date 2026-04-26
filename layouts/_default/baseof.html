@@ -79,6 +79,7 @@
     {{ partial "toc-js.html" . }}
 
     {{ partial "search-modal.html" . }}
+    {{ partial "external-links.html" . }}
 
     {{ if .Store.Get "hasMermaid" }}
     <script src='{{ "vendor/mermaid.min.js" | relURL }}'></script>

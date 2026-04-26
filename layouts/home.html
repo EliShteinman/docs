@@ -602,24 +602,6 @@
       document.getElementById('dropdownChevron').classList.toggle('rotate-180');
       document.getElementById('dropdown').classList.toggle('hidden');
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      var links = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.externalLinks) || {};
-      document.querySelectorAll('[data-external-link]').forEach(function(el) {
-        var key = el.getAttribute('data-external-link');
-        var cfg = links[key];
-        if (!cfg) return;
-
-        if (cfg.url) {
-          el.href = cfg.url;
-        }
-
-        if (cfg.enabled === false) {
-          var target = el.closest('[data-external-card]') || el.closest('li') || el;
-          target.style.display = 'none';
-        }
-      });
-    });
   </script>
 </main>
 {{ end }}
