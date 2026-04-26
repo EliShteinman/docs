@@ -1463,7 +1463,7 @@
         // so JavaScript (Node.js) cells lose syntax highlighting after activation.
         // Lazily fetch CM5's javascript mode and register it on Thebe's internal CM class,
         // then re-apply the mode on any JS cells to force re-tokenization.
-        const CM_JS_MODE_URL = 'https://unpkg.com/codemirror@5.65.16/mode/javascript/javascript.js';
+        const CM_JS_MODE_URL = window.HUGO_BASEURL + 'vendor/codemirror-javascript.js';
 
         function loadCodeMirrorJsMode(CM) {
           if (!CM || typeof CM.defineMode !== 'function') return Promise.resolve(false);
