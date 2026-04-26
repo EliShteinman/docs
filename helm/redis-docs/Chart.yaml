@@ -1,6 +1,24 @@
 apiVersion: v2
 name: redis-docs
-description: A Helm chart for deploying the Redis documentation site
+description: |
+  Air-gapped deployment of the Redis documentation site (nginx + static
+  Hugo build). Provides hierarchical control over external links via a
+  catalog + master kill-switch + per-family / per-link overrides, runtime
+  URL substitution for AI/RAG outputs, and optional Prometheus metrics
+  and CLI / Jupyter playground sidecars.
 type: application
 version: 0.12.0
 appVersion: "0f24bb8a2"
+kubeVersion: ">=1.26.0-0"
+keywords:
+  - redis
+  - documentation
+  - docs
+  - airgap
+  - air-gapped
+  - openshift
+  - nginx
+  - hugo
+maintainers:
+  - name: Eli Shteinman
+    email: 7198754@gmail.com
