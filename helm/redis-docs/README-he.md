@@ -40,30 +40,78 @@ nginx משמש גם כ-reverse proxy:
 
 ### הגדרות Runtime
 
-קובץ `configmap-runtime.yaml` מזריק קובץ JS לתוך nginx, המכיל הגדרות דינמיות:
-- `aiServices.litellm` — כתובת LiteLLM endpoint (במקום CloudFront חיצוני)
-- `aiServices.binder.url` — כתובת BinderHub / JupyterHub
-- `externalLinks` — שליטה על לינקים חיצוניים בדף הבית
+שני ConfigMaps מזריקים תצורת זמן-ריצה לתוך nginx:
+
+- **`configmap-runtime.yaml`** — מייצר `runtime-config.js` שנטען בכל עמוד. מכיל:
+  - `aiServices.litellm` — כתובת LiteLLM endpoint (במקום CloudFront חיצוני)
+  - `aiServices.binder.url` — כתובת BinderHub / JupyterHub
+  - `externalLinks` — `enabled`/`url` יעיל לכל לינק חיצוני בקטלוג
+- **`configmap.yaml`** — קובץ ה-`default.conf` של nginx, שמשתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה.
 
 ### לינקים חיצוניים (externalLinks)
 
-דף הבית מכיל 7 לינקים לשירותים חיצוניים שאינם חלק מאתר הדוקומנטציה:
+האתר מכיל ~87 לינקים חיצוניים פזורים בגוף עמוד הבית, בתפריט העליון (לוגו, ניווט שיווקי, תפריטי dropdown), ובפוטר התחתון. כמעט אף אחד מהם לא יעבוד בהתקנה airgap. ההגדרה היא היררכית בת חמש שכבות:
 
-| מזהה | ברירת מחדל | תיאור |
-|------|-----------|-------|
-| `sandbox` | `https://redis.io/try/sandbox/` | Redis Sandbox אינטראקטיבי |
-| `tutorials` | `https://redis.io/tutorials/` | טוטוריאלים (אתר חיצוני) |
-| `university` | `https://university.redis.io/academy` | Redis University |
-| `blog` | `https://redis.io/blog/` | בלוג (אתר חיצוני) |
-| `support` | `https://support.redislabs.com/hc/en-us` | פורטל תמיכה (Zendesk) |
-| `github` | `https://github.com/redis/docs/` | מאגר קוד ב-GitHub |
-| `chatbot` | `https://redis.io/chat` | צ'אטבוט AI |
+```
+externalLinks.enabled                    ← master kill-switch
+└── families
+    ├── home          (7 keys)
+    │   └── links: { sandbox, tutorials, university, blog, support, github, chatbot }
+    ├── header        (36 keys, 6 sub-families)
+    │   └── sub-families: { main-nav, cta, search,
+    │                       products-dropdown, resources-dropdown, mobile }
+    └── footer        (44 keys, 9 sub-families)
+        └── sub-families: { social, legal, solutions, industries, compare,
+                            company, community, cloud-partners, services }
+```
 
-כל לינק תומך ב:
-- **`enabled`** — `true` / `false` — הצגה או הסתרה של הלינק
-- **`url`** — דריסת הכתובת לשירות פנימי חלופי
+הקטלוג המלא (כל מפתח עם תיאור ו-URL מקורי) נשלח עם הצ'ארט בקובץ `files/external-links.yaml`. אין לערוך אותו עבור deployment ספציפי — לזה מיועד `values.yaml`.
 
-ברשת סגורה, ניתן להסתיר לינקים שלא נגישים או להפנות אותם לשירות פנימי מקביל.
+**סדר עדיפויות עבור `enabled`** (הגבוה דורס):
+
+1. `overrides.<key>.enabled` — override פר-לינק
+2. `families.<fam>.sub-families.<sub>.enabled` — kill-switch של תת-משפחה
+3. `families.<fam>.enabled` — kill-switch של משפחה
+4. `externalLinks.enabled` — master kill-switch
+5. catalog default — תמיד `true`
+
+עבור `url` הסדר פשוט יותר: ברירת מחדל מהקטלוג, אלא אם `overrides.<key>.url` דורס.
+
+**ברירת המחדל של הצ'ארט היא `enabled: false`** — כל הלינקים החיצוניים מוסתרים מתוך הקופסה. הפעלה מחדש בכל רמה מתאימה ל-deployment:
+
+```yaml
+externalLinks:
+  enabled: false             # master kill-switch (default)
+  families:
+    home:
+      enabled: true          # כל הלינקים בעמוד הבית פעילים
+    header:
+      sub-families:
+        main-nav:
+          enabled: true      # רצועת ההדר: רק Redis-for-AI / Docs / Pricing
+  overrides:
+    tutorials:
+      enabled: true          # להפעיל לינק ספציפי
+    github:
+      enabled: true
+      url: "https://gitlab.internal.company.com/redis-docs"  # גם להחליף URL
+    nav-search:
+      enabled: false         # להשאיר מוסתר במפורש
+```
+
+שני הלוגואים (פינה שמאלית עליונה של ההדר ושל הפוטר) תמיד מקושרים ל-`/` (בית הדוקס המקומי) ואינם חלק מהקטלוג — הם מוצגים תמיד ולא ניתנים לקנפוג ל-deployment.
+
+### החלפת URL קנוני (`canonicalURL`)
+
+כש-Hugo בונה את פורמטי ה-AI / RAG (`.md`, `.json`), הוא מרחיב shortcodes פנימיים כמו `{{< relref "..." >}}` ו-`{{< image filename="..." >}}` ל-placeholder בצורת `__DOCS_BASE_URL__/<path>`. nginx מחליף את ה-placeholder בזמן ריצה כך שצרכנים שצורכים את ה-Markdown ללא הקשר של HTML עדיין רואים URLs מלאים:
+
+```yaml
+canonicalURL: "https://docs.intranet.example.com"
+```
+
+כש-`canonicalURL` ריק (ברירת מחדל), nginx משתמש ב-`$scheme://$http_host` של הבקשה — אותה image שנפרסת ב-hostnames פנימיים מרובים מקבלת URLs לכל host בנפרד.
+
+ה-`sub_filter` מוגבל ל-`.md` / `.json` בלבד. תגובות HTML / CSS / JS לעולם לא נכתבות מחדש, וה-placeholder מוטמע רק בארבע נקודות מוגדרות היטב בתוך `process-markdown-content.html` (shortcodes של relref + image), כך שכתובות חיצוניות שמחבר כתב ידנית ב-Markdown נשארות ללא שינוי.
 
 ## Docker images
 
@@ -172,21 +220,20 @@ route:
 #     -----END CERTIFICATE-----
 
 # --- לינקים חיצוניים ---
+# --- Canonical public URL (משמש את nginx sub_filter ב-.md/.json) ---
+# canonicalURL: "https://docs.intranet.company.com"   # ריק = auto-detect מהבקשה
+
+# --- External links ---
+# Master kill-switch מופעל. הפעלה מחדש של לינקים ספציפיים דרך overrides.
 externalLinks:
-  github:
-    url: "https://gitlab.internal.company.com/infra/redis-docs"
-  support:
-    url: "https://support.internal.company.com"
-  sandbox:
-    enabled: false
-  tutorials:
-    enabled: false
-  university:
-    enabled: false
-  blog:
-    enabled: false
-  chatbot:
-    enabled: false
+  enabled: false
+  overrides:
+    github:
+      enabled: true
+      url: "https://gitlab.internal.company.com/infra/redis-docs"
+    support:
+      enabled: true
+      url: "https://support.internal.company.com"
 ```
 
 > `global.registry` דורס את ה-registry לכל התמונות. דריסת `image.name` ו-`image.tag` מאפשרת שליטה מלאה על כל תמונה.
@@ -487,20 +534,12 @@ kubectl port-forward svc/redis-docs 8080:80
 | `aiServices.litellm.model` | `gpt-3.5-turbo` | שם המודל לשליחה |
 | `aiServices.litellm.apiKey` | `""` | API key צד שרת (דילוג על שאלת המשתמש) |
 | `aiServices.binder.url` | `https://redis.io/binder/` | URL ל-BinderHub / JupyterHub |
-| `externalLinks.sandbox.enabled` | `true` | הצגת לינק ל-Redis Sandbox |
-| `externalLinks.sandbox.url` | `https://redis.io/try/sandbox/` | כתובת Redis Sandbox |
-| `externalLinks.tutorials.enabled` | `true` | הצגת לינק לטוטוריאלים |
-| `externalLinks.tutorials.url` | `https://redis.io/tutorials/` | כתובת טוטוריאלים |
-| `externalLinks.university.enabled` | `true` | הצגת לינק ל-Redis University |
-| `externalLinks.university.url` | `https://university.redis.io/academy` | כתובת Redis University |
-| `externalLinks.blog.enabled` | `true` | הצגת לינק לבלוג |
-| `externalLinks.blog.url` | `https://redis.io/blog/` | כתובת הבלוג |
-| `externalLinks.support.enabled` | `true` | הצגת לינק לפורטל תמיכה |
-| `externalLinks.support.url` | `https://support.redislabs.com/hc/en-us` | כתובת פורטל תמיכה |
-| `externalLinks.github.enabled` | `true` | הצגת לינק ל-GitHub |
-| `externalLinks.github.url` | `https://github.com/redis/docs/` | כתובת מאגר GitHub |
-| `externalLinks.chatbot.enabled` | `true` | הצגת לינק לצ'אטבוט |
-| `externalLinks.chatbot.url` | `https://redis.io/chat` | כתובת צ'אטבוט AI |
+| `canonicalURL` | `""` | URL ציבורי של ה-deployment, משמש את nginx sub_filter להחלפת `__DOCS_BASE_URL__` ב-`.md` / `.json`. ריק → auto-detect מ-`$http_host`. |
+| `externalLinks.enabled` | `false` | Master kill-switch לכל הלינקים החיצוניים בקטלוג. ברירת מחדל מסתירה הכל (airgap-first). |
+| `externalLinks.families.<fam>.enabled` | unset | Kill-switch ברמת משפחה (למשל `home`, `header`, `footer`). הגדר `true` כדי להפעיל משפחה שלמה. |
+| `externalLinks.families.<fam>.sub-families.<sub>.enabled` | unset | Kill-switch ברמת תת-משפחה (למשל `header.main-nav`, `footer.legal`). |
+| `externalLinks.overrides.<key>.enabled` | unset | Override פר-לינק. דורס משפחה / תת-משפחה / master. |
+| `externalLinks.overrides.<key>.url` | unset | החלפת URL של לינק יחיד (בדרך כלל למראה פנימי). |
 | `nodeSelector` | `{}` | node selector לתזמון פודים |
 | `tolerations` | `[]` | tolerations לתזמון פודים |
 | `affinity` | `{}` | affinity rules לתזמון פודים |

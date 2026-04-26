@@ -40,30 +40,95 @@ All containers in this pod communicate over `localhost`.
 
 ### Runtime Configuration
 
-The `configmap-runtime.yaml` file injects a JS file into nginx, containing dynamic settings:
-- `aiServices.litellm` — LiteLLM endpoint URL (instead of external CloudFront)
-- `aiServices.binder.url` — BinderHub / JupyterHub URL
-- `externalLinks` — control over external links on the homepage
+Two ConfigMaps inject runtime configuration into nginx:
+
+- **`configmap-runtime.yaml`** — produces `runtime-config.js`, loaded by every page. Holds:
+  - `aiServices.litellm` — LiteLLM endpoint URL (replaces external CloudFront)
+  - `aiServices.binder.url` — BinderHub / JupyterHub URL
+  - `externalLinks` — the resolved enabled/url for every catalogued external link
+- **`configmap.yaml`** — the nginx `default.conf`, which uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time.
 
 ### External Links (externalLinks)
 
-The homepage contains 7 links to external services that are not part of the documentation site:
+The site contains ~87 external links scattered across the home-page body, the
+top header (logo, marketing nav, dropdown menus), and the bottom footer.
+Almost none of them work in an air-gapped install. Configuration is driven
+by a five-layer hierarchy:
 
-| ID | Default | Description |
-|------|-----------|-------|
-| `sandbox` | `https://redis.io/try/sandbox/` | Interactive Redis Sandbox |
-| `tutorials` | `https://redis.io/tutorials/` | Tutorials (external site) |
-| `university` | `https://university.redis.io/academy` | Redis University |
-| `blog` | `https://redis.io/blog/` | Blog (external site) |
-| `support` | `https://support.redislabs.com/hc/en-us` | Support portal (Zendesk) |
-| `github` | `https://github.com/redis/docs/` | GitHub repository |
-| `chatbot` | `https://redis.io/chat` | AI chatbot |
+```
+externalLinks.enabled                    ← master kill-switch
+└── families
+    ├── home          (7 keys)
+    │   └── links: { sandbox, tutorials, university, blog, support, github, chatbot }
+    ├── header        (36 keys, 6 sub-families)
+    │   └── sub-families: { main-nav, cta, search,
+    │                       products-dropdown, resources-dropdown, mobile }
+    └── footer        (44 keys, 9 sub-families)
+        └── sub-families: { social, legal, solutions, industries, compare,
+                            company, community, cloud-partners, services }
+```
 
-Each link supports:
-- **`enabled`** — `true` / `false` — show or hide the link
-- **`url`** — override the URL with an alternative internal service
+The full catalog (every key with its description and upstream URL) ships
+inside the chart at `files/external-links.yaml`. Do not edit it for
+per-deployment customization — that is what `values.yaml` is for.
 
-In air-gapped networks, you can hide inaccessible links or redirect them to an equivalent internal service.
+**Precedence for `enabled`** (highest wins):
+
+1. `overrides.<key>.enabled` — per-link override
+2. `families.<fam>.sub-families.<sub>.enabled` — sub-family kill-switch
+3. `families.<fam>.enabled` — family kill-switch
+4. `externalLinks.enabled` — master kill-switch
+5. catalog default — always `true`
+
+`url` resolution is simpler: catalog default unless `overrides.<key>.url` replaces it.
+
+**The chart default is `enabled: false`** — every external link is hidden out of
+the box. Opt back in at whichever level fits the deployment:
+
+```yaml
+externalLinks:
+  enabled: false             # master kill-switch (default)
+  families:
+    home:
+      enabled: true          # all home-page links back on
+    header:
+      sub-families:
+        main-nav:
+          enabled: true      # header strip: only Redis-for-AI / Docs / Pricing
+  overrides:
+    tutorials:
+      enabled: true          # opt one specific link back in
+    github:
+      enabled: true
+      url: "https://gitlab.internal.company.com/redis-docs"  # also rewrite URL
+    nav-search:
+      enabled: false         # explicitly keep a link hidden
+```
+
+The two logos (top-left of the header, top-left of the footer) always link
+to `/` (the local docs home) and are not part of the catalog — they are
+shown unconditionally and not configurable per deployment.
+
+### Canonical URL substitution (`canonicalURL`)
+
+When Hugo builds the AI / RAG output formats (`.md`, `.json`) it expands
+internal shortcodes like `{{< relref "..." >}}` and `{{< image filename="..." >}}`
+into a placeholder, `__DOCS_BASE_URL__/<path>`. nginx substitutes the
+placeholder at response time so consumers that ingest the markdown without
+HTML context still see fully-qualified URLs:
+
+```yaml
+canonicalURL: "https://docs.intranet.example.com"
+```
+
+When `canonicalURL` is empty (default), nginx falls back to
+`$scheme://$http_host` from the request — the same image deployed at
+multiple internal hostnames yields per-host URLs.
+
+The `sub_filter` is scoped to `.md` / `.json` only. HTML / CSS / JS responses
+are never rewritten, and the placeholder is only emitted at four well-defined
+points inside `process-markdown-content.html` (relref + image shortcodes),
+so external URLs an author wrote by hand in markdown remain untouched.
 
 ## Docker images
 
@@ -171,22 +236,20 @@ route:
 #     ... (optional — CA certificate)
 #     -----END CERTIFICATE-----
 
+# --- Canonical public URL (used by nginx sub_filter for .md/.json) ---
+# canonicalURL: "https://docs.intranet.company.com"   # leave empty to auto-detect from request
+
 # --- External links ---
+# Master kill-switch is on by default. Re-enable specific links via overrides.
 externalLinks:
-  github:
-    url: "https://gitlab.internal.company.com/infra/redis-docs"
-  support:
-    url: "https://support.internal.company.com"
-  sandbox:
-    enabled: false
-  tutorials:
-    enabled: false
-  university:
-    enabled: false
-  blog:
-    enabled: false
-  chatbot:
-    enabled: false
+  enabled: false
+  overrides:
+    github:
+      enabled: true
+      url: "https://gitlab.internal.company.com/infra/redis-docs"
+    support:
+      enabled: true
+      url: "https://support.internal.company.com"
 ```
 
 > `global.registry` overrides the registry for all images. Overriding `image.name` and `image.tag` provides full control over each image.
@@ -485,20 +548,12 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `aiServices.litellm.model` | `gpt-3.5-turbo` | Model name to send |
 | `aiServices.litellm.apiKey` | `""` | Server-side API key (skips user prompt) |
 | `aiServices.binder.url` | `https://redis.io/binder/` | BinderHub / JupyterHub URL |
-| `externalLinks.sandbox.enabled` | `true` | Show Redis Sandbox link |
-| `externalLinks.sandbox.url` | `https://redis.io/try/sandbox/` | Redis Sandbox URL |
-| `externalLinks.tutorials.enabled` | `true` | Show tutorials link |
-| `externalLinks.tutorials.url` | `https://redis.io/tutorials/` | Tutorials URL |
-| `externalLinks.university.enabled` | `true` | Show Redis University link |
-| `externalLinks.university.url` | `https://university.redis.io/academy` | Redis University URL |
-| `externalLinks.blog.enabled` | `true` | Show blog link |
-| `externalLinks.blog.url` | `https://redis.io/blog/` | Blog URL |
-| `externalLinks.support.enabled` | `true` | Show support portal link |
-| `externalLinks.support.url` | `https://support.redislabs.com/hc/en-us` | Support portal URL |
-| `externalLinks.github.enabled` | `true` | Show GitHub link |
-| `externalLinks.github.url` | `https://github.com/redis/docs/` | GitHub repository URL |
-| `externalLinks.chatbot.enabled` | `true` | Show chatbot link |
-| `externalLinks.chatbot.url` | `https://redis.io/chat` | AI chatbot URL |
+| `canonicalURL` | `""` | Public URL of this deployment, used by nginx sub_filter to replace `__DOCS_BASE_URL__` in `.md` / `.json`. Empty → auto-detect from `$http_host`. |
+| `externalLinks.enabled` | `false` | Master kill-switch for every catalogued external link. Default hides everything (airgap-first). |
+| `externalLinks.families.<fam>.enabled` | unset | Per-family kill-switch (e.g. `home`, `header`, `footer`). Set `true` to opt the whole family back in. |
+| `externalLinks.families.<fam>.sub-families.<sub>.enabled` | unset | Per-sub-family kill-switch (e.g. `header.main-nav`, `footer.legal`). |
+| `externalLinks.overrides.<key>.enabled` | unset | Per-link override. Wins over family / sub-family / master switches. |
+| `externalLinks.overrides.<key>.url` | unset | Replace the upstream URL for a single link (typically with an internal mirror). |
 | `nodeSelector` | `{}` | Node selector for pod scheduling |
 | `tolerations` | `[]` | Tolerations for pod scheduling |
 | `affinity` | `{}` | Affinity rules for pod scheduling |
