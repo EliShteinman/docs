@@ -40,6 +40,10 @@ COPY . .
 ENV PATH="/venv/bin:$PATH"
 
 RUN sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
+# Hugo per-partial timeout: upstream sets 75s, which fits CI but not multi-platform
+# Docker builds where dynacache is constantly evicted under memory pressure and
+# QEMU-emulated amd64 plus parallel arm64 share a single host's resources.
+RUN sed -i 's/timeout="75"/timeout="600"/' config.toml
 
 RUN find content/operate/kubernetes -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > kubernetes-versions && \
     find content/operate/rs -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > rs-versions && \
