@@ -9,6 +9,7 @@ description: |
 type: application
 version: 0.12.0
 appVersion: "0f24bb8a2"
+icon: file://./icon.svg
 keywords:
   - redis
   - documentation
