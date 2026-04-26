@@ -134,7 +134,7 @@ canonicalURL: "https://docs.intranet.example.com"
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-0.12.0.tgz
+helm install redis-docs redis-docs-1.0.0.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -142,7 +142,7 @@ helm install redis-docs redis-docs-0.12.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-0.12.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-1.0.0.tgz -f my-values.yaml
 ```
 
 להלן דוגמה לתרחיש פריסה טיפוסי.
@@ -172,7 +172,7 @@ imagePullSecrets:
 # --- תמונה ראשית (דריסת תג ספציפי) ---
 image:
   name: redis-docs
-  tag: "0f24bb8a2-unprivileged"
+  tag: "1c0047d01-unprivileged"
 
 # --- מטריקות (דריסת תמונה ותג) ---
 metrics:
@@ -354,13 +354,13 @@ docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-0.12.0.tgz
+# ייצור: redis-docs-1.0.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-0.12.0.tgz`
+- `redis-docs-1.0.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
@@ -400,13 +400,13 @@ docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-0.12.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-1.0.0.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-0.12.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-1.0.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 

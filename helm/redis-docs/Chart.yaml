@@ -7,8 +7,8 @@ description: |
   substitution for AI/RAG outputs, and optional Prometheus metrics
   and CLI / Jupyter playground sidecars.
 type: application
-version: 0.12.0
-appVersion: "0f24bb8a2"
+version: 1.0.0
+appVersion: "1c0047d01"
 icon: file://./icon.svg
 keywords:
   - redis
