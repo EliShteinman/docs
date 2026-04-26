@@ -1,5 +1,18 @@
 replicaCount: 1
 
+# -- Canonical public URL of this deployment (e.g. "https://docs.intranet.example.com").
+# Used at HTTP response time by nginx sub_filter to replace `__DOCS_BASE_URL__`
+# placeholders inside .md and .json outputs, so AI / RAG consumers that ingest
+# the markdown directly receive fully-qualified links.
+#
+# Leave empty (default) to auto-detect from the request's Host header — useful
+# when the same image is exposed at multiple internal hostnames; each request
+# gets links for the host it came in through.
+#
+# Set to a fixed URL when you want every consumer to see the same canonical
+# host regardless of how the request reached the pod.
+canonicalURL: ""
+
 global:
   registry: ""
 

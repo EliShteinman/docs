@@ -217,3 +217,40 @@ externalLinks:
 ### איך זה מגיע לדפדפן
 
 `templates/configmap-runtime.yaml` הולך על העץ ההיררכי ב-`helm install/upgrade`, מחשב `enabled` יעיל לכל מפתח לפי סדר העדיפויות, ופולט מפה שטוחה ל-`window.RUNTIME_CONFIG.externalLinks`. ה-JS המשותף ב-`layouts/partials/external-links.html` מטפל בכל אלמנט שמסומן ב-`data-external-link="<key>"` (מסתיר אם `enabled === false`, מחליף `href` אם יש `url`).
+
+## הזרקת URL קנוני בזמן ריצה (`canonicalURL`)
+
+### הבעיה
+כש-Hugo מייצר את גרסאות ה-`.md` וה-`.json` של עמודים (שמיועדות לצריכת AI/RAG), ה-shortcodes הפנימיים `{{< relref "..." >}}` ו-`{{< image filename="..." >}}` חייבים להפוך ל-URLs מלאים — אחרת LLM שמקבל את התוכן בלי הקשר של הדפדפן לא יודע מה ה-domain. אבל hardcoding של domain ספציפי (כמו `https://redis.io/docs/latest/`) פוגע בגמישות, ושינוי ל-domain פנימי דורש build נפרד לכל deployment.
+
+### הפתרון
+**Hugo כותב placeholder, nginx מחליף בזמן ריצה.**
+
+1. **Build time** (`layouts/partials/process-markdown-content.html`): כל `{{< relref >}}` ו-`{{< image >}}` מומר ל-`__DOCS_BASE_URL__/<path>`. הקבצים נשמרים סטטית עם ה-placeholder.
+2. **Helm value** (`values.yaml`): שדה `canonicalURL` (ברירת מחדל ריק).
+3. **Runtime** (`templates/configmap.yaml` של ה-Helm chart): `nginx sub_filter` בלוקיישן של `.md`/`.json` מחליף את ה-placeholder. הערך:
+   - אם `canonicalURL` הוגדר ב-`values.yaml` → תמיד אותו URL
+   - אם ריק → `$scheme://$http_host` של הבקשה (auto-detect — אותה image על מספר דומיינים)
+
+### דוגמה
+
+```yaml
+# values.yaml
+canonicalURL: "https://docs.intranet.example.com"
+```
+
+המשתמש מבקש `GET /develop/foo/index.md`. הקובץ על הדיסק מכיל:
+```markdown
+ראו [את העמוד הבא](__DOCS_BASE_URL__/develop/bar) למידע נוסף
+```
+
+nginx מחליף ושולח:
+```markdown
+ראו [את העמוד הבא](https://docs.intranet.example.com/develop/bar) למידע נוסף
+```
+
+### גבולות
+- ה-`sub_filter` פעיל **רק על `.md` ו-`.json`** — לא על HTML/CSS/JS. אין סיכון להחלפה לא צפויה ב-content אחר.
+- `gzip_static` כבוי בלוקיישן הזה (כי `sub_filter` לא יכול לפעול על תוכן מכווץ); דחיסה דינמית פעילה במקום זאת.
+- ה-`__DOCS_BASE_URL__` מוטמע **רק על ידי 4 השורות** ב-`process-markdown-content.html`, וכל אחת מהן מטפלת ב-shortcode פנימי שמצביע על תוכן באתר. כתובות חיצוניות שמשתמש כתב ידנית ב-MD לא נוגעים בהן.
+- לוגו ה-header וה-footer מצביעים תמיד ל-`/` — לא תלויים ב-`canonicalURL`.

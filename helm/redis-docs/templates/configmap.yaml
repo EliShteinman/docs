@@ -51,6 +51,7 @@ data:
         gzip_min_length 256;
         gzip_types
             text/plain
+            text/markdown
             text/css
             text/xml
             text/javascript
@@ -94,6 +95,32 @@ data:
         }
 
         location ~* \.html$ {
+            expires 1h;
+            add_header Cache-Control "public, must-revalidate";
+        }
+
+        # AI / RAG outputs (.md, .json): substitute the __DOCS_BASE_URL__
+        # placeholder produced at build time by process-markdown-content.html
+        # with the canonical URL of this deployment, so consumers that ingest
+        # the markdown without HTML context still see fully-qualified links.
+        #
+        # gzip_static is disabled for these locations because sub_filter cannot
+        # operate on already-compressed bodies; dynamic `gzip on` (with
+        # text/markdown + application/json in gzip_types) re-compresses the
+        # modified response on the way out.
+        location ~* \.(md|json)$ {
+            gzip_static off;
+            types {
+                text/markdown md;
+                application/json json;
+            }
+            {{- if .Values.canonicalURL }}
+            sub_filter '__DOCS_BASE_URL__' '{{ .Values.canonicalURL | trimSuffix "/" }}';
+            {{- else }}
+            sub_filter '__DOCS_BASE_URL__' '$scheme://$http_host';
+            {{- end }}
+            sub_filter_types text/markdown application/json;
+            sub_filter_once off;
             expires 1h;
             add_header Cache-Control "public, must-revalidate";
         }
