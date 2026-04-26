@@ -1,33 +1,89 @@
 {{- /*
-  Build the effective external-links map by composing three layers:
-    1. Defaults from files/external-links.yaml (all `enabled: true` upstream)
-    2. Global kill-switch: .Values.externalLinks.enabled — if false, force every
-       link's enabled to false (URL is preserved so an override can re-enable).
-    3. Per-link overrides: .Values.externalLinks.overrides.<key> — wins over
-       both layers above. May set `enabled`, `url`, or both.
+  Resolve the effective external-links map by walking the hierarchical
+  catalog (helm/redis-docs/files/external-links.yaml) and composing five
+  layers of configuration:
+
+  Precedence for `enabled` (highest wins):
+    1. .Values.externalLinks.overrides.<key>.enabled
+    2. .Values.externalLinks.families.<fam>.sub-families.<sub>.enabled
+    3. .Values.externalLinks.families.<fam>.enabled
+    4. .Values.externalLinks.enabled                 (master kill-switch)
+    5. catalog default                               (per-link `enabled: true`)
+
+  Resolution for `url`:
+    1. .Values.externalLinks.overrides.<key>.url
+    2. catalog default
+
+  An explicit values entry — even `false` — wins over lower layers. A missing
+  values entry inherits from the next layer down. Per-link override wins
+  absolutely, including the ability to re-enable a link inside a disabled
+  sub-family or family.
 */ -}}
-{{- $defaults := .Files.Get "files/external-links.yaml" | fromYaml -}}
-{{- $globalEnabled := .Values.externalLinks.enabled -}}
+{{- $catalog := .Files.Get "files/external-links.yaml" | fromYaml -}}
+{{- $globalSet := hasKey .Values.externalLinks "enabled" -}}
+{{- $global := .Values.externalLinks.enabled -}}
+{{- $valFamilies := .Values.externalLinks.families | default dict -}}
 {{- $overrides := .Values.externalLinks.overrides | default dict -}}
+
 {{- $effective := dict -}}
-{{- range $key, $entry := $defaults.links -}}
-  {{- $resolved := dict "enabled" $entry.enabled -}}
-  {{- if hasKey $entry "url" -}}
-    {{- $_ := set $resolved "url" $entry.url -}}
-  {{- end -}}
-  {{- if eq $globalEnabled false -}}
-    {{- $_ := set $resolved "enabled" false -}}
-  {{- end -}}
-  {{- if hasKey $overrides $key -}}
-    {{- $override := index $overrides $key -}}
-    {{- if hasKey $override "enabled" -}}
-      {{- $_ := set $resolved "enabled" $override.enabled -}}
+{{- range $famName, $famDef := $catalog.families -}}
+  {{- $valFam := index $valFamilies $famName | default dict -}}
+  {{- $famSet := hasKey $valFam "enabled" -}}
+  {{- $famVal := false -}}
+  {{- if $famSet }}{{- $famVal = $valFam.enabled -}}{{- end -}}
+
+  {{- /* Direct links under the family (no sub-family) */ -}}
+  {{- if hasKey $famDef "links" -}}
+    {{- range $key, $entry := $famDef.links -}}
+      {{- $resolved := dict -}}
+      {{- $enabled := true -}}
+      {{- if hasKey $entry "enabled" }}{{- $enabled = $entry.enabled -}}{{- end -}}
+      {{- if and $globalSet (eq $global false) }}{{- $enabled = false -}}{{- end -}}
+      {{- if $famSet }}{{- $enabled = $famVal -}}{{- end -}}
+      {{- if hasKey $overrides $key -}}
+        {{- $ov := index $overrides $key -}}
+        {{- if hasKey $ov "enabled" }}{{- $enabled = $ov.enabled -}}{{- end -}}
+      {{- end -}}
+      {{- $_ := set $resolved "enabled" $enabled -}}
+      {{- if hasKey $entry "url" }}{{- $_ := set $resolved "url" $entry.url -}}{{- end -}}
+      {{- if hasKey $overrides $key -}}
+        {{- $ov := index $overrides $key -}}
+        {{- if hasKey $ov "url" }}{{- $_ := set $resolved "url" $ov.url -}}{{- end -}}
+      {{- end -}}
+      {{- $_ := set $effective $key $resolved -}}
     {{- end -}}
-    {{- if hasKey $override "url" -}}
-      {{- $_ := set $resolved "url" $override.url -}}
+  {{- end -}}
+
+  {{- /* Sub-families */ -}}
+  {{- if hasKey $famDef "sub-families" -}}
+    {{- $valSubFams := index $valFam "sub-families" | default dict -}}
+    {{- range $subName, $subDef := index $famDef "sub-families" -}}
+      {{- $valSub := index $valSubFams $subName | default dict -}}
+      {{- $subSet := hasKey $valSub "enabled" -}}
+      {{- $subVal := false -}}
+      {{- if $subSet }}{{- $subVal = $valSub.enabled -}}{{- end -}}
+
+      {{- range $key, $entry := $subDef.links -}}
+        {{- $resolved := dict -}}
+        {{- $enabled := true -}}
+        {{- if hasKey $entry "enabled" }}{{- $enabled = $entry.enabled -}}{{- end -}}
+        {{- if and $globalSet (eq $global false) }}{{- $enabled = false -}}{{- end -}}
+        {{- if $famSet }}{{- $enabled = $famVal -}}{{- end -}}
+        {{- if $subSet }}{{- $enabled = $subVal -}}{{- end -}}
+        {{- if hasKey $overrides $key -}}
+          {{- $ov := index $overrides $key -}}
+          {{- if hasKey $ov "enabled" }}{{- $enabled = $ov.enabled -}}{{- end -}}
+        {{- end -}}
+        {{- $_ := set $resolved "enabled" $enabled -}}
+        {{- if hasKey $entry "url" }}{{- $_ := set $resolved "url" $entry.url -}}{{- end -}}
+        {{- if hasKey $overrides $key -}}
+          {{- $ov := index $overrides $key -}}
+          {{- if hasKey $ov "url" }}{{- $_ := set $resolved "url" $ov.url -}}{{- end -}}
+        {{- end -}}
+        {{- $_ := set $effective $key $resolved -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
-  {{- $_ := set $effective $key $resolved -}}
 {{- end -}}
 apiVersion: v1
 kind: ConfigMap

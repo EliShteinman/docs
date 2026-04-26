@@ -114,52 +114,106 @@ docker run -p 80:80 a0533057932/redis-docs:latest
 
 ## ניהול לינקים חיצוניים
 
-האתר מכיל עשרות לינקים ל-`redis.io` — בדף הבית, בתפריט העליון, בתפריטי ה-dropdown ובפוטר. רוב הלינקים האלו לא יעבדו בפריסה airgap. הצ'ארט מספק מנגנון תלת-שכבתי לניהול שלהם:
+האתר מכיל עשרות לינקים ל-`redis.io` — בדף הבית, בתפריט העליון, בתפריטי ה-dropdown ובפוטר. רוב הלינקים האלו לא יעבדו בפריסה airgap. הצ'ארט מספק מנגנון **היררכי** של חמש שכבות לניהול שלהם.
 
-### שכבה 1 — `helm/redis-docs/files/external-links.yaml`
+### מבנה היררכי
 
-קובץ פנימי בצ'ארט שמכיל את **רשימת כל הלינקים** עם ה-URL המקורי שלהם, תיאור, ו-`enabled: true` כברירת מחדל. הקובץ הזה הוא reference upstream; אין לערוך אותו עבור deployment ספציפי.
+הקטלוג מסודר ב-**משפחות** וב-**תתי-משפחות**:
 
-מבנה כל ערך:
-
-```yaml
-links:
-  <key>:
-    description: "מה הלינק הזה מייצג ב-UI"
-    url: "https://redis.io/..."
-    enabled: true
+```
+externalLinks.enabled                    ← master kill-switch
+└── families
+    ├── home                              ← קישורים בגוף עמוד הבית
+    │   └── links: { sandbox, tutorials, ... }
+    └── header                            ← תפריט עליון
+        └── sub-families
+            ├── main-nav: { Redis for AI, Docs, Pricing }
+            ├── cta: { Login, Book a meeting, Try Redis }
+            ├── search: { search button }
+            ├── products-dropdown
+            ├── resources-dropdown
+            └── mobile: { hamburger + drawer }
 ```
 
-מפתחות מתחילים ב-`nav-` עבור התפריט העליון, או בלי תחילית עבור כפתורי דף הבית.
+(`footer` נוספת בקומיט בנפרד.)
 
-### שכבה 2 — Kill-switch גלובלי (ב-`values.yaml`)
+### שכבה 1 — קטלוג ברירות המחדל
+
+`helm/redis-docs/files/external-links.yaml` — רשימת **כל הלינקים** מאורגנים במשפחות ותתי-משפחות, עם ה-URL המקורי, תיאור, ו-`enabled: true` ברירת מחדל. אין לערוך אותו עבור deployment ספציפי.
+
+### שכבות 2-5 — קונפיג מ-`values.yaml`
+
+#### שכבה 2: Kill-switch גלובלי
 
 ```yaml
 externalLinks:
-  enabled: false   # מסתיר את כל הלינקים בבת אחת. ברירת מחדל: false (airgap-first)
+  enabled: false   # מסתיר את הכל בבת אחת
 ```
 
-### שכבה 3 — `overrides` פר-לינק (ב-`values.yaml`)
+#### שכבה 3: רמת משפחה
+
+```yaml
+externalLinks:
+  enabled: false
+  families:
+    home:
+      enabled: true   # להפעיל רק את משפחת home
+```
+
+#### שכבה 4: רמת תת-משפחה
+
+```yaml
+externalLinks:
+  enabled: false
+  families:
+    header:
+      sub-families:
+        main-nav:
+          enabled: true   # רק main-nav של header פעיל
+```
+
+#### שכבה 5: Override פר-לינק
 
 ```yaml
 externalLinks:
   enabled: false
   overrides:
     tutorials:
-      enabled: true                                       # להפעיל לינק יחיד גם כשה-kill-switch פעיל
+      enabled: true
     github:
       enabled: true
-      url: "https://gitlab.internal.company.com/redis-docs"  # להחליף URL
-    nav-search:
-      enabled: false                                       # להשאיר מוסתר במפורש
+      url: "https://gitlab.internal.company.com/redis-docs"
 ```
 
-### סדר עדיפויות (הגבוה דורס)
+### סדר עדיפויות עבור `enabled` (הגבוה דורס)
 
-1. `overrides.<key>.enabled` / `overrides.<key>.url`
-2. `externalLinks.enabled` (kill-switch)
-3. `files/external-links.yaml` (defaults)
+1. `overrides.<key>.enabled` — פר-לינק (תמיד הכי חזק)
+2. `families.<fam>.sub-families.<sub>.enabled` — תת-משפחה
+3. `families.<fam>.enabled` — משפחה
+4. `externalLinks.enabled` — global kill-switch
+5. catalog default — תמיד true
+
+הסדר עבור `url`: קטלוג ברירת מחדל, ואופציונלית `overrides.<key>.url`.
+
+### דוגמה: airgap עם re-enable היררכי
+
+```yaml
+externalLinks:
+  enabled: false              # global off
+  families:
+    home:
+      enabled: true           # אבל home דווקא כן יוצג
+    header:
+      sub-families:
+        main-nav:
+          enabled: true       # וגם main-nav של header
+  overrides:
+    nav-pricing:
+      enabled: false          # חוץ מ-Pricing שדווקא יוסתר
+    github:
+      url: "https://gitlab.internal/redis-docs"  # github עם URL פנימי
+```
 
 ### איך זה מגיע לדפדפן
 
-`templates/configmap-runtime.yaml` ממזג את שלוש השכבות בזמן `helm install/upgrade` ופולט `runtime-config.js` ל-ConfigMap. הקובץ נטען בראש כל דף (מ-`baseof.html`), מאכלס את `window.RUNTIME_CONFIG.externalLinks`, וה-JS המשותף ב-`layouts/partials/external-links.html` מחיל את ההגדרות על כל אלמנט שמסומן ב-`data-external-link="<key>"`.
+`templates/configmap-runtime.yaml` הולך על העץ ההיררכי ב-`helm install/upgrade`, מחשב `enabled` יעיל לכל מפתח לפי סדר העדיפויות, ופולט מפה שטוחה ל-`window.RUNTIME_CONFIG.externalLinks`. ה-JS המשותף ב-`layouts/partials/external-links.html` מטפל בכל אלמנט שמסומן ב-`data-external-link="<key>"` (מסתיר אם `enabled === false`, מחליף `href` אם יש `url`).

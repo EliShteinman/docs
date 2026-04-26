@@ -202,33 +202,56 @@ aiServices:
     url: "https://redis.io/binder/"
 
 # -- External links shown across the docs site (home page cards, top header
-#    nav, dropdown menus). The full default list with descriptions and
-#    upstream URLs lives in `files/external-links.yaml` inside the chart;
-#    this section is for per-deployment customization only.
+#    nav, dropdown menus, footer). The full hierarchical catalog lives in
+#    `files/external-links.yaml` inside the chart and groups every link into
+#    a family (e.g. `home`, `header`, `footer`) and optionally a sub-family
+#    (e.g. `header.cta`, `header.main-nav`). This section is for
+#    per-deployment customization only.
 #
-#    Precedence (highest wins):
-#      1. overrides.<key>           — re-enable / disable / replace URL of a single link
-#      2. enabled (global)          — kill-switch for the whole set
-#      3. files/external-links.yaml — chart defaults (all `enabled: true`)
+#    Precedence for `enabled` (highest wins):
+#      1. overrides.<key>.enabled                          — single link
+#      2. families.<fam>.sub-families.<sub>.enabled        — sub-family
+#      3. families.<fam>.enabled                           — family
+#      4. enabled (master kill-switch)                     — whole set
+#      5. catalog default in files/external-links.yaml     — always true
 #
-#    Default below is `enabled: false` (airgap-first): every external link is
-#    hidden unless you explicitly opt in, either by flipping `enabled: true`
-#    here or by re-enabling specific keys via `overrides`.
+#    `url` resolution: catalog default unless overrides.<key>.url is set.
+#
+#    Default below is `enabled: false` (airgap-first): every external link
+#    is hidden unless you explicitly opt back in at one of the layers above.
 externalLinks:
   enabled: false
+
+  # families: re-enable a whole family or sub-family at once. Leave a key
+  # unset to inherit from the layer above (master kill-switch).
+  families: {}
+  # Example: re-enable just the home-page links and only the main-nav strip
+  # of the top header (Redis for AI / Docs / Pricing), leave the rest off.
+  #   families:
+  #     home:
+  #       enabled: true
+  #     header:
+  #       sub-families:
+  #         main-nav:
+  #           enabled: true
+
+  # overrides: per-link tweaks. Wins over every layer above. Use to
+  # re-enable a specific link inside a disabled family, replace its URL
+  # with an internal mirror, or explicitly disable a link that would
+  # otherwise be on.
   overrides: {}
   # Examples:
   #   overrides:
   #     tutorials:
-  #       enabled: true                                        # opt this one back in
+  #       enabled: true
   #     github:
   #       enabled: true
-  #       url: "https://gitlab.internal.company.com/redis-docs"  # also replace the URL
+  #       url: "https://gitlab.internal.company.com/redis-docs"
   #     nav-search:
-  #       enabled: false                                       # explicitly keep hidden
+  #       enabled: false
   #
-  # See `helm/redis-docs/files/external-links.yaml` for the full list of keys
-  # and their default URLs.
+  # See `helm/redis-docs/files/external-links.yaml` for the full list of
+  # keys, their families/sub-families, and default URLs.
 
 podDisruptionBudget:
   enabled: true
