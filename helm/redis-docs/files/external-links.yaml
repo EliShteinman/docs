@@ -127,19 +127,123 @@ families:
             enabled: true
 
       products-dropdown:
-        description: "Products ▼ dropdown trigger and menu in the top header"
+        description: "Products ▼ dropdown — trigger button and menu contents (Cloud, Software, Open Source, LangCache, Insight, Data Integration, Clients, Downloads)"
         enabled: true
         links:
           nav-products-dropdown:
-            description: "The Products dropdown wrapper (hides the trigger and the menu together)"
+            description: "Wrapper for the dropdown trigger + menu. Hiding this hides the entire Products entry from the top bar at once."
+            enabled: true
+          nav-products-cloud:
+            description: "Products dropdown: 'Redis Cloud' link"
+            url: "https://redis.io/cloud/"
+            enabled: true
+          nav-products-software:
+            description: "Products dropdown: 'Redis Software' link"
+            url: "https://redis.io/software/"
+            enabled: true
+          nav-products-open-source:
+            description: "Products dropdown: 'Redis Open Source' link"
+            url: "https://redis.io/open-source/"
+            enabled: true
+          nav-products-langcache:
+            description: "Products dropdown — Tools section: 'Redis LangCache'"
+            url: "https://redis.io/langcache/"
+            enabled: true
+          nav-products-insight:
+            description: "Products dropdown — Tools section: 'Redis Insight'"
+            url: "https://redis.io/insight/"
+            enabled: true
+          nav-products-data-integration:
+            description: "Products dropdown — Tools section: 'Redis Data Integration'"
+            url: "https://redis.io/data-integration/"
+            enabled: true
+          nav-products-clients:
+            description: "Products dropdown — Tools section: 'Clients & Connectors'"
+            url: "https://redis.io/clients/"
+            enabled: true
+          nav-products-downloads:
+            description: "Products dropdown — Get Redis CTA: 'Downloads' button"
+            url: "https://redis.io/downloads/"
             enabled: true
 
       resources-dropdown:
-        description: "Resources ▼ dropdown trigger and menu in the top header"
+        description: "Resources ▼ dropdown — trigger button and menu contents (Connect, Learn, Latest sections plus the Developer Hub CTA)"
         enabled: true
         links:
           nav-resources-dropdown:
-            description: "The Resources dropdown wrapper (hides the trigger and the menu together)"
+            description: "Wrapper for the dropdown trigger + menu. Hiding this hides the entire Resources entry from the top bar at once."
+            enabled: true
+          nav-resources-customers:
+            description: "Resources dropdown — Connect section: 'Customer Stories'"
+            url: "https://redis.io/customers/"
+            enabled: true
+          nav-resources-partners:
+            description: "Resources dropdown — Connect section: 'Partners'"
+            url: "https://redis.io/partners/"
+            enabled: true
+          nav-resources-support:
+            description: "Resources dropdown — Connect section: 'Support'"
+            url: "https://redis.io/support/"
+            enabled: true
+          nav-resources-community:
+            description: "Resources dropdown — Connect section: 'Community'"
+            url: "https://redis.io/community/"
+            enabled: true
+          nav-resources-events:
+            description: "Resources dropdown — Connect section: 'Events & Webinars'"
+            url: "https://redis.io/events/"
+            enabled: true
+          nav-resources-professional-services:
+            description: "Resources dropdown — Connect section: 'Professional Services'"
+            url: "https://redis.io/services/professional-services/"
+            enabled: true
+          nav-resources-tutorials:
+            description: "Resources dropdown — Learn section: 'Tutorials' (separate from the home-page 'tutorials' card so each can be toggled independently)"
+            url: "https://redis.io/tutorials/"
+            enabled: true
+          nav-resources-quick-starts:
+            description: "Resources dropdown — Learn section: 'Quick starts'"
+            url: "https://redis.io/docs/get-started/"
+            enabled: true
+          nav-resources-commands:
+            description: "Resources dropdown — Learn section: 'Commands'"
+            url: "https://redis.io/docs/latest/commands/"
+            enabled: true
+          nav-resources-university:
+            description: "Resources dropdown — Learn section: 'University' (separate from the home-page 'university' card)"
+            url: "https://university.redis.io/academy"
+            enabled: true
+          nav-resources-knowledge-base:
+            description: "Resources dropdown — Learn section: 'Knowledge Base'"
+            url: "https://support.redislabs.com"
+            enabled: true
+          nav-resources-resource-center:
+            description: "Resources dropdown — Learn section: 'Resource Center'"
+            url: "https://redis.io/resources/"
+            enabled: true
+          nav-resources-blog:
+            description: "Resources dropdown — Learn section: 'Blog' (separate from the home-page 'blog' card)"
+            url: "https://redis.io/blog/"
+            enabled: true
+          nav-resources-demo-center:
+            description: "Resources dropdown — Learn section: 'Demo Center'"
+            url: "https://redis.io/demo-center/"
+            enabled: true
+          nav-resources-developer-hub:
+            description: "Resources dropdown — 'Developer Hub' link in Learn section AND the bottom CTA 'Visit our Developer Hub' (same URL, single key controls both)"
+            url: "https://redis.io/dev/"
+            enabled: true
+          nav-resources-faqs:
+            description: "Resources dropdown — Learn section: 'FAQs'"
+            url: "https://redis.io/kb/"
+            enabled: true
+          nav-resources-releases:
+            description: "Resources dropdown — Latest section: 'Releases'"
+            url: "https://redis.io/new/"
+            enabled: true
+          nav-resources-news:
+            description: "Resources dropdown — Latest section: 'News & Updates'"
+            url: "https://redis.io/company/news/"
             enabled: true
 
       mobile:
