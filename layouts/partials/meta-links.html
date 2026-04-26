@@ -13,7 +13,7 @@
 {{ $stripped_filename := replaceRE `(_index.md)$|(index.md)$|(.md)$` "" $gh_file | lower }}
 
 {{ $editURL := printf "%s/edit/%s/content/%s%s" $gh_repo $gh_branch $gh_path $gh_file }}
-{{ $issuesURL := printf "%s/issues/new?title=Feedback: %s&body=Page https://redis.io/docs/latest/%s%s" $gh_repo (safeURL $.Title ) $gh_path $stripped_filename }}
+{{ $issuesURL := printf "%s/issues/new?title=Feedback: %s&body=Page %s" $gh_repo (safeURL $.Title ) (safeURL .Permalink) }}
 
 {{/* Get the markdown output format URL and generate a proper filename */}}
 {{ $markdownURL := "" }}
