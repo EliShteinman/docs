@@ -58,18 +58,14 @@ metrics:
   route:
     enabled: true
 
+# External links — kill-switch is on by default; selectively re-enable a few
+# items pointing at internal mirrors. Every other link stays hidden.
 externalLinks:
-  github:
-    url: "https://gitlab.internal.company.com/infra/redis-docs"
-  support:
-    url: "https://support.internal.company.com"
-  sandbox:
-    enabled: false
-  tutorials:
-    enabled: false
-  university:
-    enabled: false
-  blog:
-    enabled: false
-  chatbot:
-    enabled: false
+  enabled: false
+  overrides:
+    github:
+      enabled: true
+      url: "https://gitlab.internal.company.com/infra/redis-docs"
+    support:
+      enabled: true
+      url: "https://support.internal.company.com"
