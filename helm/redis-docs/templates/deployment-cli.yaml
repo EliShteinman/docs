@@ -70,6 +70,9 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.cli.redis.resources | nindent 12 }}
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
         {{- if .Values.cli.jupyter.enabled }}
         - name: jupyter
           image: {{ include "redis-docs.cliJupyterImage" . }}
@@ -113,9 +116,11 @@ spec:
           securityContext:
             {{- toYaml .Values.cli.jupyter.securityContext | nindent 12 }}
         {{- end }}
-      {{- if .Values.cli.jupyter.enabled }}
       volumes:
+        - name: redis-data
+          emptyDir: {}
+        {{- if .Values.cli.jupyter.enabled }}
         - name: jupyter-home
           emptyDir: {}
-      {{- end }}
+        {{- end }}
 {{- end }}
