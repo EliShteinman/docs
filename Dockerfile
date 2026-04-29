@@ -45,66 +45,16 @@ RUN sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
 # QEMU-emulated amd64 plus parallel arm64 share a single host's resources.
 RUN sed -i 's/timeout="75"/timeout="600"/' config.toml
 
-RUN find content/operate/kubernetes -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > kubernetes-versions && \
-    find content/operate/rs -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > rs-versions && \
-    find content/integrate/redis-data-integration -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > rdi-versions && \
-    find content/develop/ai/redisvl -maxdepth 1 -type d -regex '.*[0-9]' -printf '%f\n' | sort > redisvl-versions
-
-# Air-gap nav alignment: applied at build time only so the source tree stays identical
-# to upstream redis/docs (no merge conflicts on `git pull`).
-#  1. Relax the version-selector URL regex in scripts.html so the dropdown shows on
-#     any baseURL — upstream regex requires `/docs/latest/` or `/docs/staging/`.
-#  2. Inject `hidden: true` into version-directory `_index.md` files so they stop
-#     appearing as standalone nav items. Uses upstream's existing `Params.hidden`
-#     filter (`docs-nav.html` line 6).
-RUN python3 <<'PYEOF'
-import re, glob, os, pathlib
-
-scripts_path = pathlib.Path("layouts/partials/scripts.html")
-text = scripts_path.read_text()
-text, n_op = re.subn(
-    r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/operate/(\w+)/\.\*'\)",
-    r"new RegExp('/operate/\1/')",
-    text,
-)
-text, n_dev = re.subn(
-    r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
-    r"new RegExp('/develop/ai/\1/')",
-    text,
-)
-scripts_path.write_text(text)
-assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
-
-VERSION_RE = re.compile(r"^\d+\.\d+(\.\d+)?$")
-patched = 0
-for pattern in ("content/operate/rs/*/_index.md",
-                "content/operate/kubernetes/*/_index.md",
-                "content/develop/ai/redisvl/*/_index.md"):
-    for path in glob.glob(pattern):
-        if not VERSION_RE.match(os.path.basename(os.path.dirname(path))):
-            continue
-        p = pathlib.Path(path)
-        s = p.read_text()
-        if not s.startswith("---"):
-            continue
-        try:
-            _, frontmatter, body = s.split("---", 2)
-        except ValueError:
-            continue
-        if re.search(r"^hidden:\s*true\s*$", frontmatter, re.M):
-            continue
-        if re.search(r"^hidden:", frontmatter, re.M):
-            frontmatter = re.sub(r"^hidden:.*$", "hidden: true", frontmatter, count=1, flags=re.M)
-        else:
-            frontmatter = frontmatter.rstrip() + "\nhidden: true\n"
-        p.write_text(f"---{frontmatter}---{body}")
-        patched += 1
-assert patched > 0, "no version _index.md files were patched"
-print(f"airgap-nav: relaxed {n_op + n_dev} JS regex(es), hid {patched} version dir(s)")
-PYEOF
-
+# Fetch external client repos (clones into examples/). Cached unless deps or
+# build/make.py change. Cannot move into the multi-build below because each
+# version build resets the workspace; we want examples/ in the snapshot.
 RUN --mount=type=secret,id=PRIVATE_ACCESS_TOKEN,env=PRIVATE_ACCESS_TOKEN \
-    make components && make ndjson
+    make components
+
+# Multi-build pipeline: latest + one Hugo invocation per (product, version),
+# then merged into a single public/ tree. See build/airgap-multibuild.sh.
+# Mirrors .github/workflows/main.yml's parallel matrix as a sequential loop.
+RUN bash build/airgap-multibuild.sh
 
 RUN find /site/public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.json" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
     -exec gzip -9 -k {} \;
