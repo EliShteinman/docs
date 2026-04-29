@@ -168,6 +168,14 @@ build_version() {
   fi
 
   mkdir -p "$FINAL/$product_path"
+  # Latest's aliases (e.g. content/operate/rs/monitoring/_index.md has
+  # `aliases: [..., /operate/rs/7.4/clusters/monitoring/]`) cause Hugo to
+  # emit redirect HTMLs *inside* the version's URL prefix during the latest
+  # build. Those land in $FINAL via the rsync after latest, and would make
+  # `cp -a` nest the version's tree (creating $version/$version/index.html
+  # and serving 403 at /<version>/). Wipe the dest first so the version's
+  # tree fully replaces whatever was there.
+  rm -rf "$FINAL/$product_path/$version"
   cp -a "$SITE/public/$product_path/$version" "$FINAL/$product_path/$version"
   rm -rf "$SITE/public"
 }
