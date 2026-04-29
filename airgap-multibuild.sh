@@ -20,6 +20,35 @@ readonly FINAL=/tmp/public-final
 
 cd "$SITE"
 
+# ---- Airgap-only source-tree patches (applied once, before snapshot) ---------
+# These changes flow into every per-version build via the snapshot.
+#
+# 1. Relax the JS regex that gates the version-selector dropdown. Upstream
+#    requires URL prefix /docs/(latest|staging/.+)/, which never matches when
+#    baseURL=/. Replace with a path-only check so the dropdown shows on any
+#    deployment.
+python3 <<'PYEOF'
+import re, pathlib
+p = pathlib.Path("layouts/partials/scripts.html")
+text = p.read_text()
+text, n_op  = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/operate/(\w+)/\.\*'\)",
+                      r"new RegExp('/operate/\1/')", text)
+text, n_dev = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
+                      r"new RegExp('/develop/ai/\1/')", text)
+p.write_text(text)
+assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
+print(f"airgap: relaxed {n_op + n_dev} version-selector regex(es) in scripts.html")
+PYEOF
+
+# 2. Strip hardcoded https://redis.io/docs/latest/ from all content .md files,
+#    so markdown links resolve against the local deployment instead of redis.io.
+#    Also strip the bare "redis.io/docs/latest/" link-text occurrences (e.g.
+#    inside bannerText) so the visible text isn't misleading.
+echo "airgap: stripping hardcoded redis.io/docs/latest links from content/*.md..."
+find content -type f -name '*.md' -print0 | xargs -0 sed -i \
+  -e 's|https://redis.io/docs/latest/|/|g' \
+  -e 's|redis\.io/docs/latest/|/|g'
+
 # ---- Snapshot the prepared workspace -----------------------------------------
 # Captures content + layouts + components output. Excludes Hugo's own outputs.
 rm -rf "$SNAPSHOT"
@@ -126,11 +155,9 @@ build_version() {
   sed -i "12i \\{{ \$gh_path = replaceRE \`^${pp_esc}/\` \"${pp_esc}/${version}/\" \$gh_path }}" \
     layouts/partials/meta-links.html
 
-  # AIRGAP-ONLY: the version's _index.md hardcodes a banner link to
-  # https://redis.io/docs/latest/<product>/ . Rewrite to a relative path so
-  # the banner points at the local deployment's latest.
-  sed -i "s|https://redis.io/docs/latest/|/|g" \
-    "content/$product_path/_index.md" || true
+  # NOTE: the redis.io/docs/latest/ banner link is already rewritten globally
+  # at the top of this script (before the snapshot), so we don't need a
+  # per-version sed here.
 
   write_version_files
   hugo --logLevel info
