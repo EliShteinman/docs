@@ -3,12 +3,17 @@
 ARG VARIANT=privileged
 
 # ============================================================
-# Builder stage (shared by both variants)
+# Builder stage (shared by both variants AND both target arches)
 # ============================================================
-FROM node:24-trixie AS builder
+# Force the builder to run on the host's native platform — the output is
+# static HTML/CSS/JS that's identical regardless of target arch, so there's
+# no point running Hugo + npm + pip twice (once natively and once under
+# QEMU emulation) for a multi-arch build. Each target's runtime stage
+# COPYs the same /site/public out of this single builder.
+FROM --platform=$BUILDPLATFORM node:24-trixie AS builder
 
 ARG HUGO_VERSION=0.143.1
-ARG TARGETARCH
+ARG BUILDARCH
 ARG GIT_COMMIT=unknown
 ARG BUILD_DATE=unknown
 
@@ -23,7 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget -O /tmp/hugo.deb \
-    "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.deb" \
+    "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${BUILDARCH}.deb" \
     && dpkg -i /tmp/hugo.deb \
     && rm /tmp/hugo.deb
 
