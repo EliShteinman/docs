@@ -52,9 +52,9 @@ RUN --mount=type=secret,id=PRIVATE_ACCESS_TOKEN,env=PRIVATE_ACCESS_TOKEN \
     make components
 
 # Multi-build pipeline: latest + one Hugo invocation per (product, version),
-# then merged into a single public/ tree. See build/airgap-multibuild.sh.
+# then merged into a single public/ tree. See airgap-multibuild.sh.
 # Mirrors .github/workflows/main.yml's parallel matrix as a sequential loop.
-RUN bash build/airgap-multibuild.sh
+RUN bash airgap-multibuild.sh
 
 RUN find /site/public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.json" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
     -exec gzip -9 -k {} \;
