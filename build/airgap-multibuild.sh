@@ -1,0 +1,169 @@
+#!/usr/bin/env bash
+# Air-gap multi-build pipeline.
+# Mirrors .github/workflows/main.yml's parallel matrix as a sequential bash loop.
+#
+# Produces a single public/ tree containing:
+#   - "latest" content rooted at /operate/<product>/, /develop/ai/redisvl/, etc.
+#     (with all version directories removed before Hugo runs)
+#   - For each (product, version), a self-contained subtree at
+#     /operate/<product>/<version>/ built from a Hugo invocation where the
+#     version's content has been rsync'd over the parent directory.
+#
+# Run inside the Docker builder stage AFTER `make components` (so /site/examples/
+# is populated from external clones).
+
+set -euo pipefail
+
+readonly SITE=/site
+readonly SNAPSHOT=/tmp/site-snapshot
+readonly FINAL=/tmp/public-final
+
+cd "$SITE"
+
+# ---- Snapshot the prepared workspace -----------------------------------------
+# Captures content + layouts + components output. Excludes Hugo's own outputs.
+rm -rf "$SNAPSHOT"
+mkdir -p "$SNAPSHOT"
+rsync -a --delete \
+  --exclude=public --exclude=resources --exclude=.git \
+  "$SITE/" "$SNAPSHOT/"
+
+mkdir -p "$FINAL"
+
+# ---- Discover version directories from the snapshot --------------------------
+discover() {
+  local dir=$1
+  if [ -d "$SNAPSHOT/$dir" ]; then
+    ls -1 "$SNAPSHOT/$dir" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' || true
+  fi
+}
+
+K8S_VERSIONS=$(discover content/operate/kubernetes)
+RS_VERSIONS=$(discover content/operate/rs)
+REDISVL_VERSIONS=$(discover content/develop/ai/redisvl)
+
+echo ">>> Discovered versions:"
+echo "    Kubernetes: $(echo "$K8S_VERSIONS" | tr '\n' ' ')"
+echo "    RS:         $(echo "$RS_VERSIONS" | tr '\n' ' ')"
+echo "    RedisVL:    $(echo "$REDISVL_VERSIONS" | tr '\n' ' ')"
+
+# ---- Helpers -----------------------------------------------------------------
+write_version_files() {
+  echo "$K8S_VERSIONS"     > "$SITE/kubernetes-versions"
+  echo "$RS_VERSIONS"      > "$SITE/rs-versions"
+  echo "$REDISVL_VERSIONS" > "$SITE/redisvl-versions"
+  : > "$SITE/rdi-versions"
+}
+
+reset_workspace() {
+  rsync -a --delete \
+    --exclude=public --exclude=resources --exclude=.git \
+    "$SNAPSHOT/" "$SITE/"
+}
+
+# ---- 1. Build "latest" -------------------------------------------------------
+# Latest = current site with ALL version dirs removed.
+echo ">>> Building latest"
+reset_workspace
+cd "$SITE"
+
+for v in $K8S_VERSIONS;     do rm -rf "content/operate/kubernetes/$v"; done
+for v in $RS_VERSIONS;      do rm -rf "content/operate/rs/$v"; done
+for v in $REDISVL_VERSIONS; do rm -rf "content/develop/ai/redisvl/$v"; done
+
+write_version_files
+hugo --logLevel info
+
+rsync -a "$SITE/public/" "$FINAL/"
+
+# ---- 2. Build each version ---------------------------------------------------
+# Per version: reset workspace, delete other versions, awk-fix relrefs,
+# rsync version content INTO parent (so version becomes "the product"),
+# tweak templates/frontmatter, run Hugo, extract /<product>/<version>/ subtree.
+build_version() {
+  local product_path=$1     # e.g. operate/kubernetes
+  local product_label=$2    # e.g. "Redis for Kubernetes"
+  local product_pascal=$3   # e.g. Kubernetes (matches docs-nav.html selector id suffix)
+  local version=$4
+  local all_versions=$5     # newline-separated version list for this product
+
+  echo ">>> Building ${product_path} v${version}"
+  reset_workspace
+  cd "$SITE"
+
+  # Remove all OTHER versions of this product
+  for v in $all_versions; do
+    if [ "$v" != "$version" ]; then
+      rm -rf "content/$product_path/$v"
+    fi
+  done
+
+  # Strip the version prefix from relrefs in the version's own content
+  # (because after rsync the content moves up one level).
+  find "content/$product_path/$version" -type f -name '*.md' | while read -r f; do
+    awk -v pp="$product_path" -v ver="$version" '
+      { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp); print }
+    ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+  done
+
+  # rsync the version content INTO the parent dir, replacing latest's content
+  # for this product. --delete-after removes any latest files not in the version.
+  rsync -a --delete-after \
+    "content/$product_path/$version/" \
+    "content/$product_path/"
+
+  # Restore parent linkTitle (the rsync brought in the version's _index.md
+  # whose linkTitle is "<version>", e.g. "7.8.6"; restore the product label).
+  sed -i "s/^linkTitle: $version$/linkTitle: $product_label/" \
+    "content/$product_path/_index.md" || true
+
+  # Update the version-selector button label in the nav from "latest" to "v<version>".
+  sed -i "s/id=\"versionSelector${product_pascal}Value\" class=\"version-selector-control\">latest/id=\"versionSelector${product_pascal}Value\" class=\"version-selector-control\">v${version}/" \
+    layouts/partials/docs-nav.html
+
+  # Inject Edit-on-GitHub path rewrite so it points at the version dir on GH.
+  local pp_esc="${product_path//\//\\/}"
+  sed -i "12i \\{{ \$gh_path = replaceRE \`^${pp_esc}/\` \"${pp_esc}/${version}/\" \$gh_path }}" \
+    layouts/partials/meta-links.html
+
+  # AIRGAP-ONLY: the version's _index.md hardcodes a banner link to
+  # https://redis.io/docs/latest/<product>/ . Rewrite to a relative path so
+  # the banner points at the local deployment's latest.
+  sed -i "s|https://redis.io/docs/latest/|/|g" \
+    "content/$product_path/_index.md" || true
+
+  write_version_files
+  hugo --logLevel info
+
+  if [ ! -d "$SITE/public/$product_path/$version" ]; then
+    echo "!!! ERROR: hugo did not produce public/$product_path/$version/" >&2
+    exit 1
+  fi
+
+  mkdir -p "$FINAL/$product_path"
+  cp -a "$SITE/public/$product_path/$version" "$FINAL/$product_path/$version"
+  rm -rf "$SITE/public"
+}
+
+for v in $K8S_VERSIONS; do
+  build_version operate/kubernetes "Redis for Kubernetes" Kubernetes "$v" "$K8S_VERSIONS"
+done
+for v in $RS_VERSIONS; do
+  build_version operate/rs "Redis Software" Rs "$v" "$RS_VERSIONS"
+done
+for v in $REDISVL_VERSIONS; do
+  build_version develop/ai/redisvl "RedisVL" Redisvl "$v" "$REDISVL_VERSIONS"
+done
+
+# ---- 3. Replace site public with the merged final tree -----------------------
+rm -rf "$SITE/public"
+mv "$FINAL" "$SITE/public"
+
+# ---- 4. Generate ndjson over the merged tree ---------------------------------
+echo ">>> Generating ndjson..."
+cd "$SITE"
+python3 build/generate_ndjson.py
+gzip -kf public/docs.ndjson
+
+echo ">>> Multi-build complete. public/ summary:"
+echo "    $(find public -type f | wc -l) files, $(du -sh public | cut -f1) total"
