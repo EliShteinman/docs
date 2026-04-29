@@ -20,32 +20,131 @@
 > `<HASH>` = commit hash בן 9 תווים (`git rev-parse --short=9 HEAD`).
 > ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
 
-## בנייה
+## תהליך עדכון מקצה לקצה
 
-שתי הפקודות רצות במקביל:
+תהליך התחזוקה הסטנדרטי בכל פעם ש-upstream של redis מפרסם תוכן/תיקונים חדשים. הסדר חשוב — אל תדלג על שלבים.
+
+### שלב 1 — סקירה לפני מיזוג (5-10 דק)
+
+המטרה: לוודא ש-upstream לא הכניס דבר ש"שוקע מתחת לרדאר" של מנגנוני ה-airgap (קטלוג `externalLinks`, vendored CDN, sed של `redis.io/docs/latest/`).
 
 ```bash
-# Privileged variant (פורט 80)
-docker buildx build --platform linux/amd64,linux/arm64 \
-  --target final --build-arg VARIANT=privileged \
-  --secret id=PRIVATE_ACCESS_TOKEN \
-  -t a0533057932/redis-docs:<HASH> \
-  -t a0533057932/redis-docs:latest \
-  --push .
+git fetch origin
+MERGE_BASE=$(git merge-base HEAD origin/main)
+git log --oneline $MERGE_BASE..origin/main          # מה מגיע (כותרות הקומיטים)
+git diff --stat $MERGE_BASE..origin/main | tail     # היקף השינוי
 
-# Unprivileged variant (פורט 8080)
+# בדיקה 1 — לינקים חיצוניים חדשים בתבניות שלא מטופלים ע"י externalLinks:
+git diff $MERGE_BASE..origin/main -- layouts/ \
+  | grep -E '^\+' | grep -E 'href=["'"'"']https?://' | grep -v data-external-link
+# שורות יוצאות = יש לינק שיצטרך להיכנס ל-helm/redis-docs/files/external-links.yaml
+
+# בדיקה 2 — סקריפטים חיצוניים חדשים (cdn.*, unpkg.*, fonts.googleapis וכו'):
+git diff $MERGE_BASE..origin/main \
+  | grep -E '^\+' | grep -oE '(cdn\.[a-z]+|jsdelivr|unpkg|fonts\.googleapis|googletagmanager)[^ "]*' | sort -u
+# שורות יוצאות = יש סקריפט שיצטרך לוונדור ל-static/vendor/
+
+# בדיקה 3 — aliases חדשים שמצביעים לנתיבי גרסאות (יוצרים artifacts ב-airgap-multibuild):
+git diff $MERGE_BASE..origin/main -- 'content/**.md' \
+  | grep -E '^\+aliases:' | grep -oE '/(operate|develop)/[^ ,\]"]+/[0-9]+\.[0-9]+(\.[0-9]+)?/' | sort -u
+# שורות יוצאות = ייתכן ש-airgap-multibuild.sh יצטרך התאמה (כרגע יש rm -rf לפני cp -a שמטפל ברוב המקרים)
+
+# בדיקה 4 — תיקיות גרסה חדשות (כל תיקייה תחת content/operate/{rs,kubernetes}/ או content/develop/ai/redisvl/ עם שם של מספר):
+git diff --diff-filter=A --name-only $MERGE_BASE..origin/main \
+  | grep -E '^content/(operate/(rs|kubernetes)|develop/ai/redisvl)/[0-9]+\.[0-9]+(\.[0-9]+)?/_index\.md$'
+# שורות יוצאות = airgap-multibuild.sh יגלה אותן אוטומטית, לא נדרש שינוי
+```
+
+אם אחת מבדיקות 1-3 מחזירה שורות → טיפלו לפני המיזוג (עדכון catalog, וונדור קובץ, או שינוי בסקריפט).
+
+### שלב 2 — מיזוג
+
+```bash
+git merge origin/main
+# auto-merge ברוב המקרים. במקרה של conflict — ידני
+```
+
+### שלב 3 — בנייה (חובה ברצף, לא במקביל)
+
+```bash
+HASH=$(git rev-parse --short=9 HEAD)
+
+# ראשון — unprivileged. בונה את builder stage המלא (~14 דק multi-arch).
 docker buildx build --platform linux/amd64,linux/arm64 \
   --target final --build-arg VARIANT=unprivileged \
   --secret id=PRIVATE_ACCESS_TOKEN \
-  -t a0533057932/redis-docs:<HASH>-unprivileged \
+  -t a0533057932/redis-docs:${HASH}-unprivileged \
   -t a0533057932/redis-docs:unprivileged \
+  --push .
+
+# שני — privileged. מקבל cache מלא של builder stage (~3-5 דק).
+docker buildx build --platform linux/amd64,linux/arm64 \
+  --target final --build-arg VARIANT=privileged \
+  --secret id=PRIVATE_ACCESS_TOKEN \
+  -t a0533057932/redis-docs:${HASH} \
+  -t a0533057932/redis-docs:latest \
   --push .
 ```
 
+> **למה ברצף ולא במקביל?** שני ה-variants חולקים את אותו builder stage. כשהראשון מסתיים, ה-26 hugo runs נכנסים ל-cache של BuildKit. השני מקבל אותם CACHED ורץ רק את שלב ה-runtime (`COPY` + LABELs). במקביל — תחרות על משאבים בלי תועלת.
+
+> **למה האותה פקודה לא מציינת `,src=`?** ה-default של `--secret id=NAME` ב-BuildKit הוא לקרוא מקובץ באותו שם ב-cwd. הקובץ `PRIVATE_ACCESS_TOKEN` מוגדר ב"דרישות" — לא נדרש `export` ולא `,src=` מפורש.
+
+### שלב 4 — אימות deployment
+
+```bash
+# התקנה נקייה (כדי לוודא שהתמונה החדשה באמת עולה):
+helm uninstall redis-docs -n redis-docs
+helm install redis-docs ./helm/redis-docs -n redis-docs --set route.enabled=true
+
+# (לחלופין, אם רק רוצים להחליף תמונה ב-deployment קיים:)
+# helm upgrade redis-docs ./helm/redis-docs -n redis-docs --reuse-values
+
+oc get pods,route -n redis-docs
+```
+
+בדיקות בדפדפן:
+1. דף בית — לוגו ולינקים פנימיים עובדים
+2. `/operate/kubernetes/` — דרופ-דאון גרסאות מופיע, התפריט נקי (בלי תיקיות גרסה)
+3. `/operate/kubernetes/7.8.6/` — הכפתור מציג `v7.8.6 ▼`, התפריט מחליף לתוכן הגרסה
+4. עמוד גרסה ישנה — באנר עם קישור יחסי ל-`/operate/.../`, לא ל-`redis.io/...`
+
+### שלב 5 — עדכון Helm chart
+
+לפי היקף השינויים מאז הגרסה הקודמת של ה-chart:
+
+| מקרה | bump | פעולה |
+|---|---|---|
+| **תוכן upstream בלבד** (זה הרגיל) | patch (`1.1.0 → 1.1.1`) | עדכון `appVersion`, עדכון tag בדוגמאות |
+| **תיקון/הוספה קטנה ב-airgap-multibuild.sh או ב-Dockerfile** | minor (`1.1.0 → 1.2.0`) | אותו דבר |
+| **שינוי במבנה ה-chart** (כניסה חדשה ל-catalog, configmap חדש, default values משופרים) | minor או major | + עיון בכל ה-templates שהתעדכנו |
+| **שינוי breaking** (שיניתי `values.yaml` באופן שלא תואם לאחור) | major (`1.x → 2.0.0`) | + הערת migration ב-CHANGELOG |
+
+קבצים לעדכן (4 בכל מקרה):
+- `helm/redis-docs/Chart.yaml` — `version` (לפי הטבלה) ו-`appVersion` (להחליף ל-HASH החדש)
+- `helm/redis-docs/README.md` — דוגמת `tag:`
+- `helm/redis-docs/README-he.md` — אותו דבר
+- `helm/redis-docs/examples/values-openshift-airgapped.yaml` — `tag:` + ההערה למעלה
+
+```bash
+git add helm/
+git commit -m "chore(helm): bump chart X.Y.Z, appVersion ${HASH}"
+
+# רענון מטא של ה-release (Pods לא נופלים אם templates זהים):
+helm upgrade redis-docs ./helm/redis-docs -n redis-docs --reuse-values
+```
+
+---
+
+## בנייה
+
+ראו "תהליך עדכון מקצה לקצה" — שלב 3 לפקודות. הסדר חייב להיות **ברצף** (לא במקביל) כדי שה-variant השני יקבל cache מלא של builder stage.
+
 ## מה הבנייה עושה
 
-1. **Builder stage** (משותף לשני ה-variants):
+1. **Builder stage** (משותף לשני ה-variants ולשתי הארכיטקטורות):
    - Base image: `node:24-trixie` (Node 24 + Python 3.13)
+   - **רץ תמיד native על host platform** — ראו פרק "Builder native via BUILDPLATFORM" למטה
    - התקנת Hugo 0.143.1
    - התקנת dependencies (npm + pip)
    - שינוי `baseURL` ל-`"/"` (תמיכה בכל דומיין)
@@ -53,9 +152,24 @@ docker buildx build --platform linux/amd64,linux/arm64 \
    - הרצת `airgap-multibuild.sh` — N+1 בילדי Hugo נפרדים: latest + אחד לכל גרסה. ראו פרק נפרד בהמשך.
    - דחיסת gzip מראש לכל הקבצים הסטטיים
 
-2. **Runtime stage** (לפי VARIANT):
+2. **Runtime stage** (לפי VARIANT, רץ native לפי target platform):
    - `privileged`: `nginx:alpine` על פורט 80
    - `unprivileged`: `nginx-unprivileged:alpine` על פורט 8080 (non-root)
+   - הפעולה היחידה ב-runtime: `COPY --from=builder /site/public /usr/share/nginx/html` + LABELs
+
+### Builder native via `BUILDPLATFORM`
+
+ה-builder stage מכריז `FROM --platform=$BUILDPLATFORM node:24-trixie AS builder`. זה כופה את ה-stage לרוץ על הארכיטקטורה של ה-host (arm64 על Mac M-class, amd64 על runner intel).
+
+**למה זה חיוני:**
+
+ה-builder מריץ ~26 קריאות Hugo, npm install, pip install, ו-make components. **הפלט שלו (`/site/public`) הוא HTML/CSS/JS — בייט-אידנטי בכל ארכיטקטורה.** לא היה שום טעם להריץ את כל הצינור פעמיים בבילד multi-arch (פעם native ופעם תחת QEMU emulation).
+
+**לפני התיקון** (Dockerfile ללא `--platform=$BUILDPLATFORM`): multi-arch על Mac arm64 לקח ~85-100 דק כי amd64 רץ תחת QEMU emulation, וכל קריאת hugo הייתה איטית פי 6-9.
+
+**אחרי התיקון**: ~14 דק. ה-builder רץ native פעם אחת, שני ה-runtime stages (`linux/arm64` ו-`linux/amd64`) משתמשים באותו `COPY --from=builder`.
+
+**שימוש ב-`BUILDARCH` במקום `TARGETARCH`** להורדת Hugo binary: ה-Hugo רץ ב-builder, אז ה-binary צריך להתאים ל-host's arch, לא ל-target.
 
 ## פיפליין הבילד הרב-גרסתי (`airgap-multibuild.sh`)
 
@@ -99,7 +213,11 @@ aliases: [/operate/rs/clusters/monitoring/, /operate/rs/7.4/clusters/monitoring/
 
 ### עלויות
 
-- **זמן wall-clock**: ~9 דקות עבור 26 בילדים על Mac M-class arm64. ב-CI של redis זה ~5-10 דקות בזכות מקבילית; אצלנו ברצף בלי קאשינג ביניים.
+- **זמן wall-clock** (Mac M-class):
+  - arm64-only: ~10-12 דק
+  - multi-arch (amd64+arm64) **אחרי תיקון BUILDPLATFORM**: ~14 דק
+  - variant שני ברצף אחרי הראשון: ~3-5 דק (cache מלא של builder stage)
+  - ב-CI של redis המקבילי: ~5-10 דק בזכות N runners
 - **disk peak**: snapshot (~2GB) + `$SITE/public` הנוכחי (~1.3GB) + `$FINAL` המצטבר (גדל עד ~1.3GB) ≈ ~5-7GB בתוך ה-container.
 - **גודל image סופי**: ~1.5-2GB (כל הגרסאות בתוך אותו image).
 
@@ -114,6 +232,8 @@ aliases: [/operate/rs/clusters/monitoring/, /operate/rs/7.4/clusters/monitoring/
 | baseURL | `/docs/latest` | `/` |
 | בילדי גרסאות | מקבילית ב-N runners | רצף בתוך container אחד (`airgap-multibuild.sh`) |
 | מיזוג | rsync ל-GCS לכל גרסה בנפרד | `cp -a` ל-`$FINAL` ו-`mv` בסוף |
+| Multi-arch | runner נפרד לכל arch | builder native על host דרך `BUILDPLATFORM`; runtime לפי target |
+| Cache בין variants | אין (כל variant build נפרד) | builder stage cached, variant שני רץ ~3-5 דק |
 | פלט | GCS bucket | nginx container |
 | gzip | GCS עושה compression | `gzip_static` מראש |
 | לינקים `redis.io/docs/latest/` | תקפים (זה ה-canonical) | מותקנים ל-`/` ב-build time |
