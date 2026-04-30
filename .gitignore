@@ -20,6 +20,7 @@ package-lock.json
 PRIVATE_ACCESS_TOKEN
 dist/
 *.tar
+/redis-docs-*.tgz
 # Rust docs demos
 /content/develop/use-cases/rate-limiter/rust/target/
 /content/develop/use-cases/rate-limiter/rust/Cargo.lock

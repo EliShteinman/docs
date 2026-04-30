@@ -134,6 +134,32 @@ git commit -m "chore(helm): bump chart X.Y.Z, appVersion ${HASH}"
 helm upgrade redis-docs ./helm/redis-docs -n redis-docs --reuse-values
 ```
 
+### שלב 6 — פרסום ה-chart ל-OCI registry
+
+מאז Helm 3.8, helm charts יכולים להיות מאוחסנים כ-OCI artifacts באותו registry שבו נמצאות תמונות Docker. ב-Docker Hub זה תומך מיידית — ה-chart ייגש לאותו account שבו ה-image (`a0533057932/redis-docs`), עם MediaType שונה אז אין התנגשות עם תגי image.
+
+```bash
+# אריזה של ה-chart ל-tgz (גרסת tar gzipped):
+helm package helm/redis-docs/
+
+# דחיפה ל-Docker Hub כ-OCI artifact:
+helm push redis-docs-X.Y.Z.tgz oci://registry-1.docker.io/a0533057932
+
+# ניקוי הקובץ המקומי (gitignored כבר):
+rm redis-docs-*.tgz
+```
+
+לאימות שהדחיפה הצליחה:
+```bash
+helm show chart oci://registry-1.docker.io/a0533057932/redis-docs --version X.Y.Z | head
+```
+
+**לקוחות יכולים להתקין ישירות ב-pipeline אחד**, בלי לקלון את הריפו:
+```bash
+helm install my-deploy oci://registry-1.docker.io/a0533057932/redis-docs --version X.Y.Z \
+  --set route.enabled=true
+```
+
 ---
 
 ## בנייה
