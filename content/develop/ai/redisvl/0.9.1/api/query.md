@@ -906,7 +906,7 @@ returned in addition to any others implicitly specified.
 Otherwise, fields should be given in the format of @field.
 
 * **Parameters:**
-  **fields** (*List* *[* *str* *]*)
+  **fields** (*str*)
 * **Return type:**
   *AggregateRequest*
 
@@ -947,7 +947,7 @@ AggregateRequest()            .group_by("@customer", r.sum("@paid").alias(FIELDN
 ``
 
 * **Parameters:**
-  **fields** (*List* *[* *str* *]*)
+  **fields** (*str*)
 * **Return type:**
   *AggregateRequest*
 
