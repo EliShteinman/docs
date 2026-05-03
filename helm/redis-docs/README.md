@@ -189,7 +189,7 @@ imagePullSecrets:
 # --- Main image (specific tag override) ---
 image:
   name: redis-docs
-  tag: "aff936f55-unprivileged"
+  tag: "471f62abf-unprivileged"
 
 # --- Metrics (image and tag override) ---
 metrics:
