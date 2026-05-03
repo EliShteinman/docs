@@ -177,6 +177,19 @@ build_version() {
   # tree fully replaces whatever was there.
   rm -rf "$FINAL/$product_path/$version"
   cp -a "$SITE/public/$product_path/$version" "$FINAL/$product_path/$version"
+
+  # Mirror upstream's #3166/#3177 fix: per-version Hugo builds produce a
+  # different /css/index.min.<hash>.css than the latest build (Tailwind purges
+  # by classes seen in rendered HTML, which differs across versions). Without
+  # this, version pages 404 on their CSS. Copy css/scss additively so each
+  # build's hash coexists alongside latest's.
+  for d in css scss; do
+    if [ -d "$SITE/public/$d" ]; then
+      mkdir -p "$FINAL/$d"
+      cp -an "$SITE/public/$d/." "$FINAL/$d/"
+    fi
+  done
+
   rm -rf "$SITE/public"
 }
 
