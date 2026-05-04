@@ -266,6 +266,38 @@ externalLinks:
   # See `helm/redis-docs/files/external-links.yaml` for the full list of
   # keys, their families/sub-families, and default URLs.
 
+  # gitMirrors: redirect inline `<a href>` links inside docs content
+  # (rendered from markdown) to internal Git mirrors. Catalog of available
+  # mirrors and the upstream URLs they target lives at
+  # `files/external-links.yaml` under `git-mirrors`.
+  #
+  # For each mirror name, set:
+  #   enabled: true                   (default false — leave OFF means: keep the original GitHub link)
+  #   to: <full mirror project URL>   (empty by default; required when enabled)
+  #
+  # The `to` URL is treated as an opaque prefix and may include nested
+  # GitLab groups, e.g.
+  #   "https://gitlab.example.com/group/subgroup/redis-observability"
+  # The runtime handler translates GitHub paths (`/blob/<ref>/<path>`,
+  # `/tree/<ref>/<path>`, `/raw`, `/blame`, `/commits`, `/commit`, `/tags`,
+  # `/releases`, `/wiki`, `/issues`) to their GitLab equivalents
+  # (`/-/blob/...`, `/-/tree/...`, etc.) automatically — you only provide
+  # the project URL.
+  #
+  # Activation is purely Helm-driven: changing values here regenerates the
+  # runtime ConfigMap (`runtime-config.js`) and triggers a rolling restart
+  # via the `checksum/runtime-config` annotation on the deployment. No image
+  # rebuild is required.
+  gitMirrors: {}
+  # Example: redirect every link that points to
+  # github.com/redis-field-engineering/redis-enterprise-observability
+  # (36 inline links across the Prometheus/Grafana docs) to an internal
+  # GitLab mirror with nested groups.
+  #   gitMirrors:
+  #     observability:
+  #       enabled: true
+  #       to: "https://gitlab.internal.company.com/redis/observability/redis-enterprise-observability"
+
 podDisruptionBudget:
   enabled: true
   maxUnavailable: 1
