@@ -101,6 +101,34 @@ externalLinks:
 
 שני הלוגואים (פינה שמאלית עליונה של ההדר ושל הפוטר) תמיד מקושרים ל-`/` (בית הדוקס המקומי) ואינם חלק מהקטלוג — הם מוצגים תמיד ולא ניתנים לקנפוג ל-deployment.
 
+### מירורי Git (`externalLinks.gitMirrors`)
+
+מנגנון נפרד שמשכתב לינקים מסוג `<a href>` בתוך תוכן Markdown (URLs של דשבורדי Grafana, קונפיגי alerts של Prometheus, listings של repositories וכו') מ-host ציבורי במעלה הזרם למירור פנימי.
+
+המנגנון **אינו** חלק ממערכת ה-`families` / `overrides` שלמעלה — אלה מתמקדות באלמנטים של ה-layout עם `data-external-link="<key>"` (כרטיסי עמוד הבית, רצועת ההדר, עמודות הפוטר). `gitMirrors` מתאים לפי קידומת URL ב-HTML המרונדר, וזה מה שלינקים מתוך תוכן צריכים.
+
+הקטלוג של המירורים הזמינים נמצא ב-`files/external-links.yaml` תחת `git-mirrors:`. לכל entry יש כתובת upstream (`from`) קבועה — הצ'ארט נשלח עם entry אחד:
+
+| שם | upstream | תיעוד מושפע |
+|---|---|---|
+| `observability` | `https://github.com/redis-field-engineering/redis-enterprise-observability` | 36 לינקים מוטמעים ב-`rs-observability.md`, `rs-prometheus-grafana-quickstart.md`, `prometheus-with-redis-cloud/_index.md` |
+
+הפעלה פר-deployment היא שני שדות ב-`values.yaml`:
+
+```yaml
+externalLinks:
+  gitMirrors:
+    observability:
+      enabled: true
+      to: "https://gitlab.internal.company.com/redis/group1/group2/observability"
+```
+
+ה-URL ב-`to` מטופל כקידומת אטומית — יש לספק את כתובת הפרויקט המלאה, כולל כל נסטינג של GitLab groups. ה-handler ב-runtime מתרגם נתיבי GitHub (`/blob/<ref>/<path>`, `/tree/<ref>/<path>`, `/raw`, `/blame`, `/commits`, `/commit`, `/tags`, `/releases`, `/wiki`, `/issues`) למקבילות שלהם ב-GitLab (`/-/blob/...`, `/-/tree/...`, וכו') באופן אוטומטי.
+
+**ההפעלה היא Helm בלבד**: שינוי `values.yaml` מייצר מחדש את ה-ConfigMap של ה-runtime (`runtime-config.js`), וה-annotation `checksum/runtime-config` גורם ל-rolling restart. אין צורך לבנות מחדש את ה-image, ואותה image יכולה להגיש URLs שונים של מירור עבור deployments שונים.
+
+**הוספת מירור חדש** (למשל repo נוסף שמוזכר בתיעוד) היא שני שלבים: הוספת entry תחת `git-mirrors:` בקטלוג עם כתובת ה-`from` שלו, ולאחר מכן opt-in פר-deployment עם `enabled: true` ו-`to: <כתובת המירור>` ב-`values.yaml`. אין צורך לשנות template, handler, Hugo, או image.
+
 ### החלפת URL קנוני (`canonicalURL`)
 
 כש-Hugo בונה את פורמטי ה-AI / RAG (`.md`, `.json`), הוא מרחיב shortcodes פנימיים כמו `{{< relref "..." >}}` ו-`{{< image filename="..." >}}` ל-placeholder בצורת `__DOCS_BASE_URL__/<path>`. nginx מחליף את ה-placeholder בזמן ריצה כך שצרכנים שצורכים את ה-Markdown ללא הקשר של HTML עדיין רואים URLs מלאים:

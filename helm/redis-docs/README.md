@@ -109,6 +109,54 @@ The two logos (top-left of the header, top-left of the footer) always link
 to `/` (the local docs home) and are not part of the catalog — they are
 shown unconditionally and not configurable per deployment.
 
+### Git mirrors (`externalLinks.gitMirrors`)
+
+A separate mechanism rewrites inline `<a href>` links inside markdown
+content (Grafana dashboard URLs, Prometheus alert configs, repository
+listings, etc.) from the upstream public Git host to an internal mirror.
+
+It is **not** part of the `families` / `overrides` system above — those
+target layout elements with `data-external-link="<key>"` attributes
+(home page cards, header strip, footer columns). `gitMirrors` matches by
+URL prefix on the rendered HTML, which is what inline content links need.
+
+Catalog of available mirrors lives at `files/external-links.yaml` under
+`git-mirrors:`. Each entry has a fixed upstream `from` URL — the chart
+ships one entry today:
+
+| Name | Upstream | Affected docs |
+|---|---|---|
+| `observability` | `https://github.com/redis-field-engineering/redis-enterprise-observability` | 36 inline links across `rs-observability.md`, `rs-prometheus-grafana-quickstart.md`, `prometheus-with-redis-cloud/_index.md` |
+
+Per-deployment activation is two fields in `values.yaml`:
+
+```yaml
+externalLinks:
+  gitMirrors:
+    observability:
+      enabled: true
+      to: "https://gitlab.internal.company.com/redis/group1/group2/observability"
+```
+
+The `to` URL is treated as an opaque prefix — provide the full project
+URL including any nested GitLab groups. The runtime handler translates
+GitHub paths (`/blob/<ref>/<path>`, `/tree/<ref>/<path>`, `/raw`,
+`/blame`, `/commits`, `/commit`, `/tags`, `/releases`, `/wiki`,
+`/issues`) to their GitLab equivalents (`/-/blob/...`, `/-/tree/...`,
+etc.) automatically.
+
+**Activation is purely Helm-driven**: changing `values.yaml` regenerates
+the runtime ConfigMap (`runtime-config.js`), and the
+`checksum/runtime-config` annotation triggers a rolling restart. No
+image rebuild is required, and the same image can serve different
+mirror URLs per deployment.
+
+**Adding a new mirror** (e.g. another upstream repo referenced from the
+docs) is two steps: add an entry under `git-mirrors:` in the catalog
+with its `from` URL, then opt in per-deployment with `enabled: true`
+and `to: <mirror URL>` in `values.yaml`. No template, handler, or
+Hugo / image change is needed.
+
 ### Canonical URL substitution (`canonicalURL`)
 
 When Hugo builds the AI / RAG output formats (`.md`, `.json`) it expands
