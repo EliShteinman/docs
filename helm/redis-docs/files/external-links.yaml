@@ -490,3 +490,54 @@ families:
             description: "Footer Support: 'Support'"
             url: "https://redis.io/support/"
             enabled: true
+
+# ───────────────────────────────────────────────────────────────────────────
+# git-mirrors — runtime-rewriting of inline `<a href>` URLs in markdown content
+#
+# Unlike `families` above (which targets layout elements with
+# `data-external-link="<key>"` attributes), this catalog drives prefix-based
+# rewriting of plain links rendered from markdown into the static HTML.
+#
+# How it works:
+#   1. Browser loads any docs page → baseof.html sources `js/runtime-config.js`
+#      from a ConfigMap (templates/configmap-runtime.yaml) — NO image rebuild.
+#   2. The configmap injects `window.RUNTIME_CONFIG.gitMirrors` plus a
+#      DOMContentLoaded handler that walks every <a href> on the page.
+#   3. For each enabled mirror with a `to` URL set: every href that starts
+#      with `from` is rewritten — its remainder is path-translated from
+#      GitHub layout to GitLab layout, then prepended with `to`.
+#
+# Path translation (GitHub → GitLab):
+#   /<org>/<repo>/blob/<ref>/<path>     →  /<group>/.../<proj>/-/blob/<ref>/<path>
+#   /<org>/<repo>/tree/<ref>/<path>     →  /<group>/.../<proj>/-/tree/<ref>/<path>
+#   /<org>/<repo>/                       →  /<group>/.../<proj>/
+#
+# The handler inserts `/-/` for the GitLab path families: blob, tree, raw,
+# blame, commits, commit, tags, releases, wiki, issues. GitLab nested groups
+# (`url/group/subgroup/.../project`) are handled transparently because `to`
+# is treated as an opaque prefix string — provide the full project URL.
+#
+# Precedence (highest wins) for the resolved entry:
+#   1. values.externalLinks.gitMirrors.<name>.enabled / .to
+#   2. catalog default below (enabled: false, to: "")
+#
+# Default state: every mirror is OFF (enabled: false, to: ""). A deployment
+# opts-in by setting both `enabled: true` and a non-empty `to` URL in
+# values.yaml — leaving either unset keeps the original GitHub URL intact.
+# ───────────────────────────────────────────────────────────────────────────
+git-mirrors:
+
+  observability:
+    description: |
+      Mirror of redis-field-engineering/redis-enterprise-observability.
+      Affects 36 inline links across:
+        - content/embeds/rs-observability.md
+        - content/embeds/rs-prometheus-grafana-quickstart.md
+        - content/integrate/prometheus-with-redis-cloud/_index.md
+      Set `to` in values.yaml to a GitLab project URL to redirect every
+      occurrence (Grafana dashboards, Prometheus alerts, tests directories)
+      to the internal mirror — including nested-group URLs like
+      `https://gitlab.example.com/group/subgroup/redis-observability`.
+    from: "https://github.com/redis-field-engineering/redis-enterprise-observability"
+    to: ""
+    enabled: false

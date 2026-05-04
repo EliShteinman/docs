@@ -24,6 +24,7 @@
 {{- $global := .Values.externalLinks.enabled -}}
 {{- $valFamilies := .Values.externalLinks.families | default dict -}}
 {{- $overrides := .Values.externalLinks.overrides | default dict -}}
+{{- $valMirrors := .Values.externalLinks.gitMirrors | default dict -}}
 
 {{- $effective := dict -}}
 {{- range $famName, $famDef := $catalog.families -}}
@@ -85,6 +86,27 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
+
+{{- /*
+  Resolve git-mirrors. Each entry in the catalog has a fixed `from` (the
+  upstream URL prefix — never overridable) and a default `enabled`/`to`
+  pair that values.yaml can override. Only mirrors with both
+  `enabled: true` AND a non-empty `to` make it into the final map; anything
+  else is dropped so the runtime handler skips it without a guard.
+*/ -}}
+{{- $mirrors := dict -}}
+{{- $catalogMirrors := index $catalog "git-mirrors" | default dict -}}
+{{- range $name, $entry := $catalogMirrors -}}
+  {{- $enabled := $entry.enabled | default false -}}
+  {{- $to := $entry.to | default "" -}}
+  {{- $valMirror := index $valMirrors $name | default dict -}}
+  {{- if hasKey $valMirror "enabled" }}{{- $enabled = $valMirror.enabled -}}{{- end -}}
+  {{- if hasKey $valMirror "to" }}{{- $to = $valMirror.to -}}{{- end -}}
+  {{- if and $enabled (ne $to "") -}}
+    {{- $resolved := dict "from" $entry.from "to" $to -}}
+    {{- $_ := set $mirrors $name $resolved -}}
+  {{- end -}}
+{{- end -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -109,5 +131,56 @@ data:
           }
         }
       },
-      externalLinks: {{ $effective | toJson }}
+      externalLinks: {{ $effective | toJson }},
+      gitMirrors: {{ $mirrors | toJson }}
     };
+
+    // Git-mirror rewriting: rewrite inline <a href> links that target an
+    // upstream public Git host (e.g. GitHub) to an internal mirror (e.g.
+    // GitLab). Translates GitHub-shaped paths (/blob, /tree, /raw, ...)
+    // to GitLab-shaped paths (/-/blob, /-/tree, ...) on the way out.
+    //
+    // Driven entirely by window.RUNTIME_CONFIG.gitMirrors (populated above
+    // from values.externalLinks.gitMirrors). Each mirror entry that is
+    // both enabled and has a non-empty `to` triggers a prefix match + path
+    // rewrite. Entries are dropped at template time when either condition
+    // is missing, so the runtime loop has no work to do for them.
+    (function () {
+      var mirrors = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.gitMirrors) || {};
+      var entries = Object.keys(mirrors).map(function (name) { return mirrors[name]; });
+      if (entries.length === 0) return;
+
+      // GitHub → GitLab path-family rename. The leading slash plus one of
+      // these tokens (followed by `/` or end-of-string) gets `/-/` inserted
+      // before it. Tokens cover the common file/tree views used in docs;
+      // pull → merge_requests is intentionally omitted (different name AND
+      // structure on GitLab — content links should never be PRs anyway).
+      var pathRewrite = /^\/(blob|tree|raw|blame|commits|commit|tags|releases|wiki|issues)(\/|$)/;
+
+      function translateHref(href) {
+        for (var i = 0; i < entries.length; i++) {
+          var m = entries[i];
+          if (!m.from || !m.to) continue;
+          if (href.indexOf(m.from) !== 0) continue;
+          var rest = href.slice(m.from.length);
+          rest = rest.replace(pathRewrite, '/-/$1$2');
+          return m.to + rest;
+        }
+        return null;
+      }
+
+      function rewriteAll(root) {
+        var anchors = (root || document).querySelectorAll('a[href]');
+        for (var i = 0; i < anchors.length; i++) {
+          var a = anchors[i];
+          var newHref = translateHref(a.getAttribute('href'));
+          if (newHref !== null) a.setAttribute('href', newHref);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { rewriteAll(); });
+      } else {
+        rewriteAll();
+      }
+    })();

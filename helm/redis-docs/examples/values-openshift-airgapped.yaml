@@ -103,3 +103,13 @@ externalLinks:
     support:
       enabled: true
       url: "https://support.internal.company.com"
+
+  # gitMirrors: redirect inline links inside the Prometheus/Grafana docs
+  # from the upstream public repo on github.com to an internal GitLab
+  # mirror. The handler translates GitHub `/blob`, `/tree`, ... paths to
+  # GitLab `/-/blob`, `/-/tree` automatically — provide the full project
+  # URL only (nested groups are handled transparently).
+  gitMirrors:
+    observability:
+      enabled: true
+      to: "https://gitlab.internal.company.com/redis/observability/redis-enterprise-observability"
