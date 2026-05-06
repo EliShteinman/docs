@@ -541,3 +541,21 @@ git-mirrors:
     from: "https://github.com/redis-field-engineering/redis-enterprise-observability"
     to: ""
     enabled: false
+
+  k8s-docs:
+    description: |
+      Mirror of RedisLabs/redis-enterprise-k8s-docs — the upstream source
+      for installing the Redis Enterprise operator on Kubernetes /
+      OpenShift. Affects ~179 inline links across ~89 files under
+      `content/operate/kubernetes/` (current and historical versions),
+      including:
+        - operator releases / `RedisEnterpriseCluster` API reference
+        - example manifests under `examples/`, `crds/`, `openshift/`
+        - rack-awareness, vault, log-collector docs
+      The runtime handler rewrites only `<a href>` URLs (clickable links).
+      `curl` / `kubectl apply -f` commands inside fenced code blocks that
+      reference `raw.githubusercontent.com/...` are NOT rewritten — those
+      need a separate build-time substitution if required.
+    from: "https://github.com/RedisLabs/redis-enterprise-k8s-docs"
+    to: ""
+    enabled: false
