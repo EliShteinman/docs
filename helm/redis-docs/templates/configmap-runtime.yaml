@@ -158,10 +158,16 @@ data:
       var pathRewrite = /^\/(blob|tree|raw|blame|commits|commit|tags|releases|wiki|issues)(\/|$)/;
 
       function translateHref(href) {
+        // GitHub treats owner/repo case-insensitively (RediSearch/RediSearch
+        // and redisearch/redisearch resolve to the same repo). Match the
+        // catalog `from` prefix case-insensitively so a single entry covers
+        // every variant; keep the original href for slicing so case in the
+        // remaining path (refs, file paths) is preserved verbatim.
+        var hrefLower = href.toLowerCase();
         for (var i = 0; i < entries.length; i++) {
           var m = entries[i];
           if (!m.from || !m.to) continue;
-          if (href.indexOf(m.from) !== 0) continue;
+          if (hrefLower.indexOf(m.from.toLowerCase()) !== 0) continue;
           var rest = href.slice(m.from.length);
           rest = rest.replace(pathRewrite, '/-/$1$2');
           return m.to + rest;
