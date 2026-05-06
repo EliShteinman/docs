@@ -155,7 +155,13 @@ data:
       // before it. Tokens cover the common file/tree views used in docs;
       // pull → merge_requests is intentionally omitted (different name AND
       // structure on GitLab — content links should never be PRs anyway).
+      // GitHub `/wiki/` maps to GitLab `/-/wikis/` (plural — GitLab's
+      // convention) so that one family is rewritten via the function
+      // replacer below; all other families keep their original token.
       var pathRewrite = /^\/(blob|tree|raw|blame|commits|commit|tags|releases|wiki|issues)(\/|$)/;
+      function pathRewriter(_match, family, sep) {
+        return '/-/' + (family === 'wiki' ? 'wikis' : family) + sep;
+      }
 
       function translateHref(href) {
         // GitHub treats owner/repo case-insensitively (RediSearch/RediSearch
@@ -169,7 +175,7 @@ data:
           if (!m.from || !m.to) continue;
           if (hrefLower.indexOf(m.from.toLowerCase()) !== 0) continue;
           var rest = href.slice(m.from.length);
-          rest = rest.replace(pathRewrite, '/-/$1$2');
+          rest = rest.replace(pathRewrite, pathRewriter);
           return m.to + rest;
         }
         return null;
