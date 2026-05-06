@@ -559,3 +559,98 @@ git-mirrors:
     from: "https://github.com/RedisLabs/redis-enterprise-k8s-docs"
     to: ""
     enabled: false
+
+  redis:
+    description: |
+      Mirror of redis/redis — the upstream Redis source. Affects ~706
+      inline links across the docs:
+        - command reference pages linking to source / module sources
+        - per-version `redis.conf` / `redis-full.conf` raw downloads
+          (raw.githubusercontent.com auto-derived from this `from`)
+        - release notes (`00-RELEASENOTES`)
+      Case variants in the wild (`redis/redis` vs `Redis/Redis`) are all
+      covered by a single entry — the handler matches case-insensitively.
+    from: "https://github.com/redis/redis"
+    to: ""
+    enabled: false
+
+  RediSearch:
+    description: |
+      Mirror of RediSearch/RediSearch (the search/query module).
+      ~1,067 inline links — the most-referenced module repo. Catches both
+      `RediSearch/RediSearch` and `redisearch/redisearch` casings via the
+      handler's case-insensitive prefix match.
+    from: "https://github.com/RediSearch/RediSearch"
+    to: ""
+    enabled: false
+
+  RedisGraph:
+    description: |
+      Mirror of RedisGraph/RedisGraph (graph database module). ~578
+      inline links. Catches both `RedisGraph/RedisGraph` and
+      `redisgraph/redisgraph` casings.
+    from: "https://github.com/RedisGraph/RedisGraph"
+    to: ""
+    enabled: false
+
+  RedisInsight:
+    description: |
+      Mirror of RedisInsight/RedisInsight (the GUI client). ~430 inline
+      links. Catches both `RedisInsight/RedisInsight` and the
+      `redis/RedisInsight` redirect path.
+    from: "https://github.com/RedisInsight/RedisInsight"
+    to: ""
+    enabled: false
+
+  RedisTimeSeries:
+    description: |
+      Mirror of RedisTimeSeries/RedisTimeSeries (time-series module).
+      ~221 inline links. Catches both `RedisTimeSeries/RedisTimeSeries`
+      and `redistimeseries/redistimeseries` casings.
+    from: "https://github.com/RedisTimeSeries/RedisTimeSeries"
+    to: ""
+    enabled: false
+
+  RedisGears:
+    description: |
+      Mirror of RedisGears/RedisGears (server-side scripting module).
+      ~152 inline links.
+    from: "https://github.com/RedisGears/RedisGears"
+    to: ""
+    enabled: false
+
+  RedisJSON:
+    description: |
+      Mirror of RedisJSON/RedisJSON (JSON document module). ~187 inline
+      links. Catches both `RedisJSON/RedisJSON` and `redisjson/redisjson`
+      casings.
+    from: "https://github.com/RedisJSON/RedisJSON"
+    to: ""
+    enabled: false
+
+  RedisBloom:
+    description: |
+      Mirror of RedisBloom/RedisBloom (probabilistic data structures
+      module). ~164 inline links. Catches both `RedisBloom/RedisBloom`
+      and `redisbloom/redisbloom` casings.
+    from: "https://github.com/RedisBloom/RedisBloom"
+    to: ""
+    enabled: false
+
+  redis-py:
+    description: |
+      Mirror of redis/redis-py (official Python client). ~100 inline
+      links — the most-referenced single client library, used in many
+      RedisVL and RAG examples.
+    from: "https://github.com/redis/redis-py"
+    to: ""
+    enabled: false
+
+  prometheus-operator:
+    description: |
+      Mirror of prometheus-operator/prometheus-operator (third-party
+      dependency). ~44 inline links — referenced from the Kubernetes
+      observability docs (ServiceMonitor, PodMonitor, alert rules).
+    from: "https://github.com/prometheus-operator/prometheus-operator"
+    to: ""
+    enabled: false
