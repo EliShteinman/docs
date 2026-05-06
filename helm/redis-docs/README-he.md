@@ -107,13 +107,14 @@ externalLinks:
 
 המנגנון **אינו** חלק ממערכת ה-`families` / `overrides` שלמעלה — אלה מתמקדות באלמנטים של ה-layout עם `data-external-link="<key>"` (כרטיסי עמוד הבית, רצועת ההדר, עמודות הפוטר). `gitMirrors` מתאים לפי קידומת URL ב-HTML המרונדר, וזה מה שלינקים מתוך תוכן צריכים.
 
-הקטלוג של המירורים הזמינים נמצא ב-`files/external-links.yaml` תחת `git-mirrors:`. לכל entry יש כתובת upstream (`from`) קבועה — הצ'ארט נשלח עם entry אחד:
+הקטלוג של המירורים הזמינים נמצא ב-`files/external-links.yaml` תחת `git-mirrors:`. לכל entry יש כתובת upstream (`from`) קבועה — הצ'ארט נשלח עם שני entries:
 
 | שם | upstream | תיעוד מושפע |
 |---|---|---|
 | `observability` | `https://github.com/redis-field-engineering/redis-enterprise-observability` | 36 לינקים מוטמעים ב-`rs-observability.md`, `rs-prometheus-grafana-quickstart.md`, `prometheus-with-redis-cloud/_index.md` |
+| `k8s-docs` | `https://github.com/RedisLabs/redis-enterprise-k8s-docs` | ~179 לינקים מוטמעים ב-~89 קבצים תחת `content/operate/kubernetes/` (releases של ה-operator, ה-API reference, manifests לדוגמה, vault, rack-awareness) |
 
-הפעלה פר-deployment היא שני שדות ב-`values.yaml`:
+הפעלה פר-deployment היא שני שדות ב-`values.yaml` לכל מירור:
 
 ```yaml
 externalLinks:
@@ -121,7 +122,12 @@ externalLinks:
     observability:
       enabled: true
       to: "https://gitlab.internal.company.com/redis/group1/group2/observability"
+    k8s-docs:
+      enabled: true
+      to: "https://gitlab.internal.company.com/redis/k8s/redis-enterprise-k8s-docs"
 ```
+
+> ה-handler משכתב רק כתובות `<a href>` (קישורים לחיצים). פקודות `curl` / `kubectl apply -f` בתוך code-blocks שמפנות ל-`raw.githubusercontent.com/...` **לא** עוברות שכתוב — הן דורשות החלפה build-time נפרדת אם נדרש.
 
 ה-URL ב-`to` מטופל כקידומת אטומית — יש לספק את כתובת הפרויקט המלאה, כולל כל נסטינג של GitLab groups. ה-handler ב-runtime מתרגם נתיבי GitHub (`/blob/<ref>/<path>`, `/tree/<ref>/<path>`, `/raw`, `/blame`, `/commits`, `/commit`, `/tags`, `/releases`, `/wiki`, `/issues`) למקבילות שלהם ב-GitLab (`/-/blob/...`, `/-/tree/...`, וכו') באופן אוטומטי.
 
@@ -200,7 +206,7 @@ imagePullSecrets:
 # --- תמונה ראשית (דריסת תג ספציפי) ---
 image:
   name: redis-docs
-  tag: "471f62abf-unprivileged"
+  tag: "e472b9ea5-unprivileged"
 
 # --- מטריקות (דריסת תמונה ותג) ---
 metrics:

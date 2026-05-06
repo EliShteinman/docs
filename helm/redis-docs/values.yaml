@@ -289,14 +289,16 @@ externalLinks:
   # via the `checksum/runtime-config` annotation on the deployment. No image
   # rebuild is required.
   gitMirrors: {}
-  # Example: redirect every link that points to
-  # github.com/redis-field-engineering/redis-enterprise-observability
-  # (36 inline links across the Prometheus/Grafana docs) to an internal
-  # GitLab mirror with nested groups.
+  # Example: redirect inline `<a href>` links pointing to upstream
+  # GitHub repos to an internal GitLab mirror. `to` may include nested
+  # GitLab groups — it is treated as an opaque prefix.
   #   gitMirrors:
   #     observability:
   #       enabled: true
   #       to: "https://gitlab.internal.company.com/redis/observability/redis-enterprise-observability"
+  #     k8s-docs:
+  #       enabled: true
+  #       to: "https://gitlab.internal.company.com/redis/k8s/redis-enterprise-k8s-docs"
 
 podDisruptionBudget:
   enabled: true

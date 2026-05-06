@@ -122,13 +122,14 @@ URL prefix on the rendered HTML, which is what inline content links need.
 
 Catalog of available mirrors lives at `files/external-links.yaml` under
 `git-mirrors:`. Each entry has a fixed upstream `from` URL — the chart
-ships one entry today:
+ships two entries today:
 
 | Name | Upstream | Affected docs |
 |---|---|---|
 | `observability` | `https://github.com/redis-field-engineering/redis-enterprise-observability` | 36 inline links across `rs-observability.md`, `rs-prometheus-grafana-quickstart.md`, `prometheus-with-redis-cloud/_index.md` |
+| `k8s-docs` | `https://github.com/RedisLabs/redis-enterprise-k8s-docs` | ~179 inline links across ~89 files under `content/operate/kubernetes/` (operator releases, API reference, manifests, vault, rack-awareness) |
 
-Per-deployment activation is two fields in `values.yaml`:
+Per-deployment activation is two fields in `values.yaml` per mirror:
 
 ```yaml
 externalLinks:
@@ -136,7 +137,15 @@ externalLinks:
     observability:
       enabled: true
       to: "https://gitlab.internal.company.com/redis/group1/group2/observability"
+    k8s-docs:
+      enabled: true
+      to: "https://gitlab.internal.company.com/redis/k8s/redis-enterprise-k8s-docs"
 ```
+
+> The handler rewrites only `<a href>` URLs (clickable links). `curl` /
+> `kubectl apply -f` commands inside fenced code blocks that reference
+> `raw.githubusercontent.com/...` are not rewritten — those need a
+> separate build-time substitution if required.
 
 The `to` URL is treated as an opaque prefix — provide the full project
 URL including any nested GitLab groups. The runtime handler translates
@@ -237,7 +246,7 @@ imagePullSecrets:
 # --- Main image (specific tag override) ---
 image:
   name: redis-docs
-  tag: "471f62abf-unprivileged"
+  tag: "e472b9ea5-unprivileged"
 
 # --- Metrics (image and tag override) ---
 metrics:
