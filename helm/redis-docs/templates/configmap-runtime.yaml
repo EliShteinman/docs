@@ -173,10 +173,25 @@ data:
         for (var i = 0; i < entries.length; i++) {
           var m = entries[i];
           if (!m.from || !m.to) continue;
-          if (hrefLower.indexOf(m.from.toLowerCase()) !== 0) continue;
-          var rest = href.slice(m.from.length);
-          rest = rest.replace(pathRewrite, pathRewriter);
-          return m.to + rest;
+          var fromLower = m.from.toLowerCase();
+
+          // Standard match: <from>/<family>/<ref>/<path> on the github.com host.
+          if (hrefLower.indexOf(fromLower) === 0) {
+            var rest = href.slice(m.from.length);
+            rest = rest.replace(pathRewrite, pathRewriter);
+            return m.to + rest;
+          }
+
+          // Raw-host match: GitHub serves file contents at a separate host
+          // (raw.githubusercontent.com/<owner>/<repo>/<ref>/<path>) with no
+          // `/raw/` token in the path — the host itself is the family marker.
+          // Auto-derive the raw prefix from any `from` that targets github.com
+          // and inject `/-/raw` between `to` and the ref+path so the result
+          // lands on the GitLab raw URL (<project>/-/raw/<ref>/<path>).
+          var rawFromLower = fromLower.replace(/^https:\/\/github\.com\//, 'https://raw.githubusercontent.com/');
+          if (rawFromLower !== fromLower && hrefLower.indexOf(rawFromLower) === 0) {
+            return m.to + '/-/raw' + href.slice(rawFromLower.length);
+          }
         }
         return null;
       }
