@@ -19,22 +19,51 @@ MIRRORS_DIR="${HOME}/mirrors"
 TRANSFER_DIR="${HOME}/usb-out"
 
 # ────────────────────────────────────────────────────────────────────────
-# Mirror catalog — name | github_owner/repo
+# Mirror catalog — name | github_owner/repo [| asset_policy]
 #
 # `name`              — local mirror folder name ($MIRRORS_DIR/<name>.git)
 #                       AND the key used by the chart catalog
 #                       (helm/redis-docs/files/external-links.yaml)
 # `github_owner/repo` — upstream GitHub URL is https://github.com/<this>
+# `asset_policy`      — OPTIONAL. Controls which Release ASSETS (binary
+#                       uploads attached to GitHub Releases) get
+#                       downloaded into $TRANSFER_DIR/releases/<name>/
+#                       by releases-export.sh. Release metadata
+#                       (title/body/tag) is always exported in full,
+#                       regardless of policy.
+#
+#                       Values:
+#                         (omitted) / all     download all assets   [default]
+#                         none                metadata only — no binaries
+#                         latest:N            assets for N most recent
+#                                             releases (sliding window)
+#                         since:YYYY-MM-DD    assets for releases
+#                                             published on/after this date
 #
 # No GitLab path here — that's internal-only data.
 # ────────────────────────────────────────────────────────────────────────
+#
+# Defaults below match a measured snapshot of the upstream repos:
+#   RedisInsight ships ~5.8 GiB of GUI installers across 48 releases. The
+#     latest release alone is ~1.0 GiB (one installer per OS/arch). Set
+#     to `none` here so binary downloads are skipped entirely — release
+#     metadata (titles + bodies) still imports normally so the docs link
+#     to populated GitLab Release pages. Switch to `latest:1` (single
+#     newest installer set) when you're ready to host installers; the
+#     other policy options are documented above.
+#   prometheus-operator ships ~287 MiB across many small platform
+#     binaries — kept as `all` since the operator is genuinely needed.
+#   The remaining repos are tens of MiB or less; `all` (default) is fine.
+#
+# Total transfer with these defaults: ~370 MiB on first run, then small
+# deltas. Without the policy on RedisInsight it would be ~6.1 GiB.
 MIRRORS=(
   "k8s-docs|RedisLabs/redis-enterprise-k8s-docs"
   "observability|redis-field-engineering/redis-enterprise-observability"
   "redis|redis/redis"
   "RediSearch|RediSearch/RediSearch"
   "RedisGraph|RedisGraph/RedisGraph"
-  "RedisInsight|RedisInsight/RedisInsight"
+  "RedisInsight|RedisInsight/RedisInsight|none"
   "RedisTimeSeries|RedisTimeSeries/RedisTimeSeries"
   "RedisGears|RedisGears/RedisGears"
   "RedisJSON|RedisJSON/RedisJSON"
