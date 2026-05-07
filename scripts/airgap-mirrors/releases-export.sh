@@ -9,14 +9,26 @@
 #   $TRANSFER_DIR/releases/<name>/releases.json    — full GH API response
 #   $TRANSFER_DIR/releases/<name>/assets/<tag>/*   — downloaded asset files
 #
-# `gh` CLI handles auth + pagination automatically. Run `gh auth login`
-# once before first use.
+# Asset-download policy is per-repo, set via the optional 3rd field in
+# each MIRRORS entry in mirrors.conf:
 #
-# This is a full snapshot each time (no incremental marker) — Releases are
-# small in count (tens-to-hundreds per repo) and the inner-side import is
-# idempotent (skips releases that already exist), so re-exporting is cheap
-# for everything except the asset downloads. To skip asset re-download on
-# repeat runs, pass --no-assets.
+#   (omitted) | all          download every release's assets    [default]
+#   none                     metadata only — no asset downloads
+#   latest:N                 only the N most recent releases
+#   since:YYYY-MM-DD         only releases published on/after this date
+#
+# Releases metadata (releases.json) is always fetched in full regardless
+# of policy — it's small and the inner side needs the complete list to
+# decide which Releases to create on GitLab. Only ASSET downloads are
+# filtered.
+#
+# Repeat-run behavior: the JSON is re-fetched every time (cheap), and
+# already-downloaded assets are reused as-is (`-s` size check). The
+# inner-side `releases-import.sh` is idempotent — releases whose tag
+# already exists on GitLab are skipped.
+#
+# CLI flags:
+#   --no-assets       force `none` policy globally (overrides per-repo)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib/common.sh
@@ -27,10 +39,10 @@ require_cmd gh
 require_cmd jq
 require_cmd curl
 
-WITH_ASSETS=1
+GLOBAL_NO_ASSETS=0
 for arg in "$@"; do
   case "$arg" in
-    --no-assets) WITH_ASSETS=0 ;;
+    --no-assets) GLOBAL_NO_ASSETS=1 ;;
     *) die "unknown flag: $arg" ;;
   esac
 done
@@ -38,22 +50,64 @@ done
 OUT_DIR="$TRANSFER_DIR/releases"
 mkdir -p "$OUT_DIR"
 
+# Decide which slice of the releases list gets its assets downloaded.
+# Echoes a JSON array (subset of $1) on stdout. $1 is the full releases
+# JSON file; $2 is the policy string.
+filter_for_assets() {
+  local releases_file="$1" policy="$2"
+
+  case "$policy" in
+    ''|all)
+      cat "$releases_file"
+      ;;
+    none)
+      echo '[]'
+      ;;
+    latest:*)
+      local n="${policy#latest:}"
+      [[ "$n" =~ ^[0-9]+$ ]] || die "invalid latest:N policy '$policy' (N must be a positive integer)"
+      jq ".[0:$n]" "$releases_file"
+      ;;
+    since:*)
+      local d="${policy#since:}"
+      [[ "$d" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] \
+        || die "invalid since: policy '$policy' (expected YYYY-MM-DD)"
+      jq --arg d "${d}T00:00:00Z" \
+        '[.[] | select(.published_at >= $d)]' "$releases_file"
+      ;;
+    *)
+      die "unknown asset policy: '$policy'"
+      ;;
+  esac
+}
+
 export_one() {
-  local name="$1" gh_path="$2"
+  local name="$1" gh_path="$2" policy="${3:-all}"
+  [[ "$GLOBAL_NO_ASSETS" -eq 1 ]] && policy="none"
+
   local repo_out="$OUT_DIR/$name"
   mkdir -p "$repo_out"
 
-  log_info "$name: listing releases via gh API"
+  log_info "$name: listing releases via gh API (asset policy: $policy)"
   gh api --paginate "repos/$gh_path/releases" > "$repo_out/releases.json"
 
   local count
   count="$(jq 'length' "$repo_out/releases.json")"
   log_info "$name: $count release(s) recorded"
 
-  [[ "$WITH_ASSETS" -eq 1 ]] || return 0
   [[ "$count" -gt 0 ]] || return 0
 
-  jq -c '.[]' "$repo_out/releases.json" | while read -r rel; do
+  local to_assetize asset_count
+  to_assetize="$(filter_for_assets "$repo_out/releases.json" "$policy")"
+  asset_count="$(jq 'length' <<<"$to_assetize")"
+
+  if [[ "$asset_count" -eq 0 ]]; then
+    log_info "$name: policy excluded all releases — no assets to fetch"
+    return 0
+  fi
+  log_info "$name: downloading assets for $asset_count release(s)"
+
+  jq -c '.[]' <<<"$to_assetize" | while read -r rel; do
     local tag asset_dir
     tag="$(jq -r '.tag_name' <<<"$rel")"
     asset_dir="$repo_out/assets/$tag"
