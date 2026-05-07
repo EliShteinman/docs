@@ -39,7 +39,7 @@ OUT_DIR="$TRANSFER_DIR/releases"
 mkdir -p "$OUT_DIR"
 
 export_one() {
-  local name="$1" gh_path="$2" _gl_path="$3"
+  local name="$1" gh_path="$2"
   local repo_out="$OUT_DIR/$name"
   mkdir -p "$repo_out"
 
