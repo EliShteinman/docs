@@ -163,6 +163,15 @@ data:
         return '/-/' + (family === 'wiki' ? 'wikis' : family) + sep;
       }
 
+      // GitHub's per-tag release URL `/releases/tag/<X>` has no 1:1 path
+      // equivalent on GitLab. Mapping to `/-/tags/<X>` is the safest
+      // choice — it always resolves for any existing tag; `/-/releases/<X>`
+      // only exists when a GitLab Release object was explicitly created.
+      // Must run BEFORE pathRewrite, otherwise the general rule would
+      // produce the broken `/-/releases/tag/<X>` (no `/tag/` segment in
+      // GitLab's path layout — that's a GitHub-only artifact).
+      var releasesTagRewrite = /^\/releases\/tag(\/|$)/;
+
       function translateHref(href) {
         // GitHub treats owner/repo case-insensitively (RediSearch/RediSearch
         // and redisearch/redisearch resolve to the same repo). Match the
@@ -178,6 +187,7 @@ data:
           // Standard match: <from>/<family>/<ref>/<path> on the github.com host.
           if (hrefLower.indexOf(fromLower) === 0) {
             var rest = href.slice(m.from.length);
+            rest = rest.replace(releasesTagRewrite, '/-/tags$1');
             rest = rest.replace(pathRewrite, pathRewriter);
             return m.to + rest;
           }

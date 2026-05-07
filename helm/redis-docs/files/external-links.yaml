@@ -510,12 +510,18 @@ families:
 # Path translation (GitHub → GitLab):
 #   /<org>/<repo>/blob/<ref>/<path>     →  /<group>/.../<proj>/-/blob/<ref>/<path>
 #   /<org>/<repo>/tree/<ref>/<path>     →  /<group>/.../<proj>/-/tree/<ref>/<path>
+#   /<org>/<repo>/releases/tag/<X>      →  /<group>/.../<proj>/-/tags/<X>
 #   /<org>/<repo>/                       →  /<group>/.../<proj>/
 #
 # The handler inserts `/-/` for the GitLab path families: blob, tree, raw,
 # blame, commits, commit, tags, releases, wiki, issues. GitLab nested groups
 # (`url/group/subgroup/.../project`) are handled transparently because `to`
 # is treated as an opaque prefix string — provide the full project URL.
+#
+# Special case: GitHub's per-tag release page `/releases/tag/<X>` is mapped
+# to GitLab's `/-/tags/<X>` (not `/-/releases/<X>`) — `tags/<X>` always
+# resolves for any existing tag, while `releases/<X>` requires a GitLab
+# Release object to have been created explicitly.
 #
 # Precedence (highest wins) for the resolved entry:
 #   1. values.externalLinks.gitMirrors.<name>.enabled / .to

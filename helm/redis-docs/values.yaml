@@ -282,7 +282,9 @@ externalLinks:
   # `/tree/<ref>/<path>`, `/raw`, `/blame`, `/commits`, `/commit`, `/tags`,
   # `/releases`, `/wiki`, `/issues`) to their GitLab equivalents
   # (`/-/blob/...`, `/-/tree/...`, etc.) automatically — you only provide
-  # the project URL.
+  # the project URL. GitHub's per-tag release URL `/releases/tag/<X>` is
+  # mapped to GitLab's `/-/tags/<X>` (the closest 1:1 — `/-/releases/<X>`
+  # only exists if a GitLab Release object was explicitly created).
   #
   # Activation is purely Helm-driven: changing values here regenerates the
   # runtime ConfigMap (`runtime-config.js`) and triggers a rolling restart
