@@ -21,6 +21,9 @@ PRIVATE_ACCESS_TOKEN
 dist/
 *.tar
 /redis-docs-*.tgz
+# Airgap mirror sync — local config (real values, host names, paths).
+# `mirrors.conf.example` is the tracked template.
+/scripts/airgap-mirrors/mirrors.conf
 # Rust docs demos
 /content/develop/use-cases/rate-limiter/rust/target/
 /content/develop/use-cases/rate-limiter/rust/Cargo.lock
