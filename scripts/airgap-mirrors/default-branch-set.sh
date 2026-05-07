@@ -24,7 +24,7 @@ require_cmd jq
 : "${GITLAB_TOKEN:?export GITLAB_TOKEN before running this script}"
 
 set_one() {
-  local name="$1" _gh_path="$2" gl_path="$3"
+  local name="$1" gl_path="$2"
   local repo="$MIRRORS_DIR/$name.git"
 
   [[ -d "$repo" ]] || { log_warn "$name: bare mirror not found, skipping"; return 0; }

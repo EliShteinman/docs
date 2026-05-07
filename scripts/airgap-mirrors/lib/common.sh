@@ -16,10 +16,7 @@ load_config() {
   local config="$script_dir/mirrors.conf"
 
   if [[ ! -f "$config" ]]; then
-    if [[ -f "$script_dir/mirrors.conf.example" ]]; then
-      die "missing $config — copy mirrors.conf.example and edit it for your deployment"
-    fi
-    die "missing $config (and no example template found)"
+    die "missing $config — copy the matching template (mirrors.external.conf.example on the online machine, mirrors.internal.conf.example on the airgap machine) to mirrors.conf and edit"
   fi
 
   # shellcheck source=/dev/null
@@ -30,16 +27,22 @@ load_config() {
   : "${MIRRORS:?MIRRORS array not set in mirrors.conf}"
 }
 
-# Iterate over $MIRRORS and call $1 with (name, github_owner_repo, gitlab_path).
+# Iterate over $MIRRORS and call $1 with (name, target).
+#
+# `target` is the side-specific second field of each entry — on the
+# external machine it's `github_owner/repo`, on the internal machine it's
+# `gitlab_path`. Each script knows which it expects based on the side it
+# runs on; this helper stays side-agnostic.
+#
 # Exits on first failure to match `set -e` semantics.
 for_each_mirror() {
   local callback="$1"
-  local entry name gh_path gl_path
+  local entry name target
   for entry in "${MIRRORS[@]}"; do
-    IFS='|' read -r name gh_path gl_path <<< "$entry"
-    [[ -n "$name" && -n "$gh_path" && -n "$gl_path" ]] \
+    IFS='|' read -r name target <<< "$entry"
+    [[ -n "$name" && -n "$target" ]] \
       || die "malformed mirror entry: '$entry'"
-    "$callback" "$name" "$gh_path" "$gl_path"
+    "$callback" "$name" "$target"
   done
 }
 

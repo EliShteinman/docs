@@ -28,7 +28,7 @@ mkdir -p "$OUT_DIR"
 STAMP="$(iso_stamp)"
 
 bundle_one() {
-  local name="$1" gh_path="$2" gl_path="$3"
+  local name="$1" gh_path="$2"
   local repo="$MIRRORS_DIR/$name.git"
   local upstream="https://github.com/$gh_path"
 
@@ -62,15 +62,17 @@ bundle_one() {
   # promotes sync.bundled → sync.synced after the inner side reports success.
   git_local_set "$repo" sync.bundled "$head"
 
+  # Sidecar metadata travels with the bundle to the airgap side. It must
+  # contain ONLY external-side / shared facts (mirror name, GitHub URL,
+  # SHAs) — never any internal-network info such as GitLab paths.
   jq -n \
     --arg name "$name" \
     --arg upstream "$upstream" \
-    --arg gitlab "$gl_path" \
     --arg head "$head" \
     --arg from "${synced:-}" \
     --arg kind "$bundle_kind" \
     --arg created "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-    '{name:$name, upstream:$upstream, gitlab_path:$gitlab,
+    '{name:$name, upstream:$upstream,
       head:$head, from:$from, kind:$kind, created_at:$created}' \
     > "${bundle_path%.bundle}.meta.json"
 

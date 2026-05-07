@@ -1,0 +1,44 @@
+# Airgap mirror sync — EXTERNAL (online) machine configuration.
+#
+# Copy this file to `mirrors.conf` (in the same directory) on the ONLINE
+# machine that has access to GitHub. The real `mirrors.conf` is gitignored.
+#
+# This file MUST NOT contain any information about the internal/airgap
+# network: no GitLab host, no group paths, no tokens. Those belong on the
+# internal machine in `mirrors.internal.conf.example`.
+
+# ────────────────────────────────────────────────────────────────────────
+# Local paths (deployment-specific)
+# ────────────────────────────────────────────────────────────────────────
+
+# Bare clones live here. Each repo at: $MIRRORS_DIR/<name>.git
+MIRRORS_DIR="${HOME}/mirrors"
+
+# Bundle outputs land here. Copy this directory's contents to USB after
+# running bundle-create.sh / releases-export.sh.
+TRANSFER_DIR="${HOME}/usb-out"
+
+# ────────────────────────────────────────────────────────────────────────
+# Mirror catalog — name | github_owner/repo
+#
+# `name`              — local mirror folder name ($MIRRORS_DIR/<name>.git)
+#                       AND the key used by the chart catalog
+#                       (helm/redis-docs/files/external-links.yaml)
+# `github_owner/repo` — upstream GitHub URL is https://github.com/<this>
+#
+# No GitLab path here — that's internal-only data.
+# ────────────────────────────────────────────────────────────────────────
+MIRRORS=(
+  "k8s-docs|RedisLabs/redis-enterprise-k8s-docs"
+  "observability|redis-field-engineering/redis-enterprise-observability"
+  "redis|redis/redis"
+  "RediSearch|RediSearch/RediSearch"
+  "RedisGraph|RedisGraph/RedisGraph"
+  "RedisInsight|RedisInsight/RedisInsight"
+  "RedisTimeSeries|RedisTimeSeries/RedisTimeSeries"
+  "RedisGears|RedisGears/RedisGears"
+  "RedisJSON|RedisJSON/RedisJSON"
+  "RedisBloom|RedisBloom/RedisBloom"
+  "redis-py|redis/redis-py"
+  "prometheus-operator|prometheus-operator/prometheus-operator"
+)

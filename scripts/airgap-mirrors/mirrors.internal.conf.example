@@ -1,0 +1,56 @@
+# Airgap mirror sync — INTERNAL (airgap) machine configuration.
+#
+# Copy this file to `mirrors.conf` (in the same directory) on the AIRGAP
+# machine that talks to your internal GitLab. The real `mirrors.conf` is
+# gitignored — fill it with the actual values for your internal network.
+#
+# This file is the ONLY place where internal-network details are recorded:
+# GitLab host, group paths, etc. The external (online) machine MUST NOT
+# have any of this information.
+
+# ────────────────────────────────────────────────────────────────────────
+# Local paths (deployment-specific)
+# ────────────────────────────────────────────────────────────────────────
+
+# Bare clones live here. Each repo at: $MIRRORS_DIR/<name>.git
+# Each bare repo's `origin` remote points to the matching GitLab project.
+MIRRORS_DIR="${HOME}/mirrors"
+
+# USB landing zone. Copy bundle/release contents from USB into this dir
+# before running bundle-import.sh / releases-import.sh.
+TRANSFER_DIR="${HOME}/usb-in"
+
+# ────────────────────────────────────────────────────────────────────────
+# GitLab API target
+# ────────────────────────────────────────────────────────────────────────
+GITLAB_HOST="https://gitlab.your-company.example"
+# GITLAB_TOKEN is read from the environment, never the config file:
+#   export GITLAB_TOKEN="glpat-xxxxx"
+
+# ────────────────────────────────────────────────────────────────────────
+# Mirror catalog — name | gitlab_path
+#
+# `name`        — local mirror folder name ($MIRRORS_DIR/<name>.git)
+#                 AND the key used by the chart catalog. MUST match the
+#                 names used in the EXTERNAL machine's mirrors.conf (the
+#                 .bundle metadata uses this name to find the local repo).
+# `gitlab_path` — path inside GitLab without the host (e.g.
+#                 "your-group/redis"). Nested groups OK
+#                 (e.g. "redis/k8s/redis-enterprise-k8s-docs").
+#
+# No GitHub URL here — that's external-only data.
+# ────────────────────────────────────────────────────────────────────────
+MIRRORS=(
+  "k8s-docs|your-group/redis-enterprise-k8s-docs"
+  "observability|your-group/redis-enterprise-observability"
+  "redis|your-group/redis"
+  "RediSearch|your-group/RediSearch"
+  "RedisGraph|your-group/RedisGraph"
+  "RedisInsight|your-group/RedisInsight"
+  "RedisTimeSeries|your-group/RedisTimeSeries"
+  "RedisGears|your-group/RedisGears"
+  "RedisJSON|your-group/RedisJSON"
+  "RedisBloom|your-group/RedisBloom"
+  "redis-py|your-group/redis-py"
+  "prometheus-operator|your-group/prometheus-operator"
+)

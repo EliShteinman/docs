@@ -68,7 +68,7 @@ link_asset_to_release() {
 }
 
 import_one() {
-  local name="$1" _gh_path="$2" gl_path="$3"
+  local name="$1" gl_path="$2"
   local repo_in="$IN_DIR/$name"
   local releases_file="$repo_in/releases.json"
 
