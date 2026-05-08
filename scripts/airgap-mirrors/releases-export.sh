@@ -82,13 +82,22 @@ filter_for_assets() {
 }
 
 export_one() {
-  local name="$1" gh_path="$2" policy="${3:-all}"
+  local name="$1" gh_path="$2" policy="${3:-all}" asset_filter="${4:-}"
   [[ "$GLOBAL_NO_ASSETS" -eq 1 ]] && policy="none"
+
+  # Build a jq-compatible regex from the comma-separated keyword list
+  # (e.g. "win,linux" → "win|linux"). Empty filter means accept all.
+  local asset_regex=""
+  if [[ -n "$asset_filter" ]]; then
+    asset_regex="${asset_filter//,/|}"
+  fi
 
   local repo_out="$OUT_DIR/$name"
   mkdir -p "$repo_out"
 
-  log_info "$name: listing releases via gh API (asset policy: $policy)"
+  local policy_desc="$policy"
+  [[ -n "$asset_filter" ]] && policy_desc="$policy, assets matching: $asset_filter"
+  log_info "$name: listing releases via gh API ($policy_desc)"
   gh api --paginate "repos/$gh_path/releases" > "$repo_out/releases.json"
 
   local count
@@ -113,17 +122,26 @@ export_one() {
     asset_dir="$repo_out/assets/$tag"
     mkdir -p "$asset_dir"
 
-    jq -r '.assets[]? | "\(.name)\t\(.browser_download_url)"' <<<"$rel" \
-      | while IFS=$'\t' read -r asset_name asset_url; do
-        [[ -z "$asset_url" ]] && continue
-        local target="$asset_dir/$asset_name"
-        if [[ -s "$target" ]]; then
-          log_info "$name: $tag/$asset_name (cached)"
-        else
-          log_info "$name: downloading $tag/$asset_name"
-          curl -fsSL "$asset_url" -o "$target"
-        fi
-      done
+    # Apply asset name filter if set, otherwise take all assets.
+    local asset_list
+    if [[ -n "$asset_regex" ]]; then
+      asset_list="$(jq -r --arg re "$asset_regex" \
+        '.assets[]? | select(.name | test($re;"i")) | "\(.name)\t\(.browser_download_url)"' \
+        <<<"$rel")"
+    else
+      asset_list="$(jq -r '.assets[]? | "\(.name)\t\(.browser_download_url)"' <<<"$rel")"
+    fi
+
+    while IFS=$'\t' read -r asset_name asset_url; do
+      [[ -z "$asset_url" ]] && continue
+      local target="$asset_dir/$asset_name"
+      if [[ -s "$target" ]]; then
+        log_info "$name: $tag/$asset_name (cached)"
+      else
+        log_info "$name: downloading $tag/$asset_name"
+        curl -fsSL "$asset_url" -o "$target"
+      fi
+    done <<< "$asset_list"
   done
 }
 

@@ -19,52 +19,43 @@ MIRRORS_DIR="${HOME}/mirrors"
 TRANSFER_DIR="${HOME}/usb-out"
 
 # ────────────────────────────────────────────────────────────────────────
-# Mirror catalog — name | github_owner/repo [| asset_policy]
+# Mirror catalog — name | github_owner/repo [| asset_policy [| asset_filter]]
 #
 # `name`              — local mirror folder name ($MIRRORS_DIR/<name>.git)
 #                       AND the key used by the chart catalog
 #                       (helm/redis-docs/files/external-links.yaml)
 # `github_owner/repo` — upstream GitHub URL is https://github.com/<this>
-# `asset_policy`      — OPTIONAL. Controls which Release ASSETS (binary
-#                       uploads attached to GitHub Releases) get
-#                       downloaded into $TRANSFER_DIR/releases/<name>/
-#                       by releases-export.sh. Release metadata
-#                       (title/body/tag) is always exported in full,
-#                       regardless of policy.
+# `asset_policy`      — OPTIONAL. Controls WHICH RELEASES get their assets
+#                       downloaded. Release metadata (title/body/tag) is
+#                       always exported in full regardless of policy.
 #
 #                       Values:
-#                         (omitted) / all     download all assets   [default]
-#                         none                metadata only — no binaries
-#                         latest:N            assets for N most recent
-#                                             releases (sliding window)
-#                         since:YYYY-MM-DD    assets for releases
-#                                             published on/after this date
+#                         (omitted) / all     all releases            [default]
+#                         none                metadata only, no binaries
+#                         latest:N            only N most-recent releases
+#                         since:YYYY-MM-DD    only releases on/after date
+#
+# `asset_filter`      — OPTIONAL. Comma-separated keywords; only assets
+#                       whose filename contains at least one keyword
+#                       (case-insensitive) are downloaded. Empty = all.
+#                       Example: "win,linux" skips macOS .dmg files.
 #
 # No GitLab path here — that's internal-only data.
 # ────────────────────────────────────────────────────────────────────────
 #
-# Defaults below match a measured snapshot of the upstream repos:
-#   RedisInsight ships ~5.8 GiB of GUI installers across 48 releases. The
-#     latest release alone is ~1.07 GiB (10 platform-specific installers:
-#     Windows .exe, macOS .dmg x64/arm64, Linux .deb/.rpm/.AppImage/.snap
-#     across x86_64 and arm64). Set to `latest:1` so each export grabs
-#     only the newest installer set; subsequent runs are no-ops until a
-#     fresh upstream release lands, at which point only that single new
-#     release's assets download.
-#   prometheus-operator ships ~287 MiB across many small platform
-#     binaries — kept as `all` since the operator is genuinely needed.
-#   The remaining repos are tens of MiB or less; `all` (default) is fine.
-#
-# Total transfer on a clean external machine: ~1.4 GiB on first run,
-# then small deltas (typically < 50 MiB per run unless RedisInsight ships
-# a new release, in which case ~1 GiB for that one release).
+# Measured sizes (snapshot):
+#   RedisInsight: 48 releases, win+linux assets only = ~3.52 GiB first run.
+#     Per new release going forward = ~700-815 MiB (only new files).
+#     macOS .dmg files (~2.3 GiB total) are excluded via asset_filter.
+#   prometheus-operator: 166 releases, all assets = ~287 MiB.
+#   All other repos: tens of MiB or less, `all` default is fine.
 MIRRORS=(
   "k8s-docs|RedisLabs/redis-enterprise-k8s-docs"
   "observability|redis-field-engineering/redis-enterprise-observability"
   "redis|redis/redis"
   "RediSearch|RediSearch/RediSearch"
   "RedisGraph|RedisGraph/RedisGraph"
-  "RedisInsight|RedisInsight/RedisInsight|latest:1"
+  "RedisInsight|RedisInsight/RedisInsight|all|win,linux"
   "RedisTimeSeries|RedisTimeSeries/RedisTimeSeries"
   "RedisGears|RedisGears/RedisGears"
   "RedisJSON|RedisJSON/RedisJSON"
