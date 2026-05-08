@@ -140,6 +140,23 @@ export GITLAB_TOKEN="glpat-xxxxx"
 
 ---
 
+## דרישות מוקדמות לפני הריצה הראשונה
+
+| דרישה | היכן נדרש | כיצד להכין |
+|---|---|---|
+| **GitLab PAT עם scope `api`** | כל הסקריפטים הפנימיים | GitLab → User Settings → Access Tokens → scope: `api` |
+| **`git push` מאומת על origin** | `bundle-import.sh` | הכנס את הטוקן ישירות ב-URL: `git remote set-url origin https://oauth2:TOKEN@gitlab.../group/repo` — או הגדר SSH key |
+| **Generic Package Registry מופעל** | `releases-import.sh` | Admin → Settings → CI/CD → Package registry (ברירת מחדל: פעיל) |
+| **מגבלת גודל artifacts מספקת** | `releases-import.sh` | Admin → Settings → General → Maximum artifacts size (ברירת מחדל: 1 GiB — מספיק ל-RedisInsight) |
+| **`gh` CLI מאומת** | `releases-export.sh` | `gh auth login` פעם אחת על המחשב החיצוני |
+
+> **אסימון GitLab:** מעבירים כ-env var לפני כל ריצה פנימית:
+> ```bash
+> export GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
+> ```
+
+---
+
 ## הגדרת Default Branch (חד-פעמי)
 
 `git push --mirror` לא מעביר את ה-default branch של ה-project — GitLab קובע אותו בנפרד.
@@ -156,13 +173,13 @@ export GITLAB_TOKEN="glpat-xxxxx"
 
 ## מגבלות — מה לא מועבר
 
-| משאב | סיבה | השפעה על docs |
+| משאב | סיבה | השפעה |
 |---|---|---|
-| **Issues, Pull Requests** | DB של GitHub, לא Git | 2,220 קישורי PR + 648 Issues → יציגו ב-GitLab אבל תוכן לא יועבר |
+| **Issues, Pull Requests** | DB של GitHub, לא Git | קישורים יצביעו ל-GitLab אבל התוכן לא שם |
 | **Security Advisories** | DB של GitHub | 16 קישורים — יישארו שבורים |
-| **Wiki** | repo נפרד (`<repo>.wiki.git`) | 2 קישורים — צריך mirror נפרד |
-| **Release body של ריליסים ישנים** | לא בגיט | נוצרים דפי Release ריקים אם לא יובא ה-JSON |
-| **Release assets היסטוריים** | לפי ה-policy | רק מה שה-policy מגדיר |
+| **Wiki** | repo נפרד בגיטהאב | 2 קישורים — דורש mirror נפרד של `<repo>.wiki.git` |
+| **ענפים/תגיות שנמחקו ב-GitHub** | bundle import לא מוחק refs | ישארו ב-GitLab עד bundle מלא הבא |
+| **Release assets היסטוריים** | לפי ה-policy בקונפיג | רק מה שה-policy מגדיר |
 | **`curl`/`kubectl apply -f` ב-code blocks** | JS handler לא נוגע ב-code blocks | קישורים אלה לא משוכתבים בזמן ריצה |
 
 ---

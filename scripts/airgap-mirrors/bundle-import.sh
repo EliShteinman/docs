@@ -29,9 +29,13 @@ SUCCESS_LIST="$TRANSFER_DIR/import-success.list"
 : > "$SUCCESS_LIST"   # truncate / start fresh
 
 shopt -s nullglob
-bundles=("$IN_DIR"/*.bundle)
+_raw_bundles=("$IN_DIR"/*.bundle)
 shopt -u nullglob
-[[ ${#bundles[@]} -gt 0 ]] || die "no *.bundle files found under $IN_DIR"
+[[ ${#_raw_bundles[@]} -gt 0 ]] || die "no *.bundle files found under $IN_DIR"
+
+# Sort alphabetically so full bundles (earlier timestamps) are applied before
+# delta bundles of the same repo when multiple cycles land on the same USB.
+readarray -t bundles < <(printf '%s\n' "${_raw_bundles[@]}" | sort)
 
 for bundle in "${bundles[@]}"; do
   meta="${bundle%.bundle}.meta.json"
@@ -42,6 +46,12 @@ for bundle in "${bundles[@]}"; do
   repo="$MIRRORS_DIR/$name.git"
 
   [[ -d "$repo" ]] || die "$name: bare mirror not found at $repo"
+
+  # origin must point to the GitLab URL and be authenticated (embedded token
+  # in the URL or SSH key). Check it is at least configured.
+  origin_url="$(git -C "$repo" remote get-url origin 2>/dev/null || true)"
+  [[ -n "$origin_url" ]] \
+    || die "$name: no 'origin' remote — set it to the GitLab project URL"
 
   log_info "$name: verifying $(basename "$bundle")"
   git -C "$repo" bundle verify "$bundle" >/dev/null

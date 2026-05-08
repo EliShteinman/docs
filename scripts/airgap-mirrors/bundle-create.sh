@@ -35,7 +35,7 @@ bundle_one() {
   [[ -d "$repo" ]] || die "$name: bare mirror not found at $repo (run initial clone first)"
 
   log_info "$name: fetching upstream"
-  git -C "$repo" fetch --prune
+  git -C "$repo" fetch --prune --prune-tags
 
   local head synced bundle_kind bundle_path
   head="$(git -C "$repo" rev-parse HEAD)"
@@ -49,8 +49,11 @@ bundle_one() {
   if [[ -n "$synced" ]]; then
     bundle_kind="delta"
     bundle_path="$OUT_DIR/${name}.${STAMP}.delta.bundle"
-    log_info "$name: bundling $synced..HEAD"
-    git -C "$repo" bundle create "$bundle_path" "$synced..HEAD" --all
+    log_info "$name: bundling delta since $synced"
+    # --all includes all branch/tag refs; ^$synced excludes commits already
+    # synced and marks $synced as a prerequisite so bundle-verify on the
+    # inner side can confirm the receiving repo has the required base.
+    git -C "$repo" bundle create "$bundle_path" --all "^$synced"
   else
     bundle_kind="full"
     bundle_path="$OUT_DIR/${name}.${STAMP}.full.bundle"
