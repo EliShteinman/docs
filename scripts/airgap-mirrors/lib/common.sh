@@ -27,27 +27,27 @@ load_config() {
   : "${MIRRORS:?MIRRORS array not set in mirrors.conf}"
 }
 
-# Iterate over $MIRRORS and call $1 with (name, target, extra).
+# Iterate over $MIRRORS and call $1 with (name, target, extra1, extra2).
 #
-# `target` is the side-specific second field of each entry — on the
-# external machine it's `github_owner/repo`, on the internal machine it's
-# `gitlab_path`. Each script knows which it expects based on the side it
-# runs on; this helper stays side-agnostic.
+# `target`  — side-specific second field:
+#             external machine: github_owner/repo
+#             internal machine: gitlab_path
+# `extra1`  — optional 3rd field (asset-download policy on external side)
+# `extra2`  — optional 4th field (asset filename filter on external side)
+# Scripts that don't need extra fields simply ignore $3/$4.
 #
-# `extra` is an optional third field, currently used by releases-export.sh
-# on the external side to attach a per-repo asset-download policy
-# (none / all / latest:N / since:YYYY-MM-DD). Scripts that don't care
-# simply ignore $3.
-#
-# Exits on first failure to match `set -e` semantics.
+# IMPORTANT: bash `read` with N variables slurps ALL remaining |-separated
+# fields into the last variable. Four explicit variables are required so
+# that 4-field entries like "name|gh_path|all|win,linux" are parsed
+# correctly: extra1="all", extra2="win,linux".
 for_each_mirror() {
   local callback="$1"
-  local entry name target extra
+  local entry name target extra1 extra2
   for entry in "${MIRRORS[@]}"; do
-    IFS='|' read -r name target extra <<< "$entry"
+    IFS='|' read -r name target extra1 extra2 <<< "$entry"
     [[ -n "$name" && -n "$target" ]] \
       || die "malformed mirror entry: '$entry'"
-    "$callback" "$name" "$target" "${extra:-}"
+    "$callback" "$name" "$target" "${extra1:-}" "${extra2:-}"
   done
 }
 
