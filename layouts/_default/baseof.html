@@ -1546,7 +1546,7 @@
         }
 
         // Same workaround as JS above, applied to Ruby cells.
-        const CM_RUBY_MODE_URL = 'https://unpkg.com/codemirror@5.65.16/mode/ruby/ruby.js';
+        const CM_RUBY_MODE_URL = window.HUGO_BASEURL + 'vendor/codemirror-ruby.js';
 
         function loadCodeMirrorRubyMode(CM) {
           if (!CM || typeof CM.defineMode !== 'function') return Promise.resolve(false);
