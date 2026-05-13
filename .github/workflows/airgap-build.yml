@@ -1,10 +1,20 @@
 name: Airgap Build & Push
 
-# Matrix-based parallel build:
-#   setup    → install deps, fetch components, snapshot workspace, discover versions
-#   build    → matrix of N+1 jobs (latest + each version), each does ONE hugo run
-#   assemble → download all artifacts, merge into single public/, gzip
-#   docker   → 2 conditional steps (priv/unpriv), build minimal nginx image, push
+# Cloud equivalent of the local Dockerfile + airgap-multibuild.sh pipeline.
+# Does the same multi-version Hugo build, but in parallel across GHA runners,
+# with path-specific actions/cache keys so unchanged versions hit cache.
+#
+# Pipeline mirrors the local one phase-by-phase:
+#   - Dockerfile builder phase A (apt + hugo + npm + pip)  → setup job, with caches on node_modules, venv
+#   - Dockerfile builder phase B (make components)         → setup job, cache on examples/
+#   - airgap-multibuild.sh pre-snapshot patches            → setup job, inline
+#   - airgap-multibuild.sh build latest                    → build_latest job, cache on hugo-latest-<hash>
+#   - airgap-multibuild.sh build per (product, version)    → build_versions job (matrix), cache on hugo-<product>-<version>-<hash>
+#   - airgap-multibuild.sh assemble + ndjson + gzip        → assemble job
+#   - Dockerfile runtime stages                            → docker job, Dockerfile.runtime
+#
+# Original Dockerfile and airgap-multibuild.sh are untouched and still work
+# for local `docker buildx build .` from a developer machine.
 
 on:
   workflow_dispatch:
@@ -27,9 +37,9 @@ on:
         default: both
       tag_override:
         description: >-
-          Custom tag for testing (e.g. "test1"). When set, replaces the
-          auto HASH-based tag and SKIPS the rolling :latest / :unprivileged
-          tags so you can safely delete it later. Leave empty for normal builds.
+          Custom tag for testing. When set, replaces the auto HASH-based tag
+          and SKIPS the rolling :latest / :unprivileged tags. Leave empty for
+          normal builds.
         type: string
         default: ''
 
@@ -39,7 +49,8 @@ env:
 
 jobs:
   # =========================================================================
-  # Phase 1: setup — prepare workspace, discover versions, emit build matrix
+  # Phase 1: setup — install deps, fetch components, apply pre-snapshot
+  # patches, discover versions, package the workspace for matrix runners.
   # =========================================================================
   setup:
     name: 1. Setup workspace
@@ -53,10 +64,9 @@ jobs:
       unpriv_tags: ${{ steps.meta.outputs.unpriv_tags }}
       matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout (full history for enableGitInfo)
+        uses: actions/checkout@v4
         with:
-          # Need full git history because config.toml sets enableGitInfo=true,
-          # which makes Hugo run `git log` per page for lastmod metadata.
           fetch-depth: 0
 
       - name: Compute build params
@@ -106,22 +116,58 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends python3-venv rsync gawk jq
 
-      - name: Setup Python venv + install deps
-        run: |
-          python3 -m venv /tmp/venv
-          /tmp/venv/bin/pip install --quiet -r requirements.txt
+      # ---- npm cache + install ----
+      - name: Restore node_modules cache
+        id: cache-npm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
 
-      - name: Setup Node deps
+      - name: npm install
+        if: steps.cache-npm.outputs.cache-hit != 'true'
         run: npm install --no-audit --no-fund
 
-      - name: Fetch external components
+      # ---- pip cache + install (venv at /opt/venv) ----
+      - name: Restore python venv cache
+        id: cache-pip
+        uses: actions/cache@v4
+        with:
+          path: /opt/venv
+          key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: pip install into venv
+        if: steps.cache-pip.outputs.cache-hit != 'true'
+        run: |
+          sudo python3 -m venv /opt/venv
+          sudo chown -R "$USER" /opt/venv
+          /opt/venv/bin/pip install --quiet -r requirements.txt
+
+      - name: Fix venv ownership (cache restores as runner, no-op if already writable)
+        run: |
+          if [ ! -w /opt/venv ]; then
+            sudo chown -R "$USER" /opt/venv
+          fi
+
+      # ---- examples/ cache + make components ----
+      - name: Restore examples (make components output) cache
+        id: cache-examples
+        uses: actions/cache@v4
+        with:
+          path: examples
+          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components_local/index.json') }}
+
+      - name: make components (fetch external client repos)
+        if: steps.cache-examples.outputs.cache-hit != 'true'
         env:
           PRIVATE_ACCESS_TOKEN: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
         run: |
-          export PATH="/tmp/venv/bin:$PATH"
+          export PATH="/opt/venv/bin:$PATH"
           make components
 
-      - name: Apply airgap source patches (pre-snapshot)
+      # ---- Pre-snapshot airgap patches (deterministic, run every time) ----
+      # These match airgap-multibuild.sh lines 24-50.
+      - name: Apply airgap source patches
         run: |
           set -euo pipefail
           # 1. Relax version-selector regex so dropdown appears under any baseURL
@@ -141,42 +187,47 @@ jobs:
           find content -type f -name '*.md' -print0 | xargs -0 sed -i \
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
-          # 3. baseURL and Hugo per-partial timeout
+          # 3. baseURL and Hugo per-partial timeout (matches Dockerfile lines 47, 51)
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
-      - name: Discover versions & emit matrix JSON
+      # ---- Discover versions, write version-files, emit matrix JSON ----
+      - name: Discover versions and emit matrix JSON
         id: matrix
         run: |
           set -euo pipefail
           discover() {
             local d=$1
             if [ -d "$d" ]; then
-              ls -1 "$d" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' || true
+              find "$d" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" \
+                | awk -F/ '{print $NF}' | sort
             fi
           }
           K8S=$(discover content/operate/kubernetes)
           RS=$(discover content/operate/rs)
           REDISVL=$(discover content/develop/ai/redisvl)
 
-          # Write version lists into workspace (consumed by templates)
+          # Write version-files (consumed by docs-nav.html template).
+          # These must be in workspace so latest + all matrix runners have them.
           echo "$K8S"     > kubernetes-versions
           echo "$RS"      > rs-versions
           echo "$REDISVL" > redisvl-versions
           : > rdi-versions
 
-          # Emit JSON matrix: 1 latest + N versions
           {
             echo '['
-            echo '{"kind":"latest","name":"latest","product":"","version":"","product_label":"","product_pascal":""}'
+            sep=''
             for v in $K8S; do
-              echo ",{\"kind\":\"version\",\"name\":\"k8s-$v\",\"product\":\"operate/kubernetes\",\"version\":\"$v\",\"product_label\":\"Redis for Kubernetes\",\"product_pascal\":\"Kubernetes\"}"
+              echo "$sep{\"name\":\"k8s-$v\",\"product\":\"operate/kubernetes\",\"version\":\"$v\",\"product_label\":\"Redis for Kubernetes\",\"product_pascal\":\"Kubernetes\"}"
+              sep=','
             done
             for v in $RS; do
-              echo ",{\"kind\":\"version\",\"name\":\"rs-$v\",\"product\":\"operate/rs\",\"version\":\"$v\",\"product_label\":\"Redis Software\",\"product_pascal\":\"Rs\"}"
+              echo "$sep{\"name\":\"rs-$v\",\"product\":\"operate/rs\",\"version\":\"$v\",\"product_label\":\"Redis Software\",\"product_pascal\":\"Rs\"}"
+              sep=','
             done
             for v in $REDISVL; do
-              echo ",{\"kind\":\"version\",\"name\":\"redisvl-$v\",\"product\":\"develop/ai/redisvl\",\"version\":\"$v\",\"product_label\":\"RedisVL\",\"product_pascal\":\"Redisvl\"}"
+              echo "$sep{\"name\":\"redisvl-$v\",\"product\":\"develop/ai/redisvl\",\"version\":\"$v\",\"product_label\":\"RedisVL\",\"product_pascal\":\"Redisvl\"}"
+              sep=','
             done
             echo ']'
           } | jq -c . > matrix.json
@@ -184,14 +235,14 @@ jobs:
           echo "Matrix entries: $(jq 'length' matrix.json)"
           jq -r '.[] | "  - \(.name)"' matrix.json
 
-      - name: Tar workspace (with node_modules + venv for matrix runners)
+      # ---- Bundle the workspace for the matrix + latest runners ----
+      # --anchored is required: without it, --exclude=public would also strip
+      # node_modules/tailwindcss/lib/public/ and break postcss.
+      # .git IS included because config.toml has enableGitInfo=true (Hugo runs
+      # `git log` per page to populate lastmod).
+      - name: Tar workspace
         run: |
           set -euo pipefail
-          cp -a /tmp/venv ./venv
-          # --anchored is critical: without it, --exclude=public would also
-          # strip node_modules/tailwindcss/lib/public/ and break postcss.
-          # .git IS included (~280MB) because config.toml has enableGitInfo=true
-          # and Hugo needs `git log` to populate lastmod per page.
           tar --anchored \
               --exclude='./public' \
               --exclude='./resources' \
@@ -207,7 +258,7 @@ jobs:
           name: workspace
           path: /tmp/workspace.tar.gz
           retention-days: 1
-          compression-level: 0  # already gzipped
+          compression-level: 0
 
       - name: Write build plan
         env:
@@ -221,7 +272,7 @@ jobs:
         run: |
           set -euo pipefail
           OVERRIDE_DISPLAY="${INPUT_OVERRIDE:-(none — auto HASH + rolling tags)}"
-          MATRIX_COUNT=$(jq 'length' matrix.json)
+          COUNT=$(jq 'length' matrix.json)
           {
             echo "## Build plan"
             echo ""
@@ -232,7 +283,7 @@ jobs:
             echo "| Variant | \`$INPUT_VARIANT\` |"
             echo "| Platforms | \`$PLATFORMS\` |"
             echo "| Tag override | \`$OVERRIDE_DISPLAY\` |"
-            echo "| Matrix size | ${MATRIX_COUNT} parallel Hugo builds |"
+            echo "| Matrix size | $COUNT version builds + 1 latest |"
             echo ""
             if [ "$INPUT_VARIANT" != "unprivileged" ]; then
               echo "### Privileged tags"
@@ -249,10 +300,105 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================
-  # Phase 2: build matrix — one runner per (kind, product, version)
+  # Phase 2a: build_latest — equivalent to airgap-multibuild.sh "build latest"
   # =========================================================================
-  build:
-    name: "2. Build ${{ matrix.name }}"
+  build_latest:
+    name: 2a. Build latest
+    needs: setup
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Install Hugo
+        run: |
+          wget -qO /tmp/hugo.deb \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i /tmp/hugo.deb
+
+      - name: Install system deps
+        run: sudo apt-get install -y --no-install-recommends rsync
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: /tmp/
+
+      - name: Extract workspace
+        run: |
+          mkdir -p site
+          tar -xzf /tmp/workspace.tar.gz -C site
+
+      # Hash key = all non-version content + layouts + config + workflow file.
+      # Excludes content under /content/<section>/<product>/<X.Y[.Z]>/ because
+      # those don't affect latest's output (we rm -rf them before Hugo).
+      - name: Compute cache key
+        id: key
+        working-directory: site
+        run: |
+          set -euo pipefail
+          {
+            find content -type f \
+              ! -regex '.*/content/operate/kubernetes/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
+              ! -regex '.*/content/operate/rs/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
+              ! -regex '.*/content/develop/ai/redisvl/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
+              -print0 | sort -z | xargs -0 sha256sum
+            find layouts -type f -print0 | sort -z | xargs -0 sha256sum
+            for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
+              [ -f "$f" ] && sha256sum "$f"
+            done
+            cat kubernetes-versions rs-versions redisvl-versions rdi-versions
+            sha256sum ../.github/workflows/airgap-build.yml 2>/dev/null || true
+          } | sha256sum | awk '{print $1}' | cut -c1-16 > /tmp/key
+          echo "key=$(cat /tmp/key)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore Hugo output cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: site/output
+          key: hugo-latest-${{ steps.key.outputs.key }}
+
+      - name: Build latest (cache miss)
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: site
+        run: |
+          set -euo pipefail
+          export PATH="/opt/venv/bin:$PATH"
+          # Remove all version dirs — latest = the site as it'd look if there
+          # were no versions at all.
+          for parent in content/operate/kubernetes content/operate/rs content/develop/ai/redisvl; do
+            [ -d "$parent" ] || continue
+            find "$parent" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended \
+              -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" -exec rm -rf {} +
+          done
+          hugo --logLevel info -d output
+
+      - name: Stage output as artifact
+        working-directory: site
+        run: tar -czf /tmp/out.tar.gz output
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-latest
+          path: /tmp/out.tar.gz
+          retention-days: 1
+          compression-level: 0
+
+      - name: Append progress
+        env:
+          HIT: ${{ steps.cache.outputs.cache-hit }}
+        run: |
+          if [ "$HIT" = "true" ]; then
+            echo "- ✅ Stage 2a: latest (cache HIT)" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- ✅ Stage 2a: latest (built fresh)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  # =========================================================================
+  # Phase 2b: build_versions — matrix of N parallel jobs, one per version
+  # =========================================================================
+  build_versions:
+    name: "2b. Build ${{ matrix.name }}"
     needs: setup
     runs-on: ubuntu-24.04
     permissions:
@@ -270,8 +416,7 @@ jobs:
           sudo dpkg -i /tmp/hugo.deb
 
       - name: Install system deps
-        run: |
-          sudo apt-get install -y --no-install-recommends rsync gawk
+        run: sudo apt-get install -y --no-install-recommends rsync gawk
 
       - uses: actions/download-artifact@v4
         with:
@@ -280,92 +425,106 @@ jobs:
 
       - name: Extract workspace
         run: |
-          sudo mkdir -p /site
-          sudo chown "$USER" /site
-          tar -xzf /tmp/workspace.tar.gz -C /site
+          mkdir -p site
+          tar -xzf /tmp/workspace.tar.gz -C site
 
-      - name: Build (latest or per-version)
-        working-directory: /site
+      # Hash key = THIS version's content + shared layouts + config + workflow.
+      # Independent of other versions' content (their hashes don't enter here).
+      - name: Compute cache key
+        id: key
+        working-directory: site
         env:
-          KIND: ${{ matrix.kind }}
+          PRODUCT: ${{ matrix.product }}
+          VERSION: ${{ matrix.version }}
+        run: |
+          set -euo pipefail
+          {
+            find "content/$PRODUCT/$VERSION" -type f -print0 | sort -z | xargs -0 sha256sum
+            find layouts -type f -print0 | sort -z | xargs -0 sha256sum
+            for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
+              [ -f "$f" ] && sha256sum "$f"
+            done
+            cat kubernetes-versions rs-versions redisvl-versions rdi-versions
+            sha256sum ../.github/workflows/airgap-build.yml 2>/dev/null || true
+            printf 'product=%s version=%s\n' "$PRODUCT" "$VERSION"
+          } | sha256sum | awk '{print $1}' | cut -c1-16 > /tmp/key
+          echo "key=$(cat /tmp/key)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore Hugo output cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: site/output
+          key: hugo-${{ matrix.name }}-${{ steps.key.outputs.key }}
+
+      - name: Build version (cache miss)
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: site
+        env:
           PRODUCT: ${{ matrix.product }}
           VERSION: ${{ matrix.version }}
           PRODUCT_LABEL: ${{ matrix.product_label }}
           PRODUCT_PASCAL: ${{ matrix.product_pascal }}
         run: |
           set -euo pipefail
-          export PATH="/site/venv/bin:$PATH"
+          export PATH="/opt/venv/bin:$PATH"
 
-          if [ "$KIND" = "latest" ]; then
-            echo ">>> Building latest (removing all version dirs)"
-            # Find any X.Y or X.Y.Z dirs under known version-bearing paths and remove
-            for parent in content/operate/kubernetes content/operate/rs content/develop/ai/redisvl; do
-              [ -d "$parent" ] || continue
-              find "$parent" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" -exec rm -rf {} +
-            done
-          else
-            echo ">>> Building $PRODUCT v$VERSION"
-            # Remove all OTHER versions of this product
-            VPARENT="content/$PRODUCT"
-            find "$VPARENT" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" \
-              | while read -r d; do
-                  case "$d" in
-                    "$VPARENT/$VERSION") ;;
-                    *) rm -rf "$d" ;;
-                  esac
-                done
+          # Remove all OTHER versions of this product (matches airgap-multibuild.sh)
+          VPARENT="content/$PRODUCT"
+          find "$VPARENT" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended \
+            -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" \
+            | while read -r d; do
+                if [ "$(basename "$d")" != "$VERSION" ]; then
+                  rm -rf "$d"
+                fi
+              done
 
-            # Strip the version prefix from relrefs in the version's own content
-            find "$VPARENT/$VERSION" -type f -name '*.md' | while read -r f; do
-              awk -v pp="$PRODUCT" -v ver="$VERSION" '
-                { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp); print }
-              ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
-            done
+          # Strip the version prefix from relrefs in this version's content
+          find "$VPARENT/$VERSION" -type f -name '*.md' | while read -r f; do
+            awk -v pp="$PRODUCT" -v ver="$VERSION" '
+              { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp); print }
+            ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+          done
 
-            # rsync version content INTO parent, replacing the latest-stub product content
-            rsync -a --delete-after "$VPARENT/$VERSION/" "$VPARENT/"
+          # rsync version content INTO parent (replaces latest-stub product content)
+          rsync -a --delete-after "$VPARENT/$VERSION/" "$VPARENT/"
 
-            # Restore parent linkTitle to product label (rsync brought in "X.Y.Z")
-            sed -i "s/^linkTitle: $VERSION$/linkTitle: $PRODUCT_LABEL/" \
-              "$VPARENT/_index.md" || true
+          # Restore parent linkTitle to product label
+          sed -i "s/^linkTitle: $VERSION$/linkTitle: $PRODUCT_LABEL/" \
+            "$VPARENT/_index.md" || true
 
-            # Update nav-selector button label from "latest" to "v<version>"
-            sed -i "s/id=\"versionSelector${PRODUCT_PASCAL}Value\" class=\"version-selector-control\">latest/id=\"versionSelector${PRODUCT_PASCAL}Value\" class=\"version-selector-control\">v${VERSION}/" \
-              layouts/partials/docs-nav.html
+          # Update nav-selector button label from "latest" to "v<version>"
+          sed -i "s/id=\"versionSelector${PRODUCT_PASCAL}Value\" class=\"version-selector-control\">latest/id=\"versionSelector${PRODUCT_PASCAL}Value\" class=\"version-selector-control\">v${VERSION}/" \
+            layouts/partials/docs-nav.html
 
-            # Inject Edit-on-GitHub path rewrite (sed 12i)
-            PP_ESC="${PRODUCT//\//\\/}"
-            sed -i "12i \\{{ \$gh_path = replaceRE \`^${PP_ESC}/\` \"${PP_ESC}/${VERSION}/\" \$gh_path }}" \
-              layouts/partials/meta-links.html
+          # Inject Edit-on-GitHub path rewrite
+          PP_ESC="${PRODUCT//\//\\/}"
+          sed -i "12i \\{{ \$gh_path = replaceRE \`^${PP_ESC}/\` \"${PP_ESC}/${VERSION}/\" \$gh_path }}" \
+            layouts/partials/meta-links.html
+
+          hugo --logLevel info -d output
+
+          # Verify Hugo produced the expected version subtree
+          if [ ! -d "output/$PRODUCT/$VERSION" ]; then
+            echo "!!! ERROR: hugo did not produce output/$PRODUCT/$VERSION" >&2
+            exit 1
           fi
 
-          hugo --logLevel info
-
-      - name: Stage output for upload
-        working-directory: /site
+      # Stage only the version subtree + css/scss for upload (smaller artifact)
+      - name: Stage output as artifact
+        working-directory: site
         env:
-          KIND: ${{ matrix.kind }}
           PRODUCT: ${{ matrix.product }}
           VERSION: ${{ matrix.version }}
         run: |
           set -euo pipefail
-          mkdir -p /tmp/out
-          if [ "$KIND" = "latest" ]; then
-            # Latest: ship the entire public/ tree
-            cp -a public /tmp/out/public
-          else
-            # Version: ship only the version subtree + css/scss (additive merge in assemble)
-            mkdir -p "/tmp/out/public/$PRODUCT"
-            if [ ! -d "public/$PRODUCT/$VERSION" ]; then
-              echo "!!! ERROR: hugo did not produce public/$PRODUCT/$VERSION" >&2
-              exit 1
-            fi
-            cp -a "public/$PRODUCT/$VERSION" "/tmp/out/public/$PRODUCT/$VERSION"
-            for d in css scss; do
-              [ -d "public/$d" ] && cp -a "public/$d" "/tmp/out/public/$d"
-            done
-          fi
-          tar -czf /tmp/out.tar.gz -C /tmp/out public
+          mkdir -p /tmp/stage
+          mkdir -p "/tmp/stage/output/$PRODUCT"
+          cp -a "output/$PRODUCT/$VERSION" "/tmp/stage/output/$PRODUCT/$VERSION"
+          for d in css scss; do
+            [ -d "output/$d" ] && cp -a "output/$d" "/tmp/stage/output/$d"
+          done
+          tar -czf /tmp/out.tar.gz -C /tmp/stage output
 
       - uses: actions/upload-artifact@v4
         with:
@@ -375,25 +534,21 @@ jobs:
           compression-level: 0
 
   # =========================================================================
-  # Phase 3: assemble — merge all per-version outputs into a single public/
+  # Phase 3: assemble — merge all per-build outputs, ndjson, gzip
   # =========================================================================
   assemble:
     name: 3. Assemble & gzip
-    needs: [setup, build]
+    needs: [setup, build_latest, build_versions]
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-    outputs:
-      hash: ${{ needs.setup.outputs.hash }}
     steps:
-      - name: Install deps
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends rsync python3-venv
-
       - uses: actions/checkout@v4
 
-      - name: Setup Python venv (for ndjson)
+      - name: Install system deps
+        run: sudo apt-get install -y --no-install-recommends rsync python3-venv
+
+      - name: Setup Python venv for ndjson
         run: |
           python3 -m venv /tmp/venv
           /tmp/venv/bin/pip install --quiet -r requirements.txt
@@ -408,33 +563,35 @@ jobs:
           set -euo pipefail
           mkdir -p public
 
-          # 1. Latest first — establishes the base tree
+          # 1. Latest establishes the base tree
           mkdir -p /tmp/extract-latest
           tar -xzf /tmp/builds/build-latest/out.tar.gz -C /tmp/extract-latest
-          cp -a /tmp/extract-latest/public/. ./public/
+          cp -a /tmp/extract-latest/output/. ./public/
 
-          # 2. Versions on top. Each artifact contains public/<product>/<version>/ plus public/css and public/scss.
+          # 2. Each version overlays its subtree + adds CSS/SCSS additively.
+          # rm -rf the dest before cp -a to prevent alias-induced nesting
+          # (latest may emit redirect HTMLs inside version paths via aliases).
           for art_dir in /tmp/builds/build-*; do
             name=$(basename "$art_dir" | sed 's/^build-//')
             [ "$name" = "latest" ] && continue
-            artifact="$art_dir/out.tar.gz"
             rm -rf /tmp/extract
             mkdir -p /tmp/extract
-            tar -xzf "$artifact" -C /tmp/extract
+            tar -xzf "$art_dir/out.tar.gz" -C /tmp/extract
 
-            # Replace version subtrees (avoids alias-induced nesting from latest)
+            # Find version subtrees (depth 3 = operate/X/Y.Z, depth 4 = develop/ai/X/Y.Z)
             while IFS= read -r vdir; do
-              relpath=${vdir#/tmp/extract/public/}
+              relpath=${vdir#/tmp/extract/output/}
               rm -rf "./public/$relpath"
               mkdir -p "$(dirname "./public/$relpath")"
               cp -a "$vdir" "./public/$relpath"
-            done < <(find /tmp/extract/public -mindepth 3 -maxdepth 4 -type d -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$")
+            done < <(find /tmp/extract/output -mindepth 3 -maxdepth 4 -type d \
+              -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$")
 
-            # Additively merge css/scss (per-version hashes coexist)
+            # Additive css/scss
             for d in css scss; do
-              if [ -d "/tmp/extract/public/$d" ]; then
+              if [ -d "/tmp/extract/output/$d" ]; then
                 mkdir -p "./public/$d"
-                cp -an "/tmp/extract/public/$d/." "./public/$d/" || true
+                cp -an "/tmp/extract/output/$d/." "./public/$d/" || true
               fi
             done
           done
@@ -444,7 +601,7 @@ jobs:
           /tmp/venv/bin/python3 build/generate_ndjson.py
           gzip -kf public/docs.ndjson
 
-      - name: Pre-compress static assets (skipping .json/.md — sub_filter at runtime)
+      - name: Pre-compress static assets (skip .json/.md — sub_filter at runtime)
         run: |
           find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
             -exec gzip -9 -k {} \;
@@ -462,9 +619,9 @@ jobs:
           retention-days: 1
           compression-level: 0
 
-      - name: Append assemble summary
+      - name: Append progress
         run: |
-          echo "- ✅ Assembled $(find public -type f | wc -l) files into public/ ($(du -sh public | cut -f1))" >> "$GITHUB_STEP_SUMMARY"
+          echo "- ✅ Stage 3: Assembled $(find public -type f | wc -l) files ($(du -sh public | cut -f1))" >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================
   # Phase 4: docker — build minimal nginx images, push to DockerHub
@@ -568,7 +725,7 @@ jobs:
             echo ""
 
             if [ "$STATUS" != "success" ]; then
-              echo "Build did not complete successfully — see step logs above."
+              echo "Build did not complete — see step logs above."
               exit 0
             fi
 
