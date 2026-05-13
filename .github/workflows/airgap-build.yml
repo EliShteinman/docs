@@ -1,0 +1,314 @@
+name: Airgap Build & Push
+
+# Fork-only workflow. Builds and pushes the 4 airgap image variants
+# (privileged + unprivileged, each multi-arch amd64 + arm64) to DockerHub.
+#
+# Designed in stages — future jobs will be appended below `build`:
+#   - update-helm   (edits Chart.yaml + READMEs, commits, pushes)
+#   - publish-helm  (helm package + helm push to OCI registry)
+#   - merge-upstream (auto-merge from origin/main when safe)
+
+on:
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: Which variant(s) to build
+        type: choice
+        options:
+          - both
+          - privileged
+          - unprivileged
+        default: both
+      platforms:
+        description: Which platform(s) to build
+        type: choice
+        options:
+          - both
+          - amd64
+          - arm64
+        default: both
+      tag_override:
+        description: >-
+          Custom tag for testing (e.g. "test1"). When set, replaces the
+          auto HASH-based tag and SKIPS the rolling :latest / :unprivileged
+          tags so you can safely delete it later. Leave empty for normal builds.
+        type: string
+        default: ''
+
+env:
+  REPO: a0533057932/redis-docs
+
+jobs:
+  build:
+    name: Build & push docker images
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      hash: ${{ steps.meta.outputs.hash }}
+      platforms: ${{ steps.meta.outputs.platforms }}
+      priv_tags: ${{ steps.meta.outputs.priv_tags }}
+      unpriv_tags: ${{ steps.meta.outputs.unpriv_tags }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------------------------
+      # Step 1: Compute build parameters. Inputs are passed via env: to avoid
+      # any shell-injection risk from the free-text tag_override field.
+      # ----------------------------------------------------------------------
+      - name: Compute build params
+        id: meta
+        env:
+          INPUT_VARIANT: ${{ inputs.variant }}
+          INPUT_PLATFORMS: ${{ inputs.platforms }}
+          INPUT_OVERRIDE: ${{ inputs.tag_override }}
+        run: |
+          set -euo pipefail
+          HASH=$(git rev-parse --short=9 HEAD)
+
+          case "$INPUT_PLATFORMS" in
+            both)  PLATFORMS=linux/amd64,linux/arm64 ;;
+            amd64) PLATFORMS=linux/amd64 ;;
+            arm64) PLATFORMS=linux/arm64 ;;
+            *) echo "Unknown platforms: $INPUT_PLATFORMS" >&2; exit 1 ;;
+          esac
+
+          {
+            echo "hash=$HASH"
+            echo "platforms=$PLATFORMS"
+
+            echo "priv_tags<<EOF"
+            if [ -n "$INPUT_OVERRIDE" ]; then
+              echo "$REPO:$INPUT_OVERRIDE"
+            else
+              echo "$REPO:$HASH"
+              echo "$REPO:latest"
+            fi
+            echo "EOF"
+
+            echo "unpriv_tags<<EOF"
+            if [ -n "$INPUT_OVERRIDE" ]; then
+              echo "$REPO:$INPUT_OVERRIDE-unprivileged"
+            else
+              echo "$REPO:$HASH-unprivileged"
+              echo "$REPO:unprivileged"
+            fi
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "::notice title=Build params::commit=$HASH platforms=$PLATFORMS variant=$INPUT_VARIANT override=${INPUT_OVERRIDE:-none}"
+
+      - name: Write build plan to run summary
+        env:
+          INPUT_VARIANT: ${{ inputs.variant }}
+          INPUT_OVERRIDE: ${{ inputs.tag_override }}
+          HASH: ${{ steps.meta.outputs.hash }}
+          PLATFORMS: ${{ steps.meta.outputs.platforms }}
+          PRIV_TAGS: ${{ steps.meta.outputs.priv_tags }}
+          UNPRIV_TAGS: ${{ steps.meta.outputs.unpriv_tags }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          OVERRIDE_DISPLAY="${INPUT_OVERRIDE:-(none — auto HASH + rolling tags)}"
+
+          {
+            echo "## Build plan"
+            echo ""
+            echo "| Setting | Value |"
+            echo "|---------|-------|"
+            echo "| Commit | \`$HASH\` |"
+            echo "| Branch | \`$BRANCH\` |"
+            echo "| Variant input | \`$INPUT_VARIANT\` |"
+            echo "| Platforms | \`$PLATFORMS\` |"
+            echo "| Tag override | \`$OVERRIDE_DISPLAY\` |"
+            echo ""
+
+            if [ "$INPUT_VARIANT" != "unprivileged" ]; then
+              echo "### Privileged tags about to be pushed"
+              echo '```'
+              echo "$PRIV_TAGS"
+              echo '```'
+            fi
+
+            if [ "$INPUT_VARIANT" != "privileged" ]; then
+              echo "### Unprivileged tags about to be pushed"
+              echo '```'
+              echo "$UNPRIV_TAGS"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # ----------------------------------------------------------------------
+      # Step 2: Cross-arch setup (skipped when building amd64-only)
+      # ----------------------------------------------------------------------
+      - name: Set up QEMU (for arm64 runtime layer)
+        if: inputs.platforms != 'amd64'
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # ----------------------------------------------------------------------
+      # Step 3: privileged. The Dockerfile pins builder to $BUILDPLATFORM
+      # (amd64 native on this runner), so the heavy work runs ONCE.
+      # `cache-to: type=gha,mode=max` writes intermediates to GitHub Actions
+      # cache → next workflow run starts with a warm cache.
+      # ----------------------------------------------------------------------
+      - name: Build & push privileged
+        if: inputs.variant != 'unprivileged'
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: ${{ steps.meta.outputs.platforms }}
+          target: final
+          build-args: |
+            VARIANT=privileged
+          secrets: |
+            PRIVATE_ACCESS_TOKEN=${{ secrets.PRIVATE_ACCESS_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: ${{ steps.meta.outputs.priv_tags }}
+          push: true
+
+      # ----------------------------------------------------------------------
+      # Step 4: unprivileged. The builder stage is CACHED from step 3 (same
+      # runner, in-memory BuildKit). Only the runtime stage actually runs.
+      # ----------------------------------------------------------------------
+      - name: Build & push unprivileged
+        if: inputs.variant != 'privileged'
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: ${{ steps.meta.outputs.platforms }}
+          target: final
+          build-args: |
+            VARIANT=unprivileged
+          secrets: |
+            PRIVATE_ACCESS_TOKEN=${{ secrets.PRIVATE_ACCESS_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: ${{ steps.meta.outputs.unpriv_tags }}
+          push: true
+
+      # ----------------------------------------------------------------------
+      # Step 5: final summary with pull commands (runs even if build failed,
+      # so you see what was attempted)
+      # ----------------------------------------------------------------------
+      - name: Write final summary with pull / cleanup commands
+        if: always()
+        env:
+          INPUT_VARIANT: ${{ inputs.variant }}
+          INPUT_OVERRIDE: ${{ inputs.tag_override }}
+          STATUS: ${{ job.status }}
+          PRIV_TAGS: ${{ steps.meta.outputs.priv_tags }}
+          UNPRIV_TAGS: ${{ steps.meta.outputs.unpriv_tags }}
+        run: |
+          set -euo pipefail
+
+          {
+            echo ""
+            echo "## Result: \`$STATUS\`"
+            echo ""
+
+            if [ "$STATUS" != "success" ]; then
+              echo "Build did not complete successfully — see step logs above."
+              exit 0
+            fi
+
+            echo "### Pull commands"
+            echo ""
+
+            if [ "$INPUT_VARIANT" != "unprivileged" ]; then
+              echo "**Privileged (port 80):**"
+              echo '```bash'
+              while IFS= read -r tag; do
+                [ -z "$tag" ] && continue
+                echo "docker pull $tag"
+              done <<< "$PRIV_TAGS"
+              echo '```'
+            fi
+
+            if [ "$INPUT_VARIANT" != "privileged" ]; then
+              echo "**Unprivileged (port 8080, for k8s/OpenShift):**"
+              echo '```bash'
+              while IFS= read -r tag; do
+                [ -z "$tag" ] && continue
+                echo "docker pull $tag"
+              done <<< "$UNPRIV_TAGS"
+              echo '```'
+            fi
+
+            echo ""
+            echo "### Quick run (locally on your machine)"
+            echo '```bash'
+            if [ "$INPUT_VARIANT" != "privileged" ]; then
+              FIRST_UNPRIV=$(printf '%s\n' "$UNPRIV_TAGS" | head -n1)
+              echo "docker run --rm -p 8080:8080 $FIRST_UNPRIV"
+              echo "# open http://localhost:8080"
+            elif [ "$INPUT_VARIANT" != "unprivileged" ]; then
+              FIRST_PRIV=$(printf '%s\n' "$PRIV_TAGS" | head -n1)
+              echo "docker run --rm -p 80:80 $FIRST_PRIV"
+              echo "# open http://localhost"
+            fi
+            echo '```'
+
+            if [ -n "$INPUT_OVERRIDE" ]; then
+              echo ""
+              echo "### Cleanup (this was a test build with tag_override=\`$INPUT_OVERRIDE\`)"
+              echo "Delete the test tags from DockerHub when done:"
+              echo '```bash'
+              echo "# DockerHub UI → repo → Tags → delete each:"
+              if [ "$INPUT_VARIANT" != "unprivileged" ]; then
+                while IFS= read -r t; do
+                  [ -z "$t" ] && continue
+                  echo "#   $t"
+                done <<< "$PRIV_TAGS"
+              fi
+              if [ "$INPUT_VARIANT" != "privileged" ]; then
+                while IFS= read -r t; do
+                  [ -z "$t" ] && continue
+                  echo "#   $t"
+                done <<< "$UNPRIV_TAGS"
+              fi
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ============================================================================
+  # STAGE 2 (future) — Helm chart automation
+  #
+  # update-helm:
+  #   needs: build
+  #   permissions:
+  #     contents: write   # to commit + push the bump
+  #   steps:
+  #     - edit helm/redis-docs/Chart.yaml (version + appVersion=${{ needs.build.outputs.hash }})
+  #     - edit helm/redis-docs/README.md, README-he.md, values-openshift-airgapped.yaml
+  #     - git commit + git push
+  #
+  # publish-helm:
+  #   needs: update-helm
+  #   steps:
+  #     - install helm
+  #     - helm registry login docker.io
+  #     - helm package helm/redis-docs/
+  #     - helm push redis-docs-<version>.tgz oci://registry-1.docker.io/a0533057932
+  # ============================================================================
+
+  # ============================================================================
+  # STAGE 3 (future, exploratory) — auto-merge upstream when safe
+  #
+  # merge-upstream:
+  #   # runs BEFORE build; only when pre-merge review checks (BUILD.md step 1)
+  #   # pass cleanly with zero output
+  # ============================================================================
