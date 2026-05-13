@@ -184,9 +184,16 @@ jobs:
         run: |
           set -euo pipefail
           cp -a /tmp/venv ./venv
-          tar --exclude=.git --exclude=public --exclude=resources \
-              --exclude=.hugo_build.lock --exclude=PRIVATE_ACCESS_TOKEN \
-              --exclude=.github --exclude=helm \
+          # --anchored is critical: without it, --exclude=public would also
+          # strip node_modules/tailwindcss/lib/public/ and break postcss.
+          tar --anchored \
+              --exclude='./.git' \
+              --exclude='./public' \
+              --exclude='./resources' \
+              --exclude='./.hugo_build.lock' \
+              --exclude='./PRIVATE_ACCESS_TOKEN' \
+              --exclude='./.github' \
+              --exclude='./helm' \
               -czf /tmp/workspace.tar.gz .
           ls -lh /tmp/workspace.tar.gz
 
