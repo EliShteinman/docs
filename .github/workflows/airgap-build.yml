@@ -1,20 +1,19 @@
 name: Airgap Build & Push
 
 # Cloud equivalent of the local Dockerfile + airgap-multibuild.sh pipeline.
-# Does the same multi-version Hugo build, but in parallel across GHA runners,
-# with path-specific actions/cache keys so unchanged versions hit cache.
+# Each runner does its own fresh checkout (no workspace tar shuffling), like
+# upstream redis/docs main.yml. Caches and invalidation are keyed only on
+# files that actually affect Hugo's output — fork-only files (Dockerfile,
+# helm/, BUILD.md, airgap-multibuild.sh) do not enter any cache key.
 #
-# Pipeline mirrors the local one phase-by-phase:
-#   - Dockerfile builder phase A (apt + hugo + npm + pip)  → setup job, with caches on node_modules, venv
-#   - Dockerfile builder phase B (make components)         → setup job, cache on examples/
-#   - airgap-multibuild.sh pre-snapshot patches            → setup job, inline
-#   - airgap-multibuild.sh build latest                    → build_latest job, cache on hugo-latest-<hash>
-#   - airgap-multibuild.sh build per (product, version)    → build_versions job (matrix), cache on hugo-<product>-<version>-<hash>
-#   - airgap-multibuild.sh assemble + ndjson + gzip        → assemble job
-#   - Dockerfile runtime stages                            → docker job, Dockerfile.runtime
+# Phases:
+#   1. setup           discover versions, emit matrix JSON, compute meta
+#   2a. build_latest   one Hugo run with all version dirs removed
+#   2b. build_versions matrix of N jobs (one per <product, version>)
+#   3. assemble        merge per-build artifacts, ndjson, gzip
+#   4. docker          minimal nginx image, push to DockerHub
 #
-# Original Dockerfile and airgap-multibuild.sh are untouched and still work
-# for local `docker buildx build .` from a developer machine.
+# Dockerfile and airgap-multibuild.sh are unchanged — local builds still work.
 
 on:
   workflow_dispatch:
@@ -28,7 +27,7 @@ on:
           - unprivileged
         default: both
       platforms:
-        description: Which platform(s) to build (for the final nginx image)
+        description: Which platform(s) to build (final nginx image)
         type: choice
         options:
           - both
@@ -49,11 +48,10 @@ env:
 
 jobs:
   # =========================================================================
-  # Phase 1: setup — install deps, fetch components, apply pre-snapshot
-  # patches, discover versions, package the workspace for matrix runners.
+  # Phase 1: setup — discover versions, compute meta. No build work here.
   # =========================================================================
   setup:
-    name: 1. Setup workspace
+    name: 1. Setup (discover versions)
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -63,11 +61,11 @@ jobs:
       priv_tags: ${{ steps.meta.outputs.priv_tags }}
       unpriv_tags: ${{ steps.meta.outputs.unpriv_tags }}
       matrix: ${{ steps.matrix.outputs.matrix }}
+      k8s_versions: ${{ steps.matrix.outputs.k8s }}
+      rs_versions: ${{ steps.matrix.outputs.rs }}
+      redisvl_versions: ${{ steps.matrix.outputs.redisvl }}
     steps:
-      - name: Checkout (full history for enableGitInfo)
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
       - name: Compute build params
         id: meta
@@ -105,97 +103,12 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Install Hugo
-        run: |
-          wget -qO /tmp/hugo.deb \
-            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
-          sudo dpkg -i /tmp/hugo.deb
-
-      - name: Install system deps
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends python3-venv rsync gawk jq
-
-      # ---- npm cache + install ----
-      - name: Restore node_modules cache
-        id: cache-npm
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
-
-      - name: npm install
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: npm install --no-audit --no-fund
-
-      # ---- pip cache + install (venv at /opt/venv) ----
-      - name: Restore python venv cache
-        id: cache-pip
-        uses: actions/cache@v4
-        with:
-          path: /opt/venv
-          key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-
-      - name: pip install into venv
-        if: steps.cache-pip.outputs.cache-hit != 'true'
-        run: |
-          sudo python3 -m venv /opt/venv
-          sudo chown -R "$USER" /opt/venv
-          /opt/venv/bin/pip install --quiet -r requirements.txt
-
-      - name: Fix venv ownership (cache restores as runner, no-op if already writable)
-        run: |
-          if [ ! -w /opt/venv ]; then
-            sudo chown -R "$USER" /opt/venv
-          fi
-
-      # ---- examples/ cache + make components ----
-      - name: Restore examples (make components output) cache
-        id: cache-examples
-        uses: actions/cache@v4
-        with:
-          path: examples
-          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components_local/index.json') }}
-
-      - name: make components (fetch external client repos)
-        if: steps.cache-examples.outputs.cache-hit != 'true'
-        env:
-          PRIVATE_ACCESS_TOKEN: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
-        run: |
-          export PATH="/opt/venv/bin:$PATH"
-          make components
-
-      # ---- Pre-snapshot airgap patches (deterministic, run every time) ----
-      # These match airgap-multibuild.sh lines 24-50.
-      - name: Apply airgap source patches
-        run: |
-          set -euo pipefail
-          # 1. Relax version-selector regex so dropdown appears under any baseURL
-          python3 <<'PYEOF'
-          import re, pathlib
-          p = pathlib.Path("layouts/partials/scripts.html")
-          text = p.read_text()
-          text, n_op  = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/operate/(\w+)/\.\*'\)",
-                                r"new RegExp('/operate/\1/')", text)
-          text, n_dev = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
-                                r"new RegExp('/develop/ai/\1/')", text)
-          p.write_text(text)
-          assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
-          print(f"airgap: relaxed {n_op + n_dev} version-selector regex(es)")
-          PYEOF
-          # 2. Strip hardcoded redis.io/docs/latest from content/*.md
-          find content -type f -name '*.md' -print0 | xargs -0 sed -i \
-            -e 's|https://redis.io/docs/latest/|/|g' \
-            -e 's|redis\.io/docs/latest/|/|g'
-          # 3. baseURL and Hugo per-partial timeout (matches Dockerfile lines 47, 51)
-          sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
-          sed -i 's/timeout="75"/timeout="600"/' config.toml
-
-      # ---- Discover versions, write version-files, emit matrix JSON ----
       - name: Discover versions and emit matrix JSON
         id: matrix
         run: |
           set -euo pipefail
+          sudo apt-get install -y --no-install-recommends jq >/dev/null
+
           discover() {
             local d=$1
             if [ -d "$d" ]; then
@@ -207,13 +120,20 @@ jobs:
           RS=$(discover content/operate/rs)
           REDISVL=$(discover content/develop/ai/redisvl)
 
-          # Write version-files (consumed by docs-nav.html template).
-          # These must be in workspace so latest + all matrix runners have them.
-          echo "$K8S"     > kubernetes-versions
-          echo "$RS"      > rs-versions
-          echo "$REDISVL" > redisvl-versions
-          : > rdi-versions
+          # Output version lists as newline-separated for each runner to write locally
+          {
+            echo "k8s<<EOF"
+            echo "$K8S"
+            echo "EOF"
+            echo "rs<<EOF"
+            echo "$RS"
+            echo "EOF"
+            echo "redisvl<<EOF"
+            echo "$REDISVL"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
+          # Emit matrix JSON (per-version build configs)
           {
             echo '['
             sep=''
@@ -234,31 +154,6 @@ jobs:
           echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
           echo "Matrix entries: $(jq 'length' matrix.json)"
           jq -r '.[] | "  - \(.name)"' matrix.json
-
-      # ---- Bundle the workspace for the matrix + latest runners ----
-      # --anchored is required: without it, --exclude=public would also strip
-      # node_modules/tailwindcss/lib/public/ and break postcss.
-      # .git IS included because config.toml has enableGitInfo=true (Hugo runs
-      # `git log` per page to populate lastmod).
-      - name: Tar workspace
-        run: |
-          set -euo pipefail
-          tar --anchored \
-              --exclude='./public' \
-              --exclude='./resources' \
-              --exclude='./.hugo_build.lock' \
-              --exclude='./PRIVATE_ACCESS_TOKEN' \
-              --exclude='./.github' \
-              --exclude='./helm' \
-              -czf /tmp/workspace.tar.gz .
-          ls -lh /tmp/workspace.tar.gz
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: workspace
-          path: /tmp/workspace.tar.gz
-          retention-days: 1
-          compression-level: 0
 
       - name: Write build plan
         env:
@@ -300,7 +195,14 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================
-  # Phase 2a: build_latest — equivalent to airgap-multibuild.sh "build latest"
+  # Reusable "build one Hugo target" via a shared composite — we inline the
+  # logic in both build_latest and build_versions since GHA reusable workflows
+  # add complexity. Each job below does its own checkout + cache restore +
+  # Hugo invocation.
+  # =========================================================================
+
+  # =========================================================================
+  # Phase 2a: build_latest
   # =========================================================================
   build_latest:
     name: 2a. Build latest
@@ -309,6 +211,10 @@ jobs:
     permissions:
       contents: read
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history for Hugo's enableGitInfo
+
       - name: Install Hugo
         run: |
           wget -qO /tmp/hugo.deb \
@@ -316,24 +222,83 @@ jobs:
           sudo dpkg -i /tmp/hugo.deb
 
       - name: Install system deps
-        run: sudo apt-get install -y --no-install-recommends rsync
+        run: sudo apt-get install -y --no-install-recommends python3-venv rsync gawk
 
-      - uses: actions/download-artifact@v4
+      - name: Restore node_modules
+        id: cache-npm
+        uses: actions/cache@v4
         with:
-          name: workspace
-          path: /tmp/
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
 
-      - name: Extract workspace
+      - name: npm install (cache miss)
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: npm install --no-audit --no-fund
+
+      - name: Restore python venv
+        id: cache-pip
+        uses: actions/cache@v4
+        with:
+          path: ./venv
+          key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: pip install (cache miss)
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
-          mkdir -p site
-          tar -xzf /tmp/workspace.tar.gz -C site
+          python3 -m venv ./venv
+          ./venv/bin/pip install --quiet -r requirements.txt
 
-      # Hash key = all non-version content + layouts + config + workflow file.
-      # Excludes content under /content/<section>/<product>/<X.Y[.Z]>/ because
-      # those don't affect latest's output (we rm -rf them before Hugo).
+      - name: Restore examples
+        id: cache-examples
+        uses: actions/cache@v4
+        with:
+          path: examples
+          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components_local/index.json') }}
+
+      - name: make components (cache miss)
+        if: steps.cache-examples.outputs.cache-hit != 'true'
+        env:
+          PRIVATE_ACCESS_TOKEN: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+        run: |
+          export PATH="$PWD/venv/bin:$PATH"
+          make components
+
+      - name: Write version-files
+        env:
+          K8S: ${{ needs.setup.outputs.k8s_versions }}
+          RS: ${{ needs.setup.outputs.rs_versions }}
+          REDISVL: ${{ needs.setup.outputs.redisvl_versions }}
+        run: |
+          printf '%s\n' "$K8S"     > kubernetes-versions
+          printf '%s\n' "$RS"      > rs-versions
+          printf '%s\n' "$REDISVL" > redisvl-versions
+          : > rdi-versions
+
+      - name: Apply airgap pre-snapshot patches
+        run: |
+          set -euo pipefail
+          python3 <<'PYEOF'
+          import re, pathlib
+          p = pathlib.Path("layouts/partials/scripts.html")
+          text = p.read_text()
+          text, n_op  = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/operate/(\w+)/\.\*'\)",
+                                r"new RegExp('/operate/\1/')", text)
+          text, n_dev = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
+                                r"new RegExp('/develop/ai/\1/')", text)
+          p.write_text(text)
+          assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
+          PYEOF
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i \
+            -e 's|https://redis.io/docs/latest/|/|g' \
+            -e 's|redis\.io/docs/latest/|/|g'
+          sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
+          sed -i 's/timeout="75"/timeout="600"/' config.toml
+
+      # Cache key for latest: hash all Hugo-relevant files EXCEPT version dirs.
+      # Excludes fork-only files (helm/, Dockerfile, BUILD.md, .github/ except
+      # this workflow file). Hugo-only inputs invalidate the cache.
       - name: Compute cache key
         id: key
-        working-directory: site
         run: |
           set -euo pipefail
           {
@@ -342,30 +307,30 @@ jobs:
               ! -regex '.*/content/operate/rs/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
               ! -regex '.*/content/develop/ai/redisvl/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
               -print0 | sort -z | xargs -0 sha256sum
-            find layouts -type f -print0 | sort -z | xargs -0 sha256sum
+            for d in layouts assets data static i18n; do
+              [ -d "$d" ] && find "$d" -type f -print0 | sort -z | xargs -0 sha256sum
+            done
             for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
               [ -f "$f" ] && sha256sum "$f"
             done
             cat kubernetes-versions rs-versions redisvl-versions rdi-versions
-            sha256sum ../.github/workflows/airgap-build.yml 2>/dev/null || true
+            sha256sum .github/workflows/airgap-build.yml
           } | sha256sum | awk '{print $1}' | cut -c1-16 > /tmp/key
           echo "key=$(cat /tmp/key)" >> "$GITHUB_OUTPUT"
 
       - name: Restore Hugo output cache
-        id: cache
+        id: cache-hugo
         uses: actions/cache@v4
         with:
-          path: site/output
+          path: output
           key: hugo-latest-${{ steps.key.outputs.key }}
 
       - name: Build latest (cache miss)
-        if: steps.cache.outputs.cache-hit != 'true'
-        working-directory: site
+        if: steps.cache-hugo.outputs.cache-hit != 'true'
         run: |
           set -euo pipefail
-          export PATH="/opt/venv/bin:$PATH"
-          # Remove all version dirs — latest = the site as it'd look if there
-          # were no versions at all.
+          export PATH="$PWD/venv/bin:$PATH"
+          # Latest = site with ALL version dirs removed
           for parent in content/operate/kubernetes content/operate/rs content/develop/ai/redisvl; do
             [ -d "$parent" ] || continue
             find "$parent" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended \
@@ -374,7 +339,6 @@ jobs:
           hugo --logLevel info -d output
 
       - name: Stage output as artifact
-        working-directory: site
         run: tar -czf /tmp/out.tar.gz output
 
       - uses: actions/upload-artifact@v4
@@ -386,7 +350,7 @@ jobs:
 
       - name: Append progress
         env:
-          HIT: ${{ steps.cache.outputs.cache-hit }}
+          HIT: ${{ steps.cache-hugo.outputs.cache-hit }}
         run: |
           if [ "$HIT" = "true" ]; then
             echo "- ✅ Stage 2a: latest (cache HIT)" >> "$GITHUB_STEP_SUMMARY"
@@ -395,7 +359,7 @@ jobs:
           fi
 
   # =========================================================================
-  # Phase 2b: build_versions — matrix of N parallel jobs, one per version
+  # Phase 2b: build_versions — matrix of N parallel jobs, one per version.
   # =========================================================================
   build_versions:
     name: "2b. Build ${{ matrix.name }}"
@@ -409,6 +373,10 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.setup.outputs.matrix) }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Install Hugo
         run: |
           wget -qO /tmp/hugo.deb \
@@ -416,23 +384,82 @@ jobs:
           sudo dpkg -i /tmp/hugo.deb
 
       - name: Install system deps
-        run: sudo apt-get install -y --no-install-recommends rsync gawk
+        run: sudo apt-get install -y --no-install-recommends python3-venv rsync gawk
 
-      - uses: actions/download-artifact@v4
+      - name: Restore node_modules
+        id: cache-npm
+        uses: actions/cache@v4
         with:
-          name: workspace
-          path: /tmp/
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
 
-      - name: Extract workspace
+      - name: npm install (cache miss)
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: npm install --no-audit --no-fund
+
+      - name: Restore python venv
+        id: cache-pip
+        uses: actions/cache@v4
+        with:
+          path: ./venv
+          key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: pip install (cache miss)
+        if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
-          mkdir -p site
-          tar -xzf /tmp/workspace.tar.gz -C site
+          python3 -m venv ./venv
+          ./venv/bin/pip install --quiet -r requirements.txt
 
-      # Hash key = THIS version's content + shared layouts + config + workflow.
-      # Independent of other versions' content (their hashes don't enter here).
+      - name: Restore examples
+        id: cache-examples
+        uses: actions/cache@v4
+        with:
+          path: examples
+          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components_local/index.json') }}
+
+      - name: make components (cache miss)
+        if: steps.cache-examples.outputs.cache-hit != 'true'
+        env:
+          PRIVATE_ACCESS_TOKEN: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+        run: |
+          export PATH="$PWD/venv/bin:$PATH"
+          make components
+
+      - name: Write version-files
+        env:
+          K8S: ${{ needs.setup.outputs.k8s_versions }}
+          RS: ${{ needs.setup.outputs.rs_versions }}
+          REDISVL: ${{ needs.setup.outputs.redisvl_versions }}
+        run: |
+          printf '%s\n' "$K8S"     > kubernetes-versions
+          printf '%s\n' "$RS"      > rs-versions
+          printf '%s\n' "$REDISVL" > redisvl-versions
+          : > rdi-versions
+
+      - name: Apply airgap pre-snapshot patches
+        run: |
+          set -euo pipefail
+          python3 <<'PYEOF'
+          import re, pathlib
+          p = pathlib.Path("layouts/partials/scripts.html")
+          text = p.read_text()
+          text, n_op  = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/operate/(\w+)/\.\*'\)",
+                                r"new RegExp('/operate/\1/')", text)
+          text, n_dev = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
+                                r"new RegExp('/develop/ai/\1/')", text)
+          p.write_text(text)
+          assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
+          PYEOF
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i \
+            -e 's|https://redis.io/docs/latest/|/|g' \
+            -e 's|redis\.io/docs/latest/|/|g'
+          sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
+          sed -i 's/timeout="75"/timeout="600"/' config.toml
+
+      # Cache key for this version: hash THIS version's content + shared Hugo
+      # inputs + workflow file. Other versions' content does NOT enter the key.
       - name: Compute cache key
         id: key
-        working-directory: site
         env:
           PRODUCT: ${{ matrix.product }}
           VERSION: ${{ matrix.version }}
@@ -440,26 +467,27 @@ jobs:
           set -euo pipefail
           {
             find "content/$PRODUCT/$VERSION" -type f -print0 | sort -z | xargs -0 sha256sum
-            find layouts -type f -print0 | sort -z | xargs -0 sha256sum
+            for d in layouts assets data static i18n; do
+              [ -d "$d" ] && find "$d" -type f -print0 | sort -z | xargs -0 sha256sum
+            done
             for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
               [ -f "$f" ] && sha256sum "$f"
             done
             cat kubernetes-versions rs-versions redisvl-versions rdi-versions
-            sha256sum ../.github/workflows/airgap-build.yml 2>/dev/null || true
+            sha256sum .github/workflows/airgap-build.yml
             printf 'product=%s version=%s\n' "$PRODUCT" "$VERSION"
           } | sha256sum | awk '{print $1}' | cut -c1-16 > /tmp/key
           echo "key=$(cat /tmp/key)" >> "$GITHUB_OUTPUT"
 
       - name: Restore Hugo output cache
-        id: cache
+        id: cache-hugo
         uses: actions/cache@v4
         with:
-          path: site/output
+          path: output
           key: hugo-${{ matrix.name }}-${{ steps.key.outputs.key }}
 
       - name: Build version (cache miss)
-        if: steps.cache.outputs.cache-hit != 'true'
-        working-directory: site
+        if: steps.cache-hugo.outputs.cache-hit != 'true'
         env:
           PRODUCT: ${{ matrix.product }}
           VERSION: ${{ matrix.version }}
@@ -467,9 +495,9 @@ jobs:
           PRODUCT_PASCAL: ${{ matrix.product_pascal }}
         run: |
           set -euo pipefail
-          export PATH="/opt/venv/bin:$PATH"
+          export PATH="$PWD/venv/bin:$PATH"
 
-          # Remove all OTHER versions of this product (matches airgap-multibuild.sh)
+          # Remove all OTHER versions of this product
           VPARENT="content/$PRODUCT"
           find "$VPARENT" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended \
             -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" \
@@ -486,14 +514,14 @@ jobs:
             ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
           done
 
-          # rsync version content INTO parent (replaces latest-stub product content)
+          # rsync version content INTO parent
           rsync -a --delete-after "$VPARENT/$VERSION/" "$VPARENT/"
 
-          # Restore parent linkTitle to product label
+          # Restore parent linkTitle
           sed -i "s/^linkTitle: $VERSION$/linkTitle: $PRODUCT_LABEL/" \
             "$VPARENT/_index.md" || true
 
-          # Update nav-selector button label from "latest" to "v<version>"
+          # Update nav-selector button label
           sed -i "s/id=\"versionSelector${PRODUCT_PASCAL}Value\" class=\"version-selector-control\">latest/id=\"versionSelector${PRODUCT_PASCAL}Value\" class=\"version-selector-control\">v${VERSION}/" \
             layouts/partials/docs-nav.html
 
@@ -504,22 +532,19 @@ jobs:
 
           hugo --logLevel info -d output
 
-          # Verify Hugo produced the expected version subtree
           if [ ! -d "output/$PRODUCT/$VERSION" ]; then
             echo "!!! ERROR: hugo did not produce output/$PRODUCT/$VERSION" >&2
             exit 1
           fi
 
-      # Stage only the version subtree + css/scss for upload (smaller artifact)
+      # Stage only this version's subtree + css/scss for the assemble step
       - name: Stage output as artifact
-        working-directory: site
         env:
           PRODUCT: ${{ matrix.product }}
           VERSION: ${{ matrix.version }}
         run: |
           set -euo pipefail
-          mkdir -p /tmp/stage
-          mkdir -p "/tmp/stage/output/$PRODUCT"
+          mkdir -p /tmp/stage/output/$PRODUCT
           cp -a "output/$PRODUCT/$VERSION" "/tmp/stage/output/$PRODUCT/$VERSION"
           for d in css scss; do
             [ -d "output/$d" ] && cp -a "output/$d" "/tmp/stage/output/$d"
@@ -558,7 +583,7 @@ jobs:
           path: /tmp/builds
           pattern: build-*
 
-      - name: Merge artifacts into final public/
+      - name: Merge artifacts into public/
         run: |
           set -euo pipefail
           mkdir -p public
@@ -568,9 +593,7 @@ jobs:
           tar -xzf /tmp/builds/build-latest/out.tar.gz -C /tmp/extract-latest
           cp -a /tmp/extract-latest/output/. ./public/
 
-          # 2. Each version overlays its subtree + adds CSS/SCSS additively.
-          # rm -rf the dest before cp -a to prevent alias-induced nesting
-          # (latest may emit redirect HTMLs inside version paths via aliases).
+          # 2. Each version overlays its subtree + adds CSS/SCSS additively
           for art_dir in /tmp/builds/build-*; do
             name=$(basename "$art_dir" | sed 's/^build-//')
             [ "$name" = "latest" ] && continue
@@ -578,7 +601,6 @@ jobs:
             mkdir -p /tmp/extract
             tar -xzf "$art_dir/out.tar.gz" -C /tmp/extract
 
-            # Find version subtrees (depth 3 = operate/X/Y.Z, depth 4 = develop/ai/X/Y.Z)
             while IFS= read -r vdir; do
               relpath=${vdir#/tmp/extract/output/}
               rm -rf "./public/$relpath"
@@ -587,7 +609,6 @@ jobs:
             done < <(find /tmp/extract/output -mindepth 3 -maxdepth 4 -type d \
               -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$")
 
-            # Additive css/scss
             for d in css scss; do
               if [ -d "/tmp/extract/output/$d" ]; then
                 mkdir -p "./public/$d"
@@ -609,8 +630,7 @@ jobs:
       - name: Tar public/
         run: |
           tar -czf /tmp/public.tar.gz public
-          ls -lh /tmp/public.tar.gz
-          echo "Files: $(find public -type f | wc -l)"
+          echo "Files: $(find public -type f | wc -l), Size: $(du -sh public | cut -f1)"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -645,9 +665,7 @@ jobs:
           path: /tmp/
 
       - name: Extract public/ into build context
-        run: |
-          tar -xzf /tmp/public.tar.gz -C .
-          ls -lh public/ | head -5
+        run: tar -xzf /tmp/public.tar.gz -C .
 
       - name: Set up QEMU
         if: inputs.platforms != 'amd64'
@@ -766,7 +784,6 @@ jobs:
             if [ -n "$INPUT_OVERRIDE" ]; then
               echo ""
               echo "### Cleanup (test build with tag_override=\`$INPUT_OVERRIDE\`)"
-              echo "Delete these tags from DockerHub when done:"
               echo '```'
               [ "$PRIV_OUTCOME" = "success" ] && printf '%s\n' "$PRIV_TAGS"
               [ "$UNPRIV_OUTCOME" = "success" ] && printf '%s\n' "$UNPRIV_TAGS"
