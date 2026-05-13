@@ -1,12 +1,10 @@
 name: Airgap Build & Push
 
-# Fork-only workflow. Builds and pushes the 4 airgap image variants
-# (privileged + unprivileged, each multi-arch amd64 + arm64) to DockerHub.
-#
-# Designed in stages — future jobs will be appended below `build`:
-#   - update-helm   (edits Chart.yaml + READMEs, commits, pushes)
-#   - publish-helm  (helm package + helm push to OCI registry)
-#   - merge-upstream (auto-merge from origin/main when safe)
+# Matrix-based parallel build:
+#   setup    → install deps, fetch components, snapshot workspace, discover versions
+#   build    → matrix of N+1 jobs (latest + each version), each does ONE hugo run
+#   assemble → download all artifacts, merge into single public/, gzip
+#   docker   → 2 conditional steps (priv/unpriv), build minimal nginx image, push
 
 on:
   workflow_dispatch:
@@ -20,7 +18,7 @@ on:
           - unprivileged
         default: both
       platforms:
-        description: Which platform(s) to build
+        description: Which platform(s) to build (for the final nginx image)
         type: choice
         options:
           - both
@@ -37,10 +35,14 @@ on:
 
 env:
   REPO: a0533057932/redis-docs
+  HUGO_VERSION: 0.143.1
 
 jobs:
-  build:
-    name: Build & push docker images
+  # =========================================================================
+  # Phase 1: setup — prepare workspace, discover versions, emit build matrix
+  # =========================================================================
+  setup:
+    name: 1. Setup workspace
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -49,14 +51,10 @@ jobs:
       platforms: ${{ steps.meta.outputs.platforms }}
       priv_tags: ${{ steps.meta.outputs.priv_tags }}
       unpriv_tags: ${{ steps.meta.outputs.unpriv_tags }}
-
+      matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # ----------------------------------------------------------------------
-      # Setup
-      # ----------------------------------------------------------------------
       - name: Compute build params
         id: meta
         env:
@@ -66,18 +64,15 @@ jobs:
         run: |
           set -euo pipefail
           HASH=$(git rev-parse --short=9 HEAD)
-
           case "$INPUT_PLATFORMS" in
             both)  PLATFORMS=linux/amd64,linux/arm64 ;;
             amd64) PLATFORMS=linux/amd64 ;;
             arm64) PLATFORMS=linux/arm64 ;;
-            *) echo "Unknown platforms: $INPUT_PLATFORMS" >&2; exit 1 ;;
+            *) echo "Bad platforms: $INPUT_PLATFORMS" >&2; exit 1 ;;
           esac
-
           {
             echo "hash=$HASH"
             echo "platforms=$PLATFORMS"
-
             echo "priv_tags<<EOF"
             if [ -n "$INPUT_OVERRIDE" ]; then
               echo "$REPO:$INPUT_OVERRIDE"
@@ -86,7 +81,6 @@ jobs:
               echo "$REPO:latest"
             fi
             echo "EOF"
-
             echo "unpriv_tags<<EOF"
             if [ -n "$INPUT_OVERRIDE" ]; then
               echo "$REPO:$INPUT_OVERRIDE-unprivileged"
@@ -97,9 +91,113 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-          echo "::notice title=Build params::commit=$HASH platforms=$PLATFORMS variant=$INPUT_VARIANT override=${INPUT_OVERRIDE:-none}"
+      - name: Install Hugo
+        run: |
+          wget -qO /tmp/hugo.deb \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i /tmp/hugo.deb
 
-      - name: Write build plan to run summary
+      - name: Install system deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends python3-venv rsync gawk jq
+
+      - name: Setup Python venv + install deps
+        run: |
+          python3 -m venv /tmp/venv
+          /tmp/venv/bin/pip install --quiet -r requirements.txt
+
+      - name: Setup Node deps
+        run: npm install --no-audit --no-fund
+
+      - name: Fetch external components
+        env:
+          PRIVATE_ACCESS_TOKEN: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+        run: |
+          export PATH="/tmp/venv/bin:$PATH"
+          make components
+
+      - name: Apply airgap source patches (pre-snapshot)
+        run: |
+          set -euo pipefail
+          # 1. Relax version-selector regex so dropdown appears under any baseURL
+          python3 <<'PYEOF'
+          import re, pathlib
+          p = pathlib.Path("layouts/partials/scripts.html")
+          text = p.read_text()
+          text, n_op  = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/operate/(\w+)/\.\*'\)",
+                                r"new RegExp('/operate/\1/')", text)
+          text, n_dev = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
+                                r"new RegExp('/develop/ai/\1/')", text)
+          p.write_text(text)
+          assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
+          print(f"airgap: relaxed {n_op + n_dev} version-selector regex(es)")
+          PYEOF
+          # 2. Strip hardcoded redis.io/docs/latest from content/*.md
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i \
+            -e 's|https://redis.io/docs/latest/|/|g' \
+            -e 's|redis\.io/docs/latest/|/|g'
+          # 3. baseURL and Hugo per-partial timeout
+          sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
+          sed -i 's/timeout="75"/timeout="600"/' config.toml
+
+      - name: Discover versions & emit matrix JSON
+        id: matrix
+        run: |
+          set -euo pipefail
+          discover() {
+            local d=$1
+            if [ -d "$d" ]; then
+              ls -1 "$d" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' || true
+            fi
+          }
+          K8S=$(discover content/operate/kubernetes)
+          RS=$(discover content/operate/rs)
+          REDISVL=$(discover content/develop/ai/redisvl)
+
+          # Write version lists into workspace (consumed by templates)
+          echo "$K8S"     > kubernetes-versions
+          echo "$RS"      > rs-versions
+          echo "$REDISVL" > redisvl-versions
+          : > rdi-versions
+
+          # Emit JSON matrix: 1 latest + N versions
+          {
+            echo '['
+            echo '{"kind":"latest","name":"latest","product":"","version":"","product_label":"","product_pascal":""}'
+            for v in $K8S; do
+              echo ",{\"kind\":\"version\",\"name\":\"k8s-$v\",\"product\":\"operate/kubernetes\",\"version\":\"$v\",\"product_label\":\"Redis for Kubernetes\",\"product_pascal\":\"Kubernetes\"}"
+            done
+            for v in $RS; do
+              echo ",{\"kind\":\"version\",\"name\":\"rs-$v\",\"product\":\"operate/rs\",\"version\":\"$v\",\"product_label\":\"Redis Software\",\"product_pascal\":\"Rs\"}"
+            done
+            for v in $REDISVL; do
+              echo ",{\"kind\":\"version\",\"name\":\"redisvl-$v\",\"product\":\"develop/ai/redisvl\",\"version\":\"$v\",\"product_label\":\"RedisVL\",\"product_pascal\":\"Redisvl\"}"
+            done
+            echo ']'
+          } | jq -c . > matrix.json
+          echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
+          echo "Matrix entries: $(jq 'length' matrix.json)"
+          jq -r '.[] | "  - \(.name)"' matrix.json
+
+      - name: Tar workspace (with node_modules + venv for matrix runners)
+        run: |
+          set -euo pipefail
+          cp -a /tmp/venv ./venv
+          tar --exclude=.git --exclude=public --exclude=resources \
+              --exclude=.hugo_build.lock --exclude=PRIVATE_ACCESS_TOKEN \
+              --exclude=.github --exclude=helm \
+              -czf /tmp/workspace.tar.gz .
+          ls -lh /tmp/workspace.tar.gz
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: workspace
+          path: /tmp/workspace.tar.gz
+          retention-days: 1
+          compression-level: 0  # already gzipped
+
+      - name: Write build plan
         env:
           INPUT_VARIANT: ${{ inputs.variant }}
           INPUT_OVERRIDE: ${{ inputs.tag_override }}
@@ -111,7 +209,7 @@ jobs:
         run: |
           set -euo pipefail
           OVERRIDE_DISPLAY="${INPUT_OVERRIDE:-(none — auto HASH + rolling tags)}"
-
+          MATRIX_COUNT=$(jq 'length' matrix.json)
           {
             echo "## Build plan"
             echo ""
@@ -122,191 +220,339 @@ jobs:
             echo "| Variant | \`$INPUT_VARIANT\` |"
             echo "| Platforms | \`$PLATFORMS\` |"
             echo "| Tag override | \`$OVERRIDE_DISPLAY\` |"
+            echo "| Matrix size | ${MATRIX_COUNT} parallel Hugo builds |"
             echo ""
-
             if [ "$INPUT_VARIANT" != "unprivileged" ]; then
-              echo "### Privileged tags to push"
+              echo "### Privileged tags"
               echo '```'
               echo "$PRIV_TAGS"
               echo '```'
             fi
-
             if [ "$INPUT_VARIANT" != "privileged" ]; then
-              echo "### Unprivileged tags to push"
+              echo "### Unprivileged tags"
               echo '```'
               echo "$UNPRIV_TAGS"
               echo '```'
             fi
-
-            echo ""
-            echo "## Progress"
-            echo ""
-            echo "| Stage | Status |"
-            echo "|-------|--------|"
-            echo "| 1/5: Install dependencies (apt + hugo + npm + pip) | ⏳ pending |"
-            echo "| 2/5: Clone external components (make components) | ⏳ pending |"
-            echo "| 3/5: Hugo multi-version build + gzip | ⏳ pending |"
-            echo "| 4/5: Build & push privileged | ⏳ pending |"
-            echo "| 5/5: Build & push unprivileged | ⏳ pending |"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Set up QEMU (for arm64 runtime layer)
+  # =========================================================================
+  # Phase 2: build matrix — one runner per (kind, product, version)
+  # =========================================================================
+  build:
+    name: "2. Build ${{ matrix.name }}"
+    needs: setup
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      max-parallel: 15
+      matrix:
+        include: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    steps:
+      - name: Install Hugo
+        run: |
+          wget -qO /tmp/hugo.deb \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i /tmp/hugo.deb
+
+      - name: Install system deps
+        run: |
+          sudo apt-get install -y --no-install-recommends rsync gawk
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: /tmp/
+
+      - name: Extract workspace
+        run: |
+          sudo mkdir -p /site
+          sudo chown "$USER" /site
+          tar -xzf /tmp/workspace.tar.gz -C /site
+
+      - name: Build (latest or per-version)
+        working-directory: /site
+        env:
+          KIND: ${{ matrix.kind }}
+          PRODUCT: ${{ matrix.product }}
+          VERSION: ${{ matrix.version }}
+          PRODUCT_LABEL: ${{ matrix.product_label }}
+          PRODUCT_PASCAL: ${{ matrix.product_pascal }}
+        run: |
+          set -euo pipefail
+          export PATH="/site/venv/bin:$PATH"
+
+          if [ "$KIND" = "latest" ]; then
+            echo ">>> Building latest (removing all version dirs)"
+            # Find any X.Y or X.Y.Z dirs under known version-bearing paths and remove
+            for parent in content/operate/kubernetes content/operate/rs content/develop/ai/redisvl; do
+              [ -d "$parent" ] || continue
+              find "$parent" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" -exec rm -rf {} +
+            done
+          else
+            echo ">>> Building $PRODUCT v$VERSION"
+            # Remove all OTHER versions of this product
+            VPARENT="content/$PRODUCT"
+            find "$VPARENT" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" \
+              | while read -r d; do
+                  case "$d" in
+                    "$VPARENT/$VERSION") ;;
+                    *) rm -rf "$d" ;;
+                  esac
+                done
+
+            # Strip the version prefix from relrefs in the version's own content
+            find "$VPARENT/$VERSION" -type f -name '*.md' | while read -r f; do
+              awk -v pp="$PRODUCT" -v ver="$VERSION" '
+                { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp); print }
+              ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+            done
+
+            # rsync version content INTO parent, replacing the latest-stub product content
+            rsync -a --delete-after "$VPARENT/$VERSION/" "$VPARENT/"
+
+            # Restore parent linkTitle to product label (rsync brought in "X.Y.Z")
+            sed -i "s/^linkTitle: $VERSION$/linkTitle: $PRODUCT_LABEL/" \
+              "$VPARENT/_index.md" || true
+
+            # Update nav-selector button label from "latest" to "v<version>"
+            sed -i "s/id=\"versionSelector${PRODUCT_PASCAL}Value\" class=\"version-selector-control\">latest/id=\"versionSelector${PRODUCT_PASCAL}Value\" class=\"version-selector-control\">v${VERSION}/" \
+              layouts/partials/docs-nav.html
+
+            # Inject Edit-on-GitHub path rewrite (sed 12i)
+            PP_ESC="${PRODUCT//\//\\/}"
+            sed -i "12i \\{{ \$gh_path = replaceRE \`^${PP_ESC}/\` \"${PP_ESC}/${VERSION}/\" \$gh_path }}" \
+              layouts/partials/meta-links.html
+          fi
+
+          hugo --logLevel info
+
+      - name: Stage output for upload
+        working-directory: /site
+        env:
+          KIND: ${{ matrix.kind }}
+          PRODUCT: ${{ matrix.product }}
+          VERSION: ${{ matrix.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/out
+          if [ "$KIND" = "latest" ]; then
+            # Latest: ship the entire public/ tree
+            cp -a public /tmp/out/public
+          else
+            # Version: ship only the version subtree + css/scss (additive merge in assemble)
+            mkdir -p "/tmp/out/public/$PRODUCT"
+            if [ ! -d "public/$PRODUCT/$VERSION" ]; then
+              echo "!!! ERROR: hugo did not produce public/$PRODUCT/$VERSION" >&2
+              exit 1
+            fi
+            cp -a "public/$PRODUCT/$VERSION" "/tmp/out/public/$PRODUCT/$VERSION"
+            for d in css scss; do
+              [ -d "public/$d" ] && cp -a "public/$d" "/tmp/out/public/$d"
+            done
+          fi
+          tar -czf /tmp/out.tar.gz -C /tmp/out public
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.name }}
+          path: /tmp/out.tar.gz
+          retention-days: 1
+          compression-level: 0
+
+  # =========================================================================
+  # Phase 3: assemble — merge all per-version outputs into a single public/
+  # =========================================================================
+  assemble:
+    name: 3. Assemble & gzip
+    needs: [setup, build]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      hash: ${{ needs.setup.outputs.hash }}
+    steps:
+      - name: Install deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends rsync python3-venv
+
+      - uses: actions/checkout@v4
+
+      - name: Setup Python venv (for ndjson)
+        run: |
+          python3 -m venv /tmp/venv
+          /tmp/venv/bin/pip install --quiet -r requirements.txt
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: /tmp/builds
+          pattern: build-*
+
+      - name: Merge artifacts into final public/
+        run: |
+          set -euo pipefail
+          mkdir -p public
+
+          # 1. Latest first — establishes the base tree
+          mkdir -p /tmp/extract-latest
+          tar -xzf /tmp/builds/build-latest/out.tar.gz -C /tmp/extract-latest
+          cp -a /tmp/extract-latest/public/. ./public/
+
+          # 2. Versions on top. Each artifact contains public/<product>/<version>/ plus public/css and public/scss.
+          for art_dir in /tmp/builds/build-*; do
+            name=$(basename "$art_dir" | sed 's/^build-//')
+            [ "$name" = "latest" ] && continue
+            artifact="$art_dir/out.tar.gz"
+            rm -rf /tmp/extract
+            mkdir -p /tmp/extract
+            tar -xzf "$artifact" -C /tmp/extract
+
+            # Replace version subtrees (avoids alias-induced nesting from latest)
+            while IFS= read -r vdir; do
+              relpath=${vdir#/tmp/extract/public/}
+              rm -rf "./public/$relpath"
+              mkdir -p "$(dirname "./public/$relpath")"
+              cp -a "$vdir" "./public/$relpath"
+            done < <(find /tmp/extract/public -mindepth 3 -maxdepth 4 -type d -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$")
+
+            # Additively merge css/scss (per-version hashes coexist)
+            for d in css scss; do
+              if [ -d "/tmp/extract/public/$d" ]; then
+                mkdir -p "./public/$d"
+                cp -an "/tmp/extract/public/$d/." "./public/$d/" || true
+              fi
+            done
+          done
+
+      - name: Generate ndjson
+        run: |
+          /tmp/venv/bin/python3 build/generate_ndjson.py
+          gzip -kf public/docs.ndjson
+
+      - name: Pre-compress static assets (skipping .json/.md — sub_filter at runtime)
+        run: |
+          find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
+            -exec gzip -9 -k {} \;
+
+      - name: Tar public/
+        run: |
+          tar -czf /tmp/public.tar.gz public
+          ls -lh /tmp/public.tar.gz
+          echo "Files: $(find public -type f | wc -l)"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: public
+          path: /tmp/public.tar.gz
+          retention-days: 1
+          compression-level: 0
+
+      - name: Append assemble summary
+        run: |
+          echo "- ✅ Assembled $(find public -type f | wc -l) files into public/ ($(du -sh public | cut -f1))" >> "$GITHUB_STEP_SUMMARY"
+
+  # =========================================================================
+  # Phase 4: docker — build minimal nginx images, push to DockerHub
+  # =========================================================================
+  docker:
+    name: 4. Build & push images
+    needs: [setup, assemble]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            Dockerfile.runtime
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: public
+          path: /tmp/
+
+      - name: Extract public/ into build context
+        run: |
+          tar -xzf /tmp/public.tar.gz -C .
+          ls -lh public/ | head -5
+
+      - name: Set up QEMU
         if: inputs.platforms != 'amd64'
         uses: docker/setup-qemu-action@v4
         with:
           platforms: arm64
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+      - uses: docker/setup-buildx-action@v4
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v4
+      - uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # ----------------------------------------------------------------------
-      # Stage 1/5: Install build dependencies
-      # ----------------------------------------------------------------------
-      - name: "Stage 1/5: Install build dependencies"
-        id: stage1
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          target: deps
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          push: false
-      - name: "Stage 1/5: summary"
-        if: always() && steps.stage1.conclusion != 'skipped'
-        env:
-          STAGE_OUTCOME: ${{ steps.stage1.outcome }}
-        run: |
-          ICON="✅"
-          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
-          echo "- $ICON **Stage 1/5**: Dependencies installed ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
-
-      # ----------------------------------------------------------------------
-      # Stage 2/5: Clone external example repos
-      # ----------------------------------------------------------------------
-      - name: "Stage 2/5: Clone external components"
-        id: stage2
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          target: components
-          secrets: |
-            PRIVATE_ACCESS_TOKEN=${{ secrets.PRIVATE_ACCESS_TOKEN }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          push: false
-      - name: "Stage 2/5: summary"
-        if: always() && steps.stage2.conclusion != 'skipped'
-        env:
-          STAGE_OUTCOME: ${{ steps.stage2.outcome }}
-        run: |
-          ICON="✅"
-          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
-          echo "- $ICON **Stage 2/5**: External components cloned ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
-
-      # ----------------------------------------------------------------------
-      # Stage 3/5: Hugo multi-version build (the long one, ~30 min on GHA
-      # for a fully-cold build, much less when the per-version cache mount
-      # has entries from previous runs).
-      # ----------------------------------------------------------------------
-      - name: "Stage 3/5: Hugo multi-version build + gzip"
-        id: stage3
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          target: builder
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          push: false
-      - name: "Stage 3/5: summary"
-        if: always() && steps.stage3.conclusion != 'skipped'
-        env:
-          STAGE_OUTCOME: ${{ steps.stage3.outcome }}
-        run: |
-          ICON="✅"
-          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
-          echo "- $ICON **Stage 3/5**: Hugo multi-build + gzip complete ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
-
-      # ----------------------------------------------------------------------
-      # Stage 4/5: Build & push privileged. Builder layers come from cache;
-      # only the runtime stage (COPY + LABEL) actually runs, then push.
-      # ----------------------------------------------------------------------
-      - name: "Stage 4/5: Build & push privileged"
-        id: stage4
+      - name: Build & push privileged
+        id: push_priv
         if: inputs.variant != 'unprivileged'
         uses: docker/build-push-action@v7
         with:
           context: .
-          platforms: ${{ steps.meta.outputs.platforms }}
+          file: Dockerfile.runtime
+          platforms: ${{ needs.setup.outputs.platforms }}
           target: final
           build-args: |
             VARIANT=privileged
-          secrets: |
-            PRIVATE_ACCESS_TOKEN=${{ secrets.PRIVATE_ACCESS_TOKEN }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: ${{ steps.meta.outputs.priv_tags }}
+            GIT_COMMIT=${{ needs.setup.outputs.hash }}
+            BUILD_DATE=${{ github.event.repository.updated_at }}
+          tags: ${{ needs.setup.outputs.priv_tags }}
           push: true
-      - name: "Stage 4/5: summary"
-        if: always() && steps.stage4.conclusion != 'skipped'
-        env:
-          STAGE_OUTCOME: ${{ steps.stage4.outcome }}
-        run: |
-          ICON="✅"
-          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
-          echo "- $ICON **Stage 4/5**: Privileged pushed to DockerHub ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
 
-      # ----------------------------------------------------------------------
-      # Stage 5/5: Build & push unprivileged
-      # ----------------------------------------------------------------------
-      - name: "Stage 5/5: Build & push unprivileged"
-        id: stage5
+      - name: Build & push unprivileged
+        id: push_unpriv
         if: inputs.variant != 'privileged'
         uses: docker/build-push-action@v7
         with:
           context: .
-          platforms: ${{ steps.meta.outputs.platforms }}
+          file: Dockerfile.runtime
+          platforms: ${{ needs.setup.outputs.platforms }}
           target: final
           build-args: |
             VARIANT=unprivileged
-          secrets: |
-            PRIVATE_ACCESS_TOKEN=${{ secrets.PRIVATE_ACCESS_TOKEN }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: ${{ steps.meta.outputs.unpriv_tags }}
+            GIT_COMMIT=${{ needs.setup.outputs.hash }}
+            BUILD_DATE=${{ github.event.repository.updated_at }}
+          tags: ${{ needs.setup.outputs.unpriv_tags }}
           push: true
-      - name: "Stage 5/5: summary"
-        if: always() && steps.stage5.conclusion != 'skipped'
-        env:
-          STAGE_OUTCOME: ${{ steps.stage5.outcome }}
-        run: |
-          ICON="✅"
-          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
-          echo "- $ICON **Stage 5/5**: Unprivileged pushed to DockerHub ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
 
-      # ----------------------------------------------------------------------
-      # Final summary with pull/cleanup commands. Runs even on failure so
-      # you see what was attempted.
-      # ----------------------------------------------------------------------
-      - name: Write final summary with pull / cleanup commands
+      - name: Write final summary
         if: always()
         env:
           INPUT_VARIANT: ${{ inputs.variant }}
           INPUT_OVERRIDE: ${{ inputs.tag_override }}
           STATUS: ${{ job.status }}
-          PRIV_TAGS: ${{ steps.meta.outputs.priv_tags }}
-          UNPRIV_TAGS: ${{ steps.meta.outputs.unpriv_tags }}
+          PRIV_TAGS: ${{ needs.setup.outputs.priv_tags }}
+          UNPRIV_TAGS: ${{ needs.setup.outputs.unpriv_tags }}
+          PRIV_OUTCOME: ${{ steps.push_priv.outcome }}
+          UNPRIV_OUTCOME: ${{ steps.push_unpriv.outcome }}
         run: |
           set -euo pipefail
-
+          icon() {
+            case "$1" in
+              success) echo "✅" ;;
+              failure) echo "❌" ;;
+              skipped) echo "⏭️" ;;
+              *)       echo "❓" ;;
+            esac
+          }
           {
             echo ""
             echo "## Result: \`$STATUS\`"
+            echo ""
+            echo "| Variant | Outcome |"
+            echo "|---------|---------|"
+            echo "| privileged | $(icon "${PRIV_OUTCOME:-skipped}") $PRIV_OUTCOME |"
+            echo "| unprivileged | $(icon "${UNPRIV_OUTCOME:-skipped}") $UNPRIV_OUTCOME |"
             echo ""
 
             if [ "$STATUS" != "success" ]; then
@@ -315,9 +561,7 @@ jobs:
             fi
 
             echo "### Pull commands"
-            echo ""
-
-            if [ "$INPUT_VARIANT" != "unprivileged" ]; then
+            if [ "$PRIV_OUTCOME" = "success" ]; then
               echo "**Privileged (port 80):**"
               echo '```bash'
               while IFS= read -r tag; do
@@ -326,9 +570,8 @@ jobs:
               done <<< "$PRIV_TAGS"
               echo '```'
             fi
-
-            if [ "$INPUT_VARIANT" != "privileged" ]; then
-              echo "**Unprivileged (port 8080, for k8s/OpenShift):**"
+            if [ "$UNPRIV_OUTCOME" = "success" ]; then
+              echo "**Unprivileged (port 8080):**"
               echo '```bash'
               while IFS= read -r tag; do
                 [ -z "$tag" ] && continue
@@ -338,66 +581,26 @@ jobs:
             fi
 
             echo ""
-            echo "### Quick run (locally on your machine)"
+            echo "### Quick run"
             echo '```bash'
-            if [ "$INPUT_VARIANT" != "privileged" ]; then
-              FIRST_UNPRIV=$(printf '%s\n' "$UNPRIV_TAGS" | head -n1)
-              echo "docker run --rm -p 8080:8080 $FIRST_UNPRIV"
+            if [ "$UNPRIV_OUTCOME" = "success" ]; then
+              FIRST=$(printf '%s\n' "$UNPRIV_TAGS" | head -n1)
+              echo "docker run --rm -p 8080:8080 $FIRST"
               echo "# open http://localhost:8080"
-            elif [ "$INPUT_VARIANT" != "unprivileged" ]; then
-              FIRST_PRIV=$(printf '%s\n' "$PRIV_TAGS" | head -n1)
-              echo "docker run --rm -p 80:80 $FIRST_PRIV"
+            elif [ "$PRIV_OUTCOME" = "success" ]; then
+              FIRST=$(printf '%s\n' "$PRIV_TAGS" | head -n1)
+              echo "docker run --rm -p 80:80 $FIRST"
               echo "# open http://localhost"
             fi
             echo '```'
 
             if [ -n "$INPUT_OVERRIDE" ]; then
               echo ""
-              echo "### Cleanup (this was a test build with tag_override=\`$INPUT_OVERRIDE\`)"
-              echo "Delete the test tags from DockerHub when done:"
-              echo '```bash'
-              echo "# DockerHub UI → repo → Tags → delete each:"
-              if [ "$INPUT_VARIANT" != "unprivileged" ]; then
-                while IFS= read -r t; do
-                  [ -z "$t" ] && continue
-                  echo "#   $t"
-                done <<< "$PRIV_TAGS"
-              fi
-              if [ "$INPUT_VARIANT" != "privileged" ]; then
-                while IFS= read -r t; do
-                  [ -z "$t" ] && continue
-                  echo "#   $t"
-                done <<< "$UNPRIV_TAGS"
-              fi
+              echo "### Cleanup (test build with tag_override=\`$INPUT_OVERRIDE\`)"
+              echo "Delete these tags from DockerHub when done:"
+              echo '```'
+              [ "$PRIV_OUTCOME" = "success" ] && printf '%s\n' "$PRIV_TAGS"
+              [ "$UNPRIV_OUTCOME" = "success" ] && printf '%s\n' "$UNPRIV_TAGS"
               echo '```'
             fi
           } >> "$GITHUB_STEP_SUMMARY"
-
-  # ============================================================================
-  # STAGE 2 (future) — Helm chart automation
-  #
-  # update-helm:
-  #   needs: build
-  #   permissions:
-  #     contents: write   # to commit + push the bump
-  #   steps:
-  #     - edit helm/redis-docs/Chart.yaml (version + appVersion=${{ needs.build.outputs.hash }})
-  #     - edit helm/redis-docs/README.md, README-he.md, values-openshift-airgapped.yaml
-  #     - git commit + git push
-  #
-  # publish-helm:
-  #   needs: update-helm
-  #   steps:
-  #     - install helm
-  #     - helm registry login docker.io
-  #     - helm package helm/redis-docs/
-  #     - helm push redis-docs-<version>.tgz oci://registry-1.docker.io/a0533057932
-  # ============================================================================
-
-  # ============================================================================
-  # STAGE 3 (future, exploratory) — auto-merge upstream when safe
-  #
-  # merge-upstream:
-  #   # runs BEFORE build; only when pre-merge review checks (BUILD.md step 1)
-  #   # pass cleanly with zero output
-  # ============================================================================

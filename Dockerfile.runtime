@@ -1,0 +1,53 @@
+# syntax=docker/dockerfile:1
+#
+# Runtime-only Dockerfile. Used by the matrix-based airgap-build workflow,
+# which builds Hugo natively on GHA runners (parallel per version) and then
+# only needs to wrap the assembled public/ tree in nginx.
+#
+# The legacy Dockerfile at repo root still does the whole pipeline for local
+# `docker buildx build` use.
+
+ARG VARIANT=privileged
+
+# ============================================================
+# Runtime: privileged variant (nginx:alpine, port 80)
+# ============================================================
+FROM nginx:alpine AS runtime-privileged
+
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+
+LABEL org.opencontainers.image.source="https://github.com/redis/docs"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.variant="privileged"
+
+COPY public /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+# ============================================================
+# Runtime: unprivileged variant (nginx-unprivileged, port 8080)
+# ============================================================
+FROM nginxinc/nginx-unprivileged:alpine AS runtime-unprivileged
+
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+
+LABEL org.opencontainers.image.source="https://github.com/redis/docs"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.variant="unprivileged"
+
+COPY --chown=nginx:nginx public /usr/share/nginx/html
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
+
+# ============================================================
+# Final stage: select variant via build arg
+# ============================================================
+FROM runtime-${VARIANT} AS final
