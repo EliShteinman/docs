@@ -2,9 +2,21 @@
 
 ## דרישות
 
+יש שתי דרכי בנייה — בענן (GitHub Actions) ובמחשב המקומי. שלב 3 שלמטה מתעד את שתיהן.
+
+**משותף:**
+- חשבון DockerHub עם הרשאת write ל-`a0533057932/redis-docs`
+
+**לבנייה בענן (אופציה A — מומלץ):**
+- Repository ב-GitHub עם 3 secrets/vars (כבר מוגדרים אצלך):
+  - Variable `DOCKERHUB_USERNAME` = `a0533057932`
+  - Secret `DOCKERHUB_TOKEN` = DockerHub Access Token עם הרשאת write
+  - Secret `PRIVATE_ACCESS_TOKEN` = GitHub PAT עם scope `repo` (ל-`make components`)
+
+**לבנייה מקומית (אופציה B):**
 - Docker עם BuildKit (Docker Desktop 4.x+)
 - `docker buildx` עם תמיכה ב-multi-platform
-- קובץ `PRIVATE_ACCESS_TOKEN` בשורש הפרויקט שמכיל GitHub token (ל-API rate limit)
+- קובץ `PRIVATE_ACCESS_TOKEN` בשורש הפרויקט שמכיל GitHub PAT (ל-API rate limit + clone של repos פרטיים)
 
 ## סכמת תגים
 
@@ -64,7 +76,34 @@ git merge origin/main
 # auto-merge ברוב המקרים. במקרה של conflict — ידני
 ```
 
-### שלב 3 — בנייה (חובה ברצף, לא במקביל)
+### שלב 3 — בנייה
+
+שתי דרכים — בענן או מקומית. שתיהן מייצרות את אותם **4 תגים** ב-DockerHub.
+
+#### אופציה A — בנייה בענן (GitHub Actions, מומלץ)
+
+GHA workflow מקבילי: phase 1 setup → phase 2 הוא 29 ריצות Hugo במקביל (latest + 28 גרסאות) → phase 3 assemble → phase 4 push.
+
+**הרצה:**
+1. `git push fork feature/docker-support` (או הbranch הרצוי) — לוודא שהcommit נמצא ב-GitHub
+2. https://github.com/EliShteinman/docs/actions/workflows/airgap-build.yml → **Run workflow**
+3. בחר branch, השאר את ה-inputs כברירת מחדל (אם רוצים build רגיל)
+
+**Inputs אופציונליים** (לבדיקות):
+
+| Input | ערכים | שימוש |
+|--------|--------|--------|
+| `variant` | both / privileged / unprivileged | לבנות רק וריאנט אחד |
+| `platforms` | both / amd64 / arm64 | לבנות לrch ייעודי (חיסכון בזמן push) |
+| `tag_override` | טקסט חופשי (e.g. `test1`) | תג זמני בלי לדרוס `:latest` / `:unprivileged` |
+
+**זמן:** ~10-15 דק׳ first run, ~6-10 דק׳ אחרי שה-cache מאוכלס.
+
+**ה-Summary page** של ה-run יציג בסוף פקודות `docker pull` ו-`docker run` להעתקה.
+
+#### אופציה B — בנייה מקומית (Docker buildx)
+
+ידני, על המק/לינוקס. משתמש ב-`Dockerfile` ובסקריפט `airgap-multibuild.sh` (28+1 ריצות Hugo ברצף בתוך container).
 
 ```bash
 HASH=$(git rev-parse --short=9 HEAD)
@@ -86,9 +125,26 @@ docker buildx build --platform linux/amd64,linux/arm64 \
   --push .
 ```
 
-> **למה ברצף ולא במקביל?** שני ה-variants חולקים את אותו builder stage. כשהראשון מסתיים, ה-26 hugo runs נכנסים ל-cache של BuildKit. השני מקבל אותם CACHED ורץ רק את שלב ה-runtime (`COPY` + LABELs). במקביל — תחרות על משאבים בלי תועלת.
+> **למה ברצף ולא במקביל?** שני ה-variants חולקים את אותו builder stage. כשהראשון מסתיים, ה-29 hugo runs נכנסים ל-cache של BuildKit. השני מקבל אותם CACHED ורץ רק את שלב ה-runtime (`COPY` + LABELs). במקביל — תחרות על משאבים בלי תועלת.
 
 > **למה האותה פקודה לא מציינת `,src=`?** ה-default של `--secret id=NAME` ב-BuildKit הוא לקרוא מקובץ באותו שם ב-cwd. הקובץ `PRIVATE_ACCESS_TOKEN` מוגדר ב"דרישות" — לא נדרש `export` ולא `,src=` מפורש.
+
+**זמן:** ~10-15 דק׳ build על Mac M-series + עד שעה+ push לDockerHub מאינטרנט ביתי.
+
+#### השוואה בין האופציות
+
+| | אופציה A (ענן) | אופציה B (מקומית) |
+|---|------|------|
+| היכן רץ | GitHub runners (ubuntu-24.04 amd64) | המחשב שלך |
+| Parallelism | 29 ריצות hugo במקביל | רצף בתוך container |
+| Build time | ~10-15 דק׳ | ~10-15 דק׳ |
+| Push to DockerHub | ~2-5 דק׳ (network של Azure) | ~30 דק׳ עד שעה+ (אינטרנט ביתי) |
+| **סה"כ wall-clock** | **~12-20 דק׳** | **~40-90 דק׳** |
+| התערבות ידנית | אחת (לחיצה על Run) | להעקוב | 
+| המחשב תפוס בזמן | לא | כן |
+| קבצים מעורבים | `.github/workflows/airgap-build.yml` + `Dockerfile.runtime` | `Dockerfile` + `airgap-multibuild.sh` |
+
+**המלצה:** אופציה A לעדכונים רגילים. אופציה B אם אין גישה ל-GitHub Actions, או לbuild שכולל שינויי Dockerfile/script שאתה בודק.
 
 ### שלב 4 — אימות deployment
 
@@ -116,7 +172,7 @@ oc get pods,route -n redis-docs
 | מקרה | bump | פעולה |
 |---|---|---|
 | **תוכן upstream בלבד** (זה הרגיל) | patch (`1.1.0 → 1.1.1`) | עדכון `appVersion`, עדכון tag בדוגמאות |
-| **תיקון/הוספה קטנה ב-airgap-multibuild.sh או ב-Dockerfile** | minor (`1.1.0 → 1.2.0`) | אותו דבר |
+| **תיקון/הוספה קטנה ב-airgap-multibuild.sh, ב-Dockerfile, ב-Dockerfile.runtime או ב-`.github/workflows/airgap-build.yml`** | minor (`1.1.0 → 1.2.0`) | אותו דבר |
 | **שינוי במבנה ה-chart** (כניסה חדשה ל-catalog, configmap חדש, default values משופרים) | minor או major | + עיון בכל ה-templates שהתעדכנו |
 | **שינוי breaking** (שיניתי `values.yaml` באופן שלא תואם לאחור) | major (`1.x → 2.0.0`) | + הערת migration ב-CHANGELOG |
 
@@ -164,9 +220,13 @@ helm install my-deploy oci://registry-1.docker.io/a0533057932/redis-docs --versi
 
 ## בנייה
 
-ראו "תהליך עדכון מקצה לקצה" — שלב 3 לפקודות. הסדר חייב להיות **ברצף** (לא במקביל) כדי שה-variant השני יקבל cache מלא של builder stage.
+ראו "תהליך עדכון מקצה לקצה" — שלב 3 לפקודות (אופציה A לענן, אופציה B מקומית).
 
-## מה הבנייה עושה
+## מה הבנייה עושה (אופציה B — מקומית, ע"ב Dockerfile)
+
+> אופציה A (GHA) עושה את **אותו דבר לוגית** אבל מפצלת ל-jobs מקבילים — phase 1 setup → phase 2 הוא 29 ריצות Hugo במקביל → phase 3 assemble → phase 4 nginx+push. ראה `.github/workflows/airgap-build.yml`.
+
+
 
 1. **Builder stage** (משותף לשני ה-variants ולשתי הארכיטקטורות):
    - Base image: `node:24-trixie` (Node 24 + Python 3.13)
