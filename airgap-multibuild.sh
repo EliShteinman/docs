@@ -17,6 +17,31 @@ set -euo pipefail
 readonly SITE=/site
 readonly SNAPSHOT=/tmp/site-snapshot
 readonly FINAL=/tmp/public-final
+# Per-version output cache. The Dockerfile mounts this path via
+# `RUN --mount=type=cache,target=/var/cache/airgap-versions`, so it persists
+# across builds (and across workflow runs when cache-to=type=gha,mode=max).
+readonly CACHE_ROOT=/var/cache/airgap-versions
+mkdir -p "$CACHE_ROOT"
+
+# Hash everything that affects rendering for a given (product, version):
+# the version's own content, shared layouts, data, top-level configs, and
+# the script itself. Identical inputs → identical key → cache reuse.
+compute_version_cache_key() {
+  local product_path=$1
+  local version=$2
+  {
+    [ -d "$SNAPSHOT/content/$product_path/$version" ] && \
+      find "$SNAPSHOT/content/$product_path/$version" -type f -print0 | sort -z | xargs -0 sha256sum
+    find "$SNAPSHOT/layouts" -type f -print0 | sort -z | xargs -0 sha256sum
+    [ -d "$SNAPSHOT/data" ] && \
+      find "$SNAPSHOT/data" -type f -print0 | sort -z | xargs -0 sha256sum
+    for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
+      [ -f "$SNAPSHOT/$f" ] && sha256sum "$SNAPSHOT/$f"
+    done
+    sha256sum "$SITE/airgap-multibuild.sh"
+    printf 'product=%s version=%s\n' "$product_path" "$version"
+  } 2>/dev/null | sha256sum | cut -c1-16
+}
 
 cd "$SITE"
 
@@ -116,7 +141,26 @@ build_version() {
   local version=$4
   local all_versions=$5     # newline-separated version list for this product
 
-  echo ">>> Building ${product_path} v${version}"
+  local cache_key
+  cache_key=$(compute_version_cache_key "$product_path" "$version")
+  local pp_slug="${product_path//\//-}"
+  local cache_dir="$CACHE_ROOT/${pp_slug}-v${version}-${cache_key}"
+
+  if [ -d "$cache_dir/version" ]; then
+    echo ">>> [CACHE HIT] ${product_path} v${version} (key=${cache_key})"
+    mkdir -p "$FINAL/$product_path"
+    rm -rf "$FINAL/$product_path/$version"
+    cp -a "$cache_dir/version" "$FINAL/$product_path/$version"
+    for d in css scss; do
+      if [ -d "$cache_dir/$d" ]; then
+        mkdir -p "$FINAL/$d"
+        cp -an "$cache_dir/$d/." "$FINAL/$d/"
+      fi
+    done
+    return
+  fi
+
+  echo ">>> [CACHE MISS] Building ${product_path} v${version} (key=${cache_key})"
   reset_workspace
   cd "$SITE"
 
@@ -189,6 +233,21 @@ build_version() {
       cp -an "$SITE/public/$d/." "$FINAL/$d/"
     fi
   done
+
+  # Save the fresh build to the per-version cache so the next build with the
+  # same inputs is a cache hit. We use a temp dir + atomic rename so a build
+  # killed mid-write doesn't poison the cache.
+  local cache_tmp="${cache_dir}.tmp.$$"
+  rm -rf "$cache_tmp"
+  mkdir -p "$cache_tmp"
+  cp -a "$SITE/public/$product_path/$version" "$cache_tmp/version"
+  for d in css scss; do
+    if [ -d "$SITE/public/$d" ]; then
+      cp -a "$SITE/public/$d" "$cache_tmp/$d"
+    fi
+  done
+  rm -rf "$cache_dir"
+  mv "$cache_tmp" "$cache_dir"
 
   rm -rf "$SITE/public"
 }

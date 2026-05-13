@@ -55,8 +55,7 @@ jobs:
         uses: actions/checkout@v4
 
       # ----------------------------------------------------------------------
-      # Step 1: Compute build parameters. Inputs are passed via env: to avoid
-      # any shell-injection risk from the free-text tag_override field.
+      # Setup
       # ----------------------------------------------------------------------
       - name: Compute build params
         id: meta
@@ -120,29 +119,37 @@ jobs:
             echo "|---------|-------|"
             echo "| Commit | \`$HASH\` |"
             echo "| Branch | \`$BRANCH\` |"
-            echo "| Variant input | \`$INPUT_VARIANT\` |"
+            echo "| Variant | \`$INPUT_VARIANT\` |"
             echo "| Platforms | \`$PLATFORMS\` |"
             echo "| Tag override | \`$OVERRIDE_DISPLAY\` |"
             echo ""
 
             if [ "$INPUT_VARIANT" != "unprivileged" ]; then
-              echo "### Privileged tags about to be pushed"
+              echo "### Privileged tags to push"
               echo '```'
               echo "$PRIV_TAGS"
               echo '```'
             fi
 
             if [ "$INPUT_VARIANT" != "privileged" ]; then
-              echo "### Unprivileged tags about to be pushed"
+              echo "### Unprivileged tags to push"
               echo '```'
               echo "$UNPRIV_TAGS"
               echo '```'
             fi
+
+            echo ""
+            echo "## Progress"
+            echo ""
+            echo "| Stage | Status |"
+            echo "|-------|--------|"
+            echo "| 1/5: Install dependencies (apt + hugo + npm + pip) | ⏳ pending |"
+            echo "| 2/5: Clone external components (make components) | ⏳ pending |"
+            echo "| 3/5: Hugo multi-version build + gzip | ⏳ pending |"
+            echo "| 4/5: Build & push privileged | ⏳ pending |"
+            echo "| 5/5: Build & push unprivileged | ⏳ pending |"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      # ----------------------------------------------------------------------
-      # Step 2: Cross-arch setup (skipped when building amd64-only)
-      # ----------------------------------------------------------------------
       - name: Set up QEMU (for arm64 runtime layer)
         if: inputs.platforms != 'amd64'
         uses: docker/setup-qemu-action@v4
@@ -159,12 +166,78 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # ----------------------------------------------------------------------
-      # Step 3: privileged. The Dockerfile pins builder to $BUILDPLATFORM
-      # (amd64 native on this runner), so the heavy work runs ONCE.
-      # `cache-to: type=gha,mode=max` writes intermediates to GitHub Actions
-      # cache → next workflow run starts with a warm cache.
+      # Stage 1/5: Install build dependencies
       # ----------------------------------------------------------------------
-      - name: Build & push privileged
+      - name: "Stage 1/5: Install build dependencies"
+        id: stage1
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          target: deps
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: false
+      - name: "Stage 1/5: summary"
+        if: always() && steps.stage1.conclusion != 'skipped'
+        env:
+          STAGE_OUTCOME: ${{ steps.stage1.outcome }}
+        run: |
+          ICON="✅"
+          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
+          echo "- $ICON **Stage 1/5**: Dependencies installed ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
+
+      # ----------------------------------------------------------------------
+      # Stage 2/5: Clone external example repos
+      # ----------------------------------------------------------------------
+      - name: "Stage 2/5: Clone external components"
+        id: stage2
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          target: components
+          secrets: |
+            PRIVATE_ACCESS_TOKEN=${{ secrets.PRIVATE_ACCESS_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: false
+      - name: "Stage 2/5: summary"
+        if: always() && steps.stage2.conclusion != 'skipped'
+        env:
+          STAGE_OUTCOME: ${{ steps.stage2.outcome }}
+        run: |
+          ICON="✅"
+          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
+          echo "- $ICON **Stage 2/5**: External components cloned ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
+
+      # ----------------------------------------------------------------------
+      # Stage 3/5: Hugo multi-version build (the long one, ~30 min on GHA
+      # for a fully-cold build, much less when the per-version cache mount
+      # has entries from previous runs).
+      # ----------------------------------------------------------------------
+      - name: "Stage 3/5: Hugo multi-version build + gzip"
+        id: stage3
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          target: builder
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: false
+      - name: "Stage 3/5: summary"
+        if: always() && steps.stage3.conclusion != 'skipped'
+        env:
+          STAGE_OUTCOME: ${{ steps.stage3.outcome }}
+        run: |
+          ICON="✅"
+          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
+          echo "- $ICON **Stage 3/5**: Hugo multi-build + gzip complete ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
+
+      # ----------------------------------------------------------------------
+      # Stage 4/5: Build & push privileged. Builder layers come from cache;
+      # only the runtime stage (COPY + LABEL) actually runs, then push.
+      # ----------------------------------------------------------------------
+      - name: "Stage 4/5: Build & push privileged"
+        id: stage4
         if: inputs.variant != 'unprivileged'
         uses: docker/build-push-action@v7
         with:
@@ -179,12 +252,20 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.priv_tags }}
           push: true
+      - name: "Stage 4/5: summary"
+        if: always() && steps.stage4.conclusion != 'skipped'
+        env:
+          STAGE_OUTCOME: ${{ steps.stage4.outcome }}
+        run: |
+          ICON="✅"
+          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
+          echo "- $ICON **Stage 4/5**: Privileged pushed to DockerHub ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
 
       # ----------------------------------------------------------------------
-      # Step 4: unprivileged. The builder stage is CACHED from step 3 (same
-      # runner, in-memory BuildKit). Only the runtime stage actually runs.
+      # Stage 5/5: Build & push unprivileged
       # ----------------------------------------------------------------------
-      - name: Build & push unprivileged
+      - name: "Stage 5/5: Build & push unprivileged"
+        id: stage5
         if: inputs.variant != 'privileged'
         uses: docker/build-push-action@v7
         with:
@@ -199,10 +280,18 @@ jobs:
           cache-to: type=gha,mode=max
           tags: ${{ steps.meta.outputs.unpriv_tags }}
           push: true
+      - name: "Stage 5/5: summary"
+        if: always() && steps.stage5.conclusion != 'skipped'
+        env:
+          STAGE_OUTCOME: ${{ steps.stage5.outcome }}
+        run: |
+          ICON="✅"
+          [ "$STAGE_OUTCOME" != "success" ] && ICON="❌"
+          echo "- $ICON **Stage 5/5**: Unprivileged pushed to DockerHub ($STAGE_OUTCOME)" >> "$GITHUB_STEP_SUMMARY"
 
       # ----------------------------------------------------------------------
-      # Step 5: final summary with pull commands (runs even if build failed,
-      # so you see what was attempted)
+      # Final summary with pull/cleanup commands. Runs even on failure so
+      # you see what was attempted.
       # ----------------------------------------------------------------------
       - name: Write final summary with pull / cleanup commands
         if: always()

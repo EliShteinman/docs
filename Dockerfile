@@ -3,19 +3,16 @@
 ARG VARIANT=privileged
 
 # ============================================================
-# Builder stage (shared by both variants AND both target arches)
+# Stage: deps (apt + hugo + npm + pip)
 # ============================================================
-# Force the builder to run on the host's native platform — the output is
-# static HTML/CSS/JS that's identical regardless of target arch, so there's
-# no point running Hugo + npm + pip twice (once natively and once under
-# QEMU emulation) for a multi-arch build. Each target's runtime stage
-# COPYs the same /site/public out of this single builder.
-FROM --platform=$BUILDPLATFORM node:24-trixie AS builder
+# Force builder-side stages to run on the host's native platform — the output
+# is static HTML/CSS/JS that's identical regardless of target arch, so there's
+# no point running Hugo + npm + pip twice under QEMU emulation. Each target's
+# runtime stage COPYs the same /site/public out of the final builder stage.
+FROM --platform=$BUILDPLATFORM node:24-trixie AS deps
 
 ARG HUGO_VERSION=0.143.1
 ARG BUILDARCH
-ARG GIT_COMMIT=unknown
-ARG BUILD_DATE=unknown
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
@@ -40,28 +37,45 @@ RUN npm install
 COPY requirements.txt ./
 RUN python3 -m venv /venv && /venv/bin/pip install -r requirements.txt
 
+# ============================================================
+# Stage: components (COPY workspace + make components)
+# ============================================================
+FROM deps AS components
+
 COPY . .
 
 ENV PATH="/venv/bin:$PATH"
 
 RUN sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
 # Hugo per-partial timeout: upstream sets 75s, which fits CI but not multi-platform
-# Docker builds where dynacache is constantly evicted under memory pressure and
-# QEMU-emulated amd64 plus parallel arm64 share a single host's resources.
+# Docker builds where dynacache is constantly evicted under memory pressure.
 RUN sed -i 's/timeout="75"/timeout="600"/' config.toml
 
-# Fetch external client repos (clones into examples/). Cached unless deps or
-# build/make.py change. Cannot move into the multi-build below because each
-# version build resets the workspace; we want examples/ in the snapshot.
+# Fetch external client repos (clones into examples/). Cannot move into the
+# multi-build below because each version build resets the workspace; we want
+# examples/ in the snapshot.
 RUN --mount=type=secret,id=PRIVATE_ACCESS_TOKEN,env=PRIVATE_ACCESS_TOKEN \
     make components
 
+# ============================================================
+# Stage: builder (multi-version Hugo build + gzip pre-compression)
+# ============================================================
+FROM components AS builder
+
 # Multi-build pipeline: latest + one Hugo invocation per (product, version),
 # then merged into a single public/ tree. See airgap-multibuild.sh.
-# Mirrors .github/workflows/main.yml's parallel matrix as a sequential loop.
-RUN bash airgap-multibuild.sh
+#
+# The cache mount preserves per-version Hugo outputs across builds. The script
+# computes a content-hash per version and reuses cached outputs when the hash
+# matches — so a merge that only touches one version's content rebuilds only
+# that version, not the other 27.
+RUN --mount=type=cache,target=/var/cache/airgap-versions \
+    bash airgap-multibuild.sh
 
-RUN find /site/public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.json" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
+# Pre-compress static assets that nginx serves via gzip_static. Skips .md and
+# .json because nginx runs sub_filter on those at request time (gzip_static is
+# OFF for those locations — pre-compressing them would be wasted CPU).
+RUN find /site/public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
     -exec gzip -9 -k {} \;
 
 # ============================================================
