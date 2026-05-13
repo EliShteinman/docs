@@ -368,6 +368,7 @@ docker run -p 80:80 a0533057932/redis-docs:latest
 | `thebe.css` | 0.9.0-rc.12 | unpkg.com | עיצוב Thebe |
 | `codemirror-javascript.js` | 5.65.16 | unpkg.com | מצב הדגשת תחביר JavaScript ל-Thebe (mode/javascript/javascript.js) |
 | `codemirror-ruby.js` | 5.65.16 | unpkg.com | מצב הדגשת תחביר Ruby ל-Thebe (mode/ruby/ruby.js) |
+| `codemirror-clike.js` | 5.65.16 | unpkg.com | מצב הדגשת תחביר C/C++/Java ל-Thebe (mode/clike/clike.js, MIME text/x-csrc) |
 
 > לעדכון: הורידו את הגרסה החדשה מהמקור המקורי, החליפו את הקובץ ב-`static/vendor/`, ועדכנו טבלה זו.
 
