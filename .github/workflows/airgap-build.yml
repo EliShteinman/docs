@@ -54,6 +54,10 @@ jobs:
       matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Need full git history because config.toml sets enableGitInfo=true,
+          # which makes Hugo run `git log` per page for lastmod metadata.
+          fetch-depth: 0
 
       - name: Compute build params
         id: meta
@@ -186,8 +190,9 @@ jobs:
           cp -a /tmp/venv ./venv
           # --anchored is critical: without it, --exclude=public would also
           # strip node_modules/tailwindcss/lib/public/ and break postcss.
+          # .git IS included (~280MB) because config.toml has enableGitInfo=true
+          # and Hugo needs `git log` to populate lastmod per page.
           tar --anchored \
-              --exclude='./.git' \
               --exclude='./public' \
               --exclude='./resources' \
               --exclude='./.hugo_build.lock' \
