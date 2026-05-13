@@ -248,12 +248,14 @@ jobs:
           python3 -m venv ./venv
           ./venv/bin/pip install --quiet -r requirements.txt
 
-      - name: Restore examples
+      - name: Restore examples + data/examples.json
         id: cache-examples
         uses: actions/cache@v4
         with:
-          path: examples
-          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components_local/index.json') }}
+          path: |
+            examples
+            data/examples.json
+          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components/index.json') }}
 
       - name: make components (cache miss)
         if: steps.cache-examples.outputs.cache-hit != 'true'
@@ -410,12 +412,14 @@ jobs:
           python3 -m venv ./venv
           ./venv/bin/pip install --quiet -r requirements.txt
 
-      - name: Restore examples
+      - name: Restore examples + data/examples.json
         id: cache-examples
         uses: actions/cache@v4
         with:
-          path: examples
-          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components_local/index.json') }}
+          path: |
+            examples
+            data/examples.json
+          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components/index.json') }}
 
       - name: make components (cache miss)
         if: steps.cache-examples.outputs.cache-hit != 'true'
