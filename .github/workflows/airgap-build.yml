@@ -41,6 +41,14 @@ on:
           normal builds.
         type: string
         default: ''
+      publish_chart:
+        description: >-
+          After the image push, also auto-bump the Helm chart patch version,
+          commit the update back to this branch, and publish the chart as an
+          OCI artifact. Skipped automatically on partial builds and override
+          tags. For non-patch bumps build the chart manually per BUILD.md.
+        type: boolean
+        default: false
 
 env:
   REPO: a0533057932/redis-docs
@@ -65,7 +73,7 @@ jobs:
       rs_versions: ${{ steps.matrix.outputs.rs }}
       redisvl_versions: ${{ steps.matrix.outputs.redisvl }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
       - name: Compute build params
         id: meta
@@ -211,7 +219,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           fetch-depth: 0   # full history for Hugo's enableGitInfo
 
@@ -226,7 +234,7 @@ jobs:
 
       - name: Restore node_modules
         id: cache-npm
-        uses: actions/cache@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
           path: node_modules
           key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
@@ -237,7 +245,7 @@ jobs:
 
       - name: Restore python venv
         id: cache-pip
-        uses: actions/cache@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
           path: ./venv
           key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
@@ -250,7 +258,7 @@ jobs:
 
       - name: Restore examples + data/examples.json
         id: cache-examples
-        uses: actions/cache@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
           path: |
             examples
@@ -322,7 +330,7 @@ jobs:
 
       - name: Restore Hugo output cache
         id: cache-hugo
-        uses: actions/cache@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
           path: output
           key: hugo-latest-${{ steps.key.outputs.key }}
@@ -343,7 +351,7 @@ jobs:
       - name: Stage output as artifact
         run: tar -czf /tmp/out.tar.gz output
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: build-latest
           path: /tmp/out.tar.gz
@@ -375,7 +383,7 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.setup.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           fetch-depth: 0
 
@@ -390,7 +398,7 @@ jobs:
 
       - name: Restore node_modules
         id: cache-npm
-        uses: actions/cache@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
           path: node_modules
           key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
@@ -401,7 +409,7 @@ jobs:
 
       - name: Restore python venv
         id: cache-pip
-        uses: actions/cache@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
           path: ./venv
           key: pip-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
@@ -414,7 +422,7 @@ jobs:
 
       - name: Restore examples + data/examples.json
         id: cache-examples
-        uses: actions/cache@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
           path: |
             examples
@@ -485,7 +493,7 @@ jobs:
 
       - name: Restore Hugo output cache
         id: cache-hugo
-        uses: actions/cache@v4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
         with:
           path: output
           key: hugo-${{ matrix.name }}-${{ steps.key.outputs.key }}
@@ -555,7 +563,7 @@ jobs:
           done
           tar -czf /tmp/out.tar.gz -C /tmp/stage output
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: build-${{ matrix.name }}
           path: /tmp/out.tar.gz
@@ -572,7 +580,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
       - name: Install system deps
         run: sudo apt-get install -y --no-install-recommends rsync python3-venv
@@ -582,7 +590,7 @@ jobs:
           python3 -m venv /tmp/venv
           /tmp/venv/bin/pip install --quiet -r requirements.txt
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
         with:
           path: /tmp/builds
           pattern: build-*
@@ -636,7 +644,7 @@ jobs:
           tar -czf /tmp/public.tar.gz public
           echo "Files: $(find public -type f | wc -l), Size: $(du -sh public | cut -f1)"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: public
           path: /tmp/public.tar.gz
@@ -657,13 +665,13 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           sparse-checkout: |
             Dockerfile.runtime
           sparse-checkout-cone-mode: false
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
         with:
           name: public
           path: /tmp/
@@ -673,13 +681,13 @@ jobs:
 
       - name: Set up QEMU
         if: inputs.platforms != 'amd64'
-        uses: docker/setup-qemu-action@v4
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
         with:
           platforms: arm64
 
-      - uses: docker/setup-buildx-action@v4
+      - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd  # v4.0.0
 
-      - uses: docker/login-action@v4
+      - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -687,7 +695,7 @@ jobs:
       - name: Build & push privileged
         id: push_priv
         if: inputs.variant != 'unprivileged'
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
         with:
           context: .
           file: Dockerfile.runtime
@@ -703,7 +711,7 @@ jobs:
       - name: Build & push unprivileged
         id: push_unpriv
         if: inputs.variant != 'privileged'
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
         with:
           context: .
           file: Dockerfile.runtime
@@ -792,5 +800,149 @@ jobs:
               [ "$PRIV_OUTCOME" = "success" ] && printf '%s\n' "$PRIV_TAGS"
               [ "$UNPRIV_OUTCOME" = "success" ] && printf '%s\n' "$UNPRIV_TAGS"
               echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # =========================================================================
+  # Phase 5: publish_chart — opt-in.
+  # Order: bump files -> git commit & push -> helm publish to OCI.
+  # If helm publish fails the bump is already in git; rerun helm push by hand.
+  # Skipped on partial builds (variant/platforms != both, or tag_override set).
+  # =========================================================================
+  publish_chart:
+    name: 5. Publish Helm chart (opt-in)
+    needs: [setup, docker]
+    if: >-
+      inputs.publish_chart &&
+      inputs.variant == 'both' &&
+      inputs.platforms == 'both' &&
+      inputs.tag_override == ''
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      # Default ref (github.ref) and persist-credentials (true) are what we
+      # need: git-auto-commit-action reuses the auth header to push back to
+      # this branch.
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Bump chart files
+        id: bump
+        env:
+          NEW_HASH: ${{ needs.setup.outputs.hash }}
+        run: |
+          set -euo pipefail
+          CHART=helm/redis-docs/Chart.yaml
+
+          # NEW_HASH is interpolated into sed below, so it must match the
+          # setup phase's convention exactly (git rev-parse --short=9). A
+          # malformed hash here would corrupt every targeted line.
+          if [[ ! "$NEW_HASH" =~ ^[a-f0-9]{9}$ ]]; then
+            echo "::error::NEW_HASH '$NEW_HASH' is not 9-char lowercase hex. Setup phase produced an unexpected value."
+            exit 1
+          fi
+
+          OLD_VERSION=$(grep '^version:' "$CHART" | awk '{print $2}')
+          OLD_HASH=$(sed -nE 's/^appVersion:[[:space:]]*"([^"]+)".*/\1/p' "$CHART")
+
+          # OLD_VERSION drives the patch increment ($((PATCH + 1))), so any
+          # non-X.Y.Z form crashes the arithmetic mid-bump. Reject early.
+          if [[ ! "$OLD_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::version '$OLD_VERSION' is not plain X.Y.Z. Pre-release / build-meta suffixes are not auto-bumped — bump manually per BUILD.md step 5."
+            exit 1
+          fi
+
+          # OLD_HASH is used only for the same-hash skip check; it is no
+          # longer interpolated into sed, so loose validation suffices.
+          if [ -z "$OLD_HASH" ]; then
+            echo "::error::Could not read appVersion from $CHART. Format may have changed."
+            exit 1
+          fi
+
+          {
+            echo "old_version=$OLD_VERSION"
+            echo "old_hash=$OLD_HASH"
+          } >> "$GITHUB_OUTPUT"
+
+          if [ "$OLD_HASH" = "$NEW_HASH" ]; then
+            echo "appVersion already $NEW_HASH — nothing to publish."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          IFS=. read -r MAJ MIN PATCH <<<"$OLD_VERSION"
+          NEW_VERSION="$MAJ.$MIN.$((PATCH + 1))"
+
+          # Context-aware replacements. Each pattern matches exactly the
+          # lines BUILD.md step 5 lists, so a stray hex string elsewhere in
+          # these files (release notes, examples, etc.) can't be corrupted.
+          sed -i -E "s/^appVersion:[[:space:]]*\"[a-f0-9]+\"/appVersion: \"${NEW_HASH}\"/" "$CHART"
+          sed -i -E "s/[a-f0-9]+-unprivileged/${NEW_HASH}-unprivileged/g" \
+            helm/redis-docs/examples/values-openshift-airgapped.yaml \
+            helm/redis-docs/README.md \
+            helm/redis-docs/README-he.md
+          sed -i "s/^version: .*/version: ${NEW_VERSION}/" "$CHART"
+
+          {
+            echo "new_version=$NEW_VERSION"
+            echo "new_hash=$NEW_HASH"
+            echo "changed=true"
+          } >> "$GITHUB_OUTPUT"
+
+      # Skip when the bump step short-circuited (changed=false because the
+      # appVersion was already current). GHA implicitly ANDs success() with
+      # any step-level `if:` that does not contain a status function — no
+      # need to repeat it here.
+      - name: Commit bump
+        if: steps.bump.outputs.changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9  # v7.1.0
+        with:
+          commit_message: "chore(helm): bump chart ${{ steps.bump.outputs.new_version }}, appVersion ${{ steps.bump.outputs.new_hash }}"
+          file_pattern: helm/redis-docs/
+
+      - name: Publish chart to OCI
+        if: steps.bump.outputs.changed == 'true'
+        uses: appany/helm-oci-chart-releaser@d94988c92bed2e09c6113981f15f8bb495d10943  # v0.5.0
+        with:
+          name: redis-docs
+          repository: ${{ vars.DOCKERHUB_USERNAME }}
+          tag: ${{ steps.bump.outputs.new_version }}
+          path: helm/redis-docs
+          registry: registry-1.docker.io
+          registry_username: ${{ vars.DOCKERHUB_USERNAME }}
+          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Write chart summary
+        if: always()
+        env:
+          STATUS: ${{ job.status }}
+          CHANGED: ${{ steps.bump.outputs.changed }}
+          OLD_VERSION: ${{ steps.bump.outputs.old_version }}
+          NEW_VERSION: ${{ steps.bump.outputs.new_version }}
+          NEW_HASH: ${{ steps.bump.outputs.new_hash }}
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+        run: |
+          {
+            echo ""
+            echo "## Helm chart publish: \`$STATUS\`"
+            echo ""
+            if [ "$STATUS" = "success" ] && [ "$CHANGED" = "true" ]; then
+              echo "| Field | Value |"
+              echo "|-------|-------|"
+              echo "| version | \`$OLD_VERSION\` → \`$NEW_VERSION\` |"
+              echo "| appVersion | \`$NEW_HASH\` |"
+              echo "| OCI ref | \`oci://registry-1.docker.io/$DOCKERHUB_USERNAME/redis-docs:$NEW_VERSION\` |"
+            elif [ "$STATUS" = "success" ]; then
+              echo "Chart appVersion already up to date — nothing pushed."
+            elif [ "$CHANGED" = "true" ]; then
+              echo "⚠️ Bump committed (or attempted) but a later step failed."
+              echo ""
+              echo "If \`Commit bump\` succeeded but \`Publish chart\` failed, run manually:"
+              echo '```bash'
+              echo "helm package helm/redis-docs/ -d /tmp/"
+              echo "helm push /tmp/redis-docs-${NEW_VERSION}.tgz oci://registry-1.docker.io/$DOCKERHUB_USERNAME"
+              echo '```'
+            else
+              echo "❌ Bump step failed (validation or sed) — nothing committed, nothing published. See step logs."
             fi
           } >> "$GITHUB_STEP_SUMMARY"
