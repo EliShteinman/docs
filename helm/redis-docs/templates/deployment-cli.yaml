@@ -41,12 +41,14 @@ spec:
               port: http
             initialDelaySeconds: 5
             periodSeconds: 10
+            timeoutSeconds: 3
           readinessProbe:
             httpGet:
               path: /healthz
               port: http
             initialDelaySeconds: 3
             periodSeconds: 5
+            timeoutSeconds: 3
           resources:
             {{- toYaml .Values.cli.resources | nindent 12 }}
           securityContext:
