@@ -60,12 +60,11 @@ externalLinks.enabled                    ← master kill-switch
 └── families
     ├── home          (7 keys)
     │   └── links: { sandbox, tutorials, university, blog, support, github, chatbot }
-    ├── header        (36 keys, 6 sub-families)
-    │   └── sub-families: { main-nav, cta, search,
-    │                       products-dropdown, resources-dropdown, mobile }
-    └── footer        (44 keys, 9 sub-families)
-        └── sub-families: { social, legal, solutions, industries, compare,
-                            company, community, cloud-partners, services }
+    ├── header        (5 keys, 4 sub-families)
+    │   └── sub-families: { main-nav, cta, search, mobile }
+    └── footer        (23 keys, 6 sub-families)
+        └── sub-families: { social, legal, compare, company,
+                            cloud-partners, services }
 ```
 
 The full catalog (every key with its description and upstream URL) ships

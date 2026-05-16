@@ -385,17 +385,16 @@ externalLinks.enabled                    ← master kill-switch
 └── families
     ├── home                              ← קישורים בגוף עמוד הבית
     │   └── links: { sandbox, tutorials, ... }
-    └── header                            ← תפריט עליון
-        └── sub-families
-            ├── main-nav: { Redis for AI, Docs, Pricing }
-            ├── cta: { Login, Book a meeting, Try Redis }
-            ├── search: { search button }
-            ├── products-dropdown
-            ├── resources-dropdown
-            └── mobile: { hamburger + drawer }
+    ├── header                            ← תפריט עליון
+    │   └── sub-families
+    │       ├── main-nav: { Docs }
+    │       ├── cta: { Login, Sign up }
+    │       ├── search: { search button }
+    │       └── mobile: { hamburger + drawer }
+    └── footer                            ← פוטר תחתון
+        └── sub-families: { social, legal, compare, company,
+                            cloud-partners, services }
 ```
-
-(`footer` נוספת בקומיט בנפרד.)
 
 ### שכבה 1 — קטלוג ברירות המחדל
 
@@ -468,8 +467,8 @@ externalLinks:
         main-nav:
           enabled: true       # וגם main-nav של header
   overrides:
-    nav-pricing:
-      enabled: false          # חוץ מ-Pricing שדווקא יוסתר
+    nav-try-redis:
+      enabled: false          # חוץ מכפתור Sign up שדווקא יוסתר
     github:
       url: "https://gitlab.internal/redis-docs"  # github עם URL פנימי
 ```
