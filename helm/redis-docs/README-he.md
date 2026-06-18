@@ -205,7 +205,7 @@ imagePullSecrets:
 # --- תמונה ראשית (דריסת תג ספציפי) ---
 image:
   name: redis-docs
-  tag: "30ecd868d-unprivileged"
+  tag: "0244dce93-unprivileged"
 
 # --- מטריקות (דריסת תמונה ותג) ---
 metrics:
