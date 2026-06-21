@@ -7,7 +7,7 @@
 #
 # Before using, replace the following:
 #   registry.internal.company.com  → your private registry address
-#   a45f9d25b-unprivileged         → your Docker image tag
+#   fad1283b4-unprivileged         → your Docker image tag
 #   regcred                        → your image pull secret name
 #   docs.intranet.company.com      → the public hostname of this deployment
 #   gitlab.internal.company.com    → your internal Git URL
@@ -25,7 +25,7 @@ imagePullSecrets:
 
 image:
   name: redis-docs
-  tag: "a45f9d25b-unprivileged"
+  tag: "fad1283b4-unprivileged"
   pullPolicy: IfNotPresent
 
 resources:
