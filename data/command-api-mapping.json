@@ -6582,6 +6582,48 @@
           }
         }
       ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_add(key: K, value: V)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "value",
+              "type": "V",
+              "description": "The item to add to the filter"
+            }
+          ],
+          "returns": {
+            "type": "(bool)",
+            "description": "true if the item was newly added, false if it may have existed previously"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_add(key: K, value: V)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "value",
+              "type": "V",
+              "description": "The item to add to the filter"
+            }
+          ],
+          "returns": {
+            "type": "(bool)",
+            "description": "true if the item was newly added, false if it may have existed previously"
+          }
+        }
+      ],
       "jedis": [
         {
           "signature": "boolean bfAdd(String key, String item)",
@@ -6733,6 +6775,38 @@
           }
         }
       ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_card(key: K)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            }
+          ],
+          "returns": {
+            "type": "(usize)",
+            "description": "The number of items reported as added to the filter"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_card(key: K)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            }
+          ],
+          "returns": {
+            "type": "(usize)",
+            "description": "The number of items reported as added to the filter"
+          }
+        }
+      ],
       "jedis": [
         {
           "signature": "long bfCard(String key)",
@@ -6840,6 +6914,48 @@
           "returns": {
             "type": "int",
             "description": "1 if item may exist, 0 if item definitely does not exist"
+          }
+        }
+      ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_exists(key: K, value: V)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "value",
+              "type": "V",
+              "description": "The item to check for"
+            }
+          ],
+          "returns": {
+            "type": "(bool)",
+            "description": "true if the item may exist, false if it definitely does not"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_exists(key: K, value: V)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "value",
+              "type": "V",
+              "description": "The item to check for"
+            }
+          ],
+          "returns": {
+            "type": "(bool)",
+            "description": "true if the item may exist, false if it definitely does not"
           }
         }
       ],
@@ -6991,6 +7107,76 @@
           "returns": {
             "type": "dict",
             "description": "Dictionary with capacity, size, number of filters, items inserted, and expansion rate"
+          }
+        }
+      ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_info(key: K)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            }
+          ],
+          "returns": {
+            "type": "(HashMap<String, BloomFilterInfoTypeResponse>)",
+            "description": "A map of all available information about the filter"
+          }
+        },
+        {
+          "signature": "bf_info_type(key: K, info_type: BloomFilterInfoType)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "info_type",
+              "type": "BloomFilterInfoType",
+              "description": "The single piece of information to return"
+            }
+          ],
+          "returns": {
+            "type": "(BloomFilterInfoTypeResponse)",
+            "description": "The requested information value (derefs to f64)"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_info(key: K)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            }
+          ],
+          "returns": {
+            "type": "(HashMap<String, BloomFilterInfoTypeResponse>)",
+            "description": "A map of all available information about the filter"
+          }
+        },
+        {
+          "signature": "bf_info_type(key: K, info_type: BloomFilterInfoType)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "info_type",
+              "type": "BloomFilterInfoType",
+              "description": "The single piece of information to return"
+            }
+          ],
+          "returns": {
+            "type": "(BloomFilterInfoTypeResponse)",
+            "description": "The requested information value (derefs to f64)"
           }
         }
       ],
@@ -7147,6 +7333,96 @@
           "returns": {
             "type": "list",
             "description": "List of booleans indicating if each item was newly added"
+          }
+        }
+      ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_insert(key: K, items: V)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "items",
+              "type": "V",
+              "description": "The items to add to the filter"
+            }
+          ],
+          "returns": {
+            "type": "(Vec<bool>)",
+            "description": "For each item, true if newly added, false if it may have existed previously"
+          }
+        },
+        {
+          "signature": "bf_insert_options(key: K, items: V, options: BloomFilterInsertOptions)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "items",
+              "type": "V",
+              "description": "The items to add to the filter"
+            },
+            {
+              "name": "options",
+              "type": "BloomFilterInsertOptions",
+              "description": "Capacity, error rate, expansion and creation options for the filter"
+            }
+          ],
+          "returns": {
+            "type": "(Vec<bool>)",
+            "description": "For each item, true if newly added, false if it may have existed previously"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_insert(key: K, items: V)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "items",
+              "type": "V",
+              "description": "The items to add to the filter"
+            }
+          ],
+          "returns": {
+            "type": "(Vec<bool>)",
+            "description": "For each item, true if newly added, false if it may have existed previously"
+          }
+        },
+        {
+          "signature": "bf_insert_options(key: K, items: V, options: BloomFilterInsertOptions)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "items",
+              "type": "V",
+              "description": "The items to add to the filter"
+            },
+            {
+              "name": "options",
+              "type": "BloomFilterInsertOptions",
+              "description": "Capacity, error rate, expansion and creation options for the filter"
+            }
+          ],
+          "returns": {
+            "type": "(Vec<bool>)",
+            "description": "For each item, true if newly added, false if it may have existed previously"
           }
         }
       ],
@@ -7420,6 +7696,48 @@
           }
         }
       ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_loadchunk(key: K, chunk: BloomFilterDumpChunk)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter to restore"
+            },
+            {
+              "name": "chunk",
+              "type": "BloomFilterDumpChunk",
+              "description": "A chunk previously produced by bf_scandump"
+            }
+          ],
+          "returns": {
+            "type": "(())",
+            "description": "Unit on success"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_loadchunk(key: K, chunk: BloomFilterDumpChunk)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter to restore"
+            },
+            {
+              "name": "chunk",
+              "type": "BloomFilterDumpChunk",
+              "description": "A chunk previously produced by bf_scandump"
+            }
+          ],
+          "returns": {
+            "type": "(())",
+            "description": "Unit on success"
+          }
+        }
+      ],
       "jedis": [
         {
           "signature": "String bfLoadChunk(String key, long iterator, byte[] data)",
@@ -7606,6 +7924,48 @@
           }
         }
       ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_madd(key: K, items: V)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "items",
+              "type": "V",
+              "description": "The items to add to the filter"
+            }
+          ],
+          "returns": {
+            "type": "(Vec<bool>)",
+            "description": "For each item, true if newly added, false if it may have existed previously"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_madd(key: K, items: V)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "items",
+              "type": "V",
+              "description": "The items to add to the filter"
+            }
+          ],
+          "returns": {
+            "type": "(Vec<bool>)",
+            "description": "For each item, true if newly added, false if it may have existed previously"
+          }
+        }
+      ],
       "jedis": [
         {
           "signature": "List<Boolean> bfMAdd(String key, String... items)",
@@ -7759,6 +8119,48 @@
           "returns": {
             "type": "list",
             "description": "List of booleans indicating if each item may exist"
+          }
+        }
+      ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_mexists(key: K, items: &[V])",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "items",
+              "type": "&[V]",
+              "description": "The items to check for"
+            }
+          ],
+          "returns": {
+            "type": "(Vec<bool>)",
+            "description": "For each item, true if it may exist, false if it definitely does not"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_mexists(key: K, items: &[V])",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter"
+            },
+            {
+              "name": "items",
+              "type": "&[V]",
+              "description": "The items to check for"
+            }
+          ],
+          "returns": {
+            "type": "(Vec<bool>)",
+            "description": "For each item, true if it may exist, false if it definitely does not"
           }
         }
       ],
@@ -7964,6 +8366,116 @@
           "returns": {
             "type": "str",
             "description": "OK on success (alias for create)"
+          }
+        }
+      ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_reserve(key: K, err_rate: f64, capacity: usize)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter to create"
+            },
+            {
+              "name": "err_rate",
+              "type": "f64",
+              "description": "The desired false positive rate"
+            },
+            {
+              "name": "capacity",
+              "type": "usize",
+              "description": "The number of items expected in the filter"
+            }
+          ],
+          "returns": {
+            "type": "(())",
+            "description": "Unit on success"
+          }
+        },
+        {
+          "signature": "bf_reserve_options(key: K, err_rate: E, capacity: C, options: BloomFilterScalingOptions)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter to create"
+            },
+            {
+              "name": "err_rate",
+              "type": "E",
+              "description": "The desired false positive rate"
+            },
+            {
+              "name": "capacity",
+              "type": "C",
+              "description": "The number of items expected in the filter"
+            },
+            {
+              "name": "options",
+              "type": "BloomFilterScalingOptions",
+              "description": "Expansion rate and non-scaling options"
+            }
+          ],
+          "returns": {
+            "type": "(())",
+            "description": "Unit on success"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_reserve(key: K, err_rate: f64, capacity: usize)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter to create"
+            },
+            {
+              "name": "err_rate",
+              "type": "f64",
+              "description": "The desired false positive rate"
+            },
+            {
+              "name": "capacity",
+              "type": "usize",
+              "description": "The number of items expected in the filter"
+            }
+          ],
+          "returns": {
+            "type": "(())",
+            "description": "Unit on success"
+          }
+        },
+        {
+          "signature": "bf_reserve_options(key: K, err_rate: E, capacity: C, options: BloomFilterScalingOptions)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter to create"
+            },
+            {
+              "name": "err_rate",
+              "type": "E",
+              "description": "The desired false positive rate"
+            },
+            {
+              "name": "capacity",
+              "type": "C",
+              "description": "The number of items expected in the filter"
+            },
+            {
+              "name": "options",
+              "type": "BloomFilterScalingOptions",
+              "description": "Expansion rate and non-scaling options"
+            }
+          ],
+          "returns": {
+            "type": "(())",
+            "description": "Unit on success"
           }
         }
       ],
@@ -8238,6 +8750,48 @@
           "returns": {
             "type": "tuple",
             "description": "Tuple of (iterator, data) - continue until iterator is 0"
+          }
+        }
+      ],
+      "redis_rs_sync": [
+        {
+          "signature": "bf_scandump(key: K, iterator: i64)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter to dump"
+            },
+            {
+              "name": "iterator",
+              "type": "i64",
+              "description": "Iterator value; 0 to start, then the value returned by the previous call"
+            }
+          ],
+          "returns": {
+            "type": "(BloomFilterDumpChunk)",
+            "description": "The next chunk of the filter; an empty chunk signals completion"
+          }
+        }
+      ],
+      "redis_rs_async": [
+        {
+          "signature": "bf_scandump(key: K, iterator: i64)",
+          "params": [
+            {
+              "name": "key",
+              "type": "K",
+              "description": "The name of the Bloom filter to dump"
+            },
+            {
+              "name": "iterator",
+              "type": "i64",
+              "description": "Iterator value; 0 to start, then the value returned by the previous call"
+            }
+          ],
+          "returns": {
+            "type": "(BloomFilterDumpChunk)",
+            "description": "The next chunk of the filter; an empty chunk signals completion"
           }
         }
       ],
