@@ -362,8 +362,8 @@ docker run -p 80:80 a0533057932/redis-docs:latest
 | `highlight.min.js` | v11.11.1 | cdnjs.cloudflare.com | הדגשת תחביר בדוגמאות קוד |
 | `marked.min.js` | v9.1.6 | cdn.jsdelivr.net | פרסור Markdown (Agent Builder) |
 | `mathjax-tex-mml-chtml.js` | v3.x | cdn.jsdelivr.net | נוסחאות מתמטיות |
-| `mermaid.min.js` | v11.14.0 | cdn.jsdelivr.net | דיאגרמות (flowcharts, sequence) |
-| `redoc.standalone.js` | latest | cdn.redoc.ly | תצוגת OpenAPI/Swagger |
+| `mermaid.min.js` | v11.16.0 | cdn.jsdelivr.net | דיאגרמות (flowcharts, sequence) |
+| `redoc.standalone.js` | v2.5.3 | cdn.redoc.ly | תצוגת OpenAPI/Swagger |
 | `thebe.js` | 0.9.0-rc.12 | unpkg.com | הרצת קוד אינטראקטיבית (Jupyter) |
 | `thebe.css` | 0.9.0-rc.12 | unpkg.com | עיצוב Thebe |
 | `codemirror-javascript.js` | 5.65.16 | unpkg.com | מצב הדגשת תחביר JavaScript ל-Thebe (mode/javascript/javascript.js) |
