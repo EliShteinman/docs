@@ -78,6 +78,10 @@ git merge origin/main
 
 ### שלב 3 — בנייה
 
+> **לפני כל בנייה — בדיקת drift של `cli.js`** (חובה): `python3 build/check_cli_js_drift.py`.
+> exit 1 = הקובץ הקנוני של רדיס השתנה → לרה-וונדר ולסקור לפני הבנייה. פירוט בסעיף
+> "widget ה-redis-cli האינטראקטיבי" למטה.
+
 שתי דרכים — בענן או מקומית. שתיהן מייצרות את אותם **4 תגים** ב-DockerHub.
 
 #### אופציה A — בנייה בענן (GitHub Actions, מומלץ)
@@ -371,6 +375,25 @@ docker run -p 80:80 a0533057932/redis-docs:latest
 | `codemirror-clike.js` | 5.65.16 | unpkg.com | מצב הדגשת תחביר C/C++/Java ל-Thebe (mode/clike/clike.js, MIME text/x-csrc) |
 
 > לעדכון: הורידו את הגרסה החדשה מהמקור המקורי, החליפו את הקובץ ב-`static/vendor/`, ועדכנו טבלה זו.
+
+### widget ה-redis-cli האינטראקטיבי (`cli.js` וונדר) — בדיקת drift חובה
+
+מ-upstream PR #3642, הדוקס **לא מחזיקים יותר** את הקוד המלא של ה-widget: `static/js/cli.js`
+הוא shim דק שטוען את הסקריפט הקנוני מה-backend ב-`https://redis.io/cli/static/js/cli.js`.
+ב-airgap הכתובת הזו לא נגישה, לכן ה-fork **וונדר** את הסקריפט הקנוני ל-`static/cli-playground/assets/cli.js`,
+ושני הצרכנים מצביעים אליו: ה-shim של הטרמינל המוטמע (`static/js/cli.js`) ו-shell של הפלייגראונד
+(`static/cli-playground/index.html`). שניהם POST ל-`/cli` (ה-cli-proxy בקלאסטר).
+
+מכיוון ש-upstream כבר לא עוקב אחרי הקובץ ב-git, **אין סיגנל PR/diff** כשרדיס מעדכנת אותו.
+לכן **חובה, בכל בנייה מחדש של ה-image**, להריץ את בדיקת ה-drift:
+
+```bash
+python3 build/check_cli_js_drift.py
+# exit 0 = תואם ל-redis.io  |  exit 1 = השתנה → לרה-וונדר ולסקור מחדש  |  exit 2 = לא ניתן למשוך (בדקו רשת)
+```
+
+> לרה-וונדור: `curl -s https://redis.io/cli/static/js/cli.js -o static/cli-playground/assets/cli.js`,
+> להריץ שוב את הבדיקה עד exit 0, ולסקור את ה-diff לפני commit.
 
 ## ניהול לינקים חיצוניים
 
