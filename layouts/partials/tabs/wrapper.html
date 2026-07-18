@@ -315,7 +315,14 @@ window.openTryItCli = window.openTryItCli || function(button) {
     const json = JSON.stringify(commands);
     const b64 = btoa(unescape(encodeURIComponent(json)))
         .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    const url = 'https://redis.io/cli?commands=' + b64 + '&autorun=true';
+    // Airgap fork: open the in-cluster playground instead of redis.io. The base
+    // comes from RUNTIME_CONFIG.cli.url (Helm); a disabled cli is a no-op here
+    // and the button is hidden by updateAllTryItButtons. When RUNTIME_CONFIG is
+    // absent (public build) the default keeps the upstream redis.io behavior.
+    var rtCli = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.cli) || {};
+    if (window.RUNTIME_CONFIG && rtCli.enabled === false) return;
+    var cliBase = rtCli.url || 'https://redis.io/cli';
+    const url = cliBase + '?commands=' + b64 + '&autorun=true';
     window.open(url, '_blank', 'noopener,noreferrer');
 };
 
@@ -371,6 +378,18 @@ window.toggleApiSignatures = window.toggleApiSignatures || function(button) {
 // The button should only be visible when the Redis CLI tab is active
 window.updateAllTryItButtons = window.updateAllTryItButtons || function() {
     const buttons = document.querySelectorAll('.tryit-button');
+    // Airgap fork: when the cli backend is not deployed (Helm cli.enabled=false)
+    // there is nowhere for the playground to run, so hide every Try It button
+    // regardless of the selected language. Absent RUNTIME_CONFIG (public build)
+    // falls through to the upstream language-based visibility below.
+    var rtCli = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.cli) || {};
+    if (window.RUNTIME_CONFIG && rtCli.enabled === false) {
+        buttons.forEach((button) => {
+            button.classList.add('hidden');
+            button.classList.remove('flex');
+        });
+        return;
+    }
     buttons.forEach((button) => {
         const codetabsId = button.getAttribute('data-codetabs-id');
         const langSelect = document.getElementById('lang-select-' + codetabsId);
