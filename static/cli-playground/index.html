@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script>
+    // Airgap fork: point the playground at the in-cluster cli-proxy (nginx
+    // location = /cli -> redis-docs-cli:8090). appendDbId:false keeps the POST
+    // on exactly /cli so it matches the exact-match nginx location; showBadge
+    // false drops the external "Powered by" badge.
+    window.REDIS_CLI_CONFIG = {
+      apiUrl: '/cli',
+      appendDbId: false,
+      showBadge: false
+    };
+  </script>
+  <script src="/cli-playground/assets/cli.js"></script>
+  <link href="/cli-playground/assets/cli.css" rel="stylesheet" type="text/css">
+</head>
+
+<body style="background-color: black;">
+  <form class="redis-cli" dbid="" fullscreen asciiart>
+  </form>
+</body>
+
+</html>
