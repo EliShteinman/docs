@@ -1,0 +1,475 @@
+// Interactive redis-cli widget. This is the canonical implementation served by
+// the /cli backend (…/cli/static/js/cli.js) and loaded by the docs site through
+// a thin shim. Behaviour is configured via window.REDIS_CLI_CONFIG, which a
+// consumer assigns BEFORE this script runs; the CONFIG DEFAULTS below reproduce
+// the backend page's behaviour, so the backend loads this file with no config.
+//
+// The docs shim overrides a few fields, e.g.:
+//   window.REDIS_CLI_CONFIG = {
+//     apiUrl: 'https://redis.io/cli', appendDbId: false, promptPrefix: 'redis> ',
+//     enableUrlCommands: false, showBadge: false,
+//   };
+const CONFIG = Object.assign({
+  apiUrl: window.location.pathname, // where command batches are POSTed
+  appendDbId: true,                 // append the widget's dbid to apiUrl
+  promptPrefix: 'redis:6379> ',     // text shown before each typed command
+  enableUrlCommands: true,          // honour ?commands=<base64>&autorun=true
+  showBadge: true,                  // draw the "Powered by" badge on terminals
+}, window.REDIS_CLI_CONFIG || {});
+
+async function createCli(cli) {
+  const toExecute = getCommandsToExecute(cli);
+  const urlCommands = CONFIG.enableUrlCommands ? getUrlCommands() : null;
+  cli.replaceChildren();
+
+  const pre = createPre(cli),
+    [input, prompt] = createPrompt(cli),
+    dbid = cli.getAttribute('dbid');
+
+  drawTerminal(cli);
+  drawBadge(cli);
+  handleHistory(pre, input);
+
+  try {
+    await asciiArt(cli, dbid, pre, input);
+  } finally {
+    cli.addEventListener(
+      'submit',
+      event => {
+        event.preventDefault();
+
+        const command = input.value;
+        input.value = '';
+        if (!command.trim()) {
+          writeLines(pre, input, command, '', false);
+          return;
+        }
+
+        disablePrompt(cli, input, prompt,
+          () => executeInputCommand(dbid, pre, input, command)
+        );
+      }
+    );
+
+    if (toExecute) {
+      disablePrompt(cli, input, prompt, () =>
+        executeCommands(dbid, pre, input, toExecute, shouldAnimate(cli)));
+    }
+
+    if (urlCommands) {
+      if (urlCommands.autorun) {
+        disablePrompt(cli, input, prompt, () =>
+          executeCommands(dbid, pre, input, urlCommands.commands, false));
+      } else {
+        input.value = urlCommands.commands[0] || '';
+      }
+    }
+  }
+}
+
+function drawBadge(cli) {
+  if (!CONFIG.showBadge || shouldAnimate(cli) || !isTerminal(cli)) {
+    return
+  }
+  const badge = document.createElement('div');
+  badge.classList.add('powered');
+  badge.appendChild(document.createTextNode('Powered by'));
+  cli.appendChild(badge);
+}
+
+function drawTerminal(cli) {
+    if (!isTerminal(cli)) return;
+    const bar = document.createElement('div');
+    bar.classList.add('bar');
+
+    const buttons = ['#d00', '#0d0', '#00d'];
+    buttons.forEach((b) => {
+      let button = document.createElement('span');
+      button.classList.add('button')
+      // button.style.backgroundColor = b;
+      bar.appendChild(button);
+    });
+
+    cli.classList.add('terminal');
+    cli.prepend(bar);
+}
+
+function isTerminal(cli) {
+    return cli.getAttribute('terminal') !== null
+}
+
+function shouldAnimate(cli) {
+  try {
+    return cli.getAttribute('typewriter') !== null &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch {
+    return true;
+  }
+}
+
+function getUrlCommands() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const commandsParam = params.get('commands');
+    if (!commandsParam) return null;
+
+    const decoded = decodeBase64(commandsParam);
+    if (decoded === null) return null;
+
+    const commands = JSON.parse(decoded);
+    if (!Array.isArray(commands) || commands.length === 0) return null;
+
+    const autorun = params.get('autorun') === 'true';
+    return { commands: commands.map(String), autorun };
+  } catch {
+    return null;
+  }
+}
+
+function decodeBase64(value) {
+  try {
+    let s = value.replace(/-/g, '+').replace(/_/g, '/');
+    const pad = s.length % 4;
+    if (pad) s += '='.repeat(4 - pad);
+    const bin = atob(s);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8', { fatal: false }).decode(bytes);
+  } catch {
+    return null;
+  }
+}
+
+function getCommandsToExecute(cli) {
+  const textContent = cli.textContent.trim();
+  if (!textContent) return;
+
+  return textContent.split('\n').map(x => x.trim());
+}
+
+function createPre(cli) {
+  const pre = document.createElement('pre');
+  pre.setAttribute('tabindex', '0');
+  cli.appendChild(pre);
+  return pre;
+}
+
+function createPrompt(cli) {
+  const prompt = document.createElement('div');
+  prompt.classList.add('prompt');
+
+  const prefix = document.createElement('span');
+  prefix.appendChild(document.createTextNode(CONFIG.promptPrefix));
+  prompt.appendChild(prefix);
+
+  const input = document.createElement('input');
+  input.setAttribute('name', 'prompt');
+  input.setAttribute('type', 'text');
+  input.setAttribute('autocomplete', 'off');
+  input.setAttribute('spellcheck', 'false');
+  prompt.appendChild(input);
+
+  cli.appendChild(prompt);
+
+  cli.addEventListener('click', () => {
+    if (document.getSelection().type === 'Range') return;
+    input.focus();
+  });
+
+  cli.addEventListener('keydown', event =>  {
+    if (event.target === input) return;
+    if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) return;
+    input.focus();
+    input.scrollIntoView({block: "nearest"});
+  });
+  return [input, prompt];
+}
+
+async function disablePrompt(cli, input, prompt, fn) {
+  cli.classList.add('disabled');
+  input.disabled = true;
+  prompt.style.display = 'none';
+  const p = Promise.all([fn()])
+    .then(() => {
+      prompt.style.display = '';
+      cli.classList.remove('disabled');
+      input.disabled = false;
+      input.focus({preventScroll: true});
+    });
+}
+
+function handleHistory(pre, input) {
+  let position = 0,
+    tempValue = '';
+  input.addEventListener('keydown', event => {
+    switch (event.key) {
+      case 'ArrowUp':
+        event.preventDefault();
+
+        if (position === Math.floor(pre.childNodes.length / 2)) return;
+        else if (position === 0) tempValue = input.value;
+
+        ++position;
+        break;
+
+      case 'ArrowDown':
+        event.preventDefault();
+
+        if (position === 0) return;
+        else if (--position === 0) {
+          setInputValue(input, tempValue);
+          return;
+        }
+        break;
+
+      default:
+        return;
+    }
+
+    const { nodeValue } = pre.childNodes[pre.childNodes.length - position * 2];
+    setInputValue(input, nodeValue.substring(CONFIG.promptPrefix.length, nodeValue.length - 1));
+  });
+}
+
+function setInputValue(input, value) {
+  input.value = value;
+  input.setSelectionRange(value.length, value.length);
+}
+
+async function writeLines(pre, input, command, reply, animate) {
+  await writeLine(pre, input, command, animate, true);
+  await writeLine(pre, input, reply, false, false);
+}
+
+async function executeCommands(dbid, pre, input, commands, animate) {
+  try {
+     const { replies } = await execute(commands, dbid);
+     for (const [i, command] of commands.entries()) {
+      const { error, value, status } = replies[i];
+      try {
+        await writeLines(pre, input, command, error ? `(error) ${value}` : formatReply(value, '', status), animate, false);
+      } catch (err) {
+        console.error(err);
+        await writeLines(pre, input, command, `(fatal error) ${err.message}`, animate);
+      }
+    }
+  } catch (err) {
+    for (const command of commands) {
+      await writeLines(pre, input, command, err.message, animate);
+    }
+  }
+}
+
+async function executeInputCommand(dbid, pre, input, command) {
+  switch (command.toLowerCase()) {
+    case 'clear':
+      pre.replaceChildren();
+      break;
+
+    case 'help':
+      writeLine(pre, input, command, false, false);
+      writeLine(pre, input, 'No problem! Let me just open this url for you: https://redis.io/commands', false, false);
+      window.open('https://redis.io/commands');
+      break;
+
+    default:
+      executeCommands(dbid, pre, input, [command]);
+      break;
+  }
+}
+
+// One shared session per page; requests serialized through a queue so parallel
+// auto-runs reuse a single session id instead of each sending id=undefined at
+// once and forking into separate databases. On the single-widget /cli page the
+// queue simply serializes one stream, which is transparent.
+let session = { id: undefined };
+let executeQueue = Promise.resolve();
+
+async function execute(commands, dbid = '') {
+  const url = CONFIG.apiUrl + (CONFIG.appendDbId ? dbid : '');
+  const run = executeQueue.then(async () => {
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        commands,
+        id: session.id
+      })
+    });
+    const reply = await response.json();
+    session.id = reply.id;
+    return reply;
+  });
+  executeQueue = run.then(() => {}, () => {});
+  return run;
+}
+
+// Quote and escape a bulk string exactly like redis-cli's sdscatrepr: operate
+// on the raw UTF-8 bytes, use the named escapes \\ " \n \r \t \a \b, leave
+// printable ASCII (0x20-0x7e) literal, and emit \xHH (lowercase) for every
+// other byte. This mirrors the native CLI byte-for-byte, e.g. a NUL renders as
+// "\x00" (not JSON's "\u0000") and "é" as "\xc3\xa9".
+function reprString(str) {
+  const bytes = new TextEncoder().encode(str);
+  let out = '"';
+  for (const b of bytes) {
+    switch (b) {
+      case 0x5c: out += '\\\\'; break;
+      case 0x22: out += '\\"'; break;
+      case 0x0a: out += '\\n'; break;
+      case 0x0d: out += '\\r'; break;
+      case 0x09: out += '\\t'; break;
+      case 0x07: out += '\\a'; break;
+      case 0x08: out += '\\b'; break;
+      default:
+        out += (b >= 0x20 && b <= 0x7e)
+          ? String.fromCharCode(b)
+          : `\\x${b.toString(16).padStart(2, '0')}`;
+    }
+  }
+  return out + '"';
+}
+
+function formatReply(reply, indent = '', status = false) {
+  if (reply === null) {
+    return '(nil)';
+  }
+
+  // Out-of-range 64-bit integers are tagged by the backend (safe_json_integers)
+  // as {$int: "<decimal>"} so they survive JSON without precision loss and stay
+  // distinct from numeric bulk strings. Render them as a plain integer reply.
+  if (typeof reply === 'object' && !Array.isArray(reply)
+      && typeof reply.$int === 'string') {
+    return `(integer) ${reply.$int}`;
+  }
+
+  // Nested RESP simple strings are tagged by the backend (safe_json_integers)
+  // as {$status: "<text>"} so they render unquoted like redis-cli — distinct
+  // from bulk strings, which are quoted. TS.INFO field names and enum values
+  // (e.g. "compressed"), TS.RANGE sample values, etc. arrive this way. Top-level
+  // status replies use the `status` flag below instead and never reach here.
+  if (typeof reply === 'object' && !Array.isArray(reply)
+      && typeof reply.$status === 'string') {
+    return reply.$status;
+  }
+
+  const type = typeof reply;
+  if (type === 'string') {
+    // RESP simple string / status reply (e.g. PONG, OK): rendered without quotes
+    if (status) {
+      return reply;
+    }
+    // Bulk string: quote and escape it byte-for-byte the way redis-cli does
+    // (e.g. a JSON.GET payload renders as "{\"a\":1}" and a NUL byte as "\x00").
+    return reprString(reply);
+  } else if (type === 'number') {
+    return `(integer) ${reply}`;
+  } else if (Array.isArray(reply)) {
+    if (reply.length === 0) {
+      return '(empty array)';
+    } else {
+      let s = '';
+      for (const [i, x] of reply.entries()) {
+        const num = i + 1,
+          nestedIndent = indent + ' '.repeat(num.toString().length + 2);
+        s += `${i === 0 ? '' : `\n${indent}`}${num}) ${formatReply(x, nestedIndent)}`;
+      }
+      return s;
+    }
+  } else {
+    return `-PROTOCOLERR Unknown reply type ${typeof reply}`;
+  }
+}
+
+async function writeLine(pre, input, line, animate, prompt) {
+  const textNode = document.createTextNode('');
+  pre.appendChild(textNode);
+
+  const toWrite = line + '\n';
+  if (prompt) textNode.nodeValue = CONFIG.promptPrefix;
+  if (!animate) {
+    textNode.nodeValue += toWrite;
+  } else {
+    await typewriter(textNode, toWrite);
+  }
+  input.scrollIntoView({block: "nearest"});
+}
+
+function typewriter(textNode, toWrite) {
+  return new Promise(resolve => {
+    let i = 0;
+    const intervalId = setInterval(() => {
+      if (i === toWrite.length) {
+        clearInterval(intervalId);
+        resolve();
+        return;
+      }
+
+      textNode.nodeValue += toWrite[i++];
+    }, 25+Math.random()*25);
+  });
+}
+
+async function asciiArt(cli, dbid, pre, input) {
+  if (cli.getAttribute('asciiart') === null) return;
+
+  const { replies: [{ error, value: raw }] } = await execute(['INFO SERVER'], dbid);
+
+  if (error) {
+    writeLine(pre, input, `(error) ${raw}`, false);
+  } else {
+    const time = new Date().toISOString(),
+      version = raw.match(/redis_version:(.*)/)[1],
+      sha = raw.match(/redis_git_sha1:(.*)/)[1],
+      dirty = raw.match(/redis_git_dirty:(.*)/)[1],
+      bits = raw.match(/arch_bits:(.*)/)[1],
+      port = raw.match(/tcp_port:(.*)/)[1],
+      pid = raw.match(/process_id:(.*)/)[1];
+    writeLine(
+      pre,
+      input,
+`${pid}:C ${time} # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+${pid}:C ${time} # Configuration loaded
+                  _._
+            _.-\`\`__ ''-._
+      _.-\`\`    \`.  \`_.  ''-._            Redis ${version} (${sha}/${dirty}) ${bits} bit
+    .-\`\` .-\`\`\`.  \`\`\`\/    _.,_ ''-._
+  (    '      ,       .-\`  | \`,    )     Running in standalone mode
+  |\`-._\`-...-\` __...-.\`\`-._|'\` _.-'|     Port: ${port}
+  |    \`-._   \`._    /     _.-'    |     PID: ${pid}
+  \`-._    \`-._  \`-./  _.-'    _.-'
+  |\`-._\`-._    \`-.__.-'    _.-'_.-'|
+  |    \`-._\`-._        _.-'_.-'    |           https://redis.io
+  \`-._    \`-._\`-.__.-'_.-'    _.-'
+  |\`-._\`-._    \`-.__.-'    _.-'_.-'|
+  |    \`-._\`-._        _.-'_.-'    |
+  \`-._    \`-._\`-.__.-'_.-'    _.-'
+      \`-._    \`-.__.-'    _.-'
+          \`-._        _.-'
+              \`-.__.-'
+
+${pid}:M ${time} # Server initialized
+${pid}:M ${time} * Ready to accept connections`,
+        false);
+  }
+}
+
+function initRedisClis() {
+  for (const cli of document.querySelectorAll('form.redis-cli')) {
+    createCli(cli);
+  }
+}
+
+// Initialise as soon as the DOM is ready. When the docs' cli.js shim injects
+// this file dynamically it may run AFTER DOMContentLoaded has already fired, so
+// fall back to initialising immediately in that case.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initRedisClis);
+} else {
+  initRedisClis();
+}
