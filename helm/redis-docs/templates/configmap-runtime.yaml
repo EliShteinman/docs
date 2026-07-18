@@ -116,6 +116,10 @@ metadata:
 data:
   runtime-config.js: |
     window.RUNTIME_CONFIG = {
+      cli: {
+        enabled: {{ .Values.cli.enabled }},
+        url: "/cli-playground/"
+      },
       aiServices: {
         litellm: {
           enabled: {{ .Values.aiServices.litellm.enabled }},
