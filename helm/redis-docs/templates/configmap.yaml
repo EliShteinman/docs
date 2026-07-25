@@ -56,6 +56,7 @@ data:
             text/xml
             text/javascript
             application/json
+            application/x-ndjson
             application/javascript
             application/xml
             application/rss+xml
@@ -99,7 +100,7 @@ data:
             add_header Cache-Control "public, must-revalidate";
         }
 
-        # AI / RAG outputs (.md, .json): substitute the __DOCS_BASE_URL__
+        # AI / RAG outputs (.md, .json, .ndjson): substitute the __DOCS_BASE_URL__
         # placeholder produced at build time by process-markdown-content.html
         # with the canonical URL of this deployment, so consumers that ingest
         # the markdown without HTML context still see fully-qualified links.
@@ -108,18 +109,19 @@ data:
         # operate on already-compressed bodies; dynamic `gzip on` (with
         # text/markdown + application/json in gzip_types) re-compresses the
         # modified response on the way out.
-        location ~* \.(md|json)$ {
+        location ~* \.(md|json|ndjson)$ {
             gzip_static off;
             types {
                 text/markdown md;
                 application/json json;
+                application/x-ndjson ndjson;
             }
             {{- if .Values.canonicalURL }}
             sub_filter '__DOCS_BASE_URL__' '{{ .Values.canonicalURL | trimSuffix "/" }}';
             {{- else }}
             sub_filter '__DOCS_BASE_URL__' '$scheme://$http_host';
             {{- end }}
-            sub_filter_types text/markdown application/json;
+            sub_filter_types text/markdown application/json application/x-ndjson;
             sub_filter_once off;
             expires 1h;
             add_header Cache-Control "public, must-revalidate";

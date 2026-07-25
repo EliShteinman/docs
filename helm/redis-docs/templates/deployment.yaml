@@ -31,6 +31,51 @@ spec:
       serviceAccountName: {{ include "redis-docs.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.canonicalURL }}
+      # A fixed canonical URL is known at deploy time, so bake a correct,
+      # pre-substituted docs.ndjson.gz for the advertised gzipped RAG download.
+      # (Without canonicalURL the base URL varies per request via $http_host and a
+      # static .gz cannot be pre-substituted — it is then simply not served, and
+      # consumers use /docs.ndjson, which nginx substitutes + gzips per request.)
+      initContainers:
+        - name: bake-ndjson-gz
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ include "redis-docs.image" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+              src=/usr/share/nginx/html/docs.ndjson
+              tmp=/ndjson-gz/docs.ndjson.gz.tmp
+              out=/ndjson-gz/docs.ndjson.gz
+              # This is a secondary download — never let its failure block the pod
+              # (and thus the whole docs site). On any problem, log and exit 0 so
+              # nginx still starts; /docs.ndjson.gz then 404s, exactly like the
+              # no-canonicalURL path. Write to a temp then rename so a failed/empty
+              # bake never leaves a truncated .gz in place.
+              if [ ! -s "$src" ]; then
+                echo "WARN: $src missing/empty; skipping gz bake (/docs.ndjson.gz will 404)" >&2
+                exit 0
+              fi
+              if sed "s|__DOCS_BASE_URL__|${DOCS_BASE_URL}|g" "$src" | gzip -9 > "$tmp" && [ -s "$tmp" ]; then
+                mv -f "$tmp" "$out"
+                echo "baked $out ($(wc -c < "$out") bytes)"
+              else
+                echo "WARN: gz bake failed; /docs.ndjson.gz will 404" >&2
+                rm -f "$tmp"
+              fi
+          env:
+            - name: DOCS_BASE_URL
+              value: {{ .Values.canonicalURL | trimSuffix "/" | quote }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: ndjson-gz
+              mountPath: /ndjson-gz
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -71,6 +116,12 @@ spec:
               mountPath: /usr/share/nginx/html/js/runtime-config.js
               subPath: runtime-config.js
               readOnly: true
+            {{- if .Values.canonicalURL }}
+            - name: ndjson-gz
+              mountPath: /usr/share/nginx/html/docs.ndjson.gz
+              subPath: docs.ndjson.gz
+              readOnly: true
+            {{- end }}
             {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
             - name: tls-certs
               mountPath: /etc/nginx/ssl
@@ -133,6 +184,10 @@ spec:
         - name: runtime-config
           configMap:
             name: {{ include "redis-docs.fullname" . }}-runtime
+        {{- if .Values.canonicalURL }}
+        - name: ndjson-gz
+          emptyDir: {}
+        {{- end }}
         {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
         - name: tls-certs
           secret:

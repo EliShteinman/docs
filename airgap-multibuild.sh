@@ -265,12 +265,24 @@ done
 # ---- 3. Replace site public with the merged final tree -----------------------
 rm -rf "$SITE/public"
 mv "$FINAL" "$SITE/public"
-
-# ---- 4. Generate ndjson over the merged tree ---------------------------------
-echo ">>> Generating ndjson..."
 cd "$SITE"
+
+# ---- 4. Generate the RAG feed over the merged tree (latest + every version) ---
+# Airgap fork diverges from upstream here on purpose: upstream publishes a
+# latest-only feed, but our internal RAG must answer version-specific questions
+# (e.g. a parameter present in 7.2 but not 8.2), so the feed must cover every
+# version. Enrich each page's JSON with heading sections (transform), concatenate
+# to NDJSON, then tag every record with the version parsed from its URL so the
+# RAG can filter and cite by version. Run the scripts directly, not `make ndjson`
+# (its `hugo` prereq would rebuild the site). The feed ships UNCOMPRESSED and
+# keeps its __DOCS_BASE_URL__ placeholders: nginx serves /docs.ndjson with runtime
+# sub_filter + dynamic gzip. The static docs.ndjson.gz is deliberately NOT built
+# here — it is baked at deploy time with the real URL substituted by the Helm
+# initContainer, and only when a fixed canonicalURL is known (see deployment.yaml).
+echo ">>> Generating versioned RAG feed (public/docs.ndjson)..."
+npx tsx build/transform_json_sections.ts
 python3 build/generate_ndjson.py
-gzip -kf public/docs.ndjson
+python3 build/tag_ndjson_versions.py
 
 echo ">>> Multi-build complete. public/ summary:"
 echo "    $(find public -type f | wc -l) files, $(du -sh public | cut -f1) total"
