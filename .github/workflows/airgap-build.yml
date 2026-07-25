@@ -590,6 +590,21 @@ jobs:
           python3 -m venv /tmp/venv
           /tmp/venv/bin/pip install --quiet -r requirements.txt
 
+      # Node + tsx run transform_json_sections.ts over the merged tree, mirroring
+      # the local Dockerfile/airgap-multibuild.sh feed pipeline. node_modules is
+      # restored from the cache the build jobs populated (same key); npm install
+      # is the cache-miss fallback. Node itself is preinstalled on the runner.
+      - name: Restore node_modules
+        id: cache-npm
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
+        with:
+          path: node_modules
+          key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
+
+      - name: npm install (cache miss)
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: npm install --no-audit --no-fund
+
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
         with:
           path: /tmp/builds
@@ -629,10 +644,18 @@ jobs:
             done
           done
 
-      - name: Generate ndjson
+      - name: Generate versioned RAG feed (transform → ndjson → version tags)
         run: |
+          # Mirror the local airgap-multibuild.sh step-4 pipeline exactly so the
+          # shipped image's feed matches: enrich per-page JSON with heading
+          # sections, concatenate to NDJSON, tag every record with the version
+          # parsed from its URL. Shipped UNCOMPRESSED (placeholders intact): nginx
+          # serves /docs.ndjson via runtime sub_filter + dynamic gzip. The static
+          # docs.ndjson.gz is baked at deploy time by the Helm initContainer when
+          # a fixed canonicalURL is set (see deployment.yaml) — not here.
+          npx tsx build/transform_json_sections.ts
           /tmp/venv/bin/python3 build/generate_ndjson.py
-          gzip -kf public/docs.ndjson
+          /tmp/venv/bin/python3 build/tag_ndjson_versions.py
 
       - name: Pre-compress static assets (skip .json/.md — sub_filter at runtime)
         run: |
