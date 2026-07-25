@@ -44,7 +44,16 @@
     const json = JSON.stringify(commands);
     const b64 = btoa(unescape(encodeURIComponent(json)))
       .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    const url = 'https://redis.io/cli?commands=' + b64 + '&autorun=true';
+    // Airgap fork: route to the in-cluster playground (RUNTIME_CONFIG.cli.url
+    // from Helm) instead of redis.io; a disabled cli is a no-op. Absent
+    // RUNTIME_CONFIG (public build) keeps the upstream redis.io default. Kept in
+    // sync with the openTryItCli in layouts/partials/tabs/wrapper.html — command
+    // pages that use this shortcode without client-example codetabs would
+    // otherwise define only the upstream redis.io version and leak out of the airgap.
+    var rtCli = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.cli) || {};
+    if (window.RUNTIME_CONFIG && rtCli.enabled === false) return;
+    var cliBase = rtCli.url || 'https://redis.io/cli';
+    const url = cliBase + '?commands=' + b64 + '&autorun=true';
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 </script>
