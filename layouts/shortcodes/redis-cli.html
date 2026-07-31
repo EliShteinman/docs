@@ -34,33 +34,13 @@
   {{- printf "<div class=\"redis-cli redis-cli-static overflow-y-auto max-h-80\"><pre>%s</pre></div>" (htmlEscape (trim .Inner " \n\t\r")) | safeHTML -}}
 {{- end -}}
 {{- if $commands -}}
-<script>
-  window._tryItCommands = window._tryItCommands || {};
-  window._tryItCommands['{{ $id }}'] = {{ $commands | jsonify | safeJS }};
-  window.openTryItCli = window.openTryItCli || function(button) {
-    const codetabsId = button.getAttribute('data-codetabs-id');
-    const commands = window._tryItCommands[codetabsId];
-    if (!commands || !commands.length) return;
-    const json = JSON.stringify(commands);
-    const b64 = btoa(unescape(encodeURIComponent(json)))
-      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    // Airgap fork: route to the in-cluster playground (RUNTIME_CONFIG.cli.url
-    // from Helm) instead of redis.io; a disabled cli is a no-op. Absent
-    // RUNTIME_CONFIG (public build) keeps the upstream redis.io default. Kept in
-    // sync with the openTryItCli in layouts/partials/tabs/wrapper.html — command
-    // pages that use this shortcode without client-example codetabs would
-    // otherwise define only the upstream redis.io version and leak out of the airgap.
-    // Attribution (snippet/source, upstream #3716) is appended to whichever base
-    // is used; for airgap that is the in-cluster playground, so it stays internal
-    // and never leaves the deployment.
-    var rtCli = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.cli) || {};
-    if (window.RUNTIME_CONFIG && rtCli.enabled === false) return;
-    var cliBase = rtCli.url || 'https://redis.io/cli';
-    const source = button.getAttribute('data-tryit-source') || '';
-    let url = cliBase + '?commands=' + b64 + '&autorun=true'
-      + '&snippet=' + encodeURIComponent(codetabsId);
-    if (source) url += '&source=' + encodeURIComponent(source);
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
-</script>
+{{- /* One line, no "//" comments. This shortcode is called with percent
+       delimiters, so Goldmark re-parses its output; html/template strips JS
+       comments to whitespace-only lines, which end the HTML block and turn the
+       rest of the script into a <pre><code> block. See DOC-6918.
+       Airgap fork: openTryItCli routes to cliBase (RUNTIME_CONFIG.cli.url from
+       Helm) instead of redis.io; a disabled cli is a no-op; absent RUNTIME_CONFIG
+       (public build) keeps the redis.io default. snippet/source (#3716) ride on
+       whichever base is used. Kept in sync with layouts/partials/tabs/wrapper.html. */ -}}
+<script>window._tryItCommands = window._tryItCommands || {}; window._tryItCommands['{{ $id }}'] = {{ $commands | jsonify | safeJS }}; window.openTryItCli = window.openTryItCli || function(button) { const codetabsId = button.getAttribute('data-codetabs-id'); const commands = window._tryItCommands[codetabsId]; if (!commands || !commands.length) return; const json = JSON.stringify(commands); const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); var rtCli = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.cli) || {}; if (window.RUNTIME_CONFIG && rtCli.enabled === false) return; var cliBase = rtCli.url || 'https://redis.io/cli'; const source = button.getAttribute('data-tryit-source') || ''; let url = cliBase + '?commands=' + b64 + '&autorun=true' + '&snippet=' + encodeURIComponent(codetabsId); if (source) url += '&source=' + encodeURIComponent(source); window.open(url, '_blank', 'noopener,noreferrer'); };</script>
 {{- end -}}
