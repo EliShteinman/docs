@@ -314,8 +314,7 @@ async function execute(commands, dbid = '') {
 // printable ASCII (0x20-0x7e) literal, and emit \xHH (lowercase) for every
 // other byte. This mirrors the native CLI byte-for-byte, e.g. a NUL renders as
 // "\x00" (not JSON's "\u0000") and "é" as "\xc3\xa9".
-function reprString(str) {
-  const bytes = new TextEncoder().encode(str);
+function reprBytes(bytes) {
   let out = '"';
   for (const b of bytes) {
     switch (b) {
@@ -333,6 +332,21 @@ function reprString(str) {
     }
   }
   return out + '"';
+}
+
+// A text bulk string: its UTF-8 bytes are what redis-cli would see, so "é"
+// renders as "\xc3\xa9". Binary values never reach here — the backend tags them
+// {$bin} (see formatReply) because their raw bytes can't survive JSON intact.
+function reprString(str) {
+  return reprBytes(new TextEncoder().encode(str));
+}
+
+// Decode standard base64 (as emitted by the backend's {$bin} tag) to raw bytes.
+function base64ToBytes(b64) {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
 }
 
 function formatReply(reply, indent = '', status = false) {
@@ -356,6 +370,15 @@ function formatReply(reply, indent = '', status = false) {
   if (typeof reply === 'object' && !Array.isArray(reply)
       && typeof reply.$status === 'string') {
     return reply.$status;
+  }
+
+  // Binary bulk strings (non-UTF-8 bytes: BF.SCANDUMP, DUMP, GET of a bitmap,
+  // ...) are tagged by the backend as {$bin: "<base64>"} because their raw bytes
+  // can't round-trip through JSON. Decode and print them byte-for-byte with \xHH
+  // escapes, exactly like redis-cli.
+  if (typeof reply === 'object' && !Array.isArray(reply)
+      && typeof reply.$bin === 'string') {
+    return reprBytes(base64ToBytes(reply.$bin));
   }
 
   const type = typeof reply;
