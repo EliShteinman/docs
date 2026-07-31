@@ -76,9 +76,15 @@
   }
   </script>
   {{ end }}
-  <a {{ printf "href=%q" $chatURL | safeHTMLAttr }} class="group inline-flex items-center gap-1  hover:text-redis-pen-400 mt-auto self-start">
+  {{/* Airgap fork: the href (redis.io /chat) is only used on the public build.
+       When RUNTIME_CONFIG is present, ask-ai.js takes over: it routes the question
+       to the internal LiteLLM endpoint (aiServices.litellm) when AI is enabled, or
+       removes the button entirely when AI is disabled — so the deployment never
+       calls out to redis.io. */}}
+  <a {{ printf "href=%q" $chatURL | safeHTMLAttr }} class="ask-ai-link group inline-flex items-center gap-1  hover:text-redis-pen-400 mt-auto self-start" data-ask-title="{{ .Title }}" data-ask-url="{{ .Permalink }}">
     {{ partial "icons/sparkles.html" }}
     Ask AI to explain this page
   </a>
+  <script src="{{ "js/ask-ai.js" | relURL }}" defer></script>
 </nav>
 

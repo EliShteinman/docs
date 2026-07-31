@@ -1254,6 +1254,14 @@ Please help the user understand, modify, debug, or deploy this code. Provide spe
 
             // Use runtime config if available (LiteLLM / local endpoint), fallback to default
             const rtConfig = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.litellm) || {};
+            // Airgap fork: RUNTIME_CONFIG present + AI disabled => no AI anywhere in
+            // the deployment. Never fall back to the external cloudfront default; that
+            // default is only for the public build, which has no RUNTIME_CONFIG.
+            if (window.RUNTIME_CONFIG && !rtConfig.enabled) {
+                removeLastBotMessage();
+                addCodeChatMessage('AI assistance is disabled in this deployment.', 'bot');
+                return;
+            }
             const chatUrl = rtConfig.enabled ? rtConfig.url : 'https://d34j1iks5zrrtk.cloudfront.net/v1/chat/completions';
             const chatModel = rtConfig.enabled ? rtConfig.model : 'gpt-3.5-turbo';
             const chatApiKey = (rtConfig.enabled && rtConfig.apiKey) ? rtConfig.apiKey : codeChatState.apiKey;
