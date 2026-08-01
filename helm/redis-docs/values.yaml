@@ -172,7 +172,7 @@ cli:
     image:
       registry: docker.io
       name: redis
-      tag: "8-alpine"
+      tag: "8.10.0-alpine"
       pullPolicy: IfNotPresent
     resources:
       requests:
