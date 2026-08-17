@@ -126,6 +126,14 @@ for v in $RS_VERSIONS;      do rm -rf "content/operate/rs/$v"; done
 for v in $REDISVL_VERSIONS; do rm -rf "content/develop/ai/redisvl/$v"; done
 
 write_version_files
+
+# Dates the redirect map's entries from git history (DOC-6951), same as
+# upstream's `make hugo` -> `page_moves` prereq, run directly like the other
+# build/*.py scripts here rather than through make. Needs $SITE/.git, which
+# reset_workspace() never touches (always --exclude=.git), and full history --
+# a shallow clone silently produces zero dates instead of failing.
+python3 build/generate_page_moves.py
+
 hugo --logLevel info
 
 rsync -a "$SITE/public/" "$FINAL/"
@@ -204,6 +212,10 @@ build_version() {
   # per-version sed here.
 
   write_version_files
+  # No generate_page_moves.py call here: this build's /redirects.json (home
+  # output) is never staged below -- only $product_path/$version + css/scss
+  # are -- so dating it here would be pure waste. Matches upstream's own
+  # main.yml, which only runs this for the latest-equivalent job.
   hugo --logLevel info
 
   if [ ! -d "$SITE/public/$product_path/$version" ]; then
