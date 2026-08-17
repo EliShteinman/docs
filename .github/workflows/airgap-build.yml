@@ -346,6 +346,12 @@ jobs:
             find "$parent" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended \
               -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" -exec rm -rf {} +
           done
+          # Dates the redirect map's entries from git history (DOC-6951), same as
+          # upstream's `make hugo` -> `page_moves` prereq. Run directly, matching
+          # how the other build/*.py scripts here are called outside make. This
+          # job already checks out with fetch-depth: 0 above (for enableGitInfo),
+          # so the full history this script needs is already present.
+          python3 build/generate_page_moves.py
           hugo --logLevel info -d output
 
       - name: Stage output as artifact
@@ -542,6 +548,10 @@ jobs:
           sed -i "12i \\{{ \$gh_path = replaceRE \`^${PP_ESC}/\` \"${PP_ESC}/${VERSION}/\" \$gh_path }}" \
             layouts/partials/meta-links.html
 
+          # No generate_page_moves.py call here: this job's /redirects.json (home
+          # output) is never staged below -- only $PRODUCT/$VERSION + css/scss
+          # are -- so dating it here would be pure waste. Matches upstream's own
+          # main.yml, which only runs this for the latest-equivalent job.
           hugo --logLevel info -d output
 
           if [ ! -d "output/$PRODUCT/$VERSION" ]; then
