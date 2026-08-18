@@ -53,13 +53,13 @@ async function createCli(cli) {
 
     if (toExecute) {
       disablePrompt(cli, input, prompt, () =>
-        executeCommands(dbid, pre, input, toExecute, shouldAnimate(cli)));
+        executeCommands(dbid, pre, input, toExecute, shouldAnimate(cli), 'preset'));
     }
 
     if (urlCommands) {
       if (urlCommands.autorun) {
         disablePrompt(cli, input, prompt, () =>
-          executeCommands(dbid, pre, input, urlCommands.commands, false));
+          executeCommands(dbid, pre, input, urlCommands.commands, false, 'share'));
       } else {
         input.value = urlCommands.commands[0] || '';
       }
@@ -241,9 +241,9 @@ async function writeLines(pre, input, command, reply, animate) {
   await writeLine(pre, input, reply, false, false);
 }
 
-async function executeCommands(dbid, pre, input, commands, animate) {
+async function executeCommands(dbid, pre, input, commands, animate, source = 'interactive') {
   try {
-     const { replies } = await execute(commands, dbid);
+     const { replies } = await execute(commands, dbid, source);
      for (const [i, command] of commands.entries()) {
       const { error, value, status } = replies[i];
       try {
@@ -273,7 +273,7 @@ async function executeInputCommand(dbid, pre, input, command) {
       break;
 
     default:
-      executeCommands(dbid, pre, input, [command]);
+      executeCommands(dbid, pre, input, [command], false, 'interactive');
       break;
   }
 }
@@ -285,7 +285,38 @@ async function executeInputCommand(dbid, pre, input, command) {
 let session = { id: undefined };
 let executeQueue = Promise.resolve();
 
-async function execute(commands, dbid = '') {
+// Page attribution. Docs pages that embed CLI share-links add the originating
+// page path and the specific snippet id to the URL, e.g.
+//   /cli?commands=...&autorun=true&source=%2Fdocs%2Flatest%2Fcommands%2Fhdel%2F&snippet=cmds_hash-stephdel
+// Captured once per page load and attached to every batch, so both the autorun
+// and any commands typed afterwards on that page are attributed to it. NOTE:
+// the docs param is named `source`; we map it to `page` here to avoid colliding
+// with the batch-origin `source` (interactive/share/preset/internal). The
+// backend validates the format and caps distinct values (cardinality guard).
+const pageContext = (() => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return { page: params.get('source') || '', snippet: params.get('snippet') || '' };
+  } catch {
+    return { page: '', snippet: '' };
+  }
+})();
+
+// How this page was opened, decided once at load: 'example' if it carries a
+// shared command set (a docs interactive-example link, ?commands=…), else
+// 'direct' (someone opened redis.io/cli themselves). Sent on every batch; the
+// backend only uses it on the one that mints the session, giving an exact
+// direct-vs-example open count (no fragile subtraction).
+const openType = (() => {
+  try {
+    return new URLSearchParams(window.location.search).has('commands')
+      ? 'example' : 'direct';
+  } catch {
+    return 'direct';
+  }
+})();
+
+async function execute(commands, dbid = '', source = 'interactive') {
   const url = CONFIG.apiUrl + (CONFIG.appendDbId ? dbid : '');
   const run = executeQueue.then(async () => {
     const response = await fetch(url, {
@@ -296,9 +327,18 @@ async function execute(commands, dbid = '') {
       headers: {
         'Content-Type': 'application/json'
       },
+      // `source` labels the batch's origin for usage metrics: 'interactive'
+      // (typed at the prompt), 'share' (a ?commands= base64 share-link
+      // autorun), 'preset' (commands embedded in the page) or 'internal' (the
+      // startup INFO the widget runs itself). The backend validates it against
+      // a fixed allowlist, so an arbitrary value can't inflate label cardinality.
       body: JSON.stringify({
         commands,
-        id: session.id
+        id: session.id,
+        source,
+        page: pageContext.page,
+        snippet: pageContext.snippet,
+        open_type: openType
       })
     });
     const reply = await response.json();
@@ -441,7 +481,7 @@ function typewriter(textNode, toWrite) {
 async function asciiArt(cli, dbid, pre, input) {
   if (cli.getAttribute('asciiart') === null) return;
 
-  const { replies: [{ error, value: raw }] } = await execute(['INFO SERVER'], dbid);
+  const { replies: [{ error, value: raw }] } = await execute(['INFO SERVER'], dbid, 'internal');
 
   if (error) {
     writeLine(pre, input, `(error) ${raw}`, false);
