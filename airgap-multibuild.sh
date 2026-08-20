@@ -39,7 +39,12 @@ compute_version_cache_key() {
       [ -f "$SNAPSHOT/$f" ] && sha256sum "$SNAPSHOT/$f"
     done
     sha256sum "$SITE/airgap-multibuild.sh"
-    printf 'product=%s version=%s\n' "$product_path" "$version"
+    # cache_schema=2: bumped once, deliberately, to bust every pre-existing
+    # cache entry the moment this script starts writing sitemap.xml into the
+    # cache dir (see build_version). Without this, an old entry from before
+    # that change would cache-hit, skip the sitemap generation, and fail on
+    # the missing $cache_dir/sitemap.xml with no rebuild to fall back to.
+    printf 'product=%s version=%s cache_schema=2\n' "$product_path" "$version"
   } 2>/dev/null | sha256sum | cut -c1-16
 }
 
@@ -138,6 +143,12 @@ hugo --logLevel info
 
 rsync -a "$SITE/public/" "$FINAL/"
 
+# Stage latest's own (unversioned) sitemap.xml as one input to the sitemap
+# merge below (step 3b). Mirrors upstream's DOC-6979 / #3818 fix, ported here
+# because this script -- unlike .github/workflows/main.yml -- never wired it in.
+mkdir -p /tmp/sitemaps/latest
+cp "$FINAL/sitemap.xml" /tmp/sitemaps/latest/sitemap.xml
+
 # ---- 2. Build each version ---------------------------------------------------
 # Per version: reset workspace, delete other versions, awk-fix relrefs,
 # rsync version content INTO parent (so version becomes "the product"),
@@ -165,6 +176,8 @@ build_version() {
         cp -an "$cache_dir/$d/." "$FINAL/$d/"
       fi
     done
+    mkdir -p "/tmp/sitemaps/${pp_slug}-v${version}"
+    cp "$cache_dir/sitemap.xml" "/tmp/sitemaps/${pp_slug}-v${version}/sitemap.xml"
     return
   fi
 
@@ -223,6 +236,16 @@ build_version() {
     exit 1
   fi
 
+  # Filtered per-version sitemap, staged for the merge in step 3b. Mirrors
+  # upstream's generate_version_sitemap.py (DOC-6979 / #3818), ported here.
+  # Must run before rm -rf "$SITE/public" at the end of this function.
+  local sitemap_stage="/tmp/sitemaps/${pp_slug}-v${version}"
+  mkdir -p "$sitemap_stage"
+  python3 build/generate_version_sitemap.py \
+    --sitemap "$SITE/public/sitemap.xml" \
+    --subtree "$product_path/$version" \
+    --output "$sitemap_stage/sitemap.xml"
+
   mkdir -p "$FINAL/$product_path"
   # Latest's aliases (e.g. content/operate/rs/monitoring/_index.md has
   # `aliases: [..., /operate/rs/7.4/clusters/monitoring/]`) cause Hugo to
@@ -258,6 +281,7 @@ build_version() {
       cp -a "$SITE/public/$d" "$cache_tmp/$d"
     fi
   done
+  cp "$sitemap_stage/sitemap.xml" "$cache_tmp/sitemap.xml"
   rm -rf "$cache_dir"
   mv "$cache_tmp" "$cache_dir"
 
@@ -278,6 +302,20 @@ done
 rm -rf "$SITE/public"
 mv "$FINAL" "$SITE/public"
 cd "$SITE"
+
+# ---- 3b. Merge latest + per-version sitemaps into the published sitemap.xml --
+# Without this, public/sitemap.xml stays whatever `rsync` copied straight from
+# the latest build in step 1 -- listing only unversioned pages, with every
+# versioned page (operate/rs, operate/kubernetes, develop/ai/redisvl) absent.
+# Ports upstream's merge_sitemaps.py (DOC-6979 / #3818): union every filtered
+# per-version sitemap staged above (by build_version, cache hit or miss) with
+# latest's own sitemap.xml. --expect guards against silently shipping a
+# partial sitemap if a version's build/cache entry never staged its file.
+EXPECT=1  # latest
+for v in $K8S_VERSIONS $RS_VERSIONS $REDISVL_VERSIONS; do
+  EXPECT=$((EXPECT + 1))
+done
+python3 build/merge_sitemaps.py /tmp/sitemaps --output "$SITE/public/sitemap.xml" --expect "$EXPECT"
 
 # ---- 4. Generate the RAG feed over the merged tree (latest + every version) ---
 # Airgap fork diverges from upstream here on purpose: upstream publishes a
