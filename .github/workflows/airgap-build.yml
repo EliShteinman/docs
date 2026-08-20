@@ -559,7 +559,24 @@ jobs:
             exit 1
           fi
 
-      # Stage only this version's subtree + css/scss for the assemble step
+      # Runs unconditionally (not gated on cache-miss): output/sitemap.xml is
+      # present either way, since the whole `output` dir is what gets cached.
+      # Mirrors upstream's generate_version_sitemap.py (DOC-6979 / #3818) --
+      # same script, ported here because it isn't wired into this workflow.
+      - name: Generate version sitemap subtree
+        env:
+          PRODUCT: ${{ matrix.product }}
+          VERSION: ${{ matrix.version }}
+        run: |
+          set -euo pipefail
+          python3 build/generate_version_sitemap.py \
+            --sitemap output/sitemap.xml \
+            --subtree "$PRODUCT/$VERSION" \
+            --output /tmp/version-sitemap/sitemap.xml
+
+      # Stage this version's subtree + css/scss (served tree) plus its filtered
+      # sitemap.xml (NOT part of the served tree -- assemble merges it into the
+      # published sitemap.xml, it never lands under public/$PRODUCT/$VERSION/).
       - name: Stage output as artifact
         env:
           PRODUCT: ${{ matrix.product }}
@@ -571,7 +588,9 @@ jobs:
           for d in css scss; do
             [ -d "output/$d" ] && cp -a "output/$d" "/tmp/stage/output/$d"
           done
-          tar -czf /tmp/out.tar.gz -C /tmp/stage output
+          mkdir -p /tmp/stage/sitemap
+          cp /tmp/version-sitemap/sitemap.xml /tmp/stage/sitemap/sitemap.xml
+          tar -czf /tmp/out.tar.gz -C /tmp/stage output sitemap
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
@@ -623,14 +642,19 @@ jobs:
       - name: Merge artifacts into public/
         run: |
           set -euo pipefail
-          mkdir -p public
+          mkdir -p public /tmp/sitemaps
 
-          # 1. Latest establishes the base tree
+          # 1. Latest establishes the base tree, and contributes its own
+          #    (unversioned) sitemap.xml as one input to the merge below.
           mkdir -p /tmp/extract-latest
           tar -xzf /tmp/builds/build-latest/out.tar.gz -C /tmp/extract-latest
           cp -a /tmp/extract-latest/output/. ./public/
+          mkdir -p /tmp/sitemaps/latest
+          cp /tmp/extract-latest/output/sitemap.xml /tmp/sitemaps/latest/sitemap.xml
 
-          # 2. Each version overlays its subtree + adds CSS/SCSS additively
+          # 2. Each version overlays its subtree + adds CSS/SCSS additively,
+          #    and contributes its filtered sitemap.xml (staged outside
+          #    output/ by build_versions -- see Stage output as artifact).
           for art_dir in /tmp/builds/build-*; do
             name=$(basename "$art_dir" | sed 's/^build-//')
             [ "$name" = "latest" ] && continue
@@ -652,7 +676,30 @@ jobs:
                 cp -an "/tmp/extract/output/$d/." "./public/$d/" || true
               fi
             done
+
+            mkdir -p "/tmp/sitemaps/$name"
+            cp /tmp/extract/sitemap/sitemap.xml "/tmp/sitemaps/$name/sitemap.xml"
           done
+
+      # Union of latest's sitemap + every version's filtered sitemap, replacing
+      # the one `cp -a` above copied from latest alone. Ports upstream's
+      # merge_sitemaps.py (DOC-6979 / #3818) into this pipeline.
+      #
+      # --expect is computed from needs.setup.outputs.matrix (the version list
+      # discovered up front), NOT from counting downloaded artifacts -- doing
+      # the latter would make the check tautological, since a build_versions
+      # job that failed and never uploaded its artifact just wouldn't be there
+      # to count either way. Independent expectation is the whole point: it's
+      # upstream's own guard against a failed matrix job silently shipping a
+      # sitemap with that version's pages missing.
+      - name: Merge per-build sitemaps into public/sitemap.xml
+        env:
+          MATRIX: ${{ needs.setup.outputs.matrix }}
+        run: |
+          set -euo pipefail
+          EXPECT=$(( $(jq 'length' <<<"$MATRIX") + 1 ))
+          echo "Expecting $EXPECT sitemaps (versions + latest)"
+          python3 build/merge_sitemaps.py /tmp/sitemaps --output public/sitemap.xml --expect "$EXPECT"
 
       - name: Generate versioned RAG feed (transform → ndjson → version tags)
         run: |
