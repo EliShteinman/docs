@@ -28,13 +28,39 @@ image:
   tag: "f048072dc-unprivileged"
   pullPolicy: IfNotPresent
 
+# ephemeral-storage has to hold the packed download bundles (see `downloads`
+# below). Overriding `resources` without it silently drops the chart's own
+# headroom and the pod can be evicted mid-pack.
 resources:
   requests:
     cpu: 250m
     memory: 256Mi
+    ephemeral-storage: 512Mi
   limits:
     cpu: "1"
     memory: 512Mi
+    ephemeral-storage: 1Gi
+
+# Documentation download bundles, packed at pod start so every archive carries
+# the canonicalURL set below. Needs canonicalURL; without it packing is skipped
+# and the download button is removed from the page.
+downloads:
+  enabled: true
+  # Dropping html takes the packed set from ~280 MB to ~30 MB and the pack from
+  # minutes to seconds. Then ephemeral-storage above can go back to 128Mi/256Mi.
+  formats: "md,md-single,json,html"
+  # Named in each bundle's README. Empty omits the line rather than pointing an
+  # airgapped reader at github.com.
+  sourceURL: "https://gitlab.internal.company.com/redis-docs"
+  # Packing is CPU-bound and one-off. Only the limit is raised: a pod's request
+  # is max(init containers, sum(containers)), so a request here would inflate the
+  # pod for its whole life and a rolling update would need it twice at once --
+  # enough to exceed a namespace CPU quota and leave the new pod unschedulable.
+  resources:
+    limits:
+      cpu: "2"
+      memory: 1Gi
+      ephemeral-storage: 1Gi
 
 # Automatic hostname + automatic TLS certificate from OpenShift
 route:
