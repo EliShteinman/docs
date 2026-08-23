@@ -93,6 +93,13 @@ LABEL org.opencontainers.image.variant="privileged"
 
 COPY --from=builder /site/public /usr/share/nginx/html
 
+# Kept in step with Dockerfile.runtime, which the airgap workflow uses. The
+# download bundles are packed at pod start so they carry the deployment's own
+# base URL; see the note there.
+RUN apk add --no-cache python3
+COPY --from=builder /site/build/make_doc_bundles.py /opt/redis-docs/build/make_doc_bundles.py
+COPY --from=builder /site/data/doc_bundles.json /opt/redis-docs/data/doc_bundles.json
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
@@ -111,6 +118,14 @@ LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL org.opencontainers.image.variant="unprivileged"
 
 COPY --from=builder --chown=nginx:nginx /site/public /usr/share/nginx/html
+
+# See the note on the privileged variant. apk needs root; drop straight back to
+# the image's own unprivileged uid so nothing else runs elevated.
+USER root
+RUN apk add --no-cache python3
+COPY --from=builder /site/build/make_doc_bundles.py /opt/redis-docs/build/make_doc_bundles.py
+COPY --from=builder /site/data/doc_bundles.json /opt/redis-docs/data/doc_bundles.json
+USER 101
 
 EXPOSE 8080
 
