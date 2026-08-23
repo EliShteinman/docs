@@ -245,7 +245,39 @@ helm install my-deploy oci://registry-1.docker.io/a0533057932/redis-docs --versi
 2. **Runtime stage** (לפי VARIANT, רץ native לפי target platform):
    - `privileged`: `nginx:alpine` על פורט 80
    - `unprivileged`: `nginx-unprivileged:alpine` על פורט 8080 (non-root)
-   - הפעולה היחידה ב-runtime: `COPY --from=builder /site/public /usr/share/nginx/html` + LABELs
+   - `COPY --from=builder /site/public /usr/share/nginx/html` + LABELs
+   - `apk add python3` (13.5MB, stdlib בלבד) + העתקת `build/make_doc_bundles.py`
+     ו-`data/doc_bundles.json` ל-`/opt/redis-docs/` — ראו פרק "חבילות ההורדה" למטה
+
+### חבילות ההורדה (`downloads`)
+
+הכפתור "Download documentation" בכל עמוד מציע כל מוצר כ-`.tar.gz` ב-Markdown,
+HTML או JSON. upstream בונה את הארכיונים ב-CI ומגיש אותם מ-bucket; בפורק הם
+**נארזים ב-init container בעליית הפוד**.
+
+הסיבה: הארכיונים מכילים לינקים אבסולוטיים, ולכן הם נכונים רק אחרי שכתובת האתר
+ידועה — וזו נקבעת ב-`helm install`, לא בבניית ה-image. אריזה מראש הייתה צורבת
+את הכתובת הלא נכונה, ומוסיפה ~280MB לכל שכבה.
+
+מה שהבנייה חייבת לספק ל-image כדי שזה יעבוד:
+
+| רכיב | למה |
+|---|---|
+| `python3` | הפאקר הוא סקריפט Python (stdlib בלבד — בלי pip, בלי venv) |
+| `/opt/redis-docs/build/make_doc_bundles.py` | הפאקר עצמו |
+| `/opt/redis-docs/data/doc_bundles.json` | קטלוג המוצרים והפורמטים; הפאקר מוצא אותו בנתיב ברירת המחדל בזכות מבנה הספריות |
+
+> **ב-`airgap-build.yml` שני הקבצים האלה חייבים להופיע ב-`sparse-checkout` של
+> job ה-docker.** אותו job מושך רק את מה שהוא מפרט במפורש, ובלעדיהם ה-`COPY`
+> נכשל. `airgap-multibuild.sh` לא בונה image ולכן לא מושפע.
+
+**מדידה** (272MB, כל 4 הפורמטים, ליבה אחת): 148 שניות. פורמט `html` הוא ~89%
+מהמשקל ומהזמן; `downloads.formats: "md,md-single,json"` מוריד ל-~30MB ולשניות.
+
+תיקון צד-פורק בפאקר: Hugo כותב את הטוקן `__DOCS_BASE_URL__` לתוך פלטי ה-`.md`
+וה-`.json`, ובאתר חי nginx מחליף אותו בכל בקשה. הפאקר קורא מהדיסק — nginx אף
+פעם לא רץ — ולכן הטוקן היה נארז כמו שהוא. ההחלפה קורית עכשיו בזמן האריזה, מול
+אותו `--url-base`.
 
 ### Builder native via `BUILDPLATFORM`
 

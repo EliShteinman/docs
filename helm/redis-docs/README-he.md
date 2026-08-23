@@ -146,6 +146,45 @@ canonicalURL: "https://docs.intranet.example.com"
 
 ה-`sub_filter` מוגבל ל-`.md` / `.json` בלבד. תגובות HTML / CSS / JS לעולם לא נכתבות מחדש, וה-placeholder מוטמע רק בארבע נקודות מוגדרות היטב בתוך `process-markdown-content.html` (shortcodes של relref + image), כך שכתובות חיצוניות שמחבר כתב ידנית ב-Markdown נשארות ללא שינוי.
 
+### הורדת דוקומנטציה (`downloads`)
+
+בכל עמוד יש כפתור **Download documentation**. הוא מציע כל מוצר כ-`.tar.gz` ב-Markdown (קובץ לעמוד, או קובץ אחד למוצר), HTML לגלישה offline, או JSON.
+
+הארכיונים מכילים לינקים אבסולוטיים, ולכן הם נכונים רק אחרי שכתובת האתר נקבעת. לכן init container אורז אותם בעליית הפוד, כותב לתוך כל אחד את ה-`canonicalURL` של הפריסה הזו, ו-nginx מגיש אותם מ-`emptyDir` ייעודי לפוד. שום דבר לא נצרב ל-image ושום דבר לא פונה ל-`redis.io`.
+
+```yaml
+canonicalURL: "https://docs.intranet.example.com"   # חובה
+downloads:
+  enabled: true
+  formats: "md,md-single,json,html"
+  sourceURL: "https://git.intranet.example.com/docs" # ריק = השורה מושמטת
+```
+
+ההורדות דורשות `canonicalURL`. בלעדיו הכתובת נגזרת מכותרת ה-`Host` בכל בקשה, ושום קובץ על הדיסק לא יכול לשאת כתובת כזו — ולכן האריזה מדולגת והכפתור **מוסר מהעמוד** במקום להישאר ולהחזיר 404. `downloads.enabled: false` מסיר אותו באותו אופן.
+
+**`html` יקר בהרבה משלושת האחרים.** הוא כ-89% מהמשקל ומזמן האריזה, כי כל עמוד נכתב מחדש כדי להיפתח מהדיסק והנכסים שלו נאספים לצידו. ויתור עליו מוריד את הסט מ-~280MB ל-~30MB, ואת האריזה מדקות לשניות:
+
+```yaml
+downloads:
+  formats: "md,md-single,json"
+```
+
+שתי הגדרות נגזרות מהגודל ומהזמן:
+
+- `resources.limits.ephemeral-storage` חייב להכיל את הסט הארוז. ברירת המחדל בצ'ארט היא `1Gi`, מספיק לכל ארבעת הפורמטים.
+- `progressDeadlineSeconds` הוא `1800` כאן, כי אריזת `html` על node חנוק יכולה לעבור את ברירת המחדל של Kubernetes (600 שניות) ולסמן ככושל rollout שמתקדם כרגיל.
+
+האריזה תלוית-CPU וקורית פעם אחת בעליית פוד. `downloads.resources` דורס את `resources` עבור אותו init container בלבד:
+
+```yaml
+downloads:
+  resources:
+    limits:
+      cpu: "4"
+```
+
+**להעלות את ה-limit, לא את ה-request.** Kubernetes קובע את בקשת המשאבים של פוד כ-`max(init containers, sum(containers))`, ולכן request שנקבע כאן הופך לבקשה של **הפוד כולו לכל חייו** — הרבה אחרי שהאריזה הסתיימה ו-nginx הוא היחיד שרץ. rolling update צריך אז להכיל את הבקשה הזו פעמיים במקביל, וזה מספיק כדי שהפוד החדש לא יצליח להיות משובץ תחת מכסת namespace. limit לא עולה כלום עד שהקונטיינר באמת רץ.
+
 ## Docker images
 
 | Image | תג | פורט | שימוש | חובה? |
@@ -514,12 +553,17 @@ kubectl port-forward svc/redis-docs 8080:80
 | `route.tls.insecureEdgeTerminationPolicy` | `Redirect` | מדיניות לתעבורה לא מוצפנת |
 | `nginx.workerConnections` | `2048` | מספר חיבורים מקבילים per worker |
 | `nginx.keepaliveTimeout` | `15` | timeout לחיבורים idle (שניות) |
+| `progressDeadlineSeconds` | `1800` | timeout ל-rollout. הועלה מברירת המחדל של Kubernetes (600) כי אריזת חבילות ה-`html` יכולה לעבור אותה. ריק = ברירת המחדל. |
+| `downloads.enabled` | `true` | אריזת חבילות ההורדה בעליית הפוד. דורש `canonicalURL`; כשלא פעיל, כפתור ההורדה מוסר מהעמוד. |
+| `downloads.formats` | `md,md-single,json,html` | פורמטים לאריזה. ויתור על `html` מוריד את הסט מ-~280MB ל-~30MB. |
+| `downloads.sourceURL` | `""` | היכן נמצא מקור הדוקומנטציה, מוזכר ב-README של כל חבילה. ריק = השורה מושמטת. |
+| `downloads.resources` | `{}` | resources ל-init container של האריזה בלבד. ריק = יורש מ-`resources`. |
 | `resources.requests.cpu` | `250m` | בקשת CPU מינימלית |
 | `resources.requests.memory` | `256Mi` | בקשת זיכרון מינימלית |
-| `resources.requests.ephemeral-storage` | `128Mi` | בקשת אחסון זמני |
+| `resources.requests.ephemeral-storage` | `512Mi` | בקשת אחסון זמני |
 | `resources.limits.cpu` | `1` | מגבלת CPU |
 | `resources.limits.memory` | `512Mi` | מגבלת זיכרון |
-| `resources.limits.ephemeral-storage` | `256Mi` | מגבלת אחסון זמני |
+| `resources.limits.ephemeral-storage` | `1Gi` | מגבלת אחסון זמני. חייבת להכיל את חבילות ההורדה הארוזות. |
 | `livenessProbe` | `httpGet /healthz` | בדיקת חיות (initialDelay: 5s, period: 10s) |
 | `readinessProbe` | `httpGet /healthz` | בדיקת מוכנות (initialDelay: 3s, period: 5s) |
 | `autoscaling.enabled` | `false` | הפעלת HPA |

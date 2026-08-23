@@ -186,6 +186,66 @@ are never rewritten, and the placeholder is only emitted at four well-defined
 points inside `process-markdown-content.html` (relref + image shortcodes),
 so external URLs an author wrote by hand in markdown remain untouched.
 
+### Documentation downloads (`downloads`)
+
+Every documentation page carries a **Download documentation** button. It offers
+each product as a `.tar.gz` in Markdown (one file per page, or one file per
+product), offline-browsable HTML, or JSON.
+
+The archives hold absolute links, so they are only correct once the site's base
+URL is fixed. An init container therefore packs them at pod start, writing this
+deployment's own `canonicalURL` into every one, and nginx serves them from a
+per-pod `emptyDir`. Nothing is baked into the image, and nothing reaches
+`redis.io`.
+
+```yaml
+canonicalURL: "https://docs.intranet.example.com"   # required
+downloads:
+  enabled: true
+  formats: "md,md-single,json,html"
+  sourceURL: "https://git.intranet.example.com/docs" # empty omits the line
+```
+
+Downloads need `canonicalURL`. Without it the base URL is resolved per request
+from the `Host` header, which no file on disk can carry — so packing is skipped
+and the button is removed from the page rather than left to return 404s. Setting
+`downloads.enabled: false` removes it the same way.
+
+**`html` costs far more than the other three formats.** It is roughly 89% of
+both the packed size and the packing time, because every page is rewritten to
+resolve from disk and its assets are collected alongside. Dropping it takes the
+packed set from ~280 MB to ~30 MB and the pack from minutes to seconds:
+
+```yaml
+downloads:
+  formats: "md,md-single,json"
+```
+
+Two settings follow from the size and the time:
+
+- `resources.limits.ephemeral-storage` must hold the packed set. The chart
+  defaults to `1Gi`, enough for all four formats.
+- `progressDeadlineSeconds` defaults to `1800` here, because packing `html` on a
+  throttled node can outrun Kubernetes' own 600-second default and fail a
+  rollout that is in fact progressing normally.
+
+Packing is CPU-bound and happens once per pod start. `downloads.resources`
+overrides `resources` for that init container alone:
+
+```yaml
+downloads:
+  resources:
+    limits:
+      cpu: "4"
+```
+
+**Raise the limit, not the request.** Kubernetes sets a pod's resource request to
+`max(init containers, sum(containers))`, so a request set here becomes the whole
+pod's request for its entire life — long after packing has finished and nginx is
+the only thing running. A rolling update then has to fit that request twice at
+once, which is enough to make the new pod unschedulable under a namespace quota.
+A limit costs nothing until the container actually runs.
+
 ## Docker images
 
 | Image | Tag | Port | Usage | Required? |
@@ -551,12 +611,17 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `route.tls.insecureEdgeTerminationPolicy` | `Redirect` | Policy for unencrypted traffic |
 | `nginx.workerConnections` | `2048` | Number of concurrent connections per worker |
 | `nginx.keepaliveTimeout` | `15` | Idle connection timeout (seconds) |
+| `progressDeadlineSeconds` | `1800` | Rollout timeout. Raised over the Kubernetes default of 600 because packing the `html` download bundles can outrun it. Empty leaves the default. |
+| `downloads.enabled` | `true` | Pack the documentation download bundles at pod start. Needs `canonicalURL`; when inactive the download button is removed from the page. |
+| `downloads.formats` | `md,md-single,json,html` | Bundle formats to pack. Dropping `html` takes the set from ~280 MB to ~30 MB. |
+| `downloads.sourceURL` | `""` | Where the docs source lives, named in each bundle's README. Empty omits the line. |
+| `downloads.resources` | `{}` | Resources for the packing init container alone. Empty inherits `resources`. |
 | `resources.requests.cpu` | `250m` | Minimum CPU request |
 | `resources.requests.memory` | `256Mi` | Minimum memory request |
-| `resources.requests.ephemeral-storage` | `128Mi` | Ephemeral storage request |
+| `resources.requests.ephemeral-storage` | `512Mi` | Ephemeral storage request |
 | `resources.limits.cpu` | `1` | CPU limit |
 | `resources.limits.memory` | `512Mi` | Memory limit |
-| `resources.limits.ephemeral-storage` | `256Mi` | Ephemeral storage limit |
+| `resources.limits.ephemeral-storage` | `1Gi` | Ephemeral storage limit. Must hold the packed download bundles. |
 | `livenessProbe` | `httpGet /healthz` | Liveness probe (initialDelay: 5s, period: 10s) |
 | `readinessProbe` | `httpGet /healthz` | Readiness probe (initialDelay: 3s, period: 5s) |
 | `autoscaling.enabled` | `false` | Enable HPA |
