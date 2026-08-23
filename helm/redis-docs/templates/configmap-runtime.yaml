@@ -135,9 +135,37 @@ data:
           }
         }
       },
+      downloads: {
+        enabled: {{ if include "redis-docs.downloadsActive" . }}true{{ else }}false{{ end }}
+      },
       externalLinks: {{ $effective | toJson }},
       gitMirrors: {{ $mirrors | toJson }}
     };
+
+    // Documentation downloads: the widget's markup ships in every page, but the
+    // archives it links to are packed by an init container that only runs when
+    // downloads are enabled and a canonical URL is set. When they are not, drop
+    // the triggers — a button that 404s is worse than no button.
+    //
+    // Handled here rather than in the layout so the widget's own partials stay
+    // byte-identical to upstream.
+    (function () {
+      var cfg = window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.downloads;
+      if (cfg && cfg.enabled) return;
+
+      function removeTriggers() {
+        var nodes = document.querySelectorAll('[data-open-download], #download-docs-dialog');
+        for (var i = 0; i < nodes.length; i++) {
+          nodes[i].parentNode.removeChild(nodes[i]);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', removeTriggers);
+      } else {
+        removeTriggers();
+      }
+    })();
 
     // Git-mirror rewriting: rewrite inline <a href> links that target an
     // upstream public Git host (e.g. GitHub) to an internal mirror (e.g.

@@ -121,3 +121,15 @@ Sanitize PEM certificate text by stripping Windows carriage returns.
 {{- define "redis-docs.cleanPem" -}}
 {{- . | replace "\r" "" -}}
 {{- end }}
+
+{{/*
+Whether the download widget has bundles to offer: "true" or "".
+
+Packing writes this deployment's base URL into every archive, so it needs a
+canonical URL fixed at install time. Without one the site resolves its base URL
+per request from the Host header, which no file on disk can carry — so the
+bundles cannot be built and the widget is hidden rather than left to 404.
+*/}}
+{{- define "redis-docs.downloadsActive" -}}
+{{- if and .Values.downloads.enabled .Values.canonicalURL -}}true{{- end -}}
+{{- end }}
