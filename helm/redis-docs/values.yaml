@@ -90,15 +90,61 @@ nginx:
   workerConnections: 2048
   keepaliveTimeout: 15
 
+# How long a rollout may take before Kubernetes marks it failed. Kubernetes
+# defaults to 600; packing the html download bundles can outrun that on a
+# throttled node, which fails the rollout even though the pod is still working.
+# Empty leaves the Kubernetes default — set it only if you keep html enabled.
+progressDeadlineSeconds: 1800
+
+# Documentation download bundles: the "Download documentation" widget offers each
+# product as a .tar.gz in Markdown, HTML, or JSON.
+#
+# The archives are packed by an init container at pod start rather than baked
+# into the image, because their contents carry this deployment's own base URL —
+# known to Helm, not to the image build. They land in an emptyDir, so they cost
+# ephemeral storage per pod and are rebuilt on every restart.
+#
+# Disabling this hides the widget instead of leaving a button that 404s.
+downloads:
+  enabled: true
+
+  # Format ids from data/doc_bundles.json. `html` is the offline-browsable copy
+  # and is ~89% of both the size and the packing time; drop it to trade the
+  # offline site for a much smaller, much faster build:
+  #   formats: "md,md-single,json"   # ~30 MB, seconds
+  formats: "md,md-single,json,html"
+
+  # Named in each bundle's README as where the documentation source lives.
+  # Empty omits the line — an airgapped reader cannot reach github.com. Point it
+  # at an internal mirror to give them something that resolves.
+  sourceURL: ""
+
+  # Packing is CPU-bound and one-off. Left empty it inherits `resources` below,
+  # where the 1-core limit makes the html format take minutes.
+  #
+  # Raise `limits.cpu` here to speed packing up, and leave `requests.cpu` alone.
+  # Kubernetes sets a pod's request to max(init containers, sum(containers)), so
+  # a request set here inflates the whole pod's request for its entire life --
+  # long after this container has exited -- and a rolling update then needs that
+  # much twice over. A limit costs nothing until the container actually runs.
+  #
+  #   resources:
+  #     limits:
+  #       cpu: "4"
+  resources: {}
+
+# ephemeral-storage must hold the packed bundles (see `downloads` above): all
+# four formats need roughly 300Mi, plus headroom for nginx's cache and logs.
+# Dropping the html format, or downloads.enabled=false, frees ~250Mi of it.
 resources:
   requests:
     cpu: 250m
     memory: 256Mi
-    ephemeral-storage: 128Mi
+    ephemeral-storage: 512Mi
   limits:
     cpu: "1"
     memory: 512Mi
-    ephemeral-storage: 256Mi
+    ephemeral-storage: 1Gi
 
 autoscaling:
   enabled: false

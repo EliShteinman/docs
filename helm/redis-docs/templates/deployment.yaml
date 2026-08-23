@@ -8,6 +8,9 @@ spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  {{- if .Values.progressDeadlineSeconds }}
+  progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "redis-docs.selectorLabels" . | nindent 6 }}
@@ -75,6 +78,68 @@ spec:
           volumeMounts:
             - name: ndjson-gz
               mountPath: /ndjson-gz
+        {{- if include "redis-docs.downloadsActive" . }}
+        # Pack the documentation download bundles. Same reasoning as the ndjson
+        # bake above: the archives carry absolute links, so they can only be
+        # built once the base URL is fixed — which happens here, not at image
+        # build time. Rebuilt on every pod start; the emptyDir is per-pod.
+        - name: pack-doc-bundles
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ include "redis-docs.image" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -u
+              out=/downloads/bundles
+              stage=/downloads/.staging
+
+              # Downloads are a secondary feature, so no failure here may block
+              # the docs site. Every step exits 0 on failure: nginx still starts
+              # and the archives 404, exactly as when downloads are switched
+              # off. Deliberately not `set -e` -- that would turn a failed rm or
+              # mv into a crash-looping init container, taking the site with it.
+              give_up() {
+                echo "WARN: $1; documentation downloads will 404" >&2
+                rm -rf "$stage"
+                exit 0
+              }
+
+              # Stage then swap, so a partial run never leaves the widget
+              # offering half a set of archives.
+              rm -rf "$stage" || give_up "could not clear the staging directory"
+              mkdir -p "$stage" || give_up "could not create the staging directory"
+
+              # -u because packing runs for minutes and Python buffers stdout
+              # when it is not a terminal: without it `oc logs` stays empty the
+              # whole time and a working pod is indistinguishable from a hung one.
+              echo "packing $BUNDLE_FORMATS for $DOCS_BASE_URL ..."
+              python3 -u /opt/redis-docs/build/make_doc_bundles.py \
+                --source /usr/share/nginx/html \
+                --out "$stage" \
+                --all-versions \
+                --formats "$BUNDLE_FORMATS" \
+                --url-base "$DOCS_BASE_URL" \
+                --source-url "$DOCS_SOURCE_URL" || give_up "packing failed"
+
+              rm -rf "$out" || give_up "could not remove the previous set"
+              mv "$stage" "$out" || give_up "could not publish the packed set"
+              echo "packed $(find "$out" -name '*.tar.gz' | wc -l) bundles ($(du -sh "$out" | cut -f1))"
+          env:
+            - name: DOCS_BASE_URL
+              value: {{ .Values.canonicalURL | trimSuffix "/" | quote }}
+            - name: BUNDLE_FORMATS
+              value: {{ .Values.downloads.formats | quote }}
+            - name: DOCS_SOURCE_URL
+              value: {{ .Values.downloads.sourceURL | quote }}
+          resources:
+            {{- toYaml (.Values.downloads.resources | default .Values.resources) | nindent 12 }}
+          volumeMounts:
+            - name: doc-bundles
+              mountPath: /downloads
+        {{- end }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -120,6 +185,11 @@ spec:
             - name: ndjson-gz
               mountPath: /usr/share/nginx/html/docs.ndjson.gz
               subPath: docs.ndjson.gz
+              readOnly: true
+            {{- end }}
+            {{- if include "redis-docs.downloadsActive" . }}
+            - name: doc-bundles
+              mountPath: /usr/share/nginx/html/downloads
               readOnly: true
             {{- end }}
             {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
@@ -186,6 +256,14 @@ spec:
             name: {{ include "redis-docs.fullname" . }}-runtime
         {{- if .Values.canonicalURL }}
         - name: ndjson-gz
+          emptyDir: {}
+        {{- end }}
+        {{- if include "redis-docs.downloadsActive" . }}
+        # Disk-backed on purpose: the packed set runs to a few hundred MB, which
+        # counts against ephemeral-storage here and against the memory limit if
+        # it were medium: Memory. nginx's page cache keeps the hot archives in
+        # RAM anyway.
+        - name: doc-bundles
           emptyDir: {}
         {{- end }}
         {{- if and .Values.tls.enabled .Values.tls.nginxTermination }}
