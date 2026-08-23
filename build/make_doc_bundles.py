@@ -42,6 +42,7 @@ import re
 import sys
 import tarfile
 from pathlib import Path
+from urllib.parse import urlsplit
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_MANIFEST = REPO_ROOT / "data" / "doc_bundles.json"
@@ -242,12 +243,34 @@ def page_url(url_base, docset, version, rel_posix):
     return f"{url_base.rstrip('/')}/{path}/"
 
 
+# Airgap fork: Hugo writes the literal token __DOCS_BASE_URL__ into the .md and
+# .json outputs (layouts/partials/process-markdown-content.html), and on a served
+# page nginx substitutes it per request (helm/redis-docs/templates/configmap.yaml).
+# This packager reads those files straight off disk, so nginx never runs and the
+# token would ship inside the archives. Substitute it on the way in, using the
+# same --url-base the rest of the packager already resolves URLs against.
+BASE_URL_TOKEN = b"__DOCS_BASE_URL__"
+
+# Where the reader can find the source of these docs. Public builds point at
+# GitHub; an airgapped deployment points at its own mirror, or passes an empty
+# --source-url to drop the line rather than advertise a host nobody can reach.
+DEFAULT_SOURCE_URL = "https://github.com/redis/docs"
+
+
+def site_host(url_base):
+    return urlsplit(url_base).netloc or url_base.rstrip("/")
+
+
+def page_bytes(path, url_base):
+    return path.read_bytes().replace(BASE_URL_TOKEN, url_base.rstrip("/").encode("utf-8"))
+
+
 def single_markdown(pages, url_base, docset, version):
     """Concatenate every page into one document, each preceded by its URL."""
     parts = []
     for rel_posix, path in pages:
         url = page_url(url_base, docset, version, rel_posix)
-        body = path.read_text(encoding="utf-8").strip()
+        body = page_bytes(path, url_base).decode("utf-8").strip()
         parts.append(f"<!-- page: {url} -->\n\n{body}\n")
     return "\n".join(parts).encode("utf-8")
 
@@ -272,9 +295,17 @@ examples, and body. Links inside the body are absolute redis.io URLs.""",
 }
 
 
-def readme(docset, version, fmt, url_base, page_count):
+def readme(docset, version, fmt, url_base, page_count, source_url=DEFAULT_SOURCE_URL):
     fmt_spec = f"{fmt['label']} -- {fmt['summary']}"
     root_url = page_url(url_base, docset, version, ".")
+    # Airgap fork: the notes describe where the links in this bundle point, and
+    # upstream states that as "redis.io" literally. On a fork-built site they
+    # point at whatever --url-base says, so name that host instead of misleading
+    # the reader. A no-op when the site really is redis.io.
+    notes = READING_NOTES[fmt["id"]].replace("redis.io", site_host(url_base))
+    source_line = (
+        f"\nThe documentation source lives at {source_url}.\n" if source_url else ""
+    )
     return f"""# {docset['title']} documentation ({version})
 
 Format: {fmt_spec}
@@ -283,10 +314,8 @@ Published at: {root_url}
 
 Downloaded from {url_base.rstrip('/')}/downloads/
 
-{READING_NOTES[fmt['id']]}
-
-The documentation source lives at https://github.com/redis/docs.
-"""
+{notes}
+{source_line}"""
 
 
 def end_of_element(html, tag, after_open):
@@ -667,7 +696,8 @@ def add_offline_html(tar, prefix, source, root, pages, docset, version, url_base
             add_file(tar, f"{prefix}/{bundle_path}", path.read_bytes())
 
 
-def build_bundle(source, out_dir, docset, version, fmt, url_base):
+def build_bundle(source, out_dir, docset, version, fmt, url_base,
+                 source_url=DEFAULT_SOURCE_URL):
     """Write one bundle. Returns its index entry, or None if it has no pages."""
     spec = FORMATS[fmt["id"]]
     root = resolve_root(source, docset, version)
@@ -709,7 +739,8 @@ def build_bundle(source, out_dir, docset, version, fmt, url_base):
             add_file(
                 tar,
                 f"{prefix}/README.md",
-                readme(docset, version, fmt, url_base, len(pages)).encode("utf-8"),
+                readme(docset, version, fmt, url_base, len(pages),
+                       source_url).encode("utf-8"),
             )
             if fmt["id"] == "md-single":
                 add_file(
@@ -722,7 +753,7 @@ def build_bundle(source, out_dir, docset, version, fmt, url_base):
             else:
                 for rel_posix, path in pages:
                     name = archive_name(rel_posix, spec["file"], spec["suffix"])
-                    add_file(tar, f"{prefix}/{name}", path.read_bytes())
+                    add_file(tar, f"{prefix}/{name}", page_bytes(path, url_base))
 
     data = raw.getvalue()
     filename = f"{docset['id']}-{version}-{fmt['id']}.tar.gz"
@@ -752,6 +783,10 @@ def main():
                              "local testing: CI builds each version in its own job, but one "
                              "local build renders them all")
     parser.add_argument("--formats", help="comma-separated format ids (default: all of them)")
+    parser.add_argument("--source-url", default=DEFAULT_SOURCE_URL,
+                        help="where the docs source lives, named in each bundle's "
+                             "README; pass an empty value to omit the line "
+                             f"(default: {DEFAULT_SOURCE_URL})")
     parser.add_argument("--url-base", default=DEFAULT_URL_BASE,
                         help=f"where these pages are published (default: {DEFAULT_URL_BASE})")
     args = parser.parse_args()
@@ -793,7 +828,8 @@ def main():
     entries = []
     for docset, version in targets:
         for fmt in formats:
-            entry = build_bundle(source, out_dir, docset, version, fmt, args.url_base)
+            entry = build_bundle(source, out_dir, docset, version, fmt, args.url_base,
+                                 args.source_url)
             if entry is None:
                 continue
             entries.append(entry)
