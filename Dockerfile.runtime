@@ -24,6 +24,16 @@ LABEL org.opencontainers.image.variant="privileged"
 
 COPY public /usr/share/nginx/html
 
+# The documentation download bundles are packed by an init container at pod
+# start, not baked in here: the archives carry the deployment's own base URL,
+# which Helm knows and an image build does not. That costs python3 in the
+# runtime image (stdlib only -- no pip, no venv) and keeps ~280 MB of archives
+# out of every layer. Layout mirrors the repo so the script finds its manifest
+# at the default path.
+RUN apk add --no-cache python3
+COPY build/make_doc_bundles.py /opt/redis-docs/build/make_doc_bundles.py
+COPY data/doc_bundles.json /opt/redis-docs/data/doc_bundles.json
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
@@ -42,6 +52,14 @@ LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL org.opencontainers.image.variant="unprivileged"
 
 COPY --chown=nginx:nginx public /usr/share/nginx/html
+
+# See the note on the privileged variant. apk needs root; drop straight back to
+# the image's own unprivileged uid so nothing else runs elevated.
+USER root
+RUN apk add --no-cache python3
+COPY build/make_doc_bundles.py /opt/redis-docs/build/make_doc_bundles.py
+COPY data/doc_bundles.json /opt/redis-docs/data/doc_bundles.json
+USER 101
 
 EXPOSE 8080
 
