@@ -17,6 +17,10 @@ const CONFIG = Object.assign({
   showBadge: true,                  // draw the "Powered by" badge on terminals
 }, window.REDIS_CLI_CONFIG || {});
 
+/* The live terminals on the page, keyed by their form element: {pre, input,
+   prompt, dbid}. A WeakMap so a removed terminal is collectable. */
+const terminals = new WeakMap();
+
 async function createCli(cli) {
   const toExecute = getCommandsToExecute(cli);
   const urlCommands = CONFIG.enableUrlCommands ? getUrlCommands() : null;
@@ -29,6 +33,12 @@ async function createCli(cli) {
   drawTerminal(cli);
   drawBadge(cli);
   handleHistory(pre, input);
+
+  /* Remember this terminal's parts so an embedder can run commands *into* it
+     later (see window.RedisCli.run). Without that, adding commands to a live
+     terminal means replacing it, which throws away the transcript — and a
+     console whose history vanishes every time you use it isn't one. */
+  terminals.set(cli, { pre, input, prompt, dbid });
 
   try {
     await asciiArt(cli, dbid, pre, input);
@@ -189,7 +199,10 @@ async function disablePrompt(cli, input, prompt, fn) {
   cli.classList.add('disabled');
   input.disabled = true;
   prompt.style.display = 'none';
-  const p = Promise.all([fn()])
+  /* Returned, so a caller can await the batch it just queued — window.RedisCli
+     .run needs that to know when a snippet has finished running. The callers
+     inside this file ignore it, as they always have. */
+  return Promise.all([fn()])
     .then(() => {
       prompt.style.display = '';
       cli.classList.remove('disabled');
@@ -343,10 +356,30 @@ async function execute(commands, dbid = '', source = 'interactive') {
     });
     const reply = await response.json();
     session.id = reply.id;
+    notifyExecuted({ commands, replies: reply.replies || [], dbid, source });
     return reply;
   });
   executeQueue = run.then(() => {}, () => {});
   return run;
+}
+
+// Embedder hooks, fired after a batch is served (see window.RedisCli.onExecute).
+// Batches the widget runs for itself are deliberately NOT reported: 'internal'
+// is the startup INFO, and 'workbench' is a listener's own introspection, which
+// would otherwise re-enter its listener and loop.
+const executeListeners = new Set();
+
+function notifyExecuted(batch) {
+  if (batch.source === 'internal' || batch.source === 'workbench') {
+    return;
+  }
+  for (const listener of executeListeners) {
+    try {
+      listener(batch);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 }
 
 // Quote and escape a bulk string exactly like redis-cli's sdscatrepr: operate
@@ -527,6 +560,54 @@ function initRedisClis() {
     createCli(cli);
   }
 }
+
+// Public API for embedders — currently the docs "Try it" workbench, which needs
+// to run its own keyspace introspection (TYPE/TTL/HGETALL/...) against THIS
+// page's session and render replies the same way the terminal does. Exposing
+// this deliberately small surface is what keeps consumers from reimplementing
+// the session handshake or the reply formatter and drifting from this file, the
+// single source of truth for both.
+//
+// `session` is exposed by reference: it is only ever mutated (`session.id = …`),
+// never reassigned, so a consumer holding it always reads the live session id.
+// `createCli` initialises one terminal, for terminals added after page load;
+// calling `init` again would re-initialise (and so clear) the existing ones.
+window.RedisCli = {
+  execute,        // (commands[], dbid?, source?) -> Promise<{id, replies}>
+  formatReply,    // (value, indent?, status?) -> redis-cli-faithful text
+  createCli,      // (form.redis-cli element) -> Promise, initialises a terminal
+  init: initRedisClis,
+  session,
+
+  /* Run commands in an already-initialised terminal, appending them and their
+     replies to its transcript exactly as if they had been typed — the prompt is
+     disabled for the duration, so this cannot interleave with the reader typing.
+     Resolves when the batch has been written; false if the element is not a
+     live terminal. */
+  run: function (cli, commands, source) {
+    const parts = terminals.get(cli);
+    if (!parts || !commands || !commands.length) return Promise.resolve(false);
+    return disablePrompt(cli, parts.input, parts.prompt, () =>
+      executeCommands(parts.dbid, parts.pre, parts.input, commands, false,
+        source || 'preset')).then(() => true);
+  },
+
+  /* Empty a terminal's transcript, exactly as the `clear` command typed at its
+     prompt does. Only the printed history goes: the session, its keys and the
+     prompt are untouched. False if the element is not a live terminal. */
+  clear: function (cli) {
+    const parts = terminals.get(cli);
+    if (!parts) return false;
+    parts.pre.replaceChildren();
+    return true;
+  },
+  // Called after every user-visible batch with {commands, replies, dbid,
+  // source}; returns an unsubscribe function.
+  onExecute(listener) {
+    executeListeners.add(listener);
+    return () => executeListeners.delete(listener);
+  },
+};
 
 // Initialise as soon as the DOM is ready. When the docs' cli.js shim injects
 // this file dynamically it may run AFTER DOMContentLoaded has already fired, so
