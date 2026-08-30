@@ -7,7 +7,7 @@
 #
 # Before using, replace the following:
 #   registry.internal.company.com  → your private registry address
-#   caa0311a7-unprivileged         → your Docker image tag
+#   c79fe074d-unprivileged         → your Docker image tag
 #   regcred                        → your image pull secret name
 #   docs.intranet.company.com      → the public hostname of this deployment
 #   gitlab.internal.company.com    → your internal Git URL
@@ -25,7 +25,7 @@ imagePullSecrets:
 
 image:
   name: redis-docs
-  tag: "caa0311a7-unprivileged"
+  tag: "c79fe074d-unprivileged"
   pullPolicy: IfNotPresent
 
 # ephemeral-storage has to hold the packed download bundles (see `downloads`
