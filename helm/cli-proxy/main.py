@@ -19,7 +19,11 @@ import os
 import shlex
 import socket
 import threading
+import time
 import uuid
+from collections import OrderedDict
+from collections.abc import Callable
+from dataclasses import dataclass, field
 
 from flask import Flask, jsonify, request
 
@@ -32,6 +36,17 @@ LOGGER = logging.getLogger("cli_proxy")
 REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.environ.get("REDIS_PORT", "6379"))
 SOCKET_TIMEOUT = float(os.environ.get("REDIS_TIMEOUT", "5"))
+
+# Sessions are sticky (see SessionRegistry) so they have to be bounded, or every
+# visitor's connection is held for the life of the process. A session goes when
+# it has been idle this long, and the oldest go early if the cap is reached
+# first; either way the reader just gets a fresh session on their next command.
+SESSION_IDLE_TTL = float(os.environ.get("SESSION_IDLE_TTL", "1800"))
+SESSION_MAX = int(os.environ.get("SESSION_MAX", "500"))
+# Idle sessions are swept on the way into a request rather than by a background
+# thread: an idle process has nothing to collect, and this keeps the sidecar to
+# the one thread pool gunicorn already runs.
+SWEEP_INTERVAL = float(os.environ.get("SESSION_SWEEP_INTERVAL", "60"))
 
 # Integers beyond this magnitude lose precision once serialized as JSON numbers
 # and parsed by the browser, so they are tagged {"$int": "<decimal>"} instead.
@@ -148,46 +163,142 @@ class RespConnection:
         self._buffer += chunk
 
 
+@dataclass
 class Session:
-    """A Redis connection plus a lock that serializes the worker threads sharing it."""
+    """One browser session: its Redis connection, and when it was last used.
 
-    def __init__(self, connection: RespConnection) -> None:
-        self.connection = connection
-        self.lock = threading.Lock()
+    The lock serializes the worker threads sharing the connection; last_seen is
+    what the registry's sweep reads to decide the session has been abandoned.
+    """
+
+    sid: str
+    connection: RespConnection
+    lock: threading.Lock = field(default_factory=threading.Lock)
+    last_seen: float = field(default_factory=time.monotonic)
 
 
-_sessions: dict[str, Session] = {}
-_sessions_lock = threading.Lock()
+class SessionRegistry:
+    """The live sessions, ordered least-recently-used first.
 
+    A session keeps a connection of its own rather than borrowing one from a
+    pool, because connection state a reader builds up has to survive between
+    requests: cli.js POSTs each typed command as its own batch, so MULTI and
+    EXEC — or WATCH and the command it guards — arrive as separate HTTP calls
+    and only reach the same Redis client if the session is sticky.
 
-def get_session(session_id: str | None) -> tuple[Session, str]:
-    sid = session_id or str(uuid.uuid4())
+    That stickiness is why the registry is bounded. Nothing about a browser
+    session tells us when the reader closed the tab, so a session is abandoned
+    once it goes quiet, and the cap catches the rest.
+    """
 
-    with _sessions_lock:
-        session = _sessions.get(sid)
-    if session is not None:
+    def __init__(
+        self,
+        connect: Callable[[], RespConnection],
+        max_sessions: int = SESSION_MAX,
+        idle_ttl: float = SESSION_IDLE_TTL,
+        sweep_interval: float = SWEEP_INTERVAL,
+    ) -> None:
+        self._connect = connect
+        # Never below one, or the cap reclaims the session acquire just opened
+        # and hands back a closed connection that can only fail and reconnect.
+        self._max_sessions = max(1, max_sessions)
+        self._idle_ttl = idle_ttl
+        self._sweep_interval = sweep_interval
+        self._sessions: OrderedDict[str, Session] = OrderedDict()
+        self._lock = threading.Lock()
+        self._last_sweep = time.monotonic()
+
+    def acquire(self, session_id: str | None) -> tuple[Session, str]:
+        sid = session_id or str(uuid.uuid4())
+
+        with self._lock:
+            session = self._touch(sid)
+        if session is not None:
+            return session, sid
+
+        # Connect outside the lock so a slow or unreachable Redis never stalls
+        # every other worker thread.
+        connection = self._connect()
+
+        with self._lock:
+            existing = self._touch(sid)
+            if existing is not None:
+                connection.close()
+                return existing, sid
+            session = Session(sid=sid, connection=connection)
+            self._sessions[sid] = session
+            overflow = self._reclaim(lambda _: len(self._sessions) > self._max_sessions)
+            live = len(self._sessions)
+
+        _close_all(overflow)
+        if overflow:
+            LOGGER.warning("session cap %d reached, closed %d", self._max_sessions, len(overflow))
+        LOGGER.info("opened redis session %s (%d live)", sid, live)
         return session, sid
 
-    # Connect outside the global lock so a slow/unreachable Redis never stalls
-    # every other worker thread.
-    connection = RespConnection(REDIS_HOST, REDIS_PORT, SOCKET_TIMEOUT)
-    with _sessions_lock:
-        existing = _sessions.get(sid)
-        if existing is not None:
-            connection.close()
-            return existing, sid
-        session = Session(connection)
-        _sessions[sid] = session
-    LOGGER.info("opened redis session %s", sid)
-    return session, sid
+    def sweep(self) -> None:
+        """Close sessions that have gone quiet, at most once per sweep interval."""
+        now = time.monotonic()
+        with self._lock:
+            if now - self._last_sweep < self._sweep_interval:
+                return
+            self._last_sweep = now
+            expired = self._reclaim(lambda session: now - session.last_seen >= self._idle_ttl)
+
+        _close_all(expired)
+        if expired:
+            LOGGER.info("closed %d idle session(s)", len(expired))
+
+    def discard(self, sid: str) -> None:
+        with self._lock:
+            session = self._sessions.pop(sid, None)
+        if session is not None:
+            session.connection.close()
+            LOGGER.warning("dropped redis session %s", sid)
+
+    def __len__(self) -> int:
+        with self._lock:
+            return len(self._sessions)
+
+    def _touch(self, sid: str) -> Session | None:
+        """Mark a session used and move it to the young end. Caller holds the lock."""
+        session = self._sessions.get(sid)
+        if session is None:
+            return None
+        session.last_seen = time.monotonic()
+        self._sessions.move_to_end(sid)
+        return session
+
+    def _reclaim(self, should_close: Callable[[Session], bool]) -> list[Session]:
+        """Take out the oldest sessions the predicate still accepts.
+
+        Caller holds the lock; the connections are closed outside it. A session
+        another thread is mid-batch on is left alone — it is in use, so it is
+        neither idle nor the right one to sacrifice to the cap.
+        """
+        reclaimed: list[Session] = []
+        for sid in list(self._sessions):
+            session = self._sessions[sid]
+            if not should_close(session):
+                break  # ordered oldest first, so nothing further qualifies
+            if not session.lock.acquire(blocking=False):
+                continue
+            del self._sessions[sid]
+            session.lock.release()
+            reclaimed.append(session)
+        return reclaimed
 
 
-def drop_session(sid: str) -> None:
-    with _sessions_lock:
-        session = _sessions.pop(sid, None)
-    if session is not None:
+def _close_all(sessions: list[Session]) -> None:
+    for session in sessions:
         session.connection.close()
-        LOGGER.warning("dropped redis session %s", sid)
+
+
+def _open_connection() -> RespConnection:
+    return RespConnection(REDIS_HOST, REDIS_PORT, SOCKET_TIMEOUT)
+
+
+_registry = SessionRegistry(_open_connection)
 
 
 def encode_value(value: object) -> object:
@@ -237,8 +348,10 @@ def cli():
     commands = body.get("commands", [])
     session_id = body.get("id")
 
+    _registry.sweep()
+
     try:
-        session, sid = get_session(session_id)
+        session, sid = _registry.acquire(session_id)
     except OSError as error:
         LOGGER.error("could not reach redis: %s", error)
         replies = [{"error": True, "value": "could not connect to redis"} for _ in commands]
@@ -251,7 +364,7 @@ def cli():
                 replies.append(run_command(session, command))
             except (OSError, RespProtocolError) as error:
                 LOGGER.error("redis failure on session %s: %s", sid, error)
-                drop_session(sid)
+                _registry.discard(sid)
                 replies.extend(
                     {"error": True, "value": "redis connection lost, please retry"}
                     for _ in commands[index:]
