@@ -35,6 +35,10 @@ spec:
               value: "localhost"
             - name: REDIS_PORT
               value: "6379"
+            {{- if .Values.cli.redis.acl.enabled }}
+            - name: REDIS_USERNAME
+              value: {{ .Values.cli.redis.acl.username | quote }}
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /healthz
@@ -60,6 +64,28 @@ spec:
             - name: redis
               containerPort: 6379
               protocol: TCP
+          {{- if .Values.cli.redis.acl.enabled }}
+          args: ["redis-server", "--aclfile", "/etc/redis/sandbox.acl"]
+          lifecycle:
+            postStart:
+              exec:
+                # Redis parses the ACL file before it registers the bundled
+                # modules, so these three cannot be named there — see the file.
+                # Retried because postStart runs alongside the entrypoint, not
+                # after it, so Redis may not be listening on the first attempt.
+                command:
+                  - sh
+                  - -c
+                  - |
+                    for attempt in 1 2 3 4 5 6 7 8 9 10; do
+                      if redis-cli ACL SETUSER {{ .Values.cli.redis.acl.username }} \
+                           +ft._list +ft.dropindex +ft.tagvals >/dev/null 2>&1; then
+                        exit 0
+                      fi
+                      sleep 1
+                    done
+                    echo "could not grant module commands to {{ .Values.cli.redis.acl.username }}" >&2
+          {{- end }}
           livenessProbe:
             exec:
               command: ["redis-cli", "ping"]
@@ -75,6 +101,11 @@ spec:
           volumeMounts:
             - name: redis-data
               mountPath: /data
+            {{- if .Values.cli.redis.acl.enabled }}
+            - name: cli-acl
+              mountPath: /etc/redis
+              readOnly: true
+            {{- end }}
         {{- if .Values.cli.jupyter.enabled }}
         - name: jupyter
           image: {{ include "redis-docs.cliJupyterImage" . }}
@@ -121,6 +152,11 @@ spec:
       volumes:
         - name: redis-data
           emptyDir: {}
+        {{- if .Values.cli.redis.acl.enabled }}
+        - name: cli-acl
+          configMap:
+            name: {{ include "redis-docs.fullname" . }}-cli-acl
+        {{- end }}
         {{- if .Values.cli.jupyter.enabled }}
         - name: jupyter-home
           emptyDir: {}

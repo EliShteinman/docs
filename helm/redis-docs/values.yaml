@@ -220,6 +220,13 @@ cli:
       name: redis
       tag: "8.10.0-alpine"
       pullPolicy: IfNotPresent
+    # Runs every command a reader types as a restricted user, so the shared
+    # sandbox survives someone typing FLUSHALL. The rules and the reasoning are
+    # in files/sandbox.acl. Turning this off puts the proxy back on the default
+    # user, with nothing between the browser and the whole keyspace.
+    acl:
+      enabled: true
+      username: docsandbox
     resources:
       requests:
         cpu: 50m

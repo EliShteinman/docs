@@ -1,4 +1,4 @@
-"""Tests for the cli-proxy session registry.
+"""Tests for the cli-proxy: the session registry, and the commands it refuses.
 
 The registry is the part of the proxy with state that outlives a request, so
 these cover the two ways a session goes away — idle timeout and the cap — plus
@@ -14,14 +14,22 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-from main import SessionRegistry
+from main import PROXY_DENIED, RedisAuthError, RespError, Session, SessionRegistry, authenticate, run_command
 
 
 class FakeConnection:
-    """Stands in for RespConnection, recording only whether it was closed."""
+    """Stands in for RespConnection, recording what was sent and what to reply."""
 
-    def __init__(self) -> None:
+    def __init__(self, replies: list | None = None) -> None:
         self.closed = False
+        self.sent: list[list[str]] = []
+        self._replies = list(replies or [])
+
+    def send_command(self, args: list[str]) -> None:
+        self.sent.append(args)
+
+    def read_reply(self) -> object:
+        return self._replies.pop(0) if self._replies else "OK"
 
     def close(self) -> None:
         self.closed = True
@@ -235,3 +243,73 @@ def test_losing_a_connect_race_closes_the_spare(connect, connections):
         thread.join()
 
     assert sum(1 for connection in connections if not connection.closed) == 1
+
+
+# --- authentication -------------------------------------------------------
+#
+# A connection that stays on Redis's default user runs a reader's commands with
+# full rights, so these pin down that a refused AUTH ends the connection rather
+# than falling through to one that can still run FLUSHALL.
+
+
+def test_auth_sends_the_credentials():
+    connection = FakeConnection()
+    authenticate(connection, "docsandbox", "")
+
+    assert connection.sent == [["AUTH", "docsandbox", ""]]
+
+
+def test_auth_leaves_an_accepted_connection_open():
+    connection = FakeConnection()
+    authenticate(connection, "docsandbox", "")
+
+    assert not connection.closed
+
+
+def test_a_refused_auth_raises():
+    connection = FakeConnection([RespError("WRONGPASS invalid username-password pair")])
+
+    with pytest.raises(RedisAuthError):
+        authenticate(connection, "docsandbox", "nope")
+
+
+def test_a_refused_auth_closes_the_connection():
+    connection = FakeConnection([RespError("WRONGPASS invalid username-password pair")])
+
+    with pytest.raises(RedisAuthError):
+        authenticate(connection, "docsandbox", "nope")
+
+    assert connection.closed
+
+
+# --- commands the ACL cannot deny -----------------------------------------
+
+
+def test_reset_is_refused_by_the_proxy():
+    session = Session(sid="s", connection=FakeConnection())
+
+    assert run_command(session, "RESET")["error"]
+
+
+def test_reset_never_reaches_redis():
+    connection = FakeConnection()
+    run_command(Session(sid="s", connection=connection), "reset")
+
+    assert connection.sent == []
+
+
+def test_the_refusal_reads_like_redis():
+    session = Session(sid="s", connection=FakeConnection())
+
+    assert "no permissions" in run_command(session, "RESET")["value"]
+
+
+def test_only_the_listed_commands_are_refused():
+    connection = FakeConnection()
+    run_command(Session(sid="s", connection=connection), "GET k")
+
+    assert connection.sent == [["GET", "k"]]
+
+
+def test_reset_is_what_the_proxy_denies():
+    assert PROXY_DENIED == frozenset({"RESET"})
