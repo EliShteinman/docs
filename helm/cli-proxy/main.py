@@ -37,6 +37,19 @@ REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.environ.get("REDIS_PORT", "6379"))
 SOCKET_TIMEOUT = float(os.environ.get("REDIS_TIMEOUT", "5"))
 
+# The restricted user from sandbox.acl. Everything a reader types runs as this
+# user, which is what stops FLUSHALL and friends. Empty means connect
+# unauthenticated, for a Redis started without the ACL file.
+REDIS_USERNAME = os.environ.get("REDIS_USERNAME", "")
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", "")
+
+# RESET carries Redis's no-auth flag, so no ACL rule can deny it: `ACL SETUSER
+# -reset` is accepted and ACL DRYRUN still passes the command. Left alone it
+# would drop the connection back to the default user mid-session, which both
+# undoes the sandbox user and discards the MULTI or WATCH the reader is in the
+# middle of. Nothing in the docs runs it, so the proxy refuses it here.
+PROXY_DENIED = frozenset({"RESET"})
+
 # Sessions are sticky (see SessionRegistry) so they have to be bounded, or every
 # visitor's connection is held for the life of the process. A session goes when
 # it has been idle this long, and the oldest go early if the cap is reached
@@ -57,6 +70,10 @@ CRLF = b"\r\n"
 
 class RespProtocolError(Exception):
     """The server sent bytes that do not conform to the RESP grammar."""
+
+
+class RedisAuthError(Exception):
+    """Redis refused the sandbox user's credentials."""
 
 
 class RespStatus(str):
@@ -295,7 +312,24 @@ def _close_all(sessions: list[Session]) -> None:
 
 
 def _open_connection() -> RespConnection:
-    return RespConnection(REDIS_HOST, REDIS_PORT, SOCKET_TIMEOUT)
+    connection = RespConnection(REDIS_HOST, REDIS_PORT, SOCKET_TIMEOUT)
+    if REDIS_USERNAME:
+        authenticate(connection, REDIS_USERNAME, REDIS_PASSWORD)
+    return connection
+
+
+def authenticate(connection: RespConnection, username: str, password: str) -> None:
+    """Log the connection in as the sandbox user, or close it and give up.
+
+    A connection that stays on the default user would run a reader's commands
+    with full rights, so a refused AUTH has to end the connection rather than
+    quietly fall through to one that can still run FLUSHALL.
+    """
+    connection.send_command(["AUTH", username, password])
+    reply = connection.read_reply()
+    if isinstance(reply, RespError):
+        connection.close()
+        raise RedisAuthError(str(reply))
 
 
 _registry = SessionRegistry(_open_connection)
@@ -323,6 +357,13 @@ def run_command(session: Session, command: str) -> dict:
         return {"error": True, "value": f"parse error: {error}"}
     if not argv:
         return {"error": True, "value": "empty command"}
+    if argv[0].upper() in PROXY_DENIED:
+        # Phrased the way Redis phrases an ACL refusal, so the widget renders it
+        # like any other denied command rather than like a proxy malfunction.
+        return {
+            "error": True,
+            "value": f"NOPERM this user has no permissions to run the '{argv[0].lower()}' command",
+        }
 
     session.connection.send_command(argv)
     reply = session.connection.read_reply()
@@ -354,6 +395,10 @@ def cli():
         session, sid = _registry.acquire(session_id)
     except OSError as error:
         LOGGER.error("could not reach redis: %s", error)
+        replies = [{"error": True, "value": "could not connect to redis"} for _ in commands]
+        return jsonify({"replies": replies, "id": session_id or ""})
+    except RedisAuthError as error:
+        LOGGER.error("redis rejected the sandbox user %r: %s", REDIS_USERNAME, error)
         replies = [{"error": True, "value": "could not connect to redis"} for _ in commands]
         return jsonify({"replies": replies, "id": session_id or ""})
 

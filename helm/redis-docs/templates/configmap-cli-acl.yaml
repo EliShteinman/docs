@@ -1,0 +1,12 @@
+{{- if and .Values.cli.enabled .Values.cli.redis.acl.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-cli-acl
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cli
+data:
+  sandbox.acl: |
+{{ .Files.Get "files/sandbox.acl" | indent 4 }}
+{{- end }}

@@ -1,0 +1,65 @@
+# Redis ACL for the docs CLI sandbox.
+#
+# What a reader typing into the "Try it" widget is allowed to run. Every command
+# from the browser reaches Redis as `docsandbox`, so this file — not the proxy —
+# is what stops FLUSHALL wiping the keyspace every other visitor is working in.
+#
+# Derived, not guessed: the rules below were checked with ACL DRYRUN against all
+# 350 real Redis commands the docs demonstrate in a runnable example (extracted
+# with build/components/cli_parser.py). The only demonstrated commands they block
+# are ACL LIST/LOAD/SAVE, DEBUG OBJECT, ROLE and SLOWLOG RESET, all deliberately.
+# test_acl.py re-runs that check against a live Redis so the file cannot drift
+# from the corpus.
+#
+# Scope: this constrains the reader, not the network. `default` stays open
+# because the Jupyter sidecar and the liveness probe both connect without
+# credentials, and the notebook examples are upstream content the fork does not
+# edit. A pod that reaches port 6379 directly is a NetworkPolicy question.
+
+user default on nopass ~* &* +@all
+
+# One line, and it has to stay one line: an ACL file has no continuation
+# character, and a wrapped rule aborts Redis at startup rather than degrading.
+# -@all then +@all is not redundant either — reset first so the rule inherits
+# nothing, then open up and carve back. Order matters; the carve-outs go last.
+#
+# No FT./JSON./TS./BF. command may be named here. Redis parses this file before
+# it registers the bundled modules, so any module command in it is an "Unknown
+# command or category name in ACL" and Redis aborts startup. What that ordering
+# costs is only the module commands the category rules above sweep up —
+# FT._LIST (@admin) and FT.DROPINDEX/FT.TAGVALS (@dangerous) — which the
+# deployment grants back once the modules are up. Everything else module-side
+# (FT.CREATE, FT.SEARCH, JSON.*, TS.*, BF.*) is untouched by those categories
+# and needs nothing.
+user docsandbox on nopass ~* &* -@all +@all -@admin -@dangerous +info +keys +publish -randomkey -select -swapdb -dump -subscribe -psubscribe -ssubscribe -script|flush -script|kill
+
+# Why each carve-out, since none of them is obvious a year from now:
+#
+#   +info            @dangerous, but redis.io leaves it readable and the docs
+#                    demonstrate it. It leaks a global key count, nothing more.
+#   +keys            @dangerous for good reason on a real server; here it is the
+#                    reader's only way to see their own keyspace, and step 04
+#                    rewrites its pattern to the session prefix.
+#   +publish         PUBLISH alone is harmless. The SUBSCRIBE side is not.
+#
+#   -randomkey       Returns a key from the shared keyspace with no way to tell
+#                    whose it is. This is the one redis.io blocks too.
+#   -select          Would move the session to another database, out of reach of
+#   -swapdb          the prefix scheme entirely.
+#   -dump            Serializes any key, prefix or not, straight past the proxy.
+#   -subscribe       Puts the connection into subscribe mode, where it accepts
+#   -psubscribe      almost nothing else — and sessions are sticky, so that wedges
+#   -ssubscribe      the reader until their session is reclaimed.
+#   -script|flush    Discards every cached script on the server, everyone's.
+#   -script|kill     Kills whatever script is running, whoever started it.
+#
+# Granted after startup, from the deployment's post-start step, because they
+# cannot be named above:
+#
+#   +ft._list        @admin. The workbench's Indexes pane is built on it.
+#   +ft.dropindex    @dangerous. A tutorial that creates an index has to be able
+#   +ft.tagvals      to undo it; both are demonstrated in the docs.
+#
+# RESET is missing on purpose: it carries Redis's no-auth flag, so ACL cannot
+# deny it — `ACL SETUSER -reset` returns OK and DRYRUN still passes it. The proxy
+# refuses it instead (PROXY_DENIED in main.py).
