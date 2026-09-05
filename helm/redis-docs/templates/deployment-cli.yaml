@@ -39,6 +39,20 @@ spec:
             - name: REDIS_USERNAME
               value: {{ .Values.cli.redis.acl.username | quote }}
             {{- end }}
+            - name: SESSION_IDLE_TTL
+              value: {{ .Values.cli.session.idleTtlSeconds | quote }}
+            - name: SESSION_MAX
+              value: {{ .Values.cli.session.max | quote }}
+            - name: SESSION_SWEEP_INTERVAL
+              value: {{ .Values.cli.session.sweepIntervalSeconds | quote }}
+            - name: NAMESPACE_ENABLED
+              value: {{ .Values.cli.namespace.enabled | quote }}
+            - name: SCAN_MIN_COUNT
+              value: {{ .Values.cli.namespace.scanMinCount | quote }}
+            - name: CLEANUP_ENABLED
+              value: {{ .Values.cli.namespace.cleanup.enabled | quote }}
+            - name: CLEANUP_BATCH
+              value: {{ .Values.cli.namespace.cleanup.batch | quote }}
           livenessProbe:
             httpGet:
               path: /healthz

@@ -652,7 +652,16 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.image.tag` | `latest` | CLI proxy image tag (in air-gapped networks: `0.3.3`) |
 | `cli.image.pullPolicy` | `IfNotPresent` | CLI image pull policy |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | CLI proxy resources |
+| `cli.session.idleTtlSeconds` | `1800` | Close a browser session after this long without a command |
+| `cli.session.max` | `500` | Cap on live sessions; the least recently used is closed first |
+| `cli.session.sweepIntervalSeconds` | `60` | How often idle sessions are looked for |
+| `cli.namespace.enabled` | `true` | Give each session its own slice of the shared keyspace |
+| `cli.namespace.scanMinCount` | `10000` | Floor on SCAN's COUNT, so a scan does not return an empty page |
+| `cli.namespace.cleanup.enabled` | `true` | Delete a session's keys and indexes when it is closed |
+| `cli.namespace.cleanup.batch` | `500` | Keys deleted per round trip during cleanup |
 | `cli.redis.image.registry` | `docker.io` | Redis image registry |
+| `cli.redis.acl.enabled` | `true` | Run reader commands as a restricted Redis user (files/sandbox.acl) |
+| `cli.redis.acl.username` | `docsandbox` | The restricted user the proxy authenticates as |
 | `cli.redis.image.tag` | `8-alpine` | Redis sidecar image tag |
 | `cli.redis.image.pullPolicy` | `IfNotPresent` | Redis image pull policy |
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | Redis sidecar resources |

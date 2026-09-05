@@ -207,6 +207,28 @@ cli:
     name: redis-docs-cli
     tag: "latest"
     pullPolicy: IfNotPresent
+  # How long a browser session lives in the proxy. A session holds a Redis
+  # connection of its own so transactions survive between typed commands, so
+  # these are what keep that from growing without limit.
+  session:
+    idleTtlSeconds: 1800
+    max: 500
+    sweepIntervalSeconds: 60
+  # Each session gets its own slice of the shared keyspace: commands go out
+  # under a per-session prefix and replies come back without it, so two readers
+  # working through the same tutorial do not overwrite each other's keys.
+  # Turning this off puts every reader back in one flat keyspace.
+  namespace:
+    enabled: true
+    # Redis filters SCAN's MATCH after walking the table, so a small COUNT over
+    # a large keyspace returns an empty page and the reader sees no keys at all.
+    # Every scan is raised to at least this.
+    scanMinCount: 10000
+    # Delete a session's keys and indexes when it is reclaimed. Off leaves them
+    # for whatever eviction policy the sidecar Redis has, which is none.
+    cleanup:
+      enabled: true
+      batch: 500
   resources:
     requests:
       cpu: 50m
