@@ -1,24 +1,24 @@
-"""Tests for the cli-proxy: the session registry, and the commands it refuses.
+"""Tests for the request path: parsing a typed line, and what it refuses.
 
-The registry is the part of the proxy with state that outlives a request, so
-these cover the two ways a session goes away — idle timeout and the cap — plus
-the reuse that everything else depends on. RespConnection is faked: what matters
-here is which connections get closed and when, not the RESP wire.
+The rewriting these commands go through is covered in test_namespace.py and the
+isolation it buys in test_isolation.py. What is left here is the layer between
+the HTTP body and the wire.
 """
 
 import os
 import sys
-import threading
 
 import pytest
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-from main import PROXY_DENIED, RedisAuthError, RespError, Session, SessionRegistry, authenticate, run_command
+import main
+from resp import RespError
+from sessions import Session
 
 
 class FakeConnection:
-    """Stands in for RespConnection, recording what was sent and what to reply."""
+    """Records what was sent, and answers from a scripted list."""
 
     def __init__(self, replies: list | None = None) -> None:
         self.closed = False
@@ -35,281 +35,133 @@ class FakeConnection:
         self.closed = True
 
 
-@pytest.fixture
-def connections() -> list[FakeConnection]:
-    return []
+@pytest.fixture(autouse=True)
+def unnamespaced(monkeypatch):
+    """These tests are about the request path, so leave the keys alone."""
+    monkeypatch.setattr(main.config, "NAMESPACE_ENABLED", False)
 
 
 @pytest.fixture
-def connect(connections):
-    def _connect() -> FakeConnection:
-        connection = FakeConnection()
-        connections.append(connection)
-        return connection
-
-    return _connect
+def connection() -> FakeConnection:
+    return FakeConnection()
 
 
 @pytest.fixture
-def registry(connect) -> SessionRegistry:
-    """A registry that never sweeps on its own, so tests drive the clock."""
-    return SessionRegistry(connect, max_sessions=3, idle_ttl=100.0, sweep_interval=0.0)
+def session(connection) -> Session:
+    return Session(sid="s", connection=connection)
 
 
-def test_acquire_without_id_mints_one(registry):
-    _, sid = registry.acquire(None)
+# --- parsing ---------------------------------------------------------------
 
-    assert sid
 
+def test_a_command_is_split_into_arguments(session, connection):
+    main.run_command(session, "SET greeting hello")
 
-def test_acquire_reuses_the_same_session(registry):
-    first, sid = registry.acquire(None)
-    second, _ = registry.acquire(sid)
+    assert connection.sent == [["SET", "greeting", "hello"]]
 
-    assert second is first
 
+def test_a_quoted_argument_stays_one_argument(session, connection):
+    main.run_command(session, 'SET greeting "hello there"')
 
-def test_reuse_does_not_open_a_second_connection(registry, connections):
-    _, sid = registry.acquire(None)
-    registry.acquire(sid)
+    assert connection.sent == [["SET", "greeting", "hello there"]]
 
-    assert len(connections) == 1
 
+def test_an_unbalanced_quote_is_reported_not_raised(session):
+    assert main.run_command(session, 'SET k "unclosed')["error"]
 
-def test_each_new_session_opens_its_own_connection(registry, connections):
-    registry.acquire(None)
-    registry.acquire(None)
 
-    assert len(connections) == 2
-
-
-def test_discard_closes_the_connection(registry):
-    session, sid = registry.acquire(None)
-    registry.discard(sid)
-
-    assert session.connection.closed
-
-
-def test_discard_forgets_the_session(registry):
-    _, sid = registry.acquire(None)
-    registry.discard(sid)
-
-    assert len(registry) == 0
-
-
-def test_discard_of_an_unknown_id_is_a_no_op(registry):
-    registry.discard("never-existed")
-
-    assert len(registry) == 0
-
-
-def test_cap_holds_the_session_count(registry):
-    for _ in range(5):
-        registry.acquire(None)
-
-    assert len(registry) == 3
-
-
-def test_cap_closes_what_it_evicts(registry):
-    evicted, _ = registry.acquire(None)
-    for _ in range(3):
-        registry.acquire(None)
-
-    assert evicted.connection.closed
-
-
-def test_cap_evicts_the_least_recently_used(registry):
-    oldest, oldest_sid = registry.acquire(None)
-    _, keep_sid = registry.acquire(None)
-    registry.acquire(keep_sid)  # touch, so `oldest` is now the stalest
-    registry.acquire(None)
-    registry.acquire(None)
-
-    assert oldest.connection.closed
-
-
-def test_cap_spares_the_session_that_was_touched(registry):
-    registry.acquire(None)
-    kept, keep_sid = registry.acquire(None)
-    registry.acquire(keep_sid)
-    registry.acquire(None)
-    registry.acquire(None)
-
-    assert not kept.connection.closed
-
-
-def test_cap_leaves_a_session_that_is_mid_batch(registry):
-    busy, _ = registry.acquire(None)
-    busy.lock.acquire()
-    try:
-        for _ in range(4):
-            registry.acquire(None)
-    finally:
-        busy.lock.release()
-
-    assert not busy.connection.closed
-
-
-def test_sweep_closes_an_idle_session(registry):
-    idle, _ = registry.acquire(None)
-    idle.last_seen -= 200.0
-    registry.sweep()
-
-    assert idle.connection.closed
-
-
-def test_sweep_forgets_an_idle_session(registry):
-    idle, _ = registry.acquire(None)
-    idle.last_seen -= 200.0
-    registry.sweep()
-
-    assert len(registry) == 0
-
-
-def test_sweep_keeps_a_session_inside_the_timeout(registry):
-    fresh, _ = registry.acquire(None)
-    fresh.last_seen -= 50.0
-    registry.sweep()
-
-    assert not fresh.connection.closed
-
-
-def test_sweep_stops_at_the_first_live_session(registry):
-    idle, _ = registry.acquire(None)
-    idle.last_seen -= 200.0
-    fresh, _ = registry.acquire(None)
-    registry.sweep()
-
-    assert not fresh.connection.closed
-
-
-def test_sweep_leaves_a_session_that_is_mid_batch(registry):
-    busy, _ = registry.acquire(None)
-    busy.last_seen -= 200.0
-    busy.lock.acquire()
-    try:
-        registry.sweep()
-    finally:
-        busy.lock.release()
-
-    assert not busy.connection.closed
-
-
-def test_a_zero_cap_still_leaves_the_new_session_usable(connect):
-    registry = SessionRegistry(connect, max_sessions=0, idle_ttl=100.0, sweep_interval=0.0)
-    session, _ = registry.acquire(None)
-
-    assert not session.connection.closed
-
-
-def test_sweep_honours_its_interval(connect):
-    registry = SessionRegistry(connect, max_sessions=10, idle_ttl=0.0, sweep_interval=3600.0)
-    session, _ = registry.acquire(None)
-    registry.sweep()
-
-    assert not session.connection.closed
-
-
-def test_acquire_is_safe_under_concurrent_callers(connect):
-    registry = SessionRegistry(connect, max_sessions=50, idle_ttl=100.0, sweep_interval=0.0)
-    sessions = []
-    barrier = threading.Barrier(8)
-
-    def race() -> None:
-        barrier.wait()
-        sessions.append(registry.acquire("shared-id")[0])
-
-    threads = [threading.Thread(target=race) for _ in range(8)]
-    for thread in threads:
-        thread.start()
-    for thread in threads:
-        thread.join()
-
-    assert len(set(id(session) for session in sessions)) == 1
-
-
-def test_losing_a_connect_race_closes_the_spare(connect, connections):
-    registry = SessionRegistry(connect, max_sessions=50, idle_ttl=100.0, sweep_interval=0.0)
-    barrier = threading.Barrier(4)
-
-    def race() -> None:
-        barrier.wait()
-        registry.acquire("shared-id")
-
-    threads = [threading.Thread(target=race) for _ in range(4)]
-    for thread in threads:
-        thread.start()
-    for thread in threads:
-        thread.join()
-
-    assert sum(1 for connection in connections if not connection.closed) == 1
-
-
-# --- authentication -------------------------------------------------------
-#
-# A connection that stays on Redis's default user runs a reader's commands with
-# full rights, so these pin down that a refused AUTH ends the connection rather
-# than falling through to one that can still run FLUSHALL.
-
-
-def test_auth_sends_the_credentials():
-    connection = FakeConnection()
-    authenticate(connection, "docsandbox", "")
-
-    assert connection.sent == [["AUTH", "docsandbox", ""]]
-
-
-def test_auth_leaves_an_accepted_connection_open():
-    connection = FakeConnection()
-    authenticate(connection, "docsandbox", "")
-
-    assert not connection.closed
-
-
-def test_a_refused_auth_raises():
-    connection = FakeConnection([RespError("WRONGPASS invalid username-password pair")])
-
-    with pytest.raises(RedisAuthError):
-        authenticate(connection, "docsandbox", "nope")
-
-
-def test_a_refused_auth_closes_the_connection():
-    connection = FakeConnection([RespError("WRONGPASS invalid username-password pair")])
-
-    with pytest.raises(RedisAuthError):
-        authenticate(connection, "docsandbox", "nope")
-
-    assert connection.closed
-
-
-# --- commands the ACL cannot deny -----------------------------------------
-
-
-def test_reset_is_refused_by_the_proxy():
-    session = Session(sid="s", connection=FakeConnection())
-
-    assert run_command(session, "RESET")["error"]
-
-
-def test_reset_never_reaches_redis():
-    connection = FakeConnection()
-    run_command(Session(sid="s", connection=connection), "reset")
+def test_an_unbalanced_quote_never_reaches_redis(session, connection):
+    main.run_command(session, 'SET k "unclosed')
 
     assert connection.sent == []
 
 
-def test_the_refusal_reads_like_redis():
-    session = Session(sid="s", connection=FakeConnection())
-
-    assert "no permissions" in run_command(session, "RESET")["value"]
+def test_an_empty_line_is_reported(session):
+    assert main.run_command(session, "   ")["error"]
 
 
-def test_only_the_listed_commands_are_refused():
-    connection = FakeConnection()
-    run_command(Session(sid="s", connection=connection), "GET k")
+# --- reply shapes the widget depends on ------------------------------------
 
-    assert connection.sent == [["GET", "k"]]
+
+def test_a_simple_string_is_tagged_as_a_status(session):
+    """The widget prints OK unquoted and a bulk string quoted."""
+    from resp import RespStatus
+
+    session.connection = FakeConnection([RespStatus("OK")])
+
+    assert main.run_command(session, "SET k v")["status"]
+
+
+def test_an_error_is_flagged(session):
+    session.connection = FakeConnection([RespError("ERR no such key")])
+
+    assert main.run_command(session, "GET k")["error"]
+
+
+def test_a_bulk_string_is_not_a_status(session):
+    session.connection = FakeConnection(["hello"])
+
+    assert "status" not in main.run_command(session, "GET k")
+
+
+# --- commands the ACL cannot deny ------------------------------------------
+
+
+def test_reset_is_refused_by_the_proxy(session):
+    assert main.run_command(session, "RESET")["error"]
+
+
+def test_reset_never_reaches_redis(session, connection):
+    main.run_command(session, "reset")
+
+    assert connection.sent == []
+
+
+def test_the_refusal_reads_like_redis(session):
+    assert "no permissions" in main.run_command(session, "RESET")["value"]
 
 
 def test_reset_is_what_the_proxy_denies():
-    assert PROXY_DENIED == frozenset({"RESET"})
+    assert main.PROXY_DENIED == frozenset({"RESET"})
+
+
+# --- keeping the namespace out of sight ------------------------------------
+
+
+def test_the_prefix_is_taken_out_of_error_text():
+    """Redis quotes the key it was given, which carries the session prefix."""
+    from namespace import Namespace
+
+    message = main._readable("WRONGTYPE against key 'abc:product:1'", Namespace("abc"))
+
+    assert message == "WRONGTYPE against key 'product:1'"
+
+
+def test_error_text_is_untouched_when_namespacing_is_off():
+    assert main._readable("ERR whatever", None) == "ERR whatever"
+
+
+def test_a_command_is_refused_when_the_key_lookup_is_down(session, connection, monkeypatch):
+    """Running it as typed would write outside the reader's namespace."""
+    from namespace import KeyLookupUnavailable
+
+    monkeypatch.setattr(main.config, "NAMESPACE_ENABLED", True)
+    monkeypatch.setattr(
+        main._rewriter, "rewrite",
+        lambda argv, ns: (_ for _ in ()).throw(KeyLookupUnavailable("down")),
+    )
+
+    assert main.run_command(session, "SET k v")["error"]
+
+
+def test_a_refused_command_never_reaches_redis(session, connection, monkeypatch):
+    from namespace import KeyLookupUnavailable
+
+    monkeypatch.setattr(main.config, "NAMESPACE_ENABLED", True)
+    monkeypatch.setattr(
+        main._rewriter, "rewrite",
+        lambda argv, ns: (_ for _ in ()).throw(KeyLookupUnavailable("down")),
+    )
+    main.run_command(session, "SET k v")
+
+    assert connection.sent == []

@@ -594,7 +594,16 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.3.3`) |
 | `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי CLI proxy |
+| `cli.session.idleTtlSeconds` | `1800` | סגירת סשן דפדפן לאחר פרק זמן זה ללא פקודה |
+| `cli.session.max` | `500` | תקרת סשנים חיים; הישן ביותר נסגר ראשון |
+| `cli.session.sweepIntervalSeconds` | `60` | תדירות החיפוש אחר סשנים רדומים |
+| `cli.namespace.enabled` | `true` | מתן פלח keyspace נפרד לכל סשן |
+| `cli.namespace.scanMinCount` | `10000` | רצפה ל-COUNT של SCAN, כדי שסריקה לא תחזיר עמוד ריק |
+| `cli.namespace.cleanup.enabled` | `true` | מחיקת המפתחות והאינדקסים של סשן בעת סגירתו |
+| `cli.namespace.cleanup.batch` | `500` | מפתחות שנמחקים בכל round trip בניקוי |
 | `cli.redis.image.registry` | `docker.io` | registry לתמונת Redis |
+| `cli.redis.acl.enabled` | `true` | הרצת פקודות הקורא כמשתמש Redis מוגבל (files/sandbox.acl) |
+| `cli.redis.acl.username` | `docsandbox` | המשתמש המוגבל שהפרוקסי מזדהה כמותו |
 | `cli.redis.image.tag` | `8-alpine` | תג תמונת Redis sidecar |
 | `cli.redis.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Redis |
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי Redis sidecar |
