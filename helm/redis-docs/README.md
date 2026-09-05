@@ -253,7 +253,7 @@ A limit costs nothing until the container actually runs.
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | Standard run with `docker run` (privileged) | Yes — one of the two |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | Yes — one of the two |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | Prometheus metrics (including response times) | No — only if `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.3.3` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server for interactive code execution | No — only if `cli.jupyter.enabled=true` |
 
@@ -512,8 +512,8 @@ docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # Load CLI (optional)
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.3.3
-docker push REGISTRY/redis-docs-cli:0.3.3
+docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.4.0
+docker push REGISTRY/redis-docs-cli:0.4.0
 
 docker load -i redis.tar
 docker tag redis:8-alpine REGISTRY/redis:8-alpine
@@ -649,7 +649,7 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.securityContext.runAsNonRoot` | `true` | Block running as root (CLI) |
 | `cli.image.registry` | `a0533057932` | CLI proxy image registry |
 | `cli.image.name` | `redis-docs-cli` | CLI proxy image name |
-| `cli.image.tag` | `latest` | CLI proxy image tag (in air-gapped networks: `0.3.3`) |
+| `cli.image.tag` | `latest` | CLI proxy image tag (in air-gapped networks: `0.4.0`) |
 | `cli.image.pullPolicy` | `IfNotPresent` | CLI image pull policy |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | CLI proxy resources |
 | `cli.session.idleTtlSeconds` | `1800` | Close a browser session after this long without a command |
