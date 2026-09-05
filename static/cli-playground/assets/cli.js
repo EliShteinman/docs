@@ -50,6 +50,7 @@ async function createCli(cli) {
 
         const command = input.value;
         input.value = '';
+        rememberCommand(pre, command);
         if (!command.trim()) {
           writeLines(pre, input, command, '', false);
           return;
@@ -211,26 +212,66 @@ async function disablePrompt(cli, input, prompt, fn) {
     });
 }
 
+/* The lines a terminal can walk back through, per terminal.
+
+   Kept here rather than read back out of the transcript. Reading the transcript
+   meant counting from its end in pairs — `childNodes.length - position * 2` —
+   which assumed every command had written exactly two nodes, and it never reset
+   its position when a command ran: recall a line, run something, and the next
+   ArrowUp carried on from where the reader had left off, so the command they
+   had just run was unreachable and every further recall drifted another line
+   back. `clear` also took the history with it, which redis-cli does not do. */
+const MAX_HISTORY = 200;
+const histories = new WeakMap();
+
+function historyFor(pre) {
+  let state = histories.get(pre);
+  if (!state) {
+    state = { lines: [], at: 0, draft: '' };
+    histories.set(pre, state);
+  }
+  return state;
+}
+
+/* Remembered: what the reader typed, and what a batch ran for them — a share
+   link's autorun and a docs "Try it" both leave commands worth editing and
+   running again. A new command ends any walk in progress. */
+function rememberCommand(pre, command) {
+  const line = String(command == null ? '' : command).trim();
+  const state = historyFor(pre);
+  state.at = 0;
+  state.draft = '';
+  if (!line) return;
+  state.lines.push(line);
+  if (state.lines.length > MAX_HISTORY) state.lines.shift();
+}
+
 function handleHistory(pre, input) {
-  let position = 0,
-    tempValue = '';
+  const state = historyFor(pre);
+
+  /* Typing ends the walk: the line is the reader's again, and the next ArrowUp
+     starts from the newest command rather than continuing from wherever they
+     had got to. Only real edits fire this — setInputValue does not. */
+  input.addEventListener('input', () => { state.at = 0; });
+
   input.addEventListener('keydown', event => {
     switch (event.key) {
       case 'ArrowUp':
         event.preventDefault();
 
-        if (position === Math.floor(pre.childNodes.length / 2)) return;
-        else if (position === 0) tempValue = input.value;
+        if (state.at >= state.lines.length) return;
+        /* A half-written line is not lost by reaching for an earlier one. */
+        if (state.at === 0) state.draft = input.value;
 
-        ++position;
+        ++state.at;
         break;
 
       case 'ArrowDown':
         event.preventDefault();
 
-        if (position === 0) return;
-        else if (--position === 0) {
-          setInputValue(input, tempValue);
+        if (state.at === 0) return;
+        else if (--state.at === 0) {
+          setInputValue(input, state.draft);
           return;
         }
         break;
@@ -239,8 +280,7 @@ function handleHistory(pre, input) {
         return;
     }
 
-    const { nodeValue } = pre.childNodes[pre.childNodes.length - position * 2];
-    setInputValue(input, nodeValue.substring(CONFIG.promptPrefix.length, nodeValue.length - 1));
+    setInputValue(input, state.lines[state.lines.length - state.at]);
   });
 }
 
@@ -254,9 +294,15 @@ async function writeLines(pre, input, command, reply, animate) {
   await writeLine(pre, input, reply, false, false);
 }
 
-async function executeCommands(dbid, pre, input, commands, animate, source = 'interactive') {
+async function executeCommands(dbid, pre, input, commands, animate, source = 'interactive',
+                               meta = null) {
+  if (source !== 'interactive') {
+    /* Typed commands are remembered by the submit handler, which sees them
+       before this does — and sees `clear` and `help`, which never reach here. */
+    for (const command of commands) rememberCommand(pre, command);
+  }
   try {
-     const { replies } = await execute(commands, dbid, source);
+     const { replies } = await execute(commands, dbid, source, meta);
      for (const [i, command] of commands.entries()) {
       const { error, value, status } = replies[i];
       try {
@@ -306,12 +352,20 @@ let executeQueue = Promise.resolve();
 // the docs param is named `source`; we map it to `page` here to avoid colliding
 // with the batch-origin `source` (interactive/share/preset/internal). The
 // backend validates the format and caps distinct values (cardinality guard).
+//
+// An embedder that runs the widget on the docs page itself — the workbench —
+// has no such URL to read, so CONFIG.page carries the path instead and each
+// batch can name its own snippet (see execute's `meta`). The URL still wins
+// where it exists, which is the standalone /cli page reached from a share-link.
 const pageContext = (() => {
   try {
     const params = new URLSearchParams(window.location.search);
-    return { page: params.get('source') || '', snippet: params.get('snippet') || '' };
+    return {
+      page: params.get('source') || CONFIG.page || '',
+      snippet: params.get('snippet') || ''
+    };
   } catch {
-    return { page: '', snippet: '' };
+    return { page: CONFIG.page || '', snippet: '' };
   }
 })();
 
@@ -329,7 +383,7 @@ const openType = (() => {
   }
 })();
 
-async function execute(commands, dbid = '', source = 'interactive') {
+async function execute(commands, dbid = '', source = 'interactive', meta = null) {
   const url = CONFIG.apiUrl + (CONFIG.appendDbId ? dbid : '');
   const run = executeQueue.then(async () => {
     const response = await fetch(url, {
@@ -350,7 +404,9 @@ async function execute(commands, dbid = '', source = 'interactive') {
         id: session.id,
         source,
         page: pageContext.page,
-        snippet: pageContext.snippet,
+        // Per batch when the caller says so: a workbench "Try it" knows which
+        // snippet it is running, where the page as a whole does not.
+        snippet: (meta && meta.snippet) || pageContext.snippet,
         open_type: openType
       })
     });
@@ -584,12 +640,14 @@ window.RedisCli = {
      disabled for the duration, so this cannot interleave with the reader typing.
      Resolves when the batch has been written; false if the element is not a
      live terminal. */
-  run: function (cli, commands, source) {
+  /* `meta` carries what only the caller knows about this batch: {snippet} names
+     the docs snippet a "Try it" is running, which the page as a whole cannot. */
+  run: function (cli, commands, source, meta) {
     const parts = terminals.get(cli);
     if (!parts || !commands || !commands.length) return Promise.resolve(false);
     return disablePrompt(cli, parts.input, parts.prompt, () =>
       executeCommands(parts.dbid, parts.pre, parts.input, commands, false,
-        source || 'preset')).then(() => true);
+        source || 'preset', meta)).then(() => true);
   },
 
   /* Empty a terminal's transcript, exactly as the `clear` command typed at its
