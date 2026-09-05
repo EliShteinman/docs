@@ -413,8 +413,17 @@ docker run -p 80:80 a0533057932/redis-docs:latest
 מ-upstream PR #3642, הדוקס **לא מחזיקים יותר** את הקוד המלא של ה-widget: `static/js/cli.js`
 הוא shim דק שטוען את הסקריפט הקנוני מה-backend ב-`https://redis.io/cli/static/js/cli.js`.
 ב-airgap הכתובת הזו לא נגישה, לכן ה-fork **וונדר** את הסקריפט הקנוני ל-`static/cli-playground/assets/cli.js`,
-ושני הצרכנים מצביעים אליו: ה-shim של הטרמינל המוטמע (`static/js/cli.js`) ו-shell של הפלייגראונד
-(`static/cli-playground/index.html`). שניהם POST ל-`/cli` (ה-cli-proxy בקלאסטר).
+ושלושת הצרכנים מצביעים אליו: ה-shim של הטרמינל המוטמע (`static/js/cli.js`), shell של הפלייגראונד
+(`static/cli-playground/index.html`), ומ-upstream #3862 גם ה-workbench (`static/js/redis-workbench.js`).
+כולם POST ל-`/cli` (ה-cli-proxy בקלאסטר).
+
+ב-shim, upstream מחזיק קבוע יחיד (`REDIS_CLI_BACKEND`) שממנו נגזרים גם ה-API וגם כתובת הסקריפט,
+כי אצלם זה אותו origin. ב-fork אלו שני נתיבים שונים בקלאסטר, לכן הוא מפוצל ל-`REDIS_CLI_API`
+(`/cli`) ו-`REDIS_CLI_SCRIPT` (`/cli-playground/assets/cli.js`). מיזוג upstream שנוגע ב-shim
+יחזיר את האיחוד — צריך לפצל שוב.
+
+ה-workbench הוא הסיבה שה-drift מסוכן יותר מבעבר: הוא בנוי על `window.RedisCli`, API שרק
+הסקריפט הקנוני מפרסם. עותק וונדר ישן שלא מכיר אותו לא יישבר ברעש — המגירה פשוט לא תיפתח.
 
 מכיוון ש-upstream כבר לא עוקב אחרי הקובץ ב-git, **אין סיגנל PR/diff** כשרדיס מעדכנת אותו.
 לכן **חובה, בכל בנייה מחדש של ה-image**, להריץ את בדיקת ה-drift:
@@ -426,6 +435,32 @@ python3 build/check_cli_js_drift.py
 
 > לרה-וונדור: `curl -s https://redis.io/cli/static/js/cli.js -o static/cli-playground/assets/cli.js`,
 > להריץ שוב את הבדיקה עד exit 0, ולסקור את ה-diff לפני commit.
+
+### ניתוב ה-"Try it" (`openTryItCli`) — נקודת תיקון אחת
+
+כפתור ה-Try it בונה URL עם הפקודות ב-base64 ופותח אותו. ב-upstream הבסיס קשיח
+(`https://redis.io/cli`); ב-fork הוא מגיע מ-`RUNTIME_CONFIG.cli.url` (Helm), ו-cli מכובה
+הופך את הכפתור ל-no-op. בהיעדר `RUNTIME_CONFIG` נשמרת התנהגות upstream, כדי שבנייה ציבורית
+תמשיך לעבוד.
+
+**עד #3862 הלוגיקה הייתה משוכפלת בשני קבצים** (`layouts/partials/tabs/wrapper.html`
+ו-`layouts/shortcodes/redis-cli.html`), ותיקון של אחד בלבד הדליף את כל עמודי הפקודות החוצה —
+קרה בפועל אחרי upstream #3608. upstream איחד את שתיהן ל-partial אחד, ולכן היום:
+
+| קובץ | מה מתוקן |
+|---|---|
+| `layouts/partials/tryit-script.html` | `cliBase` מ-`RUNTIME_CONFIG.cli.url` — **נקודת התיקון היחידה** |
+| `layouts/partials/tabs/wrapper.html` | `updateAllTryItButtons` מסתיר את הכפתור כש-`cli.enabled=false`; `updateAllBinderLinks` |
+| `layouts/_default/baseof.html` | `RESOLVED_BINDER_URL` קורא מ-`RUNTIME_CONFIG` |
+| `layouts/shortcodes/jupyter-example.html` | משכתב כל `[data-binder-url]` ל-hub הפנימי |
+
+**אימות אחרי כל מיזוג שנוגע באחד מהם:** לבנות מקומית (`hugo`), ואז לסרוק
+`public/commands/**/*.html` — כל עמוד עם `onclick="openTryItCli(this)"` חייב להכיל `cliBase`,
+ולא את המחרוזת `'https://redis.io/cli?commands='` כבסיס פעיל.
+
+> `baseof.html` הוא המסוכן שבהם: הוא נוטה למזג **בלי קונפליקט** בעוד ההשמה של upstream
+> ל-`config.binderOptions.binderUrl` דורסת בשקט תיקון שמוצב לפניה. לכן התיקון יושב על
+> הגדרת הקבוע ולא על אתרי ההשמה.
 
 ## ניהול לינקים חיצוניים
 
