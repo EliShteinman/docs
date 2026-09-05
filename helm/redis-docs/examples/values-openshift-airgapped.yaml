@@ -143,3 +143,40 @@ externalLinks:
     k8s-docs:
       enabled: true
       to: "https://gitlab.internal.company.com/redis/k8s/redis-enterprise-k8s-docs"
+
+# --- CLI playground (optional) ---
+# An in-page Redis terminal and workbench, served by a second pod holding the
+# proxy and a Redis sidecar. Off by default; everything below is the default
+# once it is on, and is shown so the isolation is visible rather than implied.
+cli:
+  enabled: true
+  image:
+    registry: registry.intranet.company.com
+    name: redis-docs-cli
+    tag: "0.4.0"          # not `latest`: IfNotPresent will not re-pull a moved tag
+  redis:
+    image:
+      registry: registry.intranet.company.com
+      name: redis
+      tag: "8.10.0-alpine"
+    # Runs every command a reader types as a restricted user. Turning this off
+    # leaves nothing between a typed FLUSHALL and every other visitor's data.
+    acl:
+      enabled: true
+      username: docsandbox
+  # Each session gets its own slice of the shared keyspace, so two readers
+  # working through the same tutorial do not overwrite each other's keys.
+  namespace:
+    enabled: true
+    scanMinCount: 10000
+    cleanup:
+      enabled: true
+      batch: 500
+  session:
+    idleTtlSeconds: 1800
+    max: 500
+    sweepIntervalSeconds: 60
+  # Jupyter kernel server for the notebook examples. Needs a BinderHub or
+  # JupyterHub reachable from the cluster; see aiServices.binder.
+  jupyter:
+    enabled: false
