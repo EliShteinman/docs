@@ -36,17 +36,51 @@ nginx משמש גם כ-reverse proxy:
 | `redis` | Redis sidecar — מקומי ל-pod (localhost) | 6379 |
 | `jupyter` (אופציונלי) | Jupyter kernel server להרצת קוד אינטראקטיבי | 8888 |
 
-כל הקונטיינרים בפוד זה מתקשרים על `localhost`.
+כל הקונטיינרים בפוד זה מתקשרים על `localhost`. פורט 6379 הוא containerPort בלבד — אין Service
+שחושף אותו — אבל כל pod שמגיע ל-IP של הפוד עדיין מגיע ל-Redis ישירות, וזו שאלה של NetworkPolicy
+ולא משהו שהצ'ארט מכריע.
+
+#### בידוד ה-CLI playground
+
+כל המבקרים חולקים מסד Redis אחד, ולכן בלי זה שני קוראים שעוברים על אותו tutorial כותבים לאותו
+`product:1` ודורסים זה את זה. שלושה מנגנונים מפרידים ביניהם, כולם דלוקים כברירת מחדל:
+
+| מנגנון | ערך | מה הוא עושה |
+|---|---|---|
+| משתמש מוגבל | `cli.redis.acl.enabled` | הפקודות רצות כ-`docsandbox`, שהכללים שלו ב-`files/sandbox.acl`. חוסם `FLUSHALL`, `RANDOMKEY`, `SELECT`, `DUMP`, `CONFIG`, `MONITOR` ואת שאר מה שמגיע מעבר לסשן. |
+| Namespace | `cli.namespace.enabled` | כל סשן מקבל קידומת מפתחות. הפקודות יוצאות תחתיה והתשובות חוזרות בלעדיה, כך שקורא מקליד `SET product:1` ו-`KEYS *` עונה `product:1`. אינדקסי חיפוש מבודדים באותה דרך. |
+| מגבלות סשן | `cli.session.*` | לסשן יש חיבור Redis משלו כדי ש-`MULTI` ישרוד בין פקודות מוקלדות, ולכן הוא חסום: נסגר אחרי `idleTtlSeconds`, והישן ביותר נסגר ראשון ב-`max`. |
+
+`cli.namespace.cleanup.enabled` מוחק את המפתחות והאינדקסים של סשן כשהוא נאסף; בלעדיו הם נצברים,
+כי ל-Redis ה-sidecar אין מדיניות eviction.
+
+קובץ ה-ACL לא יכול לנקוב בפקודות מודול — Redis פורס אותו לפני שהוא רושם את המודולים המובנים
+ונופל ב-startup על פקודה לא מוכרת — לכן hook של `postStart` מעניק `FT._LIST`, `FT.DROPINDEX`
+ו-`FT.TAGVALS` אחרי שהמודולים עלו. לאימות שהוא רץ:
+
+```bash
+kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox FT._LIST
+# OK
+```
+
+כיבוי של כל אחד מהם הוא הורדת דרג מכוונת: `namespace.enabled=false` מחזיר את כל הקוראים
+ל-keyspace שטוח אחד, ו-`acl.enabled=false` מחזיר את הפרוקסי למשתמש ברירת המחדל של Redis, בלי
+שום דבר בין `FLUSHALL` מוקלד לבין המידע של כל האחרים.
 
 ### הגדרות Runtime
 
-שני ConfigMaps מזריקים תצורת זמן-ריצה לתוך nginx:
+ארבעה ConfigMaps נושאים תצורת זמן-ריצה; שניים תמיד נוצרים, ושניים תלויים בדגל הפיצ'ר שלהם:
 
 - **`configmap-runtime.yaml`** — מייצר `runtime-config.js` שנטען בכל עמוד. מכיל:
+  - `cli` — האם ה-CLI playground פרוס, ולאיזו כתובת כפתורי ה-Try it נפתחים. עם `cli.enabled=false` הכפתורים מוסתרים במקום להצביע ל-redis.io.
   - `aiServices.litellm` — כתובת LiteLLM endpoint (במקום CloudFront חיצוני)
-  - `aiServices.binder.url` — כתובת BinderHub / JupyterHub
+  - `aiServices.binder.url` — כתובת BinderHub / JupyterHub, משמשת גם את כפתורי תאי Jupyter
+  - `downloads` — האם לווידג'ט הורדת הדוקומנטציה יש ארכיונים להציע
   - `externalLinks` — `enabled`/`url` יעיל לכל לינק חיצוני בקטלוג
-- **`configmap.yaml`** — קובץ ה-`default.conf` של nginx, שמשתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה.
+  - `gitMirrors` — המראה היעילה לכל כתובת Git בקטלוג
+- **`configmap.yaml`** — קובץ ה-`default.conf` של nginx. משתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה, ומנתב `/cli` לשירות ה-CLI playground.
+- **`configmap-metrics.yaml`** — תצורת nginxlog-exporter. רק עם `metrics.enabled=true`.
+- **`configmap-cli-acl.yaml`** — קובץ ה-ACL של Redis מתוך `files/sandbox.acl`, מותקן ל-sidecar. רק עם `cli.redis.acl.enabled=true`; ראו [בידוד ה-CLI playground](#בידוד-ה-cli-playground).
 
 ### לינקים חיצוניים (externalLinks)
 
@@ -193,7 +227,7 @@ downloads:
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן — אחד מהשניים |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא — רק אם `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
-| `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
+| `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא — רק אם `cli.jupyter.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
@@ -206,7 +240,7 @@ downloads:
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-1.0.0.tgz
+helm install redis-docs redis-docs-1.9.0.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -214,7 +248,7 @@ helm install redis-docs redis-docs-1.0.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-1.0.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-1.9.0.tgz -f my-values.yaml
 ```
 
 להלן דוגמה לתרחיש פריסה טיפוסי.
@@ -414,8 +448,8 @@ docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-
 # CLI playground (אופציונלי)
 docker pull a0533057932/redis-docs-cli:latest
 docker save a0533057932/redis-docs-cli:latest -o redis-docs-cli.tar
-docker pull redis:8-alpine
-docker save redis:8-alpine -o redis.tar
+docker pull redis:8.10.0-alpine
+docker save redis:8.10.0-alpine -o redis.tar
 
 # Jupyter kernel server (אופציונלי)
 docker pull quay.io/jupyter/minimal-notebook:2026-04-02
@@ -426,13 +460,13 @@ docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-1.0.0.tgz
+# ייצור: redis-docs-1.9.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-1.0.0.tgz`
+- `redis-docs-1.9.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI)
@@ -458,8 +492,8 @@ docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.4.0
 docker push REGISTRY/redis-docs-cli:0.4.0
 
 docker load -i redis.tar
-docker tag redis:8-alpine REGISTRY/redis:8-alpine
-docker push REGISTRY/redis:8-alpine
+docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
+docker push REGISTRY/redis:8.10.0-alpine
 
 # טעינת Jupyter (אופציונלי)
 docker load -i jupyter.tar
@@ -472,15 +506,21 @@ docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-1.0.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-1.9.0.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-1.0.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-1.9.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
+
+> **תמונה שנבנתה מחדש תחת אותו תג לא תימשך.** ברירת המחדל של שתי התמונות היא
+> `pullPolicy: IfNotPresent`, כך שצומת שכבר מחזיק את `latest` ימשיך להגיש את השכבות הישנות
+> וה-upgrade ייראה מוצלח בלי לשנות דבר. דחפו תחת תג חדש והגדירו אותו
+> (`--set cli.image.tag=0.4.0`), או קבעו `pullPolicy: Always`. נכון גם ל-`image.tag`
+> וגם ל-`cli.image.tag`.
 
 ## גישה לאתר
 
@@ -532,6 +572,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות |
 | `securityContext.readOnlyRootFilesystem` | `true` | מערכת קבצים לקריאה בלבד |
 | `securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root |
+| `securityContext.capabilities.drop` | `[ALL]` | יכולות Linux שמוסרות מהקונטיינר |
 | `service.type` | `ClusterIP` | סוג השירות |
 | `service.port` | `80` | פורט השירות |
 | `containerPort` | `8080` | פורט הקונטיינר (nginx) |
@@ -545,11 +586,14 @@ kubectl port-forward svc/redis-docs 8080:80
 | `ingress.enabled` | `false` | הפעלת Ingress (Kubernetes) |
 | `ingress.className` | `""` | Ingress class name |
 | `ingress.annotations` | `{}` | annotations ל-Ingress |
+| `ingress.hosts` | `redis-docs.local` בנתיב `/` | מארחים ונתיבים שה-Ingress מגיש |
+| `ingress.tls` | `[]` | רשומות TLS ל-Ingress (שם secret ומארחים) |
 | `route.enabled` | `false` | הפעלת Route (OpenShift) |
 | `route.annotations` | `{}` | annotations ל-Route |
 | `route.host` | `""` | hostname ל-Route (אוטומטי אם ריק) |
 | `route.path` | `/` | נתיב ל-Route |
 | `route.tls.termination` | `edge` | סוג TLS termination |
+| `route.tls.enabled` | `true` | הפעלת TLS על ה-Route |
 | `route.tls.insecureEdgeTerminationPolicy` | `Redirect` | מדיניות לתעבורה לא מוצפנת |
 | `nginx.workerConnections` | `2048` | מספר חיבורים מקבילים per worker |
 | `nginx.keepaliveTimeout` | `15` | timeout לחיבורים idle (שניות) |
@@ -572,6 +616,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `autoscaling.targetCPUUtilizationPercentage` | `80` | סף CPU להגדלה |
 | `autoscaling.targetMemoryUtilizationPercentage` | `80` | סף זיכרון להגדלה |
 | `podDisruptionBudget.enabled` | `true` | הגנה בזמן rolling updates |
+| `podDisruptionBudget.maxUnavailable` | `1` | פודים שמותר שיהיו לא זמינים בזמן הפרעה |
 | `metrics.enabled` | `false` | הפעלת Prometheus metrics |
 | `metrics.image.registry` | `quay.io/martinhelmich` | registry לתמונת מטריקות |
 | `metrics.image.name` | `prometheus-nginxlog-exporter` | שם תמונת מטריקות |
@@ -589,6 +634,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.enabled` | `false` | הפעלת CLI playground (פוד נפרד עם Flask + Redis) |
 | `cli.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (CLI) |
 | `cli.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (CLI) |
+| `cli.securityContext.capabilities.drop` | `[ALL]` | יכולות Linux שמוסרות (CLI) |
 | `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
 | `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.4.0`) |
@@ -602,14 +648,16 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.namespace.cleanup.enabled` | `true` | מחיקת המפתחות והאינדקסים של סשן בעת סגירתו |
 | `cli.namespace.cleanup.batch` | `500` | מפתחות שנמחקים בכל round trip בניקוי |
 | `cli.redis.image.registry` | `docker.io` | registry לתמונת Redis |
+| `cli.redis.image.name` | `redis` | שם תמונת Redis sidecar |
 | `cli.redis.acl.enabled` | `true` | הרצת פקודות הקורא כמשתמש Redis מוגבל (files/sandbox.acl) |
 | `cli.redis.acl.username` | `docsandbox` | המשתמש המוגבל שהפרוקסי מזדהה כמותו |
-| `cli.redis.image.tag` | `8-alpine` | תג תמונת Redis sidecar |
+| `cli.redis.image.tag` | `8.10.0-alpine` | תג תמונת Redis sidecar |
 | `cli.redis.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Redis |
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי Redis sidecar |
 | `cli.jupyter.enabled` | `false` | הפעלת Jupyter kernel server (container נוסף בפוד CLI) |
 | `cli.jupyter.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (Jupyter) |
 | `cli.jupyter.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (Jupyter) |
+| `cli.jupyter.securityContext.capabilities.drop` | `[ALL]` | יכולות Linux שמוסרות (Jupyter) |
 | `cli.jupyter.image.registry` | `quay.io` | registry לתמונת Jupyter |
 | `cli.jupyter.image.name` | `jupyter/minimal-notebook` | שם תמונת Jupyter |
 | `cli.jupyter.image.tag` | `2026-04-02` | תג תמונת Jupyter |

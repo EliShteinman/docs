@@ -36,17 +36,52 @@ Created only when `cli.enabled=true`.
 | `redis` | Redis sidecar — local to pod (localhost) | 6379 |
 | `jupyter` (optional) | Jupyter kernel server for interactive code execution | 8888 |
 
-All containers in this pod communicate over `localhost`.
+All containers in this pod communicate over `localhost`. Port 6379 is a container port
+only — no Service exposes it — but any pod that can reach the pod IP can still reach Redis
+directly, which is a NetworkPolicy question rather than something the chart settles.
+
+#### CLI playground isolation
+
+Every visitor shares one Redis database, so without this two readers working through the same
+tutorial write to the same `product:1` and overwrite each other. Three mechanisms keep them
+apart, all on by default:
+
+| Mechanism | Value | What it does |
+|---|---|---|
+| Restricted user | `cli.redis.acl.enabled` | Commands run as `docsandbox`, whose rules live in `files/sandbox.acl`. Blocks `FLUSHALL`, `RANDOMKEY`, `SELECT`, `DUMP`, `CONFIG`, `MONITOR` and the rest of what would reach past a session. |
+| Namespacing | `cli.namespace.enabled` | Each session gets a key prefix. Commands go out under it and replies come back without it, so a reader types `SET product:1` and `KEYS *` answers `product:1`. Search indexes are scoped the same way. |
+| Session limits | `cli.session.*` | A session holds a Redis connection of its own so a `MULTI` survives between typed commands, so it is bounded: closed after `idleTtlSeconds`, and the least recently used goes first at `max`. |
+
+`cli.namespace.cleanup.enabled` deletes a session's keys and indexes when it is reclaimed;
+without it they accumulate, since the sidecar Redis has no eviction policy.
+
+The ACL file cannot name module commands — Redis parses it before it registers the bundled
+modules and aborts startup on an unknown command — so a `postStart` hook grants `FT._LIST`,
+`FT.DROPINDEX` and `FT.TAGVALS` once the modules are up. To confirm it ran:
+
+```bash
+kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox FT._LIST
+# OK
+```
+
+Turning any of these off is a deliberate downgrade: `namespace.enabled=false` puts every reader
+back in one flat keyspace, and `acl.enabled=false` puts the proxy back on Redis's default user
+with nothing between a typed `FLUSHALL` and everyone else's data.
 
 ### Runtime Configuration
 
-Two ConfigMaps inject runtime configuration into nginx:
+Four ConfigMaps carry runtime configuration; two are always rendered, two follow their feature flag:
 
 - **`configmap-runtime.yaml`** — produces `runtime-config.js`, loaded by every page. Holds:
+  - `cli` — whether the CLI playground is deployed, and the URL the "Try it" buttons open. With `cli.enabled=false` the buttons are hidden instead of pointing at redis.io.
   - `aiServices.litellm` — LiteLLM endpoint URL (replaces external CloudFront)
-  - `aiServices.binder.url` — BinderHub / JupyterHub URL
+  - `aiServices.binder.url` — BinderHub / JupyterHub URL, also used by the Jupyter cell buttons
+  - `downloads` — whether the documentation download widget has archives to offer
   - `externalLinks` — the resolved enabled/url for every catalogued external link
-- **`configmap.yaml`** — the nginx `default.conf`, which uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time.
+  - `gitMirrors` — the resolved mirror host for every catalogued Git URL
+- **`configmap.yaml`** — the nginx `default.conf`. It uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time, and proxies `/cli` to the CLI playground service.
+- **`configmap-metrics.yaml`** — the nginxlog-exporter configuration. Only with `metrics.enabled=true`.
+- **`configmap-cli-acl.yaml`** — the Redis ACL file from `files/sandbox.acl`, mounted into the Redis sidecar. Only with `cli.redis.acl.enabled=true`; see [CLI playground isolation](#cli-playground-isolation).
 
 ### External Links (externalLinks)
 
@@ -254,7 +289,7 @@ A limit costs nothing until the container actually runs.
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | Yes — one of the two |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | Prometheus metrics (including response times) | No — only if `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
-| `redis` | `8-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
+| `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server for interactive code execution | No — only if `cli.jupyter.enabled=true` |
 
 > For Kubernetes/OpenShift use the `unprivileged` or `<HASH>-unprivileged` tag.
@@ -267,7 +302,7 @@ A limit costs nothing until the container actually runs.
 ### Basic usage
 
 ```bash
-helm install redis-docs redis-docs-1.0.0.tgz
+helm install redis-docs redis-docs-1.9.0.tgz
 ```
 
 ### Installation with a values file
@@ -275,7 +310,7 @@ helm install redis-docs redis-docs-1.0.0.tgz
 The recommended approach - a custom `values.yaml` file:
 
 ```bash
-helm install redis-docs redis-docs-1.0.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-1.9.0.tgz -f my-values.yaml
 ```
 
 Below is an example of a typical deployment scenario.
@@ -472,8 +507,8 @@ docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-
 # CLI playground (optional)
 docker pull a0533057932/redis-docs-cli:latest
 docker save a0533057932/redis-docs-cli:latest -o redis-docs-cli.tar
-docker pull redis:8-alpine
-docker save redis:8-alpine -o redis.tar
+docker pull redis:8.10.0-alpine
+docker save redis:8.10.0-alpine -o redis.tar
 
 # Jupyter kernel server (optional)
 docker pull quay.io/jupyter/minimal-notebook:2026-04-02
@@ -484,13 +519,13 @@ docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# Produces: redis-docs-1.0.0.tgz
+# Produces: redis-docs-1.9.0.tgz
 ```
 
 ### Step 3: Transfer files to the air-gapped network
 
 Transfer the following files:
-- `redis-docs-1.0.0.tgz`
+- `redis-docs-1.9.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (optional - metrics)
 - `redis-docs-cli.tar` (optional - CLI)
@@ -516,8 +551,8 @@ docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.4.0
 docker push REGISTRY/redis-docs-cli:0.4.0
 
 docker load -i redis.tar
-docker tag redis:8-alpine REGISTRY/redis:8-alpine
-docker push REGISTRY/redis:8-alpine
+docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
+docker push REGISTRY/redis:8.10.0-alpine
 
 # Load Jupyter (optional)
 docker load -i jupyter.tar
@@ -530,15 +565,21 @@ docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ## Version Upgrade
 
 ```bash
-helm upgrade redis-docs redis-docs-1.0.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-1.9.0.tgz -f my-values.yaml
 ```
 
 Or with a single value override:
 
 ```bash
-helm upgrade redis-docs redis-docs-1.0.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-1.9.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
+
+> **A rebuilt image under the same tag will not be pulled.** Both images default to
+> `pullPolicy: IfNotPresent`, so a node that already holds `latest` keeps serving the old
+> layers and the upgrade appears to succeed while changing nothing. Push under a new tag and
+> set it (`--set cli.image.tag=0.4.0`), or set `pullPolicy: Always`. This applies to
+> `image.tag` and `cli.image.tag` alike.
 
 ## Accessing the Site
 
@@ -590,6 +631,7 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation |
 | `securityContext.readOnlyRootFilesystem` | `true` | Read-only root filesystem |
 | `securityContext.runAsNonRoot` | `true` | Block running as root |
+| `securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped from the container |
 | `service.type` | `ClusterIP` | Service type |
 | `service.port` | `80` | Service port |
 | `containerPort` | `8080` | Container port (nginx) |
@@ -603,11 +645,14 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `ingress.enabled` | `false` | Enable Ingress (Kubernetes) |
 | `ingress.className` | `""` | Ingress class name |
 | `ingress.annotations` | `{}` | Ingress annotations |
+| `ingress.hosts` | `redis-docs.local` at `/` | Hosts and paths the Ingress serves |
+| `ingress.tls` | `[]` | Ingress TLS entries (secret name plus hosts) |
 | `route.enabled` | `false` | Enable Route (OpenShift) |
 | `route.annotations` | `{}` | Route annotations |
 | `route.host` | `""` | Route hostname (auto-generated if empty) |
 | `route.path` | `/` | Route path |
 | `route.tls.termination` | `edge` | TLS termination type |
+| `route.tls.enabled` | `true` | Enable TLS on the Route |
 | `route.tls.insecureEdgeTerminationPolicy` | `Redirect` | Policy for unencrypted traffic |
 | `nginx.workerConnections` | `2048` | Number of concurrent connections per worker |
 | `nginx.keepaliveTimeout` | `15` | Idle connection timeout (seconds) |
@@ -630,6 +675,7 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `autoscaling.targetCPUUtilizationPercentage` | `80` | CPU threshold for scaling up |
 | `autoscaling.targetMemoryUtilizationPercentage` | `80` | Memory threshold for scaling up |
 | `podDisruptionBudget.enabled` | `true` | Protection during rolling updates |
+| `podDisruptionBudget.maxUnavailable` | `1` | Pods that may be unavailable during a disruption |
 | `metrics.enabled` | `false` | Enable Prometheus metrics |
 | `metrics.image.registry` | `quay.io/martinhelmich` | Metrics image registry |
 | `metrics.image.name` | `prometheus-nginxlog-exporter` | Metrics image name |
@@ -647,6 +693,7 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.enabled` | `false` | Enable CLI playground (separate pod with Flask + Redis) |
 | `cli.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (CLI) |
 | `cli.securityContext.runAsNonRoot` | `true` | Block running as root (CLI) |
+| `cli.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (CLI) |
 | `cli.image.registry` | `a0533057932` | CLI proxy image registry |
 | `cli.image.name` | `redis-docs-cli` | CLI proxy image name |
 | `cli.image.tag` | `latest` | CLI proxy image tag (in air-gapped networks: `0.4.0`) |
@@ -660,14 +707,16 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.namespace.cleanup.enabled` | `true` | Delete a session's keys and indexes when it is closed |
 | `cli.namespace.cleanup.batch` | `500` | Keys deleted per round trip during cleanup |
 | `cli.redis.image.registry` | `docker.io` | Redis image registry |
+| `cli.redis.image.name` | `redis` | Redis sidecar image name |
 | `cli.redis.acl.enabled` | `true` | Run reader commands as a restricted Redis user (files/sandbox.acl) |
 | `cli.redis.acl.username` | `docsandbox` | The restricted user the proxy authenticates as |
-| `cli.redis.image.tag` | `8-alpine` | Redis sidecar image tag |
+| `cli.redis.image.tag` | `8.10.0-alpine` | Redis sidecar image tag |
 | `cli.redis.image.pullPolicy` | `IfNotPresent` | Redis image pull policy |
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | Redis sidecar resources |
 | `cli.jupyter.enabled` | `false` | Enable Jupyter kernel server (additional container in CLI pod) |
 | `cli.jupyter.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (Jupyter) |
 | `cli.jupyter.securityContext.runAsNonRoot` | `true` | Block running as root (Jupyter) |
+| `cli.jupyter.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (Jupyter) |
 | `cli.jupyter.image.registry` | `quay.io` | Jupyter image registry |
 | `cli.jupyter.image.name` | `jupyter/minimal-notebook` | Jupyter image name |
 | `cli.jupyter.image.tag` | `2026-04-02` | Jupyter image tag |
