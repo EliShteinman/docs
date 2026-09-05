@@ -192,7 +192,7 @@ downloads:
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן — אחד מהשניים |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן — אחד מהשניים |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא — רק אם `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.3.3` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא — רק אם `cli.jupyter.enabled=true` |
 
@@ -454,8 +454,8 @@ docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # טעינת CLI (אופציונלי)
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.3.3
-docker push REGISTRY/redis-docs-cli:0.3.3
+docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.4.0
+docker push REGISTRY/redis-docs-cli:0.4.0
 
 docker load -i redis.tar
 docker tag redis:8-alpine REGISTRY/redis:8-alpine
@@ -591,7 +591,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (CLI) |
 | `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
-| `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.3.3`) |
+| `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.4.0`) |
 | `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי CLI proxy |
 | `cli.session.idleTtlSeconds` | `1800` | סגירת סשן דפדפן לאחר פרק זמן זה ללא פקודה |
