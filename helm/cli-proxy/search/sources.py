@@ -18,7 +18,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
-from search.paths import to_path
+from search.paths import to_href, to_path
 from search.product import product_of
 
 LOGGER = logging.getLogger("docs_search.sources")
@@ -40,8 +40,11 @@ _WHITESPACE = re.compile(r"\s+")
 class Document:
     """One indexable page, in the shape the index and the response both need."""
 
+    # The normalized path: the Redis key, and what breadcrumb lookup joins on.
     doc_id: str
     title: str
+    # What a result links to, keeping the trailing slash so a click does not
+    # cost a redirect.
     url: str
     body: str
     version: str
@@ -83,7 +86,7 @@ def to_document(record: dict, source: str = DOCS_SOURCE) -> Document | None:
     return Document(
         doc_id=path,
         title=title,
-        url=path,
+        url=to_href(url),
         body=clean_body(record.get("content") or record.get("summary") or ""),
         # tag_ndjson_versions.py adds `version` to every record; a feed built
         # before that step simply has none, and the tag is left empty.

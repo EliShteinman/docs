@@ -85,6 +85,16 @@ def search_command(index: str, query: str, limit: int) -> list[str]:
         "30",
         "SEPARATOR",
         " ... ",
+        # Named rather than left to the default, which in Redis 8 is BM25STD and
+        # ranks this corpus badly: `vector*` puts the TYPE command page and four
+        # "Build and run Redis Open Source on <distro>" pages above every page
+        # about vectors. BM25 on the same index and query answers "Vector search
+        # concepts", "Vectorizers", "Vector search"; `cluster*` answers "Redis
+        # cluster specification" and "Scale with Redis Cluster"; `persistence*`
+        # answers "Configure database persistence". Compared against TFIDF,
+        # TFIDF.DOCNORM and DISMAX on the real 5,674-page feed.
+        "SCORER",
+        "BM25",
         "DIALECT",
         "2",
     ]

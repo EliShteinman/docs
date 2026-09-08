@@ -36,7 +36,7 @@ class FakeConnection:
 
 def _document(url: str = "/operate/rs/x", title: str = "X") -> Document:
     return Document(
-        doc_id=url, title=title, url=url, body="body text", version="7.4",
+        doc_id=url, title=title, url=url + "/", body="body text", version="7.4",
         product="rs", source="docs",
     )
 

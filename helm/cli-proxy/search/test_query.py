@@ -106,3 +106,9 @@ def test_hierarchy_is_decoded_back_into_a_list():
 
 def test_an_unreadable_hierarchy_becomes_an_empty_trail():
     assert to_results([{"hierarchy": "{["}])[0]["hierarchy"] == []
+
+
+def test_the_scorer_is_named_rather_than_left_to_the_redis_default():
+    """Redis 8 defaults to BM25STD, which ranks this corpus badly -- see query.py."""
+    command = search_command("docs", "vector*", 30)
+    assert command[command.index("SCORER") + 1] == "BM25"

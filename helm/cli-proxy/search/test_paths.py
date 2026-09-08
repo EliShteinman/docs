@@ -54,3 +54,22 @@ def test_ancestors_walk_every_prefix_including_the_page():
 
 def test_ancestors_of_the_root_are_empty():
     assert ancestors("/") == []
+
+
+def test_to_href_keeps_the_trailing_slash_hugo_publishes():
+    """Without it every result click costs an nginx 301 to add the slash back."""
+    from search.paths import to_href
+
+    assert to_href("https://redis.io/develop/ai/") == "/develop/ai/"
+
+
+def test_to_href_leaves_a_slashless_url_alone():
+    from search.paths import to_href
+
+    assert to_href("/commands/get") == "/commands/get"
+
+
+def test_to_href_of_the_root_is_a_single_slash():
+    from search.paths import to_href
+
+    assert to_href("https://redis.io/") == "/"

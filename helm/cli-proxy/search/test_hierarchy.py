@@ -13,7 +13,7 @@ ROOT = "Welcome to Redis Docs"
 
 def _document(url: str, title: str) -> Document:
     return Document(
-        doc_id=url, title=title, url=url, body="", version="", product="", source="docs"
+        doc_id=url, title=title, url=url + "/", body="", version="", product="", source="docs"
     )
 
 

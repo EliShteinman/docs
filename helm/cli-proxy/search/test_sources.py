@@ -84,3 +84,8 @@ def test_a_second_source_is_tagged_so_it_can_be_told_apart(tmp_path):
     feed = tmp_path / "blog.ndjson"
     feed.write_text(json.dumps({"url": "/blog/x", "title": "X"}) + "\n", encoding="utf-8")
     assert load_documents(feed, source="blog")[0].source == "blog"
+
+
+def test_the_link_keeps_the_trailing_slash_and_the_key_does_not():
+    document = to_document({"url": "https://redis.io/operate/rs/", "title": "X"})
+    assert (document.url, document.doc_id) == ("/operate/rs/", "/operate/rs")
