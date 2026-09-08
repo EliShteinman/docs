@@ -67,6 +67,41 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
 ל-keyspace שטוח אחד, ו-`acl.enabled=false` מחזיר את הפרוקסי למשתמש ברירת המחדל של Redis, בלי
 שום דבר בין `FLUSHALL` מוקלד לבין המידע של כל האחרים.
 
+### פוד 3 — `redis-docs-search` (חיפוש בדוקס)
+
+נוצר רק כאשר `search.enabled=true`.
+
+| קונטיינר | תיאור | פורט |
+|---|---|---|
+| `fetch-corpus` (init) | מעתיק את `docs.ndjson` מה-image של הדוקס לווליום משותף | — |
+| `search-api` | בונה את האינדקס, ואז מגיש את נקודת הקצה של החיפוש | 8091 |
+| `redis` | מחזיק את האינדקס — מקומי לפוד (localhost) | 6379 |
+
+`search-api` רץ מה-image של `redis-docs-cli`: שירות החיפוש נוסע בתוכו ולא ב-image משלו,
+כך שלפריסת איירגאפ אין image שלישי לבנות, למרר ולהעביר פנימה.
+
+ה-Redis הזה נפרד מזה של ה-CLI playground בכוונה. `files/sandbox.acl` מעניק לקורא את
+`+ft.dropindex` במפורש, כדי שמדריך שיוצר אינדקס יוכל לבטלו — מה שהיה מאפשר לכל מבקר
+למחוק את אינדקס החיפוש אילו השניים חלקו Redis.
+
+#### איך החיפוש עובד
+
+`layouts/partials/search-modal.html` קורא ל-`/convai/api/search-service`, שירות שרץ
+ב-redis.io. בקלאסטר מנותק אף אחד לא מגיש את הנתיב, הבקשה חוזרת 404, והמודאל נפתח ריק.
+הפעלת `search` מממשת את אותו חוזה במקום להחליף את החיפוש, כך ש-partial של upstream
+ו-`config.toml` נשארים ללא שינוי:
+
+- **הקורפוס** — `docs.ndjson`, פיד ה-RAG שהבנייה כבר מייצרת. האינדקס נבנה מחדש בכל עליית
+  פוד, כך שהעמודים שמאונדקסים הם תמיד העמודים שהגרסה הזו מגישה.
+- **הנתיב** — nginx מקבל `location = /convai/api/search-service` בהתאמה מדויקת שמפנה
+  לשירות החיפוש. הנתיב קיים רק כאשר `search.enabled=true`.
+- **הכפתור** — כפתור החיפוש הוא בעצמו קישור בקטלוג (`nav-search`), ולכן ברירת המחדל
+  `externalLinks.enabled: false` מסתירה אותו. הגדרת `search.enabled` מחזירה אותו, כי
+  פריסה שעונה לחיפושים רוצה את הכפתור. `externalLinks.overrides.nav-search.enabled`
+  מפורש עדיין גובר בשני הכיוונים.
+
+הדירוג לא יהיה זהה ל-redis.io — זה מנוע ניקוד אחר.
+
 ### הגדרות Runtime
 
 ארבעה ConfigMaps נושאים תצורת זמן-ריצה; שניים תמיד נוצרים, ושניים תלויים בדגל הפיצ'ר שלהם:
@@ -78,7 +113,7 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
   - `downloads` — האם לווידג'ט הורדת הדוקומנטציה יש ארכיונים להציע
   - `externalLinks` — `enabled`/`url` יעיל לכל לינק חיצוני בקטלוג
   - `gitMirrors` — המראה היעילה לכל כתובת Git בקטלוג
-- **`configmap.yaml`** — קובץ ה-`default.conf` של nginx. משתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה, ומנתב `/cli` לשירות ה-CLI playground.
+- **`configmap.yaml`** — קובץ ה-`default.conf` של nginx. משתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה, ומנתב `/cli` לשירות ה-CLI playground, וכאשר `search.enabled=true` גם `/convai/api/search-service` לשירות החיפוש.
 - **`configmap-metrics.yaml`** — תצורת nginxlog-exporter. רק עם `metrics.enabled=true`.
 - **`configmap-cli-acl.yaml`** — קובץ ה-ACL של Redis מתוך `files/sandbox.acl`, מותקן ל-sidecar. רק עם `cli.redis.acl.enabled=true`; ראו [בידוד ה-CLI playground](#בידוד-ה-cli-playground).
 
@@ -228,6 +263,8 @@ downloads:
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא — רק אם `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8091 | API החיפוש בדוקס — אותו image, פקודה אחרת | לא — רק אם `search.enabled=true` |
+| `redis` | `8.10.0-alpine` | 6379 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא — רק אם `cli.jupyter.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
@@ -663,6 +700,27 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.jupyter.image.tag` | `2026-04-02` | תג תמונת Jupyter |
 | `cli.jupyter.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Jupyter |
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | משאבי Jupyter |
+| `search.enabled` | `false` | פריסת שירות החיפוש (פוד נפרד: API + Redis משלו). בלעדיו כפתור החיפוש פותח חלון ריק. גם מחזיר את הכפתור לתצוגה — ראה למטה. |
+| `search.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (חיפוש) |
+| `search.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (חיפוש) |
+| `search.securityContext.capabilities.drop` | `[ALL]` | הרשאות Linux שמוסרות (חיפוש) |
+| `search.image.registry` | `a0533057932` | registry של image ה-API |
+| `search.image.name` | `redis-docs-cli` | שם ה-image — זה של ה-CLI proxy, שנושא גם את שירות החיפוש |
+| `search.image.tag` | `latest` | תג ה-image |
+| `search.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת ה-image |
+| `search.logLevel` | `INFO` | רמת לוג של שירות החיפוש |
+| `search.threads` | `8` | מספר ה-threads של gunicorn; המודאל שולח בקשה לכל תו |
+| `search.index.name` | `docs` | שם האינדקס ב-Redis |
+| `search.index.rootCrumb` | `Welcome to Redis Docs` | הכותרת שהתוצאות מקובצות תחתיה, ו-`hierarchy[0]` בכל תוצאה |
+| `search.index.resultLimit` | `30` | מספר התוצאות לשאילתה, כמו ב-redis.io |
+| `search.index.batch` | `500` | מסמכים לכל כתיבה מקובצת בזמן אינדוקס |
+| `search.index.attempts` | `30` | ניסיונות אינדוקס לפני כישלון; ה-API וה-Redis שלו עולים יחד |
+| `search.resources` | requests: 100m/128Mi, limits: 500m/512Mi | משאבי ה-API |
+| `search.redis.image.registry` | `docker.io` | registry של Redis לחיפוש |
+| `search.redis.image.name` | `redis` | שם ה-image של Redis לחיפוש |
+| `search.redis.image.tag` | `8.10.0-alpine` | תג — Redis 8 נושא את מנוע השאילתות |
+| `search.redis.image.pullPolicy` | `IfNotPresent` | מדיניות משיכה |
+| `search.redis.resources` | requests: 100m/512Mi, limits: 500m/1Gi | משאבי Redis לחיפוש; האינדקס יושב בזיכרון |
 | `aiServices.litellm.enabled` | `false` | הפעלת LiteLLM endpoint (במקום CloudFront חיצוני) |
 | `aiServices.litellm.url` | `""` | URL ל-LiteLLM (OpenAI-compatible) |
 | `aiServices.litellm.model` | `gpt-3.5-turbo` | שם המודל לשליחה |
