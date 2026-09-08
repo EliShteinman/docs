@@ -139,6 +139,18 @@ data:
             access_log off;
         }
 
+        {{- if .Values.search.enabled }}
+        # The path search-modal.html already calls, spelled exactly as
+        # config.toml's `searchService` builds it. An exact-match location
+        # outranks every regex location above it, so this is reached before the
+        # static-asset rules ever see the request. Without this block the
+        # request falls through to `location /`, 404s, and the modal opens
+        # empty — which is the behaviour when search is disabled.
+        location = /convai/api/search-service {
+            proxy_pass http://{{ include "redis-docs.fullname" . }}-search:8091/search;
+        }
+        {{- end }}
+
         {{- if .Values.cli.enabled }}
         location = /cli {
             proxy_pass http://{{ include "redis-docs.fullname" . }}-cli:8090/cli;

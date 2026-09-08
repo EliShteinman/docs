@@ -1,0 +1,169 @@
+{{- if .Values.search.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-search
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "redis-docs.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: search
+  template:
+    metadata:
+      labels:
+        {{- include "redis-docs.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: search
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # The corpus is docs.ndjson, which lives in the docs image, not in this
+      # one. Copying it out through an init container running that image is the
+      # same move bake-ndjson-gz makes in deployment.yaml, and it keeps the two
+      # images in step: the pages indexed are the pages this release serves.
+      initContainers:
+        - name: fetch-corpus
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ include "redis-docs.image" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+              src=/usr/share/nginx/html/docs.ndjson
+              # Unlike the gz bake, this one is fatal. A search pod with no
+              # corpus has nothing to answer with, and failing here is visible
+              # in the pod's status instead of turning into an endpoint that
+              # returns no results for everything.
+              if [ ! -s "$src" ]; then
+                echo "FATAL: $src missing or empty; nothing to index" >&2
+                exit 1
+              fi
+              cp "$src" /corpus/docs.ndjson
+              echo "copied corpus ($(wc -c < /corpus/docs.ndjson) bytes)"
+          resources:
+            {{- toYaml .Values.search.resources | nindent 12 }}
+          volumeMounts:
+            - name: corpus
+              mountPath: /corpus
+      containers:
+        - name: search-api
+          image: {{ include "redis-docs.searchImage" . }}
+          imagePullPolicy: {{ .Values.search.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8091
+              protocol: TCP
+          env:
+            - name: SEARCH_REDIS_HOST
+              value: "localhost"
+            - name: SEARCH_REDIS_PORT
+              value: "6379"
+            - name: SEARCH_DOCS_FEED
+              value: "/corpus/docs.ndjson"
+            - name: SEARCH_INDEX_NAME
+              value: {{ .Values.search.index.name | quote }}
+            - name: SEARCH_RESULT_LIMIT
+              value: {{ .Values.search.index.resultLimit | quote }}
+            - name: SEARCH_INDEX_BATCH
+              value: {{ .Values.search.index.batch | quote }}
+            - name: SEARCH_ROOT_CRUMB
+              value: {{ .Values.search.index.rootCrumb | quote }}
+            - name: SEARCH_LOG_LEVEL
+              value: {{ .Values.search.logLevel | quote }}
+          # Index first, serve second. The index cannot be built from an init
+          # container because it needs the Redis sidecar, which does not start
+          # until init containers finish — so it runs here, and gunicorn only
+          # replaces this shell once the index exists. Retried because the two
+          # containers start together and Redis may not be listening yet; the
+          # pod fails loudly rather than serving an empty index.
+          command:
+            - /bin/sh
+            - -c
+            - |
+              attempt=1
+              indexed=0
+              while [ "$attempt" -le {{ .Values.search.index.attempts }} ]; do
+                if python -m search.indexer; then
+                  indexed=1
+                  break
+                fi
+                echo "index attempt $attempt failed; retrying" >&2
+                attempt=$((attempt + 1))
+                sleep 2
+              done
+              if [ "$indexed" -ne 1 ]; then
+                echo "FATAL: could not build the search index" >&2
+                exit 1
+              fi
+              exec gunicorn --bind 0.0.0.0:8091 --workers 1 \
+                --worker-class gthread --threads {{ .Values.search.threads }} \
+                --control-socket /tmp/gunicorn-search.ctl search.main:app
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+          resources:
+            {{- toYaml .Values.search.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.search.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: corpus
+              mountPath: /corpus
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+        # Its own Redis, not the playground's. files/sandbox.acl deliberately
+        # grants the reader +ft.dropindex so a tutorial that creates an index
+        # can undo it — which would also let any visitor drop this one. Nothing
+        # outside this pod reaches it: the Service publishes 8091 only.
+        - name: redis
+          image: {{ include "redis-docs.searchRedisImage" . }}
+          imagePullPolicy: {{ .Values.search.redis.image.pullPolicy }}
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          # The index is rebuilt from the corpus on every start, so there is
+          # nothing here worth persisting to disk.
+          args: ["redis-server", "--save", "", "--appendonly", "no"]
+          livenessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.search.redis.resources | nindent 12 }}
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+      volumes:
+        - name: corpus
+          emptyDir: {}
+        - name: redis-data
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+{{- end }}

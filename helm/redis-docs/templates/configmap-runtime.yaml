@@ -88,6 +88,26 @@
 {{- end -}}
 
 {{- /*
+  The search button is one of the catalog's links (`nav-search`), so the
+  airgap-first default -- externalLinks.enabled: false -- hides it along with
+  everything else. That is right while nothing answers a search, and wrong the
+  moment something does: enabling search.enabled and getting no visible button
+  is a feature that silently does not exist.
+
+  So a deployment that runs the search service gets the button back, unless it
+  said otherwise. A per-link override still wins in both directions: an
+  operator who sets overrides.nav-search.enabled: false keeps it hidden.
+*/ -}}
+{{- if .Values.search.enabled -}}
+  {{- $searchOverride := index $overrides "nav-search" | default dict -}}
+  {{- if not (hasKey $searchOverride "enabled") -}}
+    {{- $navSearch := index $effective "nav-search" | default dict -}}
+    {{- $_ := set $navSearch "enabled" true -}}
+    {{- $_ := set $effective "nav-search" $navSearch -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /*
   Resolve git-mirrors. Each entry in the catalog has a fixed `from` (the
   upstream URL prefix — never overridable) and a default `enabled`/`to`
   pair that values.yaml can override. Only mirrors with both

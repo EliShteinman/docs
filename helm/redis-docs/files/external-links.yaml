@@ -107,11 +107,11 @@ families:
             enabled: true
 
       search:
-        description: "Top header: search button (the search backend is not deployed in airgap mode — clicking the button opens an empty modal)"
+        description: "Top header: search button (works only when the chart's search service is deployed — see `search.enabled` in values.yaml; without it the button opens an empty modal)"
         enabled: true
         links:
           nav-search:
-            description: "Search button (desktop and mobile share the same key)"
+            description: "Search button (desktop and mobile share the same key). Setting search.enabled turns this on by default, since a deployment that answers searches wants the button; an explicit override here still wins."
             enabled: true
 
       mobile:
