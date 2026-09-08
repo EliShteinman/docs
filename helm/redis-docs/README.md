@@ -68,6 +68,44 @@ Turning any of these off is a deliberate downgrade: `namespace.enabled=false` pu
 back in one flat keyspace, and `acl.enabled=false` puts the proxy back on Redis's default user
 with nothing between a typed `FLUSHALL` and everyone else's data.
 
+### Pod 3 — `redis-docs-search` (docs search)
+
+Created only when `search.enabled=true`.
+
+| Container | Description | Port |
+|---|---|---|
+| `fetch-corpus` (init) | Copies `docs.ndjson` out of the docs image into a shared volume | — |
+| `search-api` | Builds the index, then serves the search endpoint | 8091 |
+| `redis` | Holds the index — local to pod (localhost) | 6379 |
+
+`search-api` runs from the `redis-docs-cli` image: the search service ships inside it
+rather than in an image of its own, so an air-gapped deployment has no third image to
+build, mirror and carry in.
+
+This Redis is separate from the CLI playground's on purpose. `files/sandbox.acl`
+deliberately grants the reader `+ft.dropindex`, so a tutorial that creates an index can
+undo it — which would also let any visitor drop the search index if the two shared a
+Redis.
+
+#### How the search works
+
+`layouts/partials/search-modal.html` calls `/convai/api/search-service`, a service that
+runs at redis.io. Nothing serves that path in an air-gapped cluster, so the request 404s
+and the modal opens empty. Enabling `search` implements the same contract instead of
+replacing the search, so the upstream partial and `config.toml` are untouched:
+
+- **Corpus** — `docs.ndjson`, the RAG feed the build already produces. The index is
+  rebuilt on every pod start, so the pages indexed are always the pages this release
+  serves.
+- **Route** — nginx gains an exact-match `location = /convai/api/search-service` that
+  proxies to the search Service. The route only exists when `search.enabled=true`.
+- **The button** — the search button is itself a catalog link (`nav-search`), so the
+  airgap-first `externalLinks.enabled: false` default hides it. Setting `search.enabled`
+  turns it back on, since a deployment that answers searches wants the button. An
+  explicit `externalLinks.overrides.nav-search.enabled` still wins in both directions.
+
+Ranking will not match redis.io exactly — it is a different scoring engine.
+
 ### Runtime Configuration
 
 Four ConfigMaps carry runtime configuration; two are always rendered, two follow their feature flag:
@@ -79,7 +117,7 @@ Four ConfigMaps carry runtime configuration; two are always rendered, two follow
   - `downloads` — whether the documentation download widget has archives to offer
   - `externalLinks` — the resolved enabled/url for every catalogued external link
   - `gitMirrors` — the resolved mirror host for every catalogued Git URL
-- **`configmap.yaml`** — the nginx `default.conf`. It uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time, and proxies `/cli` to the CLI playground service.
+- **`configmap.yaml`** — the nginx `default.conf`. It uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time, and proxies `/cli` to the CLI playground service and, when `search.enabled=true`, `/convai/api/search-service` to the search service.
 - **`configmap-metrics.yaml`** — the nginxlog-exporter configuration. Only with `metrics.enabled=true`.
 - **`configmap-cli-acl.yaml`** — the Redis ACL file from `files/sandbox.acl`, mounted into the Redis sidecar. Only with `cli.redis.acl.enabled=true`; see [CLI playground isolation](#cli-playground-isolation).
 
@@ -290,6 +328,8 @@ A limit costs nothing until the container actually runs.
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | Prometheus metrics (including response times) | No — only if `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8091 | Docs search API — the same image, different command | No — only if `search.enabled=true` |
+| `redis` | `8.10.0-alpine` | 6379 | Redis holding the search index | No — only if `search.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server for interactive code execution | No — only if `cli.jupyter.enabled=true` |
 
 > For Kubernetes/OpenShift use the `unprivileged` or `<HASH>-unprivileged` tag.
@@ -722,6 +762,27 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.jupyter.image.tag` | `2026-04-02` | Jupyter image tag |
 | `cli.jupyter.image.pullPolicy` | `IfNotPresent` | Jupyter image pull policy |
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | Jupyter resources |
+| `search.enabled` | `false` | Deploy the docs search service (separate pod: search API + its own Redis). Without it the search button opens an empty modal. Also turns the button back on — see below. |
+| `search.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (search) |
+| `search.securityContext.runAsNonRoot` | `true` | Block running as root (search) |
+| `search.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (search) |
+| `search.image.registry` | `a0533057932` | Search API image registry |
+| `search.image.name` | `redis-docs-cli` | Search API image name — the CLI proxy image, which carries the search service too |
+| `search.image.tag` | `latest` | Search API image tag |
+| `search.image.pullPolicy` | `IfNotPresent` | Search API image pull policy |
+| `search.logLevel` | `INFO` | Log level for the search service |
+| `search.threads` | `8` | gunicorn threads; the modal sends one request per keystroke |
+| `search.index.name` | `docs` | Name of the index in Redis |
+| `search.index.rootCrumb` | `Welcome to Redis Docs` | The heading results are grouped under, and `hierarchy[0]` on every result |
+| `search.index.resultLimit` | `30` | Results returned per query, matching redis.io |
+| `search.index.batch` | `500` | Documents per pipelined write while indexing |
+| `search.index.attempts` | `30` | Index attempts before the pod gives up; the API and its Redis start together |
+| `search.resources` | requests: 100m/128Mi, limits: 500m/512Mi | Search API resources |
+| `search.redis.image.registry` | `docker.io` | Search Redis image registry |
+| `search.redis.image.name` | `redis` | Search Redis image name |
+| `search.redis.image.tag` | `8.10.0-alpine` | Search Redis image tag — Redis 8 carries the query engine |
+| `search.redis.image.pullPolicy` | `IfNotPresent` | Search Redis pull policy |
+| `search.redis.resources` | requests: 100m/512Mi, limits: 500m/1Gi | Search Redis resources; the index is held in memory |
 | `aiServices.litellm.enabled` | `false` | Enable LiteLLM endpoint (instead of external CloudFront) |
 | `aiServices.litellm.url` | `""` | LiteLLM URL (OpenAI-compatible) |
 | `aiServices.litellm.model` | `gpt-3.5-turbo` | Model name to send |
