@@ -150,6 +150,29 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 
 **המלצה:** אופציה A לעדכונים רגילים. אופציה B אם אין גישה ל-GitHub Actions, או לbuild שכולל שינויי Dockerfile/script שאתה בודק.
 
+#### ה-image של ה-CLI (`redis-docs-cli`) — בנייה ידנית
+
+נבנה בנפרד משני הפייפליינים לעיל, ידנית, כי הוא כמעט לא משתנה. המקור ב-`helm/cli-proxy/`.
+הוא נושא **שני** שירותים: ה-proxy של ה-CLI playground (`main:app`, פורט 8090) ושירות
+החיפוש בדוקס (`search.main:app`, פורט 8091). הצ'ארט מריץ כל אחד מ-deployment משלו עם
+`command` משלו, כך שהפעלת אחד לא מפעילה את השני.
+
+```bash
+cd helm/cli-proxy
+python3 -m pytest . -q          # 10 מודולי בדיקה, כולל search/
+
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t a0533057932/redis-docs-cli:latest \
+  --push .
+```
+
+> **לבנות מחדש אחרי כל שינוי ב-`helm/cli-proxy/`** — כולל `search/`. ה-image הזה לא נבנה
+> ע"י `airgap-build.yml` ולא ע"י `airgap-multibuild.sh`, אז שינוי בו לא ייכנס לפריסה
+> מבניית הדוקס לבדה.
+
+> **ה-image של Redis** (`redis:8.10.0-alpine`) משרת גם את ה-playground וגם את החיפוש —
+> אותו image, שני פודים. אין מה לבנות; רק לוודא שהוא ממורר.
+
 ### שלב 4 — אימות deployment
 
 ```bash
