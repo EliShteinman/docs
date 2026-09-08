@@ -277,6 +277,71 @@ cli:
         cpu: 500m
         memory: 512Mi
 
+# -- Docs search. search-modal.html calls /convai/api/search-service, a service
+#    that runs at redis.io; without something answering it here the search
+#    button opens an empty modal. Turning this on deploys that answer: an index
+#    of the site built from the docs.ndjson feed the image already ships, held
+#    in a Redis of its own, and an nginx route to reach it. The search UI itself
+#    needs no configuration — it is upstream markup and is left untouched.
+#
+#    Off by default, like `cli` above: it is another pod, and a deployment that
+#    does not want it should not pay for it.
+search:
+  enabled: false
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
+  # The CLI proxy image. The search service ships inside it rather than in one
+  # of its own, so there is no third image to build, mirror and carry in.
+  image:
+    registry: a0533057932
+    name: redis-docs-cli
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  logLevel: INFO
+  # gunicorn threads. A search is one round trip to a Redis in the same pod,
+  # and the modal fires a request per keystroke, so this is about concurrent
+  # readers rather than slow work.
+  threads: 8
+  index:
+    name: docs
+    # hierarchy[0] on every result, and the heading the modal groups results
+    # under. redis.io sends the docs home page's heading, which is not the Hugo
+    # site title, so it cannot be derived from the feed.
+    rootCrumb: "Welcome to Redis Docs"
+    # redis.io returns at most 30 hits and reports the full count separately.
+    resultLimit: 30
+    batch: 500
+    # Index attempts before the pod gives up. The API container and its Redis
+    # start together, so the first attempt often lands before Redis is
+    # listening.
+    attempts: 30
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  redis:
+    image:
+      registry: docker.io
+      name: redis
+      tag: "8.10.0-alpine"
+      pullPolicy: IfNotPresent
+    # Holds the whole index in memory. Sized for the ~5,700 pages the docs
+    # build produces; a deployment that adds more sources should raise it.
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
 aiServices:
   litellm:
     enabled: false
