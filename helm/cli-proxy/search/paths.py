@@ -25,6 +25,20 @@ def to_path(url: str) -> str:
     return trimmed or "/"
 
 
+def to_href(url: str) -> str:
+    """Return the path a result should link to, keeping Hugo's trailing slash.
+
+    Hugo publishes a page as a directory with an index.html inside it, so its
+    permalink ends in a slash. Linking without that slash still works, but only
+    after nginx answers a 301 to add it -- a redirect on every result a reader
+    clicks. The slash the feed already carries is kept instead.
+    """
+    path = to_path(url)
+    if path == "/":
+        return path
+    return path + "/" if url.rstrip().split("#", 1)[0].split("?", 1)[0].endswith("/") else path
+
+
 def segments(url: str) -> list[str]:
     """Return the non-empty path segments of `url`, outermost first."""
     return [segment for segment in to_path(url).split("/") if segment]

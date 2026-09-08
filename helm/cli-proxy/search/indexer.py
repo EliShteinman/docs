@@ -112,7 +112,7 @@ def index_documents(
     for start in range(0, len(documents), batch_size):
         batch = documents[start : start + batch_size]
         for document in batch:
-            fields = _document_fields(document, breadcrumbs.crumbs_for(document.url))
+            fields = _document_fields(document, breadcrumbs.crumbs_for(document.doc_id))
             connection.send_command(["HSET", key_prefix + document.doc_id, *fields])
         for document in batch:
             reply = connection.read_reply()

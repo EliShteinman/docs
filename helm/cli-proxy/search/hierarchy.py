@@ -30,7 +30,7 @@ class BreadcrumbIndex:
 
     @classmethod
     def from_documents(cls, root_crumb: str, documents: Iterable) -> "BreadcrumbIndex":
-        return cls(root_crumb, {document.url: document.title for document in documents})
+        return cls(root_crumb, {document.doc_id: document.title for document in documents})
 
     def crumbs_for(self, url: str) -> list[str]:
         """Return the breadcrumb trail for `url`, root first and the page itself last.
