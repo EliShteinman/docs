@@ -106,18 +106,29 @@ spec:
               exec gunicorn --bind 0.0.0.0:8091 --workers 1 \
                 --worker-class gthread --threads {{ .Values.search.threads }} \
                 --control-socket /tmp/gunicorn-search.ctl search.main:app
+          # Indexing runs before gunicorn binds the port, so the container is
+          # legitimately unreachable while it works. Without a startup probe
+          # the liveness probe would start counting against it and kill the
+          # container mid-index on a throttled node — and since the restart
+          # indexes again from scratch, that is a loop it never escapes.
+          # Liveness and readiness are both suspended until this one passes.
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 60
           livenessProbe:
             httpGet:
               path: /healthz
               port: http
-            initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 3
           readinessProbe:
             httpGet:
               path: /healthz
               port: http
-            initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 3
           resources:
