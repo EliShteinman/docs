@@ -28,7 +28,7 @@ In late December, we announced [the latest version of Redis Stack](/blog/introdu
 
 ## 4. [13 Years Later: Does Redis Need a New Architecture?](/blog/redis-architecture-13-years-later/)
 
-In this retrospective, Redis top technologists [Yiftach Shoolman,](/blog/author/yiftach/) [Yossi Gottlieb,](/blog/author/yossigottliev/) and [Filipe Oliveira](/blog/author/filipeolviera/) contemplate Redis’s architectural underpinnings, assess its performance (with attention to competitors), and discuss its design philosophy. “For the foreseeable future, we will not abandon the basic principle of a shared-nothing, multi-process architecture that Redis provides,” they conclude. “This design provides the best performance, scaling, and resiliency while supporting the variety of deployment architectures required by an in-memory, real-time data platform.”
+In this retrospective, Redis top technologists Yiftach Shoolman, Yossi Gottlieb, and Filipe Oliveira contemplate Redis’s architectural underpinnings, assess its performance (with attention to competitors), and discuss its design philosophy. “For the foreseeable future, we will not abandon the basic principle of a shared-nothing, multi-process architecture that Redis provides,” they conclude. “This design provides the best performance, scaling, and resiliency while supporting the variety of deployment architectures required by an in-memory, real-time data platform.”
 
 ## 3. [Delivering a Better Developer Experience: Redis and RESP.app Are Joining Forces](/blog/respapp-joining-redis/)
 

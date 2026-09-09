@@ -3,6 +3,8 @@ title: "Getting Started with Redis 6 Access Control Lists (ACLs)"
 linkTitle: "Getting Started with Redis 6 Access Control Lists (ACLs)"
 url: "/blog/getting-started-redis-6-access-control-lists-acls/"
 description: "With the arrival of Redis 6 come a few new features for better security and compliance. The easiest one to explain is probably support for SSL, which enables secure communication between your..."
+aliases:
+- "/blog/getting-started-with-redis-6-access-control-lists-acls/"
 date: 2020-01-31
 blogCategories:
 - "How To and Tutorials"

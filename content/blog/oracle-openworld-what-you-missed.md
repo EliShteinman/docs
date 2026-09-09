@@ -28,7 +28,7 @@ In an exclusive sit-down with TFIR at Oracle Open World, Kyle Davis, Head of Dev
 
 ## 2. Dave Nielsen on “Why MySQL Needs Redis”
 
-MySQL has definitely earned its popularity, Redis’ Head of Ecosystem Programs [Dave Nielsen](/blog/author/dave/) told a standing-room-only crowd, but as a fast and lightweight in-memory database, Redis specializes in things that MySQL doesn’t always do well, making them perfect complements to each other. In particular, users of MySQL databases may face challenges in areas such as:
+MySQL has definitely earned its popularity, Redis’ Head of Ecosystem Programs Dave Nielsen told a standing-room-only crowd, but as a fast and lightweight in-memory database, Redis specializes in things that MySQL doesn’t always do well, making them perfect complements to each other. In particular, users of MySQL databases may face challenges in areas such as:
 
 - Minimizing the cost of data management while scaling your application
 - Speeding time-to-market

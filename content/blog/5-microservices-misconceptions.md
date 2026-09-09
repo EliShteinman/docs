@@ -60,7 +60,7 @@ Managing the complexity has become easier with the tooling that’s now availabl
 
 While a microservices approach certainly makes your code less complex, Rosenquist points out that it’s not always easier when it comes to deploying or managing it. “Instead of having one application to debug, you now have six or ten. Those applications are also running on multiple instances, which are also load-balanced across the entire architecture.” To assemble all that, pay attention to things like log aggregation and observability. All of which are generally more complex than having a single application.
 
-Less complex code does not necessarily translate to a less complex system. “From a code standpoint, individual services might be slightly easier to understand in a silo,” points out [William Johnston](/blog/author/will-johnston/), developer growth leader at Redis. “But the complexity of the system you create with microservices becomes way more complex than in a monolith.”
+Less complex code does not necessarily translate to a less complex system. “From a code standpoint, individual services might be slightly easier to understand in a silo,” points out William Johnston, developer growth leader at Redis. “But the complexity of the system you create with microservices becomes way more complex than in a monolith.”
 
 That also means more development time, particularly in smaller teams that are already overloaded. That’s not always a bad thing because it forces developers to learn the application domain and the entire system. That can make refactoring easier in the long run since it makes the whole system less coupled. However, that comes with a high cost, and developer productivity might drop significantly.
 

@@ -16,7 +16,7 @@ hidden: true
 
 ![Blog tile image](/images/site-mirror/f92386dd977b1b224fe8155783101dab5e0523d5-386x260.webp)
 
-*In our *[*Advice to Our Younger Selves*](/blog/tag/advice-to-our-younger-selves/)* series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
+*In our **Advice to Our Younger Selves** series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
 
 Since a very young age, Adi Godkin loved pets, and believed she would grow up to be a veterinarian. Eventually, though, she learned being a vet required doing surgeries—and she realized this may not be the role for her.
 

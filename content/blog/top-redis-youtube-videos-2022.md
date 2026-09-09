@@ -26,7 +26,7 @@ Redis as a [cache](/solutions/caching/) is well known. But since its start, it h
 
 [Click here to view video](https://www.youtube.com/embed/oa1ns12KFhQ)
 
-In this clip, Redis’s [Will Johnston](/blog/author/will-johnston/) provides a high-level overview of how [Redis Enterprise powers applications](/redis-enterprise-cloud/overview/). He gets into more granular detail in his blog post, [Redis as a Cache vs Redis as a Primary Database in 90 Seconds](/blog/redis-cache-vs-redis-primary-database-in-90-seconds/).
+In this clip, Redis’s Will Johnston provides a high-level overview of how [Redis Enterprise powers applications](/redis-enterprise-cloud/overview/). He gets into more granular detail in his blog post, [Redis as a Cache vs Redis as a Primary Database in 90 Seconds](/blog/redis-cache-vs-redis-primary-database-in-90-seconds/).
 
 ## 4. How to Scale With Cost-Effective Redis on Flash
 

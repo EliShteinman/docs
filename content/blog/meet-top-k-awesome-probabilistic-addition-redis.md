@@ -3,6 +3,8 @@ title: "Meet Top-K: an Awesome Probabilistic Addition to Redis Features"
 linkTitle: "Meet Top-K: an Awesome Probabilistic Addition to Redis Features"
 url: "/blog/meet-top-k-awesome-probabilistic-addition-redis/"
 description: "You may find yourself wondering whether you should use more probabilistic data structures in your code. The answer is, as always, it depends. If your data set is relatively small and you have the..."
+aliases:
+- "/blog/meet-top-k-awesome-probabilistic-addition-redisbloom/"
 date: 2019-07-02
 blogCategories:
 - "Tech"

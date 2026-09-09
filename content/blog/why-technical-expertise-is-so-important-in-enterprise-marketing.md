@@ -16,7 +16,7 @@ hidden: true
 
 ![Blog tile image](/images/site-mirror/bb10ab210e067abe1ab8fd7ac4437d0924352e50-386x260.webp)
 
-*In our *[*Advice to Our Younger Selves*](/blog/tag/advice-to-our-younger-selves/)* series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
+*In our **Advice to Our Younger Selves** series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
 
 Maygol Kananizadeh received her first computer as a high schooler. Like most kids, she first used it to play games, but soon she found herself digging into the control panel settings and eventually signed up for programming classes. That’s when she found her calling. “I had a feeling at that time that if I didn’t get involved with computers, I was going to miss out on cool things,” she said.
 

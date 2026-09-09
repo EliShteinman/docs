@@ -4,6 +4,7 @@ linkTitle: "How to add Redis as a datasource in Grafana and build customize dash
 url: "/tutorials/operate/observability/redisdatasource/"
 description: "The Redis Data Source for Grafana is a plug-in that allows users to connect to the Redis database and build dashboards in Grafana to easily monitor Redis and application data. It provides an out-..."
 aliases:
+- "/tutorials/explore/redisdatasource/"
 - "/tutorials/operate-observability-redisdatasource/"
 date: 2026-02-25
 lastmod: 2026-02-26

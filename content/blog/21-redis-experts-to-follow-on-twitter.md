@@ -52,7 +52,7 @@ Follow Nick on Twitter [@Nick_Craver](https://twitter.com/Nick_Craver).
 
 ### Yossi Gottlieb
 
-Yossi Gottlieb is an experienced technology leader who today serves as chief architect at Redis as well as co-lead of the Redis open source project. He has worked as a software developer and cybersecurity researcher, and is the former CTO of a system integration firm. Yossi contributes to the [Redis blog](/blog/author/yossigottliev/) from time to time, such as a [Q&A about Redis’ architecture principles](http://www.odbms.org/2022/07/on-redis-architecture-principles-qa-with-yossi-gottlieb/).
+Yossi Gottlieb is an experienced technology leader who today serves as chief architect at Redis as well as co-lead of the Redis open source project. He has worked as a software developer and cybersecurity researcher, and is the former CTO of a system integration firm. Yossi contributes to the Redis blog from time to time, such as a [Q&A about Redis’ architecture principles](http://www.odbms.org/2022/07/on-redis-architecture-principles-qa-with-yossi-gottlieb/).
 
 Follow Yossi on Twitter [@yossigottlieb.](https://twitter.com/yossigottlieb?lang=en)
 
@@ -86,7 +86,7 @@ Follow Carlos on Twitter [@cjus](https://twitter.com/cjus).
 
 ### Guy Korland
 
-Guy Korland is the CTO of incubations at Redis. He has many years of experience in software development. Guy is the former CTO of SelfPoint (where he built a high-end ecommerce SaaS solution) as well as the founding CTO of Shopetti, an online shopping application. Read Guy’s posts on the [Redis blog](/blog/author/guykorland/).
+Guy Korland is the CTO of incubations at Redis. He has many years of experience in software development. Guy is the former CTO of SelfPoint (where he built a high-end ecommerce SaaS solution) as well as the founding CTO of Shopetti, an online shopping application. Read Guy’s posts on the Redis blog.
 
 Follow Guy on Twitter [@g_korland.](https://twitter.com/g_korland)
 
@@ -126,7 +126,7 @@ Follow Dmitry on Twitter [@dmitrypol](https://twitter.com/dmitrypol).
 
 ![a tweet from Simon Prickett](/images/site-mirror/a9f8ddfcced84a9d16db6f006c377f887a900438-538x248.webp)
 
-Simon Prickett has been coding since the 1980s and today serves as the principal developer advocate at Redis, where he leads the team that develops instructional materials for [Redis University](https://university.redis.com). He blogs regularly on his own website [simonprickett.dev](https://simonprickett.dev), contributes to the [Redis blog](/blog/author/simonprickett/), and has created many entertaining [technical video tutorials](https://www.youtube.com/playlist?list=PL83Wfqi-zYZFCjAZZTB9UaBARIvH9YsC1).
+Simon Prickett has been coding since the 1980s and today serves as the principal developer advocate at Redis, where he leads the team that develops instructional materials for [Redis University](https://university.redis.com). He blogs regularly on his own website [simonprickett.dev](https://simonprickett.dev), contributes to the Redis blog, and has created many entertaining [technical video tutorials](https://www.youtube.com/playlist?list=PL83Wfqi-zYZFCjAZZTB9UaBARIvH9YsC1).
 
 Follow Simon on Twitter [@simon_prickett](https://twitter.com/simon_prickett).
 
@@ -134,7 +134,7 @@ Follow Simon on Twitter [@simon_prickett](https://twitter.com/simon_prickett).
 
 ![a tweet from guy royse](/images/site-mirror/61aa806909d548fdf4e7864225b13e922cc71baa-539x441.webp)
 
-A self-professed “geek, graybeard, and gamemaster,” Guy Royse is a developer advocate at Redis with more than 25 years of developer experience. He speaks regularly at tech conferences and blogs at his own website [guyroyse.com](http://guyroyse.com) as well as the [Redis blog](/blog/author/guy-royse/). You can watch his entertaining [dev tutorials](https://www.youtube.com/playlist?list=PL83Wfqi-zYZEBwh41x8i9jAsfDv_bXweX) on YouTube and follow him online to read his thoughts on everything from coding to Dungeons & Dragons to the [search for Bigfoot](https://twitter.com/ConferenceIndy/status/1565123598326579201?cxt=HHwWgoCyvdnnt7grAAAA).
+A self-professed “geek, graybeard, and gamemaster,” Guy Royse is a developer advocate at Redis with more than 25 years of developer experience. He speaks regularly at tech conferences and blogs at his own website [guyroyse.com](http://guyroyse.com) as well as the Redis blog. You can watch his entertaining [dev tutorials](https://www.youtube.com/playlist?list=PL83Wfqi-zYZEBwh41x8i9jAsfDv_bXweX) on YouTube and follow him online to read his thoughts on everything from coding to Dungeons & Dragons to the [search for Bigfoot](https://twitter.com/ConferenceIndy/status/1565123598326579201?cxt=HHwWgoCyvdnnt7grAAAA).
 
 Follow Guy on Twitter [@guyroyse](https://twitter.com/guyroyse).
 

@@ -3,6 +3,8 @@ title: "Vector Database"
 linkTitle: "Vector Database"
 url: "/solutions/vector-database/"
 description: "Build faster, more accurate chatbots and agents"
+aliases:
+- "/solutions/vector-search/"
 lastmod: 2026-05-21
 ---
 

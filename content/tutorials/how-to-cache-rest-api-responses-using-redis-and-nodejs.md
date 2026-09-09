@@ -3,6 +3,8 @@ title: "How to cache REST API responses Using Redis & NodeJS"
 linkTitle: "How to cache REST API responses Using Redis & NodeJS"
 url: "/tutorials/how-to-cache-rest-api-responses-using-redis-and-nodejs/"
 description: "This demo application returns the number of public repositories a GitHub account has. When you search for an account for the first time, the server calls the GitHub API. This external call can take..."
+aliases:
+- "/tutorials/howtos/caching/"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

@@ -3,6 +3,8 @@ title: "Microservices"
 linkTitle: "Microservices"
 url: "/solutions/microservices/"
 description: "Build resilient and highly available microservices."
+aliases:
+- "/blog/what-is-a-microservices-architecture/"
 lastmod: 2026-09-01
 ---
 

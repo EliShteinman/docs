@@ -19,7 +19,7 @@ hidden: true
 
 ***Update 3/29/21: ***[***https://coronavirusapi.com/***](https://coronavirusapi.com/)*** has recently closed free access to its data, making it only available for registered first-responders. While this unfortunately means the coronavirus case visualization project demo won’t work anymore, our hints will still be useful for many other implementations when you need to display RedisTimeSeries data on the Grafana Worldmap panel.***
 
-In previous posts, [we](/blog/author/mikhail/) introduced and showed how to use the new [Redis Data Source for Grafana](https://grafana.com/grafana/plugins/redis-datasource):
+In previous posts, we introduced and showed how to use the new [Redis Data Source for Grafana](https://grafana.com/grafana/plugins/redis-datasource):
 
 - [Introducing the Redis Data Source Plug-in for Grafana](/blog/introducing-the-redis-data-source-plug-in-for-grafana/)
 - [How to Use the New Redis Data Source for Grafana Plug-in](/blog/how-to-use-the-new-redis-data-source-for-grafana-plug-in/)

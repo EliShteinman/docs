@@ -16,7 +16,7 @@ hidden: true
 
 ![Blog tile image](/images/site-mirror/bfcf641def74cce573634c8325810dc16f5fdcd8-386x260.webp)
 
-*In our *[*Advice to Our Younger Selves*](/blog/tag/advice-to-our-younger-selves/)* series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
+*In our **Advice to Our Younger Selves** series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
 
 Like many kids, young Jane Paek dreamed of becoming an astronaut. Once she started high school—and learned astronauts can’t wear glasses in space—she considered a career in medicine before eventually choosing to pursue electrical engineering.
 

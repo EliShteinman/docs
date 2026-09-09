@@ -24,9 +24,9 @@ That’s true for [Redis newbies](/try-free/) too. So we asked Redis experts –
 
 ## Seven Databases in Seven Weeks: A Guide to Modern Databases and the NoSQL Movement
 
-Redis developer advocate [Brian Sam Bodden](/blog/author/brian-sam-bodden/) recommends [*Seven Databases in Seven Weeks*](https://www.oreilly.com/library/view/seven-databases-in/9781680505962/), by Luc Perkins, as a starting point for beginners “to get a taste of the different data models and querying approaches.”
+Redis developer advocate Brian Sam Bodden recommends [*Seven Databases in Seven Weeks*](https://www.oreilly.com/library/view/seven-databases-in/9781680505962/), by Luc Perkins, as a starting point for beginners “to get a taste of the different data models and querying approaches.”
 
-The book is also a top choice for [Raja Rao](/blog/author/raja-rao/), Redis’s vice president of growth marketing. “This book provides developers with an understanding of the modern database landscape by giving a good analysis of several databases and how they work.” And, he adds, you get an overview of the [NoSQL](/nosql/what-is-nosql/) community without leading you into a web of complexity.
+The book is also a top choice for Raja Rao, Redis’s vice president of growth marketing. “This book provides developers with an understanding of the modern database landscape by giving a good analysis of several databases and how they work.” And, he adds, you get an overview of the [NoSQL](/nosql/what-is-nosql/) community without leading you into a web of complexity.
 
 ![](/images/site-mirror/871b257e4d66ac9ce0de02997584fb8db6d32c87-853x1024.webp)
 

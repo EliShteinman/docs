@@ -3,6 +3,8 @@ title: "How HolidayMe Uses Redis Enterprise As Its Primary Database"
 linkTitle: "How HolidayMe Uses Redis Enterprise As Its Primary Database"
 url: "/blog/how-holidayme-uses-redis-enterprise-as-its-primary-database/"
 description: "Nadia is looking to take a summer holiday to Switzerland from her home in Bangalore, India. To plan her trip, she heads online to HolidayMe.com, an online travel agency based in Dubai, Riyadh, and..."
+aliases:
+- "/customers/holidayme/"
 date: 2019-12-20
 blogCategories:
 - "Company"

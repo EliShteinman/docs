@@ -4,6 +4,7 @@ linkTitle: "Vector Semantic Text Search Using LangChain (OpenAI) and Redis"
 url: "/tutorials/howtos/solutions/vector/semantic-text-search/"
 description: "Semantic text search lets users find products and documents by meaning rather than exact keyword matches. This tutorial shows how to build a semantic search engine using Redis as a vector store,..."
 aliases:
+- "/tutorials/vector/"
 - "/tutorials/howtos-solutions-vector-semantic-text-search/"
 date: 2026-02-25
 lastmod: 2026-02-26

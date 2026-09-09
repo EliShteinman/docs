@@ -16,7 +16,7 @@ hidden: true
 
 ![Blog tile image](/images/site-mirror/0e6634f96a924aa867a168e9d3629a557a3e502e-386x260.webp)
 
-*In our *[*Advice to Our Younger Selves*](/blog/tag/advice-to-our-younger-selves/)* series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
+*In our **Advice to Our Younger Selves** series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
 
 Liking too many subjects in school can have its downsides—for Mariana Aviv, it meant she felt no singular calling. As a self-described “very bossy” kid who loved numbers and management, she decided to study the humanities, eventually getting her degree in merchandising in her home country of Argentina.
 

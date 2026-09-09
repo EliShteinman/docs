@@ -3,6 +3,8 @@ title: "Utilizing Auto Tiering requires only 30% of the expensive DRAM storage p
 linkTitle: "Utilizing Auto Tiering requires only 30% of the expensive DRAM storage previously used"
 url: "/customers/ekata/"
 description: "Ekata’ proprietary Identity GraphTM solution makes an average of 150,000 to 200,000 calls per second to the company’s 3TB database—and can even surpass this number during peak hours. Being able to..."
+aliases:
+- "/customers/ekata-3/"
 lastmod: 2026-09-01
 hidden: true
 ---
