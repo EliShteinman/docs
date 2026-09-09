@@ -308,6 +308,15 @@ jobs:
           # redislabs.com.
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
             -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
+          # Short-form command links: the docs link commands both as
+          # redis.io/docs/latest/commands/<x> (handled above) and as
+          # redis.io/commands/<x>, which that rule does not touch -- 435 links
+          # to pages already in this image. Lowercased because some are written
+          # in capitals while Hugo publishes them lowercase. Mirrors the same
+          # step in airgap-multibuild.sh.
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+            -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
+            -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
@@ -485,6 +494,15 @@ jobs:
           # redislabs.com.
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
             -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
+          # Short-form command links: the docs link commands both as
+          # redis.io/docs/latest/commands/<x> (handled above) and as
+          # redis.io/commands/<x>, which that rule does not touch -- 435 links
+          # to pages already in this image. Lowercased because some are written
+          # in capitals while Hugo publishes them lowercase. Mirrors the same
+          # step in airgap-multibuild.sh.
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+            -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
+            -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
