@@ -307,7 +307,8 @@ jobs:
           # 184 blog links, 83 use the legacy redis.com and 16 use
           # redislabs.com.
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
-            -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
+            -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
+            -e 's#https?://(www\.)?redis\.io/technology#/technology#g'
           # Short-form command links: the docs link commands both as
           # redis.io/docs/latest/commands/<x> (handled above) and as
           # redis.io/commands/<x>, which that rule does not touch -- 435 links
@@ -493,7 +494,8 @@ jobs:
           # 184 blog links, 83 use the legacy redis.com and 16 use
           # redislabs.com.
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
-            -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
+            -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
+            -e 's#https?://(www\.)?redis\.io/technology#/technology#g'
           # Short-form command links: the docs link commands both as
           # redis.io/docs/latest/commands/<x> (handled above) and as
           # redis.io/commands/<x>, which that rule does not touch -- 435 links
@@ -518,12 +520,12 @@ jobs:
           {
             find "content/$PRODUCT/$VERSION" -type f -print0 | sort -z | xargs -0 sha256sum
             for d in layouts assets data static i18n; do
-              # static/images/blog is excluded: it holds ~2,900 mirrored blog
+              # static/images/site-mirror is excluded: it holds ~2,700 mirrored
               # images, and a version build keeps only public/<product>/<version>,
-              # which never contains them. Hashing them would mean every blog
+              # which never contains them. Hashing them would mean every mirror
               # sync invalidated all 29 version caches and rebuilt the whole
               # matrix for pictures none of those pages can show.
-              [ -d "$d" ] && find "$d" -type f -not -path "static/images/blog/*" -print0 \
+              [ -d "$d" ] && find "$d" -type f -not -path "static/images/site-mirror/*" -print0 \
                 | sort -z | xargs -0 sha256sum
             done
             for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
@@ -556,7 +558,7 @@ jobs:
           # The mirrored blog belongs to the "latest" tree only. This job keeps
           # nothing but public/<product>/<version>, so rendering 1,100 posts
           # here produces output that is thrown away.
-          rm -rf content/blog
+          rm -rf content/blog content/technology
 
           # Remove all OTHER versions of this product
           VPARENT="content/$PRODUCT"

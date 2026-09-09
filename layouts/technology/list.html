@@ -1,0 +1,36 @@
+{{/* Index for the mirrored /technology/ guides (build/site_mirror).
+
+     Hugo picks layouts/<section>/list.html for a section page and falls back to
+     layouts/_default/section.html, which in this theme is a stub — so without
+     this file /technology/ renders blank. A layouts/_default/list.html would
+     have covered both this and the blog, but it would also change how every
+     other section that currently falls back to the stub renders, so each
+     mirrored section gets its own, the way develop/ and integrate/ do.
+
+     Unlike the blog, these pages are NOT hidden from the sidebar: eleven
+     entries is a section a reader can navigate, so this page lists them for
+     completeness rather than as their only route in.
+*/}}
+{{ define "main" }}
+  <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
+    {{ partial "docs-nav.html" . }}
+    <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
+      {{ partial "breadcrumbs" . }}
+      <section class="prose w-full py-12 max-w-none">
+        <h1>{{ .Title }}</h1>
+        {{ with .Params.description }}<p class="text-lg -mt-5 mb-10">{{ . | markdownify }}</p>{{ end }}
+        {{ .Content }}
+
+        <nav>
+          {{ range .Pages.ByTitle }}
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{ with .Description }}<p>{{ . }}</p>{{ else }}<br /><br />{{ end }}
+          {{ end }}
+        </nav>
+        {{ partial "feedback.html" . }}
+      </section>
+    </div>
+    {{ if not .Params.hideTOC }}{{ partial "docs-toc.html" . }}{{ end }}
+    {{ partial "scripts.html" . }}
+  </main>
+{{ end }}
