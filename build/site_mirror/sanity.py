@@ -45,9 +45,19 @@ _QUERY = (
 # than one Portable Text field. pages.py reads that shape.
 PAGE_TYPE = "page"
 
+# `pathname match "/solutions/*"` is not a prefix test: GROQ's match is
+# token-based, so it also returns /tutorials/howtos/solutions/... . The query
+# stays as the cheap filter and the caller narrows it to an exact prefix.
+#
+# The language clause is not optional either. Several trees carry the same
+# pathname once per translation -- /compare/elasticache/ exists in en, es, fr
+# and it -- and without it the last one fetched wins, so a reader gets the
+# Italian page at the English URL.
+_LANGUAGE = '(!defined(language) || language == "en")'
+
 _PAGE_QUERY = (
-    '*[_type=="{doc_type}" && pathname match "{prefix}"]|order(pathname)'
-    "[{start}...{end}]"
+    '*[_type=="{doc_type}" && pathname match "{prefix}" && ' + _LANGUAGE + "]"
+    "|order(pathname)[{start}...{end}]"
     '{{_id,_updatedAt,_createdAt,title,pathname,sections}}'
 )
 
@@ -90,9 +100,42 @@ def fetch_posts(timeout: float = 60.0, page_size: int = PAGE_SIZE) -> Iterator[d
         start += page_size
 
 
+def count_documents(doc_type: str, prefix: str, timeout: float = 60.0) -> int:
+    """Return how many documents of a type live under a pathname prefix."""
+    query = f'count(*[_type=="{doc_type}" && pathname match "{prefix}" && {_LANGUAGE}])'
+    return int(_get(query_url(query), timeout).get("result") or 0)
+
+
+def fetch_documents(
+    doc_type: str,
+    prefix: str,
+    projection: str,
+    timeout: float = 60.0,
+    page_size: int = PAGE_SIZE,
+) -> Iterator[dict]:
+    """Yield every document of a type under a pathname prefix, a page at a time.
+
+    The projection is passed in because these types disagree about what their
+    fields are called -- a glossary entry has a `term` where a tutorial has a
+    `title` -- and asking for a field a type does not have returns null for
+    every document, quietly.
+    """
+    start = 0
+    while True:
+        query = (
+            f'*[_type=="{doc_type}" && pathname match "{prefix}" && {_LANGUAGE}]'
+            f"|order(pathname)[{start}...{start + page_size}]{projection}"
+        )
+        batch = _get(query_url(query), timeout).get("result") or []
+        if not batch:
+            return
+        yield from batch
+        start += page_size
+
+
 def count_pages(prefix: str, timeout: float = 60.0) -> int:
     """Return how many page documents live under a pathname prefix."""
-    query = f'count(*[_type=="{PAGE_TYPE}" && pathname match "{prefix}"])'
+    query = f'count(*[_type=="{PAGE_TYPE}" && pathname match "{prefix}" && {_LANGUAGE}])'
     return int(_get(query_url(query), timeout).get("result") or 0)
 
 

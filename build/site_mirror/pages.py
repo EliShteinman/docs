@@ -34,12 +34,31 @@ DROPPED_SECTIONS = frozenset({"closingCtaSection", "cardCarouselSection"})
 _HERO_SECTIONS = frozenset({"headerSimpleSection", "resourceHeaderSection"})
 
 
-def strip_html(raw: str) -> str:
-    """Return the text of an HTML title fragment."""
-    return html.unescape(_TAG.sub("", raw or "")).strip()
+def strip_html(raw: object) -> str:
+    """Return the plain text of a section title.
+
+    A title is usually an HTML fragment, but not always: some sections in the
+    /solutions/ tree carry Portable Text there instead, which is why this takes
+    an object rather than a string. Anything it cannot read becomes empty, and
+    the section loses its heading rather than the run losing the page.
+    """
+    if isinstance(raw, list):
+        return " ".join(strip_html(item) for item in raw).strip()
+    if isinstance(raw, dict):
+        if raw.get("_type") == "span":
+            return (raw.get("text") or "").strip()
+        # Only containers are descended into. A block's scalar fields are
+        # metadata -- `style`, `_key` -- and joining them in turns a heading
+        # into "normal Fraud detection". Text lives in spans, handled above.
+        return " ".join(
+            strip_html(v) for v in raw.values() if isinstance(v, (list, dict))
+        ).strip()
+    if not isinstance(raw, str):
+        return ""
+    return html.unescape(_TAG.sub("", raw)).strip()
 
 
-def _heading(raw: str, level: int) -> str:
+def _heading(raw: object, level: int) -> str:
     text = strip_html(raw)
     return f"{'#' * level} {text}" if text else ""
 

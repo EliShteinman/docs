@@ -47,3 +47,26 @@ def test_the_site_path_is_where_hugo_will_serve_it_from():
 
 def test_an_unusable_reference_yields_no_path_rather_than_a_broken_one():
     assert site_path("rubbish") == ""
+
+
+def test_a_cdn_url_is_turned_back_into_a_reference():
+    """Markdown bodies embed images as URLs; the mirroring works from references."""
+    from build.site_mirror.images import reference_from_url
+
+    url = "https://cdn.sanity.io/images/sy1jschh/production/abc123-772x550.png"
+    assert reference_from_url(url) == "image-abc123-772x550-png"
+
+
+def test_a_url_from_somewhere_else_is_not_a_reference():
+    from build.site_mirror.images import reference_from_url
+
+    assert reference_from_url("https://example.com/a.png") == ""
+
+
+def test_an_animated_format_is_marked_for_re_encoding():
+    """Sanity flattens a GIF on every conversion; gif2webp keeps the animation."""
+    from build.site_mirror.images import ANIMATED_FORMATS, PASS_THROUGH_FORMATS
+
+    assert "gif" in ANIMATED_FORMATS
+    assert "gif" in PASS_THROUGH_FORMATS  # fetched untouched, converted after
+    assert "svg" not in ANIMATED_FORMATS

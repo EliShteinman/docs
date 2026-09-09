@@ -19,19 +19,25 @@ import logging
 import sys
 from pathlib import Path
 
-from build.site_mirror import hugo, pages, portable_text
+from build.site_mirror import documents, hugo, pages, portable_text
 from build.site_mirror.images import ImageMirror
 from build.site_mirror.sanity import (
     SanityError,
+    count_documents,
     count_pages,
     count_posts,
+    fetch_documents,
     fetch_pages,
     fetch_posts,
 )
 
 # The page tree mirrored alongside the blog. Kept as a list so adding another
 # tree is a line here rather than a new code path.
-PAGE_TREES = (("technology", "/technology/*", hugo.TECHNOLOGY_DIR, hugo.TECHNOLOGY_INDEX),)
+PAGE_TREES = (
+    ("technology", "/technology/*", hugo.TECHNOLOGY_DIR, hugo.TECHNOLOGY_INDEX),
+    ("compare", "/compare/*", hugo.COMPARE_DIR, hugo.COMPARE_INDEX),
+    ("solutions", "/solutions/*", hugo.SOLUTIONS_DIR, hugo.SOLUTIONS_INDEX),
+)
 
 LOGGER = logging.getLogger("site_mirror")
 
@@ -48,7 +54,8 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--only",
-        choices=("blog", "technology"),
+        choices=("blog", "technology", "compare", "solutions",
+                 "tutorials", "glossary", "architecture-diagrams", "customers"),
         help="Mirror one body of content instead of all of them.",
     )
     parser.add_argument("--timeout", type=float, default=60.0)
@@ -89,6 +96,19 @@ def mirror_blog(content_dir: Path, images: ImageMirror, limit: int, timeout: flo
     return len(written)
 
 
+def _under(prefix: str, pathname: str) -> str:
+    """Return the sub-path of `pathname` under `prefix`, or "" if it is not under it.
+
+    GROQ's `match` is token-based rather than a prefix test, so a query for
+    "/solutions/*" also returns /tutorials/howtos/solutions/... . This is what
+    keeps those out of the wrong tree.
+    """
+    root = "/" + prefix.strip("/*").strip("/") + "/"
+    if not pathname.startswith(root):
+        return ""
+    return pathname[len(root):].strip("/")
+
+
 def mirror_pages(
     name: str,
     prefix: str,
@@ -108,20 +128,27 @@ def mirror_pages(
         if limit and index > limit:
             break
         pathname = (page.get("pathname") or "").strip()
-        segments = [s for s in pathname.strip("/").split("/") if s]
-        # The tree's own root page becomes the section index, not a child of it.
-        if len(segments) < 2:
+        under = _under(prefix, pathname)
+        # The tree's own root page becomes the section index, not a child of it,
+        # and anything the token match dragged in is not ours.
+        if not under:
             continue
         unknown |= pages.section_types(page) - pages.KNOWN_SECTIONS
         body = pages.render_page(page, lambda reference, _alt: images.ensure(reference))
         if not body.strip():
             LOGGER.warning("%s rendered empty; skipping", pathname)
             continue
-        file = hugo.file_name(segments[-1], page.get("_id") or f"page-{index}")
+        file = hugo.file_name(under, page.get("_id") or f"page-{index}")
         # Pages stay visible in the sidebar: eleven entries is a section a
         # reader can use, unlike 1,100 posts.
+        alias = hugo.flattened_alias(name, under)
         hugo.write_post(
-            content_dir, file, hugo.render_post(page, body, url=pathname, hidden=False)
+            content_dir,
+            file,
+            hugo.render_post(
+                page, body, url=pathname, hidden=False,
+                aliases=(alias,) if alias else (),
+            ),
         )
         written.add(file)
 
@@ -136,6 +163,58 @@ def mirror_pages(
     return len(written)
 
 
+def mirror_documents(
+    tree: documents.DocumentTree, images: ImageMirror, limit: int, timeout: float
+) -> int:
+    """Mirror one single-body document tree. Returns the number written."""
+    expected = count_documents(tree.doc_type, tree.prefix, timeout)
+    LOGGER.info("source holds %d %s documents", expected, tree.name)
+    written: set[str] = set()
+
+    for index, document in enumerate(
+        fetch_documents(tree.doc_type, tree.prefix, tree.projection, timeout), start=1
+    ):
+        if limit and index > limit:
+            break
+        pathname = (document.get("pathname") or "").strip()
+        under = _under(tree.prefix, pathname)
+        if not under:
+            continue
+        title = documents.title_of(tree, document)
+        if not title:
+            LOGGER.warning("%s has no title; skipping", pathname)
+            continue
+        body = documents.render_document(
+            tree,
+            document,
+            lambda reference, _alt: images.ensure(reference),
+            images.ensure_url,
+        )
+        if not body.strip():
+            LOGGER.warning("%s rendered empty; skipping", pathname)
+            continue
+        # The tree may name its title something else (`term`), and the rest of
+        # the writer reads `title`.
+        document = {**document, "title": title}
+        file = hugo.file_name(under, document.get("_id") or f"doc-{index}")
+        alias = hugo.flattened_alias(tree.directory.name, under)
+        hugo.write_post(
+            tree.directory,
+            file,
+            hugo.render_post(
+                document, body, url=pathname, hidden=tree.hidden,
+                aliases=(alias,) if alias else (),
+            ),
+        )
+        written.add(file)
+
+    if tree.index is not None:
+        hugo.write_section_index(tree.directory, tree.index)
+    if not limit:
+        hugo.prune_removed(tree.directory, written)
+    return len(written)
+
+
 def mirror(content_dir: Path, image_dir: Path, limit: int, timeout: float, only: str | None) -> int:
     """Mirror every configured body of content. Returns the number written."""
     images = ImageMirror(image_dir, timeout)
@@ -145,9 +224,12 @@ def mirror(content_dir: Path, image_dir: Path, limit: int, timeout: float, only:
     for name, prefix, directory, index_text in PAGE_TREES:
         if only in (None, name):
             written += mirror_pages(name, prefix, directory, index_text, images, limit, timeout)
+    for tree in documents.TREES:
+        if only in (None, tree.name):
+            written += mirror_documents(tree, images, limit, timeout)
     LOGGER.info(
-        "done: %d documents, %d images fetched, %d already present, %d failed",
-        written, images.fetched, images.skipped, len(images.failed),
+        "done: %d documents, %d images fetched (%d shrunk), %d already present, %d failed",
+        written, images.fetched, images.converted, images.skipped, len(images.failed),
     )
     if images.failed:
         LOGGER.warning("images that could not be fetched: %s", ", ".join(images.failed[:10]))

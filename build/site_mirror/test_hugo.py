@@ -166,3 +166,41 @@ def test_the_byline_is_written_into_the_body_so_it_travels_with_the_content():
 
 def test_the_source_update_time_becomes_hugos_lastmod():
     assert "lastmod: 2025-03-27" in front_matter({"title": "X", "_updatedAt": "2025-03-27T22:15:06Z"})
+
+
+def test_a_body_that_opens_by_repeating_the_title_loses_the_heading():
+    """The glossary writes its term as an H1; every theme renders one already."""
+    from build.site_mirror.hugo import drop_repeated_title
+
+    assert drop_repeated_title("# ACID\n\nText.", "ACID") == "Text."
+
+
+def test_a_different_opening_heading_is_kept():
+    from build.site_mirror.hugo import drop_repeated_title
+
+    body = "# Something else\n\nText."
+    assert drop_repeated_title(body, "ACID") == body
+
+
+def test_a_visible_document_carries_no_hidden_flag():
+    assert "hidden" not in front_matter({"title": "X"}, hidden=False)
+
+
+def test_a_nested_path_publishes_its_hyphenated_alias():
+    """redis.io answers both forms; only one of them is a real path."""
+    from build.site_mirror.hugo import flattened_alias
+
+    assert flattened_alias("tutorials", "develop/dotnet/streams/stream-basics") == (
+        "/tutorials/develop-dotnet-streams-stream-basics/"
+    )
+
+
+def test_a_flat_path_needs_no_alias():
+    from build.site_mirror.hugo import flattened_alias
+
+    assert flattened_alias("compare", "valkey") == ""
+
+
+def test_aliases_reach_the_frontmatter():
+    matter = front_matter({"title": "X"}, aliases=("/tutorials/a-b/",))
+    assert "aliases:" in matter and '- "/tutorials/a-b/"' in matter
