@@ -308,7 +308,7 @@ jobs:
           # redislabs.com.
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
             -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
-            -e 's#https?://(www\.)?redis\.io/technology#/technology#g'
+            -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g'
           # Short-form command links: the docs link commands both as
           # redis.io/docs/latest/commands/<x> (handled above) and as
           # redis.io/commands/<x>, which that rule does not touch -- 435 links
@@ -495,7 +495,7 @@ jobs:
           # redislabs.com.
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
             -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
-            -e 's#https?://(www\.)?redis\.io/technology#/technology#g'
+            -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g'
           # Short-form command links: the docs link commands both as
           # redis.io/docs/latest/commands/<x> (handled above) and as
           # redis.io/commands/<x>, which that rule does not touch -- 435 links
