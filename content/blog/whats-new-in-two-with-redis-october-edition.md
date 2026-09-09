@@ -22,7 +22,7 @@ Are you a Redis enthusiast eager to stay ahead of the game with the latest relea
 
 # Vector Database Capabilities and AWS Bedrock Integration
 
-![](/images/site-mirror/5b35df619b653dc15980c05a9af9c44fc4502808-600x338.gif)
+![](/images/site-mirror/5b35df619b653dc15980c05a9af9c44fc4502808-600x338.webp)
 
 Redis has some groundbreaking news! We’re delighted to introduce vector database capabilities. Redis, Inc. has been powering some of the largest customers in the world like OpenAI, and has years of investment in making machine learning and now vector databases seamless and easily accessible. We’ve seen many customers use Redis for Retrieval Augmented Generation (RAG), large Language Models (LLM) semantic caching, recommendation systems, and document search using our new vector database capabilities. But that’s not all; we’ve partnered with AWS Bedrock, a managed service for AI-based models. Together, we’re offering a new vector database solution that empowers you to start building AI generative applications today. To make getting started really easy, you can sign up through the AWS marketplace and receive a $500 free credit.
 
@@ -40,13 +40,13 @@ Redis has upgraded its geospatial search capabilities, introducing Polygon searc
 
 # Redis Enterprise Software Cluster Manager UI Upgrade
 
-![Software Cluster Manager UI Upgrade](/images/site-mirror/ae5a1c5e2c59ea053985fc2c82af248ccf8f4e53-1920x1080.gif)
+![Software Cluster Manager UI Upgrade](/images/site-mirror/ae5a1c5e2c59ea053985fc2c82af248ccf8f4e53-1920x1080.webp)
 
 Redis isn’t just about developers. For Redis operators, we have something exciting in store. Redis Enterprise Software boasts a substantial upgrade with the new Cluster Manager UI. Beyond its brand-new face, this UI brings a host of new features and enhancements, streamlining your tasks from A to Z. Redis management has never been easier.
 
 # Redis Data Integration: Your Gateway to Near Real-Time Data Sync
 
-![](/images/site-mirror/af7e7235e845e7fa0c6992381bbf837e9154ed94-1920x1080.gif)
+![](/images/site-mirror/af7e7235e845e7fa0c6992381bbf837e9154ed94-1920x1080.webp)
 
 Finally, Redis Data Integration (RDI) is here, simplifying the process of syncing your data with Redis. RDI offers near real-time data synchronization with no code. This is the enterprise-grade integration and ingestion tool we’ve all been waiting for. Currently, RDI supports source databases such as Oracle, Postgres, MySQL, MariaDB, Percona XtraDB, SQL Server, Cassandra, MongoDB, and we’re actively working on adding more. If data integration is your concern, then check out my video on the tool to see what patterns and use cases RDI supports.
 

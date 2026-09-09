@@ -80,7 +80,7 @@ redis:6379> FT.SEARCH movies "@title:fiction"
 
 2) "*pulp* fiction"
 
-![](/images/site-mirror/121873b64ccf3bc678a81f4a80d917920de100f1-1920x1076.gif)
+![](/images/site-mirror/121873b64ccf3bc678a81f4a80d917920de100f1-1920x1076.webp)
 
 *Visualization of how aliases work.*
 

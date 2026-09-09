@@ -28,7 +28,7 @@ Count-min sketch (also called CM sketch) is a probabilistic data structure that�
 
 Fortunately, CM sketch’s simple characteristics make it relatively easy for novices to understand (turns out many of my friends were unable to follow along with this [Top-K blog](/blog/meet-top-k-awesome-probabilistic-addition-redisbloom/)).
 
-![count-min sketch RedisBloom image](/images/site-mirror/aa4b5590607a8547b09653241818f242510da11e-547x282.gif)
+![count-min sketch RedisBloom image](/images/site-mirror/aa4b5590607a8547b09653241818f242510da11e-547x282.webp)
 
 CM sketch has been a Redis module for several years and was recently rewritten as part of the [RedisBloom](/modules/redis-bloom/) module v2.0. But before we dive into CM sketch, it is important to understand why you’d use *any* probabilistic data structure. In the triangle of speed, space, and accuracy, probabilistic data structures sacrifice some accuracy to gain space—potentially *a lot of space*! The effect on speed varies based on algorithms and set sizes.
 

@@ -67,7 +67,7 @@ I love traveling, but 2020 made millions of people stay home for months on end (
 
 This is what my [Grafana U.S. States Coronavirus Dashboard](https://github.com/RedisGrafana/redis-coronavirus-map) shows. It is based on the [Coronavirus API](https://coronavirusapi.com/) data, loaded into the [RedisTimeSeries](https://oss.redis.com/redistimeseries/) module.
 
-![Redis](/images/site-mirror/bc2940ac9516fda57434bc0beac06edc6496e39e-923x540.gif)
+![Redis](/images/site-mirror/bc2940ac9516fda57434bc0beac06edc6496e39e-923x540.webp)
 
 Besides standard graph representation, data is also drawn on the map.[ The Redis Data Source plug-in](https://github.com/RedisTimeSeries/grafana-redis-datasource) is not officially supported by the [Grafana Worldmap panel](https://grafana.com/grafana/plugins/grafana-worldmap-panel), but you can make it work in two simple steps:
 
@@ -110,7 +110,7 @@ We used RedisTimeSeries to store the number of incoming messages and the queue-s
 
 To demonstrate how Redis Streams, RedisTimeSeries, RedisGears, and Redis Data Source can work together, we created the [Pop-up store demo](https://github.com/RedisTimeSeries/redis-pop-up-store) with a dynamic dashboard:
 
-![Redis](/images/site-mirror/3f7a7abc107a70407633f3b1167260ca12e660f3-1200x516.gif)
+![Redis](/images/site-mirror/3f7a7abc107a70407633f3b1167260ca12e660f3-1200x516.webp)
 
 This Grafana dashboard displays:
 

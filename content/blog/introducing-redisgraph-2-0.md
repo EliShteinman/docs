@@ -90,7 +90,7 @@ To demonstrate the power of this full-graph response, we want to showcase some t
 
 One such application is [RedisInsight](/insight/), where a user can now enter a query and receive a visualization (as shown above). The full-graph response allows RedisInsight to present a visualization and allows the inspection of all the properties of the nodes and edges returned by the query without having to know these properties in advance.
 
-![](/images/site-mirror/ff260eb890f83d62f4946446bc9a732ccdd1f736-1361x619.gif)
+![](/images/site-mirror/ff260eb890f83d62f4946446bc9a732ccdd1f736-1361x619.webp)
 
 [RedisInsight 1.2](https://docs.redis.com/latest/ri/installing/) provides direct support for exploring and querying the graphs stored in Redis. The new support for full-graph response allows RedisInsight to present the query subgraph as a visualization directly to the user. Subsequently, a user can click on nodes and edges in the graph to inspect property values or expand the graph further.
 

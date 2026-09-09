@@ -27,7 +27,7 @@ Microsoft Azure is one of the most globally distributed and secure clouds on the
 
 This joint offering already allows select customers to launch Redis Enterprise in the Azure portal just as they would any other native Azure service. Using the Azure Portal user interface, creating a new Redis Enterprise database and connecting it to your app is as easy as 1-2-3.
 
-![Redis](/images/site-mirror/6497065b4f62204d81b23f85fc100d02457fb02b-448x280.gif)
+![Redis](/images/site-mirror/6497065b4f62204d81b23f85fc100d02457fb02b-448x280.webp)
 
 ## New enterprise tiers
 

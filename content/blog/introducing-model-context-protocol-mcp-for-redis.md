@@ -38,7 +38,7 @@ You can integrate this MCP Server in a few clicks using registries like the popu
 
 MCP works with the tools you already use. IDEs like VS Code with GitHub Copilot, Cursor, and Claude Desktop support it out of the box—so you can talk to your Redis server no matter where it’s running: local, Docker, or Redis Cloud. Just connect the server you want and you’re ready to go.
 
-![The Redis MCP server](/images/site-mirror/1bbaa95c23c006f53f6e85d9e99e88dc321b8900-1404x937.gif)
+![The Redis MCP server](/images/site-mirror/1bbaa95c23c006f53f6e85d9e99e88dc321b8900-1404x937.webp)
 
 Integrating natural language processing into your IDE opens up new possibilities to boost user experience when working with app data. But MCP is much more. You can build powerful agentic apps in SDKs such as the OpenAI Agents SDK. The [SDK supports MCP](https://openai.github.io/openai-agents-python/mcp/) so that you can provide your MCP tools to agents.
 

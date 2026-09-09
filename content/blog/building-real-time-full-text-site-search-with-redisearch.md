@@ -14,11 +14,11 @@ hidden: true
 
 *By Andrew Brookins, Former Curriculum Software Engineer at Redis · Published 27 November 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
+![Blog tile image](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.webp)
 
 When we wanted to add real-time [full-text search](/glossary/full-text-search/) to the [Redis documentation site](https://docs.redis.com/latest/), we turned to [RediSearch](/modules/redis-search). The robust search features in the RediSearch module helped us transform a bland form into an awesome search experience. To show off some of what’s possible with RediSearch and to help jumpstart your search projects, I’d like to talk about the architecture of our project and share our code. The Python application we built is called redis-sitesearch. If you want to check out the code or run it for your own site, it’s [open source](https://github.com/redislabs-training/redis-sitesearch), and you can try RediSearch for free on [Redis Cloud Essentials](/try-free/). Read on for the nitty-gritty details!
 
-![](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
+![](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.webp)
 
 ## Why we used RediSearch
 
@@ -139,7 +139,7 @@ With prefix matching, “red*” will find many hits, including:
 
 The search form will start displaying results for hits across all these terms as the user types. When the user finishes the phrase they are typing, the results will begin to focus. If the final search is for “redisearch,” the app issues one last query to Redis for “redisearch*” and the results will be specific to RediSearch.
 
-![](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
+![](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.webp)
 
 ## Deploying on Google Cloud
 

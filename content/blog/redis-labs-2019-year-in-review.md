@@ -38,7 +38,7 @@ We also set a new performance standard for Redis Enterprise. In our latest bench
 
 During 2019 we also invested in enterprise-grade Kubernetes deployment of Redis. **Redis Enterprise Operator** ensures that your cluster is properly utilizing the Kubernetes Stateful Set with support for anti-affinity, multi-AZ (failure domains), rolling upgrades, and Active-Active deployment across multiple Kubernetes clusters. And we recently announced **Automated Cluster Recovery**, which not only improves the availability of your Redis deployment but also allows users to manage a stateful service as if it were stateless. Our Kubenetes distro is available across all the leading Kubernetes platforms: GKE, AKS, EKS, PKS, RedHat OpenShift, and native Kubernetes.
 
-![](/images/site-mirror/74b7b8df7e0adca2cea0c4d0cddddaeea5a435d7-1362x619.gif)
+![](/images/site-mirror/74b7b8df7e0adca2cea0c4d0cddddaeea5a435d7-1362x619.webp)
 
 Furthermore, we worked hard to help customers use Redis Enterprise across multiple clouds in just a few clicks, with the unification of Redis Enterprise Cloud and Memcached Enterprise Cloud into [**Redis Cloud Essentials**](/blog/introducing-redis-cloud-pro-essential-versions/). We also renamed Redis Enterprise VPC as **Redis Cloud Pro**, supporting Active-Active, Redis on Flash, and modules.
 

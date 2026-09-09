@@ -76,7 +76,7 @@ Note that Azure Managed Redis is currently in public preview and you can sign up
 1. Now open the Redis Insights application and configure the connection details. Also note that TLS is enabled by default, so you must enable TLS from Redis Insights as well.
 1. Once connected successfully, you will see that the newly created cache is empty. You can use the tools with Redis Insights to quickly populate the cache with some data.
 
-![](/images/site-mirror/c99ca90d31bbed6bc5224646b6554bb19e812a5f-1080x608.gif)
+![](/images/site-mirror/c99ca90d31bbed6bc5224646b6554bb19e812a5f-1080x608.webp)
 
 1. In this demo, we will use the Import feature and use an .rdb file to populate the cache.
 

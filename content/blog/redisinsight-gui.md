@@ -26,7 +26,7 @@ Wait, did you say “*FREE*?”
 
 Yes, I did! RedisInsight is 100% complimentary! We want every Redis user to be able to take advantage of RedisInsight. We hope it will make Redis easier to use, with better visibility of your data. Eventually, you’ll be able to use RedisInsight as a single place for both GUI- and CLI-based interactions with your Redis database.
 
-![](/images/site-mirror/74b7b8df7e0adca2cea0c4d0cddddaeea5a435d7-1362x619.gif)
+![](/images/site-mirror/74b7b8df7e0adca2cea0c4d0cddddaeea5a435d7-1362x619.webp)
 
 *RedisInsight lets you plot several time series in a single graph with dual axes, zoom in with click-and-drag, and optionally optimize the amount of data retrieved for visualization purposes.*
 
@@ -44,7 +44,7 @@ So what exactly can you do with this powerful new tool? Turns out, quite a few t
 - **Basic cluster management:** With RedisInsight you can directly manipulate key configurations including managing cluster and properties that affect your Redis cluster, like cluster node timeout, cluster IP, port etc..
 - **View the slow log:** RedisInsight gives you visibility into your slow logs so you can identify, troubleshoot, and fix bottlenecks and find optimization opportunities.
 
-![](/images/site-mirror/8be8037d7732cde811470822016468974a4ca64b-1362x619.gif)
+![](/images/site-mirror/8be8037d7732cde811470822016468974a4ca64b-1362x619.webp)
 
 *The RedisInsight Profiler lets you create real workloads and test which commands have the most impact on the database.*
 

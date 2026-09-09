@@ -28,7 +28,7 @@ In case you weren’t already excited, here are the latest goodies we wanted to 
 
 While we won’t be able to meet together in-person this year, we’re working on bringing you the next best thing. At RedisConf 2020 *Takeaway*, you’ll be able to create your own Redis avatar and interact with fellow Redis Geeks in an online landscape filled with keynote and training content, live interactions, games, and more. You’ll be able to navigate throughout the world, and maybe even play a round of ping-pong along the way.
 
-![](/images/site-mirror/617d282955221c57941830ea2874d89158d144f6-600x338.gif)
+![](/images/site-mirror/617d282955221c57941830ea2874d89158d144f6-600x338.webp)
 
 ![](/images/site-mirror/8caee3bea7fe04115ef51318318ec7c8bfd18ab1-1024x712.webp)
 

@@ -26,7 +26,7 @@ Redis Smart Cache allows developers to identify their worst-performing queries, 
 
 Redis Smart Cache is useful for optimizing demanding online transaction processing (OLTP) applications, data warehouses, and analytical workloads. For example, you can integrate Smart Cache with Tableau, instantly making live dashboards more responsive.
 
-![](/images/site-mirror/1112d968510a4982c57017768a7d4a4127fc035c-3456x2234.gif)
+![](/images/site-mirror/1112d968510a4982c57017768a7d4a4127fc035c-3456x2234.webp)
 
 *Redis Smart Cache configured within Tableau for real-time visualization and reporting.*
 

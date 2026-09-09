@@ -18,7 +18,7 @@ hidden: true
 
 ![Blog tile image](/images/site-mirror/56871e62057cfe57b336bb7ec1197244597ed75a-772x550.webp)
 
-![redis developer home page](/images/site-mirror/91a0ac8565dffccfdd1382326eef2ad2a8c83ccc-600x244.gif)
+![redis developer home page](/images/site-mirror/91a0ac8565dffccfdd1382326eef2ad2a8c83ccc-600x244.webp)
 
 The [Redis Developer Hub](/learn/) has always been a great resource for developers looking to build with Redis. With more than 200+ free tutorials, which were accessed by millions of developers over the last year, it offers invaluable training and instruction for developers looking to [**Create**](/learn/create/)**, **[**Develop**](/learn/develop/)**,** and [**Explore**](/learn/explore/)**.**
 

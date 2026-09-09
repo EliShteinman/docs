@@ -48,7 +48,7 @@ In the image below, this Redis database is completing the majority of GET, SET, 
 
 You can build your own custom metrics that appear on the Uptrace dashboard. For example, memory usage is an important metric for Redis. This screen capture shows how to accomplish that.
 
-![Creating a memory usage custom metric in Uptrace ](/images/site-mirror/1a8e2d0b9217e716f634170a47de50158fa2bc23-594x283.gif)
+![Creating a memory usage custom metric in Uptrace ](/images/site-mirror/1a8e2d0b9217e716f634170a47de50158fa2bc23-594x283.webp)
 
 *Creating a memory usage custom metric in Uptrace*
 

@@ -49,7 +49,7 @@ After you complete the initial configuration, you can start to create panels dis
 
 1.** Redis commands** comprise a number of predefined commands to retrieve core Redis data types, such as Hashes, Sets, Strings, Streams, etc. The command’s output is pre-formatted for easy use in the Grafana interface. This mode also allows you to execute Redis admin commands: SLOWLOG GET, INFO, CLIENT LIST. Their output comes in newly introduced data frames, so you can apply [Grafana transformations](https://grafana.com/docs/grafana/latest/panels/transformations/) to modify the standard output.
 
-![Redis](/images/site-mirror/744916b4bb2d8958034146ef57d8b10a2eda8721-800x472.gif)
+![Redis](/images/site-mirror/744916b4bb2d8958034146ef57d8b10a2eda8721-800x472.webp)
 
 2.** RedisTimeSeries commands** offer an interface to let you work with the [RedisTimeSeries](http://redistimeseries.io/) module. Currently, it supports two commands: TS.RANGE and TS.MRANGE, which let you query a range from one or more time series. The example below shows the number of downloads of the Redis Data Source from the Grafana repository.
 

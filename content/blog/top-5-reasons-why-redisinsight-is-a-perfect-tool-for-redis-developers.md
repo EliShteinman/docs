@@ -14,7 +14,7 @@ hidden: true
 
 *By Ajeet Raina, Technical Marketing Manager · Published 5 October 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/site-mirror/0244d0ed9739b943433c55fea5ac81410450bf68-1364x619.gif)
+![Blog tile image](/images/site-mirror/0244d0ed9739b943433c55fea5ac81410450bf68-1364x619.webp)
 
 ![](/images/site-mirror/afa7530506c11e4674ad59cc3ad8df3db4796d52-1024x244.webp)
 
@@ -50,7 +50,7 @@ Full screen support for [Time Series](/timeseries/), [JSON](/json/), [Redis Stre
 
 ## 2. A visual tool to interact with your data
 
-![](/images/site-mirror/0244d0ed9739b943433c55fea5ac81410450bf68-1364x619.gif)
+![](/images/site-mirror/0244d0ed9739b943433c55fea5ac81410450bf68-1364x619.webp)
 
 *Browsing keys in a Redis database using RedisInsight.*
 
@@ -58,7 +58,7 @@ RedisInsight lets you browse and explore your Redis databases and intuitively in
 
 RedisInsight comes with a built-in CLI that lets you run commands against a Redis server. You don’t need to install anything, as soon as you are connected to the database, the integrated web is CLI available, just there for you! RedisInsight also makes your life simpler with all the command’s syntax—the integrated help shows you all the arguments and validates your commands as you type.
 
-![](/images/site-mirror/1f45e65f3582e6825ba329a8de571c3cccc4e738-1364x619.gif)
+![](/images/site-mirror/1f45e65f3582e6825ba329a8de571c3cccc4e738-1364x619.webp)
 
 *Check out the auto-complete and syntax highlighting features of RedisInsight.*
 
@@ -80,7 +80,7 @@ For example, RedisInsight allows developers to perform bulk operations such as r
 
 Software firms need advanced tools to make development straightforward and fast. With the right tools, developers can save time, deliver high-quality applications, and run a sustainable enterprise. As a Redis developer, it’s important to identify efficient and easy-to-use tools that help you to understand how an application behaves and interacts with the database.
 
-![](/images/site-mirror/8be8037d7732cde811470822016468974a4ca64b-1362x619.gif)
+![](/images/site-mirror/8be8037d7732cde811470822016468974a4ca64b-1362x619.webp)
 
 *Demonstrating the top key patterns in RedisInsight.*
 
@@ -92,7 +92,7 @@ Profiler gives information about the number of commands processed, commands/seco
 
 Redis is an in-memory data store. This means that the entire dataset is stored in memory (DRAM). This is great for performance, but as the size of your data set grows, you need more DRAM to hold all that data. Few developers want to spend their time learning about Redis memory issues, so RedisInsight provides recommendations for developers on how to save memory. The recommendations are specially curated according to the Redis instance, based on industry standards and Redis’ experience.
 
-![](/images/site-mirror/a7de260e71c558fd2922c85f337aa32e321f0dc6-1362x619.gif)
+![](/images/site-mirror/a7de260e71c558fd2922c85f337aa32e321f0dc6-1362x619.webp)
 
 *RedisInsight shows memory usage by Redis keys.*
 

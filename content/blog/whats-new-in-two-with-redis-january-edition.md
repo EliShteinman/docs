@@ -27,38 +27,38 @@ Welcome to ‘What’s New in Two’, the place to catch up on the Redis release
 
 First, let’s jump into Redis Cloud and see what’s cooking there: eight new updates:
 
-![active active Redis database](/images/site-mirror/175e4c2b35a64115890f42f64e1a075e66aa43c9-1920x1080.gif)
+![active active Redis database](/images/site-mirror/175e4c2b35a64115890f42f64e1a075e66aa43c9-1920x1080.webp)
 
 1. **JSON Support in Active-Active**
 
 Redis Cloud now supports JSON in Active-Active deployment. Distribute your data globally in real-time with 99.999% high availability.
 
 ![ mTLS Certificates 
-](/images/site-mirror/ce2394b98ec849bb3d26a3e8c7b687f762455655-1920x1080.gif)
+](/images/site-mirror/ce2394b98ec849bb3d26a3e8c7b687f762455655-1920x1080.webp)
 
 1. **Support for multiple mTLS Certificates**
 
 Adding support for multiple mTLS certificates for less downtime during maintenance windows – less worry about expirations and better separations of application instances connecting to the same database as well!
 
-![Availability Zone Labeling](/images/site-mirror/56825ed568f0692ba241e989751e3314285ee15e-1920x1080.gif)
+![Availability Zone Labeling](/images/site-mirror/56825ed568f0692ba241e989751e3314285ee15e-1920x1080.webp)
 
 1. **Availability Zone Labeling**
 
 Introducing a new availability zone labeling feature. This will give you more flexibility and more information when creating new subscriptions on what availability zones your cluster is deploying to.
 
-![Database Tagging](/images/site-mirror/8f12d02fb9615f1d30616da94bc0e67b89532bd4-1920x1080.gif)
+![Database Tagging](/images/site-mirror/8f12d02fb9615f1d30616da94bc0e67b89532bd4-1920x1080.webp)
 
 1. **Database Tagging (preview)**
 
 Database tagging is here! Manage, organize, and track resources effortlessly with Redis Cloud’s fixed and flexible plans.
 
-![New Billing Admin Role](/images/site-mirror/5654b3137ef57d69599160ef52eec9cfdec1560c-1920x1080.gif)
+![New Billing Admin Role](/images/site-mirror/5654b3137ef57d69599160ef52eec9cfdec1560c-1920x1080.webp)
 
 1. **New Billing Admin Role**
 
 Finance can now pay the bills without access to your precious data. This new Billing Admin role ensures a smooth financial operation without compromising data privacy.
 
-![Column Selector](/images/site-mirror/dc83d8ed10288ed473f02eac6e74403067519ce7-1920x1080.gif)
+![Column Selector](/images/site-mirror/dc83d8ed10288ed473f02eac6e74403067519ce7-1920x1080.webp)
 
 1. **New Column Selector for Databases**
 
@@ -68,7 +68,7 @@ A new selector, “Column” on the databases page makes diagnosing, identifying
 
 Did you see our AWS Transit Gateway announcement last week? Well, here’s another! We now have Active-Active support for Redis Cloud customers using AWS Transit Gateway in public preview.
 
-![Confluent Cloud](/images/site-mirror/a091ff8079d5ff28af84b73e6d6a95947d350659-1920x1080.gif)
+![Confluent Cloud](/images/site-mirror/a091ff8079d5ff28af84b73e6d6a95947d350659-1920x1080.webp)
 
 1. **Redis Cloud Integration with Confluent Cloud**
 
@@ -92,7 +92,7 @@ Exciting News! Redis Insight is now on Docker. Check out our release there if th
 
 But wait, there’s more! I told you January was going to be a busy month for our Redis developers. Our latest release, version 7.4.2 brings some firepower.
 
-![Active-Active Setup](/images/site-mirror/3bebaca41156d9d37f2a97f80e4c76b6a8399fb2-1920x1080.gif)
+![Active-Active Setup](/images/site-mirror/3bebaca41156d9d37f2a97f80e4c76b6a8399fb2-1920x1080.webp)
 
 1. **Active-Active Setup in Redis Enterprise Software UI**
 
