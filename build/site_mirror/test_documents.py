@@ -128,3 +128,32 @@ def test_every_generated_index_is_valid_frontmatter():
         if tree.index is None:
             continue
         yaml.safe_load(tree.index.split("---")[1])
+
+
+def test_only_frontmatter_declares_a_published_path(tmp_path):
+    """A `url:` in the body is prose, not a declaration."""
+    from build.site_mirror.__main__ import _known_urls
+
+    (tmp_path / "a.md").write_text('---\nurl: "/blog/a/"\n---\n\nurl: not this one\n')
+    assert _known_urls(tmp_path) == {"/blog/a/"}
+
+
+def test_a_file_without_frontmatter_declares_nothing(tmp_path):
+    from build.site_mirror.__main__ import _known_urls
+
+    (tmp_path / "a.md").write_text("Just text.\n")
+    assert _known_urls(tmp_path) == set()
+
+
+def test_a_link_to_a_published_path_is_not_stale(tmp_path):
+    from build.site_mirror.__main__ import _stale_targets
+
+    (tmp_path / "a.md").write_text("[x](/blog/a/) and [y](/blog/missing/)\n")
+    assert _stale_targets(tmp_path, {"/blog/a/"}) == ["/blog/missing/"]
+
+
+def test_an_absolute_source_link_is_normalised_before_comparison(tmp_path):
+    from build.site_mirror.__main__ import _stale_targets
+
+    (tmp_path / "a.md").write_text("[x](https://redis.io/blog/a/)\n")
+    assert _stale_targets(tmp_path, {"/blog/a/"}) == []

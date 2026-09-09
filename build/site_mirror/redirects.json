@@ -1,0 +1,32 @@
+{
+ "/blog/getting-started-redis-6-access-control-lists-acls/": [
+  "/blog/getting-started-with-redis-6-access-control-lists-acls/"
+ ],
+ "/blog/how-holidayme-uses-redis-enterprise-as-its-primary-database/": [
+  "/customers/holidayme/"
+ ],
+ "/blog/meet-top-k-awesome-probabilistic-addition-redis/": [
+  "/blog/meet-top-k-awesome-probabilistic-addition-redisbloom/"
+ ],
+ "/customers/ekata/": [
+  "/customers/ekata-3/"
+ ],
+ "/solutions/microservices/": [
+  "/blog/what-is-a-microservices-architecture/"
+ ],
+ "/solutions/vector-database/": [
+  "/solutions/vector-search/"
+ ],
+ "/tutorials/how-to-cache-rest-api-responses-using-redis-and-nodejs/": [
+  "/tutorials/howtos/caching/"
+ ],
+ "/tutorials/howtos/solutions/vector/semantic-text-search/": [
+  "/tutorials/vector/"
+ ],
+ "/tutorials/operate/observability/redisdatasource/": [
+  "/tutorials/explore/redisdatasource/"
+ ],
+ "/tutorials/rate-limiting-in-java-spring-with-redis/": [
+  "/tutorials/develop/java/spring/rate-limiting/fixed-window/"
+ ]
+}

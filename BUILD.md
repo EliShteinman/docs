@@ -190,6 +190,19 @@ git add content/ static/images/site-mirror
 הקטן מבין השניים. הורדת איכות לא עוזרת — q70, q50 ו-q35 יצאו בהפרש של אחוז. אם `gif2webp`
 לא מותקן, הסקריפט מזהיר וממשיך עם ה-GIF-ים המקוריים.
 
+**הפניות ישנות (`build/site_mirror/redirects.json`):** חלק מהקישורים בדוקס ובתוכן הממורר
+מצביעים לכתובות ש-redis.io עונה עליהן ב-301 — למשל `/blog/connecting-spark-and-redis/`
+שהעמוד האמיתי שלו הוא `/blog/connecting-spark-and-redis-a-detailed-look/`. מפת ההפניות של
+רדיס יושבת בשכבת ה-hosting ולא ב-dataset, ולכן היא **נצפית ולא נשאלת**: הפקודה עוקבת אחרי
+כל קישור שבור, רואה איפה הוא נוחת, ורושמת alias על עמוד היעד.
+
+```bash
+python3 -m build.site_mirror --refresh-redirects   # דורש אינטרנט; להריץ ולקבע את המפה
+```
+
+המפה **מקובעת בגיט** כי המירור מייצר מחדש כל קובץ markdown בכל ריצה — alias שהיה מחושב בזמן
+סנכרון היה נמחק בריצה הבאה. ריצה רגילה רק קוראת אותה.
+
 **ניווט:** `layouts/partials/mirrored-nav.html` מוסיף תיבה בסרגל הצדדי עם כל הסקשנים
 הממוררים. `docs-nav.html` מקודד קשיח לחמישה סקשנים (‏`Develop`, `Integrate`, `Operate`,
 `Commands`), כך שבלי התיבה הזו התוכן הממורר היה נגיש רק דרך חיפוש או הקלדת כתובת. ה-partial

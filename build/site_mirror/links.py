@@ -23,6 +23,16 @@ import re
 
 LOCAL_SECTION = "/blog"
 
+# The blog's own index pages -- author, tag and category listings. They are
+# navigation over the blog rather than writing, so they are not mirrored, and a
+# link to one would dead-end. Returning "" makes the link render as plain text,
+# which for an author credit is what it should have been anyway.
+_INDEX_PAGE = re.compile(r"^/(author|tag|tags|category|categories)(/|$)", re.IGNORECASE)
+
+# The source writes some of its own links root-relative rather than absolute,
+# so the same index pages arrive as /blog/author/dave/ with no host to match on.
+_RELATIVE_BLOG = re.compile(r"^/blog(?P<rest>/.*)?$", re.IGNORECASE)
+
 # Matches the blog root on any of the domains the corpus uses, with or without
 # the locale prefix, and captures whatever path follows.
 _BLOG_URL = re.compile(
@@ -32,11 +42,18 @@ _BLOG_URL = re.compile(
 
 
 def localize(url: str) -> str:
-    """Return the local path for a blog URL, or `url` unchanged if it is not one."""
-    match = _BLOG_URL.match((url or "").strip())
+    """Return the local path for a blog URL, "" for one that is not mirrored, or
+    `url` unchanged if it is not a blog URL at all."""
+    stripped = (url or "").strip()
+    relative = _RELATIVE_BLOG.match(stripped)
+    if relative and _INDEX_PAGE.match(relative.group("rest") or "/"):
+        return ""
+    match = _BLOG_URL.match(stripped)
     if not match:
         return url
     rest = match.group("rest") or "/"
+    if _INDEX_PAGE.match(rest):
+        return ""
     # Hugo publishes each post as a directory, so the trailing slash is kept:
     # without it nginx answers a redirect before serving the page.
     if not rest.endswith("/") and "#" not in rest and "?" not in rest:

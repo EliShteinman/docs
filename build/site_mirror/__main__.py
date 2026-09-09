@@ -16,10 +16,11 @@ from __future__ import annotations
 
 import argparse
 import logging
+import re
 import sys
 from pathlib import Path
 
-from build.site_mirror import documents, hugo, pages, portable_text
+from build.site_mirror import documents, hugo, pages, portable_text, redirects
 from build.site_mirror.images import ImageMirror
 from build.site_mirror.sanity import (
     SanityError,
@@ -58,12 +59,21 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
                  "tutorials", "glossary", "architecture-diagrams", "customers"),
         help="Mirror one body of content instead of all of them.",
     )
+    parser.add_argument(
+        "--refresh-redirects",
+        action="store_true",
+        help="Follow the stale links on redis.io and record where they land. "
+             "Needs the public internet; run it deliberately, then commit the map.",
+    )
     parser.add_argument("--timeout", type=float, default=60.0)
     parser.add_argument("--log-level", default="INFO")
     return parser.parse_args(argv)
 
 
-def mirror_blog(content_dir: Path, images: ImageMirror, limit: int, timeout: float) -> int:
+def mirror_blog(
+    content_dir: Path, images: ImageMirror, limit: int, timeout: float,
+    redirect_map: dict[str, list[str]],
+) -> int:
     """Mirror every blog post. Returns the number written."""
     expected = count_posts(timeout)
     LOGGER.info("source holds %d posts", expected)
@@ -85,7 +95,13 @@ def mirror_blog(content_dir: Path, images: ImageMirror, limit: int, timeout: flo
             if path:
                 alt = (post.get("image") or {}).get("altText") or post.get("title") or ""
                 body = f"![{alt}]({path})\n\n{body}"
-        hugo.write_post(content_dir, name, hugo.render_post(post, body))
+        hugo.write_post(
+            content_dir,
+            name,
+            hugo.render_post(
+                post, body, aliases=_aliases(hugo.permalink(post.get("slug") or ""), "", redirect_map)
+            ),
+        )
         written.add(name)
         if index % 100 == 0:
             LOGGER.info("%d/%d posts written, %d images fetched", index, expected, images.fetched)
@@ -94,6 +110,59 @@ def mirror_blog(content_dir: Path, images: ImageMirror, limit: int, timeout: flo
     if not limit:
         hugo.prune_removed(content_dir, written)
     return len(written)
+
+
+# Sections whose links are worth resolving: the ones this mirror publishes.
+MIRRORED_SECTIONS = (
+    "blog", "tutorials", "glossary", "compare", "solutions",
+    "customers", "technology", "resources/architecture-diagrams",
+)
+
+_LINK = re.compile(
+    r"\]\((?:https?://(?:www\.)?redis\.io)?(/(?:"
+    + "|".join(MIRRORED_SECTIONS)
+    + r")/[A-Za-z0-9._/-]*)"
+)
+
+
+def _known_urls(content_root: Path) -> set[str]:
+    """Return every path this mirror publishes, read back from what it wrote.
+
+    Only the frontmatter is scanned, and only until it closes: a `url:` further
+    down is body text, not a declaration.
+    """
+    known = set()
+    for markdown in content_root.rglob("*.md"):
+        lines = markdown.read_text(encoding="utf-8", errors="replace").split("\n")
+        if not lines or lines[0].strip() != "---":
+            continue
+        for line in lines[1:]:
+            if line.strip() == "---":
+                break
+            if line.startswith("url:"):
+                known.add(line.split(":", 1)[1].strip().strip('"').rstrip("/") + "/")
+                break
+    return known
+
+
+def _stale_targets(content_root: Path, known: set[str]) -> list[str]:
+    """Return the internal links that point at a mirrored section but nothing in it."""
+    seen = set()
+    for markdown in content_root.rglob("*.md"):
+        text = markdown.read_text(encoding="utf-8", errors="replace")
+        for match in _LINK.finditer(text):
+            target = match.group(1).split("#")[0].rstrip("/") + "/"
+            if target not in known:
+                seen.add(target)
+    return sorted(seen)
+
+
+def _aliases(pathname: str, flattened: str, redirect_map: dict[str, list[str]]) -> tuple[str, ...]:
+    """Every stale URL that should land on this document."""
+    found = list(redirects.aliases_for(pathname, redirect_map))
+    if flattened and flattened not in found:
+        found.append(flattened)
+    return tuple(found)
 
 
 def _under(prefix: str, pathname: str) -> str:
@@ -117,6 +186,7 @@ def mirror_pages(
     images: ImageMirror,
     limit: int,
     timeout: float,
+    redirect_map: dict[str, list[str]],
 ) -> int:
     """Mirror one page tree. Returns the number written."""
     expected = count_pages(prefix, timeout)
@@ -147,7 +217,7 @@ def mirror_pages(
             file,
             hugo.render_post(
                 page, body, url=pathname, hidden=False,
-                aliases=(alias,) if alias else (),
+                aliases=_aliases(pathname, alias, redirect_map),
             ),
         )
         written.add(file)
@@ -164,7 +234,8 @@ def mirror_pages(
 
 
 def mirror_documents(
-    tree: documents.DocumentTree, images: ImageMirror, limit: int, timeout: float
+    tree: documents.DocumentTree, images: ImageMirror, limit: int, timeout: float,
+    redirect_map: dict[str, list[str]],
 ) -> int:
     """Mirror one single-body document tree. Returns the number written."""
     expected = count_documents(tree.doc_type, tree.prefix, timeout)
@@ -203,7 +274,7 @@ def mirror_documents(
             file,
             hugo.render_post(
                 document, body, url=pathname, hidden=tree.hidden,
-                aliases=(alias,) if alias else (),
+                aliases=_aliases(pathname, alias, redirect_map),
             ),
         )
         written.add(file)
@@ -218,15 +289,20 @@ def mirror_documents(
 def mirror(content_dir: Path, image_dir: Path, limit: int, timeout: float, only: str | None) -> int:
     """Mirror every configured body of content. Returns the number written."""
     images = ImageMirror(image_dir, timeout)
+    redirect_map = redirects.load()
+    if redirect_map:
+        LOGGER.info("applying %d recorded redirects", sum(len(v) for v in redirect_map.values()))
     written = 0
     if only in (None, "blog"):
-        written += mirror_blog(content_dir, images, limit, timeout)
+        written += mirror_blog(content_dir, images, limit, timeout, redirect_map)
     for name, prefix, directory, index_text in PAGE_TREES:
         if only in (None, name):
-            written += mirror_pages(name, prefix, directory, index_text, images, limit, timeout)
+            written += mirror_pages(
+                name, prefix, directory, index_text, images, limit, timeout, redirect_map
+            )
     for tree in documents.TREES:
         if only in (None, tree.name):
-            written += mirror_documents(tree, images, limit, timeout)
+            written += mirror_documents(tree, images, limit, timeout, redirect_map)
     LOGGER.info(
         "done: %d documents, %d images fetched (%d shrunk), %d already present, %d failed",
         written, images.fetched, images.converted, images.skipped, len(images.failed),
@@ -236,12 +312,29 @@ def mirror(content_dir: Path, image_dir: Path, limit: int, timeout: float, only:
     return written
 
 
+def refresh_redirects(content_root: Path, timeout: float) -> int:
+    """Follow every stale internal link on redis.io and record where it lands."""
+    known = _known_urls(content_root)
+    stale = _stale_targets(content_root, known)
+    LOGGER.info("%d published paths, %d links pointing at none of them", len(known), len(stale))
+    mapping, unrecovered = redirects.build_map(stale, known, timeout)
+    redirects.save(mapping)
+    recovered = sum(len(v) for v in mapping.values())
+    LOGGER.info("recovered %d of %d; %d still lead nowhere", recovered, len(stale), len(unrecovered))
+    for path_ in unrecovered[:10]:
+        LOGGER.info("  unrecovered: %s", path_)
+    return recovered
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     logging.basicConfig(
         level=args.log_level.upper(),
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
+    if args.refresh_redirects:
+        refresh_redirects(Path("content"), args.timeout)
+        return 0
     try:
         written = mirror(args.content, args.images, args.limit, args.timeout, args.only)
     except SanityError as error:
