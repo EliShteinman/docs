@@ -75,6 +75,23 @@ def summarize(body: str) -> str:
     return ""
 
 
+def permalink(slug: str) -> str:
+    """Return the path a post is published at.
+
+    Set explicitly, per post, because config.toml already carries a permalink
+    rule for a section named `blog`:
+
+        blog = "/:section/:year/:month/:day/:slug/"
+
+    Left to it, a post mirrored from redis.io/blog/<slug>/ would publish at
+    /blog/2022/11/03/<slug>/ and every rewritten link in the documentation
+    would 404. A `url` in the frontmatter overrides the rule without editing an
+    upstream config file the fork otherwise leaves alone.
+    """
+    stem = (slug or "").strip("/")
+    return f"/blog/{stem}/" if stem else "/blog/"
+
+
 def front_matter(post: dict, description: str = "") -> str:
     """Return the frontmatter block for a post."""
     title = post.get("title") or "Untitled"
@@ -82,6 +99,7 @@ def front_matter(post: dict, description: str = "") -> str:
         "---",
         f"title: {_yaml_value(title)}",
         f"linkTitle: {_yaml_value(title)}",
+        f"url: {_yaml_value(permalink(post.get('slug') or ''))}",
     ]
     if description:
         lines.append(f"description: {_yaml_value(description)}")

@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from build.blog_mirror.hugo import (
+    permalink,
     file_name,
     front_matter,
     prune_removed,
@@ -97,3 +98,16 @@ def test_pruning_never_deletes_the_section_index(tmp_path: Path):
     write_section_index(tmp_path)
     prune_removed(tmp_path, set())
     assert (tmp_path / "_index.md").exists()
+
+
+def test_a_post_publishes_at_the_slug_the_source_uses():
+    """config.toml carries a dated permalink rule for a section named `blog`."""
+    assert permalink("/redisgraph-eol/") == "/blog/redisgraph-eol/"
+
+
+def test_the_permalink_is_written_into_the_frontmatter():
+    assert 'url: "/blog/x/"' in front_matter({"title": "T", "slug": "/x/"})
+
+
+def test_a_post_with_no_slug_falls_back_to_the_section_root():
+    assert permalink("") == "/blog/"
