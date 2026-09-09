@@ -2,7 +2,7 @@
 
 import pytest
 
-from build.blog_mirror.images import (
+from build.site_mirror.images import (
     parse_reference,
     site_path,
     source_url,
@@ -42,7 +42,7 @@ def test_a_pass_through_url_asks_for_no_conversion():
 
 
 def test_the_site_path_is_where_hugo_will_serve_it_from():
-    assert site_path(PNG).startswith("/images/blog/")
+    assert site_path(PNG).startswith("/images/site-mirror/")
 
 
 def test_an_unusable_reference_yields_no_path_rather_than_a_broken_one():

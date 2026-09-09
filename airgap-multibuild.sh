@@ -92,7 +92,8 @@ find content -type f -name '*.md' -print0 | xargs -0 sed -i \
 #     /blogging-guide cannot be caught by this.
 echo "airgap: pointing redis.io/redis.com/redislabs.com blog links at /blog/..."
 find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
-  -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
+  -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
+  -e 's#https?://(www\.)?redis\.io/technology#/technology#g'
 
 # 2c. Point the short-form command links at the local command pages. The docs
 #     link commands both ways: redis.io/docs/latest/commands/<x> (handled by
@@ -223,7 +224,7 @@ build_version() {
   # The mirrored blog belongs to the "latest" tree only. A version build keeps
   # nothing but public/<product>/<version>, so rendering 1,100 posts here
   # produces output that is thrown away -- 28 times over, once per version.
-  rm -rf content/blog
+  rm -rf content/blog content/technology
 
   # Remove all OTHER versions of this product
   for v in $all_versions; do

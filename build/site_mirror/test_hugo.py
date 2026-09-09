@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from build.blog_mirror.hugo import (
+from build.site_mirror.hugo import (
     author_names,
     byline,
     permalink,
@@ -60,7 +60,7 @@ def test_a_post_with_no_description_omits_the_key_rather_than_emptying_it():
 
 def test_the_description_comes_from_the_first_real_paragraph():
     """Not from the source's tagline, which says "News & Media" on 1,060 posts."""
-    body = "![tile](/images/blog/x.webp)\n\n## Heading\n\nThe actual opening sentence."
+    body = "![tile](/images/site-mirror/x.webp)\n\n## Heading\n\nThe actual opening sentence."
     assert summarize(body) == "The actual opening sentence."
 
 

@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterable
 
-from build.blog_mirror.links import localize
+from build.site_mirror.links import localize
 
 # Rendered for their content.
 HEADING_STYLES = {"h1", "h2", "h3", "h4", "h5", "h6"}
@@ -130,7 +130,11 @@ def _render_image(block: dict, resolve_image: ImageResolver) -> str:
         return ""
     alt = ((block.get("image") or {}).get("altText") or "").replace("]", ")")
     path = resolve_image(reference, alt)
-    return f"![{alt}]({path})" if path else ""
+    if not path:
+        return ""
+    rendered = f"![{alt}]({path})"
+    caption = (block.get("caption") or "").strip()
+    return f"{rendered}\n\n*{caption}*" if caption else rendered
 
 
 def _render_video(block: dict) -> str:
@@ -180,7 +184,12 @@ def render(blocks: Iterable[dict], resolve_image: ImageResolver) -> str:
             piece = _render_code(block)
         elif block_type == "blockContentBlogTable":
             piece = _render_table(block)
-        elif block_type in ("blockContentBlogImage", "blockContentBlogComparisonTable"):
+        elif block_type in (
+            "blockContentBlogImage",
+            "blockContentBlogComparisonTable",
+            # The page tree's spelling of the same thing, plus a caption.
+            "blockContentImage",
+        ):
             piece = _render_image(block, resolve_image)
         elif block_type == "blockContentBlogVideo":
             piece = _render_video(block)

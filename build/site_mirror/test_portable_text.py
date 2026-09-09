@@ -4,7 +4,7 @@ The expectations come from the shapes actually present in the corpus: fourteen
 block types across all 1,108 posts, checked before this was written.
 """
 
-from build.blog_mirror.portable_text import render
+from build.site_mirror.portable_text import render
 
 
 def _resolve(reference, _alt=""):

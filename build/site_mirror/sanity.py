@@ -40,7 +40,18 @@ _QUERY = (
     '"categories":categories[]->title}}'
 )
 
-USER_AGENT = "redis-docs-airgap-blog-mirror/1.0"
+# Pages are a different document type with a different shape: no publish date,
+# no author, and their prose spread across a list of layout sections rather
+# than one Portable Text field. pages.py reads that shape.
+PAGE_TYPE = "page"
+
+_PAGE_QUERY = (
+    '*[_type=="{doc_type}" && pathname match "{prefix}"]|order(pathname)'
+    "[{start}...{end}]"
+    '{{_id,_updatedAt,_createdAt,title,pathname,sections}}'
+)
+
+USER_AGENT = "redis-docs-airgap-site-mirror/1.0"
 
 
 class SanityError(RuntimeError):
@@ -76,4 +87,26 @@ def fetch_posts(timeout: float = 60.0, page_size: int = PAGE_SIZE) -> Iterator[d
         if not page:
             return
         yield from page
+        start += page_size
+
+
+def count_pages(prefix: str, timeout: float = 60.0) -> int:
+    """Return how many page documents live under a pathname prefix."""
+    query = f'count(*[_type=="{PAGE_TYPE}" && pathname match "{prefix}"])'
+    return int(_get(query_url(query), timeout).get("result") or 0)
+
+
+def fetch_pages(
+    prefix: str, timeout: float = 60.0, page_size: int = PAGE_SIZE
+) -> Iterator[dict]:
+    """Yield every page document under a pathname prefix, a page at a time."""
+    start = 0
+    while True:
+        query = _PAGE_QUERY.format(
+            doc_type=PAGE_TYPE, prefix=prefix, start=start, end=start + page_size
+        )
+        batch = _get(query_url(query), timeout).get("result") or []
+        if not batch:
+            return
+        yield from batch
         start += page_size

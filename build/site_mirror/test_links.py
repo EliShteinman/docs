@@ -2,7 +2,7 @@
 
 import pytest
 
-from build.blog_mirror.links import localize
+from build.site_mirror.links import localize
 
 
 @pytest.mark.parametrize(

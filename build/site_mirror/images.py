@@ -18,12 +18,12 @@ import re
 import urllib.request
 from pathlib import Path
 
-from build.blog_mirror.sanity import DATASET, PROJECT_ID, USER_AGENT
+from build.site_mirror.sanity import DATASET, PROJECT_ID, USER_AGENT
 
-LOGGER = logging.getLogger("blog_mirror.images")
+LOGGER = logging.getLogger("site_mirror.images")
 
 CDN_HOST = "https://cdn.sanity.io"
-SITE_PATH = "/images/blog"
+SITE_PATH = "/images/site-mirror"
 
 # image-<sha1>-<width>x<height>-<extension>
 _REFERENCE = re.compile(r"^image-([0-9a-f]+)-(\d+x\d+)-(\w+)$")

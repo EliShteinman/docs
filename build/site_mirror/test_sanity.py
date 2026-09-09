@@ -8,7 +8,7 @@ already passed every other test.
 
 import pytest
 
-from build.blog_mirror.sanity import (
+from build.site_mirror.sanity import (
     API_HOST,
     DOCUMENT_TYPE,
     _QUERY,
