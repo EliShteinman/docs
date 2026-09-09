@@ -60,8 +60,8 @@ families:
         url: "https://university.redis.io/academy"
         enabled: true
       blog:
-        description: "Home page: 'Blog' card"
-        url: "https://redis.io/blog/"
+        description: "Home page: 'Blog' card. Points at the mirrored blog inside this image (build/blog_mirror), not at redis.io — override the url to send readers to the public blog instead."
+        url: "/blog/"
         enabled: true
       support:
         description: "Home page: 'Redis Knowledge Base' card"
@@ -429,43 +429,3 @@ git-mirrors:
     from: "https://github.com/prometheus-operator/prometheus-operator"
     to: ""
     enabled: false
-
-# ───────────────────────────────────────────────────────────────────────────
-# site-mirrors — runtime rewriting of links to a site this image carries
-#
-# Where `git-mirrors` above points at repositories mirrored onto internal
-# infrastructure, these point at content published inside this very image. The
-# destination therefore always exists, which is why these default to enabled
-# while every git mirror defaults to off.
-#
-# Each entry lists every URL prefix the upstream site is spelled with. Nothing
-# about the path is translated: the mirror publishes the same slugs, so the
-# prefix is swapped and the remainder is carried across untouched.
-#
-# Precedence (highest wins):
-#   1. values.externalLinks.siteMirrors.<name>.enabled / .to
-#   2. catalog default below
-# ───────────────────────────────────────────────────────────────────────────
-site-mirrors:
-
-  blog:
-    description: |
-      The Redis blog, mirrored into this image as Hugo content by
-      build/blog_mirror and published at /blog/.
-
-      Affects 184 links across the documentation, resolving to 55 distinct
-      posts. The four `from` prefixes are not redundant: 83 of those links use
-      the legacy redis.com domain and 16 use redislabs.com, so rewriting only
-      redis.io would leave more than half of them pointing at the internet.
-
-      Set `enabled: false` in values.yaml for a deployment built without the
-      blog section, so the links stay external rather than pointing at pages
-      that are not there.
-    from:
-      - "https://redis.io/blog"
-      - "https://redis.io/en/blog"
-      - "https://redis.com/blog"
-      - "https://redislabs.com/blog"
-      - "https://www.redislabs.com/blog"
-    to: "/blog"
-    enabled: true

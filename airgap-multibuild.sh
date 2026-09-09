@@ -79,6 +79,21 @@ find content -type f -name '*.md' -print0 | xargs -0 sed -i \
   -e 's|https://redis.io/docs/latest/|/|g' \
   -e 's|redis\.io/docs/latest/|/|g'
 
+# 2b. Point the documentation's blog links at the mirrored blog in this image
+#     (content/blog, written by build/blog_mirror). Same reasoning as the
+#     docs/latest rewrite above, and the same place to do it: a link rewritten
+#     here reaches the .md and .json AI outputs too, which a runtime handler
+#     walking <a href> in the DOM never sees.
+#
+#     Four domains, not one: of the 184 blog links in the documentation, 83 use
+#     the legacy redis.com and 16 use redislabs.com, so matching only redis.io
+#     would leave more than half of them pointing at the internet. Checked
+#     against the corpus: no URL has /blog as a non-boundary prefix, so
+#     /blogging-guide cannot be caught by this.
+echo "airgap: pointing redis.io/redis.com/redislabs.com blog links at /blog/..."
+find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+  -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
+
 # ---- Snapshot the prepared workspace -----------------------------------------
 # Captures content + layouts + components output. Excludes Hugo's own outputs.
 rm -rf "$SNAPSHOT"
@@ -184,6 +199,11 @@ build_version() {
   echo ">>> [CACHE MISS] Building ${product_path} v${version} (key=${cache_key})"
   reset_workspace
   cd "$SITE"
+
+  # The mirrored blog belongs to the "latest" tree only. A version build keeps
+  # nothing but public/<product>/<version>, so rendering 1,100 posts here
+  # produces output that is thrown away -- 28 times over, once per version.
+  rm -rf content/blog
 
   # Remove all OTHER versions of this product
   for v in $all_versions; do
