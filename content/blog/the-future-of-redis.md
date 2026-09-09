@@ -15,7 +15,7 @@ hidden: true
 
 *By Rowan Trollope, Yiftach Shoolman · Published 21 March 2024 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/fa552eae80b9c38b5e33ffdc39b0844b5c209160-772x552.webp)
+![Blog tile image](/images/site-mirror/fa552eae80b9c38b5e33ffdc39b0844b5c209160-772x552.webp)
 
 Following yesterday’s announcement of the Redis licensing change, we want to provide a wider view of our future for our customers, partners, and the developer community.
 

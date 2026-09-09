@@ -14,7 +14,7 @@ hidden: true
 
 *By Guy Royse, Developer Advocate · Published 31 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Like many software engineers, I enjoy a good game of [Dungeons & Dragons](https://dnd.wizards.com/). I love powering up my character and facing increasingly more powerful foes. Doing this right requires gold and experience. And the best way to get those things is a good old-fashioned dungeon crawl.
 
@@ -36,11 +36,11 @@ A graph database contains a *graph* made up of *nodes* and *edges*. Explanations
 
 Nodes are the nouns, the things, of your data. They have a label telling you what type of thing they are. They can also have attributes that provide additional information about the node. Let’s look at a couple of nodes with their labels and attributes:
 
-![](/images/blog/ebb4e264a9e33cc585221f8446455ec04ffe6626-900x420.webp)
+![](/images/site-mirror/ebb4e264a9e33cc585221f8446455ec04ffe6626-900x420.webp)
 
 Below we have two nodes. The first node has the label “room” and a single attribute telling us a bit about the room. In this case its name: “The Den of the Ogre King.” The second node has a label of “monster” and two attributes, one telling us that the monster’s name is “Ralph the Ogre King” and another that slaying him is worth 1,200 experience points.Pretty straightforward. Nodes are sort of like objects in a programming language like Java or C#. They have a type and properties.
 
-![](/images/blog/3f7851656d0fdfade02dc01ed71a88da9f50a592-900x420.webp)
+![](/images/site-mirror/3f7851656d0fdfade02dc01ed71a88da9f50a592-900x420.webp)
 
 Now, let’s add in an edge and see what that does:The edge has a *type* of “contains” and a *direction* that goes from the room to the monster. Its purpose is to establish a relationship between the room and the monster. The type is the nature of that relationship and is, in many ways, like the label of a node. I like to think that edges are verbs—transitive verbs to be specific—in that they connect the nouns together: the *room* contains a *monster*. This adds a relationship between the nodes.
 
@@ -48,7 +48,7 @@ The direction of the edge is arbitrary. Either way, it establishes the relations
 
 Collectively, these nodes and edges are called a graph. The simplest (and probably least interesting) graph has no nodes at all. And without nodes, of course, it can’t have edges.
 
-![](/images/blog/637e26f98941b9fd257a2484c33a4f296ac40619-1024x576.webp)
+![](/images/site-mirror/637e26f98941b9fd257a2484c33a4f296ac40619-1024x576.webp)
 
 On the other hand, graphs can get quite complex. Nodes can have multiple edges going to and from them. A pair of nodes can even have multiple edges between them. And nodes can be isolated, without any edges at all!Look at that monster of a graph! It shows three rooms, a secret door, and a treasure pile. Complete with a guardian named Ralph.
 

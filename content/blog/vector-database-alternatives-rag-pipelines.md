@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 5 August 2026*
 
-![Top vector database alternatives for RAG pipelines](/images/blog/707483d93384453db180db59da255d4ae9138038-2400x1256.webp)
+![Top vector database alternatives for RAG pipelines](/images/site-mirror/707483d93384453db180db59da255d4ae9138038-2400x1256.webp)
 
 You're building an AI app: maybe a RAG system, an agent with memory, or a chatbot with semantic caching. You need vector search, and you're weighing your options. One is a unified real-time platform like Redis, which runs vector search alongside caching, sessions, and streaming. Another is a purpose-built vector database like Pinecone, Weaviate, [Milvus](/blog/milvus-vs-redis-vector-database-comparison/), Qdrant, or Chroma. A third is PostgreSQL with pgvector.
 

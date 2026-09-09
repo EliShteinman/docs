@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 24 November 2021 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/9a4f7a80481db678a3d38fd0a7579177912c6712-772x520.webp)
+![Blog tile image](/images/site-mirror/9a4f7a80481db678a3d38fd0a7579177912c6712-772x520.webp)
 
 A/B testing has become an indispensable asset to marketers and website owners competing in today’s digital economy. It allows users to test existing ideas, experiment with new ones and highlight what works and what doesn’t.
 
@@ -50,7 +50,7 @@ You’ll build a powerful yet simple A/B testing tool that’s scalable and oper
 
 ## 3. Architecture
 
-![](/images/blog/f65264746475def46f89a2c12e02cc30a84b5423-1600x1124.webp)
+![](/images/site-mirror/f65264746475def46f89a2c12e02cc30a84b5423-1600x1124.webp)
 
 - An experiment is created on Swagger based on the variables you want to test on your website. This user has chosen to test what impact different colours have on sales.
 - Trigger events determine the users that will automatically be enrolled in the experiment.
@@ -524,7 +524,7 @@ What can you do with Redis?
 
 ## Who created the app?
 
-![](/images/blog/d837b68b240c00ca9fc6e5769b097560d119c88f-265x265.webp)
+![](/images/site-mirror/d837b68b240c00ca9fc6e5769b097560d119c88f-265x265.webp)
 
 **Thiago Camargo**
 

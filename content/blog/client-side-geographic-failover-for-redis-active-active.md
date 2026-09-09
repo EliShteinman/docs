@@ -14,7 +14,7 @@ hidden: true
 
 *By Mirko Ortensi, Sr. Product Manager, Products · Published 23 April 2026 · updated 12 May 2026*
 
-![Client-side geographic failover for Redis Active-Active](/images/blog/680873d3c389456b657fc5608b61e5276baa5dee-1200x628.webp)
+![Client-side geographic failover for Redis Active-Active](/images/site-mirror/680873d3c389456b657fc5608b61e5276baa5dee-1200x628.webp)
 
 The [Redis Active-Active](https://redis.io/docs/latest/operate/rs/databases/active-active/) architecture supports **geographically distributed applications**, providing real-time performance when apps are co-located with an Active-Active database member and ensuring strong eventual consistency through the [Conflict-Free Replicated Datatype (CRDT)](/blog/diving-into-crdts/) based conflict resolution.
 
@@ -24,7 +24,7 @@ Alongside infrastructure-based approaches such as load balancers, DNS routing, a
 
 With client-side geographic failover, client libraries can detect database failures based on a combination of the [circuit breaker pattern](https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern) and a configurable health check mechanism, and redirect the workload to the next healthy endpoint. The overall experience is that the application does not perceive any disruption and connects to the desired Redis A-A database member.
 
-![Redis](/images/blog/f8fe12b2bd4f66ceb9f3afef87b2d275b7bc2aaf-960x540.webp)
+![Redis](/images/site-mirror/f8fe12b2bd4f66ceb9f3afef87b2d275b7bc2aaf-960x540.webp)
 
 [Jedis](https://redis.io/docs/latest/develop/clients/jedis/failover/) and [redis-py support client-side geographic failover, and now it has been added to Lettuce as well.](https://redis.io/docs/latest/develop/clients/redis-py/failover/) See the [Lettuce 7.4.0](https://github.com/redis/lettuce/releases/tag/7.4.0.RELEASE) release notes to learn more.
 

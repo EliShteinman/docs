@@ -15,7 +15,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 10 August 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/790759e54f4d44705d1e6943af73200ce07c5bb7-1050x1050.webp)
+![Blog tile image](/images/site-mirror/790759e54f4d44705d1e6943af73200ce07c5bb7-1050x1050.webp)
 
 *This post is part two of a series of posts introducing the Redis-ML module.*
 
@@ -104,9 +104,9 @@ In the final step of the script, the summary method is used to display the coeff
 
 Plotting our results and comparing them with the results from the previous code:
 
-![Plot of average rooms versus Housing Price](/images/blog/790759e54f4d44705d1e6943af73200ce07c5bb7-1050x1050.webp)
+![Plot of average rooms versus Housing Price](/images/site-mirror/790759e54f4d44705d1e6943af73200ce07c5bb7-1050x1050.webp)
 
-![Linear regression using scikit](/images/blog/0235e77c986ee25b0a6783a9da16e14bcd43eb92-1280x960.webp)
+![Linear regression using scikit](/images/site-mirror/0235e77c986ee25b0a6783a9da16e14bcd43eb92-1280x960.webp)
 
 The summary method shows the coefficients determined by the linear regression procedure as:
 

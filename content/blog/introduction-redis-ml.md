@@ -15,7 +15,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 24 July 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/ad98e708c3ca5ea4f7e55651c5f578765aa9e41a-1280x960.webp)
+![Blog tile image](/images/site-mirror/ad98e708c3ca5ea4f7e55651c5f578765aa9e41a-1280x960.webp)
 
 Despite widespread interest in [machine learning](https://en.wikipedia.org/wiki/Machine_learning) (ML), using it effectively in a real-time environment is a complex problem that hasn’t been given enough attention by framework developers. Nearly every language has a framework to implement the “learning” part of machine learning, but very few frameworks support the “predict” side of machine learning.
 
@@ -52,11 +52,11 @@ Let’s work through an example of performing a linear regression and discoverin
 
 The Boston Housing Dataset is a classic data set used in teaching statistics and machine learning. The dataset predicts the median housing price for a neighborhood in the Boston area using neighborhood features like the average number of rooms in a house, the distance from main Boston employment centers, or crime rate. To make it easier to visualize the linear regression process, we’re going to work with a single feature of the data, the average rooms per dwelling (RM) column.
 
-![](/images/blog/6818ccff8f1acbcaa5b98adbf28228886f74e862-1280x960.webp)
+![](/images/site-mirror/6818ccff8f1acbcaa5b98adbf28228886f74e862-1280x960.webp)
 
 The Boston Housing Dataset is provided as part of the scikit-learning package, so, let’s start by plotting our data to visualize the relationship between room count (RM) and median price (MEDV):
 
-![](/images/blog/ad98e708c3ca5ea4f7e55651c5f578765aa9e41a-1280x960.webp)
+![](/images/site-mirror/ad98e708c3ca5ea4f7e55651c5f578765aa9e41a-1280x960.webp)
 
 While not a perfect line, we can see a pretty strong linear relationship between the average number of rooms and the median house price in a neighborhood. We can even draw an idealized representation of the relationship and see how the data points cluster around it.
 
@@ -152,7 +152,7 @@ y_predict = lm.predict(x_test)
 
 ```
 
-![](/images/blog/ae7c516157b562a540a04728c4f41c901ac791f0-1280x960.webp)
+![](/images/site-mirror/ae7c516157b562a540a04728c4f41c901ac791f0-1280x960.webp)
 
 For comparison, we’ve plotted the results. In the graph below, the black circles represent the actual prices for the test data in our dataset. The blue markers (+) represent the values predicted by Scikit and the magenta markers (x) represent the values predicted by Redis.
 

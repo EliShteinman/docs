@@ -16,7 +16,7 @@ hidden: true
 
 *By Moti Cohen, Software Engineer · Published 10 September 2024 · updated 27 June 2025*
 
-![Blog tile image](/images/blog/241c843f45edd384d00bf8c1986344f1af0b5fc4-772x552.webp)
+![Blog tile image](/images/site-mirror/241c843f45edd384d00bf8c1986344f1af0b5fc4-772x552.webp)
 
 Hash Field Expiration (HFE) is an exciting new feature introduced in Redis Community Edition and Stack 7.4, and is one of the most requested enhancements since the early days of Redis (see [[1](https://github.com/redis/redis/issues/167)], [[2](https://stackoverflow.com/questions/16545321/how-to-expire-the-hset-child-key-in-redis)], [[3](https://github.com/redis/redis/issues/1042)]).
 
@@ -40,11 +40,11 @@ As a result, the expiry struct was embedded into the registered hash fields by s
 
 An ebuckets is made up of a [RAX](https://github.com/redis/redis/blob/unstable/src/rax.h) tree or linked list when small. It’s sorted by the TTL of the items. Each leaf in the RAX tree is a bucket that represents an interval in time and contains one or more segments. Each segment within a bucket holds up to 16 items as a linked list. The following diagram summarizes those ideas. It also hints at MSTR layout and how hash table of type dict is going to integrate with it. Expiry struct, painted in yellow, basically includes “next” pointer, expiration time (TTL for short) and few more related metadata:
 
-![](/images/blog/9ff2402222c221648be42058745b39b971a21f6c-1673x867.webp)
+![](/images/site-mirror/9ff2402222c221648be42058745b39b971a21f6c-1673x867.webp)
 
 If a segment hits its limit, it splits, and also splits the bucket into two smaller intervals in the data structure. If the segment contains items with the same TTL, the split may not be even since those items, with the same TTL, must stay together in the same bucket. This leads to another key point: if a segment is full and all items share the same TTL, the bucket can’t be split further. Instead, all items with the same TTL are aggregated by creating an extended segment and chaining it to the original segment:
 
-![](/images/blog/bec719a597c54415a15d845ad75a8926cbd974a9-1897x960.webp)
+![](/images/site-mirror/bec719a597c54415a15d845ad75a8926cbd974a9-1897x960.webp)
 
 ## The battle of the benchmarks
 
@@ -63,7 +63,7 @@ The following chart displays the memory usage of two test cases, measured by que
 1. Allocating 1 million HFEs on a single hash
 1. Allocating 1 million hashes with a single HFE per hash.
 
-![](/images/blog/9489cb60a8f14d0343fe20a60b4f28cb87b0d515-1330x822.webp)
+![](/images/site-mirror/9489cb60a8f14d0343fe20a60b4f28cb87b0d515-1330x822.webp)
 
 We expected TairHash to perform worse than Redis and KeyDB because it’s a module and comes with extra overhead. But the 12.9x increase in memory usage compared to Redis indicates that there are severe inefficiencies specific to TairHash. While some per key metadata overhead is expected for a module, this big of a gap suggests poor design choices at play.
 
@@ -84,17 +84,17 @@ The benchmark uses the utility [memtier_benchmark](https://github.com/RedisLabs/
 
 The chart below shows requests per second for the command that sets the field’s expiry, as this command was the most error-prone and also in our main focus (higher is better):
 
-![](/images/blog/b56599b87cd934f2fbca4560ab3842e3a24b95b4-1011x613.webp)
+![](/images/site-mirror/b56599b87cd934f2fbca4560ab3842e3a24b95b4-1011x613.webp)
 
 The following table presents also ops/sec measured for each of the executed commands:
 
-![](/images/blog/5df9237a82c12a4a021e56ab5d3d0c4f2650d4f9-1088x572.webp)
+![](/images/site-mirror/5df9237a82c12a4a021e56ab5d3d0c4f2650d4f9-1088x572.webp)
 
 While Redis and TairHash showed competitive performance, Redis stands out, achieving up to 49% higher throughput in its best case compared to SLAB_MODE and up to 25% higher throughput compared to SORT_MODE. KeyDB struggled with EXPIREMEMBER at scale, showing intolerable performance and very low throughput, dropping below 1k ops/sec after handling only 5% of the traffic. Even with a reduced test of 1 million fields, KeyDB showed the same poor results.
 
 We also wanted to benchmark 10M hashes, each with a single field, but testing TairHash for this scenario was challenging. The AWS instance (m6i.large) crashed in SLAB mode after just 1 million hashes due to memory exhaustion (with a single field each), and in SORT mode, it crashed at 4 million hashes. KeyDB, on the other hand, experienced extremely low throughput and was stopped after more than 10 minutes without completion. In contrast, Redis showed remarkable performance in this scenario as well:
 
-![](/images/blog/023a4338a1ea6ca5f06c7394b7e7f8ba983d4a1c-936x351.webp)
+![](/images/site-mirror/023a4338a1ea6ca5f06c7394b7e7f8ba983d4a1c-936x351.webp)
 
 ### Round 3: Active expiration
 
@@ -121,7 +121,7 @@ Redis releases 10 million items within about 30 seconds with minimal latency, ev
 
 The diagram below shows an extreme case where Redis actively expires 10 million fields from a single hash called hash1, where all fields expired at time 0. At the same time, another hash, named hash2, is being populated with up to 15 million fields using memtier_benchmark (memtier: -t 1 -c 1 –pipeline 200). This test helps evaluate the impact on server availability as well as the efficiency of active-expiration. The dashed line serves as a reference, showing how hash2 would have been populated if hash1 didn’t exist and no fields were released by active-expiration during that time.
 
-![](/images/blog/14d18f7e00e0eb3a30f000cd433274d825458cb0-1141x688.webp)
+![](/images/site-mirror/14d18f7e00e0eb3a30f000cd433274d825458cb0-1141x688.webp)
 
 
 As the diagram shows, it took 34.5 seconds to populate hash2 with 15 million fields, up from 28 seconds, which means throughput dropped by about 18.8%.

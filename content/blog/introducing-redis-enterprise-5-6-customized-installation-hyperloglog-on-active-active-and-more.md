@@ -15,7 +15,7 @@ hidden: true
 
 *By Alon Magrafta, Product Manager · Published 16 April 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/4865ef10a1417b15577c777cf2080d67e3136861-1200x1000.webp)
+![Blog tile image](/images/site-mirror/4865ef10a1417b15577c777cf2080d67e3136861-1200x1000.webp)
 
 As we continue to enhance Redis Enterprise by adding new exciting features for our customers, we are happy to announce general availability of the latest major version: [Redis Enterprise Software 5.6.0](/download-center/#downloads). This release includes:
 

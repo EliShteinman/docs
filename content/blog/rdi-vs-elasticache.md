@@ -14,7 +14,7 @@ hidden: true
 
 *By Matthew Schaeffer, Corporate Solution Architect · Published 5 December 2025 · updated 8 December 2025*
 
-![Redis](/images/blog/2963e950f839ebff483920f527bdf3b82dabbc9d-1200x628.webp)
+![Redis](/images/site-mirror/2963e950f839ebff483920f527bdf3b82dabbc9d-1200x628.webp)
 
 ### Keep data fresh without pipelines using Redis Data Integration (RDI)
 

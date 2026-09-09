@@ -15,7 +15,7 @@ hidden: true
 
 *By Rini Vasan, Yihua Cheng · Published 28 July 2025 · updated 1 June 2026*
 
-![Get faster LLM inference and cheaper responses with LMCache and Redis](/images/blog/ca17416e45af42b7716d2192ba2681536970f78e-772x552.webp)
+![Get faster LLM inference and cheaper responses with LMCache and Redis](/images/site-mirror/ca17416e45af42b7716d2192ba2681536970f78e-772x552.webp)
 
 As GenAI applications evolve—think agents, copilots, and chatbots—developers need more than just a connection to an LLM. These applications demand fast, cost-efficient inference. By default, LLMs repeatedly recompute the same outputs for common inputs, wasting tokens and increasing latency.
 

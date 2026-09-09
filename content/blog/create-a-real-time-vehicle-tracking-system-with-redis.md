@@ -14,7 +14,7 @@ hidden: true
 
 *By Growth Team · Published 29 September 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/13ee97559cf2f1d5823dd8312a64ff04a22f1360-772x520.webp)
+![Blog tile image](/images/site-mirror/13ee97559cf2f1d5823dd8312a64ff04a22f1360-772x520.webp)
 
 As you’d expect, real-time vehicle tracking is no child’s play. From start to finish, there’s a whole range of variables that you have to consider before the benefits of real-time vehicle tracking come to fruition. Arguably, the most important factor is speed. Any communication lag will substantially produce stale data, and the staler it gets, the less valuable it becomes.
 
@@ -60,7 +60,7 @@ Let’s analyze each component, unpacking its functionality along with the steps
 
 To tie everything together and give you a clear visualization of how each feature was implemented, here’s a quick summary of how everything flows chronologically.
 
-![](/images/blog/9c8e96cc005577a2340b97b0aa392500f274043d-1024x653.webp)
+![](/images/site-mirror/9c8e96cc005577a2340b97b0aa392500f274043d-1024x653.webp)
 
 1. The data was sourced from the [Helsinki Regional Transit Authority through a public MQTT feed](https://digitransit.fi/en/developers/apis/5-realtime-api/vehicle-positions/).
 1. The incoming MQTT messages were then processed through a [custom MQTT broker](https://github.com/redis-developer/expert-garbanzo/blob/master/hslservices/cmd/mqtt/main.go).
@@ -109,19 +109,19 @@ The GoLang broker was used to process incoming messages from Helsinki into Redis
 
 ## Feature 1:
 
-![](/images/blog/c8cbb5d9c74ae464c1a6ea32788231f406ef88f2-1024x175.webp)
+![](/images/site-mirror/c8cbb5d9c74ae464c1a6ea32788231f406ef88f2-1024x175.webp)
 
 Event data sent to Redis Streams is then processed with a RedisGears function and written to persistent storage (PostgreSQL).
 
 ## Feature 2:
 
-![](/images/blog/4cc1a3bc2c0b89aa73f390db114f08f43d404e87-1024x170.webp)
+![](/images/site-mirror/4cc1a3bc2c0b89aa73f390db114f08f43d404e87-1024x170.webp)
 
 Event data is published by GoLang and sent to Redis PubSub which is then sent to each connected client via Web socket. This provides live updates of positions in the browser on the live-location layer.
 
 ## Feature 3:
 
-![](/images/blog/c550fc7f1f12fc15aab4b1e4771e5b3f4714a298-1024x198.webp)
+![](/images/site-mirror/c550fc7f1f12fc15aab4b1e4771e5b3f4714a298-1024x198.webp)
 
 The current speed and location of each bus was recorded via RedisTimeSeries. Time Series data was divided into different series for position (GeoHash) and speed for each scheduled trip. After every 15 seconds, these recordings were standardised using a compaction rule to avoid storing different intervals of data for any given trip.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 27 June 2013 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/4d83e305e3cb3bc38913c86da00917cf0e02d85b-772x550.webp)
+![Blog tile image](/images/site-mirror/4d83e305e3cb3bc38913c86da00917cf0e02d85b-772x550.webp)
 
 [Eli](http://stackoverflow.com/questions/16221563/whats-the-point-of-multiple-redis-databases)
 

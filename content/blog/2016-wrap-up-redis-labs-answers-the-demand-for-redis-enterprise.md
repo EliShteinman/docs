@@ -14,9 +14,9 @@ hidden: true
 
 *By Jason Forget · Published 23 January 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/50826682312158c002b8c15a8d3187641e93da87-635x200.webp)
+![Blog tile image](/images/site-mirror/50826682312158c002b8c15a8d3187641e93da87-635x200.webp)
 
-![](/images/blog/50826682312158c002b8c15a8d3187641e93da87-635x200.webp)
+![](/images/site-mirror/50826682312158c002b8c15a8d3187641e93da87-635x200.webp)
 
 Since its release in 2009, Redis has blazed a new trail in the database world, allowing users to solve complex problems through optimized data structures and commands, executed in-memory very fast and with great simplicity. As Redis’ reputation and popularity have grown—along with demand for enterprise-class capabilities (which are commercially developed and maintained by Redis)—we’ve begun to see a significantly accelerated adoption of Redis Enterprise among the largest companies in the world.
 

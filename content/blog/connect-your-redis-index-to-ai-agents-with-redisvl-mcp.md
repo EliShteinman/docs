@@ -14,7 +14,7 @@ hidden: true
 
 *By Vishal Bala, Sr. Applied AI Engineer · Published 11 June 2026 · updated 15 June 2026*
 
-![Connect Your Redis index to AI agents with RedisVL MCP](/images/blog/00470feaee022ac14d1e9ebfcb23b8d9eb276cd6-1200x628.webp)
+![Connect Your Redis index to AI agents with RedisVL MCP](/images/site-mirror/00470feaee022ac14d1e9ebfcb23b8d9eb276cd6-1200x628.webp)
 
 If you already use Redis for search, retrieval, or application memory, the RedisVL MCP is a practical next step: making that data available to agents without rebuilding your integration for every framework.
 

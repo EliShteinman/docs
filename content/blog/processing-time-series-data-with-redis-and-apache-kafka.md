@@ -17,7 +17,7 @@ hidden: true
 
 *By Abhishek Gupta, Microsoft Senior Developer Advocate · Published 22 June 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3098118e032727396b8b279289e3f8ed3c55c4c0-772x520.webp)
+![Blog tile image](/images/site-mirror/3098118e032727396b8b279289e3f8ed3c55c4c0-772x520.webp)
 
 [RedisTimeSeries](https://oss.redis.com/redistimeseries/) is a Redis module that brings native time-series data structure to Redis. Time-series solutions, which were earlier built on top of Sorted Sets (or Redis Streams), can benefit from RedisTimeSeries features such as high-volume inserts, low-latency reads, flexible query language, down-sampling, and much more!
 
@@ -30,7 +30,7 @@ Thus, databases such as RedisTimeSeries are just a part of the overall solution.
 
 That’s where [Apache Kafka](https://kafka.apache.org/) comes in! In addition to the core broker, it has a rich ecosystem of components, including [Kafka Connect](https://kafka.apache.org/documentation/#connect) (which is a part of the solution architecture presented in this blog post), client libraries in multiple languages, [Kafka Streams](https://kafka.apache.org/documentation/streams/), Mirror Maker, etc.
 
-![kafka map](/images/blog/b06115e1474ef255696e2b60976d1e98450ce0cb-1024x369.webp)
+![kafka map](/images/site-mirror/b06115e1474ef255696e2b60976d1e98450ce0cb-1024x369.webp)
 
 This blog post provides a practical example of how to use RedisTimeSeries with [Apache Kafka](https://redis.io/compare/redis-enterprise-and-kafka/) for analyzing time-series data.
 
@@ -56,7 +56,7 @@ TS.ADD pressure:3:2 * 60 LABELS metric pressure location 3 device 2
 
 Here is what the solution looks like at a high level:
 
-![Solution architecture](/images/blog/62ea5216cd6320580f9eedf2ad7532c35cd31163-1024x529.webp)
+![Solution architecture](/images/site-mirror/62ea5216cd6320580f9eedf2ad7532c35cd31163-1024x529.webp)
 
 Let’s break it down:
 
@@ -92,11 +92,11 @@ It’s time to start off with the practical stuff! Before that, make sure you ha
 
 Follow the documentation to [provision Azure Cache for Redis (Enterprise Tier)](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis-enterprise?WT.mc_id=data-17927-abhishgu) which comes with the RedisTimeSeries module.
 
-![infrastructure components](/images/blog/46a12a4f672e6ceec930f695577e84a41e817da8-1024x220.webp)
+![infrastructure components](/images/site-mirror/46a12a4f672e6ceec930f695577e84a41e817da8-1024x220.webp)
 
 Provision [Confluent Cloud cluster on Azure Marketplace](https://docs.microsoft.com/azure/partner-solutions/apache-kafka-confluent-cloud/create?WT.mc_id=data-17927-abhishgu). Also [create a Kafka topic](https://docs.confluent.io/cloud/current/get-started/index.html#step-2-create-a-ak-topic) (use the name mqtt.device-stats) and [create credentials](https://docs.confluent.io/cloud/current/client-apps/api-keys.html#create-resource-specific-api-keys-in-the-ui) (API key and secret) that you will use later on to connect to your cluster securely.
 
-![kafka cluster](/images/blog/df089d338a1087a71810bdf93c043ee7d64d8427-1024x227.webp)
+![kafka cluster](/images/site-mirror/df089d338a1087a71810bdf93c043ee7d64d8427-1024x227.webp)
 
 You can provision an instance of Azure Spring Cloud [using the Azure portal](https://docs.microsoft.com/azure/spring-cloud/quickstart-provision-service-instance?tabs=Azure-portal&pivots=programming-language-java&WT.mc_id=data-17927-abhishgu#provision-an-instance-of-azure-spring-cloud-1) or [use the Azure CLI](https://docs.microsoft.com/cli/azure/ext/spring-cloud/spring-cloud?view=azure-cli-latest&WT.mc_id=data-17927-abhishgu#ext_spring_cloud_az_spring_cloud_create):
 
@@ -104,7 +104,7 @@ You can provision an instance of Azure Spring Cloud [using the Azure portal](ht
 az spring-cloud create -n <name of Azure Spring Cloud service> -g <resource group name> -l <enter location e.g southeastasia>
 ```
 
-![Southeast Asia](/images/blog/60207e0295b56de2432694895f8ebad4e145aded-1024x215.webp)
+![Southeast Asia](/images/site-mirror/60207e0295b56de2432694895f8ebad4e145aded-1024x215.webp)
 
 Before moving on, make sure to clone the GitHub repo:
 
@@ -231,7 +231,7 @@ az spring-cloud app logs -f -n device-data-processor -s <name of Azure Spring Cl
 
 Browse to the Grafana UI at localhost:3000.
 
-![Grafana dash](/images/blog/aa1e55f69bb9ea3c370a1d9c815a1e79ef4dd3e4-880x807.webp)
+![Grafana dash](/images/site-mirror/aa1e55f69bb9ea3c370a1d9c815a1e79ef4dd3e4-880x807.webp)
 
 The Redis Data Source plugin for Grafana works with any Redis database, including Azure Cache for Redis. Follow the [instructions in this blog post](https://abhishek1987.medium.com/an-easy-to-use-monitoring-solution-for-redis-5a8a73d56129) to configure a data source.
 
@@ -239,11 +239,11 @@ Import the dashboards in the grafana_dashboards folder in the GitHub repo you ha
 
 For instance, here is a dashboard that shows the average pressure (over 30 seconds) for device 5 in location 1 (uses TS.MRANGE).
 
-![avg pressure](/images/blog/4254961d3a4e64304387c2ee371dd0a8b1d6ad0e-1024x548.webp)
+![avg pressure](/images/site-mirror/4254961d3a4e64304387c2ee371dd0a8b1d6ad0e-1024x548.webp)
 
 Here is another dashboard that shows the maximum temperature (over 15 seconds) for multiple devices in location 3 (again, thanks to TS.MRANGE).
 
-![max temp](/images/blog/a8553a319551d0b8b06a2e285714bdfa445bb35a-1024x549.webp)
+![max temp](/images/site-mirror/a8553a319551d0b8b06a2e285714bdfa445bb35a-1024x549.webp)
 
 ## So, you want to run some RedisTimeSeries commands?
 
@@ -313,7 +313,7 @@ We explored a data pipeline to ingest, process, and query time-series data using
 
 ## Additional considerations
 
-![downsampling ](/images/blog/16fb044c209cbd7e7341299bc6f94075d1e3681d-1024x428.webp)
+![downsampling ](/images/site-mirror/16fb044c209cbd7e7341299bc6f94075d1e3681d-1024x428.webp)
 
 **Optimizing RedisTimeSeries**
 
@@ -327,7 +327,7 @@ This is not an exhaustive list. For other configuration options, please refer to
 
 Data is precious, including time series! You may want to process it further (e.g. run machine learning to extract insights, predictive maintenance ,etc.). For this to be possible, you will need to retain this data for a longer time frame, and for this to be cost-effective and efficient, you would want to use a scalable object storage service such [Azure Data Lake Storage Gen2](https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction?WT.mc_id=data-17927-abhishgu) (ADLS Gen2).
 
-![data retention](/images/blog/9733360f243e01fa14562cf08767280682d8b580-789x322.webp)
+![data retention](/images/site-mirror/9733360f243e01fa14562cf08767280682d8b580-789x322.webp)
 
 There is a connector for that! You could enhance the existing data pipeline by using the fully-managed [Azure Data Lake Storage Gen2 Sink Connector for Confluent Cloud](https://docs.confluent.io/cloud/current/connectors/cc-azure-datalakeGen2-storage-sink.html) to process and store the data in ADLS and then run machine learning using [Azure Synapse Analytics](https://docs.microsoft.com/azure/synapse-analytics/spark/apache-spark-machine-learning-mllib-notebook?WT.mc_id=data-17927-abhishgu#predictive-analysis-example-on-nyc-taxi-data) or [Azure Databricks](https://docs.microsoft.com/azure/databricks/applications/machine-learning/?WT.mc_id=data-17927-abhishgu).
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Simba Khadder, Head of Context Engine at Redis. · Published 29 July 2026*
 
-![Context engineering for AI: what it is, why it matters, & how to build it](/images/blog/5a8b93e62595633a3dae53f270bedc18341abd20-2400x1256.webp)
+![Context engineering for AI: what it is, why it matters, & how to build it](/images/site-mirror/5a8b93e62595633a3dae53f270bedc18341abd20-2400x1256.webp)
 
 Your support agent confidently tells a customer they qualify for a refund under a 60-day return policy. Your actual policy is 30 days. The agent hallucinated the longer window, and the easy reaction is to blame the model. But the model never saw your return policy. The failure happened upstream, in what got loaded into the context window.
 

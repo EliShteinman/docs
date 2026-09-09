@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 May 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/34ebd5ff9f40e03d38da3b0f67cd729c744ab45f-772x550.webp)
+![Blog tile image](/images/site-mirror/34ebd5ff9f40e03d38da3b0f67cd729c744ab45f-772x550.webp)
 
 I’m excited to announce that we are expanding our partnership with Microsoft Corp., to provide [**Redis Enterprise as two new tiers of Azure Cache for Redis**](/press/redis-labs-announces-strategic-agreement-with-microsoft)**.** Our collaboration with Microsoft began in 2014 with the launch of Redis Cloud on Azure. Since then it has evolved into a unique and strategic partnership for both companies.
 

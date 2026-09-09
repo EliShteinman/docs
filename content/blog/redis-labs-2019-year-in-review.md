@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 30 December 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2cd9a200ead6a67c8b10a73a3538fbbdb8494aee-500x316.webp)
+![Blog tile image](/images/site-mirror/2cd9a200ead6a67c8b10a73a3538fbbdb8494aee-500x316.webp)
 
 Is it just us, or did 2019 seem to fly by? Maybe it just seemed that way because 2019 was such a big year for us here at Redis: We continued to invest heavily in Redis Open Source and its ecosystem, we introduced important new features to Redis Enterprise, partnered with Google Cloud to offer Redis Enterprise as a native service on the GCP console, hosted events all around the world, welcomed legions of new customers, grew our staff and bolstered our executive team, and much more.
 
@@ -38,7 +38,7 @@ We also set a new performance standard for Redis Enterprise. In our latest bench
 
 During 2019 we also invested in enterprise-grade Kubernetes deployment of Redis. **Redis Enterprise Operator** ensures that your cluster is properly utilizing the Kubernetes Stateful Set with support for anti-affinity, multi-AZ (failure domains), rolling upgrades, and Active-Active deployment across multiple Kubernetes clusters. And we recently announced **Automated Cluster Recovery**, which not only improves the availability of your Redis deployment but also allows users to manage a stateful service as if it were stateless. Our Kubenetes distro is available across all the leading Kubernetes platforms: GKE, AKS, EKS, PKS, RedHat OpenShift, and native Kubernetes.
 
-![](/images/blog/74b7b8df7e0adca2cea0c4d0cddddaeea5a435d7-1362x619.gif)
+![](/images/site-mirror/74b7b8df7e0adca2cea0c4d0cddddaeea5a435d7-1362x619.gif)
 
 Furthermore, we worked hard to help customers use Redis Enterprise across multiple clouds in just a few clicks, with the unification of Redis Enterprise Cloud and Memcached Enterprise Cloud into [**Redis Cloud Essentials**](/blog/introducing-redis-cloud-pro-essential-versions/). We also renamed Redis Enterprise VPC as **Redis Cloud Pro**, supporting Active-Active, Redis on Flash, and modules.
 
@@ -60,11 +60,15 @@ In April we held our [fifth annual ](/blog/wrap-redisconf-19-recap/)[**RedisConf
 
 Meanwhile, we brought Redis to you with** Redis Days **in Tel Aviv, New York, and [London](/blog/everything-you-missed-at-redis-day-london/). Attendees boosted their skills in hands-on training days and heard from Redis customers on innovative ways they are using Redis. If you’re in the neighborhood, don’t miss our first 2020 Redis Days in January: [Seattle](/blog/redis-day-seattle-2020/) and [Bangalore](/blog/redis-day-bangalore-2020/)!
 
-![](/images/blog/6c664bc204e3aad843c84f9cd3b78e4ddcf26d6a-2000x1333.webp)
+![](/images/site-mirror/6c664bc204e3aad843c84f9cd3b78e4ddcf26d6a-2000x1333.webp)
+
+*Redis Day London!*
 
 Finally, at [**AWS re:Invent**](/blog/redis-labs-at-aws-reinvent-2019/), we went all in on the theme Growth Happens: as your company and database needs scale, Redis Enterprise offers the best Redis experience for dealing with that growth smoothly and effectively. We had a blast in Vegas, [interviewing people on the show floor](https://twitter.com/Redis/status/1202746843547029504?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1202746843547029504&ref_url=https%3A%2F%2Fredis.com%2Fblog%2Fredis-labs-at-aws-reinvent-2019%2F), [watching our sponsored sumo wrestler win the Sumo Logic Slam Jam](https://twitter.com/howardting/status/1202481580238704640?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1202481580238704640&ref_url=https%3A%2F%2Fredis.com%2Fblog%2Fredis-labs-at-aws-reinvent-2019%2F), and [hearing top customers](/blog/what-gap-and-alliance-data-say-about-the-power-of-redis-enterprise/) like Gap and Alliance Data share how they get the most from Redis Enterprise.
 
-![](/images/blog/d402f03bcbca0025ed2b9c77724bc108b407aa95-2560x1252.webp)
+![](/images/site-mirror/d402f03bcbca0025ed2b9c77724bc108b407aa95-2560x1252.webp)
+
+*A standing-room-only audience takes in a presentation at the Redis booth at AWS re:Invent 2019.*
 
 ## Company milestones
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 18 January 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/6e0436f7942cb6c143053295f67f2ac4fde8f31e-772x550.webp)
+![Blog tile image](/images/site-mirror/6e0436f7942cb6c143053295f67f2ac4fde8f31e-772x550.webp)
 
 What generates 300 million tons of solid waste within a year? American consumers. Of this amount, only half goes straight into landfills to be stored. When one is at overcapacity, it’s sealed off to prevent leakage. Meanwhile, deep beneath the surface, the trash continues to decompose, creating many toxic byproducts such as leachate, which is contaminated water. Carbon monoxide is also produced, contributing to rising CO2 levels in our air.
 
@@ -40,7 +40,7 @@ An app. A community and a platform for people to help save the planet. This appl
 
 Below we’ll show you exactly how to build this application by going through each step in chronological order. We’ll also highlight what components you’ll need, along with their functionality.
 
-![GreenEarth website with a description of how to repurpose tin cans into flower pots, pencil holders, even tumblers. ](/images/blog/1e9cacc12a0479b4a0bc826e04900105ee285fae-1240x648.webp)
+![GreenEarth website with a description of how to repurpose tin cans into flower pots, pencil holders, even tumblers. ](/images/site-mirror/1e9cacc12a0479b4a0bc826e04900105ee285fae-1240x648.webp)
 
 ## 2. What will you need?
 
@@ -50,7 +50,7 @@ Below we’ll show you exactly how to build this application by going through ea
 
 ## 3. Architecture
 
-![Image showing the architecture of building an app with Redis.](/images/blog/0bb9e44e2f0c859fccdb10f53a300e1d491a98bf-1024x301.webp)
+![Image showing the architecture of building an app with Redis.](/images/site-mirror/0bb9e44e2f0c859fccdb10f53a300e1d491a98bf-1024x301.webp)
 
 ## 4. Getting started
 
@@ -485,21 +485,21 @@ JSON.GET – Retrieves post comment list
 
 Anyone who’s on the site can search for materials they have or projects they’re interested in. To begin, simply visit the [Green Earth homepage](https://launchpad.redis.com/?id=project%3Agreenearth#:~:text=Images-,Homepage,-Post%20Search).
 
-![The homepage screen of GreenEarth page with image of the Earth in space.](/images/blog/2ab9b870177dee6e69e2f2d7bd148180a176c8d5-1600x693.webp)
+![The homepage screen of GreenEarth page with image of the Earth in space.](/images/site-mirror/2ab9b870177dee6e69e2f2d7bd148180a176c8d5-1600x693.webp)
 
 ### How to find a project
 
 Click on the ‘posts’ tab at the top of the page. This will take you to a search bar for you to enter the household item you’re looking to recycle. So for example, if you have a lot of tin cans that you want to repurpose, simply type in ‘tin cans’ or variations of that keyword (see image below).
 
-![Image of tin cans repurposed as flower pots in the GreenEarth site.](/images/blog/a109403ea182ea69e1028c53c2ebb885ab2cda64-1600x841.webp)
+![Image of tin cans repurposed as flower pots in the GreenEarth site.](/images/site-mirror/a109403ea182ea69e1028c53c2ebb885ab2cda64-1600x841.webp)
 
 Once you’ve typed this in, a list of projects that require your household item will be displayed. Clicking on one of the results will take you to the project page of that post.
 
 Here you’ll discover everything you need to know about the project, ranging from user comments to the required materials through to the directions you’ll need to follow (see below).
 
-![The Description section of the GreenEarth site.](/images/blog/8ed78779e8e5d323d1c654cf9de08dba7200724d-1600x841.webp)
+![The Description section of the GreenEarth site.](/images/site-mirror/8ed78779e8e5d323d1c654cf9de08dba7200724d-1600x841.webp)
 
-![The Materials section of the GreenEarth site.](/images/blog/9efdfe1006d63175352ba20816b7e53361700f4f-1600x841.webp)
+![The Materials section of the GreenEarth site.](/images/site-mirror/9efdfe1006d63175352ba20816b7e53361700f4f-1600x841.webp)
 
 ### How to create an account
 
@@ -509,7 +509,7 @@ Once you’ve created an account and are logged in, the next step will be to upd
 
 You’ll then be directed to your profile page which will be empty (see below).
 
-![A page in the GreenEarth site for filling out a profile description.](/images/blog/9f48ac924acfa795201ded44f6f0084d0861154a-1600x622.webp)
+![A page in the GreenEarth site for filling out a profile description.](/images/site-mirror/9f48ac924acfa795201ded44f6f0084d0861154a-1600x622.webp)
 
 From here you’ll be able to update every section of your profile, including your profile photo and bio.
 
@@ -517,21 +517,21 @@ From here you’ll be able to update every section of your profile, including yo
 
 Once you’ve set-up a profile, you’ll then be able to leave comments on posts. To do this, first find a post you want to comment on (see ‘how to find a project’ section). The comment section in each post can be found at the bottom of the project page (see example below).
 
-![Showing the Comments section of GreenEarth website.](/images/blog/378b6a5833272c7d96df5d50625f8173f984aec8-1600x788.webp)
+![Showing the Comments section of GreenEarth website.](/images/site-mirror/378b6a5833272c7d96df5d50625f8173f984aec8-1600x788.webp)
 
 ### How to create a post
 
 To create a post, you first need to go to your profile dashboard. Click on the ‘+’ sign at the top right hand corner of your profile (see below).
 
-![A dashboard for creating a post in GreenEarth app with picture of Gandalf.](/images/blog/43683c7b3ca541320c36791bf6ffefb34eeee961-1600x788.webp)
+![A dashboard for creating a post in GreenEarth app with picture of Gandalf.](/images/site-mirror/43683c7b3ca541320c36791bf6ffefb34eeee961-1600x788.webp)
 
 You’ll then be directed to the ‘create a post page.’ From here you’ll see a number of different fields that need to be filled in, ranging from project name to directions through to the materials required to bring this project to life.
 
 Add the details of your project in each section as demonstrated below.
 
-![GreenEarth site image of a repurposed plastic bottle as a sprinkler. ](/images/blog/4cae3b878eba5bf51043ce3b676ec6d95096e3c5-1600x636.webp)
+![GreenEarth site image of a repurposed plastic bottle as a sprinkler. ](/images/site-mirror/4cae3b878eba5bf51043ce3b676ec6d95096e3c5-1600x636.webp)
 
-![A list of materials.](/images/blog/050d62e4dc3d9c8284d031eaf75c2bd56e978224-1600x636.webp)
+![A list of materials.](/images/site-mirror/050d62e4dc3d9c8284d031eaf75c2bd56e978224-1600x636.webp)
 
 Once you’ve completed each section, you’ll have the option to either delete, save or publish this post at the bottom of the page.
 
@@ -539,7 +539,7 @@ Once you’ve completed each section, you’ll have the option to either delete,
 
 All of your drafts and posts will be displayed in your profile dashboard.
 
-![A dashboard for editing a post in GreenEarth. ](/images/blog/f63b809f3489eefff6ab8654dcf64af6921c683e-1600x749.webp)
+![A dashboard for editing a post in GreenEarth. ](/images/site-mirror/f63b809f3489eefff6ab8654dcf64af6921c683e-1600x749.webp)
 
 To edit one of these, first, click on the post or draft you want to edit. Next, click on the edit button on the bottom-left-hand side of the page. Alternatively, you can delete the post by clicking on the trash icon next to it.
 
@@ -551,11 +551,11 @@ This is because any delays will hamper the user’s experience and push people a
 
 Thanks to Redis, retrieving user information from the cloud database, along with storing individual user attributes, was an effortless process. From start to finish, *everything* was carried out with hyper-efficiency.
 
-![A redislaunchpad apps banner](/images/blog/4286535b4f0ad548b626a7e3bc36792d2aa0c568-1600x593.webp)
+![A redislaunchpad apps banner](/images/site-mirror/4286535b4f0ad548b626a7e3bc36792d2aa0c568-1600x593.webp)
 
 ## Who built this app?
 
-![Rajesh Ramamurthy](/images/blog/fb1e73b8a64a0f26fe8cdfec9211add87695c68c-400x400.webp)
+![Rajesh Ramamurthy](/images/site-mirror/fb1e73b8a64a0f26fe8cdfec9211add87695c68c-400x400.webp)
 
 ### Rajesh Ramamurthy
 

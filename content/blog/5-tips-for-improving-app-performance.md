@@ -15,7 +15,7 @@ hidden: true
 
 *By Charlie Wang, Senior Product Marketing Manager · Published 27 January 2025 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/39ed37696de494e2aace43bbeb33106bd086511c-1544x1104.webp)
+![Blog tile image](/images/site-mirror/39ed37696de494e2aace43bbeb33106bd086511c-1544x1104.webp)
 
 As companies scale, their systems face increasing amounts of data and traffic, putting application performance at risk. Issues such as slower response times, downtime, and even server crashes become more likely without the right strategies in place.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 6 August 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9b6d6e749554b986903cb1846dbeddedda02302c-140x92.webp)
+![Blog tile image](/images/site-mirror/9b6d6e749554b986903cb1846dbeddedda02302c-140x92.webp)
 
-![](/images/blog/c2e0a6f0908ee005214575d9957834cd40b6b9d4-635x200.webp)
+![](/images/site-mirror/c2e0a6f0908ee005214575d9957834cd40b6b9d4-635x200.webp)
 
 It’s hard to believe that a full year had passed since the last [NoSQL Now!](/blog/like-a-kid-in-a-candy-store-dataversitys-nosqlnow-2014) event, and yet **now** we’re only a week away from this year’s conference! If the 2014 agenda made me feel like a kid in a candy store, then 2015 looks like a trip to Willy Wonka’s Chocolate Factory. I mean, look at this (partial) list of topics that I’ve lifted from the [conference homepage](http://nosql2015.dataversity.net/) – there’s something for everyone in there:
 

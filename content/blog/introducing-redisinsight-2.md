@@ -14,7 +14,7 @@ hidden: true
 
 *By Olga Lopaci · Published 23 November 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c366f211c9b1d6d9405188239aa9124b4d69cfcb-935x628.webp)
+![Blog tile image](/images/site-mirror/c366f211c9b1d6d9405188239aa9124b4d69cfcb-935x628.webp)
 
 *RedisInsight 2.0 which provides an updated UI, browser tool, advanced CLI, custom data visualization, and built-in guides to help with using Redis data models like JSON and time series. *[*Click here to try RedisInsight 2.0.*](/insight/#insight-form)
 
@@ -41,7 +41,7 @@ We’ve revamped a number of existing features, starting with the most popular o
 - *Browser tool*: Now with visual cues for quickly identifying the data types and instantly accessible key ttl and size data for lazy memory analysis.
 - *CLI*: Accessible at any time within the database workspace with a convenient command helper that lets you search and read on Redis commands.
 
-![](/images/blog/fc2210b649faf10946dbfbffed6272c8546d71dd-1024x544.webp)
+![](/images/site-mirror/fc2210b649faf10946dbfbffed6272c8546d71dd-1024x544.webp)
 
 ### Workbench
 
@@ -51,7 +51,7 @@ A new workspace where you can build and run commands in a multiple line format a
 - *Advanced data visualizations:* Provided via built-in plugins as well as the ability to render custom plugins developed by external developers. Visualize your data in a format that’s easy to understand and consume.
 - *Built-in Guides:* Developers can conveniently discover Redis features and capabilities via built-in guides. The first guide produced covers document capabilities within Redis.
 
-![](/images/blog/71644f7e9e1bcdd03f8cb74f930e6a88b3720c7c-1024x603.webp)
+![](/images/site-mirror/71644f7e9e1bcdd03f8cb74f930e6a88b3720c7c-1024x603.webp)
 
 ### Custom visualization plugins
 

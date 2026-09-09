@@ -14,7 +14,7 @@ hidden: true
 
 *By Paula Dallabetta · Published 13 April 2026 · updated 15 April 2026*
 
-![Blog tile image](/images/blog/f47cb452f6b051b9809566ce2f1cac4859b9c7c6-1200x628.webp)
+![Blog tile image](/images/site-mirror/f47cb452f6b051b9809566ce2f1cac4859b9c7c6-1200x628.webp)
 
 The difference between a five-minute outage and a five-hour one is usually infrastructure that was set up before anything broke. Data replication (keeping copies of your data in sync across multiple locations) is how distributed systems stay available when something goes wrong. This guide covers what it is, how it works, the types you'll encounter, and when each approach makes sense.
 
@@ -68,9 +68,13 @@ Transactional replication is a replication topology that copies data changes in 
 
 A snapshot of the primary is shared with the replica.
 
-![illustration of snapshot being replicated to a replica](/images/blog/05c502c5a33c7d42bcbd8d8dd3921c177549bf78-400x224.webp)
+![illustration of snapshot being replicated to a replica](/images/site-mirror/05c502c5a33c7d42bcbd8d8dd3921c177549bf78-400x224.webp)
 
-![The primary sends information gathered after the snapshot to the replica.](/images/blog/6e826ae376cb5ced7c3f9a7e52c9b47ae842b8b8-1024x573.webp)
+*A snapshot of the primary is shared to the replica*
+
+![The primary sends information gathered after the snapshot to the replica.](/images/site-mirror/6e826ae376cb5ced7c3f9a7e52c9b47ae842b8b8-1024x573.webp)
+
+*Primary sends data gathered after the snapshot to the replica*
 
 The primary later sends changes gathered after the snapshot.
 

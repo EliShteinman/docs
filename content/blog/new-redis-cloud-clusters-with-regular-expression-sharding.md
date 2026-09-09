@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 29 October 2014 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/f8d122d21654f553fdfa979a69c9ea186c8e55d7-635x200.webp)
+![](/images/site-mirror/f8d122d21654f553fdfa979a69c9ea186c8e55d7-635x200.webp)
 
 I’m delighted to announce that today we’ve made our clustering technology even more useful with the public availability of RegEx Sharding. This feature allows you to define exactly how Redis Cloud distributes data between a database’s shards, thereby enabling your application to continue performing multi-key operations at top performance on huge datasets. Our standard and new RegEx sharding policies are immediately available to all our Redis Cloud Pay-as-You-Go subscribers.
 

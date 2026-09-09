@@ -14,7 +14,7 @@ hidden: true
 
 *By Henry Tam · Published 2 June 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/1664c65157f2b3c7281aca6257aa7317fa9aad47-1891x1274.webp)
+![Blog tile image](/images/site-mirror/1664c65157f2b3c7281aca6257aa7317fa9aad47-1891x1274.webp)
 
 According to [eMarketer](https://www.emarketer.com/content/global-ecommerce-forecast-2022), “worldwide e-commerce sales will exceed $5 trillion for the first time, accounting for more than a fifth of overall retail sales” in 2022. With independent, Main Street shop owners to global retailers competing fiercely for the same shoppers, these businesses need to be able to fight for every legitimate sale to be completed. However, global payments consultancy CMPSI estimated in 2020, “[only 85% of online transactions being approved, compared to 97% in-store](https://cmspi.com/nam/blogs/changing-pace-of-payments-new-retail/).”
 

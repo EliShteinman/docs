@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 13 March 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/a63616031cdf76b214711597c62b08338946ebb2-201x172.webp)
+![Blog tile image](/images/site-mirror/a63616031cdf76b214711597c62b08338946ebb2-201x172.webp)
 
 *Earlier today, I sent this note to Redis’ customers, partners, and other members of the Redis community:*
 

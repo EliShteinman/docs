@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 1 July 2026*
 
-![Blog tile image](/images/blog/2f24410ddbba1792c86c3e2e6905575e2a8a2852-1200x628.webp)
+![Blog tile image](/images/site-mirror/2f24410ddbba1792c86c3e2e6905575e2a8a2852-1200x628.webp)
 
 AI agent memory is the system that lets an agent store, retrieve, and reuse information across interactions instead of starting over on every request. Getting there is one of the trickier parts of building AI agents. Large language models (LLMs) are stateless at their core—the model itself doesn't retain information between API calls. Products like ChatGPT and Claude layer memory systems on top, which is why they remember your name and preferences. But when you're building your own agents, you need to implement that memory layer yourself.
 

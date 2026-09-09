@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 7 December 2016 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/165eae4946d6491c991d785128c05166396ec2a6-635x200.webp)
+![Blog tile image](/images/site-mirror/165eae4946d6491c991d785128c05166396ec2a6-635x200.webp)
 
-![First-Ever Redis Modules Hackathon](/images/blog/165eae4946d6491c991d785128c05166396ec2a6-635x200.webp)
+![First-Ever Redis Modules Hackathon](/images/site-mirror/165eae4946d6491c991d785128c05166396ec2a6-635x200.webp)
 
 Every day is a special day, but last Friday was a really special day because of the [release of the first release candidate for Redis v4](http://antirez.com/news/110). The new version packs **a lot of new stuff**, although it’s most exciting addition by far is the new modules API – it allows just about anyone to go right ahead and make something more useful with Redis. It literally means endless possibilities and is the reason why the Sunday before was also an extra special day.
 

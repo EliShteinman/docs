@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 31 October 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/baf227bd241f098d96f1979251a16d9c7d4d2cd9-635x200.webp)
+![Blog tile image](/images/site-mirror/baf227bd241f098d96f1979251a16d9c7d4d2cd9-635x200.webp)
 
-![](/images/blog/baf227bd241f098d96f1979251a16d9c7d4d2cd9-635x200.webp)
+![](/images/site-mirror/baf227bd241f098d96f1979251a16d9c7d4d2cd9-635x200.webp)
 
 ### Redis Cloud Team is heading to Las Vegas as a Bronze Sponsor of [AWS re:Invent](http://reinvent.awsevents.com/) this November 12-15th!
 

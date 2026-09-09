@@ -14,7 +14,7 @@ hidden: true
 
 *By Cody Henshaw, Director, Technical Marketing, Redis · Published 15 August 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e9391fc69c7ee617640e64892c4b8448ab82cc59-772x550.webp)
+![Blog tile image](/images/site-mirror/e9391fc69c7ee617640e64892c4b8448ab82cc59-772x550.webp)
 
 **Redis is committed to making using our software a delight to use. Adding these five new clients makes it even easier to do so.**
 
@@ -30,7 +30,9 @@ Redis now officially supports five open-source client libraries:
 
 More are on the way.
 
-![The new client libraries](/images/blog/a12bddac6c93c941069db24d944216d1e8d482e4-1736x394.webp)
+![The new client libraries](/images/site-mirror/a12bddac6c93c941069db24d944216d1e8d482e4-1736x394.webp)
+
+*The new client libraries*
 
 These client libraries seamlessly integrate into your applications. That means you can put your attention on creating awesome applications, instead of on debugging and patching third-party clients.
 

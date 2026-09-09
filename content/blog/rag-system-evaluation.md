@@ -14,7 +14,7 @@ hidden: true
 
 *By Rini Vasan, AI Product Marketing Manager · Published 13 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/49e692da8dc5716e0055e9c5d91f846dbcd04032-1200x628.webp)
+![Redis](/images/site-mirror/49e692da8dc5716e0055e9c5d91f846dbcd04032-1200x628.webp)
 
 Your [Retrieval Augmented Generation (RAG)](https://redis.io/glossary/retrieval-augmented-generation/) system works perfectly in demos, then production users report irrelevant answers and hallucinated facts. The retrieval finds documents, the LLM generates responses, but somewhere between chunking and generation, quality breaks down. It's clearly time to evaluate your RAG system, but how do you do that?
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Alaeddine Abdessalem, Contributor · Published 8 November 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/5a4a696217f9bb0f3a70359401a425b309192048-772x550.webp)
+![Blog tile image](/images/site-mirror/5a4a696217f9bb0f3a70359401a425b309192048-772x550.webp)
 
 **This tutorial helps you build a real-time product recommendation system for an e-commerce system using content-based filtering and vector similarity search. Follow along to learn the essential steps and how it works.**
 
@@ -23,7 +23,7 @@ Recommendation systems are an important technology for most online businesses an
 
 A recommendation system typically shows items to users based on their profiles and preferences and by observing their actions (such as buying, liking, or viewing items).
 
-![diagram of a phone app](/images/blog/d2548071c5c85870f580233d5f09c9c385c494ec-720x434.webp)
+![diagram of a phone app](/images/site-mirror/d2548071c5c85870f580233d5f09c9c385c494ec-720x434.webp)
 
 Consider the challenges involved in building a recommendation system for a modern e-commerce site. This is just a subset of the issues to consider:
 
@@ -58,7 +58,7 @@ These techniques are implemented in vector databases. Redis offers vector search
 
 With feature representation and computing vector similarity covered, we still need a data structure to bridge the gap between our multimodal data and the vector database. For that, we use[ DocArray](http://docarray.jina.ai/). Think of DocArray as a universal [vector database](/solutions/vector-search/) client with support for multimodal data. It has a Pythonic interface that makes it easy to build a recommendation system in just a few lines of code.
 
-![docarray ingestion](/images/blog/69c9122d6498e657187e0413a4fcc99819e6fe7e-1999x1220.webp)
+![docarray ingestion](/images/site-mirror/69c9122d6498e657187e0413a4fcc99819e6fe7e-1999x1220.webp)
 
 ## Designing the solution
 
@@ -97,7 +97,7 @@ That’s all the setup we need. Now we’re ready to start exploring with data.
 
 The Amazon Berkeley Objects Dataset consists of product items accompanied by images and metadata such as brand, country, and color. It represents the inventory of an e-commerce website.
 
-![nia and nicole womens wallet](/images/blog/8abe311e50e090c3a19bd0067bca6713c4901eeb-697x268.webp)
+![nia and nicole womens wallet](/images/site-mirror/8abe311e50e090c3a19bd0067bca6713c4901eeb-697x268.webp)
 
 For the purposes of this tutorial, we can download a subset of this dataset from Jina Cloud, pre-processed in DocArray format.
 
@@ -153,7 +153,7 @@ da[:12].plot_image_sprites()
 
 ```
 
-![product catalog items](/images/blog/1d6c8b44879dc456a12741bd9b8949f6d475a1ff-734x554.webp)
+![product catalog items](/images/site-mirror/1d6c8b44879dc456a12741bd9b8949f6d475a1ff-734x554.webp)
 
 Each product contains the metadata information in the tags field.
 
@@ -299,11 +299,11 @@ recommended = view(redis_da[0], view_history
 
 That displays an attractive scarf, labeled as ” Thirty-Five Kent Men’s Cashmere Zig Zag Scarf, Blue”:
 
-![gray scarf](/images/blog/a13e60b94e811b04133c0c983df7b5c9e1ba8ac0-219x256.webp)
+![gray scarf](/images/site-mirror/a13e60b94e811b04133c0c983df7b5c9e1ba8ac0-219x256.webp)
 
 … and the accompanying recommendations:
 
-![assortment of scarves](/images/blog/56d1cae73409ea14340c587e63745274200e72b7-734x590.webp)
+![assortment of scarves](/images/site-mirror/56d1cae73409ea14340c587e63745274200e72b7-734x590.webp)
 
 How well do they meet the user’s filter?
 
@@ -318,9 +318,9 @@ recommended = view(recommended[2], view_history, color='Navy')
 
 Thirty-Five Kent Men’s Cashmere Zig Zag Scarf, Blue:
 
-![navy scarf](/images/blog/52693fc798e29395ead834d92eec79027b68abb2-166x256.webp)
+![navy scarf](/images/site-mirror/52693fc798e29395ead834d92eec79027b68abb2-166x256.webp)
 
-![digital store clothing items](/images/blog/fddecfdd35455a924398068102e2df46837cd71b-734x590.webp)
+![digital store clothing items](/images/site-mirror/fddecfdd35455a924398068102e2df46837cd71b-734x590.webp)
 
 Now the recommendation function returns the most visually similar items to scarves that also satisfy the filter color='Navy'.
 
@@ -332,7 +332,7 @@ The instructions above are a brief overview to demonstrate the building blocks f
 
 You’re welcome to take it further. We created a [GitHub repository](https://github.com/jina-ai/product-recommendation-redis-docarray) with source code for a product store interface with the same dataset and technique we just showed.
 
-![vector similarity search](/images/blog/e4c25f811826111c03db921bb245a1e512817d51-1322x620.webp)
+![vector similarity search](/images/site-mirror/e4c25f811826111c03db921bb245a1e512817d51-1322x620.webp)
 
 This demonstration just showed you how Vector Similarity Search can offer low-latency real-time recommendations that respect user preferences and filter selection.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 30 April 2026 · updated 6 May 2026*
 
-![edge computing latency](/images/blog/f970be61a70e9f022db5585d5f2634dcaaac17c3-2400x1256.webp)
+![edge computing latency](/images/site-mirror/f970be61a70e9f022db5585d5f2634dcaaac17c3-2400x1256.webp)
 
 Edge computing has an obvious pitch: put compute closer to users, cut the latency. The reality is messier. Edge nodes can hit capacity faster than cloud regions, retrieval steps can dominate the time budget, and a misconfigured thread pool can erase every millisecond you saved on the network.
 

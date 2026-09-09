@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 11 March 2026 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/73490f3b7bbcac67264436996fa2683cff9f1197-772x552.webp)
+![Blog tile image](/images/site-mirror/73490f3b7bbcac67264436996fa2683cff9f1197-772x552.webp)
 
 Redis has been one of the most popular database technologies among devs for years. Companies like Airbnb, Hulu, and OpenAI rely on Redis for high-performance workloads across caching, real-time data, and AI infrastructure.
 

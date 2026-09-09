@@ -14,7 +14,7 @@ hidden: true
 
 *By Priya Balakrishnan, Sr. Director of Product and Partner Marketing · Published 28 March 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 You’ve likely heard about the General Data Protection Regulation (GDPR) that begins on May 25, 2018. These requirements put forward by the European Commission, harmonize data privacy laws across the EU with the overall intent of protecting private information for European citizens. GDPR’s key principles revolve around data privacy and subject rights in our increasingly data-driven world.
 

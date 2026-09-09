@@ -14,7 +14,7 @@ hidden: true
 
 *By Lior Kogan, Contributor · Published 5 January 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/17769fd307f015c1aad5611f2a4896a8ebfee61d-1200x628.webp)
+![Redis](/images/site-mirror/17769fd307f015c1aad5611f2a4896a8ebfee61d-1200x628.webp)
 
 In Redis 8.4, we [have built upon improvements from 8.2](/blog/redis-82-streams-bitmap/) that make it easier to build with Redis Streams and strings.
 
@@ -61,7 +61,7 @@ XREADGROUP GROUP group consumer
 
 When CLAIM *min-idle-time* is specified, from the consumer group *group* of each specified stream *key*, Redis will first try to claim messages that have been pending for at least *min-idle-time* milliseconds (equivalent to the *min-idle-time* parameter value in XPENDING, XCLAIM, and XAUTOCLAIM). The pending messages with the highest idle time would be claimed first. If there are no such pending messages, Redis consumes incoming messages as usual.
 
-![Redis](/images/blog/8a372c53fd268e54d022ef27f8397fe64f719047-960x540.webp)
+![Redis](/images/site-mirror/8a372c53fd268e54d022ef27f8397fe64f719047-960x540.webp)
 
 When an *id* is >, without CLAIM, the consumer retrieves only messages that have never been delivered to any other consumer (i.e.,new messages). When an *id* is >, with CLAIM, the consumer retrieves those messages plus any pending entries idle for at least *min-idle-time* milliseconds. CLAIM *min-idle-time* is ignored for keys for where the specified *id* is not >.
 
@@ -100,7 +100,7 @@ Before Redis 8.4, writing the new product description atomically required transa
 
 IFEQ match-value** **ensures that Redis sets the value to new Value only if the value on the server is equal to match-value.
 
-![Redis](/images/blog/c19e04811aa9d60917fbedc8fe085c34f0868e0d-960x540.webp)
+![Redis](/images/site-mirror/c19e04811aa9d60917fbedc8fe085c34f0868e0d-960x540.webp)
 
 Sometimes, storing the old value in the client’s memory and passing it back to the server isn’t ideal, especially when the value is large (e.g., a large JSON string or BLOB). Keeping both old and new values in the client is a memory waste. In Redis 8.4, clients can avoid storing the old value by using digests:
 

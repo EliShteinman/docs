@@ -16,7 +16,7 @@ hidden: true
 
 *By Gilbert Lau, Abhishek Srivastava · Published 26 January 2023 · updated 13 March 2026*
 
-![Blog tile image](/images/blog/7038671f894f607e740da0de4fc175533a77991e-772x550.webp)
+![Blog tile image](/images/site-mirror/7038671f894f607e740da0de4fc175533a77991e-772x550.webp)
 
 **Redis Enterprise’s Active-Active Geo-Distribution and Google Cloud Spanner’s replication work together to provide a unified real-time data layer for geo-distributed applications. Here’s how they connect and the benefits the tech provides.**
 
@@ -26,7 +26,7 @@ Ensuring [data consistency](/blog/database-consistency/) in these database syste
 
 In this blog post, we discuss the combination of Redis Enterprise’s [Active-Active Geo-Distribution](/active-active/) and [Google Cloud Spanner’s replication](https://cloud.google.com/spanner/docs/replication), which together provide a resilient, globally-consistent data layer for geo-distributed real-time applications.
 
-![two maps of the world](/images/blog/4866d4f6841f52e565df26a17c554ae24cd011d3-1258x554.webp)
+![two maps of the world](/images/site-mirror/4866d4f6841f52e565df26a17c554ae24cd011d3-1258x554.webp)
 
 Cloud Spanner is a fully-managed database service. It’s part of Google Cloud’s effort to bring ACID-based consistency, SQL relational database capabilities, and synchronized replication among geographical locations to the masses. Cloud Spanner supports mission-critical applications, and it complies with relational database services by offering transactional consistency at a global scale, schemas, SQL (ANSI 2011 with extensions), and automatic, synchronous replication for five-nines SLA [high availability.](/blog/high-availability-architecture/)
 
@@ -38,7 +38,9 @@ Redis Open Source is powerful, but it falls short on various enterprise-grade fe
 
 As the following schematic diagram illustrates, an application deployed in two different geographic regions (us-east1 and us-west1) may behave erratically in the event of simultaneous cache reads and writes.
 
-![google spanner inconsistent data](/images/blog/59df35b4ff94979f27e5dbe3e066f3391aaa2754-1999x1045.webp)
+![google spanner inconsistent data](/images/site-mirror/59df35b4ff94979f27e5dbe3e066f3391aaa2754-1999x1045.webp)
+
+*Redis OSS Cache for Cloud Spanner*
 
 Imagine that this application architecture is meant to support a globally distributed real-time event booking and ticketing system. Outdated information could cause losses in business and poor customer experience.
 
@@ -65,13 +67,17 @@ With our solution in place, this just won’t happen. The two of us keep things 
 
 Redis Enterprise can solve this problem thanks to the native support of active-active geo-replication. Using this feature, Redis Enterprise can serve as a cross-region distributed cache to ensure data consistency across regions. That guarantees stronger consistency both in the caching layer and in the system of record.
 
-![redis enterprise active-active geo-distribution](/images/blog/0533d132145195ac7ac98142cf4bf4fbbb3d2e04-516x408.webp)
+![redis enterprise active-active geo-distribution](/images/site-mirror/0533d132145195ac7ac98142cf4bf4fbbb3d2e04-516x408.webp)
+
+*Distributed Redis Enterprise Cache for Google Cloud Spanner*
 
 Better yet: No additional development work is required to use Redis Enterprise’s native Active-Active Geo-Duplication. Each Redis Enterprise cluster supports local read and write operations with under one-millisecond latency, and it works harmoniously with the underlying Cloud Spanner instance in each cloud region. Without you doing anything special, data is automatically replicated among Redis Enterprise clusters. Frequent data-read access is offloaded to Redis Enterprise to improve application response time as well as to optimize overall data access costs.
 
 More importantly, Redis Enterprise’s Active-Active feature in Google Cloud Marketplace supports five nines SLAs as Cloud Spanner does in multi-region deployments. End result? Better price performance with no maintenance downtime.
 
-![active-active replication graph](/images/blog/7d7f0eca196da3fe46aa6fb96de6dd1c43c4f64b-1248x654.webp)
+![active-active replication graph](/images/site-mirror/7d7f0eca196da3fe46aa6fb96de6dd1c43c4f64b-1248x654.webp)
+
+*Distributed Redis Enterprise Cache for Cloud Spanner*
 
 Active-Active Geo-Distribution is achieved by implementing conflict-free replicated data types (CRDTs) in Redis Enterprise using a global database that spans multiple clusters and conflict-free replicated databases (CRDBs).
 

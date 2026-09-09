@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 21 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0a106f0a0c58ececbd27e81f6f7e658aeffe8f2f-772x550.webp)
+![Blog tile image](/images/site-mirror/0a106f0a0c58ececbd27e81f6f7e658aeffe8f2f-772x550.webp)
 
 **We’re changing some of our security practices. Here is what you need to know to ensure a smooth transition.**
 

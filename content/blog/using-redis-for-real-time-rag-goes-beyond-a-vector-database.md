@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 13 June 2024 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/1ba533507e3bd30be7c8b234ef5c61965a2d49c3-772x552.webp)
+![Blog tile image](/images/site-mirror/1ba533507e3bd30be7c8b234ef5c61965a2d49c3-772x552.webp)
 
 ## Why does RAG need real-time data?
 
@@ -24,7 +24,7 @@ So, what is a fast application? [Paul Buchheit](https://en.wikipedia.org/wiki/Pa
 
 Let’s examine what a typical RAG-based architecture looks like and what latency boundaries each component currently has as well as the expected end-to-end latency.
 
-![](/images/blog/2891ff2618f7c8b4f22dc0cc8218b6f96df1f653-512x400.webp)
+![](/images/site-mirror/2891ff2618f7c8b4f22dc0cc8218b6f96df1f653-512x400.webp)
 
 1. **Network round trip** — assuming the end users of your app and data centers are in the US, the round trip is expected to be in the range of 20-50ms.
 1. **LLM** — from ChatGPT: *“As of my last update, the LLM processing time for generating a response typically ranges from tens to hundreds of milliseconds, depending on the specifics mentioned above. This processing time can be affected by the model’s architecture, the length and complexity of the input text, and any additional tasks performed alongside generating the response (such as context analysis or formatting). “*
@@ -79,7 +79,7 @@ In this example, LLM memory (or conversation history) allows the LLM to personal
 
 To explain real-time RAG with Redis’ capabilities for AI, nothing beats a diagram and a short explanation:
 
-![](/images/blog/8c5c110d7aa017861b7bd63c0e52d78b4c865b56-916x708.webp)
+![](/images/site-mirror/8c5c110d7aa017861b7bd63c0e52d78b4c865b56-916x708.webp)
 
 1. Upon receiving the user’s prompt, the GenAI App calls an embedding service (e.g., OpenAI Ada2) to vectorize it.
 1. GenA AppI initiates a semantic caching operation, looking for similar responses (in this case, >= 97% similarity, but other parameters can also be used). If the app hits the cache (over 30% of the time), it just has to send the cache response back to the user.
@@ -99,7 +99,7 @@ In order to understand how real-time RAG applications perform end-to-end, let’
 
 ### Semantic cache hit analysis
 
-![](/images/blog/07b65852d3e06e5a79b0c94762c67905f5f1a455-691x556.webp)
+![](/images/site-mirror/07b65852d3e06e5a79b0c94762c67905f5f1a455-691x556.webp)
 
 As can be seen in the diagram above, only two components are actually involved in this scenario:
 
@@ -110,7 +110,7 @@ As can be seen in the diagram above, only two components are actually involved i
 
 ### Semantic cache miss analysis
 
-![](/images/blog/4011b806ffd4a51696aef8c2f8c26faf8e4d19b2-691x620.webp)
+![](/images/site-mirror/4011b806ffd4a51696aef8c2f8c26faf8e4d19b2-691x620.webp)
 
 1. **Network** – remains unchanged and accounts for a latency of 20-50ms
 1. **GenAI App** – executes all steps detailed [here](https://docs.google.com/document/d/1nGY0jojMHrSkyeM4dCX_dSJDer0jWVhw4VPQGTssaOg/edit#heading=h.tzxd0ywckka0) in case of cache miss, still within 20-100ms
@@ -121,7 +121,7 @@ As can be seen in the diagram above, only two components are actually involved i
 
 ### Total real-time RAG response time analysis
 
-![](/images/blog/f2071ba52e006a2d8949208b80670c9805a3f642-512x317.webp)
+![](/images/site-mirror/f2071ba52e006a2d8949208b80670c9805a3f642-512x317.webp)
 
 RAG architectures based on Redis have an average end-to-end response time of **389ms**, which is around **x3.2** faster than non-real-time RAG architectures and much closer to Paul Buchheit’s 100ms Rule. This allows existing and new applications to run LLM components in their stack with minimal performance impact, if any.
 

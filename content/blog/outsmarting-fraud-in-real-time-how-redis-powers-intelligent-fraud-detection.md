@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 18 July 2025 · updated 1 September 2026*
 
-![Outsmarting fraud in real-time: How Redis powers intelligent fraud detection](/images/blog/023998b3524d236ac2ffedfd04ee6c4b24d6770b-772x552.webp)
+![Outsmarting fraud in real-time: How Redis powers intelligent fraud detection](/images/site-mirror/023998b3524d236ac2ffedfd04ee6c4b24d6770b-772x552.webp)
 
 Fraudsters don’t wait—and neither can your systems.
 
@@ -82,7 +82,7 @@ That means better fraud predictions, faster decision-making, and fewer false pos
 1. **During live inference, models fetch real-time features** As each transaction or user action occurs, the fraud detection system retrieves relevant features, like recent IP addresses, spending habits, and location patterns—from the online store to instantly score the event for risk.
 1. **The system monitors for drift and performance degradation** Monitoring tools track changes in feature distributions (e.g., a shift in login locations or transaction amounts) and model outputs to detect fraudster adaptation and make sure detection quality remains high over time.
 
-![Redis Blog Fraud Detection](/images/blog/9f64d01cb755ecbb861d3830905c791a50e565c8-1920x960.webp)
+![Redis Blog Fraud Detection](/images/site-mirror/9f64d01cb755ecbb861d3830905c791a50e565c8-1920x960.webp)
 
 ### Session tracking to detect unusual behavior as it happens
 
@@ -117,7 +117,7 @@ Financial teams can use these tools to find duplicate transactions, track unusua
   1. **Count-Min Sketch**—Track how often events occur to detect abusive behavior. *Example:* This user has attempted 50 logins in 5 minutes.
   1. **Cuckoo Filters**—Similar to Bloom Filters, but allow deletions—ideal for dynamic allowlists or blocklists. *Example:* Remove a trusted device after it’s flagged as compromised.
 
-![Redis Fraud Detection](/images/blog/fe9106e83c03cddf1e53236b4fd4bce982a5f4f2-1920x600.webp)
+![Redis Fraud Detection](/images/site-mirror/fe9106e83c03cddf1e53236b4fd4bce982a5f4f2-1920x600.webp)
 
 ## Built for high throughput and low latency—always
 

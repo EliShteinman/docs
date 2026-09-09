@@ -15,7 +15,7 @@ hidden: true
 
 *By Cassie Zimmerman, Amiram Mizne · Published 12 May 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/7f57410ba58a05aec05e4e4691872a54f3d2b4b1-772x520.webp)
+![Blog tile image](/images/site-mirror/7f57410ba58a05aec05e4e4691872a54f3d2b4b1-772x520.webp)
 
 Earlier today, Microsoft and Redis announced [private preview availability](/press/redis-labs-announces-strategic-agreement-with-microsoft) of Redis Enterprise on Azure Cache for Redis, a significant milestone in the deepening strategic collaboration between our two organizations. The integration will be featured as two additional Enterprise tiers to the existing [Azure Cache for Redis](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/garantiadata.redis_enterprise_1sp_public_preview?ocid=redispreview_mktg_private_prev_blog_cta1) service.
 
@@ -27,7 +27,7 @@ Microsoft Azure is one of the most globally distributed and secure clouds on the
 
 This joint offering already allows select customers to launch Redis Enterprise in the Azure portal just as they would any other native Azure service. Using the Azure Portal user interface, creating a new Redis Enterprise database and connecting it to your app is as easy as 1-2-3.
 
-![Redis](/images/blog/6497065b4f62204d81b23f85fc100d02457fb02b-448x280.gif)
+![Redis](/images/site-mirror/6497065b4f62204d81b23f85fc100d02457fb02b-448x280.gif)
 
 ## New enterprise tiers
 

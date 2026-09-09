@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 22 January 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Today we’re going to dive quite a bit deeper and make something useful with Node.js, RediSearch and the client library we started in [Part II](/blog/mastering-redisearch-part-ii/).
 
@@ -67,7 +67,7 @@ Now that we’ve explored both the fields and how to create an index, let’s mo
 
 Thankfully, most of the data in these files is fairly clean, but that doesn’t mean we don’t need to make adjustments. In the cast/crew file, we have the challenge of cast and crew entries having slightly different sets of data. In the data, each row represents a movie and the cast column has all the cast members while the crew column has all the crew members. So, when we’re representing this in the schema, we’re effectively creating a union of the fields (since there is overlap). *cast* and *crew* are numeric fields that are set to “1” for each kind of credit—think of it like a flag.
 
-![](/images/blog/4a66899751bc74d5ebf17e73b042396650cc8a49-927x493.webp)
+![](/images/site-mirror/4a66899751bc74d5ebf17e73b042396650cc8a49-927x493.webp)
 
 For the movie database, we’re going to convert *release_date* to a number. We’ll simply parse the date into a Javascript timestamp and store it in a numeric field. Finally, we’ll ignore a number of fields — we’ll just compare columns’ keys to an array of columns in order to skip (*ignoreFields*).
 

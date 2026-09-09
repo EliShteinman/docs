@@ -14,7 +14,7 @@ hidden: true
 
 *By Fionce Siow, Senior Product Marketing · Published 29 January 2026*
 
-![Redis](/images/blog/6368519e9bd116f5058765af3f3a0a14282ace6a-1200x628.webp)
+![Redis](/images/site-mirror/6368519e9bd116f5058765af3f3a0a14282ace6a-1200x628.webp)
 
 You've hit this before: your app works fine with 100 users, but everything slows down at 10,000. Your relational database can't keep up with session lookups, cache misses are killing your API response times, and you're burning through your LLM budget with redundant queries.
 

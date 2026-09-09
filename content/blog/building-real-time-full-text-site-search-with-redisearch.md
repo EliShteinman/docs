@@ -14,11 +14,11 @@ hidden: true
 
 *By Andrew Brookins, Former Curriculum Software Engineer at Redis · Published 27 November 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
+![Blog tile image](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
 
 When we wanted to add real-time [full-text search](/glossary/full-text-search/) to the [Redis documentation site](https://docs.redis.com/latest/), we turned to [RediSearch](/modules/redis-search). The robust search features in the RediSearch module helped us transform a bland form into an awesome search experience. To show off some of what’s possible with RediSearch and to help jumpstart your search projects, I’d like to talk about the architecture of our project and share our code. The Python application we built is called redis-sitesearch. If you want to check out the code or run it for your own site, it’s [open source](https://github.com/redislabs-training/redis-sitesearch), and you can try RediSearch for free on [Redis Cloud Essentials](/try-free/). Read on for the nitty-gritty details!
 
-![](/images/blog/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
+![](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
 
 ## Why we used RediSearch
 
@@ -36,7 +36,9 @@ Our documentation search has two major pieces: a JavaScript frontend consisting 
 
 While you type, the frontend makes search requests to the backend API and renders the results. Thanks to Redis being an in-memory database, and deployments across multiple zones, getting these results is fast—averaging around 40-to-50 milliseconds in testing from Oregon.
 
-![](/images/blog/c996d4697ecf03eeed3d5edaece293fcdbf54588-1024x185.webp)
+![](/images/site-mirror/c996d4697ecf03eeed3d5edaece293fcdbf54588-1024x185.webp)
+
+*A screenshot of HTTP requests to the search API showing 40ms – 60ms response times.*
 
 We know that humans perceive response times below 100 milliseconds as instant, so we were happy to hit the 40ms – 60ms range.
 
@@ -48,7 +50,9 @@ What exactly is going on inside the search app to make this happen, though? Here
 
 Here’s a diagram of how the pieces fit together:
 
-![](/images/blog/57787b225cd3dad836fab9559b004ba0d1552628-1024x952.webp)
+![](/images/site-mirror/57787b225cd3dad836fab9559b004ba0d1552628-1024x952.webp)
+
+*This diagram shows the Indexer, RediSearch, the search API, and the frontend components of the project, with data-flow connections between the Indexer and RediSearch, the search API and RediSearch, and the frontend and search API.*
 
 We run these pieces inside a container on Google Cloud, and distribute instances of the container worldwide using a multi-zone deployment behind a global load balancer.
 
@@ -97,7 +101,7 @@ To do this, we used [Redis Queue](https://python-rq.org/) to build an indexing j
 
 One of our goals for the new search experience was to show the section of the page in which we found a search result. For example, if the query “gcp” finds a hit in the “Team management” section of the “Account and Team Settings” page, we want to show both the page and section in the search result. This screenshot of a search result shows an example:
 
-![](/images/blog/a9d93c89d5ac927321152c6d16643dab34b30c6b-1024x198.webp)
+![](/images/site-mirror/a9d93c89d5ac927321152c6d16643dab34b30c6b-1024x198.webp)
 
 In this screenshot, “GCP” is the hit, so that term is rendered in bold, an example of RediSearch’s [highlights ](https://redis.io/docs/stack/search/reference/highlight/)feature. “Account and Team Settings” is the title of the page on which we found the hit, and “Team management” is the name of the section that contained the hit.
 
@@ -135,7 +139,7 @@ With prefix matching, “red*” will find many hits, including:
 
 The search form will start displaying results for hits across all these terms as the user types. When the user finishes the phrase they are typing, the results will begin to focus. If the final search is for “redisearch,” the app issues one last query to Redis for “redisearch*” and the results will be specific to RediSearch.
 
-![](/images/blog/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
+![](/images/site-mirror/36f131416a76387631acf14cc0602aec8c78905b-640x453.gif)
 
 ## Deploying on Google Cloud
 

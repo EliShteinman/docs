@@ -14,9 +14,9 @@ hidden: true
 
 *By Ajeet Raina, Technical Marketing Manager · Published 5 October 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/0244d0ed9739b943433c55fea5ac81410450bf68-1364x619.gif)
+![Blog tile image](/images/site-mirror/0244d0ed9739b943433c55fea5ac81410450bf68-1364x619.gif)
 
-![](/images/blog/afa7530506c11e4674ad59cc3ad8df3db4796d52-1024x244.webp)
+![](/images/site-mirror/afa7530506c11e4674ad59cc3ad8df3db4796d52-1024x244.webp)
 
 For developers who are building applications with Redis, [RedisInsight](/insight/) is a lightweight multi-platform management visualization tool that helps you design, develop, and optimize your application capabilities in a single easy-to-use environment. RedisInsight provides an intuitive and efficient GUI for Redis databases, making it easier to interact with your databases and manage your data—with built-in support for most popular Redis modules. It provides tools to analyze the memory and profile the performance of your database usage, and helps guide you toward better Redis usage. It manages Redis data via GUI by scanning existing keys, adding new ones, performing CRUD or bulk operations, displaying objects in a pretty-JSON object format, and supporting friendly keyboard navigation.
 
@@ -50,13 +50,17 @@ Full screen support for [Time Series](/timeseries/), [JSON](/json/), [Redis Stre
 
 ## 2. A visual tool to interact with your data
 
-![](/images/blog/0244d0ed9739b943433c55fea5ac81410450bf68-1364x619.gif)
+![](/images/site-mirror/0244d0ed9739b943433c55fea5ac81410450bf68-1364x619.gif)
+
+*Browsing keys in a Redis database using RedisInsight.*
 
 RedisInsight lets you browse and explore your Redis databases and intuitively interact with your data. It allows you to view real-time metrics from Redis. It allows you to create tabular views from your Redis keys and export data in different formats. You can also visualize and update data from Redis [Streams](https://redis.io/docs/latest/develop/), [Search and Query](https://redisearch.io/), and [Time Series](https://redistimeseries.io/). Beginning with the RedisInsight 1.6.3 release, filtering of keys in the browser is possible, so you can more easily navigate through your data and find the keys that are the most relevant to you.
 
 RedisInsight comes with a built-in CLI that lets you run commands against a Redis server. You don’t need to install anything, as soon as you are connected to the database, the integrated web is CLI available, just there for you! RedisInsight also makes your life simpler with all the command’s syntax—the integrated help shows you all the arguments and validates your commands as you type.
 
-![](/images/blog/1f45e65f3582e6825ba329a8de571c3cccc4e738-1364x619.gif)
+![](/images/site-mirror/1f45e65f3582e6825ba329a8de571c3cccc4e738-1364x619.gif)
+
+*Check out the auto-complete and syntax highlighting features of RedisInsight.*
 
 RedisInsight provides syntax highlighting and auto-complete and employs integrated help to deliver intuitive, in-the-moment assistance. Hence, you can view all the traditional operations that can be performed using an updated CLI and graphical command builders, making it easier to write commands for all data structures and modules.
 
@@ -66,7 +70,9 @@ RedisInsight provides syntax highlighting and auto-complete and employs integrat
 
 RedisInsight is aimed at helping developers get the most out of Redis. It is basically a suite of tools that can help developers throughout the development lifecycle. There are built-in tools for the design phase during prototyping, while other sets of tools help in the implementation phase.
 
-![](/images/blog/7c348958fdca7151854ab1c2f23b56cc9ae3acbb-1362x619.gif)
+![](/images/site-mirror/7c348958fdca7151854ab1c2f23b56cc9ae3acbb-1362x619.gif)
+
+*Bulk operations include renaming all keys.*
 
 For example, RedisInsight allows developers to perform bulk operations such as renaming, expiring, and deleting a large number of keys in one go. It gives developers visibility into their slow logs so that they can identify, troubleshoot, and fix bottlenecks and find optimization opportunities. It helps developers identify top keys, key patterns, and commands. With RedisInsight, developers can filter by client IP address, key, or command across all nodes of a cluster. They can effectively debug Lua scripts with less complexity.
 
@@ -74,7 +80,9 @@ For example, RedisInsight allows developers to perform bulk operations such as r
 
 Software firms need advanced tools to make development straightforward and fast. With the right tools, developers can save time, deliver high-quality applications, and run a sustainable enterprise. As a Redis developer, it’s important to identify efficient and easy-to-use tools that help you to understand how an application behaves and interacts with the database.
 
-![](/images/blog/8be8037d7732cde811470822016468974a4ca64b-1362x619.gif)
+![](/images/site-mirror/8be8037d7732cde811470822016468974a4ca64b-1362x619.gif)
+
+*Demonstrating the top key patterns in RedisInsight.*
 
 Developers use the profiler feature of RedisInsight to help identify performance problems without having to touch the code. Some commands may take a long time to process on the Redis server, causing the request to time out. A few examples of long-running commands are met with a large number of keys, keys *, or poorly written Lua scripts. The RedisInsight profiler runs the Redis MONITOR command, which analyzes every command sent to the Redis instance. It parses the output of the MONITOR command and generates a summarized view. All the commands sent to the Redis instance are monitored for the duration of the profiling.
 
@@ -84,7 +92,9 @@ Profiler gives information about the number of commands processed, commands/seco
 
 Redis is an in-memory data store. This means that the entire dataset is stored in memory (DRAM). This is great for performance, but as the size of your data set grows, you need more DRAM to hold all that data. Few developers want to spend their time learning about Redis memory issues, so RedisInsight provides recommendations for developers on how to save memory. The recommendations are specially curated according to the Redis instance, based on industry standards and Redis’ experience.
 
-![](/images/blog/a7de260e71c558fd2922c85f337aa32e321f0dc6-1362x619.gif)
+![](/images/site-mirror/a7de260e71c558fd2922c85f337aa32e321f0dc6-1362x619.gif)
+
+*RedisInsight shows memory usage by Redis keys.*
 
 RedisInsight helps developers reduce memory usage and improve application performance. It offers several tools to manage and optimize Redis. RedisInsight analyzes memory-usage offline—without affecting Redis performance—by key patterns, key expiry, and advanced search to identify memory leaks. It can even show you total memory consumption by key pattern, and also the biggest keys within that key pattern.
 

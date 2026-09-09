@@ -14,7 +14,7 @@ hidden: true
 
 *By Manvinder Singh, VP of AI Products · Published 10 December 2025 · updated 1 June 2026*
 
-![10 techniques to optimize your semantic cache](/images/blog/5af9247c2da6866a8ced0ce6ea3ab78f16fd5427-1200x628.webp)
+![10 techniques to optimize your semantic cache](/images/site-mirror/5af9247c2da6866a8ced0ce6ea3ab78f16fd5427-1200x628.webp)
 
 A semantic cache’s purpose is to reuse previously computed LLM work—reducing repeated inference, improving latency, and stabilizing throughput. (If you're looking to understand how semantic caching works, check out this article [here](/blog/what-is-semantic-caching/) ). A higher cache hit ratio means fewer API calls, lower costs, and more consistent responses.
 

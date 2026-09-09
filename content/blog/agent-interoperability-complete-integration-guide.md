@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 14 July 2026 · updated 16 July 2026*
 
-![Agent interoperability: a complete explainer](/images/blog/e5f0059c99ede6277d411e7119f049a29fcf58fd-2400x1256.webp)
+![Agent interoperability: a complete explainer](/images/site-mirror/e5f0059c99ede6277d411e7119f049a29fcf58fd-2400x1256.webp)
 
 You built a research AI agent in the [LangGraph framework](/blog/ai-agent-orchestration-platforms/). Another team shipped a customer-service agent in CrewAI. A third team wired up tools through the OpenAI Agents SDK. Now leadership asks: can these things work together? For most teams, the honest answer is "sort of, with a lot of glue code."
 

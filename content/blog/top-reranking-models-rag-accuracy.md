@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 26 July 2026 · updated 29 July 2026*
 
-![Top reranking models to boost RAG accuracy in 2026](/images/blog/a0ef9979c04e8b3c1be9933f61b4aa4b00c04ca1-2400x1256.webp)
+![Top reranking models to boost RAG accuracy in 2026](/images/site-mirror/a0ef9979c04e8b3c1be9933f61b4aa4b00c04ca1-2400x1256.webp)
 
 Your Slack pings mid-afternoon: a product manager says the [retrieval-augmented generation (RAG)](https://university.redis.io/course/ihjs7iip0gpkrw) assistant keeps citing a deprecated API version in its answers to developer questions. You pull the trace and find the retriever grabbed 50 chunks, with the current docs page sitting at position 23, buried under near-misses the LLM latched onto first. Retrieval did its job; ranking didn't. Reranking is one layer in the broader context engineering stack—the infrastructure that assembles the right context for the model at inference time, alongside retrieval, semantic caching, agent memory, and tool outputs. Get the ranking step wrong and the rest of that stack can't compensate. 
 

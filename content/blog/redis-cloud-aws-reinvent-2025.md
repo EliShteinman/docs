@@ -14,7 +14,7 @@ hidden: true
 
 *By Jon Fritz, Chief Product Officer · Published 1 December 2025 · updated 13 August 2026*
 
-![blog post thumbnail - bringing a bigger, better Redis Cloud to AWS re:invent](/images/blog/7345a6bf8c818da9ead4f68a127c667ce209cf66-1200x628.webp)
+![blog post thumbnail - bringing a bigger, better Redis Cloud to AWS re:invent](/images/site-mirror/7345a6bf8c818da9ead4f68a127c667ce209cf66-1200x628.webp)
 
 Come see us at booth #1520 for live demos of everything new, as well as giveaways, and Redis swag. Also, don’t miss the Hallucination Hub, our happy hour where we’re bringing AI hallucinations to life (with food and drinks of course). Check out everything we’re doing at re:Invent [here](https://redis.io/aws-reinvent/).
 
@@ -76,7 +76,7 @@ redis.zadd(f"category:{new_data['category']}",
 
 RDI eliminates this. With RDI you can connect your PostgreSQL or MongoDB directly to Redis Cloud, and data syncs automatically so you can avoid cache misses and stale data. It does this by capturing changes, transforming them into Redis data types, and instantly ingesting changed data into Redis.
 
-![rdi-diagram](/images/blog/201bff6a249075763a101c8b7f5c5aab17601552-1457x579.webp)
+![rdi-diagram](/images/site-mirror/201bff6a249075763a101c8b7f5c5aab17601552-1457x579.webp)
 
 With the public preview of RDI, Redis Cloud Pro customers can now accelerate their applications by over 75% and realize substantial cost savings. For instance, [Axis Bank](https://redis.io/customers/axis-bank/) saw 4.25x better performance while saving over $80K.
 

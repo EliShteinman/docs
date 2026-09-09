@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 16 September 2025 · updated 13 August 2026*
 
-![Redis](/images/blog/c5430d4313e6195c5fc3ad11519f0cd1514ce6b0-772x552.webp)
+![Redis](/images/site-mirror/c5430d4313e6195c5fc3ad11519f0cd1514ce6b0-772x552.webp)
 
 The biggest ElastiCache cost driver is easy to miss: you never get the full node memory as usable keyspace. By default AWS [documents](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/redis-memory-management.html) that 25% of memory is reserved for operations like backups and replication and is unusable, so the actual capacity available to customers is smaller than the instance specifications suggest.
 

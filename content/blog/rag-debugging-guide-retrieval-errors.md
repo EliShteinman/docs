@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 21 July 2026 · updated 22 July 2026*
 
-![RAG Debugging Guide: Fast Fixes for Retrieval Errors](/images/blog/5f0ea4d603d507bf3d40042e9a9f85ce347f3de9-2400x1256.webp)
+![RAG Debugging Guide: Fast Fixes for Retrieval Errors](/images/site-mirror/5f0ea4d603d507bf3d40042e9a9f85ce347f3de9-2400x1256.webp)
 
 Your RAG-backed support assistant just told a customer the refund window is 30 days. It's 14. The retrieval logs look clean: chunks came back, latency was normal, nothing errored. That's what makes RAG failures slippery. The pipeline still returns an answer, sometimes right, sometimes confidently wrong, and the traces look nearly identical either way unless you capture what actually got retrieved. Validation is only [feasible during operation](https://arxiv.org/pdf/2401.05856), so catching these means monitoring production, not just passing a pre-launch test.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 20 September 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c807596ca829b2ef52f3442ee4e58da237b7e759-772x550.webp)
+![Blog tile image](/images/site-mirror/c807596ca829b2ef52f3442ee4e58da237b7e759-772x550.webp)
 
 **Are your applications running on MySQL performing to their optimum potential? Not so much, right? Discover three ways Redis Enterprise can help you overcome common obstacles in MySQL – with minimal code changes and zero disruption to your application. Want to dive even deeper into how Redis Enterprise can help either as a cache or a primary database? Click below to read our dedicated MySQL solution brief.**
 
@@ -28,7 +28,7 @@ Redis Enterprise, the leading real-time data platform, can be used alongside MyS
 
 Redis Enterprise can be used alongside your [MySQL database](/events/why-your-mysql-needs-redis/) to store your application’s most critical and commonly-accessed data in-memory to deliver it with sub-millisecond speed. Let’s go into more detail on the how.
 
-![](/images/blog/47e315f0ff6f3fdf671056319407654afbb38fbe-1024x467.webp)
+![](/images/site-mirror/47e315f0ff6f3fdf671056319407654afbb38fbe-1024x467.webp)
 
 ## MySQL speed – transformed
 

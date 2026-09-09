@@ -16,19 +16,23 @@ hidden: true
 
 *By Raja Rao, Head of Growth Marketing · Published 24 June 2021 · updated 21 May 2026*
 
-![Blog tile image](/images/blog/b3bc7ea76e3d51e208f219a603c096edbaae9543-773x520.webp)
+![Blog tile image](/images/site-mirror/b3bc7ea76e3d51e208f219a603c096edbaae9543-773x520.webp)
 
 [*Download the JSON Web Tokens (JWTs) are not safe e-book here*](/docs/json-web-tokens-jwts-are-not-safe/)
 
 Sometimes, people take technologies that are intended to solve a narrow problem and start applying them broadly. The problem may appear similar, but utilizing unique technologies to solve general issues could create unanticipated consequences. To use a metaphor, if you are a hammer, everything looks like a nail. JWT is one such technology.
 
-![](/images/blog/c0c7debf17405238ddeac0b4845c7f549d74c537-1024x181.webp)
+![](/images/site-mirror/c0c7debf17405238ddeac0b4845c7f549d74c537-1024x181.webp)
+
+*Source: “Stop using JWT for sessions” (see reference below for links).*
 
 [Watch the video](https://www.linkedin.com/in/rdegges/)
 
-![not default](/images/blog/5d7295ce3a80af2f61b5e914ec4ded784acfd2e3-1024x94.webp)
+![not default](/images/site-mirror/5d7295ce3a80af2f61b5e914ec4ded784acfd2e3-1024x94.webp)
 
-![Ptacek](/images/blog/bb22685294247ddb1cae8ae6e785c9a27d44fb40-1024x206.webp)
+*Source: “JWT should not be default for your sessions” (see reference below for links).*
+
+![Ptacek](/images/site-mirror/bb22685294247ddb1cae8ae6e785c9a27d44fb40-1024x206.webp)
 
 There are many in-depth articles and videos from SMEs of companies like Okta talking about the potential dangers and inefficiencies of using JWT tokens[1]. Yet, these warnings are overshadowed by marketers, YouTubers, bloggers, course creators, and others who knowingly or unknowingly promote it.
 
@@ -64,7 +68,7 @@ Below is what happens in the traditional approach.
 1. If the user exists and is allowed to do that action (i.e send a tweet), the server allows them to do the action.
 1. And finally, it tells the front end that the tweet was sent.
 
-![Grey 2](/images/blog/54044a18b5b4cd195def9d4c9ab86336999ce019-1024x687.webp)
+![Grey 2](/images/site-mirror/54044a18b5b4cd195def9d4c9ab86336999ce019-1024x687.webp)
 
 ## The main problem with the traditional approach
 
@@ -97,7 +101,7 @@ In the picture below, the pink section of the token has the payload (user’s in
 
 But the blue part is signed using a secret string, the header, and the payload itself. And so if the client tampers with the payload (say impersonates a different user), the signature will be different and won’t be authenticated.
 
-![Encoded](/images/blog/9b12356282f2209b999d92473c1c88cd86ad173a-1024x560.webp)
+![Encoded](/images/site-mirror/9b12356282f2209b999d92473c1c88cd86ad173a-1024x560.webp)
 
 Here is how our use case would look like with JWT:
 
@@ -113,7 +117,7 @@ Here is how our use case would look like with JWT:
 
 Going forward for every user action, the server simply verifies the signed part, gets the user info, and lets the user do that action. Thus completely skipping the DB call.
 
-![Grey 1](/images/blog/468034a634b1c6b829eb5464273439db7b1c6c4e-1024x724.webp)
+![Grey 1](/images/site-mirror/468034a634b1c6b829eb5464273439db7b1c6c4e-1024x724.webp)
 
 ### Token expiration
 
@@ -185,17 +189,17 @@ If you simply use Redis as a session store and some other Database as a primary 
 
 Note that the lightning emoji indicates a blazing fast speed. And the snail emoji indicates slow speed.
 
-![Session JWT](/images/blog/ea31b8c9658ab575d0a5ddf924fa325bd8825185-1024x771.webp)
+![Session JWT](/images/site-mirror/ea31b8c9658ab575d0a5ddf924fa325bd8825185-1024x771.webp)
 
 As mentioned earlier, you can also use Redis as a primary database for your entire data layer. In this scenario, your architecture becomes much simpler and basically, everything becomes blazing fast.
 
-![Db JWT](/images/blog/9b5150c34e3126c404a1399162285ceb99a2df08-1024x771.webp)
+![Db JWT](/images/site-mirror/9b5150c34e3126c404a1399162285ceb99a2df08-1024x771.webp)
 
 ## Does it scale?
 
 Of course, companies use Redis not just as a standalone database but as a cluster of geographically distributed databases.
 
-![](/images/blog/62dbcacace673999e363436a5158d2e3975e833f-1015x398.webp)
+![](/images/site-mirror/62dbcacace673999e363436a5158d2e3975e833f-1015x398.webp)
 
 ### [1] References:
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Thomas Caudron, Contributor · Published 9 November 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/cba9ee764ac0a560e5fb01f99c8014dd6b580d1a-772x550.webp)
+![Blog tile image](/images/site-mirror/cba9ee764ac0a560e5fb01f99c8014dd6b580d1a-772x550.webp)
 
 **Among the features of RedisGears 2.0 is the V8 JavaScript Engine. You can experiment with it in the RedisGears 2.0. Here’s what to expect.**
 

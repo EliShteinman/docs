@@ -14,11 +14,11 @@ hidden: true
 
 *By Haley Kim, Associate Content Producer · Published 21 May 2020 · updated 17 September 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 *(As organizations look to modernize their applications, many are turning to a microservices architecture to deconstruct their legacy apps into collections of loosely coupled services. This profound change inspired us to reach out to Redis users in various stages of this journey to microservices architectures. We are telling their microservices stories in a series of blog posts, which *[*began in late 2019*](/blog/how-mutualink-uses-redis-to-support-a-life-saving-microservices-architecture/)*.)*
 
-![](/images/blog/88755ea974252595572a2cb04767edac411e4b0b-400x160.svg)
+![](/images/site-mirror/88755ea974252595572a2cb04767edac411e4b0b-400x160.svg)
 
 You’re on the way to the grocery store when your phone rings. It’s a number you don’t recognize. Do you pick up?
 

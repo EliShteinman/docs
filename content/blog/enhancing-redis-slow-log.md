@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 17 January 2013 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 [Redis Slow Log](https://redis.io/commands/slowlog) is one of the best tools for debugging and tracing your Redis database, especially if you experience high latency and high CPU usage with Redis operations. [This online discussion](https://groups.google.com/forum/?fromgroups=#!searchin/redis-db/Strange$20growing$20cpu$20usage$20in$202.6.7/redis-db/zY9FMEMBnJA/Eenw58zspe4J) in a Redis DB group is just one of many examples that show how efficient Redis Slow Log is. Because Redis is based on a single threaded architecture, Redis Slow Log can be much more useful than slow log mechanisms of multi-threaded database systems such as MySQL Slow Query Log.
 

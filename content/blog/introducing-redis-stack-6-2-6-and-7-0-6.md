@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 7 December 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c21e544cd8c0a82599602320467a0f6c9e7379b9-772x550.webp)
+![Blog tile image](/images/site-mirror/c21e544cd8c0a82599602320467a0f6c9e7379b9-772x550.webp)
 
 **Whether you are a long-time Redis developer or you are just getting started, Redis Stack represents the latest innovations we have to offer.**
 

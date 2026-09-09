@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 6 April 2026 · updated 8 April 2026*
 
-![How real-time dispatch systems work](/images/blog/21a76354d1a097291189153f7e4b9342055e41e5-2400x1256.webp)
+![How real-time dispatch systems work](/images/site-mirror/21a76354d1a097291189153f7e4b9342055e41e5-2400x1256.webp)
 
 If you're building anything that assigns drivers to riders, technicians to service calls, or responders to 911 calls, the architecture behind that assignment decision separates a smooth operation from one that falls apart during the lunch rush. When the data your system acts on is even a few minutes stale, assignments go to the wrong resource, ETAs drift, and customers or dispatchers start compensating manually.
 

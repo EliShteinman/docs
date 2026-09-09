@@ -14,9 +14,9 @@ hidden: true
 
 *By Drew Kreiger, Developer Community Manager · Published 11 June 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9c56c00bf7a3d524f349e703455cac039c0af1fd-368x260.webp)
+![Blog tile image](/images/site-mirror/9c56c00bf7a3d524f349e703455cac039c0af1fd-368x260.webp)
 
-![](/images/blog/7d2908911bb4cefe63eaffe6b1c2991634cd5234-623x98.webp)
+![](/images/site-mirror/7d2908911bb4cefe63eaffe6b1c2991634cd5234-623x98.webp)
 
 ## [Vote now!](https://www.linkedin.com/feed/update/urn:li:activity:6676912867104686081/)
 

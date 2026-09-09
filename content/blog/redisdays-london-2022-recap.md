@@ -14,7 +14,7 @@ hidden: true
 
 *By Henry Tam · Published 28 March 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/686b6f4f25124287a2bba381e637553449e33fb4-772x550.webp)
+![Blog tile image](/images/site-mirror/686b6f4f25124287a2bba381e637553449e33fb4-772x550.webp)
 
 RedisDays, our three-part worldwide virtual event kicked off with a stop in London this year, where our Redis experts and esteemed guests dug deep into the power of sub-millisecond speed.
 
@@ -22,13 +22,13 @@ RedisDays is an opportunity to share with our community all the learnings and te
 
 ## Keynote: The Age of Real-Time is Now. Accelerate or Get Disrupted
 
-![ofer bengal quote](/images/blog/1eb2147b46134e56f98689409d1f1311b16ddd7d-1024x585.webp)
+![ofer bengal quote](/images/site-mirror/1eb2147b46134e56f98689409d1f1311b16ddd7d-1024x585.webp)
 
 Ofer Bengal, Redis Co-Founder and CEO, kicked things off with a keynote speech that boils down to one core idea: Many people use real-time data without noticing it. Real-time data is the technical backbone of modern living, with use cases that extend to manufacturing, airline, hospitality, telecommunications, [healthcare](/industries/healthcare/), online advertising, cybersecurity, gaming, digital mobility, shipping services, social media, among many others.
 
 Besides highlighting how real-time data at scale is used daily to improve customer experience in many applications and touch points, here are the key takeaways and product announcements from London’s keynote:
 
-![RedisFi reference architecture diagram](/images/blog/af075b5c8b8d8b12eafbaf51d341b088ec34039b-1024x559.webp)
+![RedisFi reference architecture diagram](/images/site-mirror/af075b5c8b8d8b12eafbaf51d341b088ec34039b-1024x559.webp)
 
 - [JSON ](/json/)is now generally available and provides a flexible and high-performance document store with native indexing and full-text search.
 - RedisFI demo showcases how to develop a Financial Services RoboAdvisor real-time app with JSON and [Search and Query](/blog/redisearch-2-build-modern-applications-interactive-search/).
@@ -40,11 +40,11 @@ Besides highlighting how real-time data at scale is used daily to improve custom
 
 ## Accelerate Your Apps with the Real-Time JSON Document Store from Redis
 
-![ash sahu quote](/images/blog/5ac71d99d8e98a43e4408f5af588a23cd955b0ff-1024x585.webp)
+![ash sahu quote](/images/site-mirror/5ac71d99d8e98a43e4408f5af588a23cd955b0ff-1024x585.webp)
 
 In this session, Ash Sahu, Sr. Director of Product Marketing, and Pieter Cailliau, Director of Product Management at Redis, focused on the real-time JSON document store. This presentation addressed how many types of data, including JSON, are needed for modern digital applications, but are restricted by rigid schemas of relational database management systems (RDBMS) and the slow performance of disk-based document databases.
 
-![redisjson 2.0](/images/blog/1bf75feca47f104e8e22937cf8925c3aa1ac34e7-1024x481.webp)
+![redisjson 2.0](/images/site-mirror/1bf75feca47f104e8e22937cf8925c3aa1ac34e7-1024x481.webp)
 
 Here are some noteworthy highlights from this presentation:
 
@@ -54,17 +54,17 @@ Here are some noteworthy highlights from this presentation:
 
 - Mixed workloads performance test shows up to 50X more throughput than MongoDB and 7X more than Elasticsearch.
 
-![ofer bengal keynote](/images/blog/a37543e2dd729309563dda66f877c8cb248c4bf4-1024x580.webp)
+![ofer bengal keynote](/images/site-mirror/a37543e2dd729309563dda66f877c8cb248c4bf4-1024x580.webp)
 
 Want to learn more? Watch the session in its entirety by [**registering here**](/redisdays/).
 
 ## Best Practices to Modernize Your Data Architecture
 
-![david loshin quote](/images/blog/2b6a303481eb5be41a52147bbd30366cf4d5047f-1024x585.webp)
+![david loshin quote](/images/site-mirror/2b6a303481eb5be41a52147bbd30366cf4d5047f-1024x585.webp)
 
 This session, led by David Loshin, President of Knowledge Integrity Inc., and Henry Tam, Sr. Solutions Marketing Manager at Redis, showcased best practices for modernizing data architectures still hampered by legacy technologies.
 
-![henry tam presentation](/images/blog/d2883813a260db0bb83db2b8c16835e954461dd9-1024x470.webp)
+![henry tam presentation](/images/site-mirror/d2883813a260db0bb83db2b8c16835e954461dd9-1024x470.webp)
 
 So what were the key takeaways from this session? Here they are at a glance:
 
@@ -76,11 +76,11 @@ Missed the session? [**Watch it here**](/redisdays/).
 
 ## Real-Time Data Pipelines: NLP + Redis
 
-![alexander mikhalev quote](/images/blog/45c72ca9b4b23f4f453839d794140d5cdd1cf08a-1024x585.webp)
+![alexander mikhalev quote](/images/site-mirror/45c72ca9b4b23f4f453839d794140d5cdd1cf08a-1024x585.webp)
 
 RedisDays London wrapped up with a fireside chat between Allen Terleto, Field CTO at Redis, and Alexander Mikhalev, AI/ML Architect at Nationwide Building Society, who discussed building real-time natural language processing (NLP) data pipelines using Redis to transform financial services processes.
 
-![allen terleto and alexander mikhalev](/images/blog/5a7745c894aabe1f806997b15b03623cdb7db8a5-1024x517.webp)
+![allen terleto and alexander mikhalev](/images/site-mirror/5a7745c894aabe1f806997b15b03623cdb7db8a5-1024x517.webp)
 
 Here are some of the main points addressed during this one-on-one conversation:
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 3 May 2024 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/b3bc49fca4afdc502e701986cdf738021d66979d-772x552.webp)
+![Blog tile image](/images/site-mirror/b3bc49fca4afdc502e701986cdf738021d66979d-772x552.webp)
 
 [Click image to view video](https://www.youtube.com/embed/pkKQG5Hnu28?si=f-J746A6p5j2FHCQ)
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 5 June 2014 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Customer satisfaction is Redis’ highest priority. As such, it is with great pleasure that I share another success story, this time with one of our longstanding customers, [Pixlee](http://pixlee.com/). A recent conversation with Pixlee’s co-founder, Jeff Chen, prompted the idea to compile exactly how Redis has been of service to the ever-growing visual content marketing platform.
 

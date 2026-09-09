@@ -14,7 +14,7 @@ hidden: true
 
 *By Growth Team · Published 26 April 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/2e8f6310a898810a6fba0cfd6841126004dd4383-772x550.webp)
+![Blog tile image](/images/site-mirror/2e8f6310a898810a6fba0cfd6841126004dd4383-772x550.webp)
 
 Speed and efficiency are the hallmarks of excellence in today’s fast-paced business environment.
 
@@ -317,6 +317,6 @@ Head on over. Be inspired. And have fun with Redis.
 
 ### Vishrut Kohli
 
-![](/images/blog/82a309815abc08fa4ab99a1b2129f64a80143257-298x262.webp)
+![](/images/site-mirror/82a309815abc08fa4ab99a1b2129f64a80143257-298x262.webp)
 
 Vishrut is a full-stack developer and data enthusiast who’s proficient in Python, MATLAB/octave, and machine learning algorithms. If you want to keep up to date with all of his projects then make sure to follow him on [GitHub](https://github.com/bonsai-dbrms).

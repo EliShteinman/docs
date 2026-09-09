@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 24 September 2013 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/f49c40b2a6432c63a046b20050bbfd6925bc1158-635x200.webp)
+![](/images/site-mirror/f49c40b2a6432c63a046b20050bbfd6925bc1158-635x200.webp)
 
 In-memory NoSQL datastores such as open source Redis and Memcached are becoming the de-facto standard for every web/mobile application that cares about its user’s experience. Still, large enterprises have struggled to adopt these databases in recent years due to challenges with performance, scalability and availability.
 

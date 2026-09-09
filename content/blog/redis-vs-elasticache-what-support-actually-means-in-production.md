@@ -14,7 +14,7 @@ hidden: true
 
 *By Fionce Siow, Senior Product Marketing · Published 22 January 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/46ea74197e5e835d066c3e411b71582bd74c374c-1200x628.webp)
+![Redis](/images/site-mirror/46ea74197e5e835d066c3e411b71582bd74c374c-1200x628.webp)
 
 When teams compare Redis and Amazon [ElastiCache](https://redis.io/compare/elasticache/), the discussion usually starts with performance, cost, or scale. Those factors matter. But once Redis is on the critical path, another question becomes more important: 
 

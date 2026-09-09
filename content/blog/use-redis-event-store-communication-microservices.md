@@ -14,7 +14,7 @@ hidden: true
 
 *By Martin Forstner, Solution Architect · Published 11 February 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 [*Click here to get started with Redis Enterprise. Redis Enterprise lets you work with any real-time data, at any scale, anywhere.*](/try-free/)
 
@@ -45,7 +45,7 @@ I created an application for a simple, but common, e-commerce use case. When a c
 
 The following diagram shows the inter-connectivity of nine decoupled microservices that use an event store built with [Redis Streams](https://www.google.com/url?q=https://redis.io/topics/streams-intro&sa=D&ust=1550075590813000) for inter-services communication. They do this by listening to any newly created events on the specific event stream in an event store, i.e. a Redis instance.
 
-![OrderShop Architecture](/images/blog/d3f988e4704ce8fbe1e950c57ecb1a297d939f87-720x405.webp)
+![OrderShop Architecture](/images/site-mirror/d3f988e4704ce8fbe1e950c57ecb1a297d939f87-720x405.webp)
 
 *Figure 1: OrderShop Architecture*
 
@@ -59,7 +59,7 @@ The domain model for our OrderShop application consists of the following five en
 
 By listening to the domain events and keeping the entity cache up to date, the aggregate functions of the event store has to be called only once or on reply.
 
-![OrderShop Domain Model](/images/blog/c697b978771bbeaeac46e958487a40280627b6ba-720x405.webp)
+![OrderShop Domain Model](/images/site-mirror/c697b978771bbeaeac46e958487a40280627b6ba-720x405.webp)
 
 *Figure 2: OrderShop Domain Model*
 

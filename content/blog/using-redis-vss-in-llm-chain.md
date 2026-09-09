@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 30 May 2023 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/30a85ca065c55c129c424a0f05adee591796cab4-772x550.webp)
+![Blog tile image](/images/site-mirror/30a85ca065c55c129c424a0f05adee591796cab4-772x550.webp)
 
 **In this short tutorial, we create a chain with Relevance AI, Redis VSS, OpenAI GPT, and Cohere Wikipedia embeddings.**
 
@@ -90,7 +90,9 @@ Now it’s time to jump into a Relevance AI notebook to start building our chain
 
 **Step 1**. If necessary, sign up for [a free account with Relevance AI](https://auth.relevanceai.com/signup/). Once you’re logged in, choose “Build AI chains” and click “Create new chain.” This takes you to a notebook.
 
-![The Relevance AI chain notebook](/images/blog/62672a81540448ce59f1dd21875f4b34b2d2a3bb-2000x1249.webp)
+![The Relevance AI chain notebook](/images/site-mirror/62672a81540448ce59f1dd21875f4b34b2d2a3bb-2000x1249.webp)
+
+*The Relevance AI chain notebook.*
 
 **Step 2**. You need to configure an OpenAI API key and the Redis connection string before we can execute the chain. To do this, select “API keys” from the sidebar, then provide your Redis connection string and OpenAI API key.
 
@@ -101,11 +103,15 @@ Now it’s time to jump into a Relevance AI notebook to start building our chain
 - Model: cohere-multilingual-22-12 to generate the [vector embeddings](https://redis.io/glossary/vector-embeddings/) for the search query
 - Search query: We define an input for the chain in a few minutes. Press {} and enter {{params.question}} to change this to variable mode.
 
-![Example of a Redis Vector Search step and its inputs](/images/blog/cbed19e712b14edeab5edf81d2185c3cf5eff7c9-2000x1090.webp)
+![Example of a Redis Vector Search step and its inputs](/images/site-mirror/cbed19e712b14edeab5edf81d2185c3cf5eff7c9-2000x1090.webp)
+
+*Example of a Redis Vector Search step and its inputs.*
 
 **Step 4**. Configure the LLM prompt to inject the context from the vector search and to ask our question. You can customize the prompt to fit your needs.
 
-![Example of an LLM step that takes the context from Redis Search and Query and asks a question](/images/blog/5e16037e27b0e2fb68c1a0e125821d5db78dcf8e-2000x940.webp)
+![Example of an LLM step that takes the context from Redis Search and Query and asks a question](/images/site-mirror/5e16037e27b0e2fb68c1a0e125821d5db78dcf8e-2000x940.webp)
+
+*Example of an LLM step that takes the context from Redis Search and Query and asks a question.*
 
 The intent here is to help people query vast swathes of information. Say you’re mulling over your favorite Bob Dylan song, “Stuck Inside of Mobile,” and you wonder, “Who strummed those infectious guitar riffs?” With our LLM chain, you could effortlessly pose that question to an AI-infused Wikipedia search, which would swiftly return with your answer. (We leave the non-AI-infused search to the casual observer, which may demonstrate the usefulness of such a tool.)
 
@@ -115,12 +121,14 @@ This is more than just an exercise in technological wizardry; it’s about enric
 
 A chain can be deployed in two ways with Relevance AI: as an embeddable application or as an API endpoint. An application can also be shared directly with a link where a user can see the form, fill it out, and run the chain. These are now ready to be used in production.
 
-![The deploy page for a chain with a production-ready API endpoint or shareable URL form](/images/blog/5e220f79550dff06e98493230830999182de0c65-2000x1461.webp)
+![The deploy page for a chain with a production-ready API endpoint or shareable URL form](/images/site-mirror/5e220f79550dff06e98493230830999182de0c65-2000x1461.webp)
+
+*The deploy page for a chain with a production-ready API endpoint or shareable URL form.*
 
 Want to experiment more or try out the [SDK](https://documentation.relevanceai.com/quickstart)? You can [view a technical tutorial](https://documentation.relevanceai.com/guides/pdf-qa) on building a business analyst agent that can query SQL, create charts, and answer questions.
 
 Get started today with your own vector-search powered retrieval system by signing up for [Redis Enterprise Cloud](/redis-enterprise-cloud/overview/) and [Relevance AI](https://relevanceai.com).
 
-![LLM Stack Hackathon advertisment](/images/blog/1b30b6b8220f1b628bde0fea3b78574f55ee3d0c-600x338.webp)
+![LLM Stack Hackathon advertisment](/images/site-mirror/1b30b6b8220f1b628bde0fea3b78574f55ee3d0c-600x338.webp)
 
 Join us on June 3, 2023, in person in San Francisco for a 12-hour LLM hackathon with the MLOps community featuring Redis and Relevance AI. Collaborate with other machine learning practitioners for a chance to win prizes.

@@ -15,7 +15,7 @@ hidden: true
 
 *By Henry Tam · Published 10 May 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 [***Best Practices for a Modern Data Layer in Financial Services***](/docs/best-practices-for-a-modern-data-layer-in-financial-services/)* is an essential white paper on the best steps to modernize from a rigid and slow IT legacy system to a modern data layer. Meet customer demands in real-time*.
 
@@ -52,7 +52,9 @@ These include:
 
 ---
 
-![financial services best practices webinar slide](/images/blog/b6c9849d6328fab066d08677dc05547f5ef9f939-1024x494.webp)
+![financial services best practices webinar slide](/images/site-mirror/b6c9849d6328fab066d08677dc05547f5ef9f939-1024x494.webp)
+
+*A preview of our webinar with TDWI*
 
 ---
 

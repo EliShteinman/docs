@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 19 July 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/1336062e0885a89aab31d2517222f67e6debad0f-772x550.webp)
+![Blog tile image](/images/site-mirror/1336062e0885a89aab31d2517222f67e6debad0f-772x550.webp)
 
 **Everyone needs a way to monitor server behavior, if only to confirm that the system is running to spec. Several Application Performance Monitoring (APM) tools work with Redis, but perhaps you haven’t heard of Uptrace. Let me tell you about it.**
 
@@ -28,21 +28,29 @@ Uptrace is an [open source APM](https://uptrace.dev/get/open-source-apm.html) av
 
 Its UI looks amazing, and it genuinely is easy to navigate.
 
-![Uptrace overview](/images/blog/1faee2f1f6320b68a666a36ce0a0fa62e3b5517c-1000x467.webp)
+![Uptrace overview](/images/site-mirror/1faee2f1f6320b68a666a36ce0a0fa62e3b5517c-1000x467.webp)
+
+*Uptrace overview*
 
 You can connect to multiple databases but, for our purposes, we drill down to just see the Redis database. It presents us with traces of how our GET, SET, and DEL commands are doing. That provides a quick health check on our cache performance.
 
-![Uptrace can drill down into Redis, so you can look at the traces ](/images/blog/f980fbca8a33710910b4c388053cbf40b76ec6be-1000x385.webp)
+![Uptrace can drill down into Redis, so you can look at the traces ](/images/site-mirror/f980fbca8a33710910b4c388053cbf40b76ec6be-1000x385.webp)
+
+*Uptrace can drill down into Redis, so you can look at the traces*
 
 The Uptrace spans tab helps us visualize command responsiveness down to the millisecond using a heatmap. This gives a quick, easy look at whether a [Redis database](/blog/redis-cache-vs-redis-primary-database-in-90-seconds/) is performing to expectations. If the heat moves a bit higher (longer millisecond response time), then a bottleneck is starting or inefficiencies are developing.
 
 In the image below, this Redis database is completing the majority of GET, SET, and DELETE commands at around 1 millisecond, which is a good target for our [cache performance](/solutions/caching/).
 
-![Uptrace heatmap of Redis caching commands](/images/blog/84016e95f4ba5a649a26ac4ec25ca11fe067dc31-1000x474.webp)
+![Uptrace heatmap of Redis caching commands](/images/site-mirror/84016e95f4ba5a649a26ac4ec25ca11fe067dc31-1000x474.webp)
+
+*Uptrace heatmap of Redis caching commands*
 
 You can build your own custom metrics that appear on the Uptrace dashboard. For example, memory usage is an important metric for Redis. This screen capture shows how to accomplish that.
 
-![Creating a memory usage custom metric in Uptrace ](/images/blog/1a8e2d0b9217e716f634170a47de50158fa2bc23-594x283.gif)
+![Creating a memory usage custom metric in Uptrace ](/images/site-mirror/1a8e2d0b9217e716f634170a47de50158fa2bc23-594x283.gif)
+
+*Creating a memory usage custom metric in Uptrace*
 
 Uptrace has plenty of other appealing features. One that we found super useful is its optimized storage, which includes performance optimization for common queries, efficient sharding for databases, and improved support for cold storage like S3. Specifically for Redis, Uptrace also supports improved storage policies that give more flexibility to move data between SSD and cold storage; doing so reduces costs, because you don’t have to store as much on SSD.
 

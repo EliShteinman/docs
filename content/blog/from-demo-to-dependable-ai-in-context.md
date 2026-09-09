@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 29 May 2025 · updated 3 June 2026*
 
-![From demo to dependable: what 'AI in context' really takes](/images/blog/7a87be40d6f789dc2057fc448b9bbac5da6317e4-2400x1256.webp)
+![From demo to dependable: what 'AI in context' really takes](/images/site-mirror/7a87be40d6f789dc2057fc448b9bbac5da6317e4-2400x1256.webp)
 
 Most teams don't struggle to build an impressive AI prototype anymore. The hard part starts later, when real traffic, messy data, and multi-step workflows expose everything the prototype quietly papered over: slower responses under load, answers that drift from accurate to confidently wrong, and costs that climb past anything the early numbers suggested.
 

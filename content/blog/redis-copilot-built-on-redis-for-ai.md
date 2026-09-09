@@ -14,7 +14,7 @@ hidden: true
 
 *By Mirko Ortensi, Sr. Product Manager, Products · Published 3 October 2024 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/552208bf72ddd79447c3865f545543256d220362-772x552.webp)
+![Blog tile image](/images/site-mirror/552208bf72ddd79447c3865f545543256d220362-772x552.webp)
 
 We recently [released Redis Copilot](https://redis.io/release/#rediscopilot) to help devs build faster with Redis. It’s our mission to make apps fast and make building simple. To this end, Redis Copilot is your AI assistant that helps you complete tasks with Redis even faster. You can get started with it in [Redis Insight](https://redis.io/insight/) today.
 
@@ -24,7 +24,7 @@ Redis Copilot helps you build with Redis so you can:
 - Generate code snippets to help you develop apps with Redis faster
 - Answer questions about your data by generating and executing queries in Redis
 
-![](/images/blog/327228936505b5e9bb31c14c71ddc0116cc63e2f-1000x268.webp)
+![](/images/site-mirror/327228936505b5e9bb31c14c71ddc0116cc63e2f-1000x268.webp)
 
 ## Copilot was built with the capabilities of Redis for AI
 
@@ -48,7 +48,7 @@ Generating responses from LLMs can come with a lot of computational expenses. Re
 
 This diagram summarizes the flow of user interaction with Redis Copilot:
 
-![](/images/blog/3d634eb54be03024183c1b36798f113b7614955d-1321x617.webp)
+![](/images/site-mirror/3d634eb54be03024183c1b36798f113b7614955d-1321x617.webp)
 
 ## Redis does so much more
 
@@ -58,7 +58,7 @@ While GenAI models are exciting innovations, building and deploying GenAI apps t
 
 From request to the completed answer, it can take up to a few seconds for the LLM to stream results back to users. We opted to stream replies to users to improve responsiveness and cut down on wait times, rather than return the whole response once it’s complete. We also embed additional context from a semantic search in a Redis database in the conversational bubble.
 
-![](/images/blog/d9b713ab7fd7faca4297a00a256609b9a2060a17-1380x834.webp)
+![](/images/site-mirror/d9b713ab7fd7faca4297a00a256609b9a2060a17-1380x834.webp)
 
 For the LLM, we chose OpenAI’s GPT-4o because of its reliability and speed. However, while OpenAI provides excellent AIaaS capabilities for conversational agents and embedding models, we use local embedding models to compute vector embeddings. Specifically, we use the HuggingFace embedding model for the semantic retrieval of existing answers in the semantic cache.
 
@@ -66,7 +66,7 @@ For the LLM, we chose OpenAI’s GPT-4o because of its reliability and speed. Ho
 
 While the latest trend is semantic search, and traditional searches can be reinterpreted by these new AI/ML capabilities, full-text search is an irreplaceable asset for retrieving information by matching words or phrases. Redis real-time [full-text search](https://redis.io/docs/interact/search-and-query/query/full-text/) is available in Redis Copilot to complement the conversational experience. Redis [highlighting and summarization](https://redis.io/docs/interact/search-and-query/advanced-concepts/highlight/) also addresses user demands for fast and readable results.
 
-![](/images/blog/d1217cfe000e4c635478e0d7e1dbfc5090ee98bc-738x600.webp)
+![](/images/site-mirror/d1217cfe000e4c635478e0d7e1dbfc5090ee98bc-738x600.webp)
 
 Last but not least, [aggregation capabilities](https://redis.io/docs/interact/search-and-query/advanced-concepts/aggregations/) are also critical to help users see how many results have been retrieved by Redis and determine how popular a particular search is.
 
@@ -80,7 +80,7 @@ This microservice architecture effectively splits the responsibility of a more e
 
 Redis Copilot is the main entry point for searching docs, our knowledge base, and all the training opportunities available in the Redis portal. But protecting critical endpoints from overloading is a must for all public services, as all internet services are exposed to misuse and attacks like distributed denial-of-service (DDoS) attacks. Redis has long been adopted as a [rate limiter](https://redis.com/glossary/rate-limiting/) for app servers, API gateways, and more. And we use Redis as our rate limiter to ensure Redis Copilot is stable and usage is balanced across different sessions and IPs. Redis measures and checks usage. When the usage exceeds a predetermined threshold, Redis steps in to prevent abuse.
 
-![](/images/blog/18ffa8cec04c850563c465a0b80cf1e2686301f0-888x467.webp)
+![](/images/site-mirror/18ffa8cec04c850563c465a0b80cf1e2686301f0-888x467.webp)
 
 ## Get started today with Copilot
 

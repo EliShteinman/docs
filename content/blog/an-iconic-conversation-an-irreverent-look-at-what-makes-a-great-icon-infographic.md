@@ -14,7 +14,7 @@ hidden: true
 
 *By Haley Kim, Associate Content Producer · Published 12 November 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/fe7ad5564f2332fd973ca3c4c57bac8814c3a9a3-386x260.webp)
+![Blog tile image](/images/site-mirror/fe7ad5564f2332fd973ca3c4c57bac8814c3a9a3-386x260.webp)
 
 This summer we redesigned our website and company branding, introducing a fresh new set of colors, fonts, and iconography. We hope you’re loving our new look, and wanted to spotlight a few of these icons—along with some we’d like to see and a few that didn’t make the cut.
 

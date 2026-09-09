@@ -15,7 +15,7 @@ hidden: true
 
 *By Cassie Zimmerman, Director, Strategic Alliances · Published 5 November 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 We are incredibly excited to announce the preview of a jointly developed solution between Redis and Pivotal, which will deliver easy integration of [Redis Enterprise](/redis-enterprise/) as a native service on PKS. Together, this solution gives developers instant, self-service access to a cloud-native, stateful data service that is portable, operationally simple, and brings speed and simplicity to accelerate application development. But first, let’s take a look back at how we got here, and why we’re thrilled to launch this new solution.
 

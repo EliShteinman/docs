@@ -14,7 +14,7 @@ hidden: true
 
 *By Meir Shpilraien, Developer · Published 29 October 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/eb01cdc97175aed400d1e1a5a9133974a370207c-1600x840.webp)
+![Blog tile image](/images/site-mirror/eb01cdc97175aed400d1e1a5a9133974a370207c-1600x840.webp)
 
 ### Background
 

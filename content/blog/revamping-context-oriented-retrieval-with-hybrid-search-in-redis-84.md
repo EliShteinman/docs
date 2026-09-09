@@ -15,7 +15,7 @@ hidden: true
 
 *By Adriano Amaral, Rini Vasan · Published 17 November 2025 · updated 2 December 2025*
 
-![Revamping context-oriented retrieval with hybrid search in Redis 8.4](/images/blog/26a5b7644ebdeefc2aa2251dc39d96e12dce866b-1200x628.webp)
+![Revamping context-oriented retrieval with hybrid search in Redis 8.4](/images/site-mirror/26a5b7644ebdeefc2aa2251dc39d96e12dce866b-1200x628.webp)
 
 ## Feeding the agent: Building context-aware intelligence
 

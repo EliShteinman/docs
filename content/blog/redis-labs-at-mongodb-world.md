@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 21 May 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/42f265b18b64f18a94a5a7f16270e69c0d7cf082-140x92.webp)
+![Blog tile image](/images/site-mirror/42f265b18b64f18a94a5a7f16270e69c0d7cf082-140x92.webp)
 
-![Redis Cloud - 30MB RAM, 30 Connections for FREE](/images/blog/f4149a6006d1e3707df187df5bf2fbcd623dc94b-635x200.webp)
+![Redis Cloud - 30MB RAM, 30 Connections for FREE](/images/site-mirror/f4149a6006d1e3707df187df5bf2fbcd623dc94b-635x200.webp)
 
 The Redis team will be in New York next month to sponsor [MongoDB](https://redis.io/compare/redis-enterprise-and-mongodb/) World, MongoDB’s largest end user event, which brings together thousands of Mongo developers, enthusiasts, and influencers from around the world.
 

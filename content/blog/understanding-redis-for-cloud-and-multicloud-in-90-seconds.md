@@ -15,7 +15,7 @@ hidden: true
 
 *By William Johnston, Head of Technical Marketing · Published 23 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/975cf42deae47f81d4134b523aed17f297b34f4b-772x520.webp)
+![Blog tile image](/images/site-mirror/975cf42deae47f81d4134b523aed17f297b34f4b-772x520.webp)
 
 Welcome back to our ongoing [Redis in 90 seconds](/blog/learn-how-redis-simplifies-your-architecture-in-90-seconds/) series. In this post, we’ll demonstrate how to use Redis with any major cloud providers, or in a hybrid cloud.
 

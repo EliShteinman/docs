@@ -15,7 +15,7 @@ hidden: true
 
 *By Jonathan Salomon, Paulo Sousa · Published 10 June 2026 · updated 11 June 2026*
 
-![Connecting to Redis Cloud with AWS PrivateLink vs. VPC peering](/images/blog/4f84e99f0f8cc78a91100703aa124a095de15663-1200x628.webp)
+![Connecting to Redis Cloud with AWS PrivateLink vs. VPC peering](/images/site-mirror/4f84e99f0f8cc78a91100703aa124a095de15663-1200x628.webp)
 
 AWS PrivateLink resource endpoints are now generally available across all Redis Cloud Pro subscription types, including Redis Flex and Active-Active deployments. That means you can connect apps to Redis Cloud through a private, scoped endpoint without exposing entire VPC networks to each other. Our PrivateLink implementation will also support﻿‍﻿ smart client handoffs﻿‍ in the near future, helping apps stay connected during maintenance and upgrades.
 
@@ -54,7 +54,7 @@ The only variable between runs was the connectivity layer (VPC peering versus Pr
 
 PrivateLink should be the default choice for most deployments. The additional network RTT is negligible for the majority of production workloads. The matrix shows when it isn’t:
 
-![Connecting to Redis Cloud with AWS PrivateLink vs. VPC peering](/images/blog/cd743c38c3e44174787a3308a428af3d99d79493-960x455.webp)
+![Connecting to Redis Cloud with AWS PrivateLink vs. VPC peering](/images/site-mirror/cd743c38c3e44174787a3308a428af3d99d79493-960x455.webp)
 
 **Rule of thumb:** PrivateLink first. Pick VPC peering only when your workload sits in the *Extreme* column and you don't need network isolation. *Extreme* workloads are those operating near hard limits: either sub-ms p99 latency targets or near-saturation throughputs.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Adriano Amaral, Alon Reshef, Filipe Oliveira · Published 24 September 2025 · updated 26 May 2026*
 
-![Tech dive: Comprehensive compression leveraging quantization & dimensionality reduction](/images/blog/ad9f3c7e4582136d108e595aa3e400f84f65ef16-772x552.webp)
+![Tech dive: Comprehensive compression leveraging quantization & dimensionality reduction](/images/site-mirror/ad9f3c7e4582136d108e595aa3e400f84f65ef16-772x552.webp)
 
 We are excited to announce that Redis Query Engine now supports Quantization and Dimensionality Reduction for vector search. This is based on an Intel and Redis partnership leveraging Intel SVS-VAMANA with multiple compression strategies.
 
@@ -47,7 +47,9 @@ Traditional vector compression methods face critical limitations in the context 
 
 The key idea behind Locally-adaptive Vector Quantization ([LVQ](https://vldb.org/pvldb/volumes/16/paper/Similarity%20search%20in%20the%20blink%20of%20an%20eye%20with%20compressed%20indices)) is to apply per-vector normalization and scalar quantization, adapting the quantization bounds individually for each vector. This local adaptation ensures efficient use of the available bit range, resulting in high-quality compressed representations (see Figure 1). LVQ introduces minimal decompression overhead, enabling fast, on-the-fly distance computations. Its advantage lies in this balance: it significantly reduces memory bandwidth and storage requirements while maintaining high search accuracy and throughput, outperforming traditional methods.
 
-![Figure 1 Empirical distributions of vector values in the deep-96-1M dataset](/images/blog/ce02f7f1247b806b7833f6fd3fbc329dbf1cda43-823x436.webp)
+![Figure 1 Empirical distributions of vector values in the deep-96-1M dataset](/images/site-mirror/ce02f7f1247b806b7833f6fd3fbc329dbf1cda43-823x436.webp)
+
+*Figure 1: Empirical distributions of vector values in the deep-96-1M dataset*
 
 For 95% of the vectors, global and per-dimension normalization methods utilize only about 60% and 75% of the available value range, respectively. In contrast, LVQ normalization more closely approximates a uniform distribution, effectively using the full range and resulting in a more accurate and representative encoding. Figure from [LVQ paper](https://vldb.org/pvldb/volumes/16/paper/Similarity%20search%20in%20the%20blink%20of%20an%20eye%20with%20compressed%20indices).
 
@@ -63,7 +65,9 @@ LVQ’s two-level compression works by first quantizing each vector individually
 
 Similarly, LeanVec uses a two-level approach: the first level reduces dimensionality and applies LVQ to speed up candidate retrieval, while the second level applies LVQ to the original high-dimensional vectors for accurate re-ranking. For example, LeanVec4x8 means the reduced-dimension vector is quantized with LVQ using 4 bits per dimension, while the original high-dimensional vector is quantized with 8 bits per dimension. Note that the original full-precision embeddings were never used by either LVQ or LeanVec, as both operate entirely on compressed representations.
 
-![Figure 2. Two-level vector compression implementation with LVQ and LeanVec](/images/blog/bcb71f04207f43549d3824761e70198d066cafef-999x487.webp)
+![Figure 2. Two-level vector compression implementation with LVQ and LeanVec](/images/site-mirror/bcb71f04207f43549d3824761e70198d066cafef-999x487.webp)
+
+*Figure 2. Two-level vector compression implementation with LVQ and LeanVec*
 
 #### Optimized for performance
 
@@ -85,7 +89,9 @@ A similar approach is applied when running queries, [which is particularly benef
 
 Redis Query Engine integrates SVS-VAMANA using this tiered index mechanism. As a result, users can sustain heavy vector write workloads while Redis continues to remain responsive, serving queries in parallel and consistently over dynamically evolving data.
 
-![Figure 3. Redis Query Engine tiered index architecture](/images/blog/0ef447ecdb1bd508c118d7f3ca6190868789752e-756x259.webp)
+![Figure 3. Redis Query Engine tiered index architecture](/images/site-mirror/0ef447ecdb1bd508c118d7f3ca6190868789752e-756x259.webp)
+
+*Figure 3. Redis Query Engine tiered index architecture*
 
 ### Benchmark comparisons for memory, throughput, latency and ingestion time
 
@@ -100,7 +106,9 @@ We’ll deep dive into memory savings, throughput, latency improvements, and ing
 
 One of the most immediate benefits of the new Redis-Intel SVS compression is memory efficiency. Across all datasets we tested (detailed list on the [appendix](https://docs.google.com/document/d/1sx5Mxkro5GSeZV-dbpnXz1OfjRb8-XN0ksK3lHA7lUA/edit?tab=t.0)), SVS-VAMANA consistently delivered **26–37% total memory savings** compared to HNSW, and when looking only at the vector index, the reductions were even more dramatic: **51–74% less memory used.**
 
-![Chart 1. SVS-VAMANA memory efficiency vs. HNSW. ](/images/blog/a0d16e853f14ef89e79bb6aa88bc1d4efa870483-1600x988.webp)
+![Chart 1. SVS-VAMANA memory efficiency vs. HNSW. ](/images/site-mirror/a0d16e853f14ef89e79bb6aa88bc1d4efa870483-1600x988.webp)
+
+*Chart 1. SVS-VAMANA memory efficiency vs. HNSW*
 
 Chart 1 highlights memory efficiency gains of **SVS-VAMANA** LVQ8 config per dataset compared to **HNSW** across multiple datasets and embedding sizes (Laion 512d, Cohere 768d, and DBpedia 1536d) for FP32 data. In every case, SVS-VAMANA significantly reduced total memory usage by up to 37%.
 
@@ -110,7 +118,9 @@ In practice, this means you can reduce your cloud footprint, or run larger workl
 
 A natural concern with any new indexing method is whether accuracy suffers compared to HNSW. Our testing shows that it doesn’t: **all SVS-VAMANA variants (LeanVec and LVQ) can match the high precision levels of HNSW**, also confirming what Intel has documented in their[ Scalable Vector Search deep dive](https://intel.github.io/ScalableVectorSearch/benchs/static/latest.html).
 
-![Chart 2. Precision vs. QPS for SVS-VAMANA and HNSW](/images/blog/26b44b06e3c8dcc2f862363325533d6d4b7b0ac3-1224x1010.webp)
+![Chart 2. Precision vs. QPS for SVS-VAMANA and HNSW](/images/site-mirror/26b44b06e3c8dcc2f862363325533d6d4b7b0ac3-1224x1010.webp)
+
+*Chart 2. Precision vs. QPS for SVS-VAMANA and HNSW*
 
 From Chart 2 we can see that at t every precision point—from ~0.92 up to 0.99—SVS-VAMANA tracks alongside HNSW in accuracy while consistently delivering **higher queries per second (QPS)**. The advantage is visible both at lower precision targets, where SVS-VAMANA pulls ahead aggressively, and at higher precision levels, where it sustains **up to 1.5× better throughput** at the same precision.
 
@@ -120,7 +130,9 @@ From Chart 2 we can see that at t every precision point—from ~0.92 up to 0.99�
 
 Beyond memory savings while keeping accuracy, SVS-VAMANA unlocks meaningful performance improvements in real-world search workloads. Let’s start with throughput: which cases have benefits, and which ones not that much.
 
-![Chart 3. SVS-VAMANA vs. HNSW throughput per dataset](/images/blog/aefd34b678ea5a288d06e5e68ddaa0475ba8ad69-1600x988.webp)
+![Chart 3. SVS-VAMANA vs. HNSW throughput per dataset](/images/site-mirror/aefd34b678ea5a288d06e5e68ddaa0475ba8ad69-1600x988.webp)
+
+*Chart 3. SVS-VAMANA vs. HNSW throughput per dataset*
 
 On FP32 datasets, throughput gains are substantial: up to 144% higher QPS on COHERE (768d, dot product) and up to 60% on DBpedia (1536d, cosine). These improvements are visible across the recommended SVS-VAMANA quantization method for vectors with dimensions equal to or higher than 768, LeanVec 4x8, and hold even at high precision thresholds (see Chart 3). You can check the COMPRESSION options and datasets details [in the appendix](https://docs.google.com/document/d/1sx5Mxkro5GSeZV-dbpnXz1OfjRb8-XN0ksK3lHA7lUA/edit?tab=t.0).
 
@@ -130,11 +142,15 @@ Throughput is only half the story. For many production workloads, what really ma
 
 On **FP32**, the gains are striking: on Cohere (768d, dot product), SVS-VAMANA reduced latency by **60% at p50** and **57% at p95** compared to HNSW. DBpedia (1536d, cosine) also showed strong improvements, with **46% lower p50** and **36% lower p95**, for high concurrency benchmarks (see Chart 4).
 
-![Chart 4. SVS-VAMANA vs. HNSW search latency per dataset for FP32 datatype](/images/blog/a5268ad885f06bc74d41628811646b6752648742-1600x988.webp)
+![Chart 4. SVS-VAMANA vs. HNSW search latency per dataset for FP32 datatype](/images/site-mirror/a5268ad885f06bc74d41628811646b6752648742-1600x988.webp)
+
+*Chart 4. SVS-VAMANA vs. HNSW search latency per dataset for FP32 datatype*
 
 With **FP16 **(Chart 5), the picture is consistent but the drops are smaller, with the largest advantage being on Cohere dataset dropping latencies up to 43%. **43%/40% on Cohere**, and **11% on DBpedia**. This is expected: SVS-VAMANA accelerates search primarily by reducing memory accesses, so when each vector already consumes less memory (as with FP16) the relative advantage naturally shrinks. Even then, SVS-VAMANA still delivers meaningful latency improvements where workloads are memory-bound.
 
-![Chart 5. SVS-VAMANA vs HNSW search latency per dataset for FP16 datatype](/images/blog/6a05ef4d584503e806dff00f6558c481f3fdd448-1600x988.webp)
+![Chart 5. SVS-VAMANA vs HNSW search latency per dataset for FP16 datatype](/images/site-mirror/6a05ef4d584503e806dff00f6558c481f3fdd448-1600x988.webp)
+
+*Chart 5. SVS-VAMANA vs HNSW search latency per dataset for FP16 datatype*
 
 Across datasets, these reductions translate into faster responses for end users under heavy traffic. While LAION (512d) shows little to no change on latency while still reducing memory, the medium- and high-dimensional workloads—Cohere and DBpedia—demonstrate that SVS-VAMANA not only improves throughput but also keeps response times reliably low at scale while saving memory at the same time.
 
@@ -144,9 +160,13 @@ For all data-dependent compression methods, the benefits naturally vary across d
 
 The main cost of SVS-VAMANA lies in ingestion. To illustrate it, we’ve selected 2 datasets, one for each SVS-VAMANA variant (LAION for SVS LVQ8 and DBPEDIA for LeanVec 4x8), see Chart 6 and Chart 7.
 
-![Chart 6. SVS-VAMANA LVQ upload time overhead vs. HNSW](/images/blog/0865fd0b39231b3be2172989e5f0e1539972fcba-1600x988.webp)
+![Chart 6. SVS-VAMANA LVQ upload time overhead vs. HNSW](/images/site-mirror/0865fd0b39231b3be2172989e5f0e1539972fcba-1600x988.webp)
 
-![Chart 7. SVS-VAMANA LeanVec upload time overhead vs. HNSW](/images/blog/a2fc665131bef070551c7200edb49c486441c7fb-1600x988.webp)
+*Chart 6. SVS-VAMANA LVQ upload time overhead vs. HNSW*
+
+![Chart 7. SVS-VAMANA LeanVec upload time overhead vs. HNSW](/images/site-mirror/a2fc665131bef070551c7200edb49c486441c7fb-1600x988.webp)
+
+*Chart 7. SVS-VAMANA LeanVec upload time overhead vs. HNSW*
 
 As shown in Chart 7, index construction times are higher than HNSW. On **x86 platforms (Intel and AMD)** the overhead is manageable.
 
@@ -161,7 +181,9 @@ For Intel:
 
 For AMD, the fallback algorithm (SQ8) showcased either improvements on the upload time for FP32 or small regressions depending on the configuration. Nonetheless, and as mentioned above, the overhead is smaller.
 
-![Chart 8. ARM SVS-VAMANA SQ8 fallback upload time overhead vs. HNSW](/images/blog/4705f63f2d86374e8debb51d54aaf67dd4d018a0-1600x988.webp)
+![Chart 8. ARM SVS-VAMANA SQ8 fallback upload time overhead vs. HNSW](/images/site-mirror/4705f63f2d86374e8debb51d54aaf67dd4d018a0-1600x988.webp)
+
+*Chart 8. ARM SVS-VAMANA SQ8 fallback upload time overhead vs. HNSW*
 
 On **ARM**, the story is different. Ingestion times can be **9× slower** (see Chart 8) than HNSW, making **SVS-VAMANA impractical on ARM platforms today. **This gap is less about ARM hardware capabilities and more about the fact that SVS-VAMANA optimizations are primarily tuned for x86, and the fallback algorithm (SQ8) is not optimized for ARM. In other words, SVS-VAMANA and its fallback, isn’t yet optimized for ARM ingestion workloads.
 
@@ -171,9 +193,13 @@ Our benchmarks show that the best algorithm depends on the underlying hardware, 
 
 To prove it, we’ve charted below (Charts 9 and 10) the achievable QPS at a 0.95 precision for the DBPEDIA dataset across **Intel (c4), AMD (c4d), and ARM (c4a)** instances on GCP. We also included an additional SVS-VAMANA configuration tuned for performance, LeanVec Dimensions/4, obtained by setting REDUCE, the target dimension used in the dimensionality reduction step, to 384 (i.e., dim/4 = 1536/4 = 384).
 
-![Chart 9. CPU RPS comparison for FP32 for SVS-VAMANA and HNSW](/images/blog/d1efa2356944005f38470f8063ba77707da7dca5-1600x989.webp)
+![Chart 9. CPU RPS comparison for FP32 for SVS-VAMANA and HNSW](/images/site-mirror/d1efa2356944005f38470f8063ba77707da7dca5-1600x989.webp)
 
-![Chart 10. CPU RPS comparison for FP16 for SVS-VAMANA and HNSW](/images/blog/df9c7c87dd98cfd96ffe54d9b0f7c50680715539-1600x989.webp)
+*Chart 9. CPU RPS comparison for FP32 for SVS-VAMANA and HNSW*
+
+![Chart 10. CPU RPS comparison for FP16 for SVS-VAMANA and HNSW](/images/site-mirror/df9c7c87dd98cfd96ffe54d9b0f7c50680715539-1600x989.webp)
+
+*Chart 10. CPU RPS comparison for FP16 for SVS-VAMANA and HNSW*
 
 **The results confirm a clear theme: the best algorithm depends heavily on the underlying hardware.**
 
@@ -225,7 +251,9 @@ In order to understand better what compression to use, it’s important to under
 
 ### Common embedding types & their characteristics
 
-![Figure 4. Decision tree for selecting the right quantization](/images/blog/6b07c473514bd78825e39858c40aa07d5a7eb459-771x764.webp)
+![Figure 4. Decision tree for selecting the right quantization](/images/site-mirror/6b07c473514bd78825e39858c40aa07d5a7eb459-771x764.webp)
+
+*Figure 4. Decision tree for selecting the right quantization*
 
 Different embedding models create vectors with distinct properties that affect quantization and compression performance:
 

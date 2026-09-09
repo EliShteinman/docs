@@ -15,7 +15,7 @@ hidden: true
 
 *By Ofer Bengal, Yiftach Shoolman · Published 30 June 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/5faae1620e6ae971ba6413a07763abe0afc5c1ee-270x190.webp)
+![Blog tile image](/images/site-mirror/5faae1620e6ae971ba6413a07763abe0afc5c1ee-270x190.webp)
 
 Today marks another milestone in the history of [Redis](https://redis.io/). After maintaining the open source Redis project for 11 years, Salvatore Sanfilippo (a.k.a. [antirez](https://twitter.com/antirez)) has decided [to take a step back](http://antirez.com/news/133).
 

@@ -18,7 +18,7 @@ hidden: true
 
 *By Pieter Cailliau, Lior Kogan, Charlie Wang · Published 1 May 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/c2017dcedf5fb40bcda9736a84d8b19f9228804c-1544x1104.webp)
+![Blog tile image](/images/site-mirror/c2017dcedf5fb40bcda9736a84d8b19f9228804c-1544x1104.webp)
 
 We’re excited to announce the general availability release of Redis 8.
 
@@ -83,7 +83,7 @@ Based on anonymized statistics from our tens of thousands of existing customers 
 **Up to 87% reduction in command latency**
 We have reduced the latency per command in Redis 8 for a large set of commands compared to Redis 7.2.5. In our benchmark of 149 tests, 90 commands run faster with less latency. The p50 latency reduction ranges from 5.4% to 87.4%. The vast majority of apps built with Redis 8 will see significant performance improvements.
 
-![Redis 8.0 Blog Post Graph](/images/blog/66f490792b7b9fc89fa9afe24fcbdc2ad850911b-1116x676.webp)
+![Redis 8.0 Blog Post Graph](/images/site-mirror/66f490792b7b9fc89fa9afe24fcbdc2ad850911b-1116x676.webp)
 
 More details are available on the [8.0-M02 blog post](/blog/redis-8-0-m02-the-fastest-redis-ever/).
 
@@ -95,7 +95,7 @@ In Redis 8, we introduce our new I/O threading implementation. You can enable it
 **Up to 35% less memory used for replication**
 In Redis 8, we are introducing a new replication mechanism. During replication, we initiate two replication streams simultaneously: one stream for transferring the primary node and the other for the stream of changes that happen in the interim. The second phase is no longer blocked waiting for the first phase to complete.
 
-![Redis 8.0 Blog Image](/images/blog/91ce9076c6cbafea5a8b8d3ab29166de6bc7933a-1600x898.webp)
+![Redis 8.0 Blog Image](/images/site-mirror/91ce9076c6cbafea5a8b8d3ab29166de6bc7933a-1600x898.webp)
 
 In our tests, we conducted a full synchronization of a 10 GB dataset with an additional stream of 26.84 million write operations that yields 25 GB of changes during the replication. With the new replication mechanism, **the primary can handle write operations at a 7.5% higher average rate during replication**. Replication also takes 18% less time and the **peak replication buffer size on the primary node is 35% lower**.
 
@@ -106,7 +106,7 @@ Redis 8 comes with a Redis Query Engine that can scale in two new ways that were
 
 When both ways to scale are enabled, Redis 8 is the fastest vector database on the market, and you have access to it for free through Redis Open Source. We [demonstrate](/blog/redis-8-0-m02-the-fastest-redis-ever/) this scale and how you can perform vector search queries at real time on 1 billion 768-dimensional vector embeddings at high precision.
 
-![Redis 8.0 Chart](/images/blog/c1b68f3dd7f58714ebd99bb754e196827b289856-1600x976.webp)
+![Redis 8.0 Chart](/images/site-mirror/c1b68f3dd7f58714ebd99bb754e196827b289856-1600x976.webp)
 
 At a billion-vector scale, with real-time indexing, Redis 8 can sustain 66,000 vector insertions per second for an indexing configuration that allows precision of at least 95%. For indexing configurations that result in lower precisions, Redis 8 can sustain higher ingestion rates of 160,000 vector insertions per second. Throughput can be increased further by using more servers. For high precision queries, we can see that larger HNSW indices improves the search quality at the expense of latency. We reach 90% precision with a median latency including RTT of 200ms, and 95% precision with a median latency including RTT of 1.3 seconds for the top 100 nearest neighbors, while executing 50 search queries concurrently.
 

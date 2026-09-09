@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 29 April 2026*
 
-![Active-active vs active-passive: Choosing the right database architecture](/images/blog/21b6c27a9f39a9243833cd3ccc54f9b0756d3129-2400x1256.webp)
+![Active-active vs active-passive: Choosing the right database architecture](/images/site-mirror/21b6c27a9f39a9243833cd3ccc54f9b0756d3129-2400x1256.webp)
 
 Your database is down. Users are hitting errors, revenue is bleeding, and the on-call engineer is staring at a promotion sequence that's taking too long. The architecture decision you made six months ago is now the difference between a brief blip and a full-blown incident.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Rini Vasan, AI Product Marketing Manager · Published 20 June 2025 · updated 1 June 2026*
 
-![LLM chunking](/images/blog/9ab0557fa96bdd43d51738a4ead5767bd63ef188-772x552.webp)
+![LLM chunking](/images/site-mirror/9ab0557fa96bdd43d51738a4ead5767bd63ef188-772x552.webp)
 
 ## What is LLM chunking?
 
@@ -62,7 +62,7 @@ Chunking, because it’s so common and expected in even basic LLM and RAG setups
 
 Similarly, the right chunking strategy ensures optimal context preservation and enhances the relevance and coherence of model outputs. In contrast, the wrong strategy can result in context loss, increased latency, higher operational costs, and ultimately, poorer user experiences.
 
-![Redis](/images/blog/ff6e4fea9621474967c4397b386a13f0a27de8d1-1920x1280.webp)
+![Redis](/images/site-mirror/ff6e4fea9621474967c4397b386a13f0a27de8d1-1920x1280.webp)
 
 ### 1. Fixed-length chunking
 
@@ -128,7 +128,7 @@ Redis Vector Database provides essential infrastructure for advanced semantic ch
 
 Traditional caching focuses on keyword matching, but Redis provides semantic caching, allowing a search feature, for example, to recognize that “comedy movie” and “funny movie” are similar terms. A [study](https://arxiv.org/pdf/2403.02694) across 20 ChatGPT users and over 27K queries showed that “31% of user queries were similar to previous ones, suggesting a user-centric cache can reduce LLM inference costs.”
 
-![Redis](/images/blog/ed9dfa785420fae6fd7ad88b7210976093608227-1920x1600.webp)
+![Redis](/images/site-mirror/ed9dfa785420fae6fd7ad88b7210976093608227-1920x1600.webp)
 
 
 Depending on the particular use case at hand, query similarity might rise even further, making caching even more effective.
@@ -159,7 +159,7 @@ To scale, Docugami needed a distributed services architecture that its patented 
 
 Docugami is also a leader in providing RAG services through its KG-RAG (Knowledge graph-RAG) approach, which uses exclusive hierarchical semantic chunking. Redis supports Docugami’s RAG strategy, helping Docugami achieve sub-second retrieval and enterprise-scale throughput. With high-performance, low-latency data retrieval and the ability to store embeddings of documents, knowledge bases, and business content in a vector database for rapid retrieval, Docugami has the architecture it needs to support RAG.
 
-![Redis](/images/blog/3cd8edab11657a37ef2d71141c3de88336f5610f-1920x1080.webp)
+![Redis](/images/site-mirror/3cd8edab11657a37ef2d71141c3de88336f5610f-1920x1080.webp)
 
 “Our new architecture, powered by Redis, facilitates the rapid processing of tasks at scale, enabling the real-time interactions that our customers expect, particularly as they are chatting with their document data,” says Mike Palmer, co-founder and head of technologies at Docugami.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 13 May 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 This is the third year that [DevConTLV](https://devcontlv-summit14.events.co.il/) will be taking place and by the looks of it, it will be a huge success. All the right ingredients are in place: a schedule packed with interesting talks (i.e. lots of NoSQL), speakers coming from all over the world, a lot of positive buzz in the local high-tech scene and persistent rumors about free food and drinks 🙂
 

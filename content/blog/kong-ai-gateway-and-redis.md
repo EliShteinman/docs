@@ -16,7 +16,7 @@ hidden: true
 
 *By Jim Allen Wallace, Claudio Acquaviva · Published 28 April 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/db8cbe65954bd9dd221702071004898a80a97f66-772x552.webp)
+![Blog tile image](/images/site-mirror/db8cbe65954bd9dd221702071004898a80a97f66-772x552.webp)
 
 Since its earliest versions, Kong has supported Redis. Today, Kong API Gateway and Redis integration is a powerful combination that enhances API management across three main groups of use cases:
 
@@ -32,7 +32,7 @@ In this post, we’ll focus on how Kong and Redis can be used to address semanti
 
 To get started, let’s take a look at a high-level reference architecture of the Kong AI Gateway. As you can see, the Kong Gateway Data Plane, responsible for handling the incoming traffic, can be configured with two types of Kong plugins:
 
-![](/images/blog/68480c29f1124e50eaf0cd7d52976141a030fe83-952x537.webp)
+![](/images/site-mirror/68480c29f1124e50eaf0cd7d52976141a030fe83-952x537.webp)
 
 ### Kong API gateway plugins
 
@@ -283,7 +283,7 @@ Next, the script has two steps:
 
 Here’s a diagram representing the steps:
 
-![](/images/blog/a8db2c088faacc73d95e2e8891cfccf2b5d906b1-952x537.webp)
+![](/images/site-mirror/a8db2c088faacc73d95e2e8891cfccf2b5d906b1-952x537.webp)
 
 The code assumes you have a Redis environment available. Please check the [Redis products docs](https://redis.io/docs/latest/operate/) to learn more about it. It also assumes you have two environment variables defined: OpenAI API key and load balancer address where Redis is available.
 
@@ -363,7 +363,7 @@ To get started, logically speaking, we can analyze the caching flow from two dif
 
 Here’s a diagram illustrating the scenarios:
 
-![](/images/blog/516a9704239a1ef9a296c8531b3bcb3512b249cd-952x537.webp)
+![](/images/site-mirror/516a9704239a1ef9a296c8531b3bcb3512b249cd-952x537.webp)
 
 ### Konnect data plane deployment
 
@@ -444,7 +444,7 @@ The declaration creates the following Kong objects in the “default” Konnect 
 After submitting the decK declaration to Konnect, you should see the new Objects using the Konnect UI:
 
 
-![](/images/blog/1ad622d9bcf0a10d914da616729bf2f2d1c2cf2c-2044x1853.webp)
+![](/images/site-mirror/1ad622d9bcf0a10d914da616729bf2f2d1c2cf2c-2044x1853.webp)
 
 ### Request #1
 
@@ -577,7 +577,7 @@ More importantly, *redis-cli monitor* tells us all commands the plugin sent to R
 
 You can check the new index key using the Redis dashboard:
 
-![](/images/blog/5acc3a3e35b4699fa9cd1fda4520aa5afc3fb981-1933x2043.webp)
+![](/images/site-mirror/5acc3a3e35b4699fa9cd1fda4520aa5afc3fb981-1933x2043.webp)
 
 ### Request #2
 
@@ -664,7 +664,7 @@ The diagram below shows how the AI Proxy Advanced plugin works:
 - At the configuration time, the plugin sends requests to an embeddings model based on descriptions defined. The embeddings returned are stored in a Redis vector database.
 - During request processing time, the plugin gets the request content and sends a VSS query to the Redis vector database. Depending on the similarity score, the plugin routes the request to the best targeted LLM model sitting behind the gateway.
 
-![](/images/blog/0c8824795a6c83bf47ddfc08562a2eaed2ff6e6e-952x537.webp)
+![](/images/site-mirror/0c8824795a6c83bf47ddfc08562a2eaed2ff6e6e-952x537.webp)
 
 Here’s the new decK declaration:
 

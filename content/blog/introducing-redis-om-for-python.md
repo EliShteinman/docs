@@ -16,7 +16,7 @@ hidden: true
 
 *By Andrew Brookins, Former Curriculum Software Engineer at Redis · Published 8 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/5f588e4f7d6461f7c7e7dc0e354be633cd8cc1c9-772x550.webp)
+![Blog tile image](/images/site-mirror/5f588e4f7d6461f7c7e7dc0e354be633cd8cc1c9-772x550.webp)
 
 ## Intuitive Object Mapping and Fluent Queries for Redis and Python
 

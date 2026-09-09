@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 10 October 2025 · updated 21 May 2026*
 
-![Redis blog card](/images/blog/13420bb79dd68b38120fd243c7e685aabdcf6fd3-1200x628.webp)
+![Redis blog card](/images/site-mirror/13420bb79dd68b38120fd243c7e685aabdcf6fd3-1200x628.webp)
 
 The only thing worse than no internet is slow internet. [Internet speeds in general have increased exponentially in the last two decades](https://futuretimeline.net/data-trends/2050-future-internet-speed-predictions.htm), along with users’ expectations. We know that page load times impact conversion rates (a [study by Portent](https://portent.com/blog/analytics/research-site-speed-hurting-everyones-revenue.htm) found that a site that loads in 1 second has a conversion rate of 5x higher than one loading in 10 seconds). The effect of latency on search results is no different.
 

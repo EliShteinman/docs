@@ -14,7 +14,7 @@ hidden: true
 
 *By Tugdual Grall, Technical Marketing Manager · Published 7 January 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/0e2e20f04c3d701f9cabf8a32edc06102a36a24d-386x237.webp)
+![Blog tile image](/images/site-mirror/0e2e20f04c3d701f9cabf8a32edc06102a36a24d-386x237.webp)
 
 As a new Enterprise Technical Account Manager at [Redis](https://www.redis.com/), one of my first tasks was to learn more about Redis. So I started digging in, and quickly discovered [Redis Streams](https://redis.io/docs/latest/develop/). As a big fan of streaming-based applications, I am thrilled to share what I’ve learned about how to use Redis Streams and Java.
 
@@ -30,7 +30,7 @@ In addition, Redis Streams has the concept of **consumer groups**. Redis Stream
 
 So, while it may be tempting to compare Redis Streams and Redis Pub/Sub and decide that one is better than the other, these two features aim to accomplish different things. If you’re evaluating Pub/Sub and Redis Streams and it’s not immediately clear, you might want to think either more about your problem to be solved or re-read the documentation on both.
 
-![](/images/blog/51a94e625f79eeda9cde2cc74d6f1cdf483b0adb-1012x321.webp)
+![](/images/site-mirror/51a94e625f79eeda9cde2cc74d6f1cdf483b0adb-1012x321.webp)
 
 (Enroll in the [Redis University: Redis Streams](https://university.​redis.​com/courses/ru202/) course to learn more.)
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 25 February 2026 · updated 27 February 2026*
 
-![Redis](/images/blog/69d40bb0c720a58d5bfe62a3a68b83d177f7e8bb-1200x628.webp)
+![Redis](/images/site-mirror/69d40bb0c720a58d5bfe62a3a68b83d177f7e8bb-1200x628.webp)
 
 Your large language model (LLM)-powered app might be smart, but if it feels slow, users won't stick around. [Around one second](https://dl.acm.org/doi/10.1145/1476589.1476628) is a typical threshold for maintaining a user's flow of thought, and ~10 seconds is a common upper bound for holding attention. If your app falls outside that window, it's worth investing in speed.
 

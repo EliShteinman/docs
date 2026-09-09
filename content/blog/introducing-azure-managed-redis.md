@@ -17,7 +17,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 19 November 2024 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/87dbf648e72e425bcb52d3a93f71aad02d956938-772x552.webp)
+![Blog tile image](/images/site-mirror/87dbf648e72e425bcb52d3a93f71aad02d956938-772x552.webp)
 
 Today Microsoft announced [Azure Managed Redis](http://aka.ms/Ignite24/Redis), a new fully-managed, first-party Redis offering in Microsoft Azure. Azure Managed Redis is available today in public preview. Microsoft Azure is the first major cloud service provider to offer its customers a licensed, multi-tiered Redis service.
 

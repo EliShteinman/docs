@@ -16,7 +16,7 @@ hidden: true
 
 *By Guy Royse, Developer Advocate · Published 8 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c00f92bb6fd5f3fd8c418c4a8036029f60f5ce87-772x550.webp)
+![Blog tile image](/images/site-mirror/c00f92bb6fd5f3fd8c418c4a8036029f60f5ce87-772x550.webp)
 
 ## Fast and easy object mapping for JavaScript and TypeScript
 

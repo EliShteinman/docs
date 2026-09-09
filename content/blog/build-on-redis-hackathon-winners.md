@@ -14,7 +14,7 @@ hidden: true
 
 *By Raja Rao, Head of Growth Marketing · Published 14 June 2021 · updated 9 June 2026*
 
-![Blog tile image](/images/blog/2a1f739b69b920bb368c9dad53c605cb7237423f-772x520.webp)
+![Blog tile image](/images/site-mirror/2a1f739b69b920bb368c9dad53c605cb7237423f-772x520.webp)
 
 Developers are at the core of what makes Redis one of the [most popular](https://www.techzine.eu/news/data/52544/redis-is-now-the-most-popular-database-within-aws/) and [most loved databases](/blog/redis-is-the-most-loved-database-for-the-4th-year-in-a-row/). This year at [RedisConf 21](/redisconf/), we hosted the “Build on Redis” Hackathon, our largest one to date! Today, we are thrilled to announce the winners of the $100K in prizes!
 
@@ -25,7 +25,7 @@ The below pie chart shows the distribution of different modules the winners used
 - The top-three modules used are: RedisJSON (34.9%), RediSearch (21.7%), and RedisGraph (13.3%).
 - About 60% of the winners used multiple modules to implement complex use cases which wouldn’t be that simple in any other database.
 
-![](/images/blog/8b9a5eaa2dfcdac18e3d47bc17affda4134995ad-1024x624.webp)
+![](/images/site-mirror/8b9a5eaa2dfcdac18e3d47bc17affda4134995ad-1024x624.webp)
 
 In our estimation, virtually all the teams spent anywhere between two to four weeks building these projects. They went above and beyond to build really useful and interesting apps that amazed all of our judges. Don’t take our word for it, just watch the video, look at the code, or look at the in-depth documentation!
 

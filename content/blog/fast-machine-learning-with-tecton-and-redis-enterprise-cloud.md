@@ -16,7 +16,7 @@ hidden: true
 
 *By Ed Sandoval, Eddie Esquivel · Published 10 March 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/bed06e38e7a81fe92ac9e1967723ede840612505-772x550.webp)
+![Blog tile image](/images/site-mirror/bed06e38e7a81fe92ac9e1967723ede840612505-772x550.webp)
 
 Real-time machine learning (ML) applications are everywhere — from approving credit card transactions as they happen, to immediately generating personalized recommendations for your favorite streaming service. These applications can’t afford any delay; they require live access to fresh data in order to provide ultra-low-latency inference (100 milliseconds or less). To give developers and organizations cost-effective real-time capabilities for high-scale ML applications, we’re excited to jointly announce a first-class integration of [Tecton](https://www.tecton.ai/) and [Redis Enterprise Cloud](/redis-enterprise-cloud/overview/).
 
@@ -38,7 +38,7 @@ Tecton’s Feature Store is designed to handle these steps, abstracting away all
 
 Redis Enterprise Cloud is one of these infrastructure components, bringing customers a new high-performance option for the **online store **used by Tecton’s Feature Store.
 
-![](/images/blog/100f7e39000a6a6f3346b9090ae3d0aeabc41d0f-1024x285.webp)
+![](/images/site-mirror/100f7e39000a6a6f3346b9090ae3d0aeabc41d0f-1024x285.webp)
 
 ## How Tecton uses online vs. offline stores
 

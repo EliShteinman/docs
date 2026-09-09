@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 19 March 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 ***Update 7/28/25:**** You can now use Redis natively on Windows with Memurai Enterprise Edition. We've partnered with Memurai to offer a fully compatible and officially supported Windows port of Redis that brings the full power and performance of Redis to Windows.* [*Read more here*](/blog/use-redis-natively-on-windows-with-memurai/) *for more information, tutorials, and to download an installation package.*
 
@@ -37,7 +37,9 @@ You can download a moderately out-of-date precompiled version of Redis for 32-bi
 
 After you download Redis on Windows, you’ll need to extract the executables from the zip file. As long as you’re using a version of Windows more recent than Windows XP, you should be able to extract Redis without any additional software.
 
-![Redis running in windows](/images/blog/f0f0d9da61e674ace459ca3cfbf94ce8e7c89f16-644x449.svg)
+![Redis running in windows](/images/site-mirror/f0f0d9da61e674ace459ca3cfbf94ce8e7c89f16-644x449.svg)
+
+*Figure A.1Redis running in Windows*
 
 After you’ve extracted either the 32- or 64-bit version of Redis to a location of your choice (depending on your platform and preferences; remember that 64-bit Windows can run 32- or 64-bit Redis, but 32-bit Windows can only run 32-bit Redis), you can start Redis by double-clicking on the redis-server executable. After Redis has started, you should see a window similar to figure A.1.
 

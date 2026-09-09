@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 18 June 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/58b2ab0fb755df2646c2e987fa4d1565dab0b98c-230x166.webp)
+![](/images/site-mirror/58b2ab0fb755df2646c2e987fa4d1565dab0b98c-230x166.webp)
 
 I’m delighted to [announce](/press-releases/redis-labs-launches-beta-of-redis-cloud-on-ibm-bluemix) the official beta launch of our Redis Cloud service on IBM’s BlueMix. Big Blue’s BlueMix is an implementation of IBM’s Open Cloud Architecture, which leverages Cloud Foundry to enable developers to rapidly build, deploy, and manage their cloud applications, while tapping a growing ecosystem of available services and runtime frameworks.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Paz Yanover, Principal Product Manager · Published 3 April 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 We, at Redis, are happy to announce the general availability of ***Redis Enterprise 5.0.2***, the latest version of our high performance in-memory database platform. This new version is now available with each of our deployment options:
 
@@ -64,7 +64,7 @@ Our zero-touch **Redis Enterprise VPC service** now supports the following [Redi
 
 Modules. This can be enabled when creating a new database, as illustrated below:
 
-![](/images/blog/0c2fc1f9e45004522795992b8fff07f254a53e85-1204x1070.webp)
+![](/images/site-mirror/0c2fc1f9e45004522795992b8fff07f254a53e85-1204x1070.webp)
 
 Use [this table](/pricing/) for a full comparison between various Redis Enterprise deployments.
 

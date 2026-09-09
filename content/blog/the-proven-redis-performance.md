@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 8 April 2014 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/973b1f79d5668280d37a9379c8dcda9f596db7b6-360x166.webp)
+![](/images/site-mirror/973b1f79d5668280d37a9379c8dcda9f596db7b6-360x166.webp)
 
 Recently, a known NoSQL vendor announced the addition of in-memory capabilities to its database offering. The decision to take a hybrid approach with their database offering brings up a few serious concerns. Redis, the in-memory, open-source, key-value store, has provided many insights into the world of modern applications. One particularly eye-catching observation is the inherent need for databases with in-memory capabilities. As a result, NoSQL vendors across the board have been working diligently to harness the benefits of both on-disk and in-memory databases.
 
@@ -24,7 +24,7 @@ At Redis, we believe this hybrid approach is wrong. Our concern stems from the f
 
 Before diving into each of these performance components, I would like to share the results of an in-house research study we did to compare the performance of a number of popular SQL and NoSQL databases. As seen below, there is no doubt that in-memory databases perform significantly better.
 
-![](/images/blog/ee2cb82a937206d6dbb3f76e4b26cc174ba4fcee-739x317.webp)
+![](/images/site-mirror/ee2cb82a937206d6dbb3f76e4b26cc174ba4fcee-739x317.webp)
 
 NoSQL and SQL Response Performance Comparison
 
@@ -42,7 +42,7 @@ Scenarios such as this require infrastructure that can instantly scale out. Auto
 
 Using Redis’ unique data types and commands, it is possible to build a schema in such a way that the database is tuned to serve application requests without any additional processing at the application level. This intelligent design significantly reduces the amount of transferred data.
 
-![](/images/blog/b4630d39649f0010f945487c0370eaefebc9f98b-383x230.webp)
+![](/images/site-mirror/b4630d39649f0010f945487c0370eaefebc9f98b-383x230.webp)
 
 The figure to the right illustrates an actual scenario from one of our customers. Without Redis, they would’ve needed to build a 150+ node cluster to support a network speed of 120 Gbps. In addition, they would’ve required increased work at the application level. Redis works using a six, in-memory, node cluster, 1.5 Gbps, and no extra work at the application level.
 

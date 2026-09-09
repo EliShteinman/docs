@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 9 May 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/f712d44c7cf2e222f20a4f8794b58f8d212f392f-772x550.webp)
+![Blog tile image](/images/site-mirror/f712d44c7cf2e222f20a4f8794b58f8d212f392f-772x550.webp)
 
 **These five videos break down the general concepts of clustering through webinars, tutorials, walk-through demos, and even a real-world customer success story from a Fortune 500 company.**
 
@@ -31,7 +31,7 @@ How does clustering work? In this video, Justin Castilla, a senior developer adv
 “Scalability is the property of a system to handle a growing amount of work by adding resources to the system,” says Castilla. To further explain how clustering works, he focuses on the two most common scaling strategies: vertical scaling (also called *scaling up*) and horizontal scaling (*scaling out*).
 
 
-![image of three redis instances](/images/blog/2d66726410962e97f390051d07af0b6962876fc7-1084x554.webp)
+![image of three redis instances](/images/site-mirror/2d66726410962e97f390051d07af0b6962876fc7-1084x554.webp)
 
 
 Castilla breaks the video into chapters: sharding, resharding, hash slots, high availability, and split-brain situation, making for a high-level but thorough examination of how clusters work.
@@ -45,7 +45,7 @@ Click here to watch.
 Are you past the basic clustering concepts and ready to create your own Redis clusters? Justin Castilla is there again.
 
 
-![Justin Castilla and an interface with code.](/images/blog/73a93f776db94b7090c68096ccab1031dd5f70fc-1089x561.webp)
+![Justin Castilla and an interface with code.](/images/site-mirror/73a93f776db94b7090c68096ccab1031dd5f70fc-1089x561.webp)
 
 
 In just ten minutes, Castilla walks you through his demonstration in four steps:
@@ -66,7 +66,7 @@ In this presentation from RedisConf 2021, Uber software engineers Anders Persson
 Persson and Huang detail how their team built a cluster management library in Go to automate its cluster management. They explain how this new framework could handle several operations, such as adding and removing nodes, restarting nodes, scaling clusters horizontally and vertically, as well as failure recovery protocols.
 
 
-![Professional deck presentation from Uber on using Redis clusters from RedisConf 2021](/images/blog/a9453748e6901d883d6c20c2069263132c3cefd9-1423x616.webp)
+![Professional deck presentation from Uber on using Redis clusters from RedisConf 2021](/images/site-mirror/a9453748e6901d883d6c20c2069263132c3cefd9-1423x616.webp)
 
 
 Watch and listen as they outline the important lessons learned during their migration process.
@@ -80,7 +80,7 @@ AWS was also on hand at RedisConf 2021 to discuss clustering. Its representative
 Presented by Madelyn Olson, a software engineer for Amazon ElastiCache, this presentation covers how clustering helps achieve millions of operations per second and the opportunities for improving performance and reliability.
 
 
-![Deck presentation on clustering from RedisConf 2021.](/images/blog/eacd68a4d9a87c344c22ab41e3a6b4ade9ee6787-1423x650.webp)
+![Deck presentation on clustering from RedisConf 2021.](/images/site-mirror/eacd68a4d9a87c344c22ab41e3a6b4ade9ee6787-1423x650.webp)
 
 
 Olson introduced her presentation by saying she hopes “not to just give a bullet point list of what [a cluster does], but to give everyone an intuitive understanding of what it is and some of the choices that were made during development.” Watch her presentation to learn how to use meshes between different nodes in a cluster and how to shard data so that each shard has its own unique data set.
@@ -94,7 +94,7 @@ One of the challenges of using clusters is keeping data together that belongs to
 What’s a hash slot? As Castilla describes it, “Hash slots are a way to distribute data across shards in [a cluster]. Each key is assigned to a single hash slot, and all keys in the same hash slot are stored on the same shard. This ensures that all of the data for a particular key is always stored together, which can improve performance and scalability.”
 
 
-![](/images/blog/d7b2bedf28f47d597e12792c8f2fde4a6f220d9b-1600x867.webp)
+![](/images/site-mirror/d7b2bedf28f47d597e12792c8f2fde4a6f220d9b-1600x867.webp)
 
 
 Castilla notes that hashtags are the piece that “allows you to group your data in a given slot since we don’t want to force you to reverse engineer the crc16 to make sure all the data ends up together.”

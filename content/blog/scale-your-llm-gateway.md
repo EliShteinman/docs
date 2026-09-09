@@ -14,7 +14,7 @@ hidden: true
 
 *By Rini Vasan, AI Product Marketing Manager · Published 12 June 2025 · updated 18 June 2025*
 
-![Redis](/images/blog/00d24ef065c3b5737029721337882e57a83f89bb-772x552.webp)
+![Redis](/images/site-mirror/00d24ef065c3b5737029721337882e57a83f89bb-772x552.webp)
 
 As developers build increasingly advanced GenAI apps like chatbots, agents, and copilots, the infrastructure behind them needs to keep up. Connecting to a large language model is just the start. Many teams now face limits with latency, cost, and statelessness, and need a stack that can scale reliably in production.
 

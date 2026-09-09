@@ -14,7 +14,7 @@ hidden: true
 
 *By Kyle Banker, Sr. Director, Field Engineering · Published 19 November 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/66b143b50dd2c2ca21c79b07ade1ce7594f29c66-286x275.webp)
+![Blog tile image](/images/site-mirror/66b143b50dd2c2ca21c79b07ade1ce7594f29c66-286x275.webp)
 
 As you may have heard, we recently announced the [Redis Certified Developer program](/blog/redis-developer-certification-is-here/). Anyone can [sign up for this certification program for free](https://university.redis.com/certification/), but only engineers who take and pass the certification exam will become Redis Certified Developers.
 
@@ -90,7 +90,9 @@ Let’s be clear: Redis University courses are *not* required to take the certif
 - [RU102J: Redis for Java Developers](https://university.redis.com/courses/ru102j/)
 - [RU102JS: Redis for JavaScript Developers](https://university.redis.com/courses/ru102js/)
 
-![](/images/blog/9610f901229efe6061f3e5360d3e426c4dd4383a-1024x496.webp)
+![](/images/site-mirror/9610f901229efe6061f3e5360d3e426c4dd4383a-1024x496.webp)
+
+*An example of what the certification would look like on LinkedIn.*
 
 ## Final thoughts
 

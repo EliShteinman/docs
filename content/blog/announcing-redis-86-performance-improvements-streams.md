@@ -14,7 +14,7 @@ hidden: true
 
 *By Lior Kogan, Contributor · Published 10 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/90b86546d88e1a2182cf035bf2b340e9f02fbe09-1200x628.webp)
+![Redis](/images/site-mirror/90b86546d88e1a2182cf035bf2b340e9f02fbe09-1200x628.webp)
 
 Redis 8.6 in Redis Open Source is now available. This release delivers performance and resource utilization improvements, plus a set of community-requested updates that make day-to-day development and operations smoother. It includes new Streams safeguards, more eviction control, better hotkey visibility, simpler TLS auth, and more flexible time series handling.
 
@@ -33,7 +33,9 @@ With Redis 8.6 in Redis Open Source, we continue to deliver on our commitment to
 
 ### Redis 8.6 in Redis Open Source: More than 5x throughput compared to Redis 7.2
 
-![Redis](/images/blog/4d64c84018756a0993b2c01bb9930df80577766b-1913x741.webp)
+![Redis](/images/site-mirror/4d64c84018756a0993b2c01bb9930df80577766b-1913x741.webp)
+
+*Single node; using only 16 cores on an m8g.24xlarge instance (ARM, Graviton4);  11 io-threads; Pipeline size: 1; 2000 clients Caching use case: 1:10 SET : GET ratio; 1M keys; 1K string values*
 
 With pipeline size set to 16, Redis 8.6 reaches **3.5M ops/sec**.
 
@@ -47,7 +49,9 @@ Redis performance improvements are not limited to better multithreading. We cont
 
 ### Redis 8.6 max latency improvement compared to Redis 8.4 (single core)
 
-![Redis](/images/blog/698a197459a191054471bbd756aae6a5f65f5d51-1198x741.webp)
+![Redis](/images/site-mirror/698a197459a191054471bbd756aae6a5f65f5d51-1198x741.webp)
+
+*Single node; using a single thread on a m8g.24xlarge instance (ARM, Graviton4)*
 
 The throughput and latency improvements are similar on Intel and AMD processors.
 
@@ -55,13 +59,15 @@ In addition, in 8.6 we achieved a tremendous reduction in the memory footprint o
 
 ### Redis 8.6 max memory reduction by data type compared to Redis 8.4
 
-![Redis](/images/blog/0c3c093640261d71f40d29c47fdeccda11dc445a-897x440.webp)
+![Redis](/images/site-mirror/0c3c093640261d71f40d29c47fdeccda11dc445a-897x440.webp)
 
 Compared to Redis 8.4, in Redis 8.6, we improve vector sets vector insertion performance by up to 43% and querying performance by up to 58%.
 
 ### VADD improvements on binary and 8-bit quantization for x86-64 architecture
 
-![Redis](/images/blog/8de41b229bc5f8286cf328ef05c9604aaeb66fca-812x502.webp)
+![Redis](/images/site-mirror/8de41b229bc5f8286cf328ef05c9604aaeb66fca-812x502.webp)
+
+*Single node; m8i.24xlarge machine (Intel)*
 
 ## Summary of new features in 8.6
 
@@ -96,7 +102,7 @@ In both cases, to guarantee that the message is added to the stream, the produce
 
 #### Behavior without at-most-once production guarantee
 
-![Redis](/images/blog/2e447d4c71ee09cfe0e7850e10a35b964ddee6d1-1411x622.webp)
+![Redis](/images/site-mirror/2e447d4c71ee09cfe0e7850e10a35b964ddee6d1-1411x622.webp)
 
 #### 
 Why entry IDs cannot be used as idempotent IDs?
@@ -128,7 +134,7 @@ When `XADD` is called, Redis checks if the (*pid*, *iid*) pair is identical to a
 
 Note that if the message content in different messages can be identical, apps should avoid `IDMPAUTO pid` and use `IDMP pid iid`.
 
-![Redis](/images/blog/55bb68d64b75c29f5a79edfd9c0573b892d436de-1380x624.webp)
+![Redis](/images/site-mirror/55bb68d64b75c29f5a79edfd9c0573b892d436de-1380x624.webp)
 
 #### Idempotence configuration
 

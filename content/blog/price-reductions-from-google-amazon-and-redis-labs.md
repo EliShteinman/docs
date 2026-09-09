@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 1 April 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Last week, two events shook the skies in San Francisco. On Wednesday, a sunny and gentle day, [Google’s Urs Hölzle announced](http://googlecloudplatform.blogspot.co.il/2014/03/google-cloud-platform-live-blending-iaas-and-paas-moores-law-for-the-cloud.html) during the Google Cloud Platform Live event that they are cutting the prices of Google’s platform services by considerable percentages. A day later, during the AWS Summit keynote, [Andy Jassy answered that move](http://aws.typepad.com/aws/2014/03/aws-price-reduction-42-ec2-s3-rds-elasticache-and-elastic-mapreduce.html) with Amazon’s 42nd price reduction – this time cutting the cost for a host of the cloud’s services by 10-40% (the Ultimate Question remains unknown). The skies over San Francisco showered rain that day as the two giant clouds collided (or maybe it was just Rob McKenna attending the events).
 

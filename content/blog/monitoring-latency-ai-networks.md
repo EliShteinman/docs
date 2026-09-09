@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 27 July 2026 · updated 29 July 2026*
 
-![Why monitoring latency is vital in AI networks](/images/blog/3297b895bc725789f58af6e67a0508ef60813693-2400x1256.webp)
+![Why monitoring latency is vital in AI networks](/images/site-mirror/3297b895bc725789f58af6e67a0508ef60813693-2400x1256.webp)
 
 Your monitoring looks fine but your answers are getting worse. That pairing is common in AI apps, because retrieval and serving systems are usually built to degrade gracefully under load: search a cached subset instead of the full index, fall back to a cheaper ranking model, skip the reranking step. Requests still succeed, so error rates stay flat. The answers behind them are just built on thinner context than they should have been. Latency is what connects those two facts, which is why it's worth tracking as a measure of answer quality rather than only of speed.
 

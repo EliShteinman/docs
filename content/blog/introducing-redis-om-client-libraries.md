@@ -15,7 +15,7 @@ hidden: true
 
 *By Kyle Banker, Sr. Director, Field Engineering · Published 23 November 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/810bef849496afee9b50c636cdd983676789ff0f-928x628.webp)
+![Blog tile image](/images/site-mirror/810bef849496afee9b50c636cdd983676789ff0f-928x628.webp)
 
 ## Intuitive Object Mapping and Fluent Queries for Redis
 

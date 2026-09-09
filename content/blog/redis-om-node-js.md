@@ -15,7 +15,7 @@ hidden: true
 
 *By Guy Royse, Developer Advocate · Published 4 August 2022 · updated 31 March 2025*
 
-![Blog tile image](/images/blog/c00f92bb6fd5f3fd8c418c4a8036029f60f5ce87-772x550.webp)
+![Blog tile image](/images/site-mirror/c00f92bb6fd5f3fd8c418c4a8036029f60f5ce87-772x550.webp)
 
 **Redis OM for Node.js is still in its early days, but we’re making a lot of progress. Here’s what we added in the latest version and where we’re headed.**
 

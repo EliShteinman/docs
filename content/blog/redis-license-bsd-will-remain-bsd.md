@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 22 August 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Since the recent licensing change for our Redis modules, there’s been a lot of confusion and misinformation circulating about the implications of those changes. We want to address your questions and be crystal clear: the license for open source Redis was never changed. It is BSD and will always remain BSD.
 

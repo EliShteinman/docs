@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 28 August 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/8bb21643bb9d36edc1f85f46232224d6652c03e8-140x92.webp)
+![Blog tile image](/images/site-mirror/8bb21643bb9d36edc1f85f46232224d6652c03e8-140x92.webp)
 
-![Beware of falling limbs!](/images/blog/fe1427d29975eb27614bf9d733372947ad2fc519-635x200.webp)
+![Beware of falling limbs!](/images/site-mirror/fe1427d29975eb27614bf9d733372947ad2fc519-635x200.webp)
 
 You’ve probably [already heard](http://blogs.wsj.com/digits/2013/08/25/amazon-web-services-outage-cuts-off-big-names/) about AWS’s outage last Sunday around noon PDT. The thud of that [“minor” network-cum-storage issue](http://gigaom.com/2013/08/25/amazon-web-services-experienced-minor-outage-on-sunday/) in one of the busiest data regions of the Amazon forest cloud was heard loud and clear. Even before that fallen zone tree’s leaves touched the ground, reports about the collapse of some of the better-known social brands (i.e. [Instagram, Vine & IFTTT](http://techcrunch.com/2013/08/25/instagram-vine-and-ifttt-went-dark-thanks-to-amazon-web-services-issues/)) started coming in.
 

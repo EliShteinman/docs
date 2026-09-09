@@ -15,7 +15,7 @@ hidden: true
 
 *By Bosmat Tuvel, Noam Stern · Published 22 July 2025 · updated 1 October 2025*
 
-![Redis 8 brings Vector Sets and is now in preview on Redis Cloud Essentials](/images/blog/7c0a4204a4f608bc83f022443460bdacf79fc3af-772x552.webp)
+![Redis 8 brings Vector Sets and is now in preview on Redis Cloud Essentials](/images/site-mirror/7c0a4204a4f608bc83f022443460bdacf79fc3af-772x552.webp)
 
 Redis 8 is now available for preview on [Redis Cloud Essentials](https://redis.io/docs/latest/operate/rc/subscriptions/view-essentials-subscription/essentials-plan-details/). Starting today, you can create a Redis 8 database and experience the power of our most performant Redis version yet.
 
@@ -39,7 +39,7 @@ Learn more about vector sets in our [documentation](https://redis.io/docs/latest
 
 Check out some of these improvements from our benchmarking comparing Redis 8 to Redis 7.4 on Redis Cloud.
 
-![Redis 8 brings Vector Sets](/images/blog/05591762f85ceeff251a8d533b855bc4d9cab987-1316x742.webp)
+![Redis 8 brings Vector Sets](/images/site-mirror/05591762f85ceeff251a8d533b855bc4d9cab987-1316x742.webp)
 
 You see a latency reduction of up to 78% for bitmap, up to 66% for set, and up to 58% for sorted set command groups.
 

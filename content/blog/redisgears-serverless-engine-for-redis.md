@@ -16,7 +16,7 @@ hidden: true
 
 *By Pieter Cailliau, Meir Shpilraien · Published 19 May 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/b640163838128b5e6330d2317abbc3ca57ac617c-601x601.webp)
+![Blog tile image](/images/site-mirror/b640163838128b5e6330d2317abbc3ca57ac617c-601x601.webp)
 
 We are happy to announce [the general availability of RedisGears](/press/redis-labs-delivers-powerful-data-platform-for-next-wave-of-ai-applications), a serverless engine that provides infinite programmability in Redis. Developers can use [RedisGears](/redis-enterprise/redis-gears/) to improve application performance and process data in real time, while architects can leverage it to drive architectural simplicity.
 
@@ -40,7 +40,9 @@ At the core of RedisGears is an engine that executes user-provided flows, or fun
 
 In broad strokes, this diagram depicts RedisGears’ components:
 
-![](/images/blog/80b46c9873a71902d48ef035a672819dcdb4e997-1024x582.webp)
+![](/images/site-mirror/80b46c9873a71902d48ef035a672819dcdb4e997-1024x582.webp)
+
+*RedisGears architecture and data flow*
 
 RedisGears has three main components:
 
@@ -64,13 +66,17 @@ Failure to plan for such peaks can lead to poor performance, unexpected downtime
 
 Traditional relational/disk-based databases are often unable to deal with significant increases in load. This is where RedisGears comes into play. RedisGears’ write-behind capability relies on Redis to do the heavy lifting, asynchronously managing the updates and easing the load and diminishing the spikes on the backend database. RedisGears also guarantees that all changes are written to your existing databases or data warehouse systems, protecting your application from database failure and boosting the performance of your application to the speed of Redis. This simplifies your application logic drastically since it now only needs to talk to a single frontend database, Redis. The write-behind capability comes initially with support for Oracle, MySQL, SQL, SQLite, Snowflake, and Cassandra.
 
-![](/images/blog/f63a39371ae28de90a67858d0aacd7057cd22095-1024x473.webp)
+![](/images/site-mirror/f63a39371ae28de90a67858d0aacd7057cd22095-1024x473.webp)
+
+*RedisGears helps flatten the curve of your database workload.*
 
 ## Write-behind implementation
 
 The diagram below displays the architecture of RedisGears’ write-behind capability:
 
-![](/images/blog/8b1aeb89b0cf43d555b7a70471c7426952f887c3-1024x601.webp)
+![](/images/site-mirror/8b1aeb89b0cf43d555b7a70471c7426952f887c3-1024x601.webp)
+
+*Mapping Redis data structures and RedisGears functions to the write-behind capability.*
 
 It operates as follows:
 
@@ -92,13 +98,15 @@ To showcase the benefits of write-behind, we developed a [demo application](http
 
 In this example, we used MySQL as the backend database for ease of testing and reproduction.
 
-![](/images/blog/ebb132bb07faee79d4f98982ab3c79daf3f925f2-827x892.webp)
+![](/images/site-mirror/ebb132bb07faee79d4f98982ab3c79daf3f925f2-827x892.webp)
+
+*What your application looks like with and without write-behind.*
 
 To simulate peaks in the application, we’ve created a spike test with [k6](https://k6.io/), in which we simulate a short burst going from 1 to 48 concurrent users.
 
 To check how the overall system handled the spike, we tracked the achieved HTTP load and latency on the application as well as the underlying database system performance. The graph below showcases both scenarios—the left interval presents results for the MySQL-only solution, while the right interval presents results for the write-behind scenario with RedisGears.
 
-![Redis](/images/blog/96fad5013179ce0f2af3ff2fda3970892637f03d-960x540.webp)
+![Redis](/images/site-mirror/96fad5013179ce0f2af3ff2fda3970892637f03d-960x540.webp)
 
 This chart displays some important findings:
 
@@ -118,6 +126,6 @@ We hope that this blog post has encouraged you to try RedisGears. Please check o
 
 A new version of RedisInsight will be released soon and will contain support for RedisGears to execute functions and to view the registered functions in RedisGears. We’ll leave you with a quick GIF of what you can expect:
 
-![Redis](/images/blog/aab4f0d4865be08232b3436b1e0cff3f1936554b-800x533.gif)
+![Redis](/images/site-mirror/aab4f0d4865be08232b3436b1e0cff3f1936554b-800x533.gif)
 
 Happy coding!

@@ -14,7 +14,7 @@ hidden: true
 
 *By Filipe Oliveira, Performance Engineer · Published 15 June 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0c00ac98ca37b5685d8b50c3598220bc71ec360d-772x550.webp)
+![Blog tile image](/images/site-mirror/0c00ac98ca37b5685d8b50c3598220bc71ec360d-772x550.webp)
 
 Redis is developed with a great emphasis on performance. We do our best with every release to ensure you’ll experience a very stable and fast product.
 
@@ -42,11 +42,15 @@ As soon as this first step was given, we started interpreting the profiling tool
 
 We’ve observed that when adding to a stream without an ID, it creates duplicate work on SDS creation/freeing/sdslen that costs about 10% of the CPU cycles, as showcased in detail in the next two perf report prints.
 
-![redis performance breakdown of on-cpu time for the XADD command](/images/blog/2b2ba8244b4223fd5592af82155bd5ef05a396e9-1024x662.webp)
+![redis performance breakdown of on-cpu time for the XADD command](/images/site-mirror/2b2ba8244b4223fd5592af82155bd5ef05a396e9-1024x662.webp)
+
+*Breakdown of on-CPU time for the XADD command*
 
 For the same inputs, sdscatfmt and _sdsnewlen were being called twice:
 
-![](/images/blog/67a5c212856a553bf5002504ce028e9147f9635d-1024x156.webp)
+![](/images/site-mirror/67a5c212856a553bf5002504ce028e9147f9635d-1024x156.webp)
+
+*sdscatfmt and _sdsnewlen duplicate computation overhead detail*
 
 This allowed us to optimize Streams ingestion in around 9-10% as confirmed following benchmark results:
 
@@ -54,7 +58,7 @@ This allowed us to optimize Streams ingestion in around 9-10% as confirmed follo
 
 **First commit of this PR (avoid dup work):**
 
-![github stats results](/images/blog/3c7cbbc9b91508cfaaab0b5e84e9c9410e946b1a-894x170.webp)
+![github stats results](/images/site-mirror/3c7cbbc9b91508cfaaab0b5e84e9c9410e946b1a-894x170.webp)
 
 ## Avoiding duplicate allocations to improve performance
 
@@ -62,11 +66,11 @@ The initial focus of this use-case improvement lead to further analysis from Ora
 
 Second commit (avoid reallocs):
 
-![github second commit stats](/images/blog/190523533e5bb2eaae5a848fb9f9c828409ba32a-889x168.webp)
+![github second commit stats](/images/site-mirror/190523533e5bb2eaae5a848fb9f9c828409ba32a-889x168.webp)
 
 ## Measured improvement
 
-![](/images/blog/f16f2923318b70944492918bb4da7bb156e62b65-795x491.webp)
+![](/images/site-mirror/f16f2923318b70944492918bb4da7bb156e62b65-795x491.webp)
 
 As expected, by simply reusing intermediate computation and consequently reducing the redundant computation and allocations within the internally called functions, we’ve measured a reduction in the overall CPU time of ~= 20% of [Redis Streams](https://redis.io/docs/manual/data-types/streams/).
 

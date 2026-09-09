@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 6 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/96ecca24da6e899b62135712919a2e4082a667c3-1200x628.webp)
+![Redis](/images/site-mirror/96ecca24da6e899b62135712919a2e4082a667c3-1200x628.webp)
 
 You've probably heard the pitch: with context windows hitting 10 million tokens, who needs RAG anymore? Just stuff everything into the prompt and let the model figure it out.
 

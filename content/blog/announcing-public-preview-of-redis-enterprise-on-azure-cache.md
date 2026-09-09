@@ -15,7 +15,7 @@ hidden: true
 
 *By Cassie Zimmerman, Amiram Mizne · Published 9 November 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/4d83e305e3cb3bc38913c86da00917cf0e02d85b-772x550.webp)
+![Blog tile image](/images/site-mirror/4d83e305e3cb3bc38913c86da00917cf0e02d85b-772x550.webp)
 
 ## Delivering new features to Azure Cache for Redis
 

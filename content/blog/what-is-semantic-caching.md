@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 20 January 2026 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/c12e33f78bac21fca7390252977cbd5eacc4e69a-1200x628.webp)
+![Blog tile image](/images/site-mirror/c12e33f78bac21fca7390252977cbd5eacc4e69a-1200x628.webp)
 
 LLM API costs have a way of sneaking up on you. One month you're running a promising chatbot prototype, the next you're staring at an invoice wondering how your users consumed that many tokens.
 
@@ -34,7 +34,9 @@ Think of semantic caching like a savvy librarian. Not only do they know where ev
 
 ***Make your app’s data handling faster, boost performance, and cut costs with ***[***LangCache***](https://redis.io/langcache/)***, our fully-managed semantic caching service.***
 
-![semantic caching diagram](/images/blog/89900bfa0fe07eeaca7dea0e46e18ff6d093ddeb-1000x600.webp)
+![semantic caching diagram](/images/site-mirror/89900bfa0fe07eeaca7dea0e46e18ff6d093ddeb-1000x600.webp)
+
+*Key components of semantic caching*
 
 ## How semantic caching works
 

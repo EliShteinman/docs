@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 14 January 2026 · updated 1 September 2026*
 
-![Redis](/images/blog/e3ebbf2f549380648eadce745e9c66c6817365ac-1200x628.webp)
+![Redis](/images/site-mirror/e3ebbf2f549380648eadce745e9c66c6817365ac-1200x628.webp)
 
 Building a single AI agent is straightforward. Building multiple agents that work together without stepping on each other's toes? That's a different challenge entirely.
 

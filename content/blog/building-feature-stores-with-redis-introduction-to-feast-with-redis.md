@@ -16,7 +16,7 @@ hidden: true
 
 *By Nava Levy, Guy Korland · Published 9 November 2021 · updated 21 May 2026*
 
-![Blog tile image](/images/blog/5af543d9cc9523d59491580a5efc4f91d2d9d6f3-772x520.webp)
+![Blog tile image](/images/site-mirror/5af543d9cc9523d59491580a5efc4f91d2d9d6f3-772x520.webp)
 
 A [feature store](/solutions/feature-store/) is a centralized place where data scientists from different teams across your organization can share [features](https://en.wikipedia.org/wiki/Feature_(machine_learning)) for machine learning. The feature store allows them to search, reuse, and serve features in production at scale. As MLOps matures, feature stores are becoming a cornerstone of machine learning platforms for a few reasons:
 
@@ -38,7 +38,7 @@ To provide a better understanding of how feature stores work, and why Redis is s
 
 Feast (**Fea**ture **st**ore) is an open source feature store that’s part of[the Linux Foundation’s AI & Data Foundation](https://lfaidata.foundation/blog/2020/11/10/feast-joins-lf-ai-data-as-new-incubation-project/). Feast can serve features from a low-latency online store or from an offline store, while also providing a central registry, storage, and serving. This allows ML engineers and data scientists to discover the relevant features for ML use cases and serve them in production.
 
-![Redis + Feast diagram](/images/blog/b2f49d9316c1d0f588c59832b63f25edb271b138-1024x532.webp)
+![Redis + Feast diagram](/images/site-mirror/b2f49d9316c1d0f588c59832b63f25edb271b138-1024x532.webp)
 
 Feast is built in a modular way so that you can adopt all or some of its components. Because Feast is open source, you can deploy a [Feast Feature Store](https://drive.google.com/file/d/1ocJNDbEUxXVJqyBVD35k-Vvr1y8hjN5k/view) and customize it for your own needs, without having to start building a feature store from scratch. Companies who choose Feast with Redis for their feature store have significantly shortened development time and effort, as compared to building out their own feature store. In the next section, we’ll go over Feast’s key components.
 
@@ -54,7 +54,7 @@ If you look at the Feast architecture diagram below, you’ll notice several key
 
 **Offline Store:** Offline stores maintain a record of historic time-series feature values. The offline store persists batch data that has been ingested into Feast. This data is used for producing training datasets. Feast does not manage the offline store directly, but runs queries against it.
 
-![Redis + Feast diagram](/images/blog/aa02301cf1a38ddf8ec80947442a2d443b64f3d3-1019x1024.webp)
+![Redis + Feast diagram](/images/site-mirror/aa02301cf1a38ddf8ec80947442a2d443b64f3d3-1019x1024.webp)
 
 The high-level architecture diagram above describes the following flow, as an example:
 

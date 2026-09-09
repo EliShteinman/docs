@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 28 March 2026 · updated 1 April 2026*
 
-![Building AI agent pipelines that don't forget, fail, or fall apart](/images/blog/48d7256cc0439b9a67f9eb1545cc6198cd6e6ce2-2400x1256.webp)
+![Building AI agent pipelines that don't forget, fail, or fall apart](/images/site-mirror/48d7256cc0439b9a67f9eb1545cc6198cd6e6ce2-2400x1256.webp)
 
 Your agent handled a single question fine. Then you asked it to book a flight, check your calendar, and draft a confirmation email, and somewhere between steps two and three it forgot the flight details it just looked up. That's a state management problem, and it's one of several engineering challenges that sit between a working demo and a production agent.
 

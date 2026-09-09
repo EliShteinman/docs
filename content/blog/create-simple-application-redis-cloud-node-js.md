@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 24 January 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/634a27197c9849c8f737cf292c30c1d0e2b7d7e8-1600x840.webp)
+![Blog tile image](/images/site-mirror/634a27197c9849c8f737cf292c30c1d0e2b7d7e8-1600x840.webp)
 
 Sometimes, I “think” in Redis. It’s a bit hard to describe, but I tend to think of real-life problems in terms of how I would solve them in Redis (I… think it might be a sickness). I’ve been renovating my house for a couple of years now and one of the most unexpected challenges is dealing with how long it takes to plaster, paint, apply adhesive and the like to dry and cure. Some things take weeks to cure before you can move on to the next step. I had a minor annoyance/disaster this weekend and I told myself that I’m not going to let it happen again. So… off to Redis to do an application speedrun.
 

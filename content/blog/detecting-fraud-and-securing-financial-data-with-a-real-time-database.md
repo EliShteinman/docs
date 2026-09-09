@@ -14,7 +14,7 @@ hidden: true
 
 *By Henry Tam · Published 20 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2ac3a1d8fbd7f355fe40d030f3a238178f01bef9-772x550.webp)
+![Blog tile image](/images/site-mirror/2ac3a1d8fbd7f355fe40d030f3a238178f01bef9-772x550.webp)
 
 Financial institutions are struggling to keep up with the ongoing onslaught of fraudulent transactions and cybercriminals’ changing tactics. As the global [financial services](/industries/financial-services/) landscape evolves, fraudsters are moving in tandem with the multitude of digital transaction channels, finding innovative ways to steal or fake customers’ identities and commit payment [fraud](/solutions/fraud-detection/).
 
@@ -36,7 +36,7 @@ Financial services firms traditionally used rules-based systems to detect simple
 
 Machine learning (ML) algorithms and artificial intelligence (AI) predictive models can evolve and learn as they analyze and detect payment fraud based on historical and real-time transactional information. For example, transaction scoring algorithms consider transaction details, user profiles, behavioral biometrics, geolocation, IP/device metadata, a user’s financial information, and more. However, due to the size and complexity of data pipelines, successful AI/ML implementation depends not only on accurate models but also on the performance and resiliency of the underlying machine learning operations (MLOps) database, known as an [online feature store](/solutions/feature-store/).
 
-![two people looking at secured coded page](/images/blog/420be86d75d6f3bdaa9406af7eaae02cde28bd5c-1024x683.webp)
+![two people looking at secured coded page](/images/site-mirror/420be86d75d6f3bdaa9406af7eaae02cde28bd5c-1024x683.webp)
 
 We live in a fast-paced environment where criminals have discovered savvier ways to steal identities and credit card info to commit fraud. Financial services enterprises need to adapt to the digital age and move away from rigid and slow legacy relational database management systems (RDBMS) that cannot support modern AI/ML-based fraud detection and dynamic digital identities.
 

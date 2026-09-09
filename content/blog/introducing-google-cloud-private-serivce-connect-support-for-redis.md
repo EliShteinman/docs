@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 11 September 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/dd1c6d60a3a1196a9ba945c44cf28c2e5c5f5d8c-772x550.webp)
+![Blog tile image](/images/site-mirror/dd1c6d60a3a1196a9ba945c44cf28c2e5c5f5d8c-772x550.webp)
 
 **Redis Cloud enhances security and reliability with its new support for Google Cloud Private Service Connect.**
 
@@ -34,7 +34,9 @@ There are a few reasons why you might want to use Private Service Connect:
 
 Redis Cloud can now connect to all of your Google Cloud applications and services through Private Service Connect as a hosted SaaS service.
 
-![](/images/blog/e27e3369c6b5838831ac8ea017ad29472df8932e-1466x983.svg)
+![](/images/site-mirror/e27e3369c6b5838831ac8ea017ad29472df8932e-1466x983.svg)
+
+*Private Service Connect architecture*
 
 ## How to get started
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Angel Camacho, Contributor · Published 12 September 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0e4ddcbb08c5955d84fbd3d2fdedf94e99ec5c1a-772x550.webp)
+![Blog tile image](/images/site-mirror/0e4ddcbb08c5955d84fbd3d2fdedf94e99ec5c1a-772x550.webp)
 
 **Manual deployments of Kubernetes clusters can be a real hassle. Installing and maintaining a cluster is a complex task unless there are automations to fast-track the process, and the potential for error is high. To mitigate these complications is Helm, a Kubernetes package manager, and Helm charts, a blueprint that defines how clusters are deployed. We explore the pros and cons of a Redis Helm chart as well as how the new Redis Enterprise Operator for Kubernetes solves most of the pain points that arise with using the Helm package manager.**
 

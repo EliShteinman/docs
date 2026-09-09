@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 11 February 2015 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/029083b006e0299bdc6c7f8167ff0dec051f9b1e-140x92.webp)
+![Blog tile image](/images/site-mirror/029083b006e0299bdc6c7f8167ff0dec051f9b1e-140x92.webp)
 
-![](/images/blog/3071841f9a70615ec70755c909529eca182a3a4e-635x200.webp)
+![](/images/site-mirror/3071841f9a70615ec70755c909529eca182a3a4e-635x200.webp)
 
 Redis is proud to announce that we have been selected by IBM as the winner of its prestigious 2015 Beacon Award for Outstanding Service in the Cloud Marketplace! Each year, IBM recognizes IBM Business Partners who have distinguished themselves in delivering business excellence, innovative solutions, ingenuity, and client satisfaction around the world.
 

@@ -15,9 +15,9 @@ hidden: true
 
 *By Suze Shardlow, Contributor · Published 10 August 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a8e7d124626bb16d9d8a33b7381383531564f848-772x550.webp)
+![Blog tile image](/images/site-mirror/a8e7d124626bb16d9d8a33b7381383531564f848-772x550.webp)
 
-![headshots of first participants in the Redis Insiders Program](/images/blog/2a548e551fa084e5d992630cd8271ff31f276145-1024x366.webp)
+![headshots of first participants in the Redis Insiders Program](/images/site-mirror/2a548e551fa084e5d992630cd8271ff31f276145-1024x366.webp)
 
 Back in May, we launched our first ambassador program: [Redis Insiders](/blog/redis-insiders-program/). We received a great response from the community. Now, we can introduce our first four Redis Insiders to the world.
 

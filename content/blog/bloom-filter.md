@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 14 July 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/e211bf940dcac0b5ae46e2fe189a1085ba673fc5-517x348.webp)
+![Blog tile image](/images/site-mirror/e211bf940dcac0b5ae46e2fe189a1085ba673fc5-517x348.webp)
 
 ***Click here to ***[***download the Probabilistic module***](/modules/redis-bloom/)*** which supports scalable bloom and cuckoo filters.***
 
@@ -34,7 +34,7 @@ Most of the literature on Bloom filter uses highly symbolic and/or mathematical 
 
 A Bloom filter is an array of many bits. When an element is ‘added’ to a bloom filter, the element is hashed. Then bit[hashval % nbits] is set to 1. This looks fairly similar to how buckets in a hash table are mapped, utilizing a relational hash function. To check if an item is present or not, the hash is computed and the filter sees if the corresponding bit is set or not.
 
-![](/images/blog/bce8e084f76f952a04158762eac0705c56204a9e-266x112.webp)
+![](/images/site-mirror/bce8e084f76f952a04158762eac0705c56204a9e-266x112.webp)
 
 Of course, this is subject to collisions. If a collision occurs, the filter will return a false positive – indicating that the entry is indeed found (note that a bloom filter will never return a false negative, that is, claim that something does not exist when it fact it is present).
 
@@ -42,7 +42,7 @@ In order to reduce the risk of collisions, an entry may use more than one bit: t
 
 The actual value of *bpe* is determined at the time the filter is created. Generally the more bits per element, the lower the likelihood of false positives.
 
-![](/images/blog/4773dd6dcd8e3e038bffd77e687c01f635e77944-489x172.webp)
+![](/images/site-mirror/4773dd6dcd8e3e038bffd77e687c01f635e77944-489x172.webp)
 
 In the example above, all three bits would need to be set in order for the filter to return a positive result.
 

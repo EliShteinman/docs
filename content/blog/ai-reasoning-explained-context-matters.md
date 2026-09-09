@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 3 June 2026*
 
-![AI reasoning, explained, and why a smarter model won't save you](/images/blog/643d75a6c23a35af19fc6e3a08a5e12662d1d301-2400x1256.webp)
+![AI reasoning, explained, and why a smarter model won't save you](/images/site-mirror/643d75a6c23a35af19fc6e3a08a5e12662d1d301-2400x1256.webp)
 
 Every few months, a new AI model drops with higher benchmark scores, and the reaction is predictable: "This one finally reasons." The leaderboard shuffles. And teams building production AI systems still watch their agents hallucinate or mishandle questions they should refuse.
 

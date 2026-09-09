@@ -14,7 +14,7 @@ hidden: true
 
 *By Paula Dallabetta · Published 17 June 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/8004c00bc55554b8f5524321894413c4fb71489c-772x550.webp)
+![Blog tile image](/images/site-mirror/8004c00bc55554b8f5524321894413c4fb71489c-772x550.webp)
 
 ## What is a schemaless database?
 
@@ -26,7 +26,7 @@ A schemaless database manages information without the need for a blueprint. The 
 
 With a schemaless database, you don’t need to have a fully-realized vision of what your data structure will be. Because it doesn’t adhere to a schema, all data saved in a schemaless database is kept completely intact. A relational database, on the other hand, picks and chooses what data it keeps, either changing the data to fit the schema, or eliminating it altogether. Going schemaless allows every bit of detail from the data to remain unaltered and be completely accessible at any time. For businesses whose operations change according to real-time data, it’s important to have that untouched data as any of those points can prove to be integral to how the database is later updated. Without a fixed data structure, schemaless databases can include or remove [data types](https://redis.io/docs/manual/data-types/), tables, and fields without major repercussions, like complex schema migrations and outages. Because it can withstand sudden changes and parse any data type, schemaless databases are popular in industries that are run on real-time data, like[ financial services](/industries/financial-services/), [gaming](/industries/gaming/), and social media.
 
-![developers creating an application using schemaless databases](/images/blog/5578d29b48bee30285b087eabde7f8adc9f5e883-1024x576.webp)
+![developers creating an application using schemaless databases](/images/site-mirror/5578d29b48bee30285b087eabde7f8adc9f5e883-1024x576.webp)
 
 > Going schemaless allows every bit of detail from the data to remain unaltered and be completely accessible at any time.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Manvinder Singh, Adriano Amaral · Published 10 July 2025 · updated 1 October 2025*
 
-![Speed Is Accuracy: Why Redis Query Engine Leads in Vector Search](/images/blog/72c69547c5a2478080d680e9302e38352322fb51-772x552.webp)
+![Speed Is Accuracy: Why Redis Query Engine Leads in Vector Search](/images/site-mirror/72c69547c5a2478080d680e9302e38352322fb51-772x552.webp)
 
 In today's AI-driven landscape, the difference between retrieving relevant information and irrelevant noise can make or break your application's value proposition. Whether you're building a RAG system that powers customer support, a recommendation engine that drives revenue, or a feature store that enables real-time ML decisions, one fundamental truth remains: **serving the right data at the right time is everything**.
 

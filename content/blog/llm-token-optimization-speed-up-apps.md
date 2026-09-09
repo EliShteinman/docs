@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 19 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/9b31be6fdc7ece86bfc58f7a61d01f5a9d9c8d3e-1200x628.webp)
+![Redis](/images/site-mirror/9b31be6fdc7ece86bfc58f7a61d01f5a9d9c8d3e-1200x628.webp)
 
 You've probably noticed your Large Language Model (LLM) bill creeping up faster than your user growth. Or maybe you're watching users abandon your AI app because responses take too long. Both problems often trace back to the same issue: wasted tokens.
 

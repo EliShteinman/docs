@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 27 June 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9c12c932422b55509249ffd52b373ccb10581f33-200x200.webp)
+![Blog tile image](/images/site-mirror/9c12c932422b55509249ffd52b373ccb10581f33-200x200.webp)
 
 Today we are happy to announce the general availability (GA) of [RedisTimeSeries](https://oss.redis.com/redistimeseries) v1.0. RedisTimeSeries is a Redis module developed by Redis to enhance your experience managing time series data with Redis. We released RedisTimeSeries in preview/beta mode over six months ago, and appreciate all the great feedback and suggestions we received from the community and our customers as we worked together on this first GA version. To mark this release, we performed a benchmark, which achieved 125K queries per second with RedisTimeSeries as compared to other time series approaches in Redis. [Skip ahead for the full results](#10), or take a moment to first learn about what led us to build this new module.
 
@@ -25,7 +25,7 @@ Many Redis users have been using Redis for time series data for almost a decade 
 
 In the [DB-engines](https://db-engines.com/en/) trend chart below, you can see that time series databases have gained the most in popularity recently. In addition to the ever-growing amounts of data and new time series use cases for self-driving cars, algorithmic trading, smart homes, online retail and more, we believe there are two main technological reasons for this trend.
 
-![](/images/blog/08a60abda4f2cf5f568b33d7cc391c2f92414374-602x296.webp)
+![](/images/site-mirror/08a60abda4f2cf5f568b33d7cc391c2f92414374-602x296.webp)
 
 The first reason is that the query pattern and scale of time series data differs from what existing database technologies were built for. While most databases were designed to serve more reads than writes, time series use cases have a high ingestion rate of large volumes of data, and a lower number of read queries. In a root cause analysis use case, reads are sporadic and only touch upon random parts of the data set. In the use case of training AI models (e.g., for anomaly detection in sensor data), typically reads would span a larger part of the data set but still occur significantly less frequently than writes. Because of Redis’ [scalable architecture](/blog/redis-enterprise-extends-linear-scalability-200m-ops-sec/), which delivers high write throughput with low latency, Redis is natural fit for current time series query patterns.
 
@@ -49,7 +49,7 @@ A Sorted Set stores *values* by their *scores*. In the case of time series data,
 
 ### Streams
 
-![](/images/blog/6dc37880566c450631c091aa0abb3f2e6ba18ab8-146x91.webp)
+![](/images/site-mirror/6dc37880566c450631c091aa0abb3f2e6ba18ab8-146x91.webp)
 
 Redis Streams, the most recently added data structure (and hence currently less frequently used for time series), consumes less memory than Sorted Sets and is implemented using [Rax](https://github.com/antirez/rax) (a separate implementation of Radix trees). In general, Redis Streams enhances the performance of insertion and reads compared to Sorted Sets, but still misses a toolset specific to time series, since it was designed as a generic data structure.
 
@@ -63,7 +63,7 @@ In RedisTimeSeries, we are introducing a new data type that uses chunks of memor
 
 ### Downsampling / compaction
 
-![](/images/blog/dc6125cd38c6b490410f34c727d8185df1c70048-604x215.webp)
+![](/images/site-mirror/dc6125cd38c6b490410f34c727d8185df1c70048-604x215.webp)
 
 If you want to keep all of your raw data points indefinitely, your data set will grow linearly over time. However, if your use case allows you to have less fine-grained data further back in time, downsampling can be applied. This allows you to keep fewer historical data points by aggregating raw data for a given time window using a given aggregation function. [RedisTimeSeries supports downsampling](https://redis.io/docs/data-types/timeseries/) with the following aggregations: avg, sum, min, max, range, count, first and last.
 
@@ -114,7 +114,7 @@ When you need to query a time series, it’s cumbersome to stream all raw data p
 
 RedisTimeSeries comes with several integrations into existing time series tools. One such integration is our [RedisTimeSeries adapter](https://github.com/RedisTimeSeries/prometheus-redistimeseries-adapter) for [Prometheus](https://prometheus.io/), which keeps all your monitoring metrics inside RedisTimeSeries while leveraging the entire [Prometheus ecosystem](https://prometheus.io/docs/prometheus/latest/storage/#remote-storage-integrations).
 
-![](/images/blog/b71b1a7cbccb5f0b4e5f4b6de2fcbc9a553a8236-600x400.webp)
+![](/images/site-mirror/b71b1a7cbccb5f0b4e5f4b6de2fcbc9a553a8236-600x400.webp)
 
 Furthermore, we also created direct integrations for [Grafana](https://github.com/RedisTimeSeries/grafana-redistimeseries) and Telegraph. [This repository](https://github.com/RedisTimeSeries/prometheus-demos) contains a docker-compose setup of RedisTimeSeries, its remote write adaptor, Prometheus and [Grafana](https://grafana.com/). It also comes with a set of data generators and pre-built Grafana dashboards.
 
@@ -137,21 +137,21 @@ Specifically, our setup included:
 
 Redis Streams allows you to add several field value pairs in a message for a given timestamp. For each device, we collected 10 metrics that were modelled as 10 separate fields in a single stream message.
 
-![](/images/blog/8571cb36f2a058681867f15c489a3e555113e4ba-600x339.webp)
+![](/images/site-mirror/8571cb36f2a058681867f15c489a3e555113e4ba-600x339.webp)
 
 For Sorted Sets, we modeled the data in two different ways. For “Sorted Set per Device”, we concatenated the metrics and separated them out by colons, e.g. “<timestamp>:<metric1>:<metric2>: … :<metric10>”.
 
-![](/images/blog/6fad65b7e7234b04d390083a1e69449b13a97e68-600x333.webp)
+![](/images/site-mirror/6fad65b7e7234b04d390083a1e69449b13a97e68-600x333.webp)
 
 Of course, this consumes less memory but needs more CPU cycles to get the correct metric at read time. It also implies that changing the number of metrics per device isn’t straightforward, which is why we also benchmarked a second Sorted Set approach. In “Sorted Set per Metric,” we kept each metric in its own Sorted Set and had 10 sorted sets per device. We logged values in the format “<timestamp>:<metric>”.
 
-![](/images/blog/014f5cbabaccbab15a89f3429f45aa9760682508-578x324.webp)
+![](/images/site-mirror/014f5cbabaccbab15a89f3429f45aa9760682508-578x324.webp)
 
 Another alternative approach would be to normalize the data by creating a hash with a unique key to track all measurements for a given device for a given timestamp. This key would then be the value in the sorted set. However, having to access many hashes to read a time series would come at a huge cost during read time, so we abandoned this path.
 
 In RedisTimeSeries, each time series holds a single metric. We chose this design to maintain the Redis principle that a larger number of small keys is better than a fewer number of large keys.
 
-![](/images/blog/b4fb2a02805526f80bad18be25118d4392223963-595x326.webp)
+![](/images/site-mirror/b4fb2a02805526f80bad18be25118d4392223963-595x326.webp)
 
 It is important to note that our benchmark did not utilize RedisTimeSeries’ out-of-the-box secondary indexing capabilities. The module keeps a partial secondary index in each shard, and since the index inherits the same hash-slot of the key it indices, it is always hosted on the same shard. This approach would make the setup for native data structures even more complex to model, so for the sake of simplicity, we decided not to include it in our benchmarks. Additionally, while Redis Enterprise can use the [proxy](/redis-enterprise/technology/redis-enterprise-cluster-architecture/) to fan out requests for commands like [TS.MGET](https://oss.redis.com/redistimeseries/commands/#tsmget) and [TS.MRANGE](https://oss.redis.com/redistimeseries/commands/#tsmrange) to all the shards and aggregate the results, we chose not to exploit this advantage in the benchmark either.
 
@@ -168,7 +168,7 @@ For the data ingestion part of our benchmark, we compared the four approaches by
 
 Table 1: Ingestion details of each approach
 
-![](/images/blog/ec6f167f20e5f6db502209619c4e3bc1e8674d6f-610x384.webp)
+![](/images/site-mirror/ec6f167f20e5f6db502209619c4e3bc1e8674d6f-610x384.webp)
 
 All our ingestion operations were executed at sub-millisecond latency and, although both used the same Rax data structure, the RedisTimeSeries approach has slightly higher throughput than Redis Streams.
 
@@ -182,7 +182,7 @@ TS.RANGE cpu_usage_user{1340993056} 1451606390000 1451609990000 AGGREGATION max 
 
 For the Redis Streams and Sorted Sets approaches, we created [the following LUA scripts](https://gist.github.com/itamarhaber/0107020b91c71cb52e57e9a9c890c24e). The client once again had 8 threads and 50 connections each. Since we executed the same query, only a single shard was hit, and in all four cases this shard maxed out at 100% CPU.
 
-![](/images/blog/ca0d6d37d1f059baa361fbda32baf98625e42ef7-600x364.webp)
+![](/images/site-mirror/ca0d6d37d1f059baa361fbda32baf98625e42ef7-600x364.webp)
 
 This is where you can see the real power of having dedicated data structure for a given use case with a toolbox that runs alongside it. RedisTimeSeries just blows all other approaches out of the water, and is the only one to achieve sub-millisecond response times.
 
@@ -192,7 +192,7 @@ In both the Redis Streams and Sorted Set approaches, the samples were kept as a 
 
 RedisTimeSeries can be seen to dramatically reduce the memory consumption when compared against both Sorted Set approaches. Given the unbounded nature of time series data, this is typically a critical criteria to evaluate – the overall data set size that needs to be retained in memory. Redis Streams reduces the memory consumption further but would be equal or higher than RedisTimeSeries when more digits for a higher precision would be required.
 
-![](/images/blog/a4de5e855bd71d8ddaaecc95be1b414011b0985e-590x366.webp)
+![](/images/site-mirror/a4de5e855bd71d8ddaaecc95be1b414011b0985e-590x366.webp)
 
 ### Conclusion
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Growth Team · Published 14 October 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/a80956c1f377eaa9b914d68554da90956a9dc1b9-772x520.webp)
+![Blog tile image](/images/site-mirror/a80956c1f377eaa9b914d68554da90956a9dc1b9-772x520.webp)
 
 In the face of climate change, crop insurers are faced with a whole new range of problems. A lack of data to assess cultivable land and yield has always been an issue, but accurately estimating crop damage has also proven to be almost an impossible task.
 
@@ -71,7 +71,7 @@ We’ll explore how they managed to tie in all of these different components to 
 
 ## 3. Architecture
 
-![](/images/blog/e5a9b3322003657eb4c769b9ded6bdf187aad480-1024x687.webp)
+![](/images/site-mirror/e5a9b3322003657eb4c769b9ded6bdf187aad480-1024x687.webp)
 
 ## 4. How does it work?
 

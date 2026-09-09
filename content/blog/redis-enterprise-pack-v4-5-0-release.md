@@ -14,7 +14,7 @@ hidden: true
 
 *By Kirk Kirkconnell · Published 10 May 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4bd7834c031c2231010bd6da0dbcc601c0296fc2-536x536.webp)
+![Blog tile image](/images/site-mirror/4bd7834c031c2231010bd6da0dbcc601c0296fc2-536x536.webp)
 
 # Redise Pack v4.5.0 Release
 
@@ -29,7 +29,7 @@ With Redise Pack 4.5.0, Redise Flash version 2 is production ready. The new vers
 
 Redise Flash (RF) offers users of Redise Pack and Redise Cloud Private the unique ability to operate a Redis database that spans both RAM and flash memory (SSD), but remains separate from Redise Pack’s persistence mechanisms. Whilst keys are always stored in RAM, RF intelligently manages the location of their values (RAM vs Flash) in the database via a LRU-based (least-recently-used) mechanism. Hot, frequently used values will be in RAM while warm values will be ejected to flash memory. This enables you to have much larger datasets with RAM-like latency and performance, but at dramatically lower cost than an all-RAM database.
 
-![](/images/blog/c7c71f8dd73479413ee48603a08032bf512f79d1-600x328.webp)
+![](/images/site-mirror/c7c71f8dd73479413ee48603a08032bf512f79d1-600x328.webp)
 
 You can get an introduction to building large scale databases with Redis using Redise Flash in this [short video](https://youtu.be/EUAGY5HTPYA) or read more about building large scale databases with Redis in [Redise Pack documentation](/redis-enterprise-documentation/concepts-architecture/concepts/redis-e-flash/).
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 10 February 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b916726681b6461eb02af986eee7636da07af826-772x550.webp)
+![Blog tile image](/images/site-mirror/b916726681b6461eb02af986eee7636da07af826-772x550.webp)
 
 Online games are rapidly becoming one of the most popular forms of entertainment. The technological boom, along with our increased usage of the internet, has made games more accessible, allowing people from all over the world to compete against each other.
 
@@ -44,7 +44,7 @@ You’ll build an app that will allow developers to create their own online mult
 
 Below we’ll show you how to build this application from the bottom up, highlighting what components you’ll need along with its functionality.
 
-![](/images/blog/ba35182de63b6bd67635ebadf261a17330c8de2f-1600x781.webp)
+![](/images/site-mirror/ba35182de63b6bd67635ebadf261a17330c8de2f-1600x781.webp)
 
 ## 2. What will you need?
 
@@ -56,7 +56,7 @@ Below we’ll show you how to build this application from the bottom up, highlig
 
 ## 3. Architecture
 
-![](/images/blog/7a9b85a7e32d34ccbc1d37cea2fdaf327655061e-1600x925.webp)
+![](/images/site-mirror/7a9b85a7e32d34ccbc1d37cea2fdaf327655061e-1600x925.webp)
 
 - The frontend connects to the backend through a WebSocket.
 - The frontend sends requests to the backend, requesting subscriptions on channels, and executing commands.
@@ -81,7 +81,7 @@ git clone [https://github.com/redis-developer/topscorio](https://github.com/redi
 
 Create your free [Redis Enterprise Cloud account](/try-free/). Once you click on ‘Get Started,’ you’ll receive an email with a link to activate your account and complete the signup process.
 
-![My Image](/images/blog/1cd937f45a22b8f38f70e466b17d168c00e7840e-1600x1161.webp)
+![My Image](/images/site-mirror/1cd937f45a22b8f38f70e466b17d168c00e7840e-1600x1161.webp)
 
 ### Step 3. Create your subscription
 
@@ -93,7 +93,7 @@ Follow [https://docs.redis.com/latest/rc/rc-quickstart/](https://docs.redis.com/
 
 Click ‘Create Database’. Enter the database name and choose RedisJSON module.
 
-![My Image](/images/blog/c990a4578b7f01c8a05fc9dd4662ab9725409eab-1256x850.webp)
+![My Image](/images/site-mirror/c990a4578b7f01c8a05fc9dd4662ab9725409eab-1256x850.webp)
 
 ### Step 5. Set up environmental variables
 
@@ -149,11 +149,11 @@ And navigate to [http://localhost:5010](http://localhost:5010/) in your browser.
 
 Click ‘Start now’ and enter the email address:
 
-![](/images/blog/5449a1eb5cfb9566adc8e8c87b6d6a6aa29746c1-1088x864.webp)
+![](/images/site-mirror/5449a1eb5cfb9566adc8e8c87b6d6a6aa29746c1-1088x864.webp)
 
 The app has an example chess game implemented, opening up multiple browser sessions to test this.
 
-![Screenshot showing online multiplayer chess](/images/blog/1b3f1d10aa004d170cfa9c5a0e8f8b3ea57bcea3-1600x792.webp)
+![Screenshot showing online multiplayer chess](/images/site-mirror/1b3f1d10aa004d170cfa9c5a0e8f8b3ea57bcea3-1600x792.webp)
 
 ## 5. How data is stored
 
@@ -254,7 +254,7 @@ Both signing in and signing up share the same process. First, you need to click 
 
 You’ll then be taken to a new page. Click on the ‘Start Now’ button to get started.
 
-![](/images/blog/3d7b91bff0cabf6467ffd8052bfeee7e71308eaa-1600x841.webp)
+![](/images/site-mirror/3d7b91bff0cabf6467ffd8052bfeee7e71308eaa-1600x841.webp)
 
 **Creating a new game**
 
@@ -262,7 +262,7 @@ When you log in you’ll immediately land on the ‘Create a new game’ page. A
 
 Once you’ve done this, press ‘create game’ to proceed to the next step.
 
-![](/images/blog/e8214a9f9a2d31bb0a14404aeb831aa46f8a14a3-1600x841.webp)
+![](/images/site-mirror/e8214a9f9a2d31bb0a14404aeb831aa46f8a14a3-1600x841.webp)
 
 ## Conclusion: Enhancing the gaming experience with low latency
 
@@ -280,6 +280,6 @@ All around the world, programmers are using Redis to build innovative applicatio
 
 ### Tinco Andringa
 
-![](/images/blog/4eb292eb27e07fb4efbebac18e866287f0314b92-360x360.webp)
+![](/images/site-mirror/4eb292eb27e07fb4efbebac18e866287f0314b92-360x360.webp)
 
 Tinco is a leading software engineer at AeroScan. Make sure to visit his [GitHub page](https://github.com/tinco/topscorio) to keep up to date with all of the projects he’s involved with.

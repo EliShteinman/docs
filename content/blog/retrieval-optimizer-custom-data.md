@@ -14,7 +14,7 @@ hidden: true
 
 *By Robert Shelton, AI Engineer at Redis · Published 21 July 2025*
 
-![Retrieval optimizer: Custom data](/images/blog/f782aec472eb049411771b32bd0dbc76ec6ee4aa-772x552.webp)
+![Retrieval optimizer: Custom data](/images/site-mirror/f782aec472eb049411771b32bd0dbc76ec6ee4aa-772x552.webp)
 
 In the previous blog posts on [grid search](https://docs.google.com/document/d/16ywR8VnbHrrgtQGB1r4gmpR6e3q3Z7E3fElRvJFUgfY/edit?tab=t.0) and [bayesian optimization](https://docs.google.com/document/d/1H_r3s9lYdnmExx1sGW7y2j8Xk-P_q7LL7pZNF3XZgQ0/edit?tab=t.0) with the retrieval optimizer we made things easy by pulling pre-defined and formatted data. However, let’s say you have custom data in a specific schema with a particular way of querying that you want to test, but it doesn’t fit under the pre-defined functions within the retrieval optimizer. What then? Luckily, the library was designed around this need and makes it very straightforward to define your own processing and search function to be used with the application.
 
@@ -282,7 +282,7 @@ metrics = run_grid_study(
 
 From this simple study we see that we greatly increased our retrieval performance by making use of our custom query_metadata fields.
 
-![Example output](/images/blog/c919c2a68f77c41182c8905c0c74c83630fb8891-710x74.webp)
+![Example output](/images/site-mirror/c919c2a68f77c41182c8905c0c74c83630fb8891-710x74.webp)
 
 ## Next steps
 

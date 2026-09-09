@@ -14,7 +14,7 @@ hidden: true
 
 *By Shabih Syed, Shabih is a Sr. Director of Product Marketing at Redis Labs. He has 13+ years of experience with software development, product management and marketing of cloud-based data management & application integration platforms. Most recently he led product marketing at Liaison Technologies (now OpenText) and has worked for HP and IBM before that. Shabih is based out of NYC. · Published 14 June 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/cc5890e618fda8e28517cbe0c1f0b5e04e33f9b4-3988x2657.webp)
+![Blog tile image](/images/site-mirror/cc5890e618fda8e28517cbe0c1f0b5e04e33f9b4-3988x2657.webp)
 
 Development teams building online and operational applications increasingly choose a new class of databases to support them. It’s called “[NoSQL](/nosql/what-is-nosql/),” or “Not Only SQL”, and includes options such as Redis, MongoDB and others. Selecting the right database from among the available NoSQL solutions is one of the most important decisions you can make when designing a new application. So, if you are evaluating NoSQL databases, read on for some recommendations that will aid in your selection.
 

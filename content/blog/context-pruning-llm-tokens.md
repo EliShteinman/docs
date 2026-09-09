@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 9 May 2026 · updated 13 May 2026*
 
-![Context pruning: how to cut LLM input tokens without cutting quality](/images/blog/120deb2f7a95eaa2c3905617d29226d1655de9ef-2400x1256.webp)
+![Context pruning: how to cut LLM input tokens without cutting quality](/images/site-mirror/120deb2f7a95eaa2c3905617d29226d1655de9ef-2400x1256.webp)
 
 Your LLM app is burning through tokens, and most of them aren't doing anything useful. Every retrieved passage, every chunk of conversation history, every piece of boilerplate context costs money, adds latency, and can actually make your model's output worse. Context pruning is the practice of selectively removing low-value tokens, sentences, or passages from an LLM's input before or during inference to reduce cost and improve response quality. It's one piece of context engineering: shaping what reaches the model before inference.
 

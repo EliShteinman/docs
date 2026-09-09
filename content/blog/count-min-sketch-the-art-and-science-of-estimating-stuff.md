@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 30 March 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/a98878bd61760a63d5bec9fbf397bf9814af6c6f-772x550.webp)
+![Blog tile image](/images/site-mirror/a98878bd61760a63d5bec9fbf397bf9814af6c6f-772x550.webp)
 
 This post is about what are, in my opinion, two of the most exciting things in the world: probabilistic data structures and [Redis modules](/redis-enterprise/modules/). If you’ve heard about one or the other then you can surely relate to my enthusiasm, but in case you want to catch up on the coolest stuff on earth just continue reading.
 
@@ -28,7 +28,7 @@ Count-min sketch (also called CM sketch) is a probabilistic data structure that�
 
 Fortunately, CM sketch’s simple characteristics make it relatively easy for novices to understand (turns out many of my friends were unable to follow along with this [Top-K blog](/blog/meet-top-k-awesome-probabilistic-addition-redisbloom/)).
 
-![count-min sketch RedisBloom image](/images/blog/aa4b5590607a8547b09653241818f242510da11e-547x282.gif)
+![count-min sketch RedisBloom image](/images/site-mirror/aa4b5590607a8547b09653241818f242510da11e-547x282.gif)
 
 CM sketch has been a Redis module for several years and was recently rewritten as part of the [RedisBloom](/modules/redis-bloom/) module v2.0. But before we dive into CM sketch, it is important to understand why you’d use *any* probabilistic data structure. In the triangle of speed, space, and accuracy, probabilistic data structures sacrifice some accuracy to gain space—potentially *a lot of space*! The effect on speed varies based on algorithms and set sizes.
 
@@ -74,7 +74,7 @@ In [RedisBloom](https://github.com/RedisBloom/RedisBloom/), the API for CM sketc
 
 The following commands were used to create the animated example at the top of this post:
 
-![RedisBloom commands](/images/blog/9edfe04d498e7cd6e6882e9a19e695f780d24b3a-775x343.webp)
+![RedisBloom commands](/images/site-mirror/9edfe04d498e7cd6e6882e9a19e695f780d24b3a-775x343.webp)
 
 As you can see, the value of ‘Redis’ is 4 instead of 3. This behavior is expected since, in CM sketch, the count of an item is likely to be inflated.
 
@@ -100,7 +100,7 @@ An example is called for, so let’s make a simple sketch to illustrate the data
 
 Now we can examine what happens when samples are added to the sketch. Let’s assume samples arrive one by one and that the hashes for the first sample, denoted as s1, are: h1(s1) = 1, h2(s1) = 2 and h3(s1) = 3. To record s1 in the sketch we’ll increment each hash function’s counter at the relevant index by 1. The following table shows the array’s initial and current states:
 
-![Initial array and the results of s1](/images/blog/a5f028ebe6c87a2910bfd33aafceda116fe612f1-635x283.webp)
+![Initial array and the results of s1](/images/site-mirror/a5f028ebe6c87a2910bfd33aafceda116fe612f1-635x283.webp)
 
 Although there’s only one sample in the sketch, we can already query it effectively. Remember that the number of observations for a sample is the minimum of all its counters, so for s1 it is obtained by:
 
@@ -110,7 +110,7 @@ min(array[1][1], array[2][2], array[3][3]) =
 
 min(1,1,1) = 1The sketch also answers queries about the samples not yet added. Assuming that h1(s2) = 4, h2(s2) = 4, h3(s2) = 4, note that querying for s2 will return the result 0. Let’s continue to add s2 and s3 (h1(s3) = 1, h2(s3) = 1, h3(s3) = 1) to the sketch, yielding the following:
 
-![Results of s2 and s3](/images/blog/486fe991da93a10d3a722532b8996df87b2daeb7-635x283.webp)
+![Results of s2 and s3](/images/site-mirror/486fe991da93a10d3a722532b8996df87b2daeb7-635x283.webp)
 
 In our contrived example, almost all of the samples’ hashes map to unique counters, with the one exception being the collision of h1(s1) and h1(s3). Because both hashes are the same, h1‘s 1st counter now holds the value 2. Since the sketch picks the minimum of all counters, the queries for s1 and s3 still return the correct result of 1. Eventually, however, once enough collisions have occurred, the queries’ results will become less accurate.
 

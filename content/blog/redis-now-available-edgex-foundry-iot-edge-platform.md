@@ -16,7 +16,7 @@ hidden: true
 
 *By André Srinivasan, Solutions Architect · Published 13 December 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 I’m thrilled to share that [Redis](https://redis.io/) is now available as an embedded data service for the [EdgeX Foundry](https://www.edgexfoundry.org/) IoT Edge Platform. By leveraging Redis, the EdgeX Core Services delivers an exceptional performance, a small runtime footprint and the ability to ingest millions of device events at the IoT edge with <1ms latency to IoT solutions. The combination of EdgeX and Redis has been optimized to live on fog nodes, edge gateway devices and even IoT devices in some cases. Redis’ blazing fast performance and small memory footprint (<5MB) enables data analytics to be closer to the source and respond faster to real-time business needs.
 

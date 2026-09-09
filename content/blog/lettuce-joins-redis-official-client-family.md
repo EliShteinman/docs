@@ -16,7 +16,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 26 March 2024 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/659ae4df42ab89b3720dc2b3381a2dc873d443da-772x552.webp)
+![Blog tile image](/images/site-mirror/659ae4df42ab89b3720dc2b3381a2dc873d443da-772x552.webp)
 
 Lettuce joins the family of officially supported clients under the Redis umbrella.
 
@@ -34,13 +34,13 @@ We’re thankful for [Mark Paluch](https://github.com/mp911de) and everyone who�
 
 ## Additional Resources
 
-![Introducing Redis 7.2](/images/blog/6f4d1774f0717e849708d1ebc64665473c7c337c-772x550.webp)
+![Introducing Redis 7.2](/images/site-mirror/6f4d1774f0717e849708d1ebc64665473c7c337c-772x550.webp)
 
 Redis 7.2 Sets New Experience Standards Across Redis Products
 
 Learn More
 
-![vector-db-101-blog-card-772x552 (1)](/images/blog/e9391fc69c7ee617640e64892c4b8448ab82cc59-772x550.webp)
+![vector-db-101-blog-card-772x552 (1)](/images/site-mirror/e9391fc69c7ee617640e64892c4b8448ab82cc59-772x550.webp)
 
 Five New Official Redis Clients
 
@@ -48,7 +48,7 @@ Redis is committed to making using our software a delight to use.
 
 Learn More
 
-![](/images/blog/676300a03c67ab78fd62ea92003ec1ad5a4c4c59-772x552.webp)
+![](/images/site-mirror/676300a03c67ab78fd62ea92003ec1ad5a4c4c59-772x552.webp)
 
 The best Redis GUI
 

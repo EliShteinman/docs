@@ -16,7 +16,7 @@ hidden: true
 
 *By Samuel Shen, Paulo Sousa, Srijith Rajamohan · Published 30 March 2026 · updated 2 April 2026*
 
-![Throughput-optimizing Redis for L2 KV Cache Reuse](/images/blog/2191758d8d1e8e8906fa4949089f28ce00889568-1200x628.webp)
+![Throughput-optimizing Redis for L2 KV Cache Reuse](/images/site-mirror/2191758d8d1e8e8906fa4949089f28ce00889568-1200x628.webp)
 
 In July, we added Redis to LMCache's southbound tree: [Get faster LLM inference and cheaper responses with LMCache and Redis | Redis](/blog/get-faster-llm-inference-and-cheaper-responses-with-lmcache-and-redis/)
 
@@ -33,7 +33,7 @@ LMCache manages a three-tier memory hierarchy for LLM KV cache: L0 (VRAM), L1 (H
 
 ## KV Cache is an unorthodox workload for Redis
 
-![Redis](/images/blog/d084a7836eab1942d559771f89d0a7ce5c3ba197-1536x1024.webp)
+![Redis](/images/site-mirror/d084a7836eab1942d559771f89d0a7ce5c3ba197-1536x1024.webp)
 
 The first point of potential confusion is what is KV Cache? Redis itself is a Key-Value cache but KV Cache in the world of LLMs are just the previous attention computations that allow future tokens to attend quicker to previous context ([https://huggingface.co/blog/not-lain/kv-caching](https://huggingface.co/blog/not-lain/kv-caching)).
 
@@ -101,7 +101,7 @@ On reads, `recv_exactly_into` writes directly into the caller's buffer. No inter
 
 ## KV Cache workload invariant -- fixed size chunks (2 -> 4-5 GB/s)
 
-![Redis](/images/blog/9333b2725f528f34ed5f415bdf4e896f9225b7d2-1126x286.webp)
+![Redis](/images/site-mirror/9333b2725f528f34ed5f415bdf4e896f9225b7d2-1126x286.webp)
 
 LMCache chunks KV cache along the token dimension. Normally the last chunk in a sequence can be shorter, so every chunk carries metadata recording its actual length. This seems minor, but it has two compounding costs:
 
@@ -131,7 +131,7 @@ vLLM and LMCache are both written in python so this forces our hand in the top l
 
 Intuitively, the GIL only matters for compute-bound work but profiling revealed that even with 8+ threads all doing socket operations, the GIL still caused implicit serialization. For example, if two IO completions call back at once, only one of them can schedule and no jobs can dispatch.
 
-![Redis](/images/blog/c428a887eb7d1154f95f8e2ce4511d08551be44b-1128x420.webp)
+![Redis](/images/site-mirror/c428a887eb7d1154f95f8e2ce4511d08551be44b-1128x420.webp)
 
 The pybind11 layer releases the GIL on the very first line of every call. From that point on, C++ threads run with true concurrency on multiple cores:
 
@@ -145,7 +145,7 @@ return self.submit_batch_set(keys, bufs, lens, batch_chunk_num_bytes);
 
 KV cache retrieval is all-or-nothing: all chunks for a request must arrive before inference can continue. So the client only exposes batched operations `(BATCH_TILE_GET, BATCH_TILE_SET, BATCH_TILE_EXISTS)`, never individual key access. This is useful because if you schedule multiple coroutines in python to dispatch individual `GET` or `SET` operations, you never know when your event loop will actually schedule these coroutines. Again, this was revealed by our profiling.
 
-![Redis](/images/blog/5eb92adfed6e24549ad8bade39d006f5157f65b0-1130x698.webp)
+![Redis](/images/site-mirror/5eb92adfed6e24549ad8bade39d006f5157f65b0-1130x698.webp)
 
 Within a batch, work is divided across threads by *tiling* (the other way to tile is by request but you need # requests > # threads for this to be efficient) — each thread gets a contiguous slice of the key range, and they cooperate to complete one batch. Threads coordinate through shared atomic state:
 
@@ -188,7 +188,7 @@ Moving to GCP introduced a new set of bottlenecks. Same AZ + VPC is non-negotiab
 
 All of these machine specific characteristics can also be discovered in the “spiky” throughput graph that has a different shape depending on the machine:
 
-![Redis](/images/blog/ba14badeb073f4ffcb1448d7ff9ddaac221dee8f-1144x684.webp)
+![Redis](/images/site-mirror/ba14badeb073f4ffcb1448d7ff9ddaac221dee8f-1144x684.webp)
 
 After tuning, self-hosted Redis on a GCP VM in the same AZ and VPC reaches **6 GB/s** standalone. Redis Cloud is currently at **~2.6 GB/s** — there's more cloud tuning to be done on GCP (e.g. High Tier Networking) and AWS (Placement Groups and Bring Your Own Cloud).
 

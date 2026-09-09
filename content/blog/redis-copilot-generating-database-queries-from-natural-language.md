@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 8 October 2024 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/3944bc272ccf8039175aa8f123c232011482bddc-772x552.webp)
+![Blog tile image](/images/site-mirror/3944bc272ccf8039175aa8f123c232011482bddc-772x552.webp)
 
 Over the past few months, we’ve been working on something exciting for developers: Redis Copilot. This AI-powered assistant boosts productivity and makes learning Redis easy. Redis Copilot offers two key features: a general knowledgebase chatbot and a context-aware chatbot that creates and runs queries to answer questions about your data in a Redis database. Access Redis Copilot in the latest [Redis Insight ](https://redis.io/insight/)GUI dev tool, and the general chatbot in our [public docs](https://redis.io/chat). We’re eager to share some insights from developing the natural language query builder chatbot.
 
@@ -79,7 +79,7 @@ The last piece of the puzzle is the agent’s context. In addition to the chat h
 
 Here’s how everything ties in together:
 
-![Redis Blog Copilot Generating Queries Technical Diagram](/images/blog/53c3e49063015878cbf989f57b4c4c0d5d633d0c-1000x500.webp)
+![Redis Blog Copilot Generating Queries Technical Diagram](/images/site-mirror/53c3e49063015878cbf989f57b4c4c0d5d633d0c-1000x500.webp)
 
 ## GenAI’s siren song
 

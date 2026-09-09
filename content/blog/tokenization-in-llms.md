@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 April 2026 · updated 8 April 2026*
 
-![Tokenization in LLMs: What every AI app developer needs to know](/images/blog/d16d70c973ebedb136c59ea9c4fac525db1253a1-2400x1256.webp)
+![Tokenization in LLMs: What every AI app developer needs to know](/images/site-mirror/d16d70c973ebedb136c59ea9c4fac525db1253a1-2400x1256.webp)
 
 Every time you send a prompt to an LLM, your text gets chopped into tokens before anything else happens. Tokens are discrete integer IDs that the model uses to look up the vectors it actually processes, and that conversion step directly affects how much you pay, how fast your app responds, and how much context you can fit into a single request.
 

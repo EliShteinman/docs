@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 22 July 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/ec36ce78523e1a760cc34f880f7775d2526fb84e-5000x3000.webp)
+![Blog tile image](/images/site-mirror/ec36ce78523e1a760cc34f880f7775d2526fb84e-5000x3000.webp)
 
 Here are five things to keep in mind when [writing a Redis module](/blog/writing-redis-modules/). While this list is non-exhaustive, my aim is to offer a good way to get started if you don’t yet have much experience with module building.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Shabih Syed, Shabih is a Sr. Director of Product Marketing at Redis Labs. He has 13+ years of experience with software development, product management and marketing of cloud-based data management & application integration platforms. Most recently he led product marketing at Liaison Technologies (now OpenText) and has worked for HP and IBM before that. Shabih is based out of NYC. · Published 18 June 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0af0835a76d5457d0c35c53af4d04c3a2185e1b5-2426x1728.webp)
+![Blog tile image](/images/site-mirror/0af0835a76d5457d0c35c53af4d04c3a2185e1b5-2426x1728.webp)
 
 Data is the foundation of all digital transformation initiatives in finance, and Redis Enterprise is the industry’s high-performance database of choice. This enterprise edition of Redis simplifies the development of highly performant, reliable and seamlessly scalable real-time applications, including mobile, social, personalization, internet of things (IoT), fraud mitigation and many other solutions.
 

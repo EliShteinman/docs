@@ -14,7 +14,7 @@ hidden: true
 
 *By Allen Terleto, Contributor · Published 23 May 2023 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/c38e2755f1fa1f215d0627dc8fab1a5bf0ee352c-772x550.webp)
+![Blog tile image](/images/site-mirror/c38e2755f1fa1f215d0627dc8fab1a5bf0ee352c-772x550.webp)
 
 **Redis Smart Cache is an open source library that seamlessly adds caching to any JDBC-compliant platform, application, or microservice.**
 
@@ -26,7 +26,9 @@ Redis Smart Cache allows developers to identify their worst-performing queries, 
 
 Redis Smart Cache is useful for optimizing demanding online transaction processing (OLTP) applications, data warehouses, and analytical workloads. For example, you can integrate Smart Cache with Tableau, instantly making live dashboards more responsive.
 
-![](/images/blog/1112d968510a4982c57017768a7d4a4127fc035c-3456x2234.gif)
+![](/images/site-mirror/1112d968510a4982c57017768a7d4a4127fc035c-3456x2234.gif)
+
+*Redis Smart Cache configured within Tableau for real-time visualization and reporting.*
 
 Since the proof is in the pudding, we recommend going straight to the [Redis Smart Cache demo](https://github.com/redis-field-engineering/redis-smart-cache#quick-start). You’ll have Smart Cache up and running in minutes, and you’ll see first-hand how quickly you can optimize an application with cache-aside at Redis speed.
 
@@ -60,7 +62,7 @@ Using the Redis manifesto as our guiding principle, we set out to reduce applica
 
 We began with the basic requirements for implementing SQL query-caching within an application, microservice, or third-party platform.
 
-![Identify slow queries; cache the SQL query and its result set with expiration managed by an eviction policy, TTL, and/or invalidation protocol; handle failover, stampede, and (re)hydration scenarios; provide observability; (crossed-out) find excuses to use generative AI.](/images/blog/2c60074660923a06cb89ea9be7284755df0ffd74-762x541.webp)
+![Identify slow queries; cache the SQL query and its result set with expiration managed by an eviction policy, TTL, and/or invalidation protocol; handle failover, stampede, and (re)hydration scenarios; provide observability; (crossed-out) find excuses to use generative AI.](/images/site-mirror/2c60074660923a06cb89ea9be7284755df0ffd74-762x541.webp)
 
 Next, we challenged ourselves to implement these requirements in a way that allows existing applications to add Redis without refactoring their code. In other words, a no-code solution that could be managed solely via dynamic configuration.
 
@@ -75,7 +77,9 @@ The application has two components:
 - An API powered by Spring Boot
 - A relational database – Oracle, for this example
 
-![an illustration showing reads and writes](/images/blog/5341e5258ba4cb3530c62e4b5b421ed5bbc9c740-805x599.webp)
+![an illustration showing reads and writes](/images/site-mirror/5341e5258ba4cb3530c62e4b5b421ed5bbc9c740-805x599.webp)
+
+*In this hypothetical scenario, all of the application’s queries are served by Oracle through the Oracle JDBC driver.*
 
 If this application isn’t performing within acceptable service level agreements (SLAs), and data access patterns make caching a feasible solution, the engineering team could write the necessary code to address the problems.
 
@@ -98,7 +102,9 @@ Here’s the alternative. With Redis Smart Cache you can deliver the same outcom
 
 That’s it. With Redis Smart Cache, there is no need for code analysis, no need to learn much about Redis (although [we do recommend it](https://university.redis.com/) as a rewarding activity), and you can avoid technical debt which improves your time-to-market. You don’t even have to learn the best ways to handle failover and thundering herds. It’s all baked into the cake. Simplicity!
 
-![an illustration of Redis and Spring Boot JDBC Driver](/images/blog/44ca3b41dc6174fcb9169e061acc943f5149461f-833x642.webp)
+![an illustration of Redis and Spring Boot JDBC Driver](/images/site-mirror/44ca3b41dc6174fcb9169e061acc943f5149461f-833x642.webp)
+
+*Redis Smart Cache wraps the application’s existing JDBC driver and caches expensive queries in Redis. Queries are now served both by Redis and the original system of record.*
 
 ## How to enable caching with the Smart Cache CLI
 
@@ -106,7 +112,9 @@ The [Redis Smart Cache CLI](https://github.com/redis-field-engineering/redis-sma
 
 With the CLI, you can also view your application’s parameterized queries, or prepared statements, and the duration of each query. Redis Smart Cache captures access frequency, mean query time, query metadata, and additional metrics. These metrics are exposed via pre-built grafana dashboards; the included visualizations help you decide which query caching rules to apply.
 
-![a grafana dashboard](/images/blog/ae7d7c45abe1bfe97dab9a2a9e5feaa0df9a5bb9-1999x1310.webp)
+![a grafana dashboard](/images/site-mirror/ae7d7c45abe1bfe97dab9a2a9e5feaa0df9a5bb9-1999x1310.webp)
+
+*This Grafana dashboard, included with Redis Smart Cache, shows query performance before and after enabling caching.*
 
 Once you identify the ideal queries to be cached, you can use the CLI to stage and then commit a new caching configuration.
 

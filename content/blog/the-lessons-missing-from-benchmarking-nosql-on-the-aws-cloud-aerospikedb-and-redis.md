@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 29 January 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c5056d2b9ae7f4c27711115d5878549e3c5adec5-140x92.webp)
+![Blog tile image](/images/site-mirror/c5056d2b9ae7f4c27711115d5878549e3c5adec5-140x92.webp)
 
-![](/images/blog/acd1debe6aa31e22a6b140ed47dd1ef78cc70da6-635x300.webp)
+![](/images/site-mirror/acd1debe6aa31e22a6b140ed47dd1ef78cc70da6-635x300.webp)
 
 Delivering on its [promise from last week](https://twitter.com/aerospikedb/status/558671732824113152), Aerospike yesterday published the results of a benchmark done by Lynn Langit titled “[Lessons Learned – Benchmarking NoSQL on the AWS Cloud (AerospikeDB and Redis)](http://lynnlangit.com/2015/01/28/lessons-learned-benchmarking-nosql-on-the-aws-cloud-aerospikedb-and-redis/).” Salvatore Sanfilippo, Redis’ creator, posted a response at “[Why we don’t have benchmarks comparing Redis with other DBs](http://antirez.com/news/85),” in which he describes some of the pitfalls of doing ‘comparative “advertising”‘ and provides several approaches for getting better results from Redis.
 

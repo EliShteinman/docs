@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 26 February 2026 · updated 10 March 2026*
 
-![Redis](/images/blog/e14776dda197e834bb04d57b3d0a8217447c59ce-1200x628.webp)
+![Redis](/images/site-mirror/e14776dda197e834bb04d57b3d0a8217447c59ce-1200x628.webp)
 
 AI teams are shipping RAG (retrieval-augmented generation) pipelines and agentic workflows to production, but the infrastructure often can't keep up. When your caching layer lives separately from your vector store, every new AI feature adds coordination overhead and cost.
 

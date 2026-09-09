@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/99594a527070359f959e4b677fe57a64ae0c2f1c-1200x628.webp)
+![Redis](/images/site-mirror/99594a527070359f959e4b677fe57a64ae0c2f1c-1200x628.webp)
 
 If you've spent any time building LLM apps, you know this error message: "Context window exceeded." Your perfectly crafted prompt gets rejected because you tried to stuff too much into the model's working memory. Context windows determine how much text your LLM can actually process at once. If you're building production AI systems, you need to understand context windows.
 

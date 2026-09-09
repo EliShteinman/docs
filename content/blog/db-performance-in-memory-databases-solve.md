@@ -14,7 +14,7 @@ hidden: true
 
 *By Eric Silva, Contributor · Published 4 October 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/566f13e841ba9fcbb9797f55b2cd9fb5cfa2ef9b-772x550.webp)
+![Blog tile image](/images/site-mirror/566f13e841ba9fcbb9797f55b2cd9fb5cfa2ef9b-772x550.webp)
 
 **Performance woes make cranky users – if they even stick around to use the software. Because if your software is too slow, it doesn’t matter how cool it is. Fortunately, in-memory databases solve a host of these problems.**
 
@@ -68,7 +68,7 @@ A real-time search engine provides:
 
 This graphic depicts the consolidation of data from multiple sources of record into one real-time search engine to provide timely data for analytics and new business insights:
 
-![](/images/blog/b5fa4d9dc0afce089ab215cb1cb2a3dd5f49430d-623x519.webp)
+![](/images/site-mirror/b5fa4d9dc0afce089ab215cb1cb2a3dd5f49430d-623x519.webp)
 
 ## Online search is too slow
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 6 May 2026*
 
-![Chatbot vs. AI agent: which one does your use case actually need?](/images/blog/792c711303b14a3f87c885856cb8f3cba5a2facb-2400x1256.webp)
+![Chatbot vs. AI agent: which one does your use case actually need?](/images/site-mirror/792c711303b14a3f87c885856cb8f3cba5a2facb-2400x1256.webp)
 
 Agentic AI adoption trends are everywhere right now. Or at least, everyone says they are. But when you peel back the marketing, the line between a chatbot and an AI agent isn't always obvious. Picking the wrong one for your use case can mean burning money on infrastructure you don't need, or shipping something too simple for the problem you're solving.
 

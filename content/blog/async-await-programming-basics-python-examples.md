@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 9 September 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/195c9500372c23ac887a1b57add2ff17c9d8807e-4512x3008.webp)
+![Blog tile image](/images/site-mirror/195c9500372c23ac887a1b57add2ff17c9d8807e-4512x3008.webp)
 
 In recent years, many programming languages have made an effort to improve their concurrency primitives. Go has goroutines, Ruby has fibers and, of course, Node.js helped popularize async/await, which is today’s most widespread type of concurrency operator. In this post, I will talk about the basics of async/await, using Python as an example. I chose Python, since this capability is relatively recent in Python 3, and many users might not yet be familiar with it (especially considering how long it took for Python 2.7 to get to end of life).
 

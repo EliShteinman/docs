@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 23 December 2015 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/15dacb22ffd7d888b6b3c03026c9fa0c035001c3-140x92.webp)
+![Blog tile image](/images/site-mirror/15dacb22ffd7d888b6b3c03026c9fa0c035001c3-140x92.webp)
 
-![3 Critical Point about Security](/images/blog/d791287c65015d1f451da0e544e515e616f9b4c0-635x200.webp)
+![3 Critical Point about Security](/images/site-mirror/d791287c65015d1f451da0e544e515e616f9b4c0-635x200.webp)
 
 Over the recent weeks there’s been an increase in the number of reports about [NoSQL breaches](https://krebsonsecurity.com/2015/12/13-million-mackeeper-users-exposed/) in [general](https://www.itworld.com/article/3016001/over-650-terabytes-of-data-up-for-grabs-due-to-publicly-exposed-mongodb-databases.html), but also specifically in [those](https://kevinchen.co/blog/postmortem-server-compromised/) relating to Redis. The latter is, in all likelihood, the aftermath of Salvatore Sanfilippo’s blog post “[A few things about Redis security](https://antirez.com/news/96).” That particular post was only the spark that lit the fire – I’d argue that the seeds for the breaches were laid in the ground long ago. And they’re still there unless you do something about it. But before continuing with the story, there are 3 critical points and 1 important note that I want you to take away from this:
 

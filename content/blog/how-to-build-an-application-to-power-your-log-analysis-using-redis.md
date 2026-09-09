@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 2 December 2021 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/1804154c4ee919127aef02346c7c529e2d4c27dc-772x520.webp)
+![Blog tile image](/images/site-mirror/1804154c4ee919127aef02346c7c529e2d4c27dc-772x520.webp)
 
 As your IT infrastructure grows in size and becomes complex, you may be forced to spend more attention ensuring that everything is managed properly.
 
@@ -62,7 +62,7 @@ Ok, let’s dive straight in.
 
 ## 3. Architecture
 
-![](/images/blog/285d5eed01912d4772e5537aa40038ef7b9ce20c-1600x382.webp)
+![](/images/site-mirror/285d5eed01912d4772e5537aa40038ef7b9ce20c-1600x382.webp)
 
 - Fluentd collects all of the logs from each application across various destinations
 - Fluentd then formats each log and sends them to Redis for storage
@@ -109,20 +109,20 @@ demo_redis_1              "redis-server /usr/l…"   redis               running
 
 Go to [localhost:3000](localhost:3000) to explore logs.
 
-![](/images/blog/fd6d228fbb08266c4a6fd5c27ffb3a4f8823d102-1600x921.webp)
+![](/images/site-mirror/fd6d228fbb08266c4a6fd5c27ffb3a4f8823d102-1600x921.webp)
 
 It may take around one minute for you to see the logs coming. You can view the logs on the page by filtering them with the sidebar on the right. Alternately, you search for them by filter or full-text query via the search bar at the top.
 
 When you click on a log, the details will be displayed and you’ll have the option to index business properties. These business properties can be used as filters afterwards.
 
-![](/images/blog/dbd48476ac99aa39ff17bb46ee64dafdb23f4e3b-1600x1326.webp)
+![](/images/site-mirror/dbd48476ac99aa39ff17bb46ee64dafdb23f4e3b-1600x1326.webp)
 
 Next, go to localhost:3000/demo to access the playground and add your custom logs. This demo page will allow you to:
 
 - create fake users in the demo fake app and see them in logs.
 - publish your logs in the system.
 
-![](/images/blog/02ecfcfb988efffe072851518e426a82f38618d7-1600x896.webp)
+![](/images/site-mirror/02ecfcfb988efffe072851518e426a82f38618d7-1600x896.webp)
 
 If you return to the main page, you can try to search for the logs you’ve just generated.
 
@@ -417,17 +417,17 @@ In this project, the** Tag Datatype** is widely used. Logs are often searched ba
 
 Here’s a simplified schema of the search process:
 
-![](/images/blog/1c7dc8cf26fb2c64e2b56154869dd11e08344165-1600x506.webp)
+![](/images/site-mirror/1c7dc8cf26fb2c64e2b56154869dd11e08344165-1600x506.webp)
 
 **Redis**
 
 Redis is used to store logs by Fluentd like this in the *HashSet type* of Redis.
 
-![](/images/blog/1a295e3668f7d8be6e6b55fbf180820324d20583-1600x514.webp)
+![](/images/site-mirror/1a295e3668f7d8be6e6b55fbf180820324d20583-1600x514.webp)
 
 To keep track of the indexed field by the user, you can also add a ‘schema’ object which uses the *List type* of Redis.
 
-![](/images/blog/093567a0b377e6bcdefc109583db73bf32af2478-1600x567.webp)
+![](/images/site-mirror/093567a0b377e6bcdefc109583db73bf32af2478-1600x567.webp)
 
 ## Conclusion: Cutting Through The Clutter With RediSearch
 
@@ -441,7 +441,7 @@ We also have an exciting range of innovative applications that have been develop
 
 **Who built this application?**
 
-![](/images/blog/9735c1370b546b402fd5370c40e0da3ce02ce296-400x400.webp)
+![](/images/site-mirror/9735c1370b546b402fd5370c40e0da3ce02ce296-400x400.webp)
 
 **Alexis Gardin**
 

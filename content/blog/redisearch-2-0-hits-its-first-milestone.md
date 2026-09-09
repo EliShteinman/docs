@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 29 July 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/05927a960d149febe063fdf0e3b62ccebf46e4ab-325x235.webp)
+![Blog tile image](/images/site-mirror/05927a960d149febe063fdf0e3b62ccebf46e4ab-325x235.webp)
 
 We are happy to announce the release of the first milestone in the development of [RediSearch](/redis-enterprise/redis-search/) 2.0. RediSearch is a real-time search engine that lets you query your Redis data to answer a wide variety of complex questions.
 
@@ -25,7 +25,9 @@ The big advantage here is that you can now add RediSearch to your existing Redis
 
 (**Note: **This new feature introduces some changes to [the API](https://oss.redis.com/redisearch/Commands/) (listed below). We try to maintain backward compatibility as much as we can, but in this case it was just not possible. We plan to make adjustments and fixes going forward as we gather customer feedback.)
 
-![](/images/blog/c0dc68fd6042448d0b22206077beef67944c814e-1024x814.webp)
+![](/images/site-mirror/c0dc68fd6042448d0b22206077beef67944c814e-1024x814.webp)
+
+*The architecture of the RediSearch 2.0 milestone.*
 
 ## API changes
 

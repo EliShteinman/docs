@@ -16,7 +16,7 @@ hidden: true
 
 *By Cassy Speirs, Molly Zeiger · Published 8 January 2026 · updated 1 June 2026*
 
-![Redis AWS reInvent 2025](/images/blog/27f705e8fbd814c1b5fcd200bb91b44ea4afab33-1200x628.webp)
+![Redis AWS reInvent 2025](/images/site-mirror/27f705e8fbd814c1b5fcd200bb91b44ea4afab33-1200x628.webp)
 
 AWS re:Invent 2025 has wrapped up. Redis showed up with a clear focus on customers, partners, and real world cloud workloads. As a Diamond Sponsor, we lit up the Venetian with packed sessions, a booth that was standing-room-only, high-value executive meetings, and three unforgettable events (including one very surreal GenAI experience).
 

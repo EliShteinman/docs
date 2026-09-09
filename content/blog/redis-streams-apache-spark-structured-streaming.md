@@ -14,7 +14,7 @@ hidden: true
 
 *By Roshan Kumar, Senior Product Manager · Published 3 June 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/e66f02f129cf4dfa2170a2ae5761c911ad75f50d-548x287.webp)
+![Blog tile image](/images/site-mirror/e66f02f129cf4dfa2170a2ae5761c911ad75f50d-548x287.webp)
 
 Recently, I had the honor of presenting my talk, “[Redis + Structured Streaming: A Perfect Combination to Scale-out Your Continuous Applications](https://databricks.com/session/redis-structured-streaming-a-perfect-combination-to-scale-out-your-continuous-applications)” at the Spark+AI Summit.
 
@@ -24,11 +24,11 @@ Redis, meanwhile, recently announced its new data structure, called “[Streams]
 
 Additionally, the [Spark-Redis library](https://github.com/RedisLabs/spark-redis) was developed to support Redis data structures as resilient distributed data sets (RDD). Now, with Structured Streaming and Redis Streams available, we decided to extend the Spark-Redis library to integrate Redis Streams as a data source for Apache Spark Structured Streaming.
 
-![](/images/blog/c849a2ca473b00233e14d213c39a2ed71a69e18d-1557x583.webp)
+![](/images/site-mirror/c849a2ca473b00233e14d213c39a2ed71a69e18d-1557x583.webp)
 
 During my talk last month, I demonstrated how you can collect user activity data in Redis Streams and sink it to Apache Spark for real-time data analysis. I developed a small, mobile-friendly Node.js app where people can click on the dog they love most, and I used it to run a fun contest through my session. It was a tough fight, and a couple of folks in the audience even got creative with hacking my app. They changed the HTML button name using the “page inspect” option and tried to mess with my demo. But in the end, Redis Streams, Apache Spark, the Spark-Redis library, and my code were all robust enough to handle those changes effectively.
 
-![](/images/blog/8ab71f8b122241069ae78d4f2de9c078c31fed1f-1557x712.webp)
+![](/images/site-mirror/8ab71f8b122241069ae78d4f2de9c078c31fed1f-1557x712.webp)
 
 The audience also asked some interesting questions during and after my presentation, such as:
 

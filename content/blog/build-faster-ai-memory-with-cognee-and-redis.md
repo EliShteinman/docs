@@ -15,7 +15,7 @@ hidden: true
 
 *By Rini Vasan, Hande Kafkas · Published 8 July 2025 · updated 1 June 2026*
 
-![Build faster AI memory with Cognee & Redis](/images/blog/8a851d6329fca22ec8dd40add23868615a74b01a-772x552.webp)
+![Build faster AI memory with Cognee & Redis](/images/site-mirror/8a851d6329fca22ec8dd40add23868615a74b01a-772x552.webp)
 
 Large language models are powerful, but they forget quickly. For AI agents and assistants to be truly useful, they need memory: the ability to retain instructions, recall facts, and carry context over time. [Cognee](https://github.com/topoteretes/cognee) is an open-source memory engine that addresses this challenge by organizing unstructured content into structured memory using both semantic vectors and graph-based relationships.
 
@@ -29,7 +29,7 @@ With the Redis integration, Cognee users can now store both types of memory, sem
 
 Here’s a look at the high-level architecture of Cognee.
 
-![High-level architecture of Cognee](/images/blog/e35be297d4b077bac5a5eb3f727e007af2294178-2980x1273.webp)
+![High-level architecture of Cognee](/images/site-mirror/e35be297d4b077bac5a5eb3f727e007af2294178-2980x1273.webp)
 
 ## How it works
 
@@ -128,7 +128,7 @@ The output of this simple example will be as follows:
 
 ```
 
-![Making sense of node sets](/images/blog/a85af6b14a3e3ce8f98166e67601a081be323b1f-789x741.webp)
+![Making sense of node sets](/images/site-mirror/a85af6b14a3e3ce8f98166e67601a081be323b1f-789x741.webp)
 
 #### Making sense of node sets
 

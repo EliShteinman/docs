@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 17 March 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/d9e8f500a5594c4321f53cfae252d9aa60e426d5-300x300.webp)
+![Blog tile image](/images/site-mirror/d9e8f500a5594c4321f53cfae252d9aa60e426d5-300x300.webp)
 
 [Active-Active Geo-Distribution](/active-active/) allows you to place your Redis database cluster instances and data centers close to your users, no matter where they are. Placing read replicas closer to your users is the right thing to enable real-time response. For write-heavy applications, that’s not enough. So how do you develop an Active-Active geo-distributed cluster?
 

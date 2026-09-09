@@ -15,7 +15,7 @@ hidden: true
 
 *By Denis Abrantes, Nick Schuetz · Published 2 May 2025 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/dce12404a5c7748ee68c6b81ad527ef3beff352a-772x552.webp)
+![Blog tile image](/images/site-mirror/dce12404a5c7748ee68c6b81ad527ef3beff352a-772x552.webp)
 
 Since the birth of [large language models](https://www.redhat.com/en/topics/ai/what-are-large-language-models) (LLMs) and the release of ChatGPT, [artificial intelligence](https://www.redhat.com/en/artificial-intelligence) (AI) has gone from being an out-of-reach concept to showing real promise in the business landscape for every industry and business. From personalized customer experiences to streamlined operations and increased security, the possibilities are endless.
 
@@ -36,7 +36,7 @@ Redis is the world’s fastest in-memory database. It’s a versatile solution t
 
 AI applications, especially those involving [generative AI (gen AI)](https://www.redhat.com/en/topics/ai/what-is-generative-ai), demand high performance and low latency. Users expect real-time responses and personalized experiences. The combination of OpenShift AI and Redis addresses these challenges head-on.
 
-![Supercharge Your AI](/images/blog/a14553eaf6efcb3b5402264d642821ed6f7980a6-1122x641.webp)
+![Supercharge Your AI](/images/site-mirror/a14553eaf6efcb3b5402264d642821ed6f7980a6-1122x641.webp)
 
 OpenShift AI provides the environment where data scientists can use different tools, including embedding models, third-party frameworks like [LangChain](https://github.com/langchain-ai/langchain) or [LlamaIndex](https://github.com/run-llama/llama_index) and multiple LLMs to implement their gen AI use cases at scale. Redis delivers the sub-second latency that gen AI use cases need.
 
@@ -46,7 +46,7 @@ OpenShift AI provides the environment where data scientists can use different to
 
 [RAG](https://www.redhat.com/en/topics/ai/what-is-retrieval-augmented-generation) enhances the knowledge of LLMs by integrating external data sources. Instead of solely relying on their pretrained knowledge, LLMs can fetch relevant information from a database in real time to generate more accurate and contextually appropriate responses. Fine-tuning an LLM with business-specific data is traditionally a costly and time-consuming process, and it may not be viable, depending on how often the knowledge base changes (with new or updated records). Keeping the knowledge base external to the model provides more flexibility and makes it easier to ensure that the LLM always has the latest information to serve the users.
 
-![Redis Technical Diagram RedHat Blog RAG](/images/blog/d66b79f31b61553ed3c309f79ba41ecd7a66c574-1700x1284.webp)
+![Redis Technical Diagram RedHat Blog RAG](/images/site-mirror/d66b79f31b61553ed3c309f79ba41ecd7a66c574-1700x1284.webp)
 
 **The business benefit**: Improved accuracy, reduced hallucinations and access to up-to-date information for chatbots, content generation tools and more.
 
@@ -58,7 +58,7 @@ By using [Redis as the vector database](https://redis.io/solutions/vector-databa
 
 LLMs can be expensive to run, especially for repetitive queries. A [semantic cache](/blog/what-is-semantic-caching/) stores LLM responses based on the meaning of the query, not just the exact text. When the user submits a new prompt, the system will look for similar prompts, and if it finds a match, it will retrieve the LLM response directly from the cache, saving a trip to the LLM server and the associated token cost (when using a hosted LLM service) or compute capacity (when self-hosting a model).
 
-![Redis Technical Diagram RedHat Blog Semantic Cache](/images/blog/8a7a878ae4b31591089a1aee8dc7c6726336e589-1700x1284.webp)
+![Redis Technical Diagram RedHat Blog Semantic Cache](/images/site-mirror/8a7a878ae4b31591089a1aee8dc7c6726336e589-1700x1284.webp)
 
 **The business benefit:** Semantic caching can greatly reduce LLM costs, especially for use cases where users are expected to ask basic or generic questions (FAQs, etc). Other benefits include faster response times and improved scalability for [AI-powered applications](https://developers.redhat.com/products/red-hat-openshift-ai/overview).
 
@@ -74,7 +74,7 @@ LLMs are, by definition, stateless. Meaning, they keep no record of any previous
 
 To get around this limitation, client applications (like chatbots) keep the conversation history between the user and the model (plus some additional information) and serve this data to the model every time the user submits a new prompt. The capacity to use this data is called the “context window,”’ and it makes it possible for the model to keep the answers within the context of the conversation that is happening.
 
-![Redis Technical Diagram RedHat Blog LLM Memory](/images/blog/f3feee0203c38f8814df9d14146a4f3fd5b4066e-1600x1284.webp)
+![Redis Technical Diagram RedHat Blog LLM Memory](/images/site-mirror/f3feee0203c38f8814df9d14146a4f3fd5b4066e-1600x1284.webp)
 
 **The business benefit:** More engaging and context-aware chatbots, personalized customer experiences and improved ability to handle complex conversations.
 
@@ -93,13 +93,13 @@ Deploying Redis to [Red Hat OpenShift](https://www.redhat.com/en/technologies/cl
 
 From there, you can browse to the Database tab and look for Redis, or simply type Redis in the search bar.
 
-![Supercharge Your AI](/images/blog/278c0d4cca528f42a17f0206499721234c3c91ce-1170x690.webp)
+![Supercharge Your AI](/images/site-mirror/278c0d4cca528f42a17f0206499721234c3c91ce-1170x690.webp)
 
 Then you can open the Details page and click on the Install button to deploy the Redis operator.
 
 Once the Operator is deployed, Redis resources can be easily and quickly created through the OpenShift UI:
 
-![Supercharge Your AI Blog](/images/blog/5547280821f6f9c04c6bda15d6e18b8b6ebab6d3-1170x443.webp)
+![Supercharge Your AI Blog](/images/site-mirror/5547280821f6f9c04c6bda15d6e18b8b6ebab6d3-1170x443.webp)
 
 There are 2 main resources for Redis: the cluster and the database (along with their active-active counterparts, which is outside the scope of this article).
 
@@ -107,15 +107,15 @@ The Redis cluster manages multiple databases, ensuring high availability and sca
 
 Once the database is created, users can access the Redis console to retrieve the connection information, check metrics and track the overall health of the database.
 
-![Supercharge Your AI](/images/blog/0318f4947a4e3fab32078ab9278cbd3fbeb7866c-1513x758.webp)
+![Supercharge Your AI](/images/site-mirror/0318f4947a4e3fab32078ab9278cbd3fbeb7866c-1513x758.webp)
 
 Next, the OpenShift AI environment can be configured. Here, users can create a notebook environment, provision inference services for local LLMs, create and configure data science pipelines and much more.
 
-![Supercharge Your AI](/images/blog/2b9bd16a0b3049b2fc4df08d570c5cbb11c0c954-1786x1029.webp)
+![Supercharge Your AI](/images/site-mirror/2b9bd16a0b3049b2fc4df08d570c5cbb11c0c954-1786x1029.webp)
 
 Jupyter notebooks provide a very simple and convenient way to experiment with vector searches. Users can connect to the Redis database with only a few lines of code, and from there, they can take advantage of popular frameworks like LangChain and LlamaIndex, or they can use the [*redis-vl*](https://docs.redisvl.com/en/latest/) package, which allows them to use vector capabilities without requiring a specific framework.
 
-![Supercharge Your AI Blog](/images/blog/287448ab5308b05cb3974387b41da2326ecb00e2-1625x920.webp)
+![Supercharge Your AI Blog](/images/site-mirror/287448ab5308b05cb3974387b41da2326ecb00e2-1625x920.webp)
 
 ## Conclusion
 

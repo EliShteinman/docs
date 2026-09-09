@@ -16,7 +16,7 @@ hidden: true
 
 *By Brian Sam-Bodden, Josh Long · Published 19 May 2025 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/e7c11c6b6ee952abae32b822e87df5f56fd8d5c7-772x554.webp)
+![Blog tile image](/images/site-mirror/e7c11c6b6ee952abae32b822e87df5f56fd8d5c7-772x554.webp)
 
 *This post was co-written by Josh Long, an Spring Developer Advocate at Broadcom and Brian Sam-Bodden, an Applied AI Engineer at Redis. This post was written to show how you can use Redis in *[*Spring AI 1.0*](https://spring.io/blog/2025/05/20/spring-ai-1-0-GA-released)*, which was announced GA today.*
 
@@ -24,11 +24,13 @@ hidden: true
 
 Java and Spring are in a prime spot for AI right now. Tons of companies are running on Spring Boot, which makes it easy to plug AI into what you’re already doing. You can simply link up your business logic and data right to AI models without too much hassle.
 
-![](/images/blog/ab00325afd9559929412a316c16acaf0645d4535-1600x900.webp)
+![](/images/site-mirror/ab00325afd9559929412a316c16acaf0645d4535-1600x900.webp)
+
+*(The picture shown is used with permission from the Spring AI team lead Dr. Mark Pollack)*
 
 Spring AI provides support for various AI models and technologies. **Image models** can generate images given text prompts. **Transcription models** can take audio and convert them to text. **Embedding models **are models that convert arbitrary data into vectors, which are data types optimized for semantic similarity search. **Chat models **should be familiar. You’ve no doubt even had a brief conversation with one before. Chat models are where most of the fanfare seems to be in the AI space. You can get them to help you correct a document or write a poem (just don’t ask them to tell a joke … yet). They’re incredibly powerful, but they have some issues.
 
-![](/images/blog/f19a00a81fed5ced7412f6127dd7f709393ee50f-1600x900.webp)
+![](/images/site-mirror/f19a00a81fed5ced7412f6127dd7f709393ee50f-1600x900.webp)
 
 *(The picture shown is used with permission from the Spring AI team lead Dr. Mark Pollack)*
 
@@ -156,7 +158,7 @@ You can also get the details on the index:
 
 Nice. I love looking at the data itself in Redis Insight though.
 
-![](/images/blog/955e29cdaa1f1103efa52c6d2094ca007433f6bb-1600x1102.webp)
+![](/images/site-mirror/955e29cdaa1f1103efa52c6d2094ca007433f6bb-1600x1102.webp)
 
 So much beer. So little time. How’s somebody supposed to know which beer to choose and when and why? That’s why we’re going to build an assistant to help people make the right decisions. We’ll pair Spring AI with all the data hosted in ‌Redis vector storage to make a winning combo.
 

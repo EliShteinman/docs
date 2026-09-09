@@ -14,7 +14,7 @@ hidden: true
 
 *By Tugdual Grall, Technical Marketing Manager · Published 15 December 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/04e20abfc0d47f2155c49d092b42104c4e652d0e-1393x829.webp)
+![Blog tile image](/images/site-mirror/04e20abfc0d47f2155c49d092b42104c4e652d0e-1393x829.webp)
 
 In this blog post, you will learn how to integrate [AWS Lambda](https://aws.amazon.com/lambda/) and [Redis Enterprise Cloud](/try-free/). Using a sample movie-database application, you will discover how to build and deploy two Lambda functions, one in [Node.js](https://nodejs.org/), one in [Python](https://www.python.org/). These two Lambda functions are used to interact with the Redis database to insert, update, delete, and query. The application uses the [RediSearch](https://redis.comevents-and-webinars/search/) API that provides rich query and search functionalities. [Serverless](https://aws.amazon.com/serverless/), using AWS Lambda, fits into the growing trend towards microservice architectures as it allows developers to reduce the scope of a business “service” into a small project that can be implemented using the programming language of their choice. To learn more, watch the video below and read on for a quick overview of AWS Lambda and a deeper dive into how to build an application using Redis Enterprise Cloud and Lambda:
 
@@ -30,7 +30,9 @@ AWS Lambda can be invoked using several different methods: directly from the AWS
 
 Specifically, requests via HTTP are routed to AWS’ API Gateway management tool, which parses the body, header, and parameters, and then triggers our Lambda function with this payload:
 
-![](/images/blog/5a6f695c1c5da9f2c2ac8aa1e7478dc189a72625-1024x215.webp)
+![](/images/site-mirror/5a6f695c1c5da9f2c2ac8aa1e7478dc189a72625-1024x215.webp)
+
+*Exposing a AWS Lambda function in the API Gateway.*
 
 As a developer, you simply write code to expose the REST endpoint and configure the deployment to expose it inside the AWS API Gateway. (We’ll discuss this further in the next section covering our sample movie-database application.)
 
@@ -48,9 +50,11 @@ The application uses the dataset that has been documented in the [RediSearch Get
 - Edit movies and add/delete comments
 - Search movies using full-text search and faceted search
 
-![](/images/blog/86598a6d0b42e9904b00966f0be400f7cde17307-1024x609.webp)
+![](/images/site-mirror/86598a6d0b42e9904b00966f0be400f7cde17307-1024x609.webp)
 
-![](/images/blog/77a1a3b250012f5aa95e53883bb73f2b7814e125-960x540.gif)
+![](/images/site-mirror/77a1a3b250012f5aa95e53883bb73f2b7814e125-960x540.gif)
+
+*A demo of the sample movie-database application using AWS Lambda functions.*
 
 As mentioned above, the application leverages the AWS API Gateway, AWS Lambda, and Redis Enterprise Cloud for the datastore. In addition, the Python service uses [AWS Key Management Service](https://aws.amazon.com/kms/) to store and encrypt the Redis database password.
 
@@ -73,7 +77,9 @@ If you have not yet created a database on Redis Enterprise Cloud, please do so u
 
 When you are connected to the Redis Enterprise Cloud, you can find the database connection information in the web console; be sure you add the module “RediSearch 2” to the database.
 
-![](/images/blog/a46f194ecaf194a834dd9ecf44101e6abd0786d5-962x296.webp)
+![](/images/site-mirror/a46f194ecaf194a834dd9ecf44101e6abd0786d5-962x296.webp)
+
+*Redis Enterprise Cloud database information for our sample movie-database application.*
 
 You will need the following properties to connect the Lambda functions to your Redis database:
 

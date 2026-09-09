@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 26 May 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 For patients, navigating the healthcare landscape can be bewildering. The terminology and options are often unfamiliar, and it can be difficult to even figure out how to get started. A “store finder” function, commonly found on retail sites, can help by letting you find a doctor or other healthcare provider located near you, based on a postal or zip code.
 
@@ -22,7 +22,7 @@ Unfortunately, though, this functionality isn’t always that easy to create. We
 
 The most basic question we’re answering in this problem is pretty straightforward: “What health-care providers are near me?” To do this, you need the list of healthcare providers, the providers’ locations in latitude and longitude, and the location of the patient asking the question. The list of providers could look something like this:
 
-![](/images/blog/701df4e0e8ed8bff1cfee387da140affa3c9f7a7-633x290.webp)
+![](/images/site-mirror/701df4e0e8ed8bff1cfee387da140affa3c9f7a7-633x290.webp)
 
 This is a small list for demonstration purposes, but in Redis this list could be quite vast, limited only by the amount of memory available.
 
@@ -118,7 +118,7 @@ The @ symbol in Search and Query means “search in a specific field.” The fir
 
 When building a UI, you can compose various user input into the same query to refine the results. Here’s a rough sketch of how this might work:
 
-![](/images/blog/e8dae489d24a584e9528753e5f328a3031a453e9-1024x576.webp)
+![](/images/site-mirror/e8dae489d24a584e9528753e5f328a3031a453e9-1024x576.webp)
 
 From the perspective of your application, the UI elements are a representation of the string, and as they change you template them into the string that is passed to FT.SEARCH. String interpolation inside things like SQL queries is risky (see [little ](https://xkcd.com/327/)Bobby Tables) due to administrative operations in the SQL language. In contrast, Search and Query queries can only find documents and not perform administrative operations, so only simple input validation and sanity checks are required.
 

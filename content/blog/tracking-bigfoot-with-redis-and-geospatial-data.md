@@ -14,7 +14,7 @@ hidden: true
 
 *By Guy Royse, Developer Advocate · Published 23 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 I think one of the coolest features of Redis—one that surprised me when I discovered it—is the geospatial data structure. Since I thought it was cool, I thought y’all might as well. So, I’m going to share it with you.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 18 May 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ca94f1a7cc61b5d196fa2a20b4fc7c46bf27c3f1-2362x1604.webp)
+![Blog tile image](/images/site-mirror/ca94f1a7cc61b5d196fa2a20b4fc7c46bf27c3f1-2362x1604.webp)
 
 [RedisConf 2020 ](https://redisconf.com)[*Takeaway*](https://redisconf.com) is in the books. This innovative virtual event became a unique forum for sharing the latest Redis news, product previews, and technical insights with thousands of online attendees, all in the context of rediscovering the wide range of things Redis can do, far beyond the most-common caching use case. Highlights include [Salvatore Sanfilippo](https://twitter.com/antirez?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor)’s demo of the new [Redis 6.0](/blog/diving-into-redis-6/), and the formal rollout of [Redis Enterprise 6.0](/blog/rediscover-redis-security-with-redis-enterprise-6/), as well as general availability of new technologies such as RedisGears 1.0 and RedisAI, a preview of RedisRaft, and an early-stage partnership around secure enclaves with Anjuna.
 
@@ -96,7 +96,7 @@ RedisGears, announced a year ago, is a serverless engine for infinite programmab
 
 ## Rediscover Redis: More than a cache
 
-![](/images/blog/340e1ea1ff0a5a41c80a9db297bd6bd0363cbe51-369x211.webp)
+![](/images/site-mirror/340e1ea1ff0a5a41c80a9db297bd6bd0363cbe51-369x211.webp)
 
 Put it all together and once thing is clear: While many people know that Redis is an awesome caching system, that’s only the beginning of what Redis can do. According to Ofer Bengal, maybe that’s because running in-memory may still be perceived as not robust enough for a primary database, or perhaps we need to do more to expose the Redis community to the enhanced capabilities added to Redis over the years.
 

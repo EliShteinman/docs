@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Mirko Ortensi · Published 8 June 2026*
 
-![Redis Data Integration in Redis Cloud is now GA in AWS](/images/blog/ad672731ed83408d2919f3d3137c55e45532d7f6-1200x628.webp)
+![Redis Data Integration in Redis Cloud is now GA in AWS](/images/site-mirror/ad672731ed83408d2919f3d3137c55e45532d7f6-1200x628.webp)
 
 Today, we’re announcing the general availability of Redis Data Integration (RDI) in Redis Cloud on AWS.
 
@@ -31,7 +31,7 @@ That matters because RDI is more than “data ingestion.” It is how customers 
 
 RDI implements the two phases of the pipeline lifecycle: an initial bulk hydration that loads the source into Redis, and ongoing near-real-time CDC that keeps Redis continuously in sync as the source changes. That gives customers a consolidated Redis product for the job they actually need done: define, validate, run, and monitor source-to-Redis pipelines without managing the underlying integration infrastructure themselves.
 
-![How RDI makes source data Redis-fast](/images/blog/83d362c70e1363a33a8fd3f7be7aa680b8474327-1022x600.webp)
+![How RDI makes source data Redis-fast](/images/site-mirror/83d362c70e1363a33a8fd3f7be7aa680b8474327-1022x600.webp)
 
 Redis becomes the low-latency serving layer for data that lives in your system of record, decoupling read traffic from the source database. That means no cache misses, fresher data, less pressure on source databases, a lower total cost of ownership, and a much simpler path to building real-time apps on top of Redis Cloud.
 
@@ -64,7 +64,7 @@ Together, they show that RDI in Redis Cloud is not limited to traditional relati
 
 RDI is especially crucial for feature store and reverse ETL scenarios. A feature store only delivers value if the serving layer has fresh features at decision time. A reverse ETL flow only helps if the data arrives in the operational path quickly enough to influence what the app, model, or agent does next.
 
-![Redis Data Integration Blog](/images/blog/4031646c421b5532400980d5854113c96e3b05f6-1339x855.webp)
+![Redis Data Integration Blog](/images/site-mirror/4031646c421b5532400980d5854113c96e3b05f6-1339x855.webp)
 
 RDI is what turns data that lives elsewhere into live, actionable context inside Redis. That live context is the difference between systems that are simply connected and systems powering real-time apps and agents.
 

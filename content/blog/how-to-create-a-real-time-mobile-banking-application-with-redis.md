@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis Growth Team · Published 29 March 2022 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/63bee3b2dc6173ff50beacd9d16965d32c7ba5bb-772x550.webp)
+![Blog tile image](/images/site-mirror/63bee3b2dc6173ff50beacd9d16965d32c7ba5bb-772x550.webp)
 
 Fast, accurate, and up to date, RedisBank provides you with instant access to your finances with just a few swipes on your smartphone. Since mobile banking has propelled itself forward from the financial fringes and into the mainstream, we’ve all gotten used to the idea of having our entire banking information in our pockets wherever we go.
 
@@ -64,7 +64,7 @@ This app also uses a range of Redis core data structures and modules. These incl
 
 ## 3. Architecture
 
-![RedisBank Architecture For Launchpad Post](/images/blog/883fe89499c8edae6d00229aabc4b6d9bead8a87-1024x544.webp)
+![RedisBank Architecture For Launchpad Post](/images/site-mirror/883fe89499c8edae6d00229aabc4b6d9bead8a87-1024x544.webp)
 
 This is a SpringBoot application that consists of APIs and a front end.
 
@@ -401,6 +401,6 @@ Check it out. Be inspired. And join in the Redis fun!
 
 ### Lars Rosenquist
 
-![Author Image of RedisBank](/images/blog/78f885acc99af0fb841a670011efc3d3bbaf5a3f-460x460.webp)
+![Author Image of RedisBank](/images/site-mirror/78f885acc99af0fb841a670011efc3d3bbaf5a3f-460x460.webp)
 
 Lars has a broad range of experience in the software industry but currently works as a solution architect manager to help others reach the best of their abilities. Make sure to follow his [GitHub page](https://github.com/NLxAROSA) to stay up to date with all of his projects.

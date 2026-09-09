@@ -15,9 +15,9 @@ hidden: true
 
 *By Miguel Allende, Customer Advocacy Manager · Published 5 March 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/049ff5e2ed1c9812abbab7b0cd9c2de4e220cd59-545x323.webp)
+![](/images/site-mirror/049ff5e2ed1c9812abbab7b0cd9c2de4e220cd59-545x323.webp)
 
 Golang or Go ([https://golang.org/](https://golang.org/)) and Redis have a lot in common. Go is fast and simple. It’s a great tool for prototyping things, and has the added benefit of really fast execution with little memory. Similarly, Redis is simple, persistent and benchmarked as the [fastest in-memory database](/docs/nosql-performance-benchmark/). Developers are always looking to improve performance, but often must increase complexity to achieve it. This is not the case with Redis and Go, and that’s why both are quickly becoming the most popular open source languages and databases respectively. Redis was named the[most loved database by developers for 2017](/docs/nosql-performance-benchmark/) and Go was named one of the[ top 5 most loved programming languages by developers](https://insights.stackoverflow.com/survey/2017#most-loved-dreaded-and-wanted). Though they perform different tasks, their value proposition is the same: improved performance without sacrificing simplicity.
 

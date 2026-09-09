@@ -14,7 +14,7 @@ hidden: true
 
 *By William Johnston, Head of Technical Marketing · Published 8 August 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/a0565cbe0b3387d819add1bced9577f3001fad1c-772x520.webp)
+![Blog tile image](/images/site-mirror/a0565cbe0b3387d819add1bced9577f3001fad1c-772x520.webp)
 
 We received a lot of good feedback on our post titled, [“Learn How Redis Simplifies Your Architecture in 90 Seconds,”](/blog/learn-how-redis-simplifies-your-architecture-in-90-seconds/) so we decided to do a follow-up about Redis as a cache versus Redis as both a cache and a primary database.
 

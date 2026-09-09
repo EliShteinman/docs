@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 18 September 2025 · updated 7 November 2025*
 
-![Redis vs  Oracle Coherence ](/images/blog/81779277e24d0bfe748924c1baf27391c5b38e8a-772x552.webp)
+![Redis vs  Oracle Coherence ](/images/site-mirror/81779277e24d0bfe748924c1baf27391c5b38e8a-772x552.webp)
 
 Oracle Coherence has long been a popular in-memory data grid (IMDG), powering caches and distributed data stores for enterprise Java apps. But as application demands have evolved, the cost of staying on Coherence has grown. Teams face increasing operational overhead, limited cloud flexibility, and a steep learning curve tied to Java-specific tooling and tuning. Delaying migration can mean higher infrastructure and licensing costs, slower development, and missed opportunities to innovate.
 

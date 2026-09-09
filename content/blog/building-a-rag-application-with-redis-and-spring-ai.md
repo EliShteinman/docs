@@ -14,7 +14,7 @@ hidden: true
 
 *By Julien Ruaux, Principal Field Engineer at Redis · Published 16 April 2024 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/3264129fe6e554bf443dfe688faf3ab27fca6c6d-1200x628.webp)
+![Blog tile image](/images/site-mirror/3264129fe6e554bf443dfe688faf3ab27fca6c6d-1200x628.webp)
 
 Vector databases frequently act as memory for AI apps. This is especially true for those powered by large language models (LLMs). Vector databases allow you to perform semantic search, which provides relevant context for prompting the LLM.
 
@@ -98,7 +98,7 @@ public Message chatMessage(@PathVariable("chatId") String chatId, @RequestBody P
 
 For the user interface, we have created a simple React front end that allows users to ask questions about beers. The front end interacts with the Spring back end by sending HTTP requests to the /chat/{chatId} endpoint and displaying the responses.
 
-![Redis](/images/blog/08194d211eff6d49f1a69aa53398b006052213fb-1600x793.webp)
+![Redis](/images/site-mirror/08194d211eff6d49f1a69aa53398b006052213fb-1600x793.webp)
 
 And done–with just a few classes, we have implemented a RAG application with Spring AI and Redis.
 

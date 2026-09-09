@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 31 March 2026 · updated 1 April 2026*
 
-![Vector embedding generators: How they work & how to use them](/images/blog/d0635d7bb16753547421b135000ecea869c10dcf-2400x1256.webp)
+![Vector embedding generators: How they work & how to use them](/images/site-mirror/d0635d7bb16753547421b135000ecea869c10dcf-2400x1256.webp)
 
 A vector embedding generator converts raw input like text, images, or code into numerical vectors where similar concepts cluster together. That's what makes retrieval by meaning possible: chatbots that pull from your docs, search bars that understand synonyms, and recommendation engines that surface products you didn't know you wanted all depend on these vectors under the hood.
 

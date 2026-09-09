@@ -15,7 +15,7 @@ hidden: true
 
 *By Aviad Abutbul, Senior Director of Product Management · Published 26 September 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3f32e3906bd6e8ac44fcac75dd08e2fba9cc3760-600x600.webp)
+![Blog tile image](/images/site-mirror/3f32e3906bd6e8ac44fcac75dd08e2fba9cc3760-600x600.webp)
 
 The much-awaited **Redis version 4.0** is here! Here at Redis we make an ongoing effort to ensure that our customers can enjoy all the latest and greatest features of Redis.
 

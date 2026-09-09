@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 12 June 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/7175d24f6a273782a64c3c59a32489b13749ec05-635x200.webp)
+![](/images/site-mirror/7175d24f6a273782a64c3c59a32489b13749ec05-635x200.webp)
 
 Today I’m proud to present my latest contribution to the open source community – [bmemcached-cli](https://github.com/RedisLabs/bmemcached-cli). It is a simple Python wrapper around python-binary-memcached that provides an easy way to interact with a Memcached bucket via a command line interface. What makes it (arguably) unique is that it supports the Simple Security and Authentication Layer (SASL).
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Aviad Abutbul, Senior Director of Product Management · Published 3 February 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/13cb009a037331de1a5063b7df111df83bab98bb-1999x1040.webp)
+![Blog tile image](/images/site-mirror/13cb009a037331de1a5063b7df111df83bab98bb-1999x1040.webp)
 
 For the last 12 months, we have been working closely with our cloud customers to better understand how our cloud service can meet their needs. Based on those discussions, today we are announcing a new pricing model for our Redis Enterprise Cloud service.
 
@@ -62,19 +62,19 @@ Let’s take a closer look at each of the new pricing models.
 
 Sizing your Flexible plan workloads is done using an [online calculator](/redis-enterprise-cloud/pricing/#calculator). Simply specify your database memorylimit (and if your database is highly available, make sure your memory limit takes into account the size of your replica), the expected throughput(in ops/sec) and the number of databases of this type. The screenshot below shows an example of a three-database deployment:
 
-![](/images/blog/1e247f99749598df16797a13ce073e3355fd288c-1024x349.webp)
+![](/images/site-mirror/1e247f99749598df16797a13ce073e3355fd288c-1024x349.webp)
 
 We use a shard-based pricing model to size your deployment, in which a shard is composed of a Redis server plus the infrastructure needed to host Redis:
 
-![](/images/blog/29b19d5a9eeba6067b5dc55008787f0e3b11a828-1024x319.webp)
+![](/images/site-mirror/29b19d5a9eeba6067b5dc55008787f0e3b11a828-1024x319.webp)
 
 In order to provide the best prices across the majority of the Redis use cases, we defined five types of shards, each with a different memory and throughput characteristics and a different price per hour (Note: shard rates vary between cloud providers and regions). The diagram below shows how it works:
 
-![](/images/blog/679dd2e107d96c27efc089b141348c2bae56a232-1024x615.webp)
+![](/images/site-mirror/679dd2e107d96c27efc089b141348c2bae56a232-1024x615.webp)
 
 Here’s how this new shard-based pricing approach maps to the three-database deployment outlined above:
 
-![](/images/blog/548a1e240d43549b7c014dc2656fd0e67b72a06d-1024x623.webp)
+![](/images/site-mirror/548a1e240d43549b7c014dc2656fd0e67b72a06d-1024x623.webp)
 
 As you can see:
 
@@ -92,7 +92,7 @@ Redis Enterprise Cloud will always choose the most attractive price/performance 
 
 This example shows the power of this approach:
 
-![](/images/blog/fa2f58221ac500af658da4dfe66d5e401efb2fd2-1024x466.webp)
+![](/images/site-mirror/fa2f58221ac500af658da4dfe66d5e401efb2fd2-1024x466.webp)
 
 - Let’s assume that at time T0, you launch a highly available database with a 10GB memory limit and 10K ops/sec. This will be translated to 2 small shards, priced at $0.622/hr (on the AWS/us-east-1 region).
 - Now let’s assume that at time T1 you decide to scale up your database to 100GB and 50K ops/sec to meet peak demand. This will immediately be translated to 4 large shards at a usage cost of $2.34/hr.
@@ -102,7 +102,7 @@ This example shows the power of this approach:
 
 As noted, the Annual plan provides significant discounts compared to the Flexible plan prices, by committing to a predefined annual consumption. Signing up for an Annual plan requires a short, three-step interaction between you and a Redis sales representative:
 
-![](/images/blog/9335b21a06db08d0c555117d62d374939b34de05-1024x300.webp)
+![](/images/site-mirror/9335b21a06db08d0c555117d62d374939b34de05-1024x300.webp)
 
 **Step 1:** Our sales representative will walk you through a sizing exercise to estimate your usage and annual spending.
 

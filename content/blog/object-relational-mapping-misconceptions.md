@@ -15,7 +15,7 @@ hidden: true
 
 *By William Johnston, Head of Technical Marketing · Published 13 September 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c62c6dcbcbc44e5ac575796389cb916ef572c99f-772x550.webp)
+![Blog tile image](/images/site-mirror/c62c6dcbcbc44e5ac575796389cb916ef572c99f-772x550.webp)
 
 **Most software developers are familiar with ****object-relational mapping**** (ORM), a coding technique that creates an abstraction layer between object-oriented programming languages and databases. But despite its value, ORM isn’t ideal in all situations – particularly when programmers make wrong assumptions about its use. We debunk several such mistaken beliefs so that you can use ORM the right way.**
 

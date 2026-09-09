@@ -15,7 +15,7 @@ hidden: true
 
 *By Lior Kogan, Adriano Amaral · Published 25 November 2025 · updated 1 June 2026*
 
-![Thumbnail - Redis Open Source 8.4 blog GA](/images/blog/ca22f0f3e62ddeacae05c4431d177b6e217d7da0-1200x628.webp)
+![Thumbnail - Redis Open Source 8.4 blog GA](/images/site-mirror/ca22f0f3e62ddeacae05c4431d177b6e217d7da0-1200x628.webp)
 
 Redis 8.4 continues our mission to make Redis faster, simpler, and more powerful, with major upgrades to performance and the dev experience, as well as new hybrid search capabilities that make building AI apps faster and easier. 
 
@@ -33,7 +33,9 @@ Redis 8.4 addresses these challenges with the new [FT.HYBRID](https://redis.io/d
 
 With Redis 8.4, we continue to deliver on our commitment to continuous performance improvement. The chart below shows the steady increase in Redis throughput (operations per second) for a typical caching workload across successive releases of Redis.
 
-![Redis in Redis Open Source - throughput on 4 cores over versions](/images/blog/7e385a7c87eced7936aefa05881cf8511c1a6aab-1629x915.webp)
+![Redis in Redis Open Source - throughput on 4 cores over versions](/images/site-mirror/7e385a7c87eced7936aefa05881cf8511c1a6aab-1629x915.webp)
+
+*10% writes and 90% reads with 1 KB string values.*
 
 8.4 continues on this trend, offering an over 30% throughput increase for caching use cases (90% `GET`, 10% `SET`) compared to Redis 8.2.
 
@@ -41,7 +43,7 @@ With the introduction of multi-threaded I/O handling for distributed queries, th
 
 Benchmarking shows that these changes deliver substantial end-to-end improvements for both FT.SEARCH and FT.AGGREGATE operations, and of course the newly FT.HYBRID benefits from this as well. For large-scale search workloads, parallel I/O processing yields up to a **4.7x increase in throughput** and lowers query latency at the same rate. Aggregate operations, which involve additional post-processing, also benefit, achieving around a **1.4× throughput improvement** while reducing response times under concurrent load. In both cases, multi-threaded I/O unlocks more headroom for worker threads to perform the actual search or aggregation logic, ensuring a more balanced utilization of cluster resources and faster responses across search and vector workloads
 
-![Impact of parallel I/O on RediSearch Query Performance (5 parallel I/O threads)](/images/blog/9a307fc82ca9c81c35dd10b81d5faa38d2f1d525-1718x923.webp)
+![Impact of parallel I/O on RediSearch Query Performance (5 parallel I/O threads)](/images/site-mirror/9a307fc82ca9c81c35dd10b81d5faa38d2f1d525-1718x923.webp)
 
 We've also enhanced memory allocation management for query execution, making the Redis Query Engine more robust. Devs can now choose the expected behavior in out-of-memory (OOM) events. A new configuration search-on-oom can now be defined, allowing full manageability for the memory consumed and how the engine should behave.
 

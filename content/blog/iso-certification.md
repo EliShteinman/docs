@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 July 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a82dadb2daec5b395eebe4470acd33cde1e205d9-772x550.webp)
+![Blog tile image](/images/site-mirror/a82dadb2daec5b395eebe4470acd33cde1e205d9-772x550.webp)
 
 **Redis announces the company’s certification for compliance with ISO 27017:2015 and ISO 27018:2019, added to our existing ISO 27001:2013 certifications.**
 

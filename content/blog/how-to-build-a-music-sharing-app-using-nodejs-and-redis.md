@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis Growth Team · Published 15 March 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/cc3edb43ac3dc921c78eb2d00d84c3401261d55c-772x550.webp)
+![Blog tile image](/images/site-mirror/cc3edb43ac3dc921c78eb2d00d84c3401261d55c-772x550.webp)
 
 Music is magic. It has the power to create new memories, friends, and unforgettable sensations.
 
@@ -499,7 +499,7 @@ Check them out. Be inspired. And join in the Redis fun.
 
 **Franco Chen**
 
-![](/images/blog/483329e7c963b37b39aacfd0b7c33285645429e0-265x265.webp)
+![](/images/site-mirror/483329e7c963b37b39aacfd0b7c33285645429e0-265x265.webp)
 
 
 Franco has over nine years worth of experience in software engineering and is currently studying at the University of Waterloo. If you want to keep up to date with all of his projects then make sure to follow him on [GitHub here.](https://github.com/KevinLu)

@@ -16,7 +16,7 @@ hidden: true
 
 *By Alon Magrafta, Filipe Oliveira · Published 3 May 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/f64e4e2b5e596c17c9c33b3cf34524dde294e9b8-772x550.webp)
+![Blog tile image](/images/site-mirror/f64e4e2b5e596c17c9c33b3cf34524dde294e9b8-772x550.webp)
 
 [Redis on Flash (RoF)](/redis-enterprise/technology/redis-on-flash/) has been one of our most popular enterprise functionalities, making in-memory computing cost-effective by storing up to 80% of the datasets in SSD rather than expensive DRAM, and while still keeping the sub-millisecond latency and high-throughput of Redis. In typical deployments, RoF provides up to 70% TCO discount.
 
@@ -76,7 +76,7 @@ In each configuration, we tested how many ops/sec could be achieved while keepin
 
 The graph below shows the i3 vs the I4i and RocksDB vs Speedb:
 
-![](/images/blog/7dccb8cad5c5f17299bfb5f15c532bc603973b5a-600x371.webp)
+![](/images/site-mirror/7dccb8cad5c5f17299bfb5f15c532bc603973b5a-600x371.webp)
 
 We can see the following improvements:
 
@@ -90,7 +90,7 @@ We can see the following improvements:
 
 The graph below shows scaling with I4i on Speedb and different read:write ratios:
 
-![](/images/blog/55634bd27da8df0bf2516ce1747be4ad65e13b1c-782x483.webp)
+![](/images/site-mirror/55634bd27da8df0bf2516ce1747be4ad65e13b1c-782x483.webp)
 
 We can see the following results and improvements:
 
@@ -103,7 +103,7 @@ A second notable result is that RoF on I4i with Speedb is very agnostic to the a
 
 The graph below shows the overall 3.7x performance improvement:
 
-![](/images/blog/51dcbec5a8163f7cc2ca739a94be21070ade40ba-600x371.webp)
+![](/images/site-mirror/51dcbec5a8163f7cc2ca739a94be21070ade40ba-600x371.webp)
 
 **Appendix:**
 **Benchmark setup**
@@ -121,6 +121,6 @@ memtier_benchmark -s <database host IP> -p <database port>
 
 Setup illustration:
 
-![](/images/blog/11057be57e247f70c5319a5e08b6a2214ba82898-1024x653.webp)
+![](/images/site-mirror/11057be57e247f70c5319a5e08b6a2214ba82898-1024x653.webp)
 
 ---

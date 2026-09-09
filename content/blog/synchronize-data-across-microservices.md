@@ -14,7 +14,7 @@ hidden: true
 
 *By Madhukar Kumar, VP of Technical and Product Marketing · Published 13 February 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 The data landscape has grown increasingly demanding and crowded in the last few years, with many platforms competing to offer the best processing and storage options. Tech consumers expect companies to deliver [high-speed data processing](/solutions/fast-data-ingest/) while simultaneously offering a variety of adaptable solutions that work with traditional applications but also built for modern architecture like microservices.
 

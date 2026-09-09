@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 3 August 2026 · updated 5 August 2026*
 
-![How to Connect AI Agents to Data Sources with Redis](/images/blog/3d45e42a4a34f8f7fcd06b25668c43cd10ecce48-2400x1256.webp)
+![How to Connect AI Agents to Data Sources with Redis](/images/site-mirror/3d45e42a4a34f8f7fcd06b25668c43cd10ecce48-2400x1256.webp)
 
 An [AI agent](/blog/what-is-an-ai-agent/) that can't reach your data is just a chatbot with opinions. Without runtime context, a model only knows its training data and whatever sits in the current prompt. So your app has to feed it production-specific facts at runtime: your product catalog, a customer's order history, and last night's fraud signals. Wiring an agent to one of those sources is the part that looks hard but usually isn't, and a single integration can come together fast. The catch is everything that comes after that first connection works: reaching dozens more systems without overwhelming the model, keeping the data fresh, and controlling what each agent is allowed to see, all fast enough to stay on the agent's hot path. This guide covers what connecting an agent to data actually means, why the first connection is the easy part, what production workloads demand from your data layer, and where [Redis Iris](https://redis.io/iris/) fits as a real-time context engine.
 

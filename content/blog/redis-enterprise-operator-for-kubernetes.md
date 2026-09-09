@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 9 September 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 **To streamline the management of a Kubernetes layer, we developed our own Kubernetes controller, the Redis Enterprise Operator for Kubernetes. Unlock the cloud-native data layer by downloading our e-book below.**
 
@@ -26,7 +26,7 @@ Infrastructure and operations leaders searching for agility and portability bene
 
 Below you can see the typical architecture of a [Redis Enterprise Cluster](/redis-enterprise/technology/redis-enterprise-cluster-architecture/) regardless of whether you deploy it as nodes or as containers. There is an inherited complexity in the administration of resources for scalability and availability of the cluster.
 
-![illustration of nodes and clusters](/images/blog/a538b348bbf6d9384b941d261543a080c9eec95e-1024x294.webp)
+![illustration of nodes and clusters](/images/site-mirror/a538b348bbf6d9384b941d261543a080c9eec95e-1024x294.webp)
 
 Deploying Redis Enterprise on Kubernetes increases automation and ease of management; the Redis nodes become Kubernetes pods, keeping all the benefits of Redis Enterprise. Its shared-nothing architecture is an ideal platform for a Kubernetes deployment taking advantage of persistent volumes for storage. These volumes enable containers to outlive their typical lifecycle and offer data persistence.
 
@@ -38,7 +38,7 @@ The [Redis Enterprise Operator for Kubernetes](https://docs.redis.com/latest/kub
 
 For example, the Kubernetes Operator constantly monitors the state of a cluster against its ideal state. If the cluster deviates from that state, the controller takes action to correct the problem; this is how a Kubernetes deployment can automate the scaling of the cluster or the recovery of a failed node.
 
-![operator architecture diagram](/images/blog/9657614a1dbc4be19c848be245ee0024f4a74bf7-610x437.webp)
+![operator architecture diagram](/images/site-mirror/9657614a1dbc4be19c848be245ee0024f4a74bf7-610x437.webp)
 
 **Why Operator?**
 

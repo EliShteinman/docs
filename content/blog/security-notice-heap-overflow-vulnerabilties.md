@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 10 July 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2ce9bd4a215451a1158557748bc4ca2727cac706-720x508.webp)
+![Blog tile image](/images/site-mirror/2ce9bd4a215451a1158557748bc4ca2727cac706-720x508.webp)
 
 **Here’s what you need to do about the CVE-2022-24834 and CVE-2023-36824 vulnerabilities, as well as the updates available for affected customers.**
 

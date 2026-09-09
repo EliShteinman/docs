@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 1 July 2026*
 
-![Redis](/images/blog/0f53c10cd9e20eac047b0a8c4b6b13d6f9fef49b-1200x628.webp)
+![Redis](/images/site-mirror/0f53c10cd9e20eac047b0a8c4b6b13d6f9fef49b-1200x628.webp)
 
 Open source vector databases come in two flavors: specialized tools that handle vectors and nothing else, or unified platforms that combine vector search with operational data and caching. Many teams end up managing three systems: a vector database, a cache, and an operational store. Redis combines all three in a single real-time data platform with a memory-first architecture.
 

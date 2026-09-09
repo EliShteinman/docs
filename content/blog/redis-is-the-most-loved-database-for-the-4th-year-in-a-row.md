@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 3 June 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/19887698381c93e4b17ec804f784d05ebb5f4831-368x260.webp)
+![Blog tile image](/images/site-mirror/19887698381c93e4b17ec804f784d05ebb5f4831-368x260.webp)
 
 What’s better than a 3-peat? Being named Most Loved Database four years in a row!
 

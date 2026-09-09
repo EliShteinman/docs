@@ -16,7 +16,7 @@ hidden: true
 
 *By Growth Team · Published 22 October 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/afce574fd41fb6bc76981022daf35a9d2d87169b-772x520.webp)
+![Blog tile image](/images/site-mirror/afce574fd41fb6bc76981022daf35a9d2d87169b-772x520.webp)
 
 While Google dominates the [search engine](/docs/redisearch-a-high-performance-search-engine-as-a-redis-module/) landscape, it remains an awkward tool for programmers to have access to niche-specific resources on software development. This community feeds off content on how to deploy software through different programming languages, which can be found in different awesome lists.
 
@@ -58,7 +58,7 @@ An awesome list is a curated list of coding projects within a specific niche, ap
 
 ## 3. Architecture
 
-![](/images/blog/49e4372dfe214885ac7076b7621c9fe52c69917a-1364x1262.webp)
+![](/images/site-mirror/49e4372dfe214885ac7076b7621c9fe52c69917a-1364x1262.webp)
 
 - Resources across different sources are stored in a variety of keys and data types using Redis.
 - Resource data is stored as a JSON serialized string.
@@ -107,7 +107,7 @@ $ gcloud auth login
 1. Select the right project
 1. Enable Cloud SQL Admin API
 
-![](/images/blog/83dddfb937376934949a59b113a17df17fe95aad-1146x490.webp)
+![](/images/site-mirror/83dddfb937376934949a59b113a17df17fe95aad-1146x490.webp)
 
 1. [Install and initialize the Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
@@ -122,7 +122,7 @@ $ gcloud config set project <projectname>
 
 1. [Create a MySQL database](https://cloud.google.com/python/django/appengine#creating_a_cloud_sql_instance).
 
-![](/images/blog/28e1243ab362b267e23b57b7e7c74532779e693f-1238x1374.webp)
+![](/images/site-mirror/28e1243ab362b267e23b57b7e7c74532779e693f-1238x1374.webp)
 
 Then set the connection string/password in the deployment config.ini.
 
@@ -307,7 +307,7 @@ To install Raycast, you first need to install Script Commands:
 
 **Useful tip: **It’s recommended that you don’t directly load the community script directories into Raycast. This is to avoid potential restructuring and new script commands suddenly appearing in Raycast.
 
-![](/images/blog/c74435d3e2a7fb017cfdfcb4b95afceea25fb164-1600x981.webp)
+![](/images/site-mirror/c74435d3e2a7fb017cfdfcb4b95afceea25fb164-1600x981.webp)
 
 ## How it works
 
@@ -429,7 +429,7 @@ If you want to discover more about this app, then feel free to check it out on t
 
 ## Who created this application?
 
-![](/images/blog/a37705510f4fec5b1f9896e7f8f7a3e174106de7-400x400.webp)
+![](/images/site-mirror/a37705510f4fec5b1f9896e7f8f7a3e174106de7-400x400.webp)
 
 **Marko Arezina**
 

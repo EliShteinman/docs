@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 20 May 2026 · updated 21 May 2026*
 
-![Context Engine: The Platform Layer Behind Production AI Agents](/images/blog/3dffcd583e5355da3d535872f8e3f4930b5becd6-1200x628.webp)
+![Context Engine: The Platform Layer Behind Production AI Agents](/images/site-mirror/3dffcd583e5355da3d535872f8e3f4930b5becd6-1200x628.webp)
 
 Count the systems behind your AI agent. A vector database for embeddings. A separate cache for LLM responses. A memory service for conversation state. A pipeline syncing data from Postgres. Probably a queue. Maybe a feature store. Now count the things that go wrong when one of them is out of sync with the others.
 

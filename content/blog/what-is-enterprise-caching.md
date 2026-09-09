@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 10 February 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/9c6312902ff07b7fe04226f9522d0ee996c78846-772x550.webp)
+![Blog tile image](/images/site-mirror/9c6312902ff07b7fe04226f9522d0ee996c78846-772x550.webp)
 
 ***Buyer’s Guide for Enterprise Caching****, an e-book companion with enterprise caching solutions to provide consistently high performance while scaling, is now available. Download for free below.*
 
@@ -28,7 +28,7 @@ Of course, as your company gets bigger and its reach grows, the stakes get highe
 
 Enter the enterprise cache. Built on the solid foundation of the basic cache, it provides a suite of features that enterprises require in order to keep pace with growing demands, including high availability, genuine product support, sub-millisecond performance, fully distributed replication, and a cost-effective way of managing your complex data sets. It’s more scalable, more failure resistant, and yes, more affordable.
 
-![man sitting in the dark on a computer](/images/blog/0e22f584db93ba2f9ece2ebc41dbb01e0dcf744a-1024x517.webp)
+![man sitting in the dark on a computer](/images/site-mirror/0e22f584db93ba2f9ece2ebc41dbb01e0dcf744a-1024x517.webp)
 
 ## Time to make the switch to enterprise caching?
 
@@ -66,7 +66,7 @@ Likewise, a failure in availability is no longer just an inconvenience. It’s a
 
 Of course, some third-party [Redis caches](/solutions/caching/) offer 3-9s availability, but only across a single region and with no data persistence, just snapshots. If your application is limited, it’s a limited solution. But if your company and/or your customer base are international, it isn’t enough. Redis Enterprise Cloud offers 5-9s SLA across one or more regions. It supports data persistence and backup without impacting performance. In addition, it provides automatic cluster recovery and pure in-memory replication.
 
-![What Is Enterprise Caching blog image](/images/blog/650727f1b33bcb61c5f94074924171d1cd00270c-1024x517.webp)
+![What Is Enterprise Caching blog image](/images/site-mirror/650727f1b33bcb61c5f94074924171d1cd00270c-1024x517.webp)
 
 ## Start gaining customers with enterprise caching
 

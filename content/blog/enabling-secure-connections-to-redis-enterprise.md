@@ -15,7 +15,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 19 June 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Building software that utilizes secure connections to a server should be a skill every developer possesses. Even if you choose not to enable SSL in a specific production environment, you should know how to secure connections to every server that you work with. This post is the promised follow up to [Enabling Secure Connections to Redis Enterprise Cloud in Python](/blog/enabling-secure-connections-redis-enterprise-cloud-python/) for our Java fans.
 

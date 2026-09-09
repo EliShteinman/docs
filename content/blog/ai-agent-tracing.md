@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 March 2026 · updated 24 March 2026*
 
-![Why your AI agent fails in production & how tracing helps](/images/blog/70d559faff1cd4a53d1147d7d1c1af87e7e84307-2400x1256.webp)
+![Why your AI agent fails in production & how tracing helps](/images/site-mirror/70d559faff1cd4a53d1147d7d1c1af87e7e84307-2400x1256.webp)
 
 Your agent works perfectly in staging. It answers questions, calls the right tools, and completes tasks in a reasonable number of steps. Then it hits production. A user asks a follow-up question on turn 11 of a conversation, the agent calls the wrong tool, and the response is completely off. Logs show a clean 200 for every request. No errors, no timeouts, nothing to investigate. Except the user got a bad answer, and nobody can tell you why.
 

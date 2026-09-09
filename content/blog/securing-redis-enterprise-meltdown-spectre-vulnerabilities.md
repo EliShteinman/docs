@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 8 January 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 With the recent security vulnerabilities discovered — [Meltdown](https://meltdownattack.com/meltdown.pdf) (CVE-2017-5754) and [Spectre](https://spectreattack.com/spectre.pdf) (CVE-2017-5753 and CVE-2017-5715) — Redis’ engineering, devops and support teams have been working hard to make sure our cloud services, [Redis Enterprise Cloud](/redis-enterprise-cloud/) (REC) and [Redis Enterprise VPC](/redis-enterprise-cloud/) (REV), are protected.
 
@@ -38,11 +38,13 @@ We tested a 3-node REV cluster on AWS, here is what we found:
 
 Before the Meltdown fix:
 
-![Before-the-Meltdown-fix-graph](/images/blog/382b3fe6283b4df809228b627ffd270870afb33a-1600x674.webp)
+![Before-the-Meltdown-fix-graph](/images/site-mirror/382b3fe6283b4df809228b627ffd270870afb33a-1600x674.webp)
 
 After the Meltdown fix:
 
-![After-the-Meltdown-fix-graph](/images/blog/8e5231f5abef3b9c2a6716d4904fa989c80652b2-1149x472.webp)
+![After-the-Meltdown-fix-graph](/images/site-mirror/8e5231f5abef3b9c2a6716d4904fa989c80652b2-1149x472.webp)
+
+*Performance After Meltdown Patch*
 
 We observed a negligible impact of throughput (2.5%-5%) and almost no effect on latency.
 

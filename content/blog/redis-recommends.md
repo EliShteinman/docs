@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 25 September 2016 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![Redis and Golang](/images/blog/cc8701037f89c4639145a9cf9635920dafe54aba-300x250.webp)
+![Redis and Golang](/images/site-mirror/cc8701037f89c4639145a9cf9635920dafe54aba-300x250.webp)
 
 You just finished watching Narcos, season 2 and are about to slip into the post-binge-watching doldrums, when up pops a recommendation from Netflix. “Because you liked Narcos, you should watch..El Patron De Mal.”
 

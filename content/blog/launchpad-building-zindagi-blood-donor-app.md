@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis Growth Team · Published 18 April 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/56642da8fd0ddb11ab6d5459228d621127f52aa2-772x550.webp)
+![Blog tile image](/images/site-mirror/56642da8fd0ddb11ab6d5459228d621127f52aa2-772x550.webp)
 
 Giving blood is an easy and safe way to save a life. Yet, complications still exist in matching donors and patients with the right blood type. Time is a limited commodity when it comes to blood donations, making it absolutely fundamental to align donors with the right patients.
 
@@ -65,7 +65,7 @@ Ok, let’s dive straight in.
 
 ## 3. Architecture
 
-![](/images/blog/0b496b10d86f4bf20dff3fa10045f203b411ba1c-1024x840.webp)
+![](/images/site-mirror/0b496b10d86f4bf20dff3fa10045f203b411ba1c-1024x840.webp)
 
 ## 4. Getting started
 
@@ -215,6 +215,6 @@ So make sure to check them out!
 
 **Bhanu Korthiwada**
 
-![](/images/blog/c94789d9af4ddb9fec4a6d8e16c31bf53c7d44f6-736x736.webp)
+![](/images/site-mirror/c94789d9af4ddb9fec4a6d8e16c31bf53c7d44f6-736x736.webp)
 
 Bhanu is an experienced software engineer who’s currently working as a senior consultant for ADP. If you want to keep up to date with all of his latest projects, make sure to follow him on [GitHub](https://github.com/bhanudev-org).

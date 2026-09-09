@@ -14,7 +14,7 @@ hidden: true
 
 *By Alex Milowski, Product Evangelist · Published 26 June 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/428a9c6ddf1810ad42543fa6539fbdf10e3219b3-368x260.webp)
+![Blog tile image](/images/site-mirror/428a9c6ddf1810ad42543fa6539fbdf10e3219b3-368x260.webp)
 
 With the latest release of Redis Enterprise 6.0.6, [our Kubernetes operator](https://docs.redis.com/latest/platforms/release-notes/k8s-6-0-6-6-2020-06/) includes a new database controller that provides the ability to create databases via custom resources. This mechanism enables database configurations to be packaged in a familiar YAML format alongside other application workloads. This also enables continuous integration/continuous deployment (CI/CD) processes like GitOps for code-driven Infrastructure as Code (IaC) deployments.
 
@@ -75,7 +75,7 @@ kubectl apply -f db.yaml
 
 At this point, the database controller within the Redis Enterprise operator will recognize the new custom resource. It will go through the process of creating the database on the cluster and exposing it as services within your namespace. The database status will change to “active” when it is ready, and can be monitored by: kubectl get redb/smalldb -o jsonpath="{.status.status}" That’s all that there is to creating the database. Once we are done with it, we can delete the database by simply deleting the custom resource.
 
-![](/images/blog/9d3817ed3eb34308abf3bf87076179954d6e4009-1024x525.webp)
+![](/images/site-mirror/9d3817ed3eb34308abf3bf87076179954d6e4009-1024x525.webp)
 
 **Using a database**
 
@@ -143,13 +143,13 @@ Because the database is also a resource description we can write in YAML format,
 
 ## Related Articles
 
-![](/images/blog/bf7f68541f477353a9a020546f120c1d4d2550ef-442x254.webp)
+![](/images/site-mirror/bf7f68541f477353a9a020546f120c1d4d2550ef-442x254.webp)
 
 Why Should You Care About Kubernetes?
 
 Learn More
 
-![Redis Enterprise Kubernetes Operator](/images/blog/aa782bfdc4e118aa0285578744b69761ad981157-386x254.webp)
+![Redis Enterprise Kubernetes Operator](/images/site-mirror/aa782bfdc4e118aa0285578744b69761ad981157-386x254.webp)
 
 Automated Cluster Recovery Comes to the Redis Enterprise Kubernetes Operator
 

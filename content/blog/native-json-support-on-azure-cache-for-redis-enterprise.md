@@ -14,7 +14,7 @@ hidden: true
 
 *By Shreya Verma, Principal Product Manager · Published 5 August 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a98878bd61760a63d5bec9fbf397bf9814af6c6f-772x550.webp)
+![Blog tile image](/images/site-mirror/a98878bd61760a63d5bec9fbf397bf9814af6c6f-772x550.webp)
 
 **Find new opportunities to help create a document database using native JSON support on Azure Cache for Redis Enterprise.**
 
@@ -38,13 +38,13 @@ Below, you’ll find the steps for creating a database with RedisJSON using the
 1. Select your subscription and resource group, and choose a name for your database.
 1. Select an Enterprise or Enterprise Flash tier cache from the Cache type drop-down. Note that Redis Modules are only available on Enterprise or Enterprise Flash tiers.
 
-![screen capture of creating a doc database with redisjson and redisearch](/images/blog/165207bb1073d9c8bd36c36d79501523b6062ebc-750x817.webp)
+![screen capture of creating a doc database with redisjson and redisearch](/images/site-mirror/165207bb1073d9c8bd36c36d79501523b6062ebc-750x817.webp)
 
 4. In the **Advanced** tab, select RedisJSON from the Modules drop-down.
 
 5. Click Review + create to create the JSON-enabled database.
 
-![Screen capture for choosing RedisJSON to make document store](/images/blog/1e20bebe44c50fd8d70a290d9ebdc25119ff38df-748x808.webp)
+![Screen capture for choosing RedisJSON to make document store](/images/site-mirror/1e20bebe44c50fd8d70a290d9ebdc25119ff38df-748x808.webp)
 
 ## Creating a document database: RedisJSON + RediSearch
 
@@ -52,7 +52,7 @@ Below, you’ll find the steps for creating a database with RedisJSON using the
 1. Go to the **Advanced **tab and select both RedisJSON and RediSearch from the Modules drop-down.
 1. Click on Review + create to create your document database, that is, a RedisJSON database with RediSearch indexing and search capabilities.
 
-![screen capture of creating a doc database with redisjson and redisearch](/images/blog/165207bb1073d9c8bd36c36d79501523b6062ebc-750x817.webp)
+![screen capture of creating a doc database with redisjson and redisearch](/images/site-mirror/165207bb1073d9c8bd36c36d79501523b6062ebc-750x817.webp)
 
 ### Creating a document database using Azure CLI – RediJSON + RediSearch
 
@@ -82,8 +82,8 @@ RedisInsight provides built-in support for the RedisJSON, RediSearch, and RedisT
 
 RedisInsight comes with built-in tutorials for modules to get you started.
 
-![image of redisinsight creating document database](/images/blog/cddd45b4579a77f865db615199704a89cd74228d-1024x295.webp)
+![image of redisinsight creating document database](/images/site-mirror/cddd45b4579a77f865db615199704a89cd74228d-1024x295.webp)
 
-![image of redisinsight creating document database](/images/blog/427a3b42a8d100ac330f0b70f4ac8828ef103057-1024x450.webp)
+![image of redisinsight creating document database](/images/site-mirror/427a3b42a8d100ac330f0b70f4ac8828ef103057-1024x450.webp)
 
 For details, please refer to this quick-start JSON tutorial.

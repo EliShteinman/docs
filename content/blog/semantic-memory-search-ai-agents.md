@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 4 August 2026 · updated 5 August 2026*
 
-![Semantic memory search for AI agents](/images/blog/8c8c2bff36c738ecc462ddbb4473fc5b1c63275c-2400x1256.webp)
+![Semantic memory search for AI agents](/images/site-mirror/8c8c2bff36c738ecc462ddbb4473fc5b1c63275c-2400x1256.webp)
 
 Your [AI agent](/blog/what-is-an-ai-agent/) handles a long onboarding conversation. The next day, it asks the same user for their name. That's not a bug. A language model keeps no memory of earlier calls, so without an external memory layer, each request starts fresh and the agent forgets what it just learned. Semantic memory search gives agents durable recall instead, with facts stored outside the model and retrieved by meaning when the app invokes memory search. Below, we cover what semantic memory search is, why keyword search often falls short, and why speed and freshness determine whether memory helps or hurts.
 

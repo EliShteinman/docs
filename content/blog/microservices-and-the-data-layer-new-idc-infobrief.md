@@ -14,9 +14,9 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 7 January 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/702f35df7badbb3eb031f036b2672df05c6ab8aa-772x520.webp)
+![Blog tile image](/images/site-mirror/702f35df7badbb3eb031f036b2672df05c6ab8aa-772x520.webp)
 
-![](/images/blog/1d1bf72ff5f5a3d65c73e359ad54eedb51010c4d-250x175.webp)
+![](/images/site-mirror/1d1bf72ff5f5a3d65c73e359ad54eedb51010c4d-250x175.webp)
 
 If you still harbored any doubt that [microservice architectures](/blog/microservice-architecture-key-concepts/) are dominating today’s application development, it’s time to get over it. According to IDC’s new InfoBrief on [**The Impact of Application Modernization on the Data Layer**](/docs/application-modernizaton-impact-on-data-layer/), sponsored by Redis, 89% of some 300 North American enterprise survey respondents are already using microservices. And that comes on top of [IDC’s 2019 prediction](https://www.idc.com/research/viewtoc.jsp?containerId=US44403818) that “By 2022, 90% of all new apps will feature microservices architectures.”
 
@@ -36,7 +36,9 @@ That can leave data siloed, more complex, and expensive, leading many enterprise
 
 An e-commerce solution, for example, might employ a number of services—application server, content cache, session store, product catalog, search and discovery, order processing, order fulfillment, analytics, and many more—and each service may have its own database, as shown in the diagram below:
 
-![](/images/blog/eaa6fbe95841d0037f21694240faf8129137bc15-1024x685.webp)
+![](/images/site-mirror/eaa6fbe95841d0037f21694240faf8129137bc15-1024x685.webp)
+
+*A microservice architecture in a sample e-commerce solution.*
 
 So, how do you choose and build applications with the right architecture? What characteristics do you need to look for? Research suggests focusing on four key must-haves. Let’s take a closer look:
 
@@ -44,7 +46,7 @@ So, how do you choose and build applications with the right architecture? What c
 
 As IDC noted, “over 95% of respondents favor database type or performance as criteria” and almost half of survey respondents (45%) cited performance as a top-three factor (trailing only database type) when selecting a database. It’s no surprise that performance is so important, since in a microservice environment you need both real-time performance and the ability to scale in order to fully deliver on the promise of distributed architecture.
 
-![](/images/blog/1fad114de0a493e57dec3624dc80d74fa9515445-1024x621.webp)
+![](/images/site-mirror/1fad114de0a493e57dec3624dc80d74fa9515445-1024x621.webp)
 
 Named the [most loved-database](/blog/redis-is-the-most-loved-database-for-the-4th-year-in-a-row/) four years running, Redis is well known for delivering sub-millisecond performance. With Redis Enterprise’s [low-latency database](/docs/latency-is-the-new-outage/), you can create instant user experiences or perform real-time analytics while keeping a small footprint with the ability to scale on-demand. As the InfoBrief notes, “This indicates that how the database works and performs is critical to microservices application development success.”
 
@@ -52,7 +54,7 @@ Named the [most loved-database](/blog/redis-is-the-most-loved-database-for-the-4
 
 ## 2. Always available
 
-![](/images/blog/29b4184b6483b8f9634926fa57802a09c83eeb30-798x644.webp)
+![](/images/site-mirror/29b4184b6483b8f9634926fa57802a09c83eeb30-798x644.webp)
 
 The IDC survey revealed that almost a quarter (24%) of enterprise microservice applications are already being used in business-critical roles, where high availability is critical. More generally, “for 42% of microservices apps, experiencing downtime results in direct loss of revenue for the organization,” the InfoBrief notes, while downtime in the remaining 58% of apps leads to loss of productivity.
 
@@ -66,7 +68,7 @@ Developers leverage microservice architectures to build better apps. Selecting t
 
 A microservice may employ a data model based on [key-value](/redis-enterprise/data-structures/), [JSON](/json/),[ time ser](/timeseries/)[ies](/modules/redis-graph/), and [search engines](/search/), among other things. But that means “many microservices will use a database per service,” the InfoBrief notes, which “increases the number of databases, the number of software components accessing databases, and the need for databases to be included in modern workflows.” That’s why, as noted above, database management with microservice apps is a top-three challenge for nearly a third (32%) of respondents.
 
-![](/images/blog/82029da13341946e60dc0ee5c0b3d4c62fda1db5-948x760.webp)
+![](/images/site-mirror/82029da13341946e60dc0ee5c0b3d4c62fda1db5-948x760.webp)
 
 To minimize this complexity, your database should support [multiple data models](/redis-enterprise/multi-model/). That makes it easy for enterprise architects to choose the right data model for each service without sacrificing performance or having to learn and maintain multiple different databases, which simplifies operations and helps limit technology sprawl.
 
@@ -76,7 +78,7 @@ To minimize this complexity, your database should support [multiple data models]
 
 Even as [DBaaS](/blog/what-is-dbaas/) gains momentum, a great deal of enterprise data remains on-premises, leading many enterprises to use multiple clouds and hybrid infrastructures, as shown in the IDC survey. In a microservices environment, you need the ability to optimize the data layer to give you the flexibility to run your database without silos or data loss.
 
-![](/images/blog/d3108d031053b934819c07a1f7756dd0bb852612-1024x733.webp)
+![](/images/site-mirror/d3108d031053b934819c07a1f7756dd0bb852612-1024x733.webp)
 
 But as the IDC authors point out, “Many databases were not designed to be cloud-native, compatible with containers, or orchestrated by Kubernetes.” Merely packaging a database within a container, for example, doesn’t make it right for a microservice architecture; the database must be lightweight and tunable to meet your data needs.
 

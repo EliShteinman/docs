@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 6 August 2026 · updated 12 August 2026*
 
-![Inference latency: what it measures & why the answer changes](/images/blog/24a4a3580bf21e34e752e9d405df79b71e16bb77-2400x1256.webp)
+![Inference latency: what it measures & why the answer changes](/images/site-mirror/24a4a3580bf21e34e752e9d405df79b71e16bb77-2400x1256.webp)
 
 Ask an engineer what their LLM app's inference latency is, and the honest answer is "which one?" The time to the first visible token, the time to the finished response, and the time an agent spends across a chain of calls are three different numbers. They can even disagree about which system is faster. This guide covers what inference latency measures, why it splits into several metrics, where the time actually goes in production pipelines, and when avoiding a model call can be faster.
 

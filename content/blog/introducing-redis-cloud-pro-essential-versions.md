@@ -15,7 +15,7 @@ hidden: true
 
 *By Allegra Dan, Allegra is a Principal Product Manager at Redis Labs, focusing on cloud products. She has over 10 years experience in development, architecture and management of enterprise products. · Published 25 March 2019 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/68031f89a545c8d515751e1ca0279daac5de59cb-3840x2160.webp)
+![Blog tile image](/images/site-mirror/68031f89a545c8d515751e1ca0279daac5de59cb-3840x2160.webp)
 
 **As we continue to enhance our product offerings to deliver further ease of use and simplicity for our customers, we are happy to announce enhanced versions and new names for our cloud offerings. Starting today, we are unifying Redis Enterprise Cloud and Memcached Enterprise Cloud and naming them Redis Cloud Essentials . We are also renaming Redis Enterprise VPC to Redis Cloud Pro.**
 

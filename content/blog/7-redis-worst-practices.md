@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 23 March 2020 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 [*Click here to get started with Redis Enterprise. *](/try-free/)*Redis Enterprise lets you work with any real-time data at any scale, anywhere.*
 

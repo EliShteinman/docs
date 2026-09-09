@@ -14,7 +14,7 @@ hidden: true
 
 *By Udi Gotlieb, Head of Redis Enterprise Product Marketing · Published 17 March 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/80df8d985b55712d58eb75193113e505c82d0f68-3240x2293.webp)
+![Blog tile image](/images/site-mirror/80df8d985b55712d58eb75193113e505c82d0f68-3240x2293.webp)
 
 Rediscover the power of real-time data at [RedisConf 2021](/redisconf/). Our annual real-time data conference is going virtual again from April 20–21, where you’ll have an opportunity to dive into the latest product experiences, get [hands-on training](/redisconf/training/), network with other Redis pros, and show off your skills by participating in a $100,000 hackathon.
 
@@ -28,7 +28,7 @@ There’s something for everyone, and here’s your first look at three RedisCon
 
 ## Capital One: Next-generation digital payments
 
-![](/images/blog/5057d7344e10729723558782ec99cd7e38734505-240x240.webp)
+![](/images/site-mirror/5057d7344e10729723558782ec99cd7e38734505-240x240.webp)
 
 **Speaker: **[**Mike Lee**](https://www.linkedin.com/in/symbioticllc/)**, Head of Enterprise Payment Architecture at Capital One**
 
@@ -38,7 +38,7 @@ Mike will discuss how Redis Enterprise delivered on its real-time data performan
 
 ## SitePro: Leveraging Redis Enterprise with the TimeSeries module to streamline real-time IoT data analytics at scale
 
-![](/images/blog/a8c9f5ffa492abaf728af97b70269b57f6590eb7-400x400.webp)
+![](/images/site-mirror/a8c9f5ffa492abaf728af97b70269b57f6590eb7-400x400.webp)
 
 **Speaker: **[**Dustin Brown**](https://www.linkedin.com/in/dustinbrown/)**, Director of Technology at SitePro**
 
@@ -48,7 +48,7 @@ Dustin will offer a real-world case study and deep analysis of the module, expla
 
 ## Verizon: Redis on the 5G Edge: practical advice for mobile edge computing
 
-![](/images/blog/e7b32d5db1e2272b40c29a6ceb5bc636aa643ec2-400x400.webp)
+![](/images/site-mirror/e7b32d5db1e2272b40c29a6ceb5bc636aa643ec2-400x400.webp)
 
 **Speakers: **[**Robert Belson**](https://www.linkedin.com/in/robertbelson)**, Corporate Strategist at Verizon**
 

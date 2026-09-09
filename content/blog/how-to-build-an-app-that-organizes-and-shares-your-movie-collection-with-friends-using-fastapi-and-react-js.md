@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis Growth Team · Published 21 February 2022 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/9b5d82e955f1bff8e5d4c3f96dde3bd0c853de70-772x550.webp)
+![Blog tile image](/images/site-mirror/9b5d82e955f1bff8e5d4c3f96dde3bd0c853de70-772x550.webp)
 
 Search for movies. Organize your collection. And share with your friends. Movify opens the door to exciting movie experiences by creating a social media-like platform where interactions are solely film-based. Here you can view the activity of people in your network and see what movies they’re watching, liking, and sharing.
 
@@ -265,6 +265,6 @@ Head on over. Be inspired. And have fun with Redis.
 
 ## Matthias Hasler
 
-![](/images/blog/3fb22807dba8e8a655de96fc8b5dedf29236e341-245x245.webp)
+![](/images/site-mirror/3fb22807dba8e8a655de96fc8b5dedf29236e341-245x245.webp)
 
 Despite still being a student, Matthias has a whole range of experience in programming, artificial intelligence, machine learning, and much more. To stay up date with all of the projects he’s involved in, [check out his GitHub page here](https://github.com/mhslr/redis21).

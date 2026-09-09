@@ -14,7 +14,7 @@ hidden: true
 
 *By Savannah Norem, Contributor · Published 28 February 2024 · updated 21 May 2026*
 
-![Blog tile image](/images/blog/bed6b27357b524e1b3b6b1edd765f5ce8aa91363-772x552.webp)
+![Blog tile image](/images/site-mirror/bed6b27357b524e1b3b6b1edd765f5ce8aa91363-772x552.webp)
 
 New technologies come and go quicker than the seasons. Sometimes it’s hard, as a developer, to know which tools are worth knowing about and learning how to use, and which will seem like last year’s news in only two months. Project Jupyter however, is definitely worth taking the time to learn about. They’ve been creating tools to help developers for almost a decade. Their Executive and Software Steering Councils include folks from top-notch companies like AWS, Netflix, and Apple. They also recognize distinguished contributors every year. The classic Jupyter Notebooks have trickled into education and learning for good reason. So if you’ve been a developer recently, you’ve probably heard of or even used Jupyter Notebooks. Maybe you’ve even used JupyterLab and the advanced tools it offers. But if not, what are Jupyter Notebooks and JupyterLab, and why are these tools useful?
 
@@ -48,7 +48,7 @@ While Jupyter Notebooks laid the foundation for interactive computing, JupyterLa
 
 One of the strengths of JupyterLab lies in its extensibility. Users can customize their environment by installing extensions that add new features and functionality. This extensibility fosters innovation, enabling the community to develop and share tools that cater to specific needs, from enhanced text editing to advanced data visualization. These extensions include, but are not limited to, rendering different file types like DMN, coding assistance with Language Server Protocol, a GUI-style Python code generator, and even packages that will turn your Notebooks into slideshows with slides for text, code, and images. There are also sites like Binder that will turn a GitHub repository into a “binder” full of them that can make your entire repo reproducible by anyone.
 
-![What-is-Jupyter-blog](/images/blog/9ddbe13eabe7574d3c9087832638c0bc31e6e230-512x450.webp)
+![What-is-Jupyter-blog](/images/site-mirror/9ddbe13eabe7574d3c9087832638c0bc31e6e230-512x450.webp)
 
 Another big advancement since the Notebooks was the introduction of the interactive widgets. The example shown above is from Project Jupyters own try it out demonstration. Here the “solve_lorenz” is a function defined in a cell above, but gets used here with the interactive widget to show the variable ranges. These sliders can be moved with a mouse click and drag, with the resulting plot being updated each time the slider is moved. This visualization is insanely cool, and the tool can be insanely useful. Instead of calling a function with the variables you think you want, these sliders allow you to mess around with the inputs in a fun and engaging way. How quickly the visualization gets updated with new parameters also gives a peek into how much compute power there is behind Jupyter projects.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Michelle Luna, Paolo Lazzari · Published 1 December 2025*
 
-![Try Redis code examples instantly with interactive Jupyter notebooks](/images/blog/b580e5680cf8d618109155e49bc356f915c31174-1200x639.webp)
+![Try Redis code examples instantly with interactive Jupyter notebooks](/images/site-mirror/b580e5680cf8d618109155e49bc356f915c31174-1200x639.webp)
 
 If you're learning Redis or exploring a new client library, you've probably encountered a familiar frustration: you find a great code example in the docs, but before you can try it, you need to set up your development environment, install dependencies, configure a Redis connection, and hope everything works together. What should take seconds to test ends up taking minutes or longer if you hit dependency conflicts.
 
@@ -42,7 +42,7 @@ Under the hood, we're using [BinderHub](https://binderhub.readthedocs.io/), an o
 
 The entire process takes just a few seconds, and you get a fully interactive coding environment where you can run the example, modify it, and see the results immediately.
 
-![How it Works](/images/blog/47fc80e3f4a2e254b8892ee79b0cb31c32af3362-755x162.webp)
+![How it Works](/images/site-mirror/47fc80e3f4a2e254b8892ee79b0cb31c32af3362-755x162.webp)
 
 ## Perfect for learning and experimentation
 
@@ -63,7 +63,7 @@ For example, on the redis-py documentation page, you can now:
 
 All without leaving your browser.
 
-![Perfect for learning and experimentation](/images/blog/a5f793bb039cff38ded8f8caa5817a8faf0f69c1-618x356.webp)
+![Perfect for learning and experimentation](/images/site-mirror/a5f793bb039cff38ded8f8caa5817a8faf0f69c1-618x356.webp)
 
 ## Multi-language support
 
@@ -79,7 +79,7 @@ Each language will have the same seamless experience: click a link, get a workin
 
 Head over to the [redis-py documentation page](https://redis.io/docs/latest/develop/clients/redis-py/) and look for the "Run in browser" links next to code examples. Click one and start experimenting. Modify the code, try different commands, break things and fix them. It's your sandbox to explore.
 
-![Try it yourself](/images/blog/b61f04092739b7194a58dd4f6e8c72e62a66355a-743x557.webp)
+![Try it yourself](/images/site-mirror/b61f04092739b7194a58dd4f6e8c72e62a66355a-743x557.webp)
 
 We think this is going to make learning Redis significantly easier and more enjoyable. No more "it works on my machine" problems. No more setup friction. Just pure, hands-on learning.
 

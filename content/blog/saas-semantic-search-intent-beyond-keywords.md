@@ -14,7 +14,7 @@ hidden: true
 
 *By Fionce Siow, Senior Product Marketing · Published 8 February 2026 · updated 9 February 2026*
 
-![Redis](/images/blog/93cbea023ed2ba8538d8295e0c589e2423a52d70-1200x628.webp)
+![Redis](/images/site-mirror/93cbea023ed2ba8538d8295e0c589e2423a52d70-1200x628.webp)
 
 Ever search for "best laptop for coding" and get results for "optimal development machine"? That's semantic search at work: it gets what you mean, not just what you typed. It uses vector embeddings and transformer neural networks to capture intent and context. So "ways to cool down a room without AC" surfaces results about fans and cross-ventilation even when those exact terms aren't in the query.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 18 May 2026 · updated 13 August 2026*
 
-![Context is all you need: Introducing Redis Iris, our new agent context and memory solution](/images/blog/d5d9731a5ca9b36514dfd0ff1b7d06081a8f0161-1200x628.webp)
+![Context is all you need: Introducing Redis Iris, our new agent context and memory solution](/images/site-mirror/d5d9731a5ca9b36514dfd0ff1b7d06081a8f0161-1200x628.webp)
 
 Agents don’t have an intelligence problem. They have a context problem. They fail because their context layer is scattered, stale, slow, or hard to use.
 
@@ -54,7 +54,7 @@ Redis Iris combines five tools, rolled up into a single runtime that makes conte
 - [**LangCache**](https://redis.io/langcache/) provides low-latency semantic caching to shorten response time, and save up to 90 percent on token costs.
 - [**Redis Search**](https://redis.io/query-engine/)** **the fast layer underneath the context engine that retrieves a company’s vector, structured, unstructured, and real-time data
 
-![Redis Iris](/images/blog/7002ed8d0569bb331d30ce902f4ab6b368b95ee2-1592x1218.webp)
+![Redis Iris](/images/site-mirror/7002ed8d0569bb331d30ce902f4ab6b368b95ee2-1592x1218.webp)
 
 ## Try Redis Iris today
 

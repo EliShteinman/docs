@@ -15,7 +15,7 @@ hidden: true
 
 *By Jim Allen Wallace, Tyler Hutcherson · Published 2 June 2024 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/46e437a8e582c611148582d926192488f4c8e7b9-772x552.webp)
+![Blog tile image](/images/site-mirror/46e437a8e582c611148582d926192488f4c8e7b9-772x552.webp)
 
 Accelerate your GenAI app development with Redis–the world’s fastest data platform for real-time data and AI apps. Now, with Redis and [NVIDIA NIM](https://www.nvidia.com/en-us/ai/) inference microservices, you can build and deploy GenAI apps faster.
 

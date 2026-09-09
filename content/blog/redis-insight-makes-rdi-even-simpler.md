@@ -15,7 +15,7 @@ hidden: true
 
 *By Yaron Parasol, Viktar Starastsenka · Published 6 August 2024 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/28a0f96c475dc0ba8c533b2ac6f21557aa3c83ee-772x552.webp)
+![Blog tile image](/images/site-mirror/28a0f96c475dc0ba8c533b2ac6f21557aa3c83ee-772x552.webp)
 
 Get seamless data integration and faster data access with Redis Data Integration (RDI)— no-code required. Seamlessly sync your database to Redis in near real-time and build apps at scale, faster than ever before.
 
@@ -59,13 +59,13 @@ First, add your RDI endpoint in Redis Insight via the new “Redis Data Integrat
 - Uploading an existing RDI pipeline from a file.
 - Creating a new pipeline from scratch using RDI templates for easy configuration.
 
-![](/images/blog/0649b2dc9f9d9d7a6bcbc08f1c2321fb9e328222-1600x944.webp)
+![](/images/site-mirror/0649b2dc9f9d9d7a6bcbc08f1c2321fb9e328222-1600x944.webp)
 
 ### Pipeline configuration and testing
 
 When creating a new RDI pipeline, Redis Insight auto-completes your configuration file. After specifying the configuration, you can test target database connections to verify your RDI instance writes data successfully.
 
-![](/images/blog/2e93f3be43b28b3e92aa03447d20840ab7d80293-1600x944.webp)
+![](/images/site-mirror/2e93f3be43b28b3e92aa03447d20840ab7d80293-1600x944.webp)
 
 ### Data transformation
 
@@ -80,7 +80,7 @@ Redis Insight helps you create ‌jobs. Here’s how:
 - Auto-completion and syntax highlighting for YAML files.
 - Auto-completion and syntax highlighting for JMESPath and SQL functions in a dedicated editor.
 
-![](/images/blog/13f3d4df74c4b957d97137d85d1f8df5f01d16fd-1600x945.webp)
+![](/images/site-mirror/13f3d4df74c4b957d97137d85d1f8df5f01d16fd-1600x945.webp)
 
 Once your data transformation job is ready, you can perform a dry run to view the transformation results without affecting your actual data. After finalizing the transformation jobs, you can download the pipeline to a file or deploy it to your RDI server using a dedicated deployment button.
 
@@ -88,7 +88,7 @@ Once your data transformation job is ready, you can perform a dry run to view th
 
 After deployment, navigate to the Statistics page in Redis Insight to view the current RDI engine status, target database configuration, and processing statistics broken down by stream. This overview lets you easily monitor your data integration pipeline.
 
-![](/images/blog/4152225f3c537aef0515882334307282edcd8cf3-1600x802.webp)
+![](/images/site-mirror/4152225f3c537aef0515882334307282edcd8cf3-1600x802.webp)
 
 Plus, add your Redis database in Redis Insight to filter and visualize Redis keys, allowing you to track the data transformation results.
 
@@ -120,7 +120,7 @@ Get the best in GUI Redis Insight is a powerful desktop user interface that help
 
 Talk to our team Build better apps with our self-managed, on-prem software designed for enterprise compliance, reliability, and resilience. Work with our solutions architects to understand your requirements and…
 
-![Close](/images/blog/96e244338b2f3fee742526528445ee7fd0a56a5c-17x17.svg)
+![Close](/images/site-mirror/96e244338b2f3fee742526528445ee7fd0a56a5c-17x17.svg)
 
 *(interactive chart, not available offline)*
 

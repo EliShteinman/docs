@@ -14,9 +14,9 @@ hidden: true
 
 *By Yaron Dolev · Published 21 July 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/15393ef4ce1521d1d5325adbb1a884d0802b7601-250x168.webp)
+![](/images/site-mirror/15393ef4ce1521d1d5325adbb1a884d0802b7601-250x168.webp)
 
 Redis provides a wide variety of tools directed at improving and maintaining efficient in-memory database usage. While its unique data types and commands fine-tune databases to serve application requests without any additional processing at the application level, misconfiguration, or rather, using out-of-the-box configuration, can (and does) lead to operational challenges and performance issues. Despite the setbacks that have been the cause of quite a few headaches, solutions do exist, and may be even simpler than anticipated. This series of installments will highlight some of the most irritating issues that come up when using Redis, along with tips on how to solve them. They are based on our real-life experience of running thousands of Redis database instances.
 

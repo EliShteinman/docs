@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 4 April 2024 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a2589c2cde4e3ed3ebe2f3b3d6295669221cb3ed-920x612.webp)
+![Blog tile image](/images/site-mirror/a2589c2cde4e3ed3ebe2f3b3d6295669221cb3ed-920x612.webp)
 
 Redis recently announced its achievement of the Google Cloud Ready designation for CloudSQL and AlloyDB. Cloud SQL is Google Cloud’s fully managed relational database service for MySQL, PostgreSQL, and SQL Server. AlloyDB for PostgreSQL is Google Cloud’s newest fully managed PostgreSQL-compatible database service. This designation signifies that Redis’ solution has met the certification guidelines and has been validated by Google, following a collaborative effort with Google’s engineering teams.
 
@@ -26,7 +26,7 @@ Redis Cloud is widely used across the Google Cloud customer base for many purpos
 
 To illustrate the benefits of Redis in conjunction with Google’s Cloud databases, we have compared a traditional implementation of the solution without Redis to one that incorporates Redis. This comparison highlights the advantages that Redis brings and showcases the typical use cases that can benefit from its integration.
 
-![](/images/blog/f948008e44a39ed6bbc2de8873dc7a054b075de3-805x412.webp)
+![](/images/site-mirror/f948008e44a39ed6bbc2de8873dc7a054b075de3-805x412.webp)
 
 In the architecture above, Cloud SQL is used by applications for reads and writes. The data persisted in Cloud SQL is then leveraged by Big Query for analytics. While this architecture offers essential functionality, enterprises can further enhance their capabilities by incorporating Redis in conjunction with the services.
 
@@ -35,7 +35,7 @@ Integration enables enterprises to leverage the following advantages:
 - Blazing Fast Sub-Millisecond Latency: By integrating Redis, enterprises can achieve exceptional performance with sub-millisecond latency. This ensures that real-time experiences are delivered to customers, enabling fast response times for critical operations.
 - Extremely High Resiliency: Redis Cloud provides enterprises with a highly resilient infrastructure, offering 5-9’s of availability. This level of reliability ensures that the system remains operational even in the face of potential disruptions, minimizing downtime and ensuring uninterrupted service.
 
-![](/images/blog/72c31641aa082ca206fd9b75cc957e6a3d603286-931x499.webp)
+![](/images/site-mirror/72c31641aa082ca206fd9b75cc957e6a3d603286-931x499.webp)
 
 The architecture shown above uses Redis Cloud and Redis Data Integrator (RDI) as a caching pattern allowing the apps to persist and access data in real time. This is applicable to a wide range of use cases including just-in-time fulfillment, and dynamic pricing, credit card transactions and more.
 

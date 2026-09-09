@@ -14,7 +14,7 @@ hidden: true
 
 *By Purna  Mehta, Senior Product Manager · Published 30 November 2025 · updated 1 December 2025*
 
-![Redis](/images/blog/3e1330b664da6c96538037d41434a00edbd0bd75-1200x628.webp)
+![Redis](/images/site-mirror/3e1330b664da6c96538037d41434a00edbd0bd75-1200x628.webp)
 
 Developers exploring the Azure portal often notice two Redis services: Azure Cache for Redis and Azure Managed Redis. At first, it can be confusing: why are there two services that seem to solve the same problem? This post kicks off the* “Inside Azure Managed Redis”* series by explaining how these offerings came to be, what sets them apart, and why Azure Managed Redis exists as the next-generation service.
 

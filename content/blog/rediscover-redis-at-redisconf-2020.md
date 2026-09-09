@@ -14,11 +14,11 @@ hidden: true
 
 *By Mike Kwon, VP of Demand and Growth Marketing · Published 6 March 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/2ea9fb274df6ebe096c1a9a31088188d1d71bdf2-270x190.webp)
+![Blog tile image](/images/site-mirror/2ea9fb274df6ebe096c1a9a31088188d1d71bdf2-270x190.webp)
 
 ***Note: ****Originally published on February 21, 2020, this blog post previously held information about *[*RedisConf 2020*](/redisconf/)*, planned for May 12–14 in San Francisco. Due to an abundance of caution surrounding the novel coronavirus (COVID-19), we have decided to transform the conference into a virtual event. Read on for more information.*
 
-![](/images/blog/35ced8012871248ee1d4f16322ad26edc940c804-1024x225.webp)
+![](/images/site-mirror/35ced8012871248ee1d4f16322ad26edc940c804-1024x225.webp)
 
 With the health and wellbeing of the Redis community top of mind, Redis has decided to present RedisConf 2020 as a virtual event due to the growing concern around the novel coronavirus (COVID-19).
 

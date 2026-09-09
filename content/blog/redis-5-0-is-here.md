@@ -17,7 +17,7 @@ hidden: true
 
 *By Redis   · Published 22 October 2018 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Last week, Redis reached a major milestone with the release of 5.0, which includes a variety of advancements and improvements. The big story here is the introduction of Streams as part of the release. Streams is the first entirely new data structure in Redis since HyperLogLog was introduced as part of 2.8.9 back in April 2014 (over four years ago)!
 
@@ -48,7 +48,7 @@ Aside from new commands and data structures, the 5.0 release includes many refin
 
 For a bit of fun, we have also added the useless [yet entertaining](http://antirez.com/news/123) LOLWUT command, which generates some computer art using random elements and command arguments. It doesn’t have a significant technical purpose, but it might be a nice thing to test to see if Redis 5.0 is running properly when connecting to an instance of an unknown version.
 
-![Art inside a database command](/images/blog/9b83976685f93af7afcd4b50d7ea3e706dd8081f-456x536.webp)
+![Art inside a database command](/images/site-mirror/9b83976685f93af7afcd4b50d7ea3e706dd8081f-456x536.webp)
 
 (From [LOLWUT: a piece of art inside a database command](http://antirez.com/news/123))
 

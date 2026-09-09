@@ -14,7 +14,7 @@ hidden: true
 
 *By Haley Kim, Associate Content Producer · Published 13 November 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/f92386dd977b1b224fe8155783101dab5e0523d5-386x260.webp)
+![Blog tile image](/images/site-mirror/f92386dd977b1b224fe8155783101dab5e0523d5-386x260.webp)
 
 *In our *[*Advice to Our Younger Selves*](/blog/tag/advice-to-our-younger-selves/)* series, Redis women tech staffers share insights they wish they knew when they were starting their careers.*
 

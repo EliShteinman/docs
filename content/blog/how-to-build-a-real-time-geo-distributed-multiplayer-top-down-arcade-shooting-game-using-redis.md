@@ -14,7 +14,7 @@ hidden: true
 
 *By Growth Team · Published 1 October 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/77ca578c79c1cc151e88e2e1fc72fa6ad01aa18f-772x520.webp)
+![Blog tile image](/images/site-mirror/77ca578c79c1cc151e88e2e1fc72fa6ad01aa18f-772x520.webp)
 
 As the [gaming industry ](/industries/gaming/)continues to grow in size, the need to create a unique and dynamic user experience has become even more mandatory. Because of its fandom, businesses have to maximize the multiplayer gaming experience to drive customer acquisition and retention. However, companies are faced with a number of obstacles when trying to scale multiplayer games, all of which can be solved through Redis.
 
@@ -51,7 +51,7 @@ Let’s identify the different components you’ll need to create this game. The
 
 ## 3. Architecture
 
-![](/images/blog/007312501a84d5f71eebb97225337a1768775cc9-1024x388.webp)
+![](/images/site-mirror/007312501a84d5f71eebb97225337a1768775cc9-1024x388.webp)
 
 The main idea of this multiplayer game is to keep it real-time and distribute it geographically. That means that all the instances in your cluster should be updated so that you don’t run out of synchronization. Now let’s take a look at the architecture.
 
@@ -61,7 +61,7 @@ The main idea of this multiplayer game is to keep it real-time and distribute it
 
 ## 4. How it works
 
-![](/images/blog/e04baf51fe89e5e84681f26b487b27b1b8da7f36-1024x381.webp)
+![](/images/site-mirror/e04baf51fe89e5e84681f26b487b27b1b8da7f36-1024x381.webp)
 
 Now let’s take a look at the flow of the architecture.
 
@@ -73,13 +73,13 @@ Now let’s take a look at the flow of the architecture.
 - This will distribute the commands back to other users and players
 - If the command is wrong, RedisGears will remove certain players from the game
 
-![](/images/blog/85c0d9e28d7b885374e6fde0182fd4068b51bdd5-1024x606.webp)
+![](/images/site-mirror/85c0d9e28d7b885374e6fde0182fd4068b51bdd5-1024x606.webp)
 
 - User navigates through the terrain using the arrow keys and fires missiles at opponents by clicking on the mouse
 - When the user carries out an action, these commands are sent to RedisGears via the WebSocket.
 - Valid commands will then be redistributed to other users via Redis Streams.
 
-![](/images/blog/99def42397329cd816d9d0d609ba6455efc85fd7-1024x588.webp)
+![](/images/site-mirror/99def42397329cd816d9d0d609ba6455efc85fd7-1024x588.webp)
 
 - NodeJS forms a communication channel between the user and Redis
 - A user is able to find a game and join it.

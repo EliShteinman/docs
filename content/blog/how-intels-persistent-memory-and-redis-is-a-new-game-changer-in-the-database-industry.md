@@ -15,7 +15,7 @@ hidden: true
 
 *By Priya Balakrishnan, Sr. Director of Product and Partner Marketing · Published 2 April 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9cfd4545e40037bd936f64d27531c54867a58bad-600x600.webp)
+![Blog tile image](/images/site-mirror/9cfd4545e40037bd936f64d27531c54867a58bad-600x600.webp)
 
 Over the past decade, our [customers](/customers/) have used Redis in some amazing ways—as a [cache](/solutions/caching/) (of course!), [session store](/solutions/session-management/), [message broker](/solutions/messaging/), recommendation engine, secondary index, streaming platform, and, increasingly, single source of truth database. Redis’ extreme versatility across countless scenarios is due to its ability (unlike any other database in the market) to process data and deliver insights at sub-millisecond speeds, irrespective of data volume.
 
@@ -27,7 +27,9 @@ But even with the incredible success of Redis on Flash, we have not remained com
 
 [Intel Optane DC Persistent Memory](https://www.intel.com/content/www/us/en/products/docs/memory-storage/optane-persistent-memory/overview.html) delivers a new persistent memory tier between DRAM and SSD that can provide up to 6TBs of non-volatile memory capacity in a two-socket server plus up to 1.5TB of DRAM,—at a performance level comparable to traditional DRAM memory. More simply put, this new tier extends a standard machine’s memory capacity to up to 7.5TBs of byte-addressable memory (DRAM + persistent memory), while providing persistence. This technology comes in a DIMM form factor and is available as a 128, 256, and 512GB persistent memory module.
 
-![](/images/blog/942ca94b6c388ecc48b2a86a5fb2811f44986b6f-1024x606.webp)
+![](/images/site-mirror/942ca94b6c388ecc48b2a86a5fb2811f44986b6f-1024x606.webp)
+
+*Reimagining the data center memory and storage hierarchy*
 
 ## Benchmark Testing Shows 43% Cost Savings
 

@@ -14,11 +14,11 @@ hidden: true
 
 *By Steve Naventi, Senior Director of Communications · Published 27 November 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3dc83c2e09ae7ef0b5d06f350a0a7eab5fbbe5a0-386x258.webp)
+![Blog tile image](/images/site-mirror/3dc83c2e09ae7ef0b5d06f350a0a7eab5fbbe5a0-386x258.webp)
 
 AWS re:Invent brings together over 65,000 cloud professionals each year, but it can be hard to shift through the noise and news that this annual Las Vegas conference generates. To help you out, we’ve compiled the top people we’re following for re:Invent commentary. Follow them for insightful, analytical, humorous, and fun takes on all things AWS and re:Invent.
 
-![](/images/blog/8a3dc80db05c69d958e8a498b2bb078651996e6d-150x150.webp)
+![](/images/site-mirror/8a3dc80db05c69d958e8a498b2bb078651996e6d-150x150.webp)
 
 **Jeff Barr**
 
@@ -28,7 +28,7 @@ Twitter: [@jeffbarr](https://twitter.com/jeffbarr)
 
 Blog: [https://aws.amazon.com/blogs/aws/author/jbarr/](https://aws.amazon.com/blogs/aws/author/jbarr/)
 
-![](/images/blog/855f2114ff5f58e35f71e5f2f3745fd0af116227-150x150.webp)
+![](/images/site-mirror/855f2114ff5f58e35f71e5f2f3745fd0af116227-150x150.webp)
 
 **Jeff Blankenburg**
 
@@ -38,7 +38,7 @@ Twitter: [@jeffblankenburg](https://twitter.com/jeffblankenburg?lang=en)
 
 Blog: [https://blankenblog.com/](https://blankenblog.com/)
 
-![](/images/blog/eca923e1bbafb53ca3401dfb10398dd5cffc8030-150x150.webp)
+![](/images/site-mirror/eca923e1bbafb53ca3401dfb10398dd5cffc8030-150x150.webp)
 
 **Vicki Boykis**
 
@@ -50,7 +50,7 @@ Newsletter: [https://vicki.substack.com/](https://vicki.substack.com/)
 
 GitHub: [https://github.com/veekaybee](https://github.com/veekaybee)
 
-![](/images/blog/a178b7662e501f7bcebe76cf88d176b3ddbce643-150x150.webp)
+![](/images/site-mirror/a178b7662e501f7bcebe76cf88d176b3ddbce643-150x150.webp)
 
 **Sam Charrington**
 
@@ -60,7 +60,7 @@ Twitter: [@samcharrington](https://twitter.com/samcharrington)
 
 Website: [https://twimlai.com/](https://twimlai.com/)
 
-![](/images/blog/98dfbb4a2f1a3ef6449a7eaabcacab3fa7601bf5-96x96.webp)
+![](/images/site-mirror/98dfbb4a2f1a3ef6449a7eaabcacab3fa7601bf5-96x96.webp)
 
 **Cloud Opinion**
 
@@ -68,7 +68,7 @@ The anonymous Cloud Opinion delivers parody content on AWS and the rise of the c
 
 Twitter: [@cloud_opinion](https://twitter.com/cloud_opinion)
 
-![](/images/blog/1a5fcbd81abb31a2e41a6ce2d2462495927fccf4-150x150.webp)
+![](/images/site-mirror/1a5fcbd81abb31a2e41a6ce2d2462495927fccf4-150x150.webp)
 
 **Yan Cui**
 
@@ -80,7 +80,7 @@ Website: [https://theburningmonk.com/](https://theburningmonk.com/)
 
 GitHub: [https://github.com/theburningmonk](https://github.com/theburningmonk)
 
-![](/images/blog/366a296af346bf4a83067f103471fc1321a5a175-150x150.webp)
+![](/images/site-mirror/366a296af346bf4a83067f103471fc1321a5a175-150x150.webp)
 
 **Emily Freeman**
 
@@ -90,7 +90,7 @@ Twitter: [@editingemily](https://twitter.com/editingemily)
 
 Website: [https://emilyfreeman.io/](https://emilyfreeman.io/)
 
-![](/images/blog/7510f93a08aa830264323c682261f0391ac438df-150x150.webp)
+![](/images/site-mirror/7510f93a08aa830264323c682261f0391ac438df-150x150.webp)
 
 **Abby Fuller**
 
@@ -100,7 +100,7 @@ Twitter: [@abbyfuller](https://twitter.com/abbyfuller)
 
 GitHub: [https://github.com/abby-fuller](https://github.com/abby-fuller)
 
-![](/images/blog/9f14e4d7e1f1bb9170fd206778be4cef22658ebd-150x150.webp)
+![](/images/site-mirror/9f14e4d7e1f1bb9170fd206778be4cef22658ebd-150x150.webp)
 
 **Arun Gupta**
 
@@ -110,7 +110,7 @@ Twitter: [@arungupta](https://twitter.com/arungupta)
 
 GitHub: [https://github.com/arun-gupta](https://github.com/arun-gupta)
 
-![](/images/blog/9d8837ee4abd644422bf092b94ab38c5ee6bc21a-150x150.webp)
+![](/images/site-mirror/9d8837ee4abd644422bf092b94ab38c5ee6bc21a-150x150.webp)
 
 **Lydia Leong**
 
@@ -120,7 +120,7 @@ Twitter: [@cloudpundit](https://twitter.com/cloudpundit)
 
 Website: [https://cloudpundit.com/](https://cloudpundit.com/)
 
-![](/images/blog/8baadde8b43558f5ccc165d5a7ba5a6721ff7ccf-150x150.webp)
+![](/images/site-mirror/8baadde8b43558f5ccc165d5a7ba5a6721ff7ccf-150x150.webp)
 
 **RedMonk**
 
@@ -130,7 +130,7 @@ Twitter: [@redmonk](https://twitter.com/redmonk)
 
 Website: [https://redmonk.com/](https://redmonk.com/)
 
-![](/images/blog/4cda83ac8eb63847247b6b52e149053609d4a6ec-150x150.webp)
+![](/images/site-mirror/4cda83ac8eb63847247b6b52e149053609d4a6ec-150x150.webp)
 
 **Corey Quinn**
 

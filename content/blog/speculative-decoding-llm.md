@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 22 April 2026 · updated 23 April 2026*
 
-![Redis](/images/blog/b5da8de73f648a3b68589ba5609c207bd7c2b15f-1200x628.webp)
+![Redis](/images/site-mirror/b5da8de73f648a3b68589ba5609c207bd7c2b15f-1200x628.webp)
 
 You're running LLM inference in production. Semantic caching handles the easy wins: repeated queries with the same intent come back from cache without touching the model. But everything else still hits the model at full cost, and that adds up fast at scale.
 

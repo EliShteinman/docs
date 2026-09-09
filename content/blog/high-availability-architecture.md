@@ -14,13 +14,13 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 1 July 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/4e2a56fcf3f8f0718bc00dd403d1e3d1a06aa7e6-772x550.webp)
+![Blog tile image](/images/site-mirror/4e2a56fcf3f8f0718bc00dd403d1e3d1a06aa7e6-772x550.webp)
 
 ## What is high availability architecture?
 
 A high available architecture is when there are a number of different components, [modules](/modules/get-started/), or services that work together to maintain optimal performance, irrespective of peak-time loads.
 
-![High Availability Architecture Demystified](/images/blog/a74121ea8b1a323b3dd516662c9fa8d65a2ca83e-1024x484.webp)
+![High Availability Architecture Demystified](/images/site-mirror/a74121ea8b1a323b3dd516662c9fa8d65a2ca83e-1024x484.webp)
 
 In its purest sense, this system allows businesses to work continuously without failure over a given period of time. Many businesses can’t afford even a minute of downtime. Considering that data is the lifeblood of many businesses, even just a short period of downtime can be incredibly costly.
 

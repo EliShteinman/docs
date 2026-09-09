@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 3 February 2026 · updated 6 February 2026*
 
-![Redis](/images/blog/4daf6ceb796c75f914a0bb90164b0c333da42844-1200x628.webp)
+![Redis](/images/site-mirror/4daf6ceb796c75f914a0bb90164b0c333da42844-1200x628.webp)
 
 You've built sales automation to move faster. The workflow looks good on paper. The lead comes in, the system routes it, the CRM updates, and the rep gets notified. But at scale, small delays compound.
 

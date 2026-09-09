@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 4 December 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7c13a9818b10a4c82e468a99f67f232635210675-1198x985.webp)
+![Blog tile image](/images/site-mirror/7c13a9818b10a4c82e468a99f67f232635210675-1198x985.webp)
 
-![](/images/blog/0946e56de7ef9aa6ecf222743887a86482986da3-1024x788.webp)
+![](/images/site-mirror/0946e56de7ef9aa6ecf222743887a86482986da3-1024x788.webp)
 
 *This blog post was adapted from our white paper *[***Driving Retail Transformation with Redis Enterprise***](/docs/driving-retail-transformation-with-redis-enterprise/)*. Download it for free now!*
 

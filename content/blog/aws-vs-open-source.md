@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 17 December 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/78bca5b3928c071769472013b199b0e5a8af1bed-386x259.webp)
+![Blog tile image](/images/site-mirror/78bca5b3928c071769472013b199b0e5a8af1bed-386x259.webp)
 
 It’s that time of the year again. No, I’m not referring to the winter holidays, but to the reverberations of the announcements coming out of [AWS re:Invent](https://reinvent.awsevents.com/). Oftentimes when AWS makes a big move, IT ecosystems get shaken. In the database space, this year the effect focused on [Apache Cassandra](http://cassandra.apache.org/), after AWS announced a Cassandra-compatible serverless managed solution.
 
@@ -41,7 +41,7 @@ The situation is complicated, and not as straightforward as it sounds. At AWS re
 
 As you might have guessed, ElastiCache doesn’t support any modules, even those from the community:
 
-![](/images/blog/6ba7234be0d388f6d13c9983aa98913a11151db5-974x616.webp)
+![](/images/site-mirror/6ba7234be0d388f6d13c9983aa98913a11151db5-974x616.webp)
 
 The prevalence of ElastiCache has created a split in the community of Redis users. The people who experience Redis only via AWS are seeing an incomplete vision of the open source project’s direction and benefits. I feel the broader community would benefit if they knew that, Yes, Redis is a great caching solution, but you can do so much more with it.
 

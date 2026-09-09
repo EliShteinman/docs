@@ -16,7 +16,7 @@ hidden: true
 
 *By Redis   · Published 23 March 2022 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/35b9ca6682093dbbd624172f666c7ef5fab6de53-772x550.webp)
+![Blog tile image](/images/site-mirror/35b9ca6682093dbbd624172f666c7ef5fab6de53-772x550.webp)
 
 Today we’re thrilled to announce Redis Stack. Redis Stack consolidates the capabilities of the leading Redis modules into a single product, making it easy for developers to [build modern, real-time applications](/try-free/) with the speed and stability of Redis.
 
@@ -32,7 +32,7 @@ This holds no matter the data model, be it a key/value, document, stream, graph,
 
 As the trend of the last 24 months at [DB-Engines](https://db-engines.com/) makes clear, the fastest-growing data models are key-value, search, document, graph, and time series. This trend also shows that fewer and fewer developers are choosing to model their applications with relational databases.
 
-![](/images/blog/8d3fa55aa267596e25503c627bd91288bc388fbd-1024x484.webp)
+![](/images/site-mirror/8d3fa55aa267596e25503c627bd91288bc388fbd-1024x484.webp)
 
 As it turns out, we’ve spent the past four years building several dedicated data engines that extend the core key/value data-structure functionality of Redis with modern data models and data processing capabilities, such as search, document, graph, time series, and probabilistic data structures.
 
@@ -54,7 +54,7 @@ Redis Stack is a suite of three components:
 
 1. The **Redis Stack Client SDK** includes the leading official Redis clients in Java, JavaScript, and Python. These clients also include our new suite of object mapping libraries which offer developer-friendly abstractions that get you productive with just a few lines of code. Known as Redis OM for [.NET](https://github.com/redis/redis-om-dotnet), [Node.js](https://github.com/redis/redis-om-node), [Java](https://github.com/redis/redis-om-spring), and [Python](https://github.com/redis/redis-om-python), these libraries also make it easier than ever to integrate with major application frameworks such as Spring, ASP.NET Core, FastAPI, and Express.
 
-![three redis stack icons](/images/blog/0c87796e72276c01f7f74d3901dc38b3aa6838c7-1024x432.webp)
+![three redis stack icons](/images/site-mirror/0c87796e72276c01f7f74d3901dc38b3aa6838c7-1024x432.webp)
 
 ## Getting started with Redis Stack
 
@@ -79,7 +79,7 @@ Redis is a core, open source technology, and our focus on its continued developm
 
 When you’re ready to run Redis Stack, you can [easily migrate your data](/redis-enterprise-cloud/migrate/) using the Redis replication mechanism or by loading your RDB or AOF files.
 
-![redis stack illustration](/images/blog/85ba0002eabf67d0b79061aa61748a14e3ccc66e-1024x323.webp)
+![redis stack illustration](/images/site-mirror/85ba0002eabf67d0b79061aa61748a14e3ccc66e-1024x323.webp)
 
 ## Licensing
 
@@ -89,7 +89,7 @@ All the codebase components of Redis Stack are open and free for everyone to use
 - We’re providing RedisInsight under its existing [Server Side Public License (SSPL)](https://en.wikipedia.org/wiki/Server_Side_Public_License)
 - The leading Redis clients and our object mapping libraries have been released under an open source [MIT license](https://opensource.org/licenses/MIT)
 
-![redis stack licensing icons](/images/blog/8a8b98f816600c2228313f9a8e96b6aa82bfc603-1024x435.webp)
+![redis stack licensing icons](/images/site-mirror/8a8b98f816600c2228313f9a8e96b6aa82bfc603-1024x435.webp)
 
 ## In summary
 

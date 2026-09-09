@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 June 2026 · updated 3 June 2026*
 
-![Why your AI doesn't understand your business (and how teams fix it)](/images/blog/f434174f6532a7a759535ad95125ad25066613c8-2400x1256.webp)
+![Why your AI doesn't understand your business (and how teams fix it)](/images/site-mirror/f434174f6532a7a759535ad95125ad25066613c8-2400x1256.webp)
 
 Your AI can summarize documents and answer questions about almost anything on the internet. But ask it about your business, and things fall apart. It pulls stale pricing, ignores internal policies, or hallucinates details that sound plausible but don't match reality.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 19 February 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0a0b80066c9fd0a9566eda189f09220e2e6f3010-1280x744.webp)
+![Blog tile image](/images/site-mirror/0a0b80066c9fd0a9566eda189f09220e2e6f3010-1280x744.webp)
 
 Lua scripting is a hugely powerful feature of Redis. At the same time, though, Lua scripting can be tricky to “get right.”
 

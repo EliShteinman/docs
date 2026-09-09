@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 23 October 2025 · updated 21 May 2026*
 
-![Redis In-Memory Databases](/images/blog/27ac5592301407f36909460b89075da7d104b801-1200x628.webp)
+![Redis In-Memory Databases](/images/site-mirror/27ac5592301407f36909460b89075da7d104b801-1200x628.webp)
 
 ### Key takeaways
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 11 April 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0a5523b3e2e3bff2cea428d2812cf72a8790ea40-1800x900.webp)
+![Blog tile image](/images/site-mirror/0a5523b3e2e3bff2cea428d2812cf72a8790ea40-1800x900.webp)
 
 This year Redis continues to rack up milestones. A few days ago we celebrated the 10th anniversary of Salvatore Sanfilippo [first posting a link](/blog/redis-turns-10/) on Hacker News about starting the Redis project. Now coming fresh off our [fifth annual – and biggest ever RedisConf](/blog/wrap-redisconf-19-recap/)—we are thrilled to receive the news that Redis has been named the most loved database in Stack Overflow’s [2019 Developer Survey](https://insights.stackoverflow.com/survey/2019?utm_source=so-owned&utm_medium=announcement-banner&utm_campaign=dev-survey-2019#most-loved-dreaded-and-wanted) for the third consecutive year!
 

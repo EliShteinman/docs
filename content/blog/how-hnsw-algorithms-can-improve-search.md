@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 10 June 2025 · updated 21 May 2026*
 
-![How hierarchical navigable small world (HNSW) algorithms can improve search](/images/blog/8ff7427c50ac06236564f19da7c08e85b99df959-772x552.webp)
+![How hierarchical navigable small world (HNSW) algorithms can improve search](/images/site-mirror/8ff7427c50ac06236564f19da7c08e85b99df959-772x552.webp)
 
 Think of the ["six degrees of Kevin Bacon" game](https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon): everyone is connected by just a few people. That same principle powers hierarchical navigable small world (HNSW) algorithms, which link data points so queries can reach the right match in far fewer hops.
 
@@ -22,7 +22,7 @@ Modern applications frequently deal with high-dimensional data—embeddings of i
 
 HNSW has emerged as the leading ANN approach for high-dimensional [vector search](https://redis.io/learn/howtos/solutions/vector/getting-started-vector)—whether you're building similarity search, recommendation engines, or AI applications—because it balances speed, accuracy, and scalability better than alternatives. By organizing data into layered graphs, HNSW dramatically reduces search complexity while maintaining high recall, making it the go-to choice for enterprise-scale workloads.
 
-![How hierarchical navigable small world (HNSW) algorithms can improve search](/images/blog/a52486d62f2e5e8ab649b371b2ac5d5fb5707fcf-1920x1264.webp)
+![How hierarchical navigable small world (HNSW) algorithms can improve search](/images/site-mirror/a52486d62f2e5e8ab649b371b2ac5d5fb5707fcf-1920x1264.webp)
 
 ## What is a hierarchical navigable small world (HNSW)?
 
@@ -137,7 +137,7 @@ Redis 8, for example, can [sustain 66K vector insertions per second](/blog/searc
 
 We’ve also [benchmarked our performance](/blog/benchmarking-results-for-vector-databases/) against other vendors, with our testing showing that Redis is faster for vector database workloads than any other vector database we tested. Overall, Redis has 62% more throughput than the second-ranked database for lower-dimensional datasets and 21% more throughput for high-dimensional datasets.
 
-![Redis is faster than any other vector database - graph](/images/blog/5b61cd66581faebbc672806e9fde0d73bb56b9dd-1310x900.webp)
+![Redis is faster than any other vector database - graph](/images/site-mirror/5b61cd66581faebbc672806e9fde0d73bb56b9dd-1310x900.webp)
 
 Vector storage and rapid data retrieval are only becoming more sought after with the rise of generative AI. Redis helps companies handle AI workloads at scale, which OpenAI experienced working with Redis to scale ChatGPT. Redis “plays a crucial role in our research efforts,” according to a [blog post from OpenAI](https://openai.com/index/march-20-chatgpt-outage/). “Their significance cannot be understated—we would not have been able to scale ChatGPT without Redis.”
 

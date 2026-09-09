@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 7 June 2026 · updated 10 June 2026*
 
-![AI context windows: Why context quality beats context size](/images/blog/3284593845f45cf8ee549b698c9215ae4629ffd5-2400x1256.webp)
+![AI context windows: Why context quality beats context size](/images/site-mirror/3284593845f45cf8ee549b698c9215ae4629ffd5-2400x1256.webp)
 
 Your AI agent has a 128K token context window. You're adding in retrieved documents, conversation history, tool outputs, and system instructions. But the answers are getting *worse*.
 

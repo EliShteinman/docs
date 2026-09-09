@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 30 January 2026*
 
-![Redis](/images/blog/25d4cbc52cc20d35284ef86b657d5b5c3a3a500a-1200x628.webp)
+![Redis](/images/site-mirror/25d4cbc52cc20d35284ef86b657d5b5c3a3a500a-1200x628.webp)
 
 Everyone loves a discount. Nobody loves paying for stranded capacity and on-demand overages at the same time. 
 

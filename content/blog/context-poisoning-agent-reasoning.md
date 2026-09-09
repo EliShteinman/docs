@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 17 May 2026 · updated 21 May 2026*
 
-![Context poisoning: how bad information breaks agent reasoning](/images/blog/65c688d13aee3fc3ca3acbba60efc5837acf1c30-2400x1256.webp)
+![Context poisoning: how bad information breaks agent reasoning](/images/site-mirror/65c688d13aee3fc3ca3acbba60efc5837acf1c30-2400x1256.webp)
 
 Your agent confidently tells a customer their order shipped two days ago. It didn't. The order was canceled last week, but a stale cache entry surfaced in the agent's context window, and the agent treated that outdated status as fact. Worse, it then wrote the "confirmed shipment" into its memory, so every future interaction about that order will reference the same wrong information as verified truth.
 

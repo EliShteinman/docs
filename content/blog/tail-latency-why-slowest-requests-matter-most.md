@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 4 July 2026 · updated 14 July 2026*
 
-![Tail latency: why the slowest requests matter most](/images/blog/ca32eb6a41fb20e4c467ae9d7d24afa74a9c7297-2400x1256.webp)
+![Tail latency: why the slowest requests matter most](/images/site-mirror/ca32eb6a41fb20e4c467ae9d7d24afa74a9c7297-2400x1256.webp)
 
 Tail latency is the handful of requests that take far longer than the rest, hiding inside an average that looks perfectly fine. Your dashboard shows a 50ms average, everyone seems happy, and then support tickets start piling up about the app feeling sluggish. As traffic and fan-out grow, those hidden slow requests hurt far more than their small percentage suggests.
 

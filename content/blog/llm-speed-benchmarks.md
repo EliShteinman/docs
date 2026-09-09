@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 10 May 2026 · updated 13 May 2026*
 
-![LLM speed benchmarks: the metrics, models & infrastructure that matter for production AI](/images/blog/1a1c89b8b9846e20d733bfb5e024b3cbd6fa8edd-2400x1256.webp)
+![LLM speed benchmarks: the metrics, models & infrastructure that matter for production AI](/images/site-mirror/1a1c89b8b9846e20d733bfb5e024b3cbd6fa8edd-2400x1256.webp)
 
 Your LLM-powered feature crushes it in staging. Then you ship it, and users sit watching a loading spinner for 30 seconds while the model thinks. Speed benchmarks exist to help you predict and prevent that experience before it hits production.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 18 April 2019 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 *Click to learn more about RediSearch: *[*RediSearch: A High Performance Search Engine as a Redis Module white paper*](/docs/redisearch-a-high-performance-search-engine-as-a-redis-module/)
 
@@ -40,19 +40,19 @@ We first indexed 5.6 million docs (5.3GB) from Wikipedia and then performed two-
 
 As you can see in the figure below, RediSearch built its index in 221 seconds versus 349 seconds for Elasticsearch, or 58% faster.
 
-![](/images/blog/fb8d5f64a7d7357a02d78f999d4dfbdb7d93752a-1624x720.webp)
+![](/images/site-mirror/fb8d5f64a7d7357a02d78f999d4dfbdb7d93752a-1624x720.webp)
 
 ### Querying results
 
 Once the dataset was indexed, we launched two-word search queries using 32 clients running on a dedicated load-generator server. As you can see in the figure below, RediSearch throughput reached 12.5K ops/sec compared to 3.1K ops/sec with Elasticsearch, or **x4 faster**. Furthermore, RediSearch latency was slightly better, at 8msec on average compared to 10msec with Elasticsearch.
 
-![](/images/blog/5e793c0965bd1a5b1de1a17db62338beb88dd84e-1598x540.webp)
+![](/images/site-mirror/5e793c0965bd1a5b1de1a17db62338beb88dd84e-1598x540.webp)
 
 ### Multi-tenant indexing benchmark
 
 Here, we simulated a multi-tenant e-commerce application where each tenant represented a product category and maintained its own index. For this benchmark, we built 50K indices (or products), which each stored up to 500 documents (or items), for a total of 25 million docs. RediSearch built the indices in just 201 seconds, while running an average of 125K indices/sec. However, Elasticsearch crashed after 921 indices and clearly was not designed to cope with this load.
 
-![](/images/blog/e63c81dfba6d254c800b9a865fdd59d2e83d0139-1660x936.webp)
+![](/images/site-mirror/e63c81dfba6d254c800b9a865fdd59d2e83d0139-1660x936.webp)
 
 ### Benchmark setup
 

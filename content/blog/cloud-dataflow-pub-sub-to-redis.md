@@ -14,7 +14,7 @@ hidden: true
 
 *By Gilbert Lau, Cloud Partner Solution Architect · Published 11 April 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0d01fd3cb9170f91ed0ad4f58b8f034eb8e002b8-772x550.webp)
+![Blog tile image](/images/site-mirror/0d01fd3cb9170f91ed0ad4f58b8f034eb8e002b8-772x550.webp)
 
 **Google Cloud Dataflow provides a serverless architecture that you can use to shard and process very large batch datasets or high-volume live streams of data in parallel. This short tutorial shows you how to go about it.**
 
@@ -48,21 +48,21 @@ In this example, we process a message arriving at a pre-defined Pub/Sub subscrip
 
 From the Dataflow GCP console, enter a pipeline name and regional endpoint, and then select Custom Template. Enter gs://redis-field-engineering/redis-field-engineering/pubsub-to-redis/flex/Cloud_PubSub_to_Redis for the template path.
 
-![A Google cloud template for adding the cloud dataflow to Redis enterprise](/images/blog/cba9588b4e7f96b60c58711a94b80869a5070508-1824x1338.webp)
+![A Google cloud template for adding the cloud dataflow to Redis enterprise](/images/site-mirror/cba9588b4e7f96b60c58711a94b80869a5070508-1824x1338.webp)
 
 Next, enter the Pub/Sub subscription name that holds the incoming messages. Add the Redis Enterprise database parameters (e.g., Redis database host, Redis database port, and the Redis default user authentication password).
 
-![A Google cloud template for adding the cloud dataflow to redis enterprise: create the pipeline from the template](/images/blog/279f36ed5627999bfc93bd512a788517df4432a0-1986x1916.webp)
+![A Google cloud template for adding the cloud dataflow to redis enterprise: create the pipeline from the template](/images/site-mirror/279f36ed5627999bfc93bd512a788517df4432a0-1986x1916.webp)
 
 Choose Create Pipeline. The pipeline is now set to receive incoming messages. You may cheer, if you like to celebrate small victories.
 
 You’re ready to publish a sample message to the Pub/Sub topic. Type in some sample data, and choose Publish.
 
-![A Google cloud template for adding the cloud dataflow to redis enterprise: publish the message](/images/blog/4a176df99a172b05c911b148796b19e9f62c8a92-1999x1040.webp)
+![A Google cloud template for adding the cloud dataflow to redis enterprise: publish the message](/images/site-mirror/4a176df99a172b05c911b148796b19e9f62c8a92-1999x1040.webp)
 
 Confirm that your sample data was published, if only for your own reassurance. To verify that the data was inserted into the Redis Enterprise database, you can use [Redis Insight](/insight/), a Redis GUI that supports command-line interaction in its desktop client.
 
-![A Google cloud template for adding the cloud dataflow to redis enterprise: make sure it took.](/images/blog/075915278b7a863b4814a7afbdb7ac8a9dfe6a04-1999x1345.webp)
+![A Google cloud template for adding the cloud dataflow to redis enterprise: make sure it took.](/images/site-mirror/075915278b7a863b4814a7afbdb7ac8a9dfe6a04-1999x1345.webp)
 
 ## That’s just the start
 

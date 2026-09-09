@@ -14,9 +14,9 @@ hidden: true
 
 *By Rod Hamlin · Published 17 February 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/bfc86b9ce15ac74722c3052afc4c1fcce0f07e65-1396x619.webp)
+![Blog tile image](/images/site-mirror/bfc86b9ce15ac74722c3052afc4c1fcce0f07e65-1396x619.webp)
 
-![](/images/blog/bfc86b9ce15ac74722c3052afc4c1fcce0f07e65-1396x619.webp)
+![](/images/site-mirror/bfc86b9ce15ac74722c3052afc4c1fcce0f07e65-1396x619.webp)
 
 As Gold sponsors of this year’s Spark Summit East, the team from Redis was excited to spend time in one our country’s oldest cities, Boston. Flying out from our headquarters in sunny Mountain View, CA, we had no idea what we were in for. The diversion mid-flight to Chicago for a medical emergency should have been a sign that this would be an interesting journey.
 
@@ -24,7 +24,7 @@ Spark Summit Day One went off without a hitch. With just under 2,000 attendees, 
 
 Along with our partner, Databricks, the Redis team stayed busy with prospects and customers demonstrating how Databrick’s cloud-based [Spark](/docs/redis-spark-timeseries-benchmark/) workspace integrates with Redise Cloud. This integration enables Databricks users to serve Spark processes and SQL queries with[ Redise Cloud ](/products/redis-cloud/)while allowing RediseCloud users to instantly run analytics processing using Databricks’ cloud-based Spark clusters. (see diagram below)
 
-![](/images/blog/a33431a25b5b1905941c9f0e6f354d0d844949cf-635x460.webp)
+![](/images/site-mirror/a33431a25b5b1905941c9f0e6f354d0d844949cf-635x460.webp)
 
 
 Joint customers benefit from being able to access the power of [Spark](/docs/redis-spark-timeseries-benchmark/) integrated with the real-time high performance of Redis. Analytics can shift from being post-facto to inline and instantaneous with the combination of these two powerful big data engines.
@@ -35,7 +35,7 @@ Day One of Spark Summit wrapped up with an energetic cocktail reception in the E
 
 Enter a blizzard. A little snow never hurt anyone. Around 6:00 am on Thursday, I was awakened by strong winds and snow pounding against my window on the 9th floor of the Back Bay Hilton. By mid-afternoon, we were in the middle of a powerful blizzard that brought several feet of new snow up and down the coast.
 
-![](/images/blog/c9c529232bbf610c18b24b2990753dc132401f76-640x360.webp)
+![](/images/site-mirror/c9c529232bbf610c18b24b2990753dc132401f76-640x360.webp)
 
 
 Fortunately, the Hilton is right across the street from the Hynes Convention Center so we only had to venture a few hundred feet outside. Surprisingly, Day Two of the Summit was only slightly less busy than Day One.
@@ -44,7 +44,7 @@ Our team remained busy throughout Day Two of the summit. The Redis staff was exc
 
 Day Two ended with another evening of superb dinners with prospects. A few of us decided to brave the weather, jump on the subway, and head over to TD Garden to see our San Jose Sharks take on the Boston Bruins. After a quick stop at Four’s Sports Bar, we found ourselves in the Garden, admiring all of the championship banners hanging from the rafters. The hockey game did not turn out well for the Sharks in the end, but we had a great time and made some new friends along the way.
 
-![](/images/blog/d95a628cc52c11744cf84d23ecab5ac7742af53f-574x403.webp)
+![](/images/site-mirror/d95a628cc52c11744cf84d23ecab5ac7742af53f-574x403.webp)
 
 
 By Friday morning, the sun was back out and we headed off to the airport. Fortunately, the folks at Logan International are some of the best in the world in dealing with snow and ice, and our flights back to SFO departed safely, and on-time.

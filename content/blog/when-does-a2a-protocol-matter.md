@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 4 August 2026 · updated 5 August 2026*
 
-![When does the A2A protocol actually matter?](/images/blog/f430e377d3a159e8d217c8448dbbfff0ee2406dc-2400x1256.webp)
+![When does the A2A protocol actually matter?](/images/site-mirror/f430e377d3a159e8d217c8448dbbfff0ee2406dc-2400x1256.webp)
 
 If you're building [multi-agent systems](/blog/ai-agent-orchestration-platforms/), someone has probably asked whether you're "doing A2A yet," with the implication that you should be. When teams actually reach for it, most can't say why they need A2A over MCP. A more useful question: do your agents ever talk to an agent you don't own? If the answer is no, you can likely skip the protocol entirely. A2A is most useful when independently deployed agents, especially those owned by different teams or vendors, need a shared communication contract. Many multi-agent systems never hit that situation. This guide covers what A2A is, the ownership test that decides whether you need it, how its security model works, why production prevalence remains unclear, and how it fits with the Model Context Protocol (MCP).
 

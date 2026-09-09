@@ -14,7 +14,7 @@ hidden: true
 
 *By Roshan Kumar, Senior Product Manager · Published 9 March 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a2589c2cde4e3ed3ebe2f3b3d6295669221cb3ed-920x612.webp)
+![Blog tile image](/images/site-mirror/a2589c2cde4e3ed3ebe2f3b3d6295669221cb3ed-920x612.webp)
 
 The Forrester Wave™: In-Memory Databases, Q1 2017 report was published last week. Redis received the highest ratings for key criteria such as performance, analytics support, and use cases.
 

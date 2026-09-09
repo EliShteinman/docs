@@ -16,7 +16,7 @@ hidden: true
 
 *By Dylan Kreisman, Content Marketing Intern · Published 11 August 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3595427d03d812b6f62c516e3617be053002c78e-540x383.webp)
+![Blog tile image](/images/site-mirror/3595427d03d812b6f62c516e3617be053002c78e-540x383.webp)
 
 Today, we announced that Redis Labs is becoming [Redis](/), dropping “Labs” from our company name. The change signals the maturity of the company and the Redis open source project, to which we have continuously contributed since our founding in 2011 and which we’ve sponsored since 2015. We explain the motivation for this move in the [official announcement](/press/redis-labs-becomes-simply-redis/) and what we aspire for “One Redis” to mean in this short video.
 

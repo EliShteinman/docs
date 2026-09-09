@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 April 2023 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/4827332eea928c40aba2fb92e94ae172db9b4c53-772x550.webp)
+![Blog tile image](/images/site-mirror/4827332eea928c40aba2fb92e94ae172db9b4c53-772x550.webp)
 
 **Given the recent surge of AI-enabling APIs and web development tools, it seems like everyone is building chatbots into their applications. Want to see what’s involved? Here’s an overview.**
 
@@ -411,7 +411,7 @@ Building with LangChain and Redis is easy. Try building [this chatbot](https://g
 
 Interested in getting your hands dirty with AI? Our partners at LabLab AI are hosting [a series of hackathons](https://lablab.ai/event) over the next month featuring Redis. Compete for prizes, hype, and fame. In fact, [there’s a hackathon with Stable Diffusion](https://lablab.ai/event/stable-diffusion-ai-hackathon) starting April 14th!
 
-![Stable diffusion AI hackathon promo image](/images/blog/3465e0a91ccc40732678364c9d6bfa3e7ff2d054-1600x900.webp)
+![Stable diffusion AI hackathon promo image](/images/site-mirror/3465e0a91ccc40732678364c9d6bfa3e7ff2d054-1600x900.webp)
 
 Like what you’re hearing about Generative AI from Tyler and Harrison? See them share more practical examples during their joint session at [RedisDays Virtua](/redisdays/virtual/)l, a free virtual event on May 24th.
 

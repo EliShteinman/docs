@@ -15,7 +15,7 @@ hidden: true
 
 *By Yossi Gottlieb, Oran Agra · Published 30 June 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/2ea9fb274df6ebe096c1a9a31088188d1d71bdf2-270x190.webp)
+![Blog tile image](/images/site-mirror/2ea9fb274df6ebe096c1a9a31088188d1d71bdf2-270x190.webp)
 
 Today Salvatore Sanfilippo (a.k.a. [antirez](https://twitter.com/antirez)) [announced that he’s stepping back](http://antirez.com/news/133) from being the maintainer of the Redis project. We are honored and humbled that he requested us to succeed him as Redis project leads. With this change, we are excited to offer a new “community-driven” governing structure. Let’s look inside this new approach and see how we arrived at this decision.
 

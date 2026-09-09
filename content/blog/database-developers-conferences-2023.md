@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 7 February 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3dbdb5a6bf23ebf1f38ff9a0352ff987f956611b-772x550.webp)
+![Blog tile image](/images/site-mirror/3dbdb5a6bf23ebf1f38ff9a0352ff987f956611b-772x550.webp)
 
 If you’ve been staying home with your cat and avoiding public events for the past two years, that’s perfectly understandable. But 2023 may be the year when things start to get back to normal. It’s time to get back to doing the fun things we’ve been missing out on—namely, attending tech industry conferences!
 

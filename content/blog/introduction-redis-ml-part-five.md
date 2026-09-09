@@ -15,7 +15,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 5 September 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/454e75ad130aa9f36b0d353bc046c24a2e3b7be6-1384x552.webp)
+![Blog tile image](/images/site-mirror/454e75ad130aa9f36b0d353bc046c24a2e3b7be6-1384x552.webp)
 
 *This post is part five of a series of posts examining the features of the *[*Redis-ML*](/modules/machine-learning/)* module. The first post in the series can be found *[*here*](/blog/introduction-redis-ml/)*. The sample code included in this post requires several Python libraries and a Redis instance with the Redis-ML module loaded. Detailed setup instructions for the runtime environment are provided in both *[*part one*](/blog/introduction-redis-ml/)* and *[*part two*](/blog/introduction-redis-ml-part-two/)* of the series.*
 
@@ -27,7 +27,9 @@ Each rule in the tree operates on a single feature of the data set. If the condi
 
 For features with continuous values the test is “less than” or “equal to.” To evaluate a data point, start at the root note and traverse the tree by evaluating the rules in the interior node, until a leaf node is reached. The leaf node is labeled with the decision to return. An example decision tree is shown below:
 
-![](/images/blog/8403b72ae9e32d146aa76315759e7ad285b387d9-360x340.webp)
+![](/images/site-mirror/8403b72ae9e32d146aa76315759e7ad285b387d9-360x340.webp)
+
+*CART Tree from Wikipedia Decision Tree Learning Article*
 
 Many different algorithms (recursive partitioning, top-down induction, etc.) can be used to build a decision tree, but the evaluation procedure is always the same. To improve the accuracy of decision trees, they are often aggregated into random forests which use multiple trees to classify a datapoint and take the majority decision across the trees as a final classification.
 
@@ -135,7 +137,9 @@ cl_tree.fit(X_train, Y_train)
 
 Our depth-10 decision tree is difficult to visualize in a blog post, so to visualize the structure of the decision tree, we created a second tree and limited the tree’s depth to 3. The image below shows the structure of the decision tree, learned by the classifier:
 
-![](/images/blog/454e75ad130aa9f36b0d353bc046c24a2e3b7be6-1384x552.webp)
+![](/images/site-mirror/454e75ad130aa9f36b0d353bc046c24a2e3b7be6-1384x552.webp)
+
+*Titanic Decision Tree learned by Scikit*
 
 **Loading the Redis Predictor**
 

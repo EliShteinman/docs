@@ -14,7 +14,7 @@ hidden: true
 
 *By Esther Schindler · Published 8 August 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4da8d1462649c99c6f893b2e9ddc3736b73e3b99-772x550.webp)
+![Blog tile image](/images/site-mirror/4da8d1462649c99c6f893b2e9ddc3736b73e3b99-772x550.webp)
 
 **Microservices allow developers to break down their applications into smaller, loosely coupled services that are developed, deployed, and scaled independently. But you need a monitoring tool to track whether the software works correctly–and that means you need useful criteria for choosing such a tool.**
 

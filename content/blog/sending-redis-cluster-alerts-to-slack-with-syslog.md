@@ -14,7 +14,7 @@ hidden: true
 
 *By Tugdual Grall, Technical Marketing Manager · Published 18 June 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/29ea6f9a0e5837983b239ee798f6934e3491df4c-368x260.webp)
+![Blog tile image](/images/site-mirror/29ea6f9a0e5837983b239ee798f6934e3491df4c-368x260.webp)
 
 When running in production, a system logs many events and alerts, helping administrators monitor what is happening in a system and be notified automatically when they need to respond to an issue. For example:
 
@@ -32,7 +32,7 @@ To put this in context, Redis Enterprise manages many logs, held by default in t
 - Configure the syslog system to save Redis events and alerts in a /var/log/redis.log file
 - Send events and alerts to a syslog remote server as shown in this diagram:
 
-![](/images/blog/8b07cec37d9817c9fc63c9c4893f4119b813c3fb-1024x944.webp)
+![](/images/site-mirror/8b07cec37d9817c9fc63c9c4893f4119b813c3fb-1024x944.webp)
 
 Before we start, you’ll need to have a [Redis Enterprise Software](/download-center/) cluster up and running as well as a Linux instance to run syslog server. (Note that for this post, I used a 3-node cluster of Redis Enterprise 5.4.14-28, running on CentOS 7.x., and another Linux instance to run syslog server.)
 
@@ -59,7 +59,7 @@ timestamp severity event_log EventLog:{<list of key value pairs in any order>}
 
 These events are managed at the cluster level, so only the master node of the cluster is writing in events in the event_log file at a specific moment in time. Let’s run the `rladmin` command on the cluster:
 
-![](/images/blog/d4632688e4f1dc732f8bd9c5dcdca6298e54608c-362x131.webp)
+![](/images/site-mirror/d4632688e4f1dc732f8bd9c5dcdca6298e54608c-362x131.webp)
 
 As you can see, the **node:1** is the master of the cluster. This means that the event_log will be populated there. If the master moves to another node, the events will be saved on the new master.
 

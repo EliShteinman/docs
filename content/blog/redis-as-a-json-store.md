@@ -14,11 +14,11 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 21 March 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/8eb9a9de52722aee5008486cbd3147e2eed1d252-90x90.webp)
+![Blog tile image](/images/site-mirror/8eb9a9de52722aee5008486cbd3147e2eed1d252-90x90.webp)
 
 *Redis modules are bundled and packaged as part of Redis Enterprise Software. *[*Download the modules (including RedisJSON)*](https://app.redislabs.com/#/rlec-downloads)* to upgrade Redis Enterprise Software with the latest module version.*
 
-![redis json image with Redis Stack](/images/blog/d56870aa72f223b3876239f89d83bb0a340b9693-870x180.webp)
+![redis json image with Redis Stack](/images/site-mirror/d56870aa72f223b3876239f89d83bb0a340b9693-870x180.webp)
 
 *Ready to jump right into RedisJSON? Check out *[*Getting Started with RedisJSON*](https://redis.io/docs/data-types/json/)* on the Redis Developer site!*
 
@@ -54,7 +54,7 @@ Like any well-behaved module, RedisJSON’s commands come prefixed. Both JSON.SE
 
 What happens under the hood is that whenever you call JSON.SET, the module takes the value through a streaming lexer that parses the input JSON and builds tree data structure from it:
 
-![redis json commands](/images/blog/fdfb1191599bd30d68687153010ec15f7d473866-621x242.webp)
+![redis json commands](/images/site-mirror/fdfb1191599bd30d68687153010ec15f7d473866-621x242.webp)
 
 RedisJSON stores the data in binary format in the tree’s nodes, and supports a subset of [JSONPath](http://goessner.net/articles/JsonPath/) for easy referencing of subelements. It boasts an arsenal of atomic commands that are tailored for every JSON value type, including: JSON.STRAPPEND for appending strings; JSON.NUMMULTBY for multiplying numbers; and JSON.ARRTRIM for trimming arrays… and making pirates happy. All with RedisJSON.
 
@@ -77,9 +77,9 @@ reply = json.loads(r.execute_command('JSON.GET', 'object'))
 
 But that’s just half of it. RedisJSON isn’t only a pretty API, it’s also a powerhouse in terms of performance. Initial performance benchmarks already demonstrate that, for example:
 
-![ReJSON json.lua msgpack lua rate graph ](/images/blog/ca5e0ef7e5eddd8eb8cf993aa8ef58433c32f313-600x371.webp)
+![ReJSON json.lua msgpack lua rate graph ](/images/site-mirror/ca5e0ef7e5eddd8eb8cf993aa8ef58433c32f313-600x371.webp)
 
-![REJSON json.lua msgpack lua average latency graph](/images/blog/3c95bd8884df2c5ae977d0150a5fbe4be8c63bd9-600x371.webp)
+![REJSON json.lua msgpack lua average latency graph](/images/site-mirror/3c95bd8884df2c5ae977d0150a5fbe4be8c63bd9-600x371.webp)
 
 The above graphs compare the rate (operations/sec) and average latency of read and write operations performed on a 3.4KB JSON payload that has three nested levels. RedisJSON is pitted against two variants that store the data in Strings. Both variants are implemented as Redis server-side Lua scripts with the json.lua variant storing the raw serialized JSON, and msgpack.lua using MessagePack encoding.
 

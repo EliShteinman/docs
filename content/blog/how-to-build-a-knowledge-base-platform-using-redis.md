@@ -14,7 +14,7 @@ hidden: true
 
 *By Mirko Ortensi, Sr. Product Manager, Products · Published 19 October 2022 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/2b6929e222010cdc14305ce19dc862c9cb19b4bb-772x550.webp)
+![Blog tile image](/images/site-mirror/2b6929e222010cdc14305ce19dc862c9cb19b4bb-772x550.webp)
 
 **Building multi-model applications with Redis Stack is surprisingly straightforward! Follow along with a tutorial that shows how to build a knowledge base in Python that incorporates powerful search features.**
 
@@ -38,7 +38,7 @@ The project’s source codeis available in a [GitHub repository](https://github.
 
 I named this project “Keybase,” and this is a preview of what it looks like:
 
-![How Do I Install Redis Stack image](/images/blog/2ecd298d2b17bc742dee3bcd83e6333ebc0b59cb-1024x558.webp)
+![How Do I Install Redis Stack image](/images/site-mirror/2ecd298d2b17bc742dee3bcd83e6333ebc0b59cb-1024x558.webp)
 
 ### The components
 
@@ -54,7 +54,7 @@ In this tutorial, I use the following components to develop a working prototype:
 
 ### The architecture
 
-![knowledge base architecture design](/images/blog/1cfe43fafebc4d966b20e6f2b8c53f1b5fb444d2-772x1024.webp)
+![knowledge base architecture design](/images/site-mirror/1cfe43fafebc4d966b20e6f2b8c53f1b5fb444d2-772x1024.webp)
 
 The popular Nginx web server is used together with Gunicorn, which implements the web server gateway interface and serves the Flask application.
 
@@ -318,7 +318,7 @@ Many business scenarios require the organization to monitor a knowledge base’s
 
 The **RedisTimeSeries** capability is a natural choice for analytics functions because it is optimized to store and aggregate large amounts of data.
 
-![redistimeseries chart](/images/blog/8637a68efb6f3ec0f302d4814eb4d61b4fea5d53-1024x527.webp)
+![redistimeseries chart](/images/site-mirror/8637a68efb6f3ec0f302d4814eb4d61b4fea5d53-1024x527.webp)
 
 The code to track the overall visits to the knowledge base, as an example, is:
 

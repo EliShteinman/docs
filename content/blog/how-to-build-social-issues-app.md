@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 5 January 2022 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/4f661945fe0185c33e762b8036ff3513ec07a7a0-772x550.webp)
+![Blog tile image](/images/site-mirror/4f661945fe0185c33e762b8036ff3513ec07a7a0-772x550.webp)
 
 An injured animal. A tipped trash can. And a polluted hotspot. Most of us are likely to have come across one of these in our local community. But knowing how to react quickly to these scenarios can be a challenge. Who do I contact? What’s the process for reporting a health hazard? How much time will this take out of my day?
 
@@ -63,7 +63,7 @@ Ready to get started? Ok, let’s dive straight in.
 
 ## 3. Architecture
 
-![](/images/blog/f5ee659cb2ca14a0b77940cc7574524ba29495c6-1600x990.webp)
+![](/images/site-mirror/f5ee659cb2ca14a0b77940cc7574524ba29495c6-1600x990.webp)
 
 ### Reporting an issue on the app
 
@@ -386,19 +386,19 @@ Middleware is also used for each of the routes:
 
 If somebody comes across a hazard or a social concern in their community, they can report it via the Helplanet application. Users simply have to open the app and they’ll then be faced with a number of options (see below).
 
-![](/images/blog/8eb3b295f477a46cced3b6f1a6265fd54cd36615-470x770.webp)
+![](/images/site-mirror/8eb3b295f477a46cced3b6f1a6265fd54cd36615-470x770.webp)
 
 The user will then select the option that best describes the issue or concern they’ve come across. Much like Facebook Messenger, a chat will appear where they’ll be able to provide more detail about the incident they’re reporting (see below).
 
 **Note:** Everything will be reported in real time thanks to Redis.
 
-![](/images/blog/a96032e23bac3f0226e07b27c22e648fe703a10e-470x770.webp)
+![](/images/site-mirror/a96032e23bac3f0226e07b27c22e648fe703a10e-470x770.webp)
 
 ### How organizations can use the app
 
 The organization will receive notifications from all incidents that have been reported by members of the public. They’ll be able to gain a holistic view of all reported incidents on their dashboard (see below).
 
-![](/images/blog/c1e79ab1ad4f5a7d890a89866c6f1098c82dbe04-1600x794.webp)
+![](/images/site-mirror/c1e79ab1ad4f5a7d890a89866c6f1098c82dbe04-1600x794.webp)
 
 From here, an organization can select an incident and view it in more detail. The information that will be provided about the incident will include:
 
@@ -410,11 +410,11 @@ From here, an organization can select an incident and view it in more detail. Th
 
 Organizations can filter everything based on location. This will allow them to get a quick insight as to where every instant is on the map (see below).
 
-![](/images/blog/43d509413cc28af9374f34d8fd60952bfa5237c8-1600x731.webp)
+![](/images/site-mirror/43d509413cc28af9374f34d8fd60952bfa5237c8-1600x731.webp)
 
 An organization can also view a user’s personal details if they want to get in touch with them in a different form of communication e.g email (see below).
 
-![](/images/blog/abf07356afa3da4ea31941bb380515df847a84ac-1600x731.webp)
+![](/images/site-mirror/abf07356afa3da4ea31941bb380515df847a84ac-1600x731.webp)
 
 ## Conclusion: Bringing communities together by tackling social issues with Redis
 

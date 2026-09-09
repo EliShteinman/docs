@@ -15,7 +15,7 @@ hidden: true
 
 *By Udi Gotlieb, Head of Redis Enterprise Product Marketing · Published 21 March 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/1c352273fc503cf90d158009b8abb258213ba2c8-772x550.webp)
+![Blog tile image](/images/site-mirror/1c352273fc503cf90d158009b8abb258213ba2c8-772x550.webp)
 
 Redis is an in-memory database, and Redis Enterprise adds a whole layer of management, automation, resiliency, and security capabilities on top of it, making it enterprise-ready. To many, in-memory equates to “expensive”—a premium you choose to pay for top performance. And the functionality provided by enterprise software can also bring a hefty price tag. So how can such a technology turn out to be a cost-saving vehicle?
 
@@ -25,7 +25,7 @@ To help answer that question in a deep and methodological way, we commissioned t
 
 ---
 
-![Three developers looking at code on multiple screens](/images/blog/28e987d36ccb988298f7800a9069d8956ecfa083-800x500.webp)
+![Three developers looking at code on multiple screens](/images/site-mirror/28e987d36ccb988298f7800a9069d8956ecfa083-800x500.webp)
 
 ## Finding #1: Deliver more value from applications and databases
 
@@ -35,7 +35,7 @@ Redis Enterprise helps legacy applications and databases better scale and delive
 
 – Senior Manager, Engineering, Financial Services Technology
 
-![Person calculating savings](/images/blog/a995014c4310ec1232802632c5c6b3e1d12a1be0-800x500.webp)
+![Person calculating savings](/images/site-mirror/a995014c4310ec1232802632c5c6b3e1d12a1be0-800x500.webp)
 
 ## Finding #2: Get apps to market faster and generate more income from digital channels
 
@@ -45,7 +45,7 @@ Redis Enterprise helps get applications to market faster as a direct outcome of 
 
 – Senior Director, Payment Systems Provider
 
-![Employees talking in a meeting](/images/blog/6f22657044f6611d9f37681093407cb1383f4fd4-800x500.webp)
+![Employees talking in a meeting](/images/site-mirror/6f22657044f6611d9f37681093407cb1383f4fd4-800x500.webp)
 
 ## Finding #3: Avoid SLA penalties and recoup income with better performance
 
@@ -55,7 +55,7 @@ In regulated industries, and highly governed businesses, SLA breaches often carr
 
 – Senior Vice President Engineering, Global Identity Verification
 
-![Person on laptop](/images/blog/d370c9eb5349fc69cd5e503e94428c2930f8519e-800x500.webp)
+![Person on laptop](/images/site-mirror/d370c9eb5349fc69cd5e503e94428c2930f8519e-800x500.webp)
 
 ## Finding #4: Save developer time and reduce DevOps workload
 

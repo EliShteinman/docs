@@ -15,7 +15,7 @@ hidden: true
 
 *By Mikhail Volkov, Alexey Smolyanyy · Published 28 October 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/13383fe87d63756e408c0b7934ce29185cd2ca5b-386x260.webp)
+![Blog tile image](/images/site-mirror/13383fe87d63756e408c0b7934ce29185cd2ca5b-386x260.webp)
 
 On Monday, October 26, 2020, Grafana kicked off [ObservabilityCON](https://grafana.com/about/events/observabilitycon/). The virtual conference included live talks and demos on the newest features, functionality, use cases, and just about everything else in the open source observability ecosystem. After the keynote session, we presented our session on [Real-time Observability with Redis and Grafana](https://grafana.com/go/observabilitycon/real-time-observability-with-redis-and-grafana/).
 

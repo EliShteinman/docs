@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 3 March 2026 · updated 4 March 2026*
 
-![Redis](/images/blog/1e8b7ca7c6fbf9cdfedb64406a9a79fda12955d8-1200x628.webp)
+![Redis](/images/site-mirror/1e8b7ca7c6fbf9cdfedb64406a9a79fda12955d8-1200x628.webp)
 
 A user asks your support chatbot "how do I reset my password?" and it pulls the right help doc, generates a clear answer, and responds in under a second. The next user asks "what's your refund policy?" and the chatbot retrieves three barely relevant pages, hallucinates a 30-day guarantee you don't offer, and takes four seconds to do it. Without metrics, both interactions look the same from the outside. You only find out something's broken when a customer complains or, worse, acts on bad information.
 

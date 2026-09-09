@@ -15,7 +15,7 @@ hidden: true
 
 *By Justin Cechmanek, Senior Applied AI Engineer · Published 31 January 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/6b2b5fbe2b0b0c19fef73a666f13fe2a6bdad876-772x552.webp)
+![Blog tile image](/images/site-mirror/6b2b5fbe2b0b0c19fef73a666f13fe2a6bdad876-772x552.webp)
 
 Users like options, but too many options can lead to analysis paralysis.
 

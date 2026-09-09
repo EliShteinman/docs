@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 30 April 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ee217db664458240a4f1ac3febbd4435de267834-202x210.webp)
+![Blog tile image](/images/site-mirror/ee217db664458240a4f1ac3febbd4435de267834-202x210.webp)
 
 [*Find out if your cache is enterprise-grade, and learn how to: Scale globally while maintaining low latency and cache more efficiently to lower costs*](/meeting/)
 

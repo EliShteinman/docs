@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 11 March 2026*
 
-![Real-time personalization for retail: what it takes to respond in milliseconds](/images/blog/f8576fc36636c700e4e2958eef9512f71fa4051d-2400x1256.webp)
+![Real-time personalization for retail: what it takes to respond in milliseconds](/images/site-mirror/f8576fc36636c700e4e2958eef9512f71fa4051d-2400x1256.webp)
 
 Your customer just searched for "lightweight marathon shoes," scrolled past three results, lingered on a trail runner, and added it to their cart. By the time they hit the homepage again, the experience should reflect all of that—not what they browsed last Tuesday. That's the gap between batch personalization and real-time personalization, and it's where most retail stacks fall short.
 

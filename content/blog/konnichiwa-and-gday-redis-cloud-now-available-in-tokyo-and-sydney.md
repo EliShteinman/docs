@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 20 April 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Due to popular demand, I am delighted to announce the immediate availability of our Redis Cloud and Memcached Cloud services off AWS’ ap-northeast-1 (Tokyo) and ap-southeast-2 (Sydney) data regions. After having[ opened shop in Singapore](/blog/hello-%E4%BD%A0%E5%A5%BD-and-%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D-2014-garantia-data-opens-shop-in-aws-us-west-apac-data-regions) at the beginning of this year, our friendly takeover of the Asia-Pacific region is finally complete!
 

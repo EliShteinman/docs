@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 1 March 2026 · updated 4 March 2026*
 
-![Redis](/images/blog/7ae94c770997fb95fa5ef029c06dd0bcde3eed92-1200x628.webp)
+![Redis](/images/site-mirror/7ae94c770997fb95fa5ef029c06dd0bcde3eed92-1200x628.webp)
 
 Your LLM is only as good as the context you feed it. Without grounding in real, current enterprise data, even the most capable language models produce responses that sound confident but miss the mark, hallucinating facts, ignoring internal policies, and citing information that's months or years out of date. Retrieval-augmented generation (RAG) reduces these problems by retrieving relevant internal context before the model answers.
 

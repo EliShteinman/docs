@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 19 October 2015 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/1734b1749c9a8670a341e81114695e03b8eac590-140x92.webp)
+![Blog tile image](/images/site-mirror/1734b1749c9a8670a341e81114695e03b8eac590-140x92.webp)
 
-![Gartner ODBMS Magic Quadrant](/images/blog/b4f77bfb25b09a2fc202e98bdff2c680253379ef-635x200.webp)
+![Gartner ODBMS Magic Quadrant](/images/site-mirror/b4f77bfb25b09a2fc202e98bdff2c680253379ef-635x200.webp)
 
 This is our very first year in Gartner’s ODBMS Magic Quadrant. And we are in the leader’s quadrant! This is a moment of unprecedented recognition for us and we are very proud.
 

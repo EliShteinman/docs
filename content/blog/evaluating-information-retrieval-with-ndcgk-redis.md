@@ -14,7 +14,7 @@ hidden: true
 
 *By Reza Rahim · Published 6 March 2025 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/b9fc987fe60a345137ac36ec7c79b0c995b09aa3-772x552.webp)
+![Blog tile image](/images/site-mirror/b9fc987fe60a345137ac36ec7c79b0c995b09aa3-772x552.webp)
 
 [Full Colab NoteBook on Github.](https://github.com/reza-rahim/published/blob/main/Fine_tuningEmbeddings/NDCG_with_Redis.ipynb)
 
@@ -34,7 +34,7 @@ To calculate NDCG:
 
 - DCG (Discounted Cumulative Gain): Sum relevance scores with a log-based discount for lower-ranked items.
 
-![](/images/blog/7e8dfc4843e518d4f10db1c477123fb9b8ae3f6c-362x122.webp)
+![](/images/site-mirror/7e8dfc4843e518d4f10db1c477123fb9b8ae3f6c-362x122.webp)
 
 – rel i: Relevance score of the document at position i.
 
@@ -44,11 +44,11 @@ To calculate NDCG:
 
 - IDCG (Ideal DCG): Compute DCG for the ideal ranking (highest relevance first).
 
-![](/images/blog/7e8dfc4843e518d4f10db1c477123fb9b8ae3f6c-362x122.webp)
+![](/images/site-mirror/7e8dfc4843e518d4f10db1c477123fb9b8ae3f6c-362x122.webp)
 
 - NDCG: Normalize DCG by dividing it by IDCG, ensuring a score between 0 and 1, where 1 indicates perfect ranking. If IDCG is 0, NDCG is set to 0.
 
-![](/images/blog/faff95f5ded53f9d33a7a99b08b76ea99c8ef7c4-476x84.webp)
+![](/images/site-mirror/faff95f5ded53f9d33a7a99b08b76ea99c8ef7c4-476x84.webp)
 
 ### How to define relevance scores
 
@@ -66,11 +66,11 @@ Graded relevance captures varying degrees of relevance, offering richer feedback
 
 Let’s get back to our steps to calculate NDCG.
 
-![](/images/blog/e2a4bd29445225a97a2b7d5c68daa348b824836d-1053x115.webp)
+![](/images/site-mirror/e2a4bd29445225a97a2b7d5c68daa348b824836d-1053x115.webp)
 
 ### Step-by-step NDCG calculation
 
-![](/images/blog/b871a68c798ae64f69b83d08abc1c347c5e809f2-1079x623.webp)
+![](/images/site-mirror/b871a68c798ae64f69b83d08abc1c347c5e809f2-1079x623.webp)
 
 ### Why use NDCG?
 
@@ -89,29 +89,29 @@ The objective is to compute embeddings for all answers using both the base and f
 
 ### Setting up Redis vector database with udocker in Colab
 
-![](/images/blog/23e701b8bd01de6a15b4a1def65706a5c3fe1a67-2230x347.webp)
+![](/images/site-mirror/23e701b8bd01de6a15b4a1def65706a5c3fe1a67-2230x347.webp)
 
 ### Calculate NDCG for BGE base model:
 
 Download BGE base model (BAAI/bge-base-en-v1.5) from Huggingface
 
-![](/images/blog/481d67bc0346909c125e50853d1720c5d623be9f-2230x672.webp)
+![](/images/site-mirror/481d67bc0346909c125e50853d1720c5d623be9f-2230x672.webp)
 
 The following code defines a schema for an index with two fields: a “tag” field (qa) and a “vector” field (embedding) configured for high-dimensional data search with specified attributes like algorithm, data type, dimensionality, and distance metric.
 
-![](/images/blog/d25b5362cf9fba4e3eac11a3e4f5bff3784e2fb0-1398x997.webp)
+![](/images/site-mirror/d25b5362cf9fba4e3eac11a3e4f5bff3784e2fb0-1398x997.webp)
 
 The following script creates a Redis index, processes QA pairs by generating [vector embeddings](https://redis.io/glossary/vector-embeddings/) for the answers, and loads the data into the index for search and retrieval.
 
-![](/images/blog/c7fe4b3c9871ade7a06e4dc12e7a2d7aa3da47df-1158x994.webp)
+![](/images/site-mirror/c7fe4b3c9871ade7a06e4dc12e7a2d7aa3da47df-1158x994.webp)
 
 The following script performs vector searches for each question in the QA dataset, calculates metrics like NDCG scores and match rankings, and tracks how often the correct answer is found at each position in the results. The final output includes key metrics for evaluating the model’s performance.
 
-![](/images/blog/b0eccdc741900e061f136a204b005096b9d41fcc-1131x1499.webp)
+![](/images/site-mirror/b0eccdc741900e061f136a204b005096b9d41fcc-1131x1499.webp)
 
 Here’s a summary of the results:
 
-![](/images/blog/89202f5153258e50594f72e3c76a199f436d973e-2224x474.webp)
+![](/images/site-mirror/89202f5153258e50594f72e3c76a199f436d973e-2224x474.webp)
 
 - Total NDCG score: 87.30
 - Total questions processed: 178
@@ -138,13 +138,13 @@ This indicates that the model performs relatively well, with the correct answer 
 
 Download BGE fine-tuned model (rezarahim/bge-finetuned-detail) from Huggingface.
 
-![](/images/blog/4017b31895da3182def9f47466f8a6588e9644d8-2230x672.webp)
+![](/images/site-mirror/4017b31895da3182def9f47466f8a6588e9644d8-2230x672.webp)
 
 Detail of this portion of the code can be found in the notebook.
 
 Here’s a summary of the fine-tuned model results:
 
-![](/images/blog/e17887fee4627c2b609363c92c4b6e6f6c4fecc8-2224x481.webp)
+![](/images/site-mirror/e17887fee4627c2b609363c92c4b6e6f6c4fecc8-2224x481.webp)
 
 Here’s a summary of the updated results:
 

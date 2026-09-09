@@ -14,15 +14,15 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 4 March 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/296920b212048191bf34680fcae5395c64f9858e-635x200.webp)
+![](/images/site-mirror/296920b212048191bf34680fcae5395c64f9858e-635x200.webp)
 
 Lately we’ve been busy establishing and expanding our service’s presence on the IBM SoftLayer Cloud and [Google Compute Engine](/blog/the-search-for-redis-on-google-compute-engine-gce-is-over). But, that doesn’t mean that we’ve been neglecting our core service development. As a matter of fact, today, by popular demand, I am pleased to announce the public availability of two new features for our services across all clouds: Email Alerts and SSL support.
 
 Our first addition, Email Alerts, allows you to get pertinent notifications regarding the usage and performance of your Redis resources. You can enable the new alerting mechanism for any resource from the service’s console. By default, emails alerts are turned off for your existing resources, but you can easily change the alert settings by editing any Redis Cloud instance or Memcached Cloud bucket and expanding the **Advanced Options** section.
 
-![](/images/blog/89b551b31704730698562b37bbd012fb974893a2-635x130.webp)
+![](/images/site-mirror/89b551b31704730698562b37bbd012fb974893a2-635x130.webp)
 
 Each email alert trigger can be toggled on or off independently and have its threshold configured. You can set up the triggers to get email alerts for the following conditions:
 

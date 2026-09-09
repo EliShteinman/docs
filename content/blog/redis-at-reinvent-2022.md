@@ -15,7 +15,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 14 November 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/6a1a0cff7c572ad9b336fdfa76de20b1bf43e5fe-772x550.webp)
+![Blog tile image](/images/site-mirror/6a1a0cff7c572ad9b336fdfa76de20b1bf43e5fe-772x550.webp)
 
 **Visit our booth in Las Vegas on December 1st, learn about Redis, get a Redis Geek T-shirt, and enter our raffle for an Oculus Quest 2.**
 

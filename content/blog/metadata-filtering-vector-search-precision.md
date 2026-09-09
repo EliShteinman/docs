@@ -14,7 +14,7 @@ hidden: true
 
 *By Simran Regmi, Product Marketing · Published 17 August 2026 · updated 19 August 2026*
 
-![Metadata filtering: boost search precision at scale](/images/blog/eea92f4886b86fe7fb894a9f41306ad955b566e8-2400x1256.webp)
+![Metadata filtering: boost search precision at scale](/images/site-mirror/eea92f4886b86fe7fb894a9f41306ad955b566e8-2400x1256.webp)
 
 Vector search is great at finding things that are semantically similar, but similarity isn't the same as correctness. A pure vector query doesn't know that a product is out of stock, that a document belongs to a different customer, or that a policy was superseded last quarter. Ask for "wireless headphones under $100" and similarity alone can happily surface $300 headphones, discontinued models, or products from another tenant's catalog, because those vectors sit close to your query in embedding space even when the answers are wrong for the user.
 

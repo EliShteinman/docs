@@ -14,7 +14,7 @@ hidden: true
 
 *By Lior Kogan, Contributor · Published 2 June 2026*
 
-![Announcing Redis 8.8: New array data structure, rate limiter, performance improvements, & more](/images/blog/16fbd3e66be6168be8ab80fa714000b68dc0933c-1200x628.webp)
+![Announcing Redis 8.8: New array data structure, rate limiter, performance improvements, & more](/images/site-mirror/16fbd3e66be6168be8ab80fa714000b68dc0933c-1200x628.webp)
 
 Redis 8.8 in Redis Open Source is now available, bringing performance improvements alongside a set of powerful new features. Highlights include array - a new general-purpose data structure, a window counter rate limiter, streams message NACKing, subkey notifications for hash fields, explicit control over JSON numeric array storage, multiple aggregators in a single time series query, and a new COUNT aggregator for sorted sets union and intersection.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 20 June 2025 · updated 14 August 2025*
 
-![Redis](/images/blog/2a05a029a9ddff408ac0771bddfd24d350b4e02d-772x552.webp)
+![Redis](/images/site-mirror/2a05a029a9ddff408ac0771bddfd24d350b4e02d-772x552.webp)
 
 ## From branches to smartphones
 
@@ -56,7 +56,7 @@ Examples of the types of session data that banks commonly store in Redis are:
 
 **Here’s how it works**
 
-![Redis](/images/blog/4d1de49d3d29e5452793a332bec03b79e53076ae-1920x801.webp)
+![Redis](/images/site-mirror/4d1de49d3d29e5452793a332bec03b79e53076ae-1920x801.webp)
 
 1. When a user logs into their banking app, a user session is created and data is loaded from an RDMB into the session store in Redis.
 1. When a user interacts with the app, the app fetches and updates session data, such as recent actions, location data, and more from the session store in Redis.
@@ -80,7 +80,7 @@ Auth tokens are critical enablers of open banking by enforcing user consent and 
 
 **Here’s how it works**
 
-![Redis](/images/blog/ea0c23ca834f504d159d81ffccbc76f0c2cd15e8-1920x601.webp)
+![Redis](/images/site-mirror/ea0c23ca834f504d159d81ffccbc76f0c2cd15e8-1920x601.webp)
 
 1. A user or third-party API validates using its credentials.
 1. An authentication service or identity provider validates the user or API and generates an authentication token.
@@ -102,7 +102,7 @@ User profiles often include behavioral and device-related data—such as login f
 
 **Here’s how it works**
 
-![Redis](/images/blog/6afef4a21a274cf4ed3b803e0c03ac68c2d2da5e-1920x1080.webp)
+![Redis](/images/site-mirror/6afef4a21a274cf4ed3b803e0c03ac68c2d2da5e-1920x1080.webp)
 
 - A user profile containing user data is aggregated from primary databases to make the data fast and easily accessible.
 - When a user logs in to an app, the app fetches the profile from the user profile store. As the user interacts with the app, any updates are written to their user profile.
@@ -127,7 +127,7 @@ Cache-prefetching with RDI is also often used to keep data consistent across cha
 
 **Here’s how it works with RDI**
 
-![Redis](/images/blog/a046f96f8d5dec235686531a5b6b944cad09fc16-1920x1080.webp)
+![Redis](/images/site-mirror/a046f96f8d5dec235686531a5b6b944cad09fc16-1920x1080.webp)
 
 - Banks store data in disparate databases that support individual banking products like checking accounts, savings accounts, credit cards, mortgages, etc.
 - Data is prefetched from banking databases into Redis using RDI—and as data changes in backend systems, it is proactively updated in Redis

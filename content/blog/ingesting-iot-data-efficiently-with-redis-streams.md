@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 27 April 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Before joining Redis, I worked for a consultant firm working with technologies like the Internet of Things (IoT). If you’re not familiar with the concept, [IoT](https://www.wired.co.uk/article/internet-of-things-what-is-explained-iot) is all about smart devices connected to the internet. Many of these devices include sensors that produce metrics about the real world. One notable IoT use case, for example, are bike sharing companies, where the bike itself is connected to the internet and constantly notifies its owners of its location and other conditions. But perhaps the biggest, most promising uses of IoT technology come in factories, or the industrial internet of things ([IIoT](https://www.zdnet.com/article/what-is-the-iiot-everything-you-need-to-know-about-the-industrial-internet-of-things/)).
 

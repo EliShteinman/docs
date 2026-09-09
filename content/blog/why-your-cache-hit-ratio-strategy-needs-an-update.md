@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 7 July 2025 · updated 1 June 2026*
 
-![Redis cache hit ratio strategy](/images/blog/826e6b6f599c40e8cfed7b93bed6edb332979347-772x552.webp)
+![Redis cache hit ratio strategy](/images/site-mirror/826e6b6f599c40e8cfed7b93bed6edb332979347-772x552.webp)
 
 A cache hit ratio measures how often requests are served from the cache instead of the database. It’s a useful signal, but an unreliable goal. A high hit ratio doesn’t guarantee better performance, and chasing it can lead to wasted resources and missed optimizations.
 
@@ -74,7 +74,7 @@ Rather than just keeping a cache near your cache server, this approach allows yo
 
 Redis Community Edition started supporting near-caching in version 6, but we introduced [official open-source client libraries](/blog/faster-redis-client-library-support-for-client-side-caching/#:~:text=One%20effective%20way%20to%20cut,where%20the%20client%20is%20running.) in 2024. Redis users can enable near-caching with just a few lines of code, reducing network traffic and latency.
 
-![Redis](/images/blog/7afcfa755b1a93ebe2ec72c599ce4711f0300e71-1920x600.webp)
+![Redis](/images/site-mirror/7afcfa755b1a93ebe2ec72c599ce4711f0300e71-1920x600.webp)
 
 In the Python code example below, all you have to do is enable caching when you establish the connection.
 
@@ -106,7 +106,7 @@ Cache performance can shift over time, and it can sometimes be difficult to noti
 
 Redis, for example, integrates with [Prometheus and Grafana](https://redis.io/docs/latest/operate/rs/monitoring/prometheus_and_grafana/), which allow you to collect and visualize any of the metrics associated with your Redis Enterprise instance.
 
-![Monitor cache ](/images/blog/f193f9f3caa2d276f3ce37db51acda832f3b72d6-1920x200.webp)
+![Monitor cache ](/images/site-mirror/f193f9f3caa2d276f3ce37db51acda832f3b72d6-1920x200.webp)
 
 
 By combining these tools, you can collect and display metrics that aren’t available in the admin console, set up automatic alerts, and collate Redis metrics alongside data from other systems.
@@ -123,7 +123,7 @@ At scale, every millisecond matters, so once you have your foundation built, eva
 
 Traditional caches are reactive, and eviction policies frequently need to be rewritten after the fact. [Redis Data Integration (RDI)](https://redis.io/data-integration/#more), in contrast, synchronizes data from existing databases into Redis in near real time, allowing you to scale without excessive database costs or excessive manual fine-tuning.
 
-![Redis RDI](/images/blog/2e3939e3b76e4a9e43ec9306c0c2ab7678a074cd-1920x1182.webp)
+![Redis RDI](/images/site-mirror/2e3939e3b76e4a9e43ec9306c0c2ab7678a074cd-1920x1182.webp)
 
 With RDI, you can eliminate cache misses outright, avoid using stale data, and skip building complex data pipelines just to sync your data.
 
@@ -131,7 +131,7 @@ With RDI, you can eliminate cache misses outright, avoid using stale data, and s
 
 Traditional caches store data passively, but Redis is developing predictive caching strategies that preload high-probability requests. [Redis LangCache](https://redis.io/langcache/) can shorten latency times and cut LLM costs via semantic caching, which stores and reuses previous LLM responses for repeated queries.
 
-![Redis LLM](/images/blog/d2daa600da9a5f2220e79e91a19a9a62ca5ba0e8-1920x720.webp)
+![Redis LLM](/images/site-mirror/d2daa600da9a5f2220e79e91a19a9a62ca5ba0e8-1920x720.webp)
 
 
 With LangCache and semantic caching, you can avoid the costly process of calling an LLM for every request and instead instantly return requests that have already been cached, saving time, money, and effort.

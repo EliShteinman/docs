@@ -14,7 +14,7 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 6 February 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/6dd00db222c7958a368718982f71e003b6971a1e-1200x1000.webp)
+![Blog tile image](/images/site-mirror/6dd00db222c7958a368718982f71e003b6971a1e-1200x1000.webp)
 
 The story of Redis has been an unusual and exciting one! With our roots in the open source, we started as a cloud service for Redis and Memcached many years ago and over time developed robust automation, high availability and scaling techniques that attracted hundreds and thousands of users. We made the powerful software that underpins our service, available as downloadable software for the customers to use on premises and in any private environments. During this time, we added critical features to our technology that gave it a broader appeal such as:
 

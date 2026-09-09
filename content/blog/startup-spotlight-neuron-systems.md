@@ -15,7 +15,7 @@ hidden: true
 
 *By Shalini Ananda, Marie Owens · Published 21 April 2026*
 
-![Redis](/images/blog/135fabc52e3f391d730ee907b9cede68740357fa-1200x628.webp)
+![Redis](/images/site-mirror/135fabc52e3f391d730ee907b9cede68740357fa-1200x628.webp)
 
 Most AI systems don’t have a memory problem. They have a retrieval problem. Under real load, they can’t access what they know fast enough to matter.
 
@@ -53,7 +53,9 @@ Neuron Systems built what they call the Three-Layer Redis Memory Stack. Each lay
 
 *Table 1: The Three-Layer Neuron Redis Memory Stack. Each layer operates at a different TTL and addresses a specific failure mode.*
 
-![Redis](/images/blog/c345fc2978922f164a61a4814cc5ed05ce37d280-1596x698.webp)
+![Redis](/images/site-mirror/c345fc2978922f164a61a4814cc5ed05ce37d280-1596x698.webp)
+
+*Figure 1: The Three-Layer Neuron Redis Memory Stack Architecture. Layer 1 provides live state, Layer 2 stores episodic session memory, and Layer 3 holds long-term agent calibration. All six agent personalities read from Redis at sub-2ms latency. Pub/sub channels coordinate live versus historical modes.*
 
 ### Layer 1: Live state cache
 
@@ -121,7 +123,9 @@ The match structure is different. Cricket runs as a single continuous session wi
 
 The solution was a match phase classifier that writes to Layer 1 continuously, allowing agents to read the current phase and modulate their behavioral primitives accordingly. Two endpoints feed the cricket pipeline via RapidAPI. The scorecard endpoint carries match state, score, and teams. The ball-by-ball commentary endpoint carries discrete match events. Both feed into an adaptive polling cycle of 10 to 60 seconds depending on match activity.
 
-![Redis](/images/blog/681cff3de87c4c8c7af8bebf9fa5ed4710f4935f-1596x675.webp)
+![Redis](/images/site-mirror/681cff3de87c4c8c7af8bebf9fa5ed4710f4935f-1596x675.webp)
+
+*Figure 2: NFL to Cricket Portability and Spanish Language Layer. One Redis cluster serves English and Spanish primitives simultaneously across NFL, then ports to cricket with match phase classification. NBA and FIFA expansion is shown as the next target.*
 
 ## What Neuron Systems learned
 

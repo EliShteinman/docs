@@ -14,7 +14,7 @@ hidden: true
 
 *By Ajeet Raina, Technical Marketing Manager · Published 12 July 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/410736c7b5cc2709de8898b79b1f69024a30fe59-4899x3062.webp)
+![Blog tile image](/images/site-mirror/410736c7b5cc2709de8898b79b1f69024a30fe59-4899x3062.webp)
 
 **Redis has a great reputation – but where’s it used? Developers rely on Redis Enterprise for critical use cases across several industries. Learn several scenarios where Redis has made a difference in application development for gaming, retail, IoT networking, and travel.**
 
@@ -56,7 +56,9 @@ In 2021, the global gaming market topped $198.40 billion and is expected to reac
 
 Successful mobile games require a great user experience, which can post significant infrastructure challenges, especially for real-time multiplayer games. Users must be able to launch the game, connect to a server, and collaborate with other players; any lag or hiccup can ruin the experience. The gaming experience also includes transactions in real-time, sometimes with real money involved. For the customer, the expectation is an immediate transaction, with personal payment details cached at the ready.
 
-![](/images/blog/5c2b7c7fb64081a0d363e4ef300e96694ef91cf4-1024x520.webp)
+![](/images/site-mirror/5c2b7c7fb64081a0d363e4ef300e96694ef91cf4-1024x520.webp)
+
+*Redis Enterprise for game developers*
 
 Developers rely on Redis’[ low latency](/blog/how-to-reduce-latency-and-minimize-outages/) to deliver high performance and virtually unlimited scale critical in gaming situations where large volumes of data arrive at high speed. Take[ fantasy sports](https://www.globenewswire.com/news-release/2022/07/26/2486049/0/en/fantasy-sports-market-worth-us-47940-million-by-2028-research-reports-with-global-analysis.html/), for instance, which is estimated to become a $48 billion market by 2028. American football is the most popular fantasy sport in the United States, with 35 million players. But that pales in comparison to India’s fantasy cricket leagues, which stand at around 100 million players, according to a [study](https://descrier.co.uk/culture/sport/which-fantasy-sports-are-the-most-popular/) by the Federation of Indian Fantasy Sports (FIFS).
 
@@ -80,7 +82,9 @@ However, modern multi-channel retailers are turning to [real-time inventory syst
 
 Here too, performance is critical. Delayed or inaccurate inventory information can frustrate customers, leading to[ shopping cart abandonment](https://www.dynamicyield.com/blog/shopping-cart-abandonment-ebook-announcement/) (an $18 billion problem of its own) and order cancellations, lost revenues, higher costs, and brand damage.
 
-![](/images/blog/0c5cbd3f897e3d2034323657f9fcb3efc3c5a209-600x766.webp)
+![](/images/site-mirror/0c5cbd3f897e3d2034323657f9fcb3efc3c5a209-600x766.webp)
+
+*The Gap’s real-time inventory use case*
 
 Apparel retailer[ Gap Inc](/blog/what-gap-and-alliance-data-say-about-the-power-of-redis-enterprise/). wanted to give its e-commerce customers real-time shipping information for each item shoppers added to their carts. The company faced issues with delays and inaccurate inventory information.
 
@@ -98,7 +102,7 @@ In the era of big data, businesses require software that instantly collects, sto
 
 In these applications, data must be analyzed quickly to make rapid business decisions. D ata loss is typically not permissible for these use cases.
 
-![](/images/blog/2ac0c5802678eaa8f7398d7508b9064640cfef68-1024x300.webp)
+![](/images/site-mirror/2ac0c5802678eaa8f7398d7508b9064640cfef68-1024x300.webp)
 
 However, data loss does occur, predominantly when working with a relational database. A SQL database is usually created around a known use case at the onset. Introducing another data structure or data model into a SQL stack can bog down the system with slower speed, slower ingestion, and lost data, as the data has to be altered to fit the database’s chosen model.
 
@@ -108,7 +112,9 @@ A notable Redis usage example of fast data ingestion is [Inovonics](/customers/i
 
 Inovonics’ edge platform required robust data platform capabilities for resilience and performance while minimizing the operational footprint and operating costs. With the application of [Redis Enterprise Cloud](/redis-enterprise-cloud/overview/), a fully automated Database-as-a-Service (DBaaS), Inovonics centralized all its data on [Google Cloud](/cloud-partners/google/), opening up new product offerings in the form of insightful, easy-to-access [data analytics](/blog/data-economy-podcast-modernizing-apps/).
 
-![](/images/blog/fea8908696b6a8819b9549a90b7c9673ca89c4f3-1024x531.webp)
+![](/images/site-mirror/fea8908696b6a8819b9549a90b7c9673ca89c4f3-1024x531.webp)
+
+*Inovonics solution architecture/flow.*
 
 Inovonics uses Redis Enterprise on its IoT edge devices to push data to its gateways and to the company’s virtual private Google Cloud from those gateways.
 
@@ -124,7 +130,9 @@ For example, consider [Freshworks](/press/redis-labs-extreme-performance-and-fle
 
 After evaluating NoSQL in-memory databases like Aerospike and [Hazelcast](/comparisons/redis-enterprise-vs-hazelcast/), Freshworks chose the high performance and flexibility of Redis. Ultimately, the team chose Redis Enterprise Cloud to ensure high availability and seamless database experience as an infrastructure service for developers.
 
-![](/images/blog/753f5cdbd271db477db791b619468dd440ed5bee-1024x471.webp)
+![](/images/site-mirror/753f5cdbd271db477db791b619468dd440ed5bee-1024x471.webp)
+
+*Freshdesk application server architecture*
 
 In addition to using Redis Enterprise as a frontend cache for its MySQL database, Freshworks uses Redis Enterprise’s highly optimized hashes, lists, and sorted set data structures and built-in Redis commands to meter the API requests coming into its Freshdesk software.
 

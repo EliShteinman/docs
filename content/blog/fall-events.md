@@ -15,9 +15,9 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 25 September 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3e5c87e6ba7f0377162a5479be58e9dc7b6c6d29-4031x2229.webp)
+![Blog tile image](/images/site-mirror/3e5c87e6ba7f0377162a5479be58e9dc7b6c6d29-4031x2229.webp)
 
-![](/images/blog/3e5c87e6ba7f0377162a5479be58e9dc7b6c6d29-4031x2229.webp)
+![](/images/site-mirror/3e5c87e6ba7f0377162a5479be58e9dc7b6c6d29-4031x2229.webp)
 
 It’s hard to believe, but the crew here at Redis is already planning for RedisConf 2018. Next year’s conference will take place at the end of April 2018 in San Francisco. [Sign up here](https://redisconf2018.splashthat.com/) and we’ll keep you up to date on all the latest news. I’m not going to spoil the surprise, but 2018 will be even bigger and better than this year’s conference, so don’t miss out on all the fun.
 

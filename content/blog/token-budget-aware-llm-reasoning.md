@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 28 July 2026 · updated 29 July 2026*
 
-![Token-budget-aware LLM reasoning: cutting token costs without losing accuracy](/images/blog/fb5ee927bb87f6b00d7e3547062ff0363d003460-2400x1256.webp)
+![Token-budget-aware LLM reasoning: cutting token costs without losing accuracy](/images/site-mirror/fb5ee927bb87f6b00d7e3547062ff0363d003460-2400x1256.webp)
 
 Reasoning models think before they answer, and those reasoning tokens are usually part of what you pay for. They're [billed as output tokens](https://developers.openai.com/api/docs/guides/reasoning), the expensive kind, and a single request can generate a few hundred of them depending on the problem. If your costs jumped after you switched to a reasoning model, this is usually why.
 

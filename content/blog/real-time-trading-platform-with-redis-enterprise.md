@@ -14,13 +14,15 @@ hidden: true
 
 *By Prasanna Rajagopal · Published 10 June 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d9f40511c3f5f0daed4185b7053b85916f8b9b64-772x520.webp)
+![Blog tile image](/images/site-mirror/d9f40511c3f5f0daed4185b7053b85916f8b9b64-772x520.webp)
 
 Portfolios form the foundation of the wealth and asset management industry. Ever since Harry Makowitz pioneered [modern portfolio theory](https://www.investopedia.com/terms/m/modernportfoliotheory.asp), asset and wealth management professionals have obsessed over maximizing the returns on their portfolio for a given level of risk. Today, the professionals in the industry are joined by millions of retail investors, whom have forever changed the landscape of investing. These new entrants are creating huge ramifications for the technology underpinning the trading infrastructure of retail brokerages, exchanges, and clearing houses.
 
 Take, for instance, the GameStop stock mania of January 2021. Retail investors started trading GameStop stock at record levels. These investors also piled into other meme stocks like AMC Entertainment, causing the overall market volatility to rise more than 76% in a matter of a few trading days as measured by the VIX. This volatility led to price pressure on thousands of securities. Millions of investors were frantically trying to access their portfolios at the same time, but were faced with apps that [couldn’t keep up with demand](https://www.wsj.com/articles/outages-continue-to-plague-online-brokerages-11611768827). Investors are not kind to companies whose apps do not perform well when they need it the most.
 
-![](/images/blog/b12590924433dcbd8791ae40786bd3413ecbada8-1024x571.webp)
+![](/images/site-mirror/b12590924433dcbd8791ae40786bd3413ecbada8-1024x571.webp)
+
+*Exhibit: The rise in market volatility caused by retail investors during GameStop mania, January 2021*
 
 During these frantic times, most investors are looking for two data points about their portfolio that they need access to at all times:
 
@@ -56,17 +58,19 @@ Once the client app has retrieved the portfolio and is receiving the latest pric
 
 Let’s begin by modeling a holding in a portfolio. In the illustration below, CVS Health Corp. (NYSE: [CVS](https://seekingalpha.com/symbol/CVS)) is one of our example holdings. There were two separate lots of CVS—the first was acquired on January 4, 2021 and the second on March 1, 2021. The same number of shares were purchased during the **buy** trade for each lot. Both trades were for 10 shares, however at different **prices per share**—$68.3378 for the first lot and $68.82 for the second. The total quantity of the CVS holding in the portfolio is 20 with an average cost calculated as follows: (($68.3378 * 10) + ($68.82 * 10))/20 = $68.5789 per share.
 
-![](/images/blog/66669188c8cbcac451b17a9dfca41f44c4b6f341-1024x400.webp)
+![](/images/site-mirror/66669188c8cbcac451b17a9dfca41f44c4b6f341-1024x400.webp)
+
+*Exhibit: Description of a holding in a securities portfolio (Source: E*Trade, Author annotations)*
 
 ## Implementing the requirements
 
-![](/images/blog/fb962cf131d547858b9a611ba9aa38c5e49479b3-303x449.webp)
+![](/images/site-mirror/fb962cf131d547858b9a611ba9aa38c5e49479b3-303x449.webp)
 
 Redis’ data representation is flat—one cannot embed Sets, for example, within another Set. Therefore the data model as described by an ER diagram cannot necessarily be implemented directly. Implementing the Entity Model directly might not have the desired performance characteristics, so you’ll have to think a little differently as you get down to implementation. In this section we cover some of the basic design principles required when designing a high-performance and scaling implementation using Redis.
 
 The data model here mentions the following entities:
 
-![](/images/blog/9fb22c2ac0bb93b5b265cf566acf8fe33bc4cf8a-785x431.webp)
+![](/images/site-mirror/9fb22c2ac0bb93b5b265cf566acf8fe33bc4cf8a-785x431.webp)
 
 An ER diagram provides a visual representation which can help one see what’s going on.
 
@@ -92,7 +96,7 @@ Given these points, some general approaches are:
 
 Here are the major computational components and the data flow:
 
-![](/images/blog/d658ed53110f3f4ed1eaf44bfe788d01613ad187-624x211.webp)
+![](/images/site-mirror/d658ed53110f3f4ed1eaf44bfe788d01613ad187-624x211.webp)
 
 Note that Redis Enterprise consists of one or more nodes across many machines—deployed on-premises, Kubernetes, hybrid cloud deployment, managed service, or native first party cloud service—and there will be hundreds of thousands of investors online with their client(s) of choice.
 
@@ -105,13 +109,13 @@ Security price updates will be absorbed by Redis Streams. Updates for securities
 
 The following diagram details this part of the architecture:
 
-![](/images/blog/96635daeb8be0e6bbc7d6b4b3dc1a1c2d970ac23-623x473.webp)
+![](/images/site-mirror/96635daeb8be0e6bbc7d6b4b3dc1a1c2d970ac23-623x473.webp)
 
 The most important factor in our model is the account-specific data representing lots and the related security. We’ll compare two implementations as an example of how to think about modeling data in Redis, with a focus on performance. Other implementations are possible—our goal here is to introduce the overall design principles and thought processes when implementing data in Redis.
 
 We’ll use the following information as a concrete example:
 
-![](/images/blog/5cb736ac7d84dc78effc993e61c0064daecf43a5-785x162.webp)
+![](/images/site-mirror/5cb736ac7d84dc78effc993e61c0064daecf43a5-785x162.webp)
 
 We are pricing in the lowest possible currency denomination to avoid floats and keep everything in integers. We can allow the client to handle transformation to dollars and cents. In this example, we are using the prices with precision of two decimal places.
 

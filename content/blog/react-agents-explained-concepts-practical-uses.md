@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 18 August 2026 · updated 19 August 2026*
 
-![ReAct agents explained: concepts & practical uses](/images/blog/def942fd4083ea0c994ea73acc1eee5d2f541240-2400x1256.webp)
+![ReAct agents explained: concepts & practical uses](/images/site-mirror/def942fd4083ea0c994ea73acc1eee5d2f541240-2400x1256.webp)
 
 If you've watched an AI coding assistant hunt down a bug, run a test, read the failure, and adapt its next fix, you've watched Reasoning and Acting (ReAct)-like behavior at work. ReAct is a common pattern in production agent systems today. It's simple to build and surprisingly capable, which is exactly why it can get slow and expensive once it handles real traffic. This guide covers what a ReAct agent is, how the reasoning-and-acting loop works, how it compares to other [agent patterns](/blog/ai-agent-orchestration-platforms/), and what it takes to run these loops under production traffic.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 23 August 2024 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/1f133595813f27e8946dba5a485e27b3c9f657ed-772x552.webp)
+![Blog tile image](/images/site-mirror/1f133595813f27e8946dba5a485e27b3c9f657ed-772x552.webp)
 
 Today, we’re announcing new products and capabilities, which are each different articulations of our core mission: to help developers build fast apps – fast.
 

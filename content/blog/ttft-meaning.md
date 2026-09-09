@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 April 2026 · updated 8 April 2026*
 
-![TTFT meaning: What Time to First Token tells you about your LLM app](/images/blog/8b949a7c0bb48bb68e57b5f7474e5006a01a69e9-2400x1256.webp)
+![TTFT meaning: What Time to First Token tells you about your LLM app](/images/site-mirror/8b949a7c0bb48bb68e57b5f7474e5006a01a69e9-2400x1256.webp)
 
 Have you ever stared at a chatbot where nothing is happening and wondered whether it crashed? That delay between pressing send and seeing anything happen is what Time to First Token (TTFT) measures: the time between sending a request and the first output token appearing. It's one of the most visible metrics for production LLM apps because it directly shapes perceived responsiveness—users don't wait long before assuming something's wrong.
 

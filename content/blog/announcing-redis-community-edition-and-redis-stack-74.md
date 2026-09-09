@@ -17,7 +17,7 @@ hidden: true
 
 *By Pieter Cailliau, Jim Allen Wallace · Published 29 July 2024 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/2c59a663b0884d3010c6eedb4e94e05729fd485e-772x552.webp)
+![Blog tile image](/images/site-mirror/2c59a663b0884d3010c6eedb4e94e05729fd485e-772x552.webp)
 
 Redis’ success has always been rooted in the deep connection we have with our users. Building Redis has been, and will continue to be, a collaborative effort.
 
@@ -33,7 +33,7 @@ Redis already supports [key expiration](/ebook/part-2-core-concepts/chapter-3-co
 
 As an example, one place where this can be useful is session management. Some data in a session you might want to preserve for a longer time, such as a user’s shopping basket or their preferences. But some parts you might want to expire, such as an authentication token. Previously, you had to model this in two separate keys, while logically the data belonged together. Having the ability to expire only parts of the hash will simplify session management and other use cases.
 
-![Redis](/images/blog/c35f2067a5a318e8b583d2d2ad8fcf7711d6d4b5-1904x794.webp)
+![Redis](/images/site-mirror/c35f2067a5a318e8b583d2d2ad8fcf7711d6d4b5-1904x794.webp)
 
 ### Reduce memory consumption in vector databases with new data types.
 
@@ -45,7 +45,7 @@ To show the impact of these two new data types, we benchmarked them against floa
 - While the dataset size is logically halved for bfloat16 and float16 compared to float32, the index size depends on M/EF configurations. We observed that the total used memory was reduced between 22% and 47%.
 - For multi-client tests, we achieved 34% higher QPS and 52% lower latency compared to float32 and 134% higher QPS and 59% lower latency compared to float64.
 
-![](/images/blog/7577ea86114a8f34f886ca88969f518d23c1dcf1-1124x625.webp)
+![](/images/site-mirror/7577ea86114a8f34f886ca88969f518d23c1dcf1-1124x625.webp)
 
 Regarding the maximum achievable accuracy, in three out of the four datasets we benchmarked, this remained unchanged. For the DBpedia data set, the maximum accuracy loss was 0.03. It’s important to note that accuracy loss is inherently tied to the datasets themselves. Therefore, it’s important to evaluate each case individually when dealing with production-grade setups and data.
 

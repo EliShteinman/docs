@@ -15,11 +15,11 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 15 November 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 ## Introducing RedisGraph
 
-![RedisGraph Icon](/images/blog/d58b932b701690c6931f1438fd8465a6c4ff60c2-1999x1872.webp)
+![RedisGraph Icon](/images/site-mirror/d58b932b701690c6931f1438fd8465a6c4ff60c2-1999x1872.webp)
 
 Today we are happy to announce the general availability of RedisGraph v1.0. RedisGraph is a Redis module developed by Redis to add [graph database](/glossary/graph-database/) functionality to Redis. We released RedisGraph in preview/beta mode over six months ago, and appreciate all of the great feedback and suggestions we’ve received from the community and our customers as we worked together on our first GA version.
 
@@ -32,7 +32,7 @@ Unlike existing graph database implementations, RedisGraph represents connected 
 
 Before getting into our benchmark, I should point out that Redis is a single-threaded process by default. In RedisGraph 1.0, we didn’t release functionality to partition graphs over multiple shards, because having all data within a single shard allows us to execute faster queries while avoiding network overhead between shards. RedisGraph is bound to the single thread of Redis to support all incoming queries and includes a threadpool that takes a configurable number of threads at the module’s loading time to handle higher throughput. Each graph query is received by the main Redis thread, but calculated in one of the threads of the threadpool. This allows reads to scale and handle large throughput easily. Each query, at any given moment, only runs in one thread.
 
-![RedisGraph Readers and Writers](/images/blog/3029eba018869d199c8027ed39935cb672a55f34-1476x1266.webp)
+![RedisGraph Readers and Writers](/images/site-mirror/3029eba018869d199c8027ed39935cb672a55f34-1476x1266.webp)
 
 This differs from other graph database implementations, which typically execute each query on all available cores of the machine. We believe our approach is more suitable for real-time real-world use cases where high throughput and low latency under concurrent operations are more important than processing a single serialized request at a time.
 
@@ -99,7 +99,7 @@ It is important to note that TigerGraph applied a timeout of three minutes for t
 | twitter | time (msec) | 0.8 | 24.1 | 205.0 | 289.2 | 394.8 | 1,674.7 |
 | normalized | 1 | 30.1 | 256.3 | 361.5 | 493.5 | 2,093.4 |  |
 
-![Normalized single request response times: 1-hop path query](/images/blog/8ac7256c28914f6b9902f236b3f41ead322f1100-1424x880.webp)
+![Normalized single request response times: 1-hop path query](/images/site-mirror/8ac7256c28914f6b9902f236b3f41ead322f1100-1424x880.webp)
 
 ### 2-hop path query time
 
@@ -109,7 +109,7 @@ It is important to note that TigerGraph applied a timeout of three minutes for t
 | twitter | time (msec) | 503.0 | 460.0 | 18,340.0 | 27,400.0 | 27,780.0 | 28,980.0 |
 | normalized | 1 | 0.9 | 36.5 | 54.5 | 55.2 | 57.6 |  |
 
-![Normalized single request response times: 2-hop path query](/images/blog/ddb6152192cab6143a3cc00b63029a68b29f505b-1424x880.webp)
+![Normalized single request response times: 2-hop path query](/images/site-mirror/ddb6152192cab6143a3cc00b63029a68b29f505b-1424x880.webp)
 
 ### 3-hop path query time
 
@@ -120,7 +120,7 @@ It is important to note that TigerGraph applied a timeout of three minutes for t
 | twitter | time (msec) | 9301 | 6730 | 298,000.0 | 38,700.0 | 4,324,000.0 | 3,901,600.0 |
 | normalized | 1 | 0.7 | 32.0 | 4.2 | 464.9 | 419.5 |  |
 
-![Normalized single request response times: 3-hop path query](/images/blog/fb9d336ae426a3b86f9ff88abec72d27ce50a26c-1424x880.webp)
+![Normalized single request response times: 3-hop path query](/images/site-mirror/fb9d336ae426a3b86f9ff88abec72d27ce50a26c-1424x880.webp)
 
 ### 6-hop path query time
 
@@ -130,7 +130,7 @@ It is important to note that TigerGraph applied a timeout of three minutes for t
 | twitter | time (msec) | 78730 | 63000 | N/A | N/A | N/A | N/A |
 | normalized | 1 | 0.8 | N/A | N/A | N/A | N/A |  |
 
-![Normalize single request response times: 6-hop path query](/images/blog/f52b4165770e401c18650ab7d1022be31b2b6b69-1424x880.webp)
+![Normalize single request response times: 6-hop path query](/images/site-mirror/f52b4165770e401c18650ab7d1022be31b2b6b69-1424x880.webp)
 
 ## Parallel requests benchmark
 
@@ -144,7 +144,7 @@ For TigerGraph, we extrapolated results by multiplying the average response time
 | twitter | time (msec) | 117 | 7,200 | 12,923 | 138,000 | 286,018 | 2,019,000 | 3,117,964 | 18,900,000 |
 | normalized | 1 | 61.5 | 1 | 10.7 | 1 | 7.1 | 1 | 6.1 |  |
 
-![Normalized parallel request response times](/images/blog/60419e940d6798f19db4762d9167a8a61d01d149-891x551.webp)
+![Normalized parallel request response times](/images/site-mirror/60419e940d6798f19db4762d9167a8a61d01d149-891x551.webp)
 
 ## Conclusion
 

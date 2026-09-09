@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 3 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/9214678cd7985fe0aa1fccd8294874663692cb18-1200x628.webp)
+![Redis](/images/site-mirror/9214678cd7985fe0aa1fccd8294874663692cb18-1200x628.webp)
 
 AI agent memory turns stateless language models into systems that remember past interactions and build on experience. Without memory infrastructure, LLMs treat each request independently—your agent won't remember what happened five minutes ago. Memory systems store and retrieve information across interactions, enabling agents that maintain context, learn from experience, and execute multi-step tasks.
 

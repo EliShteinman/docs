@@ -14,7 +14,7 @@ hidden: true
 
 *By Haley Kim, Associate Content Producer · Published 7 May 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/5455571a37e3f1f23466f515f3675a3eee34ef77-386x260.webp)
+![Blog tile image](/images/site-mirror/5455571a37e3f1f23466f515f3675a3eee34ef77-386x260.webp)
 
 Jenny is looking to buy a new pair of sandals for the summer, so she checks out her favorite retailer’s website. As she browses the selection and clicks on the shoes she’s interested in, she notices that each page takes forever to load. Frustrated, she goes to another retailer’s website, where she makes her purchase.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 5 August 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e00ee201692184335a5216b88f29e7862e66e5eb-20x20.webp)
+![Blog tile image](/images/site-mirror/e00ee201692184335a5216b88f29e7862e66e5eb-20x20.webp)
 
-![](/images/blog/cbecf245b5d6e437d64ff323329f99e07f5afc2a-635x200.webp)
+![](/images/site-mirror/cbecf245b5d6e437d64ff323329f99e07f5afc2a-635x200.webp)
 
 Here’s a shocking confession for you: I’m a data-phile. I am fascinated by data and everything that has to do with it. Even after having spent the last 25 years with, in, under and against all sorts of data management systems – I still can’t get enough of it. I’m thrilled whenever I play with a new database technology and I thrive when I get to dive into a dataset. Yes, I’m a datamaniac and a data junkie.
 

@@ -15,11 +15,11 @@ hidden: true
 
 *By Ed Sandoval, Senior Product Manager · Published 16 November 2021 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/e3d667dfc9afb035fddbe0f1f6ff73c2c29a0e2f-930x628.webp)
+![Blog tile image](/images/site-mirror/e3d667dfc9afb035fddbe0f1f6ff73c2c29a0e2f-930x628.webp)
 
 On a recent family trip to Switzerland, my son took a photo on his smartphone as we walked through the lovely Lavaux Vineyard Terraces.
 
-![](/images/blog/86243bf71a15c87cc3969fc9d9009260d17ae999-768x1024.webp)
+![](/images/site-mirror/86243bf71a15c87cc3969fc9d9009260d17ae999-768x1024.webp)
 
 Using [Google Lens](https://lens.google/), he was able to use the image to quickly look up the fascinating history of [this UNESCO World heritage site](https://whc.unesco.org/en/list/1243/video). Google Lens allows users to “search what they see” around them by using a technology known as Vector Similarity Search (VSS), an AI-powered method to measure the similarity of any two pieces of data, images included.
 
@@ -37,11 +37,13 @@ Here’s where AI/ML come into play.
 
 The wide availability of pre-trained machine learning models has made it simple to transform almost any kind of unstructured data (image, audio, long text) into a [vector embedding](https://redis.io/glossary/vector-embeddings/). For example, [Hugging Face](https://huggingface.co/), a startup focused on [natural-language understanding](https://en.wikipedia.org/wiki/Natural-language_understanding) (NLU), provides free access to hundreds of state-of-the-art models that transform raw text data into its vector representation (embedding).
 
-![Vector Similarity Diagram](/images/blog/3938caacad54857f8a1366d9e02c5390ba66d4a2-1024x450.webp)
+![Vector Similarity Diagram](/images/site-mirror/3938caacad54857f8a1366d9e02c5390ba66d4a2-1024x450.webp)
 
 The clever trick of these models is that the embeddings generated for two sentences will be “close” to each other only when the meaning of the sentences is semantically similar.
 
-![Vector Similarity Illustration](/images/blog/ae6a2c31fcc509e27134c3ab15fa5d28b5da73e3-1024x587.webp)
+![Vector Similarity Illustration](/images/site-mirror/ae6a2c31fcc509e27134c3ab15fa5d28b5da73e3-1024x587.webp)
+
+*Figure 1. Simplified representation of vector embeddings in a 2D vector space*
 
 In Fig. 1 above, you get a sense of how the embeddings for sentences are related. If you look at embeddings generated for sentences related to a “mobile phone,” you’ll notice that they are “close” to each other (see top left part of the diagram). More important, both of these embeddings are noticeably distant from the embedding generated for a sentence that relates to a food supplement product (lower right part of the diagram). The “distance” between the embeddings acts as a proxy for their semantic similarity. There are even models that capture semantic similarity for sentences in multiple languages.
 

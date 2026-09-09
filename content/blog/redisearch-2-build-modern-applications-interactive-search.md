@@ -20,7 +20,7 @@ hidden: true
 
 *By Ashish Sahu · Published 18 February 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/9130fe1fc372697bdd63db7cf1f37da29eb1534d-772x520.webp)
+![Blog tile image](/images/site-mirror/9130fe1fc372697bdd63db7cf1f37da29eb1534d-772x520.webp)
 
 Today we are excited to announce the general availability of RediSearch 2.0, bringing its powerful querying, indexing, and full-text search engine to all Redis users. In [public preview since September 2020, ](/blog/introducing-redisearch-2-0/)RediSearch 2.0 has already garnered a growing list of customers who rely on it for a myriad of use cases from creating modern applications to full-text search to real-time analytics. RediSearch 2.0 introduces a brand new architecture that makes it more than twice as fast as RediSearch 1.6, and RediSearch now supports Redis’ [Active-Active geo-distribution](/active-active/) and [Redis on Flash](/redis-enterprise/technology/redis-on-flash/).
 
@@ -28,7 +28,7 @@ Today we are excited to announce the general availability of RediSearch 2.0, bri
 
 Modern organizations are capturing large amounts of structured and unstructured data. Too often, however, this data is locked in slow, disk-based databases that don’t support real-time experiences for modern applications. RediSearch eliminates these performance bottlenecks by allowing users to easily index their Redis datasets and then query and aggregate the data in a fully distributed manner in real-time, at the speed of Redis.
 
-![](/images/blog/5c2eb6ae04008976bbdeb6c9696a003bbbc2d8cc-1024x471.webp)
+![](/images/site-mirror/5c2eb6ae04008976bbdeb6c9696a003bbbc2d8cc-1024x471.webp)
 
 As shown in the diagram above, RediSearch brings more sophisticated data modeling to Redis by providing several indexing strategies for the value part of the key, including full-text, geo-location, numbers, and tags. Without indexes, Redis must perform a SCAN operation for every query, which can be extremely slow and inefficient. And creating and maintaining these indexes manually is complex and error-prone. RediSearch maintains these indexes for the user and allows you to query across data structures in a clustered database.
 

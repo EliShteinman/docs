@@ -14,7 +14,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 4 September 2025 · updated 1 June 2026*
 
-![Fall Release Program](/images/blog/75cb96c1352e15d5f8dfe8c4ddea1fdbcc7a6b36-1544x1104.webp)
+![Fall Release Program](/images/site-mirror/75cb96c1352e15d5f8dfe8c4ddea1fdbcc7a6b36-1544x1104.webp)
 
 Today, we’re excited to announce our Fall Release—a comprehensive set of updates across Redis for AI, Redis Cloud, and Redis Open Source. This release brings together core enhancements, new integrations, and developer tools to help you build fast, reliable applications at scale. Before we get into the details, let's take a look at where Redis is in the new world of AI.
 

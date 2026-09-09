@@ -14,11 +14,11 @@ hidden: true
 
 *By Cassie Zimmerman, Director, Strategic Alliances · Published 14 March 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/eab9b532cc07930c20492c2ef2dda50564e5cab4-1600x1200.webp)
+![Blog tile image](/images/site-mirror/eab9b532cc07930c20492c2ef2dda50564e5cab4-1600x1200.webp)
 
-![](/images/blog/3f32e3906bd6e8ac44fcac75dd08e2fba9cc3760-600x600.webp)
+![](/images/site-mirror/3f32e3906bd6e8ac44fcac75dd08e2fba9cc3760-600x600.webp)
 
-![](/images/blog/eab9b532cc07930c20492c2ef2dda50564e5cab4-1600x1200.webp)
+![](/images/site-mirror/eab9b532cc07930c20492c2ef2dda50564e5cab4-1600x1200.webp)
 
 As infrastructure diversification becomes more relevant, the tools developers need in order to build truly scalable and professional-grade software must evolve. Today marks a big step in that evolution, now that Redis Enterprise is available on the DC/OS (Data Center Operating System) platform.
 

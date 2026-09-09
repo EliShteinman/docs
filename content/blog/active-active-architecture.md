@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 18 February 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/efe0482c998344f52c3615452a2761771d4b1175-1200x628.webp)
+![Redis](/images/site-mirror/efe0482c998344f52c3615452a2761771d4b1175-1200x628.webp)
 
 An active-active architecture is a system configuration in which multiple identical nodes are simultaneously active and serve requests concurrently. Instead of relying on a single, primary node, all nodes in an active-active architecture run in parallel, sharing the workload and boosting reliability.
 
@@ -91,7 +91,7 @@ Active-active architectures provide **horizontal scalability**. Active-active ar
 
 Active-active architectures provide **reduced latency**. As applications scale across multiple regions, active-active architectures ensure users can be served by the geographically closest or fastest-responding node, which cuts down on network latency. By routing requests to the nearest active node, services can maintain higher response times, lower latency, and even real-time data access.
 
-![Redis](/images/blog/1dd7d2483c6361ef4656c4e0aa8d5f77e52251ff-1547x900.webp)
+![Redis](/images/site-mirror/1dd7d2483c6361ef4656c4e0aa8d5f77e52251ff-1547x900.webp)
 
 Active-active architectures provide **optimized resource utilization. **In an active-active architecture, all nodes are active, meaning none are sitting idle, merely waiting for failure. This is a much more cost-effective way to use hardware. Even though running multiple active instances incurs some cost, the payoff of preventing downtime costs tends to outweigh it.
 
@@ -127,7 +127,7 @@ Some active-active systems allow concurrent writes on multiple nodes, which has 
 
 Redis, for example, implements CRDTs using a global database that spans multiple clusters, creating a conflict-free replicated database (CRDB). A CRDB enables seamless conflict resolution, local latency for read and write operations, and business continuity even when some geo-replicated regions are unavailable. Each CRDB instance also maintains separate vector clocks for each dataset, which are updated after any update operation at the instance level or when another update operation for the same object arrives from another CRDB instance.
 
-![Redis](/images/blog/6a26703784a48b3f6ab2c48ee5fa3577f4dfab4c-613x340.webp)
+![Redis](/images/site-mirror/6a26703784a48b3f6ab2c48ee5fa3577f4dfab4c-613x340.webp)
 
 Active-active architectures use **peer-to-peer replication**, which uses each node as both a source and recipient of replication. There are several ways to accomplish this, including mesh replication, where every node directly replicates to every other node, and intermediate brokers, which use middleman services to support replication between nodes.
 

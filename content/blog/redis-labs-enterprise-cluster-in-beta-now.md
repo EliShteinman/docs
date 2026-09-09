@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 7 January 2015 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/63ba6a45fec34dbb2809bf8726a1403706ea3d1e-140x92.webp)
+![Blog tile image](/images/site-mirror/63ba6a45fec34dbb2809bf8726a1403706ea3d1e-140x92.webp)
 
-![](/images/blog/03e40078f86d9d526b7d28e3983f93348ddfa819-635x200.webp)
+![](/images/site-mirror/03e40078f86d9d526b7d28e3983f93348ddfa819-635x200.webp)
 
 We’ve listened carefully during 2014 and today we are proud to announce the launch of our on-premise Redis offering: Redis Enterprise Cluster (RLEC). RLEC provides you with the same high performance Redis experience that you expect from us with the added benefit of managing your own cluster on any environment you choose, including on-premise, virtual private cloud, IaaS / PaaS, and many others.
 

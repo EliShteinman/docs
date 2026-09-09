@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 3 August 2026 · updated 5 August 2026*
 
-![Multi-agent observability: why one trace stops being enough](/images/blog/caae39649231ad98b79d50eaaa71352bbd31e624-2400x1256.webp)
+![Multi-agent observability: why one trace stops being enough](/images/site-mirror/caae39649231ad98b79d50eaaa71352bbd31e624-2400x1256.webp)
 
 A single [AI agent](/blog/what-is-an-ai-agent/) is usually easy to trace. One loop, one context window, one trace—you can read it top to bottom, spot the bad prompt or the failed tool call, and fix it. [Multi-agent systems](/blog/ai-agent-orchestration-platforms/) are different. Agents, shared memory, and external tools split the work, and many failures come from coordination between components rather than any single step. A trace that fully covers one agent may only partially cover the system.
 

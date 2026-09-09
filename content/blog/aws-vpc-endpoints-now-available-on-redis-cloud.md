@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 2 December 2024 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/32a99e2a16d4f41b5e35e8f03bd8d33786568ffb-772x552.webp)
+![Blog tile image](/images/site-mirror/32a99e2a16d4f41b5e35e8f03bd8d33786568ffb-772x552.webp)
 
 Redis is now a launch partner with Amazon Web Services (AWS) for AWS VPC endpoints for resources—a new capability that gives you private access to VPC resources using AWS PrivateLink and VPC Lattice. Soon, Redis Cloud users can take advantage of this capability to privately and securely connect their Redis databases to AWS resources across VPCs and accounts.
 

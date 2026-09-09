@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 19 June 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/12e7aadf9d192fdfd0cdcd006bd1406e17969d59-101x58.webp)
+![](/images/site-mirror/12e7aadf9d192fdfd0cdcd006bd1406e17969d59-101x58.webp)
 
 Next week the Redis team is attending [MongoDB World](https://world.mongodb.com). We’re planning to spend most of our the time at the booth (#110) and we would love it if you’d stop over! We have [#RedisGeek tees](https://twitter.com/jillysciarilly/status/479453629225512961) and stickers to give out, a drone you can win, and of course talking shop about Redis is also an option 😛
 

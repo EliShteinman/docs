@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 2 January 2014 · updated 5 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/20a4a735113f75f726db28c6dfbca869799eda55-635x181.webp)
+![](/images/site-mirror/20a4a735113f75f726db28c6dfbca869799eda55-635x181.webp)
 
 Today we are pleased to kick off 2014 with the announcement of the immediate availability of Redis Cloud & Memcached Cloud services off two additional AWS data regions:
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 24 January 2024 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/77472a60f1a43eb6824c0cddb07cc72c6ee8a1c6-772x550.webp)
+![Blog tile image](/images/site-mirror/77472a60f1a43eb6824c0cddb07cc72c6ee8a1c6-772x550.webp)
 
 Building an application that uses vector embeddings? You’ve probably gone through several phases: obtaining your raw data, attempting to chunk it, vectorizing the raw data, and then uploading the vectors to a chosen vector database.
 
@@ -46,7 +46,7 @@ With this process, you’ll have VectorFlow set up locally.
 
 ### Pipeline Overview
 
-![Pipeline overview](/images/blog/689d0f0b73651b22b8aad205cff94b3495fc63ef-512x149.webp)
+![Pipeline overview](/images/site-mirror/689d0f0b73651b22b8aad205cff94b3495fc63ef-512x149.webp)
 
 Our unstructured text data will be fed into VectorFlow. VectorFlow will segment the text data into chunks. Then, it will use a chosen vectorization model to convert these segmented parts into [vector embeddings.](https://redis.io/glossary/vector-embeddings/) For this demonstration, I’ll be using OpenAI’s embeddings, which typically requires API keys, but you can opt for any Hugging Face Sentence Transformer model. Once the embeddings are generated, they will be stored in the Redis vector database. For this example, we’re using Paul Graham’s article titled “[What I Worked On](http://www.paulgraham.com/worked.html),” but you can use any textual or image data of your preference.
 
@@ -313,19 +313,19 @@ When undertaking any project, selecting the appropriate tools is crucial for its
 
 ## Related resources
 
-![uninterrupted-availability-anywhere-ebook-card-](/images/blog/796b4067d96607482e0513f57ad3403660f0428c-772x550.webp)
+![uninterrupted-availability-anywhere-ebook-card-](/images/site-mirror/796b4067d96607482e0513f57ad3403660f0428c-772x550.webp)
 
 Redis as a vector database quick start guide
 
 Learn More
 
-![Vector-Similarity-Search](/images/blog/69081a9c12f1294ad67fad5a8058d6d64721d4cb-726x572.webp)
+![Vector-Similarity-Search](/images/site-mirror/69081a9c12f1294ad67fad5a8058d6d64721d4cb-726x572.webp)
 
 Vector Database Similarity Search
 
 Learn More
 
-![using-redis-vss-as-a-retrieval-step-in-an-llm-chain-blog-image.png](/images/blog/30a85ca065c55c129c424a0f05adee591796cab4-772x550.webp)
+![using-redis-vss-as-a-retrieval-step-in-an-llm-chain-blog-image.png](/images/site-mirror/30a85ca065c55c129c424a0f05adee591796cab4-772x550.webp)
 
 Using Redis VSS as a Retrieval Step in an LLM Chain
 

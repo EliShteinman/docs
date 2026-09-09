@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 9 November 2012 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/7fb8fab8b7fa498fc7dd89c5b070e4f821d93642-242x208.webp)
+![Blog tile image](/images/site-mirror/7fb8fab8b7fa498fc7dd89c5b070e4f821d93642-242x208.webp)
 
 Earlier this week, Flights With Friends wrote [this post](http://blog.flightswithfriends.com/post/35215688010/heroku-redis-hosting-options) evaluating alternatives for using Redis on Heroku. Even though we were not selected as their favorite choice, we think they did a fair job and want to share what we think should be the most important things to consider when selecting a Redis add-on for your Heroku app:
 

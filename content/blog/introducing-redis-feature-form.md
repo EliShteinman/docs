@@ -14,7 +14,7 @@ hidden: true
 
 *By Simba Khadder, Head of Context Engine at Redis. · Published 20 April 2026*
 
-![Redis](/images/blog/5aba89ba06f36351bf71258419c2514dc6282ed7-1200x628.webp)
+![Redis](/images/site-mirror/5aba89ba06f36351bf71258419c2514dc6282ed7-1200x628.webp)
 
 When Redis acquired Featureform last October, we were already a core part of how teams served real-time data to models, especially in production systems where latency and reliability matter. Featureform added the missing orchestration layer: a way to define, manage, and serve features consistently across training and inference, without forcing teams to rebuild their stack around a single vendor.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Britiana Andrade, Marketing Manager · Published 14 April 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d44f7ccb33e29e1ee0af596a0d981f01e132ebdc-772x550.webp)
+![Blog tile image](/images/site-mirror/d44f7ccb33e29e1ee0af596a0d981f01e132ebdc-772x550.webp)
 
 From April 20-21, join us at RedisConf 2021 for more than [60 on-demand breakout sessions](/redisconf/sessions/), four brand-new, free [training courses](/redisconf/sessions/), and a $100K “Build on Redis” hackathon. You’ll also want to tune into our live keynotes and fireside chats, where we’ll discuss the latest Redis developments, our Redis Enterprise collaborations with our partners, and insights from customers who are making real-time data a part of their solutions.
 
@@ -24,7 +24,7 @@ While working hard at learning, don’t forget to have some fun! We’re giving
 
 **We’re awarding gift cards to the top **[**500 participants**](/wp-content/uploads/2021/04/rc21-rewards-program-terms.pdf)**. **Each person will be ranked on a real-time leaderboard based on points scored. Once the clock strikes 11:59 p.m. PT on April 21, each participant’s ranking will be cemented and point totals will be locked. Here’s what you could win:
 
-![](/images/blog/5ca1714b515a33ba5a883ec10ea6a9a1e3086776-555x264.webp)
+![](/images/site-mirror/5ca1714b515a33ba5a883ec10ea6a9a1e3086776-555x264.webp)
 
 **Prize draws**
 
@@ -72,7 +72,7 @@ The conference has been designed to optimize how attendees view content and inte
 
 Network with like-minded peers in break rooms or create a dialogue in discussion rooms dedicated to popular topics. Connect directly with a fellow attendee through **direct messages**, or by requesting a **phone or video chat**.
 
-![](/images/blog/3011954a00a8b6736608f2c6064c546d55375a04-1024x521.webp)
+![](/images/site-mirror/3011954a00a8b6736608f2c6064c546d55375a04-1024x521.webp)
 
 **Engaging with content**
 

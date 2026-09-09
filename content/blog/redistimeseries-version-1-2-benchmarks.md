@@ -14,7 +14,7 @@ hidden: true
 
 *By Filipe Oliveira, Performance Engineer · Published 12 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ea439aea66779d924218acb0ca02b7d02a9b2296-601x601.webp)
+![Blog tile image](/images/site-mirror/ea439aea66779d924218acb0ca02b7d02a9b2296-601x601.webp)
 
 To benchmark the performance of our newly released [RedisTimeSeries](/redis-enterprise/redis-time-series/) 1.2 module, we used the Time Series Benchmark Suite ([TSBS](https://github.com/RedisTimeSeries/tsbs/tree/redistimeseries)). A collection of Go programs based on the work made public by InfluxDB and TimescaleDB, TSBS is designed to let developers generate datasets and then benchmark read and write performance. TSBS supports many other time-series databases, which makes it straightforward to compare databases.
 

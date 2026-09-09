@@ -14,7 +14,7 @@ hidden: true
 
 *By Fionce Siow, Senior Product Marketing · Published 27 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/67ed8fef4780cb6afa63d37dfe331787139dc3ab-1200x628.webp)
+![Redis](/images/site-mirror/67ed8fef4780cb6afa63d37dfe331787139dc3ab-1200x628.webp)
 
 If you're building Large Language Model (LLM) apps, Retrieval-Augmented Generation (RAG) systems, or any production AI feature, you've probably noticed inference costs spiraling faster than expected. Or maybe your response times feel sluggish despite throwing more GPUs at the problem. Here's what most teams miss: when you're running LLM inference at low batch sizes, your bottleneck isn't compute, it's memory bandwidth. Your GPU is sitting there waiting for data instead of crunching numbers. That changes your optimization approach.
 

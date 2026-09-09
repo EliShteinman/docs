@@ -15,7 +15,7 @@ hidden: true
 
 *By Isaac Sacolick, Contributor · Published 19 April 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4e3964d684ba05ad60d14e7d77ab0ace9def2ec6-500x356.webp)
+![Blog tile image](/images/site-mirror/4e3964d684ba05ad60d14e7d77ab0ace9def2ec6-500x356.webp)
 
 ***The Data Economy**** is a video podcast series about leaders who use data to make positive impacts on their business, customers, and the world. To see all current episodes, explore the podcast episodes library below.*
 

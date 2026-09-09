@@ -17,7 +17,7 @@ hidden: true
 
 *By Jeffrey Lovitz, Programmer · Published 31 July 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 *TLDR: We’ve been developing a graph database that transforms queries into linear algebra problems, and the result is an architecture that can perform many standard operations on millions of elements in sub-second time.*
 
@@ -49,7 +49,7 @@ The GraphBLAS interface allows the majority of our library invocations to be dir
 
 As an example, let’s take a simple graph that has 6 nodes, 4 of which have the label Person and 2 of which have the label Country:
 
-![As an example, let’s take a simple graph that has 6 nodes, 4 of which have the label Person and 2 of which have the label Country](/images/blog/4c88519e0ab1bde0c1ac6d84f6920892522bf935-251x247.webp)
+![As an example, let’s take a simple graph that has 6 nodes, 4 of which have the label Person and 2 of which have the label Country](/images/site-mirror/4c88519e0ab1bde0c1ac6d84f6920892522bf935-251x247.webp)
 
 The Cypher query we’ll run is:
 
@@ -61,23 +61,23 @@ Thanks to the minimal impact of values in the CSC encoding, our adjacency matric
 
 Our starting point for this query will be the `**friend**` adjacency matrix:
 
-![Friend adjacency matrix](/images/blog/5a42f41510665d19bf2374e70d221fdeb4eb198b-577x150.webp)
+![Friend adjacency matrix](/images/site-mirror/5a42f41510665d19bf2374e70d221fdeb4eb198b-577x150.webp)
 
-![friend adjacency diagram](/images/blog/13d37236dfe4ddb3e545471acaf98721113ee001-226x227.webp)
+![friend adjacency diagram](/images/site-mirror/13d37236dfe4ddb3e545471acaf98721113ee001-226x227.webp)
 
 I have Node ID 0, so entries in the first row of this matrix denote the IDs of individuals I am friends with. At the moment, filters are applied node-by-node, but an optimization we’re currently developing is applying them to the matrix at this stage. This will result in a modified adjacency matrix where only my friends are represented:
 
-![modified adjacency matrix](/images/blog/42dbaadecdf439ac4b94a4fe1d848547cc474a1a-577x150.webp)
+![modified adjacency matrix](/images/site-mirror/42dbaadecdf439ac4b94a4fe1d848547cc474a1a-577x150.webp)
 
 Now we take the `visited` matrix, which has the same dimensions and describes all nodes in the same order:
 
-![Visited matrix](/images/blog/87e9ced620ad5edbce19b27b8aed1f73232c7e07-579x151.webp)
+![Visited matrix](/images/site-mirror/87e9ced620ad5edbce19b27b8aed1f73232c7e07-579x151.webp)
 
-![Visited matrix diagram](/images/blog/7602d6b43aa068772fb6251e8832bd3167eff572-324x298.webp)
+![Visited matrix diagram](/images/site-mirror/7602d6b43aa068772fb6251e8832bd3167eff572-324x298.webp)
 
 By multiplying the filtered `friend` matrix against `visited`, we obtain a matrix which connects my node (as a row) to the countries that my friends have visited (as columns):
 
-![Multiplying the filtered friend matrix against visited](/images/blog/b31400a3cd81572d2e0afd977c34015e981c84f0-576x150.webp)
+![Multiplying the filtered friend matrix against visited](/images/site-mirror/b31400a3cd81572d2e0afd977c34015e981c84f0-576x150.webp)
 
 (For space optimization, we actually use boolean matrices here, so both entries would be 1 in practice.)
 
@@ -89,7 +89,7 @@ All of the below values were built with the [Wikipedia top categories](https://s
 
 Here are the performance results we achieved:
 
-![](/images/blog/a76f5fea4f34db444e3058951a2a3f83b8066fd8-456x174.webp)
+![](/images/site-mirror/a76f5fea4f34db444e3058951a2a3f83b8066fd8-456x174.webp)
 
 A few notes:
 

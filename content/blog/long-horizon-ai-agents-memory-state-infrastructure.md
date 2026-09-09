@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 21 May 2026*
 
-![Long horizon tasks: building agents that work over hours & days](/images/blog/3a613a052b1b91c7970f2ed401392a671f2cf2c8-2400x1256.webp)
+![Long horizon tasks: building agents that work over hours & days](/images/site-mirror/3a613a052b1b91c7970f2ed401392a671f2cf2c8-2400x1256.webp)
 
 Early AI agents handled one-shot jobs that took a few minutes: fix this bug, write this function, generate this test. More recent workflows are multi-step, tool-using, and stateful over extended sessions — an agent might spend a full afternoon refactoring a service, running tests, reading logs, and iterating on the fix.
 

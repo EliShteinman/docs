@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 10 February 2026 · updated 11 February 2026*
 
-![Redis](/images/blog/4b202001aeda70be13c46ce7db64a0a94f33408a-1200x628.webp)
+![Redis](/images/site-mirror/4b202001aeda70be13c46ce7db64a0a94f33408a-1200x628.webp)
 
 You've felt it before: that frustrating lag when an app can't find you a match, a ride, or a delivery slot. High engagement benefits from real-time interactions, and real-time performance is what users expect. Users perceive systems as reacting instantaneously when visual response latency is [0.1 seconds or less](https://www.britannica.com/science/time-perception/Perceived-duration). Because real-time performance is so critical to modern applications, Redis has become the data platform of choice for applications needing fast matchmaking.
 

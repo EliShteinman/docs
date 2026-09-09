@@ -15,7 +15,7 @@ hidden: true
 
 *By André Srinivasan, Solutions Architect · Published 5 January 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a4a41a14a7eaad0828db9acc9b8d6d5d9fa1080b-772x550.webp)
+![Blog tile image](/images/site-mirror/a4a41a14a7eaad0828db9acc9b8d6d5d9fa1080b-772x550.webp)
 
 **Kubernetes Secrets are often used to share secrets used by applications deployed in the Kubernetes cluster. The caveat is that Secrets are not as secure as their name may imply. Below, we highlight both the challenges posed by Kubernetes Secrets and a strategy to decouple secret management from a Kubernetes cluster.**
 
@@ -37,7 +37,7 @@ With that in mind, here are a few factors that can make secrets management a cha
 - In a similar vein of platform independence, access control is via Kubernetes roles, making access to secrets files that much more difficult, even if you can solve for a mix of application locations.
 - Kubernetes Secrets tend to be set it and forget it; it is left as an exercise for a DevOps team to deal with freshness, expiration, and secrets rotation.
 
-![](/images/blog/5257e932821981898759b12a6d0214571c75d902-624x258.webp)
+![](/images/site-mirror/5257e932821981898759b12a6d0214571c75d902-624x258.webp)
 
 What is a DevOps team to do? Most likely the team delegates to another service such as HashiCorp Vault.
 
@@ -45,7 +45,7 @@ What is a DevOps team to do? Most likely the team delegates to another service s
 
 [HashiCorp Vault ](https://www.vaultproject.io/)is a platform-agnostic, identity-based, external secrets operator. Unlike Kubernetes Secrets, Vault authorizes all access before sharing sensitive data.
 
-![](/images/blog/4855ecf1407fe73fdd41fa086a27f1eb4c313d65-624x404.webp)
+![](/images/site-mirror/4855ecf1407fe73fdd41fa086a27f1eb4c313d65-624x404.webp)
 
 ## HashiCorp Vault capabilities
 
@@ -57,11 +57,11 @@ Independent of whether Redis Enterprise is installed as [software](/enterprise/)
 
 In September 2022, HashiCorp [announced](https://www.hashicorp.com/blog/vault-kubernetes-and-the-graduation-of-vault-k8s-to-version-1-0) vault-k8s v1.0, an exciting development in the data space, as Redis Enterprise on Kubernetes now uses the [Vault Sidecar Agent Injector](https://developer.hashicorp.com/vault/docs/platform/k8s/injector-csi#vault-sidecar-agent-injector), a Kubernetes mutating webhook controller. It also uses the resulting sidecar pattern to include a Vault Agent container, granting Redis Enterprise pods access to Vault secrets.
 
-![](/images/blog/4d4803ebe2494210bd03ae7f9cf5b3bda9c4b3f5-624x207.webp)
+![](/images/site-mirror/4d4803ebe2494210bd03ae7f9cf5b3bda9c4b3f5-624x207.webp)
 
 In the context of Kubernetes and Redis Enterprise, all Redis Enterprise secrets exposed by the [Redis Enterprise Kubernetes Operator](https://docs.redis.com/latest/kubernetes/architecture/) can be delegated to Vault through the sidecar.
 
-![](/images/blog/de7bbf3792a1b7f36537f4a455e223d59dc9aac0-624x226.webp)
+![](/images/site-mirror/de7bbf3792a1b7f36537f4a455e223d59dc9aac0-624x226.webp)
 
 Below is a walkthrough on how to create a secure deployment of Redis Enterprise on Kubernetes that uses Vault’s power. Here’s a checklist of steps necessary for a successful deployment.
 

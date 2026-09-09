@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 21 June 2023 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/9b8990df47219297429f80ca75c3e88c7c84a6a1-772x550.webp)
+![Blog tile image](/images/site-mirror/9b8990df47219297429f80ca75c3e88c7c84a6a1-772x550.webp)
 
 ***Update 7/28/25: ****You can now use Redis natively on Windows with Memurai Enterprise Edition. We've partnered with Memurai to offer a fully compatible and officially supported Windows port of Redis that brings the full power and performance of Redis to Windows.* [*Read more here*](/blog/use-redis-natively-on-windows-with-memurai/) *for more information, tutorials, and to download an installation package.*
 
@@ -37,7 +37,9 @@ wsl --install
 
 ```
 
-![Installing WSL via the command line](/images/blog/dca0443ffb77889389be1194dfd6f495145eefe0-800x447.webp)
+![Installing WSL via the command line](/images/site-mirror/dca0443ffb77889389be1194dfd6f495145eefe0-800x447.webp)
+
+*Installing WSL via the command line*
 
 This installs the bits that you need and then asks you to reboot your machine. (For more information about installing and configuring WSL, Microsoft has [good documentation](https://docs.microsoft.com/en-us/windows/wsl/install).)
 
@@ -47,7 +49,9 @@ Ubuntu is the default Linux distribution for WSL. After you reboot, you may see 
 
 Once that is done, you should see something like this.
 
-![The final step of installing WSL is configuring the default Linux distribution.](/images/blog/3e40f5dd3ff8fc0393cc487961887956c4a1fb98-800x417.webp)
+![The final step of installing WSL is configuring the default Linux distribution.](/images/site-mirror/3e40f5dd3ff8fc0393cc487961887956c4a1fb98-800x417.webp)
+
+*The final step of installing WSL is configuring the default Linux distribution.*
 
 The next thing to do is to install the Redis database. Before we can install Redis via [apt-get](https://en.wikipedia.org/wiki/APT_(software)) we need to update apt-get and remove some of the new install shininess.
 
@@ -81,7 +85,9 @@ I start up redis with the service start command, and it comes back with a messag
 
 You should see something like this:
 
-![Running redis-cli from the Ubuntu shell](/images/blog/cc2c406bc5f14eb14f6ae6facb67c2c6218c8e2e-701x301.webp)
+![Running redis-cli from the Ubuntu shell](/images/site-mirror/cc2c406bc5f14eb14f6ae6facb67c2c6218c8e2e-701x301.webp)
+
+*Running redis-cli from the Ubuntu shell*
 
 So now the Redis database is running. If you close your shell and open up a new one, Redis will still be running. If you restart WSL or Windows, then Redis won’t be running.
 
@@ -94,7 +100,9 @@ wsl sudo service redis-server status
 
 ```
 
-![Running Redis commands from PowerShell](/images/blog/9ad5e5a4ec399991052c96c475dc2ebe4b3c4ef8-653x260.webp)
+![Running Redis commands from PowerShell](/images/site-mirror/9ad5e5a4ec399991052c96c475dc2ebe4b3c4ef8-653x260.webp)
+
+*Running Redis commands from PowerShell*
 
 From the screenshot, you can see that WSL passed along the sudo service command to Ubuntu. Because I used sudo, I was prompted for the root password, and it returned the same message that I would see from the Ubuntu shell.
 
@@ -119,7 +127,9 @@ Now we can go back to the Windows shell and run the wsl commands without being p
 
 You can even run the redis-cli tool from PowerShell:
 
-![Redis from PowerShell with no password](/images/blog/9f67d09df7005e9612eec17efd841c7e190cd5d1-663x393.webp)
+![Redis from PowerShell with no password](/images/site-mirror/9f67d09df7005e9612eec17efd841c7e190cd5d1-663x393.webp)
+
+*Redis from PowerShell with no password*
 
 The Windows Subsystem for Linux is one of the hidden gems for developers. And this gem sparkles.
 
@@ -141,7 +151,9 @@ function redclear {wsl redis-cli FLUSHALL}
 
 And now I can just check the redis-server status via redstat:
 
-![Calling the redstat function defined in PowerShell with the results from the redis-cli command](/images/blog/cb50fcdf2670f2f2ca7fa72c2fdae92a5c199ec8-423x192.webp)
+![Calling the redstat function defined in PowerShell with the results from the redis-cli command](/images/site-mirror/cb50fcdf2670f2f2ca7fa72c2fdae92a5c199ec8-423x192.webp)
+
+*Calling the redstat function defined in PowerShell with the results from the redis-cli command*
 
 ## How to start Redis when Windows boots
 

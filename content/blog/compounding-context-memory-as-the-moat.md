@@ -14,7 +14,7 @@ hidden: true
 
 *By Cedric Turner, Solution Architect · Published 12 August 2026 · updated 13 August 2026*
 
-![Compounding context: memory as the moat](/images/blog/e283517b03970d7b1f5e669b64c81099acc868bc-2400x1256.webp)
+![Compounding context: memory as the moat](/images/site-mirror/e283517b03970d7b1f5e669b64c81099acc868bc-2400x1256.webp)
 
 Base LLM inference is stateless. The model doesn't remember your last conversation, your users' preferences, or the mistake your agent made ten minutes ago. Unless the app supplies persisted context, everything gets discarded after each request. That statelessness is whymemory as a moat matters for AI agents: useful context can carry forward instead of disappearing. Over time, that context becomes an advantage specific to your product and hard to copy. Below, you'll see what agent memory is, why adding it turns a retrieval system into a learning system, and how memory scopes, retention policies, and access controls decide whether accumulated context compounds into an advantage or a liability.
 

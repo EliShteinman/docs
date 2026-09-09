@@ -14,9 +14,9 @@ hidden: true
 
 *By Fredric Paul, Director of Content · Published 27 August 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a01f25f20d33446fedf02a2e908ee7bf9dd3aff4-1650x1275.webp)
+![Blog tile image](/images/site-mirror/a01f25f20d33446fedf02a2e908ee7bf9dd3aff4-1650x1275.webp)
 
-![](/images/blog/713f4c8df00186672bad53672955a7e98c1723fa-309x400.webp)
+![](/images/site-mirror/713f4c8df00186672bad53672955a7e98c1723fa-309x400.webp)
 
 Scott McNealy is a Silicon Valley legend. As the helm of Sun Microsystems from 1984 through 2006, he oversaw the development of the [Java programming language](https://en.wikipedia.org/wiki/Java_(programming_language)), the[ Solaris operating system](https://en.wikipedia.org/wiki/Solaris_operating_system),[ ZFS](https://en.wikipedia.org/wiki/ZFS), the[ Network File System](https://en.wikipedia.org/wiki/Network_File_System) (NFS), and[ SPARC](https://en.wikipedia.org/wiki/SPARC)—while also selling millions of Sun workstations and servers. Since leaving Sun in 2006 (the company was acquired by Oracle in 2009), McNealy has been CEO of Wayin and co-founder and board member of Curriki.
 

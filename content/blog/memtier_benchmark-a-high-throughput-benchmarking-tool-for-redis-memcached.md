@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 2 July 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Benchmarking is the practice of measuring the performance of a system to identify its limits. Benchmarking is an integral part of our service’s development process and we use it both for regression testing (verifying performance has not been reduced between releases) and also as an aid for optimizing database performance. It is generally considered good practice to measure the performance of your system periodically as well as after every change made to ensure it is achieving maximal performance and to potentially uncover relevant issues. To facilitate the execution of these benchmark runs, we developed our own benchmarking tool that we fondly call memtier_benchmark.
 

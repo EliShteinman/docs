@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike  Moss , SVP, Worldwide Channels & Alliances · Published 6 August 2026 · updated 12 August 2026*
 
-![How Redis brings persistent memory to Snowflake Cortex Agents](/images/blog/0140510a3bf87b882cd63d1fbca3d6f9d4acc1e8-1200x628.webp)
+![How Redis brings persistent memory to Snowflake Cortex Agents](/images/site-mirror/0140510a3bf87b882cd63d1fbca3d6f9d4acc1e8-1200x628.webp)
 
 AI agents can reason and act, but without memory, every interaction starts from zero. Intelligent short-term memory and persistent context across conversations are what turns a capable model into a truly useful agent. It should remember the useful details you have already shared, such as your goals and constraints, so it can act with more context and fewer repeated questions.
 
@@ -22,7 +22,7 @@ For example, if an agent is helping a sales ops team pull pipeline data, it shou
 
 To supercharge your agentic analytics, we are excited to announce that Redis Agent Memory is now available on the Snowflake Marketplace, bringing persistent long-term memory to Cortex AI agents. Once you install the application from the Marketplace, Redis Agent Memory is launched inside your account using Snowpark Container Services, with no data egress outside of your data warehouse and no new infrastructure to manage.
 
-![Snowflake Account Diagram](/images/blog/8acffd0647ed03badf8308d94fad4591fb87317e-2406x978.webp)
+![Snowflake Account Diagram](/images/site-mirror/8acffd0647ed03badf8308d94fad4591fb87317e-2406x978.webp)
 
 ## The memory gap in Cortex agents
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Sergey Georgiev, Principal Software Engineer · Published 26 May 2026*
 
-![Single-shot reliable consumers with XREADGROUP CLAIM in Redis 8.4](/images/blog/2db85d7f16c2fdfe52efef73cdb74c60913f89a4-1200x628.webp)
+![Single-shot reliable consumers with XREADGROUP CLAIM in Redis 8.4](/images/site-mirror/2db85d7f16c2fdfe52efef73cdb74c60913f89a4-1200x628.webp)
 
 In Redis 8.4, we extended `XREADGROUP` with a new optional `CLAIM` parameter that lets a single command both consume new stream entries and reclaim idle pending ones. In this blog post, we'll cover:
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Simba Khadder, Head of Context Engine at Redis. · Published 30 November 2022 · updated 29 May 2026*
 
-![Feature Stores Explained: The Three Common Architectures](/images/blog/a155c461bbe0fc70e642021756e0db3751c86168-2000x1396.webp)
+![Feature Stores Explained: The Three Common Architectures](/images/site-mirror/a155c461bbe0fc70e642021756e0db3751c86168-2000x1396.webp)
 
-![Redis](/images/blog/a155c461bbe0fc70e642021756e0db3751c86168-2000x1396.webp)
+![Redis](/images/site-mirror/a155c461bbe0fc70e642021756e0db3751c86168-2000x1396.webp)
 
 ## Introduction
 
@@ -30,7 +30,9 @@ Before we start categorizing feature stores, let’s first define their motivati
 
 ### Decrease Iteration Time
 
-![Goals of all Feature Stores](/images/blog/443e6af223a77454a22524c82e244a776d0786ba-1226x864.svg)
+![Goals of all Feature Stores](/images/site-mirror/443e6af223a77454a22524c82e244a776d0786ba-1226x864.svg)
+
+*The iteration cycle is made up of multiple experimentation loops with occasional deployment loops*
 
 Machine learning is an iterative process. Models are black boxes, so enhancements on them are non-linear and opaque. To improve model performance, data scientists extract useful insights from primary data sources (i.e. feature engineering) and provide them as features to the model. In many machine learning use cases, especially on tabular and text data, data scientists spend most of their time fine tuning features. The faster a data scientist can iterate on features, the faster they can improve their models.
 
@@ -50,7 +52,9 @@ Feature stores limit the pool of possible errors to increase reliability. To vis
 
 ### Preserve Compliance
 
-![Preserve Compliance](/images/blog/2ff0ee5b36e95bb0ba81045f6c6ef407c5b421af-1108x814.svg)
+![Preserve Compliance](/images/site-mirror/2ff0ee5b36e95bb0ba81045f6c6ef407c5b421af-1108x814.svg)
+
+*Not all models may have access to all features*
 
 Many machine learning use cases work with sensitive data where preserving compliance is paramount. Across an organization, some data is strictly regulated while others can be used freely. Even with the same data, context can change compliance rules. For example, if someone is in the EU, they’re subject to a different set of regulations. The same data used in separate models would also be subject to different rules. For example, a model used for ads optimization can probably use more data than a model used to process housing loan applications. A data scientist can integrate these rules into the feature store to make sure that governance is locked tight.
 
@@ -60,25 +64,33 @@ Feature stores promote sharing and communicating within and across teams. In dat
 
 ## The Anatomy of a Feature
 
-![The Anatomy of a Feature](/images/blog/4c1d0fc3c68c6fc1ecc9dfbec5d6c03524168325-1706x1070.svg)
+![The Anatomy of a Feature](/images/site-mirror/4c1d0fc3c68c6fc1ecc9dfbec5d6c03524168325-1706x1070.svg)
+
+*The anatomy of a user's average purchase price feature*
 
 A data scientist will think of a feature in its logical form. Something like: “a user’s average purchase price”. In reality, the feature’s definition is split across different pieces of infrastructure: the data source, the transformations, the inference store, the training store, and all their underlying data infrastructure. A feature store should provide an abstraction to join a feature's logical form with the actual underlying components. We will explain what the components might look like for the “user’s average purchase price” example.
 
 ### The Data Source
 
-![The Data Source](/images/blog/0dfd1b10209e7a063287f7c17907839be75aeb9c-1707x1070.svg)
+![The Data Source](/images/site-mirror/0dfd1b10209e7a063287f7c17907839be75aeb9c-1707x1070.svg)
+
+*The feature's data source*
 
 All features originate from a set of initial data sources. These sources can be anything from streams to files to tables. A feature can simply be a single field of a data source. More commonly, it’s created via a set of transformations from one or multiple sources. In this example, the data source is a CSV with three columns: user, price, and date.
 
 ### The Transformation Logic and Lineage
 
-![The feature's transformation](/images/blog/6c3bc810d8537825fe5eecfac20cc970c0b7ca69-1707x1070.svg)
+![The feature's transformation](/images/site-mirror/6c3bc810d8537825fe5eecfac20cc970c0b7ca69-1707x1070.svg)
+
+*The feature's transformation*
 
 Features can be created through a series of transformations on a dataset. These transformations can be anything from SQL queries to PySpark jobs to local python functions. Transformations can be chained together and form a directed acyclic graph (DAG). This DAG is often the closest thing to the logical form of a feature. In the example above, it’s a simple SQL query.
 
 ### The Inference (Online) Table
 
-![The feature's inference store](/images/blog/304ba37e32f4ad4cb16c09ab09cad842b7c12c6a-1707x1070.svg)
+![The feature's inference store](/images/site-mirror/304ba37e32f4ad4cb16c09ab09cad842b7c12c6a-1707x1070.svg)
+
+*The feature's inference store*
 
 Deployed models need to be able to access the current values of their features for inference. Inference use cases are often very sensitive to latency. It’s typically infeasible to generate a feature for the models at point of time. Rather, features are pre-processed and stored in low-latency storage.
 
@@ -86,7 +98,9 @@ If this example feature was used millions of times a day and if the original dat
 
 ### The (Offline) Training Store
 
-![The feature's training store](/images/blog/bf700ebd93e681ff7c4b0d05e5f6dd55db91719e-1707x1070.svg)
+![The feature's training store](/images/site-mirror/bf700ebd93e681ff7c4b0d05e5f6dd55db91719e-1707x1070.svg)
+
+*The feature's training store*
 
 Features also exist in one or multiple training sets. A training set consists of a label (what the model aims to predict) and a set of features associated with it. When training, the focus is on throughput and the training set API. It’s common to loop through a dataset multiple times, sample the dataset, and update it with more data. This type of iteration can be accomplished with a set of files in object storage or an analytics database.
 
@@ -94,7 +108,9 @@ Point-in-time correctness is critical when building training sets. The value of 
 
 ### The Infrastructure Providers
 
-![The feature's infrastructure providers](/images/blog/455b9ced5ca82b8404abb15022347666d66e564b-1706x1070.svg)
+![The feature's infrastructure providers](/images/site-mirror/455b9ced5ca82b8404abb15022347666d66e564b-1706x1070.svg)
+
+*The feature's infrastructure providers*
 
 The components above depend on storage and compute. The original data needs to be stored somewhere. It could be in a table in Snowflake, a directory in HDFS, or even a local filesystem. Transformations need a compute provider to run them. It could be Dask, Spark, Snowflake, Flink, or a combination. The training set and inference store need underlying infrastructure providers. In this example, the data starts in S3, is transformed with Spark, and stored in S3 for training and Redis for inference.
 
@@ -118,7 +134,9 @@ By name alone, a feature store implies that it would store pre-processed feature
 
 The literal feature store looks like a specialized data store. Features are written to the feature store after being processed by the user’s own infrastructure. The feature store serves features to models for inference and generates point-in-time correct training sets.
 
-![The Literal Feature Store Architecture](/images/blog/d175ba2169cca58d596dbc17ddbf3e87d32e7d22-1676x901.svg)
+![The Literal Feature Store Architecture](/images/site-mirror/d175ba2169cca58d596dbc17ddbf3e87d32e7d22-1676x901.svg)
+
+*The Literal Feature Store Architecture*
 
 ### Analysis
 
@@ -138,7 +156,9 @@ The pros and cons of this architecture are highlighted when examining the proces
 
 The most popular feature store with this architecture is Feast. In this architecture, transformations are initially all written to an offline store. The user of Feast must then manually materialize the features into the online store. Feast mimics a virtual feature store by having its offline and online stores sit above existing storage infrastructure. It passes responsibility of generating the features to the data scientist’s data pipelines. Feast acts similarly to its underlying storage providers, but also generates point-in-time correct features based on the final feature values.
 
-![Feast Architecture, a literal feature store](/images/blog/8d222a783f62c2425169ec03275c88211e952ec4-1225x1227.webp)
+![Feast Architecture, a literal feature store](/images/site-mirror/8d222a783f62c2425169ec03275c88211e952ec4-1225x1227.webp)
+
+*Feast Architecture, a literal feature store*
 
 ([source](https://docs.feast.dev/getting-started/architecture-and-components/overview))
 
@@ -150,7 +170,9 @@ The physical feature store computes and stores your features. It is the most com
 
 The physical feature store consists of a metadata layer, an inference store, a training store, and a transformation engine. Unlike a virtual feature store, the physical feature store comes with its own storage and transformation layer. It replaces existing data infrastructure.
 
-![The Physical Feature Store Architecture](/images/blog/88fdfc6abef17e64231785cc012dd87a2d2bc2af-1822x938.svg)
+![The Physical Feature Store Architecture](/images/site-mirror/88fdfc6abef17e64231785cc012dd87a2d2bc2af-1822x938.svg)
+
+*The Physical Feature Store Architecture*
 
 ### Analysis
 
@@ -168,13 +190,17 @@ Most of the popular in-house feature stores like AirBnB’s Zipline, Lyft’s Dr
 
 Before:
 
-![A Real-World Architecture before adding a Physical Feature Store](/images/blog/90ed8606a0bd335b503e469ac0e81b3a115e5390-1600x838.webp)
+![A Real-World Architecture before adding a Physical Feature Store](/images/site-mirror/90ed8606a0bd335b503e469ac0e81b3a115e5390-1600x838.webp)
+
+*A Real-World Architecture before adding a Physical Feature Store*
 
 ([source](https://www.datagrom.com/data-science-machine-learning-ai-blog/feature-store-uber-ai-large-scale-machine-learning))
 
 After:
 
-![A Real-World Architecture after adding a Physical Feature Store](/images/blog/9008e31d88c96646a084a16556dea8ca91d64f68-1600x838.webp)
+![A Real-World Architecture after adding a Physical Feature Store](/images/site-mirror/9008e31d88c96646a084a16556dea8ca91d64f68-1600x838.webp)
+
+*A Real-World Architecture after adding a Physical Feature Store*
 
 ([source](https://www.datagrom.com/data-science-machine-learning-ai-blog/feature-store-uber-ai-large-scale-machine-learning))
 
@@ -188,7 +214,9 @@ The virtual feature store aims to solve a subset of the problems of a physical f
 
 The virtual feature store is made up of a metadata layer, an inference store, a training store, and a coordinator. Like some literal feature stores, the training store and inference store sit on top of existing data infrastructure. The coordinator’s goal is to put the underlying infrastructure in the same state defined in the metadata. For example, if a user defines a feature as a series of PySpark jobs, it’d be the coordinators job to make sure the jobs are successfully run. In this way, it will often replace an existing orchestrator like Airflow for feature creation use-cases.‍
 
-![A Virtual Feature Store’s Architecture](/images/blog/166b221609e01535ecb7386a7c8ea2492d41803a-1600x1117.webp)
+![A Virtual Feature Store’s Architecture](/images/site-mirror/166b221609e01535ecb7386a7c8ea2492d41803a-1600x1117.webp)
+
+*A Virtual Feature Store’s Architecture*
 
 ### Analysis
 

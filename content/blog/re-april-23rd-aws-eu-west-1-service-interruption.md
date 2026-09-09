@@ -14,9 +14,9 @@ hidden: true
 
 *By Chen Waiss · Published 24 April 2014 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/b938a55c885030f4d78c93870c68cc0db8b66050-635x200.webp)
+![](/images/site-mirror/b938a55c885030f4d78c93870c68cc0db8b66050-635x200.webp)
 
 This week on Tuesday, April 23rd, Amazon cloud’s eu-west-1 data region experienced a service degradation. It was not highly publicized, although some reported on Twitter about AWS’ connectivity issues and node failures. Analyzing the impact of this incident on our services can provide us and our customers with valuable insights regarding the efficiency of Redis’ automatic failover mechanisms.
 

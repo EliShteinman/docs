@@ -14,7 +14,7 @@ hidden: true
 
 *By Paul Bushell · Published 5 November 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/48f91562c013a67916838b16c2d0f85199b6b1f6-386x257.webp)
+![Blog tile image](/images/site-mirror/48f91562c013a67916838b16c2d0f85199b6b1f6-386x257.webp)
 
 The first Redis Day London was so much fun that we’re coming back to do it all over again. Join us on Tuesday, 12 November, for [Redis Day London 2019](/redisdays/)—it’s your chance to enjoy speakers, networking, and informed discussion about everything and anything Redis.
 
@@ -30,7 +30,9 @@ On Tuesday, 12 November, some 19 Redis experts will grace the stage at the [Park
 
 We’re also excited to hear from Elena Kolevska, who recently left her position as CTO of culture app [InvisibleCity](https://invisiblecity.eu/) to become a Technical Enablement Architect at Redis, who will talk about using Bloom Filters in Redis; and Parin Turakhia, Senior Engineering Manager at [BookMyShow](https://in.bookmyshow.com/), who’ll share how the Indian entertainment company uses Redis to book more than a million tickets per day. Plus, [Konfio.mx](https://konfio.mx) Senior Architect Pipe Gutierrez will introduce a Redis module for cancellable timeout queues.
 
-![](/images/blog/cf54e9a3a1804cb2a8be962b86abf34d13e9b57e-1024x340.webp)
+![](/images/site-mirror/cf54e9a3a1804cb2a8be962b86abf34d13e9b57e-1024x340.webp)
+
+*From left to right: Elena Kolevska from Redis; Parin Turakhia from BookMyShow; Pipe Gutierrez from Konfio.mx.*
 
 In the afternoon, Alfred Biehler, Customer Engineer at [Google Cloud](https://cloud.google.com/), will speak about how Google uses Redis, and Mugunthan Soundararajan will share how [Matrimony.com](https://www.matrimony.com) uses Redis Streams. You also don’t want to miss the launch of RedisInsight and Ogma Graph Visualization, and hear how the engineers at Play Games 24×7 built a robust game engine service with a high level of concurrency. And that’s only a fraction of the speaker lineup.
 

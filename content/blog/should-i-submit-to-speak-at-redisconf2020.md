@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 4 February 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 It’s that time of year again! We’re ramping up for [RedisConf2020](https://events.redis.com/redisconf20/), and our goal is to provide a platform for the most interesting and useful Redis talks from around the globe. To make sure we host the best conference possible, we’re inviting the global Redis community to engage in our Call for Papers (CFP) process.
 

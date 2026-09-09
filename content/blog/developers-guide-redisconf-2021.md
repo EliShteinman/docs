@@ -14,7 +14,7 @@ hidden: true
 
 *By Kyle Banker, Sr. Director, Field Engineering · Published 12 May 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/8d56d5eb481a4f4efa9e69782776f09599601a68-772x520.webp)
+![Blog tile image](/images/site-mirror/8d56d5eb481a4f4efa9e69782776f09599601a68-772x520.webp)
 
 We just wrapped a successful RedisConf 2021, where thousands of Redis enthusiasts gathered to rediscover the power of real-time data. This year’s agenda included 60+ breakout sessions, four comprehensive training courses, and several keynotes and interviews that explored Redis best practices, pro tips, and new features. Among the many great stories and presentations, we wanted to highlight a few that might be of interest to the developer community at large. Whether you’re brand new to Redis or already an expert, there’s something for everyone. Here’s our guide to RedisConf 2021:
 

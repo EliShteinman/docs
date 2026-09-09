@@ -14,9 +14,9 @@ hidden: true
 
 *By Yaron Dolev · Published 26 June 2014 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/1086a17a951d9939adb048467240ba0051d2c6fa-635x200.webp)
+![](/images/site-mirror/1086a17a951d9939adb048467240ba0051d2c6fa-635x200.webp)
 
 Redis provides a wide variety of tools directed at improving and maintaining efficient in-memory database usage. While its unique data types and commands fine-tune databases to serve application requests without any additional processing at the application level, misconfiguration, or rather, using out-of-the-box configuration, can (and does) lead to operational challenges and performance issues. Despite the setbacks that have been the cause of quite a few headaches, solutions do exist, and may be even simpler than anticipated.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 28 August 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/cf3eb9dd6b8252d7d100cccc68508e2b16b2a5ea-313x275.webp)
+![Blog tile image](/images/site-mirror/cf3eb9dd6b8252d7d100cccc68508e2b16b2a5ea-313x275.webp)
 
 *This post is part four of a series of posts introducing the Redis-ML module. The first article in the series can be found *[*here*](/blog/introduction-redis-ml/)*.*
 

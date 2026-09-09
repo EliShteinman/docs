@@ -15,7 +15,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 27 January 2025 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/aa35eac8bcf5918738013bd038153b1d3e0ee3fd-772x552.webp)
+![Blog tile image](/images/site-mirror/aa35eac8bcf5918738013bd038153b1d3e0ee3fd-772x552.webp)
 
 Switching from legacy systems to modern architectures for apps can feel like heavy lifting—but it’s one of the most important things businesses can do today to move faster, keep customers happy, and stay ahead of the competition.
 

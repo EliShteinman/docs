@@ -14,7 +14,7 @@ hidden: true
 
 *By Justin Cechmanek, Senior Applied AI Engineer · Published 13 February 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/be0aba571d85ad524af0a3b59cdb5a917668779a-772x552.webp)
+![Blog tile image](/images/site-mirror/be0aba571d85ad524af0a3b59cdb5a917668779a-772x552.webp)
 
 Collaborative filtering predicts what a user will like by learning from patterns in other users' behavior. It's how Netflix can suggest a movie you've never searched for, based on what you (and people like you) watched before. If your app has users and a catalog of anything (products, content, jobs, music), collaborative filtering is often one of the most impactful ranking signals you can add.
 
@@ -95,7 +95,7 @@ Here, we’ll walk through how to build a movie recommendation system supported 
 
 You can [run it yourself ](https://colab.research.google.com/github/redis-developer/redis-ai-resources/blob/main/python-recipes/recommendation-systems/01_collaborative_filtering.ipynb)or [clone the repo here](https://github.com/redis-developer/redis-ai-resources/blob/main/python-recipes/recommendation-systems/01_collaborative_filtering.ipynb).
 
-![ Collaborative filtering](/images/blog/a4e41d08a2340c079a4e552a3c46283a0f608b9e-2048x955.webp)
+![ Collaborative filtering](/images/site-mirror/a4e41d08a2340c079a4e552a3c46283a0f608b9e-2048x955.webp)
 
 The algorithm we’ll be using is the Singular Value Decomposition, or SVD, algorithm. It works by looking at the average ratings users have given to movies they have already watched. Below is a sample of what that data might look like.
 

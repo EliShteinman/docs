@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Filipe Oliveira · Published 12 March 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/46e7a4e823913ad78c8d439125b1610e047aebf7-368x260.webp)
+![Blog tile image](/images/site-mirror/46e7a4e823913ad78c8d439125b1610e047aebf7-368x260.webp)
 
 The newly introduced RediSearch 1.6 adds some important new functionality, including aliasing, a low-level API, and improved query validation, as well as making Fork garbage collection the module’s default. Even more important, though, the original code in RediSearch 1.6 has been refactored to significantly boost performance. The improved performance leads to a better user experience as applications can be more reactive than ever with search.
 
@@ -42,17 +42,17 @@ In addition to this primary benchmark/performance analysis scenario, we also ena
 
 The table below displays the size of the datasets we used in this benchmark. It also shows the overall indexing rate for each dataset. You can see that RediSearch 1.6 did not degrade performance on ingestion:
 
-![Redis](/images/blog/5c35d69912b936f0383c58bedf509a7c11d9be33-977x299.webp)
+![Redis](/images/site-mirror/5c35d69912b936f0383c58bedf509a7c11d9be33-977x299.webp)
 
 FSTB currently supports three full-text search queries, as shown in the chart below (remember that the latency results include RTT). Note that we plan to extend this benchmark suite with a more diversified set of [read queries](https://github.com/RediSearch/ftsb#appendix-ii---english-language-wikipediadatabase-page-abstracts).
 
-![Redis](/images/blog/1ec44fa2b97238ae0c8d8ad291198db55306d6b0-974x339.webp)
+![Redis](/images/site-mirror/1ec44fa2b97238ae0c8d8ad291198db55306d6b0-974x339.webp)
 
 We can observe in the table above that RediSearch 1.6’s improved q99 makes it more predictable, with fewer latency peaks.The chart below shows that compared to RediSearch 1.4, **RediSearch 1.6 increases throughput by 48% to 63%.**
 
-![Redis](/images/blog/7b6f8832e4391f1d5c7a0d6c6ffa5d685ca5cf78-1024x640.webp)
+![Redis](/images/site-mirror/7b6f8832e4391f1d5c7a0d6c6ffa5d685ca5cf78-1024x640.webp)
 
-![Redis](/images/blog/c4ddcc099c4c25cc5bc1d9cfea14c511fde595f6-1024x640.webp)
+![Redis](/images/site-mirror/c4ddcc099c4c25cc5bc1d9cfea14c511fde595f6-1024x640.webp)
 
 Similarly, the** latency (q50) drops by 51% to 64%.**
 
@@ -60,15 +60,15 @@ Similarly, the** latency (q50) drops by 51% to 64%.**
 
 In addition to the simple search queries, we also added a set of aggregation queries. The full details of what each query does can be found in our [benchmark repository](https://github.com/RediSearch/ftsb#aggregate-queries-1) (again, remember that the latency results include RTT):
 
-![Redis](/images/blog/72764d860001160808c46ac5d5f8964b2cd94695-970x515.webp)
+![Redis](/images/site-mirror/72764d860001160808c46ac5d5f8964b2cd94695-970x515.webp)
 
 Here too, RediSearch 1.6 improves performance compared to RediSearch 1.4. **The throughput increases by 15% to 64%:**
 
-![](/images/blog/98c590dedcce96afafc8d2d0d979924f7a76d8a3-1024x630.webp)
+![](/images/site-mirror/98c590dedcce96afafc8d2d0d979924f7a76d8a3-1024x630.webp)
 
 Similarly, the **latency (q50) decreases by 17% to 73%**:
 
-![Redis](/images/blog/f56efd6b543835d445ecd772c50bce683b08d912-1024x639.webp)
+![Redis](/images/site-mirror/f56efd6b543835d445ecd772c50bce683b08d912-1024x639.webp)
 
 ## RediSearch 1.6 by the numbers
 

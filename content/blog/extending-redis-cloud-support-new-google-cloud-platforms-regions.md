@@ -15,13 +15,15 @@ hidden: true
 
 *By Aviad Abutbul, Senior Director of Product Management · Published 17 July 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/636289e3b3ff1f490d22e53219a6161d026154f2-797x797.webp)
+![Blog tile image](/images/site-mirror/636289e3b3ff1f490d22e53219a6161d026154f2-797x797.webp)
 
 We, at Redis, are happy to share that we have recently extended our [**Redise Cloud**](/products/redis-cloud/) (Redis Enterprise Cloud) services to 2 more regions on Google Cloud Platform. You can now use Redise Cloud service on the following GCP regions: **Eastern US (us-east1), Central US (us-central1) and Northeast Asia (asia-northeast1)**
 
 [**Redise Cloud**](/products/redis-cloud/) is an integrated Redis Service on Google Cloud Platform that is a **fully managed database-as-a-service solution** for hosting your Redis or Memcached databases. Redise Cloud provides stable high performance, effortless scaling and robust high availability features including persistence, cross zone/region/datacenter replication and instant automatic failover, with no data loss and is fully compatible with existing Redis applications.
 
-![Redis Enterprise Cloud](/images/blog/636289e3b3ff1f490d22e53219a6161d026154f2-797x797.webp)
+![Redis Enterprise Cloud](/images/site-mirror/636289e3b3ff1f490d22e53219a6161d026154f2-797x797.webp)
+
+*Redis Enterprise Cloud*
 
 ## Get Started with Redise Cloud
 

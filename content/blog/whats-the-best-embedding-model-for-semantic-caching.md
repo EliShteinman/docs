@@ -14,7 +14,7 @@ hidden: true
 
 *By Robert Shelton, AI Engineer at Redis · Published 4 February 2025 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/7e48cb7a717207ad5dc136bcbdb565e6f10f7b10-772x552.webp)
+![Blog tile image](/images/site-mirror/7e48cb7a717207ad5dc136bcbdb565e6f10f7b10-772x552.webp)
 
 Semantic caching is changing how we optimize systems reliant on large language models (LLMs). By using vector embeddings, it enables faster, cost-effective responses for similar queries. But to get it right, developers need to tackle three main challenges:
 
@@ -60,7 +60,9 @@ We evaluated the results using confusion matrices to track true positives, false
 
 The overall winner from our study was the sentence-transformers **all-mpnet-base-v2** embedding model when it came to optimizing precision, recall, memory, latency, and F1 score for use in semantic caching.
 
-![](/images/blog/94c1f911bb6aef259a13842458be43a54cc89818-1003x978.webp)
+![](/images/site-mirror/94c1f911bb6aef259a13842458be43a54cc89818-1003x978.webp)
+
+*fig 1 – radar chart*
 
 ### Key takeaways and next steps
 
@@ -68,7 +70,9 @@ Our small study showed that many embedding models do a good job out-of-the-box a
 
 Looking at the figures below, you can see that there is a significant amount of overlap between true duplicate questions and similar questions that are not true duplicates below a certain threshold. Ideally, these plots would be entirely separate with no overlap between the green or blue. That way, you could set a distance threshold that drew a line in between them.
 
-![](/images/blog/35dd21fa2b5e4066c3fa2586a12a80a30443680a-1600x426.webp)
+![](/images/site-mirror/35dd21fa2b5e4066c3fa2586a12a80a30443680a-1600x426.webp)
+
+*fig 2 – distributions across models*
 
 Our study shows how important it is to pick the right embedding model to optimize semantic caching for both precision and efficiency.
 

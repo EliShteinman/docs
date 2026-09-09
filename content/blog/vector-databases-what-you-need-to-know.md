@@ -15,7 +15,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 29 January 2026 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/1458ca1b7d80df02075454025c241e309fc209ed-1200x628.webp)
+![Blog tile image](/images/site-mirror/1458ca1b7d80df02075454025c241e309fc209ed-1200x628.webp)
 
 You have your product requirements. You want to build a system that will search 10 million embeddings with sub-100ms latency and handle thousands of concurrent queries without performance degrading. But choosing between standalone vector databases and unified platforms creates architectural decisions that affect your costs, latency, and operational overhead for years.
 

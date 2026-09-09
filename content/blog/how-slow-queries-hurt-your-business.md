@@ -14,7 +14,7 @@ hidden: true
 
 *By Chris Fallon · Published 18 September 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/17d97b2db72f619a44dd2ade5d8eeec7e630d955-772x550.webp)
+![Blog tile image](/images/site-mirror/17d97b2db72f619a44dd2ade5d8eeec7e630d955-772x550.webp)
 
 **Every second of delay tests a user’s patience. A seemingly minor inconvenience reflects deeper database management issues. A small hiccup can have outsized repercussions. Slow queries aren’t just technical obstacles. They represent potential fissures in customer loyalty and confidence.**
 

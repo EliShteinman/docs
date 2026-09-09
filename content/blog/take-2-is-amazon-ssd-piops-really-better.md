@@ -14,9 +14,9 @@ hidden: true
 
 *By Guy Lubovitch · Published 3 November 2014 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/9354934247cd6901f97833ee9ab8fb067894a249-635x200.webp)
+![Blog tile image](/images/site-mirror/9354934247cd6901f97833ee9ab8fb067894a249-635x200.webp)
 
-![](/images/blog/d50aef6ad4e5f3f51359c31d5ef214af0b0d0443-635x200.webp)
+![](/images/site-mirror/d50aef6ad4e5f3f51359c31d5ef214af0b0d0443-635x200.webp)
 
 For many of today’s applications, disk speed is extremely important, which is why some AWS users turn to the wide range of available Elastic Block Store (EBS) options. As an in-memory database, Redis relies mainly on memory, rendering disk speed less important, but – and this is a big ‘but’ – Redis is also persistent and uses disk for replication. So is it worth paying extra bucks to get a faster disk from AWS when you’re already running Redis servers?
 
@@ -40,7 +40,7 @@ The ratio was set for write (SET) operations only and the test’s time was 2 mi
 
 To my surprise, these benchmarks showed that running Redis on SSD and SSD PIOPS performs much better than it does with magnetic disk:
 
-![](/images/blog/5e5f37d78e0a63a800feca14137f2ec97c33c43b-710x632.webp)
+![](/images/site-mirror/5e5f37d78e0a63a800feca14137f2ec97c33c43b-710x632.webp)
 
 The logic had remained the same and disk physics have not changed – by itself, magnetic EBS should provide similar throughput and latency to that of SSD EBS. But we found that using SSD EBS will get you better hardware and a faster network, which will **double** the performance. Note that increasing the number of memtier_benchmark client threads from 1 to 4 had caused performance to degrade, demonstrating that we’ve effectively saturated the EBS device.
 

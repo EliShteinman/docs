@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 16 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/7dd82061cff192efa94f221d9e17da568a401678-1200x628.webp)
+![Redis](/images/site-mirror/7dd82061cff192efa94f221d9e17da568a401678-1200x628.webp)
 
 Most devs use AI tools regularly, but more distrust AI output accuracy (46%) than trust it (33%), according to [Stack Overflow's developer survey](https://survey.stackoverflow.co/2025/). That skepticism is earned. Reliable LLM results depend on architecture, not just prompt engineering.
 

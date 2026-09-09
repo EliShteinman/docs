@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 12 June 2026 · updated 17 June 2026*
 
-![What Model Context Protocol gives your agents & what it leaves to you](/images/blog/9cea08d65d62382c03a72bb40887b6f6f0a23c53-2400x1256.webp)
+![What Model Context Protocol gives your agents & what it leaves to you](/images/site-mirror/9cea08d65d62382c03a72bb40887b6f6f0a23c53-2400x1256.webp)
 
 If you've shipped an AI agent that connects to tools, you've probably felt the relief of having one standard way to wire it all up. Model Context Protocol (MCP) handles that part well. But there's a gap that catches a lot of teams off guard: your agent can call a tool through MCP, complete the action, and still walk into the next session knowing nothing about what just happened.
 

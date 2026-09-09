@@ -15,7 +15,7 @@ hidden: true
 
 *By Suze Shardlow, Contributor · Published 2 May 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9e755fcc13280b99668203867278dc015a4389b7-772x550.webp)
+![Blog tile image](/images/site-mirror/9e755fcc13280b99668203867278dc015a4389b7-772x550.webp)
 
 We’re excited to launch our first ambassador program: [**Redis Insiders**](https://forms.gle/tebTN4nrJnK4PhRs6).
 
@@ -27,7 +27,7 @@ If you’re a developer who uses Redis and loves to write and talk about your co
 
 The Redis Insiders will work closely, on a voluntary basis, with the Redis Developer Relations team to educate and enthuse our large and growing user base. What’s obvious to you and me isn’t necessarily obvious to everyone, and our overarching goal is to make it frictionless for developers to get started using Redis to solve problems they’re working on. We’re looking for folks who are and will continue to be good Redis community members: **kind**, **respectful** and **inclusive**.
 
-![Redis Insiders Program female programmer at computer](/images/blog/a00945267b74fa0434436a563ec7929d771c74c0-1024x705.webp)
+![Redis Insiders Program female programmer at computer](/images/site-mirror/a00945267b74fa0434436a563ec7929d771c74c0-1024x705.webp)
 
 You’ll be spreading the word about Redis, via our channels and third-party channels (e.g. conferences, meetups, tech publications). We’re asking you to commit to a minimum tenure of six months in the first instance, with the opportunity to renew your role up to three times (for a maximum possible total of two years). Possible activities for Redis Insiders include:
 
@@ -56,7 +56,7 @@ Some of the other things we can offer include:
 
 ## Whom are we looking for?
 
-![Redis Insiders Program male programmer at computer](/images/blog/4e5e23dac8b4bd5abce49e41fde7f106a1a34bf8-1024x683.webp)
+![Redis Insiders Program male programmer at computer](/images/site-mirror/4e5e23dac8b4bd5abce49e41fde7f106a1a34bf8-1024x683.webp)
 
 As a Redis Insider, you’ll be part of a select group of developers who love to write and talk about code. Bearing in mind the types of activities you’ll be working on, you’ll need to be a confident public speaker with demonstrable experience in coding, using Redis, and creating different types of content. You’ll also need a good standard of written and spoken English. In terms of Redis knowledge, at a minimum, you’ll need to have passed our [Redis University RU101 course, Introduction To Data Structures](https://university.redis.com/courses/ru101/) by the time you become an Insider. (I took this course when I joined the company – [see how I got on](https://www.youtube.com/playlist?list=PL83Wfqi-zYZFnQoadXtzjVyjJjA1JSTvU)!)
 

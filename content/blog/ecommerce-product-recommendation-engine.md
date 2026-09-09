@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 9 March 2026 · updated 12 March 2026*
 
-![Ecommerce product recommendation engine](/images/blog/72222fb97c511325ccbe30c6c8074cd8c7baa05e-1200x628.webp)
+![Ecommerce product recommendation engine](/images/site-mirror/72222fb97c511325ccbe30c6c8074cd8c7baa05e-1200x628.webp)
 
 You've probably noticed it yourself: you browse a pair of running shoes, and the next page you visit is already suggesting matching socks and running gear. A recommendation engine did that, and it probably knows your taste better than your friends do. For modern ecommerce, it's one of the biggest pieces of infrastructure a team can build.
 

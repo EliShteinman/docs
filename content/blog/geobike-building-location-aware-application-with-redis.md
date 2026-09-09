@@ -15,9 +15,9 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 19 December 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/122a3557fcaacede10c48be519b365783f772124-5000x3335.webp)
+![](/images/site-mirror/122a3557fcaacede10c48be519b365783f772124-5000x3335.webp)
 
 I travel a lot on business as a Developer Advocate for [Redis](https://redis.com)! I’m not much of a car guy, so when I have some free time, I prefer to walk or bike around a city. Many of the cities I’ve visited on business have bike share systems which let you borrow a bike for a few hours. Most of these systems have an app for renting bikes, but they only share the details of their system. This got me thinking – using publicly available bike share information to build an “app” showing you global information would be a fun way to demonstrate the geospatial features of Redis. With that GeoBike, the Redis bike share application was born.
 
@@ -63,7 +63,7 @@ I’ve written a sample application, load_station_data.py, that mimics what woul
 
 **Finding the Bike Share Stations**
 
-![](/images/blog/bc2183ed30bc82548bc7059422a551b8d5ffd06a-2403x2762.webp)
+![](/images/site-mirror/bc2183ed30bc82548bc7059422a551b8d5ffd06a-2403x2762.webp)
 
 Loading the bike share data starts with the [systems.csv](https://github.com/NABSA/gbfs/blob/master/systems.csv) file from the [GBFS repository on Github](https://github.com/NABSA/gbfs).
 

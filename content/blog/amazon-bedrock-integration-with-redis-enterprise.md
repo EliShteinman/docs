@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 13 September 2023 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/eac3e128c0e13e75256374fc309cd70a3f42d49a-772x550.webp)
+![Blog tile image](/images/site-mirror/eac3e128c0e13e75256374fc309cd70a3f42d49a-772x550.webp)
 
 **Following the **[**recent launch of Redis 7.2**](/blog/introducing-redis-7-2/)**, which underscores our dedication to advanced developer tools and AI innovation, Redis is thrilled to announce the integration of Redis Cloud with Amazon Bedrock as a knowledge base for building RAG applications.**
 
@@ -34,7 +34,7 @@ On their own, LLMs can be clever and even astonishing, but they certainly are no
 
 Training and fine-tuning LLMs on custom data to fit your needs may require significant computational firepower, however, and that introduces new costs. RAG aims to solve this problem: to bridge the gap between the LLM’s general knowledge and [your own valuable data](/blog/datasets-for-test-databases/).
 
-![Retrieval Augmented Generation on Amazon Bedrock with Redis as a vector database](/images/blog/73c2b73f1bac688bf1ebc59ad67070edd927f98e-1000x563.webp)
+![Retrieval Augmented Generation on Amazon Bedrock with Redis as a vector database](/images/site-mirror/73c2b73f1bac688bf1ebc59ad67070edd927f98e-1000x563.webp)
 
 This reference architecture highlights:
 
@@ -84,7 +84,9 @@ Follow this detailed guide to [create your Redis Cloud database](https://github.
 
 When you create the database, you eventually land on a step that requires inputting a “Memory limit (GB).”
 
-![Sizing your database in the Redis Cloud console](/images/blog/eecb2d98be48d5a1f146702fea6612650ec937a2-1000x211.webp)
+![Sizing your database in the Redis Cloud console](/images/site-mirror/eecb2d98be48d5a1f146702fea6612650ec937a2-1000x211.webp)
+
+*Sizing your database in the Redis Cloud console*
 
 Amazon Bedrock takes raw documents from Amazon S3, creates smaller chunks of text, generates embeddings and metadata, and upserts them in Redis as hashes. For RAG to work well, text chunks should capture just enough isolated semantic context from the source documents to be useful. Thus, Bedrock creates text chunks that are about 200 words long on average.
 
@@ -218,7 +220,9 @@ At this point, everything should be ready. It’s time to integrate your Redis d
 
 On the Amazon Bedrock knowledgebase configuration screen select your source Amazon S3 bucket. Make sure Redis Cloud is selected as your vector database. Plug in your database Endpoint URL, Credentials secret ARN, and Vector index name.
 
-![Amazon Bedrock configuration screen for selecting your vector database](/images/blog/91b657a2a3a146e9117c74b25dca292f7664b5b9-1000x1606.webp)
+![Amazon Bedrock configuration screen for selecting your vector database](/images/site-mirror/91b657a2a3a146e9117c74b25dca292f7664b5b9-1000x1606.webp)
+
+*Amazon Bedrock configuration screen for selecting your vector database*
 
 Finally, plug in user-defined name for your Index field mapping and Amazon Bedrock-created Metadata field mapping. These are created automatically by Amazon Bedrock when processing your source data from Amazon S3.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Lior Kogan, Contributor · Published 5 July 2023 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/d12eaa7d5f1f8289f7ae4c9f33dc3e2ea4fdd2b8-772x550.webp)
+![Blog tile image](/images/site-mirror/d12eaa7d5f1f8289f7ae4c9f33dc3e2ea4fdd2b8-772x550.webp)
 
 **Redis is phasing out RedisGraph. This blog post explains the motivation behind this decision and the implications for existing customers and community members.**
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Blair Pierson, Sr. Director- AI/Tech partners AMER · Published 15 September 2025*
 
-![Redis](/images/blog/76db611a1787b2a1b44d524808681d09e8343824-772x552.webp)
+![Redis](/images/site-mirror/76db611a1787b2a1b44d524808681d09e8343824-772x552.webp)
 
 Startups ship fast — and Eden just proved it. At Redis Released in San Francisco, they launched their one-click migration from ElastiCache to Redis Cloud — a zero-code, zero-friction way to modernize data infrastructure in seconds.
 
@@ -42,4 +42,4 @@ Want to join them? Check out the [Redis for Startups program](https://redis.io/s
 
 And if you’re ready to see Eden’s one-click migration in action, head over to [eden.dev](http://eden.dev)
 
-![Redis](/images/blog/c480879b3709ed862c454f6667125a24b898f9dc-1840x841.webp)
+![Redis](/images/site-mirror/c480879b3709ed862c454f6667125a24b898f9dc-1840x841.webp)

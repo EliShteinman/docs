@@ -14,7 +14,7 @@ hidden: true
 
 *By Manvinder Singh, VP of AI Products · Published 13 November 2024 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/14857a9f0a96421af91a7f823b569fe715c991c6-772x552.webp)
+![Blog tile image](/images/site-mirror/14857a9f0a96421af91a7f823b569fe715c991c6-772x552.webp)
 
 As more and more companies deploy GenAI apps in production, we’re hearing about a new set of challenges that are different from the initial “POC phase of GenAI.” These new challenges are driven more by the need to scale and secure usage, especially when they’re deploying apps that interface with users outside of the organization. Because of this, companies are starting to use AI gateways (or “LLM gateways” or “GenAI gateways”) as a key component in their AI infrastructure.
 
@@ -30,7 +30,7 @@ Here are a few popularly quoted examples of GenAI gateways already used in the i
 
 In each of these examples, the gateway sits between the apps and the underlying LLMs, acting as a gatekeeper. It controls data access, enforces adherence to established rules, and monitors how GenAI apps behave. Plus, by abstracting away the different AI APIs, organizations can avoid locking into specific providers and stay flexible as the AI landscape evolves.
 
-![](/images/blog/dc97157b9d39e1c0ed82632230c2ddba389e9684-3840x2160.webp)
+![](/images/site-mirror/dc97157b9d39e1c0ed82632230c2ddba389e9684-3840x2160.webp)
 
 ## Eight key features every AI gateway needs
 
@@ -45,7 +45,9 @@ An AI gateway platform brings together a range of essential features, often cust
 1. **Usage tracking **(and chargebacks): Keeps spending on AI services in check by tracking token usage, setting budget limits, cost chargebacks and analyzing usage patterns by app, user, or department.
 1. **Credentials management:** Safeguards AI usage with centralized management of keys for external services like LLM & embedding generation providers, such as OpenAI, Anthropic, and Hugging Face.
 
-![](/images/blog/512bdad4d40fbb47d47c3546c2c45d9830659e7c-3840x2160.webp)
+![](/images/site-mirror/512bdad4d40fbb47d47c3546c2c45d9830659e7c-3840x2160.webp)
+
+*AI gateway typical capabilities*
 
 ## Build your AI gateway
 
@@ -70,7 +72,7 @@ Redis powers AI gateways with the speed and flexibility they need. With top-tier
 - **Router and guardrails:** Redis delivers high-performance vector search that’s perfect for building a fast, low-latency router. Developers can define routes based on sample queries, then use semantic search to direct incoming requests to the right models. This approach also allows blocking certain query types and adding guardrails for safety. Find a detailed guide on setting up a semantic router using Redis and RedisVL [here](https://www.redisvl.com/user_guide/semantic_router_08.html).
 - **Other use-cases **(storing credentials, usage data, PII etc.): Redis’ versatility and support for multiple data types make it a solid choice as the database behind various gateway services. For example, Redis can be used as the storage layer for Hashicorp Vault’s secret manager, securely hold PII data retrieved during the masking process, and storing usage data as part of a custom observability platform. With Redis, developers get a single platform that covers multiple use cases—no juggling different databases required.
 
-![](/images/blog/94fbb3d41f61f4a73ebd95d11a726bcd426e9f52-3840x2160.webp)
+![](/images/site-mirror/94fbb3d41f61f4a73ebd95d11a726bcd426e9f52-3840x2160.webp)
 
 Finally, Redis is available across multiple platforms and can be deployed in both public cloud (as a managed service or self-managed software) and on-prem. This flexibility is key for organizations running ML models across both cloud and on-prem environments.
 

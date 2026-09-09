@@ -14,9 +14,9 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 1 February 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/9d4f66dee2245475cbc5f418709e59612ad70634-5000x3333.webp)
+![](/images/site-mirror/9d4f66dee2245475cbc5f418709e59612ad70634-5000x3333.webp)
 
 **Indexing The Data**
 
@@ -38,7 +38,7 @@ After we have found the user’s current location, we want to locate any bike sh
 
 Imagine I’m at the Apple Store on Fifth Avenue and I want to head downtown to Mood on West 37th to catch up with my buddy [Swatch](https://twitter.com/swatchthedog). I could take a taxi or the subway, but I’d rather bike. Are there any nearby sharing stations where I could borrow a bike for my trip?
 
-![](/images/blog/fe0fb77361be5d3c484aa19c7335523ea76a2b79-747x445.webp)
+![](/images/site-mirror/fe0fb77361be5d3c484aa19c7335523ea76a2b79-747x445.webp)
 
 The Apple store is located at 40.76384, -73.97297. We can draw a 500 ft radius around the store (in blue) on the map overlay we created as part of the first post and see that two Bike Share Stations—Grand Army Plaza & Central Park South and E 58th St & Madison—fall within the radius.
 

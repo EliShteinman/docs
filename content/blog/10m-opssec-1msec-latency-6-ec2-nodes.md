@@ -14,7 +14,7 @@ hidden: true
 
 *By David Maier, Technical Enablement Mananger · Published 4 December 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2f74e139dcb26bc2d28c83a1f2155253e9cd18b5-940x394.webp)
+![Blog tile image](/images/site-mirror/2f74e139dcb26bc2d28c83a1f2155253e9cd18b5-940x394.webp)
 
 Our newly launched Redis Enterprise 5.0 introduced support for the Open Source (OSS) cluster API, which allows a [Redis Enterprise cluster](/lp/redis-cluster-database/) to scale infinitely and in a linear manner by just adding shards and nodes. The OSS cluster API relies on the intelligence of the clients to decide to which shard/node to send the request to based on the key part of the key/value item and a hashing function shared across the clients and the cluster. This post explains how [Redis Enterprise](/) works with the OSS cluster API and validates the infinite linear performance scalability.
 
@@ -28,11 +28,11 @@ A cluster, in Redis Enterprise terms, is a set of cloud instances, virtual machi
 - Zero-latency Proxy (data-path) – built on a cut-through, multi-threaded, stateless architecture and is responsible for hiding cluster complexity, enhancing security (SSL, authentication, DDoS protection) and improving performance (TCP-less, connection management and pipelining)
 - Cluster Manager (control & management-path) – built from a set of distributed processes that reside on each node of the cluster. The cluster manager takes care of cluster configuration activities, provisioning requests, resource management and monitoring, as well as acting as a resource watchdog and completely offloading the task of having Redis shards manage the health of other shards in the cluster or make failover decisions
 
-![](/images/blog/ab92a76636164bfc390f44c322f2703d436f0e46-940x529.webp)
+![](/images/site-mirror/ab92a76636164bfc390f44c322f2703d436f0e46-940x529.webp)
 
 A database in the Redis Enterprise cluster can be created in any one of the configurations below:
 
-![](/images/blog/51f86f648ece0b430b7a4e92730cc353c944c961-940x467.webp)
+![](/images/site-mirror/51f86f648ece0b430b7a4e92730cc353c944c961-940x467.webp)
 
 Based on its strong multi-tenant technology, a Redis Enterprise cluster can manage multiple databases of different types on the same cluster resources in a completely isolated manner.
 
@@ -46,7 +46,7 @@ In order to utilize the new OSS cluster API, you should use the following proper
 
 This will create a clustered database with properties similar to those shown below:
 
-![](/images/blog/fd8fe0c62845fe98d541d1c9dc24e426ab3b5178-940x529.webp)
+![](/images/site-mirror/fd8fe0c62845fe98d541d1c9dc24e426ab3b5178-940x529.webp)
 
 As you can see:
 
@@ -65,11 +65,11 @@ This is what our final setup looks like:
 
 - 6x m4.16xlarge instances for the Redis Enterprise cluster nodes:
 
-![](/images/blog/0f5aadeeac96c810afb1eb40c7f62d1ef8e99567-731x181.webp)
+![](/images/site-mirror/0f5aadeeac96c810afb1eb40c7f62d1ef8e99567-731x181.webp)
 
 - 8x c4.8xlarge instances running memtier_benchmark
 
-![](/images/blog/6c354fc2d8f8cdc92364590869b93eeb8f9d9a48-738x258.webp)
+![](/images/site-mirror/6c354fc2d8f8cdc92364590869b93eeb8f9d9a48-738x258.webp)
 
 - We used the Ubuntu Server 16.04 as our operating system and ensured that the machines were set up to support [Enhanced Networking](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking-ena.html). All instances were placed in the same VPC, availability zone, network subnet and placement group.
 
@@ -144,7 +144,7 @@ Here is a memtier_benchmark command line example:
 
 Our final setup ran a 192-shard database over only 6 nodes on the Redis Enterprise cluster and demonstrated outstanding results: over 10 million ops/sec at a slightly higher than 1msec latency! Here is a screenshot taken from the Redis Enterprise UI:
 
-![](/images/blog/2f74e139dcb26bc2d28c83a1f2155253e9cd18b5-940x394.webp)
+![](/images/site-mirror/2f74e139dcb26bc2d28c83a1f2155253e9cd18b5-940x394.webp)
 
 We conducted this experiment in order to validate that the shared-nothing architecture of Redis Enterprise can scale linearly thanks to the new OSS cluster API that was introduced in Redis Enterprise 5.0. Our experiment included:
 
@@ -154,11 +154,11 @@ We conducted this experiment in order to validate that the shared-nothing archit
 
 We found linear performance scalability when scaling from a 1-node cluster to a 6-node cluster, as shown in the following graph:
 
-![](/images/blog/5d6c2c6254d4dd416a30a4254eeab13a77eb1860-940x502.webp)
+![](/images/site-mirror/5d6c2c6254d4dd416a30a4254eeab13a77eb1860-940x502.webp)
 
 A deeper analysis of these results indicates that the throughput per node did not change by more than 10% when scaling from a single node cluster to a two-node cluster and then to a 6-node cluster. We believe that these changes in performance between the tests might be related to different resource conditions (network, VM, etc.) on each test iteration.
 
-![](/images/blog/1c532285460cfc835e3d93396081ce8b5033d915-940x533.webp)
+![](/images/site-mirror/1c532285460cfc835e3d93396081ce8b5033d915-940x533.webp)
 
 ## Summary
 

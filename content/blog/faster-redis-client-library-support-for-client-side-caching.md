@@ -18,7 +18,7 @@ hidden: true
 
 *By Mirko Ortensi, Sr. Product Manager, Products · Published 28 October 2024 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/54b9e4e05ea5755b5729a82423ecea5862ae08a6-772x552.webp)
+![Blog tile image](/images/site-mirror/54b9e4e05ea5755b5729a82423ecea5862ae08a6-772x552.webp)
 
 Getting faster than Redis [isn’t easy](/blog/benchmarking-results-for-vector-databases/), but starting today, you can read your most frequently accessed data, cut down on latency, and use resources more efficiently. Today, we’re proud to announce that client-side caching support for the official Redis client libraries is now available.
 
@@ -31,11 +31,11 @@ Let’s see how client-side caching can speed up data access by first taking a s
 
 Redis’s client-server model means performance is network-bound. Every operation requires round-trip communication, which can affect performance, especially in high-throughput systems or when network latency is an issue.
 
-![](/images/blog/e3c8fb73a3bf26af66460d87ac700a9b2b9f7231-1154x355.webp)
+![](/images/site-mirror/e3c8fb73a3bf26af66460d87ac700a9b2b9f7231-1154x355.webp)
 
 One effective way to cut down on network overhead—and boost app performance—is through client-side caching, also called **near cache**. This technique allows frequent read operations to be served directly from a cache on the same application server where the client is running. With client-side caching enabled, client applications are served with data cached by the backend application, reducing network traffic and latency.
 
-![](/images/blog/e4cb5297804baaae4af6d2be79049c4763178901-1177x362.webp)
+![](/images/site-mirror/e4cb5297804baaae4af6d2be79049c4763178901-1177x362.webp)
 
 Here’s how it helps:
 
@@ -47,7 +47,7 @@ Here’s how it helps:
 
 Let’s walk through an example to see how client-side caching works.
 
-![](/images/blog/38af83af90b9497af7b060b2a4b611da155fe68f-1126x481.webp)
+![](/images/site-mirror/38af83af90b9497af7b060b2a4b611da155fe68f-1126x481.webp)
 
 1. SET foo bar
   1. Data is stored in the server
@@ -59,7 +59,7 @@ Let’s walk through an example to see how client-side caching works.
 
 Whenever tracked data is changed by an arbitrary client, the server publishes an invalidation message to all the clients that currently track the data.
 
-![](/images/blog/040813701a8392d652af0ea41b155ad8062737c9-1350x579.webp)
+![](/images/site-mirror/040813701a8392d652af0ea41b155ad8062737c9-1350x579.webp)
 
 1. SET foo qux
   1. Client A changes the data

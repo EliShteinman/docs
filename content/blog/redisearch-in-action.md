@@ -14,7 +14,7 @@ hidden: true
 
 *By Abhishek Gupta, Microsoft Senior Developer Advocate · Published 30 March 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/6bc8c9c41ead293b4a4f4f4fc8efac482bc8a366-772x520.webp)
+![Blog tile image](/images/site-mirror/6bc8c9c41ead293b4a4f4f4fc8efac482bc8a366-772x520.webp)
 
 [Redis](https://redis.io/) has a [versatile set of data structures](https://redis.io/topics/data-types-intro) ranging from simple [Strings](https://redis.io/topics/data-types-intro#redis-strings) all the way to powerful abstractions such as [Redis Streams](https://redis.io/docs/latest/develop/). The native data types can take you a long way, but there are certain use cases that may require a workaround. One example is the requirement to use secondary indexes in Redis in order to go beyond the key-based search/lookup for richer query capabilities. Though you can [use Sorted Sets, Lists, and so on to get the job done](https://redis.io/topics/indexes), you’ll need to factor in some trade-offs.
 
@@ -34,7 +34,7 @@ Specifically, you will learn how to:
 
 As mentioned, the example service lets you consume tweets in real-time and makes them available for querying via RediSearch.
 
-![](/images/blog/0a6232f860be9209ec3ab26baa2a3223bacca875-703x321.webp)
+![](/images/site-mirror/0a6232f860be9209ec3ab26baa2a3223bacca875-703x321.webp)
 
 It has two components:
 
@@ -51,7 +51,7 @@ At this point, I am going to dive into how to get the solution up and running so
 
 Start off by using this quick-start tutorial to [set up a Redis Enterprise tier cache](https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis-enterprise?WT.mc_id=data-13024-abhishgu) on Azure. Once you finish the set up, ensure that you have the the Redis host name and access key handy:
 
-![](/images/blog/6ab40bef00969fb06da1a79d4fecc30958fff1f2-1024x264.webp)
+![](/images/site-mirror/6ab40bef00969fb06da1a79d4fecc30958fff1f2-1024x264.webp)
 
 Both the components of our service are available as Docker containers: the [Tweet indexing service](https://hub.docker.com/repository/docker/abhirockzz/redisearch-tweets-consumer) and the [Search API service](https://hub.docker.com/repository/docker/abhirockzz/redisearch-tweets-search). (If you need to build your own Docker images, please use the respective Dockerfile available on the GitHub repo.)
 

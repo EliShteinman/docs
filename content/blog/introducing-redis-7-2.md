@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 15 August 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/6f4d1774f0717e849708d1ebc64665473c7c337c-772x550.webp)
+![Blog tile image](/images/site-mirror/6f4d1774f0717e849708d1ebc64665473c7c337c-772x550.webp)
 
 **You have trusted Redis for over a decade because we make it easy to create powerful, fast applications that perform at scale––and we try hard to deserve that reputation. Redis is continuing that spirit with all the innovation we put into Redis 7.2.**
 
@@ -67,7 +67,9 @@ Redis 7.2 addresses one area that frustrated me at the beginning of my Redis dev
 
 With Redis 7.2, we bring a new level of guidance and support to Redis clients. We are working directly with the community maintainers of [five client libraries](/blog/five-official-redis-clients)––Jedis (Java), node-redis (NodeJS), redis-py (Python), NRedisStack (.Net), and Go-Redis (Go)––to establish consistency in such things as documentation, user interface, governance, and security. We also support the RESP3 protocol in Redis Stack and Redis Enterprise (cloud and software).
 
-![Supported client libraries](/images/blog/f085faf451f8f21844d213191be1f43e1ef2c86b-1000x263.webp)
+![Supported client libraries](/images/site-mirror/f085faf451f8f21844d213191be1f43e1ef2c86b-1000x263.webp)
+
+*Supported client libraries*
 
 ## We made Redis more powerful for developers
 
@@ -75,7 +77,9 @@ With this release, we also bring a new level of programmability for real-time da
 
 Triggers and functions enable cross-shard read operations at the cluster level. This functionality was not available in previous generations of the Redis programmability engine, such as Lua and functions.
 
-![Triggers and functions](/images/blog/99b7ad987fd0492d56a4abe4081bec23e845f3ba-572x392.webp)
+![Triggers and functions](/images/site-mirror/99b7ad987fd0492d56a4abe4081bec23e845f3ba-572x392.webp)
+
+*Triggers and functions*
 
 > Experience it first-hand. Read the full [Triggers and Functions](/blog/introducing-triggers-and-functions) announcement and join the public preview.
 
@@ -83,11 +87,15 @@ Triggers and functions enable cross-shard read operations at the cluster level. 
 
 For example, in an application to locate taco restaurants, the geospatial information is the indexed location data of all the restaurants in San Francisco. The polygon that a user draws on a digital map is the geographic area of the search. Redis retrieves only the keys associated with the restaurants within the boundaries of the drawn polygon.
 
-![Polygon search in Redis 7.2](/images/blog/ae3d25db2d78a0899e22647e94172904208545d8-800x865.webp)
+![Polygon search in Redis 7.2](/images/site-mirror/ae3d25db2d78a0899e22647e94172904208545d8-800x865.webp)
+
+*Polygon search in Redis 7.2*
 
 We also made significant performance improvements **in the Redis data type of **[**sorted sets**](https://redis.io/docs/data-types/sorted-sets/), commonly used to create [gaming leaderboards](/solutions/leaderboards/) among its other uses. Our enhancements generate gains between 30% and 100% compared to Redis Enterprise Cloud 6.2.
 
-![Redis Enterprise sorted sets performance comparison](/images/blog/bf352e80b8266974207a595863d584f82b353da6-800x494.webp)
+![Redis Enterprise sorted sets performance comparison](/images/site-mirror/bf352e80b8266974207a595863d584f82b353da6-800x494.webp)
+
+*Redis Enterprise sorted sets performance comparison*
 
 ## We made Redis easy to integrate with corporate tools and infrastructure
 
@@ -95,7 +103,9 @@ You can now use [**Redis Data Integration**](/data-integration/) (RDI), a tool t
 
 RDI can take data from a variety of sources (such as Oracle, Postgres, or Cassandra) and functionally turn it into real-time data. Similarly, when the data is no longer “real-time,” RDI can bring downstream changes from Redis Enterprise into the system of record without having to add more code or perform arcane integrations.
 
-![Redis Data Integration architecture](/images/blog/4a20cea720b6b1b24aa66b834c700b540ad1143a-800x437.webp)
+![Redis Data Integration architecture](/images/site-mirror/4a20cea720b6b1b24aa66b834c700b540ad1143a-800x437.webp)
+
+*Redis Data Integration architecture*
 
 RDI (currently in public preview) streams changes from source databases directly into Redis, where they are further filtered, transformed, and mapped into formats such as JSON and Hash.
 
@@ -107,7 +117,9 @@ Your applications don’t always require top speed for every use case. Sometimes
 
 With Redis Enterprise 7.2, we introduce **Auto Tiering** (formerly called Redis on Flash) with a new default storage engine, Speedb. Auto tiering allows operators to extend the size of Redis databases beyond the limits of physical DRAM using solid-state drives (SSDs). This makes sense for applications with large datasets where heavily used data stays in memory and, maintaining less frequently used data in SSD. Redis Enterprise automatically manages memory based on usage.
 
-![Auto tiering architecture](/images/blog/069a10c5a6b05ccb4492350f38e7d690345e19c0-800x562.webp)
+![Auto tiering architecture](/images/site-mirror/069a10c5a6b05ccb4492350f38e7d690345e19c0-800x562.webp)
+
+*Auto tiering architecture*
 
 Auto tiering delivers significant performance improvements in terms of throughput and latency, doubling throughput at half the latency of the previous generation storage engine (RocksDB), and reducing infrastructure costs by up to 70%.
 
@@ -115,7 +127,9 @@ Auto tiering delivers significant performance improvements in terms of throughpu
 
 There are two other innovations in this release that we want to highlight. Operators will find the **updated **[**cluster manager**](https://docs.redis.com/latest/rs/installing-upgrading/quickstarts/redis-enterprise-software-quickstart/) (CM) user interface of great help to speed up everyday administrative tasks. Its intuitive interface has features comparable to those of the Redis Enterprise Cloud that reduces learning curves and minimizes errors. For example, with the new CM, you can deploy a new Redis Enterprise database with only two mouse clicks.
 
-![quick database cluster management](/images/blog/e062b0c091b5d6d69c039877977c35ba38a5fe16-972x1160.webp)
+![quick database cluster management](/images/site-mirror/e062b0c091b5d6d69c039877977c35ba38a5fe16-972x1160.webp)
+
+*Cluster manager user interface*
 
 The other piece of good news that surely will please operators of containerized applications is the **general availability of the **[**Redis Enterprise Operator for Kubernetes**](/enterprise/redis-enterprise-on-kubernetes/)with support for Active-Active database deployments. With a few declarative lines in a YAML file, you can simplify several tasks that take time and effort, such as creating geo-distributed databases and removing, adding, and updating participating clusters from an Active-Active database.
 

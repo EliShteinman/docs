@@ -15,7 +15,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 15 September 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/150d3eda6a4ca0b129259f28ba64e52459c3287a-772x550.webp)
+![Blog tile image](/images/site-mirror/150d3eda6a4ca0b129259f28ba64e52459c3287a-772x550.webp)
 
 **How can Redis Enterprise support your Oracle SQL database as a cache or primary database? Migrating to a NoSQL database can be tricky, but luckily, Redis Enterprise can seamlessly fit into your current data stack, allowing it to work in conjunction with your existing architecture. Below, we’ve broken down three reasons why Redis is the answer to your most pressing Oracle obstacles. For a thorough breakdown, explore our solution brief below.**
 
@@ -29,7 +29,7 @@ What about using Oracle for modern use cases? You might think of **Oracle cache*
 
 [Redis Enterprise](/enterprise/), the leading real-time data platform, can be used alongside Oracle to store data in-memory to greatly relieve these common **Oracle speed**, cost, and data type limitation challenges. Time to do more with your Oracle data and enable modern solutions!
 
-![diagram detailing how redis enterprise fits with oracle stack](/images/blog/9febe797876adad67563fe66cf1f5fa4e811ff13-1024x470.webp)
+![diagram detailing how redis enterprise fits with oracle stack](/images/site-mirror/9febe797876adad67563fe66cf1f5fa4e811ff13-1024x470.webp)
 
 ## Oracle speed – upgraded
 

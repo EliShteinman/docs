@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 2 March 2022 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/dd803210e9ea43497bf6c58b9d070cd550956aed-772x550.webp)
+![Blog tile image](/images/site-mirror/dd803210e9ea43497bf6c58b9d070cd550956aed-772x550.webp)
 
 The release of Redis 7.0 is on track, and we’ve just published its second release candidate. This release candidate is a planned milestone intended to complete the version’s features, but it’s also an opportunity for us to present additional content in the new version. For example, [Redis Functions](https://redis.io/docs/latest/develop/interact/programmability/functions-intro/) has evolved from the existing support for scriptings that Redis had since version 2.6. Similarly, more of Redis’ features have evolved.
 

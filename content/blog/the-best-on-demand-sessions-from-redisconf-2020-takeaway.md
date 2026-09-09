@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 28 May 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/349c6bb691e38b2646689ba7922a452063adef50-772x520.webp)
+![Blog tile image](/images/site-mirror/349c6bb691e38b2646689ba7922a452063adef50-772x520.webp)
 
 While RedisConf 2020 *Takeaway* has come and gone, the good news is that the content—40+ breakout sessions, 15 training sessions, two keynotes, and 25+ live Q&As—won’t be going anywhere. After premiering on May 12–13, nearly everything is still available to view on-demand in the Video Library on [RedisConf.com](https://redisconf.com/).
 
@@ -34,7 +34,9 @@ As we move more systems to the cloud, it can become harder than ever to detect, 
 
 Many of the new features of Redis 6 are security-focused, and Vishy does a great job walking you through how to take advantage of them. He explains current use cases that required better security, and then explains—in tutorial-like fashion—how to use access control lists (ACLs) and transport layer security (TSL).
 
-![](/images/blog/fd5c258a534fa3e24be7facea7f3dcd848aca839-200x200.webp)
+![](/images/site-mirror/fd5c258a534fa3e24be7facea7f3dcd848aca839-200x200.webp)
+
+*Phyo Kyaw*
 
 ## Active-Active Data Replication with Redis Streams and Redis Modules
 

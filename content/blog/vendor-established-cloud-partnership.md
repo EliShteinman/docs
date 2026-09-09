@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 20 April 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a9d88f05fc2534fa4c3178a037ed8686aea14304-1200x628.webp)
+![Blog tile image](/images/site-mirror/a9d88f05fc2534fa4c3178a037ed8686aea14304-1200x628.webp)
 
 **When you assess a new software vendor for your business, be sure to factor in the benefits of the company’s partnerships.**
 

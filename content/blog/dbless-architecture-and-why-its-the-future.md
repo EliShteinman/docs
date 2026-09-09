@@ -14,7 +14,7 @@ hidden: true
 
 *By Raja Rao, Head of Growth Marketing · Published 8 July 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/89835eab457fb43a2cd53773fbbcb6428a60743e-772x520.webp)
+![Blog tile image](/images/site-mirror/89835eab457fb43a2cd53773fbbcb6428a60743e-772x520.webp)
 
 You may be wondering: Why is a database company like Redis talking about Databaseless (DBLess) architecture? And what is it? That’s natural, but before we get into the details, let’s look at the new way of thinking behind this brand new architecture.
 
@@ -26,7 +26,9 @@ To find those inefficiencies, you must take a systematic and scientific approach
 
 Fundamentally, whether people know it or not, the majority of the social, technical, and economic changes have happened because of people thinking with First Principles and challenging the tradition.
 
-![](/images/blog/aa61c4ab4d6bad665a323362d7b36336f48a108e-1024x558.webp)
+![](/images/site-mirror/aa61c4ab4d6bad665a323362d7b36336f48a108e-1024x558.webp)
+
+*Source: See the reference links at the bottom*
 
 In the above video, Elon Musk explains how he looked into the raw materials of a battery and was able to reduce the cost of it from $700 to $70.
 
@@ -44,7 +46,7 @@ If you are looking at this from a First Principles perspective, even though most
 
 Now if you look at an electric car, it removes this inefficiency to build a new type of car. In this case, it simply gets rid of the complex and highly inefficient engine and replaces it with a large battery and a motor to directly spin the wheels.
 
-![](/images/blog/a22038cef528e75482674e5fa0e1918a5755eb91-1024x848.webp)
+![](/images/site-mirror/a22038cef528e75482674e5fa0e1918a5755eb91-1024x848.webp)
 
 So you can see how First Principles thinking leads to identifying inefficiencies and creating a newer, better system.
 
@@ -56,7 +58,7 @@ Let’s shift gears and transition to the database world to see if we can apply 
 
 Let’s first look at traditional architecture.
 
-![](/images/blog/b5eff7dd4e976e0f07deb477fefecdb9018aebc1-1024x441.webp)
+![](/images/site-mirror/b5eff7dd4e976e0f07deb477fefecdb9018aebc1-1024x441.webp)
 
 In traditional architecture, you have a primary database (Postgres, MongoDB, etc.) and a secondary database or cache (e.g. Redis or Memcached). The primary DB is used to store all the data and support CRUD operations. The caching DB is used for caching, session storage, rate-limiting, IP-whitelisting, Pub/Sub, queuing, and many other things.
 
@@ -76,7 +78,7 @@ In this architecture, you get rid of the primary DB, hence the name DBLess. Inst
 
 Let’s imagine that we started using Redis or other similar caching databases as a primary database and got rid of the primary DB (such as Postgres, Mysql, MongoDB, etc) completely.
 
-![](/images/blog/21d85ede7fe9b8740f9d279d25ed216bf50ca457-1024x471.webp)
+![](/images/site-mirror/21d85ede7fe9b8740f9d279d25ed216bf50ca457-1024x471.webp)
 
 **Important Note:** This is just an architectural discussion. The DBLess architecture is not a proprietary architecture that’s limited to Redis or Redis Enterprise, and it would work with any Redis-like system. Also, remember that Redis is an OSS project, so you can build this yourself or on any other Redis-hosted cloud provider.
 
@@ -92,7 +94,7 @@ Now that you know it’s real, let’s see what makes this possible.
 
 Let’s use Redis Enterprise as an example and compare it with the traditional primary DBs.
 
-![](/images/blog/fc0e5d955ce0281d50c2cf24df2b408163b5288f-631x503.webp)
+![](/images/site-mirror/fc0e5d955ce0281d50c2cf24df2b408163b5288f-631x503.webp)
 
 As you can see, the short answer is that it fairs really well and, in fact, can even be better than some traditional Primary DBs.
 

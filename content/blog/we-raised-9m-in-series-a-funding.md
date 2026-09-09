@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 5 November 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/42de0b41e6c73bc822083e42f61b8c6b66cec617-635x200.webp)
+![Blog tile image](/images/site-mirror/42de0b41e6c73bc822083e42f61b8c6b66cec617-635x200.webp)
 
-![](/images/blog/42de0b41e6c73bc822083e42f61b8c6b66cec617-635x200.webp)
+![](/images/site-mirror/42de0b41e6c73bc822083e42f61b8c6b66cec617-635x200.webp)
 
 Today we’re proud to announce that we’ve raised $9 million in Series A funds with participation from [Bain Capital Ventures](http://www.baincapitalventures.com/) and [Carmel Ventures](http://www.carmelventures.com/). It’s a very exciting day for the Garantia Data team, our customers, and the entire open source Redis community. We’re also very excited to welcome two new board members to our team: [Salil Deshpande](https://www.baincapitalventures.com/team/salil/) from Bain Capital Ventures, and [Ronen Nir](http://www.carmelventures.com/people/investment-team/7-ronen-nir.html) from Carmel Ventures.
 

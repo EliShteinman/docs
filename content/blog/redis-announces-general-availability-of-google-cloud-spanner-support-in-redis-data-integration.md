@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike  Moss , SVP, Worldwide Channels & Alliances · Published 22 October 2025*
 
-![Redis announces general availability of Google Cloud Spanner support in Redis data integration](/images/blog/7ef3f3e0e2e5410695e46d074d0ffd163d9e5dc1-1200x628.webp)
+![Redis announces general availability of Google Cloud Spanner support in Redis data integration](/images/site-mirror/7ef3f3e0e2e5410695e46d074d0ffd163d9e5dc1-1200x628.webp)
 
 Redis, the real-time data platform, has announced the general availability of Google Cloud Spanner support for Redis Data Integration (RDI) as a self-managed deployment, in addition to Redis Cloud on GCP deployments. This new capability strengthens the Redis and Google Cloud partnership by helping joint customers improve performance, reduce infrastructure costs, and accelerate innovation.
 

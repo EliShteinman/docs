@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 24 February 2026 · updated 27 February 2026*
 
-![Redis](/images/blog/18e16f4bd2d300e03cbb3b42ca90f64ff47677bb-1200x628.webp)
+![Redis](/images/site-mirror/18e16f4bd2d300e03cbb3b42ca90f64ff47677bb-1200x628.webp)
 
 You've probably built something like this before: a pipeline that pulls data from an API, transforms it, and writes it to a database. It works great until the API changes its response format, or a field comes back null, or the database schema drifts. Now you're patching hardcoded logic at 2 AM. An agentic workflow handles that differently. Instead of following a fixed script, the agent figures out *what* needs to happen, *where* to get the data, and *how* to recover when something breaks mid-run.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Bao Phan · Published 15 May 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7e5b288a675fa902747a7cba798fc6de13cf5dc7-1401x986.webp)
+![Blog tile image](/images/site-mirror/7e5b288a675fa902747a7cba798fc6de13cf5dc7-1401x986.webp)
 
 Every year the Redis community comes together for RedisConf, the world’s largest annual gathering of Redis Geeks. Although we couldn’t meet in person this year, we’re proud to have delivered our most-attended conference yet, filled with learning and networking to nearly 4,000 attendees from 103 countries. [RedisConf 2020 ](http://redisconf.com)[*Takeaway*](http://redisconf.com) was held online from May 12–13, with keynotes, live Q&As, and sessions on Day 1 and a full roster of training classes on Day 2.
 
@@ -26,7 +26,7 @@ If you missed all the excitement, not to worry—[all sessions continue to be av
 
 What made RedisConf *Takeaway* different from other virtual conferences? With its virtual reality style interface, attendees hung out with fellow Redis Geeks almost like they would at an in-person conference! Using custom avatars, attendees interacted in a variety of ways to interact, from hanging out in themed Group Discussion rooms on topics like Redis 6, Redis Modules, and K8s & Containers, to talking to other attendees in the Lounge and playing more than 1,500 games of Redis Pong. And you guys were social—sending more than 3,700 chat messages and 12,212 emojis!
 
-![](/images/blog/54f9fd8e7350db3d9d7c302f52efa61fa15e6518-772x634.webp)
+![](/images/site-mirror/54f9fd8e7350db3d9d7c302f52efa61fa15e6518-772x634.webp)
 
 These features let conference attendees meet fellow Redis community members, like Patrick Heslin from Algo-Logic, who attended RedisConf to learn more about the platform, environment, and community. His favorite sessions were on security, as he says he always insisted on keeping clients secure. “It was fun to meet new people in a unique virtual environment,” he said. “We made good connections.”
 
@@ -40,7 +40,7 @@ We also awarded points for various activities in Redis World, from attending an 
 
 But it wasn’t all fun and games—in the Video Library, attendees watched more than 50+ on-demand sessions on topics like “Creating a Model of Human Physiology using RedisGraph” from [Carlos Justiniano](https://twitter.com/cjus) and “Leveraging Redis v6 Tracking for Awesome Client-Side Caching” from [Ben Malec](https://www.linkedin.com/in/ben-malec-62514a4/) on Day 1. Each video had its own room, where you could see the other people watching it with you and chat with them. Many of the speakers were also available for live Q&As to answer any questions not covered in the videos.
 
-![](/images/blog/3d8b52c6d6b0e97f3853aea0110f702268c4d6d8-1015x1024.webp)
+![](/images/site-mirror/3d8b52c6d6b0e97f3853aea0110f702268c4d6d8-1015x1024.webp)
 
 On Day 2, we released 15 video training sessions designed to help you improve your Redis knowledge. Sessions varied from introductions for Redis newcomers—like “Redis 101: Getting Started with Redis” and “A Practical Introduction to RedisGraph”—to brand-new training content like “RediSearch Advanced Topics” for more experienced Redis users. An exclusive [Redis Certification](https://university.redis.com/certification/) Cram session helped Redis Geeks prepare for the exam. As on Day 1, the Redis experts were answering questions all day.
 

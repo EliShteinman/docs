@@ -15,7 +15,7 @@ hidden: true
 
 *By Sheryl Sage, Director of Partner Marketing · Published 15 March 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/6559d2bf1cfc3646fb1a4a249dce81d1c404e192-400x400.webp)
+![Blog tile image](/images/site-mirror/6559d2bf1cfc3646fb1a4a249dce81d1c404e192-400x400.webp)
 
 ##### 
 

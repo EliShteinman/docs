@@ -14,7 +14,7 @@ hidden: true
 
 *By Ryan Powers · Published 12 December 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4671a538f6957cd279ee1a2035a90d620e01aa75-811x479.webp)
+![Blog tile image](/images/site-mirror/4671a538f6957cd279ee1a2035a90d620e01aa75-811x479.webp)
 
 AWS re:Invent really is the Super Bowl for cloud computing and enterprise software. Every company—including AWS—brings their latest and greatest innovations to the show.
 
@@ -32,7 +32,9 @@ And that’s only part of the equation. Not only are modern applications being b
 
 ## Takeaway #2: Use the right database for the job
 
-![](/images/blog/c8fd8df6eefab277f8e9da4d71e59b2b5b1a2d27-1024x313.webp)
+![](/images/site-mirror/c8fd8df6eefab277f8e9da4d71e59b2b5b1a2d27-1024x313.webp)
+
+*“#DBFreedom means the right tool for the job”—Andy Jassy*
 
 In the prelude leading up to Jassy’s announcement of Amazon’s managed Cassandra service, he talked about AWS’ commitment to creating purpose-built databases that are the right tools for your job. The days of using your Oracle database for everything are over.
 
@@ -54,7 +56,7 @@ Redis Enterprise is built with this stack in mind. You can seamlessly deploy, mo
 
 ## Takeaway #5: Cost reduction remains top of mind for AWS customers
 
-![](/images/blog/1f918725e03439ef74001fe97487bc47ca2acd00-300x171.webp)
+![](/images/site-mirror/1f918725e03439ef74001fe97487bc47ca2acd00-300x171.webp)
 
 Jassy announced a number of new and upgraded AWS instances, including the [M6g, R6g, CRg EC2 instances](https://aws.amazon.com/about-aws/whats-new/2019/12/announcing-new-amazon-ec2-m6g-c6g-and-r6g-instances-powered-by-next-generation-arm-based-aws-graviton2-processors/), and [Inf1 EC2 instances](https://aws.amazon.com/about-aws/whats-new/2019/12/introducing-amazon-ec2-inf1-instances-high-performance-and-the-lowest-cost-machine-learning-inference-in-the-cloud/) for machine-learning use cases.
 

@@ -14,13 +14,17 @@ hidden: true
 
 *By Sheryl Sage, Director of Partner Marketing · Published 14 January 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 The data layer is one of the first things to consider when moving to a microservices architecture. That’s because in a microservices architecture, each service manages its own data and is responsible for its own private data store. Understanding the role of the database in each service is critical. Depending on the service, for example, database could be the single source of truth, a temporary store, or something in between.
 
-![](/images/blog/268fbe32026210bd1e2d1ad1335d311623401bb4-155x150.webp)
+![](/images/site-mirror/268fbe32026210bd1e2d1ad1335d311623401bb4-155x150.webp)
 
-![Loris Cro](/images/blog/d0cad935422633e547e90e10ea47b7beabfbbc2d-144x144.webp)
+*Kyle Davis*
+
+![Loris Cro](/images/site-mirror/d0cad935422633e547e90e10ea47b7beabfbbc2d-144x144.webp)
+
+*Loris Cro*
 
 That’s one of the most important concepts in our new free e-book: [Redis Microservices for Dummies](/docs/redis-microservices-for-dummies/). Authors—and Redis developer evangelists—Kyle Davis and Loris Cro walk readers through key microservices terms and concepts and how a microservices architecture can help make your apps more scalable, easier to manage and update, and more resilient. You’ll also learn how to use Redis to optimize your data layer.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 14 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Is your development team working with microservices architectures? Or are you still trying to wrap your mind around how to get started? Or maybe you’re already at the disillusionment stage where you’re back to writing monolithic applications, [like Kelsey Hightower predicted](https://twitter.com/kelseyhightower/status/940259898331238402?s=20)?
 

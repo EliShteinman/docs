@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 31 July 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/c4255191f38b9c3948d682a280b0f46a63049dd2-635x200.webp)
+![](/images/site-mirror/c4255191f38b9c3948d682a280b0f46a63049dd2-635x200.webp)
 
 Modern applications have a general list of needs in order to not only survive, but thrive in today’s fast paced cloud environment. These include low response times (less than 100 milliseconds), limitless scalability, high availability, and optimal performance, to name a few. With a selection of modern database options available, Redis has proven to be one of the most popular. Redis has aided in the creation of over 50,000 databases by over 2,500 paying customers, with more than 100 new databases created daily. Being a major contributor to [Redis’ open source project](https://github.com/antirez/redis), many of the use cases that we see using Redis include social applications, online advertising companies, and gaming companies. Our experience running Redis services across the four major clouds (AWS, Azure, GCP and SoftLayer) has made us aware of a number of challenges that users encounter, which consequently led to our thoroughly tested solutions, a few of which we have shared below.
 

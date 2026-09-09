@@ -14,9 +14,9 @@ hidden: true
 
 *By Chen Waiss · Published 29 January 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b44e290a014b127db02a95022f03e5e9829347a0-635x200.webp)
+![Blog tile image](/images/site-mirror/b44e290a014b127db02a95022f03e5e9829347a0-635x200.webp)
 
-![](/images/blog/b44e290a014b127db02a95022f03e5e9829347a0-635x200.webp)
+![](/images/site-mirror/b44e290a014b127db02a95022f03e5e9829347a0-635x200.webp)
 
 Today we’re thrilled to officially announce our company’s new name: Redis. Since 2012, the developer community has known us as Garantia Data or by the names of our popular services, [Redis Cloud](http://redis-cloud.com/) and [Memcached Cloud](http://garantiadata.com/memcached) (even better).
 

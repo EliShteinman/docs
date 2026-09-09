@@ -14,7 +14,7 @@ hidden: true
 
 *By Steven Melendez · Published 12 December 2014 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/a9e7978fcba393b4c6389c92b7ce705124eb32ec-140x92.webp)
+![Blog tile image](/images/site-mirror/a9e7978fcba393b4c6389c92b7ce705124eb32ec-140x92.webp)
 
 Originally published on [fastcolabs.com](http://www.fastcolabs.com/3039625/how-hoteltonight-handles-the-demand-for-instant-booking-and-check-in)
 
@@ -22,7 +22,7 @@ The app HotelTonight is built around last-minute hotel booking. Users depend on 
 
 “We can have customers that are standing outside a hotel and booking a room and walking in and expecting to be able to check in,” says HotelTonight cofounder and chief architect [Chris Bailey](//www.fastcompany.com/person/chris-bailey).
 
-![](/images/blog/523cdad581ed2487ee1c196f0c7d04bb35d64503-260x384.webp)
+![](/images/site-mirror/523cdad581ed2487ee1c196f0c7d04bb35d64503-260x384.webp)
 
 The app’s backend needs to be able to quickly sync reservations and vacancy information with a range of [hotel reservation systems](http://www.fastcolabs.com/explore/hotel-reservation-systems) and users’ phones and tablets, so it doesn’t fail to display a convenient deal or, worse, book someone a room that’s already taken, says Bailey. The app’s Black Friday traffic peaked at eight times normal load levels, with a [$7 room special selling out in under seven minutes](https://www.hoteltonight.com/2014/11/black-friday-room-sale/).
 

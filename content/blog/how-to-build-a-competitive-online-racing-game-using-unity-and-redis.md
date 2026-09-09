@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 11 November 2021 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/700cbfcaa20da331a192e12271d21af3f5507a93-772x520.webp)
+![Blog tile image](/images/site-mirror/700cbfcaa20da331a192e12271d21af3f5507a93-772x520.webp)
 
 If you’re into gaming and love creating things, then you may take inspiration from this Launchpad App. By using Redis, Graham Pinsent created his very own online racing game where friends, family, and colleagues can settle old scores and compete against each other for the finish line.
 
@@ -52,7 +52,7 @@ Ready to get started? Ok, let’s dive straight in.
 
 ## 3. Architecture
 
-![](/images/blog/696078645d700e4d4a9e067cfc99286158c360dc-1406x1036.webp)
+![](/images/site-mirror/696078645d700e4d4a9e067cfc99286158c360dc-1406x1036.webp)
 
 1. After every 0.1 seconds, the position of each user’s car is sent to the Node JS server.
 1. Node JS processes this data and sends it to the Redis database.
@@ -77,7 +77,7 @@ $ docker run -d -p 6379:6379 redislabs/redismod
 
 You can also use Redis Enterprise Cloud with RedisJSON module enabled as shown below:
 
-![](/images/blog/c53c23d480e9952e36f6a33b530c2a3bf74da5a8-1600x999.webp)
+![](/images/site-mirror/c53c23d480e9952e36f6a33b530c2a3bf74da5a8-1600x999.webp)
 
 #### Step 2. Clone the repository
 
@@ -120,15 +120,15 @@ redis-12132.c72.eu-west-1-2.ec2.cloud.redislabs.com:12132> monitorOK1633172585.5
 
 Finally, you can either build the game using Unity, or just press play inside the project.
 
-![](/images/blog/d100654121532db298b87eea148423fe9d061716-1600x475.webp)
+![](/images/site-mirror/d100654121532db298b87eea148423fe9d061716-1600x475.webp)
 
-![](/images/blog/adfc876974696372972e3ee7652eb10c014f8001-1600x580.webp)
+![](/images/site-mirror/adfc876974696372972e3ee7652eb10c014f8001-1600x580.webp)
 
 Open the web browser https://IP: 3000 to access the game.
 
-![](/images/blog/e5522eaac591c7afd55747a50d2f8d4e96ef7d09-1552x1300.webp)
+![](/images/site-mirror/e5522eaac591c7afd55747a50d2f8d4e96ef7d09-1552x1300.webp)
 
-![](/images/blog/c74770c8e07d6e3ab66a0b471e248d47071b2252-1600x1295.webp)
+![](/images/site-mirror/c74770c8e07d6e3ab66a0b471e248d47071b2252-1600x1295.webp)
 
 ## 5. How it works
 
@@ -281,7 +281,7 @@ if (lastPing.AddSeconds(30) < DateTime.Now) {
 
 When you first start the game, you’ll have the opportunity to choose your player’s name as seen below. Once you enter your name and press start, the game client will then send this information as a POST request to the server.
 
-![](/images/blog/6d83dc0ca10e8e6badbd036a82e34cad14f8c130-1222x756.webp)
+![](/images/site-mirror/6d83dc0ca10e8e6badbd036a82e34cad14f8c130-1222x756.webp)
 
 The server will then perform various checks on the name to validate it. For example, it will check whether or not the name is already taken. This validation process happens by getting every player’s JSON from the Redis database to then push it into an array to loop over and check their name against the data.
 
@@ -403,6 +403,6 @@ Or if you want to learn more about how this application was made, then you can w
 
 ### Graham Pinsent
 
-![](/images/blog/4b95073ab95c5ca1014d7031b5b2c43f82879a65-800x800.webp)
+![](/images/site-mirror/4b95073ab95c5ca1014d7031b5b2c43f82879a65-800x800.webp)
 
 Graeme is a DevOps engineer who operates in the gambling and sports betting industry. Make sure to head over to his [GitHub page](https://github.com/PerryGraham/Redis-Racing) to see what other projects he’s been involved in.

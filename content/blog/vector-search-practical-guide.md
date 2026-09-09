@@ -14,7 +14,7 @@ hidden: true
 
 *By Cedric Turner, Solution Architect · Published 14 August 2026 · updated 19 August 2026*
 
-![Mastering Vector Similarity Search: A Practical Guide](/images/blog/f16f881280f216824e31cc4a4b7d185d6dfad353-2400x1256.webp)
+![Mastering Vector Similarity Search: A Practical Guide](/images/site-mirror/f16f881280f216824e31cc4a4b7d185d6dfad353-2400x1256.webp)
 
 Vector search runs on a simple idea: turn data into coordinates, and treat similarity as distance. An embedding model maps each sentence, image, or document to a point in a few hundred dimensions of space, where items with related meaning land near each other. Finding the "most similar" result becomes a nearest-neighbor problem, one a database can index and answer in milliseconds. If you want the fundamentals first, start with our [complete guide](/blog/vector-search-guide/) and come back here for the production view.
 

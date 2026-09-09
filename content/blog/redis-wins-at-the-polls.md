@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 15 September 2015 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/b1a22a1d1122e16d92cb59663a979e35112687e6-140x92.webp)
+![Blog tile image](/images/site-mirror/b1a22a1d1122e16d92cb59663a979e35112687e6-140x92.webp)
 
-![](/images/blog/2bb8aeb4d106583ed97e32edea9106d1be46d7bb-635x200.webp)
+![](/images/site-mirror/2bb8aeb4d106583ed97e32edea9106d1be46d7bb-635x200.webp)
 
 Last week, users of NoSQL databases worldwide crowned [Redis champion in G2 Crowd’s Grid](https://www.g2crowd.com/products/redis/reviews). The Grid℠ represents the democratic voice of real software users, rather than the subjective opinion of one analyst. G2 Crowd rates NoSQL databases algorithmically based on data sourced from product reviews shared by G2 Crowd users and data aggregated from online sources and social networks.
 
@@ -34,7 +34,7 @@ Top 5 things that should come as no surprise to any Redis users:
 
 While RDBMS-es are well understood as a category, NoSQL technologies are still being digested by application developers, devops and operations. To make it even more confusing, vendors are adding multiple models to their databases, leaving customers confused about when to use which database technology.
 
-![](/images/blog/2fab6faf06ed388458906c837d77d9b5b3cdb306-635x398.webp)
+![](/images/site-mirror/2fab6faf06ed388458906c837d77d9b5b3cdb306-635x398.webp)
 
 Redis makes it simple. Blazingly fast, highly stable and persistent, it is the #1 choice of users for a variety of different applications and use cases. The unique data structures in Redis, 180 or so commands, Lua scripting language all endow it with a versatility and performance that can’t be beaten. Whether you need high speed analytic processing (example: leaderboards in gaming), in-app social functionality (example: who’s following who and who you also follow), online session management (example: what’s a user doing, clicking, purchasing etc), pub-sub functionality (example: inventory notification to thousands of web clients), geo-spatial lookups (example: who’s close by), unique user counts (example: ranking articles by unique page views), high speed transactions (example: price/currency notifications) – Redis not only delivers it, but delivers it with fewer lines of code, lower latencies and higher throughput than anyone else.
 

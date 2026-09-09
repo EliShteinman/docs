@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 24 June 2026*
 
-![Knowledge graph retrieval-augmented generation (RAG): structured retrieval for AI agents](/images/blog/3c27c68bf8a56649c9310dd64982b7bfab509bd0-2400x1256.webp)
+![Knowledge graph retrieval-augmented generation (RAG): structured retrieval for AI agents](/images/site-mirror/3c27c68bf8a56649c9310dd64982b7bfab509bd0-2400x1256.webp)
 
 A user asks your support agent: "is the slow-sync bug from my last ticket fixed in the version you told me to upgrade to?" Answering means connecting three documents: the customer's earlier ticket, the new release notes, and the engineering issue the fix was tied to. Your [vector search](https://university.redis.io/course/1npvvtfft2agew) returns ten chunks that all sound relevant, but none of them answer the question. If you've built a retrieval-augmented generation (RAG) pipeline, you've probably watched this happen: the answer is spread across separate documents, and nearest-neighbor search hands the model semantically similar text without ever connecting those facts.
 

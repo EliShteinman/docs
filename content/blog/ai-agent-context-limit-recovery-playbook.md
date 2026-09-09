@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 15 June 2026 · updated 17 June 2026*
 
-![Your agent hit the context limit: a six-step recovery playbook](/images/blog/3799b0c8735fe5bc78a6aa47d4887367681c48f1-2400x1256.webp)
+![Your agent hit the context limit: a six-step recovery playbook](/images/site-mirror/3799b0c8735fe5bc78a6aa47d4887367681c48f1-2400x1256.webp)
 
 Your agent was humming along, then it stopped mid-task and declared the job done when it wasn't. One common cause is the AI context limit, a hard ceiling on how many tokens a model can hold in its working memory at once. The frustrating part: this often isn't a model problem you can prompt your way out of. It's an architecture problem.
 

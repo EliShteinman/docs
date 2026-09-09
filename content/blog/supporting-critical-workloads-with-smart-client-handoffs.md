@@ -14,7 +14,7 @@ hidden: true
 
 *By Mirko Ortensi, Sr. Product Manager, Products · Published 2 December 2025 · updated 5 January 2026*
 
-![Redis title card ](/images/blog/ff8c864fb67e16fb977e98f342411eec3c8bdd02-1200x628.webp)
+![Redis title card ](/images/site-mirror/ff8c864fb67e16fb977e98f342411eec3c8bdd02-1200x628.webp)
 
 Planned software maintenance shouldn’t break apps. That’s the simple idea behind Redis Software’s and Redis Cloud’s new **smart client handoffs** feature—a capability that keeps apps online during scheduled upgrades. It coordinates connectivity and timeouts directly from the official Redis client libraries, so your apps continue running even while maintenance operations are in progress.
 
@@ -28,7 +28,7 @@ Normally, client libraries must handle these disruptions by building in resilien
 
 With smart client handoffs, Redis shifts that burden away from your apps. Redis' official client libraries understand the phases of a maintenance operation (e.g., [cluster](https://redis.io/docs/latest/operate/rs/installing-upgrading/upgrading/upgrade-cluster/) or database version upgrades, shard [migrations](https://redis.io/docs/latest/operate/rs/references/rest-api/requests/shards/actions/migrate/), or [failovers](https://redis.io/docs/latest/operate/rs/references/rest-api/requests/shards/actions/failover/)), and proactively reconnect to the correct endpoints, while adjusting timeouts as the transition completes. All this happens transparently to your app.
 
-![Redis](/images/blog/f657eeaae9c12560d7cdde5911628a2846d9c25a-1951x1097.webp)
+![Redis](/images/site-mirror/f657eeaae9c12560d7cdde5911628a2846d9c25a-1951x1097.webp)
 
 The feature introduces two coordinated behaviors in official Redis client libraries:
 

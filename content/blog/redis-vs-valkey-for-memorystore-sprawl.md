@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 12 March 2026 · updated 13 March 2026*
 
-![Redis vs Valkey for Memorystore sprawl & resource efficiency](/images/blog/ec36cec19d94f9ae7950d52a1e9aa0886472c987-1200x628.webp)
+![Redis vs Valkey for Memorystore sprawl & resource efficiency](/images/site-mirror/ec36cec19d94f9ae7950d52a1e9aa0886472c987-1200x628.webp)
 
 ## The problem of Memorystore & Valkey sprawl
 
@@ -45,7 +45,7 @@ Redis was designed to solve this problem. Instead of requiring one cluster per w
 - More efficient infrastructure usage
 - [Multi-tenancy](/blog/multi-tenancy-redis-enterprise/) with strong isolation at the database level
 
-![Redis vs Valkey for Memorystore sprawl & resource efficiency](/images/blog/d6a0c81c1569e111a74f86f54088789b79e08a97-2560x1440.webp)
+![Redis vs Valkey for Memorystore sprawl & resource efficiency](/images/site-mirror/d6a0c81c1569e111a74f86f54088789b79e08a97-2560x1440.webp)
 
 ## Risks of Google Cloud Memorystore’s Redis to Valkey shift
 

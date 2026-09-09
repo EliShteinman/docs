@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 April 2026*
 
-![Redis](/images/blog/a7cd51d27f21f7a352c619c97b9d2c3896badba5-1200x628.webp)
+![Redis](/images/site-mirror/a7cd51d27f21f7a352c619c97b9d2c3896badba5-1200x628.webp)
 
 If your pages feel sluggish, Time to First Byte (TTFB) is often where to look first. TTFB measures how long the browser waits before the server sends anything back. That wait sits at the front of the loading chain: before rendering, before subresource discovery, before Largest Contentful Paint (LCP) can even begin. LCP tracks when the largest visible element on a page finishes rendering, and it can't start until that first byte arrives. A slow TTFB delays every metric that follows. This guide covers what TTFB measures, how to test it, what causes it to spike, and which fixes move the needle.
 

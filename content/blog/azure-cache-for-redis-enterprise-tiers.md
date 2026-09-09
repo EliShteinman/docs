@@ -14,7 +14,7 @@ hidden: true
 
 *By Shreya Verma, Principal Product Manager · Published 26 April 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c437db9e496faa71e5fafa57c58fa6b81afa5a62-772x550.webp)
+![Blog tile image](/images/site-mirror/c437db9e496faa71e5fafa57c58fa6b81afa5a62-772x550.webp)
 
 **As applications encounter rising data volumes and user counts, developers can struggle to scale their databases and maintain security. Database scaling can be a complex operation. When you get it wrong, the result is downtime or service disruption, resulting in frustration for end users, embarrassment for the tech staff, and loss for the business.**
 
@@ -34,13 +34,17 @@ With Redis Enterprise software, you can scale up by moving your database to a la
 
 If you intend to scale a database, we recommend scaling-up to a higher cache type on Azure Cache for Redis Enterprise before you start to scale-out. With a larger cache, you get more memory and compute power. Unlike Redis Open Source, Redis Enterprise software uses the additional compute power to give an optimized shard placement for the database, which results in better overall performance and throughput.
 
-![microsoft azure and redis enterprise instance capacity illustrations](/images/blog/1676fbe845c2ede3e7b12ed6e1f0b8acecefe713-872x752.webp)
+![microsoft azure and redis enterprise instance capacity illustrations](/images/site-mirror/1676fbe845c2ede3e7b12ed6e1f0b8acecefe713-872x752.webp)
+
+*When you scale-up from E10 (capacity 2) to E100 (capacity 2), the database moves to a larger VM and adds shards. Redis Enterprise software uses the additional compute power on the larger VM to optimize shard placement for the database.*
 
 ### Scaling-out
 
 Scaling-out refers to adding nodes to the cluster followed by rebalancing, resharding, and then reoptimizing the shard placement within the database. This is useful if you are already using a larger cache type and need more physical resources to scale the database.
 
-![diagram of microsoft azure and redis enterprise instance capacities](/images/blog/15cb60f6528ab18f7dbc657ae5215ac044f5c85b-440x260.webp)
+![diagram of microsoft azure and redis enterprise instance capacities](/images/site-mirror/15cb60f6528ab18f7dbc657ae5215ac044f5c85b-440x260.webp)
+
+*This is the result when you scale-out from capacity 2 to capacity 4 on the E10 SKU. This adds nodes to the database.*
 
 Microsoft offers documentation on how to scale-up or scale-out on Azure Cache for Redis Enterprise tiers. As it explains, the scaling feature is available in preview.
 

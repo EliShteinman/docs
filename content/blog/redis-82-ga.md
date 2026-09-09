@@ -16,7 +16,7 @@ hidden: true
 
 *By Lior Kogan, Paulo Sousa, Moti Cohen · Published 8 August 2025 · updated 1 June 2026*
 
-![Redis 8.2 in Redis Open Source is GA and brings more performance, efficiency, and new commands](/images/blog/32002e84e88239d1d44bcd732c7c24bb696358e7-772x552.webp)
+![Redis 8.2 in Redis Open Source is GA and brings more performance, efficiency, and new commands](/images/site-mirror/32002e84e88239d1d44bcd732c7c24bb696358e7-772x552.webp)
 
 We’re excited to announce the general availability release of Redis 8.2 in Redis Open Source, building on the momentum of Redis 8 with faster performance, more memory optimizations, and developer-friendly enhancements that make Redis even better at what it does best–making data real time for AI agents & apps.
 
@@ -30,7 +30,7 @@ This release also simplifies your development workflows with new streams data st
 
 We've optimized over 70 commands in Redis 8.2 to run faster than in Redis 8.0. The BITCOUNT command now runs 35% faster, while list operations like LINSERT, LREM, and LPOS see more than 25% latency reduction each. An additional 17 commands show more than 5% improvement, and 52 more commands demonstrate over 2% latency reduction.
 
-![Redis 8.2 Comparison Chart](/images/blog/414d2351fc68b4e7f24fd24d2bd478e0af4b8eef-1530x954.webp)
+![Redis 8.2 Comparison Chart](/images/site-mirror/414d2351fc68b4e7f24fd24d2bd478e0af4b8eef-1530x954.webp)
 
 These aren't just numbers—they translate to real-world performance gains for the vast majority of use cases.
 
@@ -38,7 +38,7 @@ These aren't just numbers—they translate to real-world performance gains for t
 
 Building on our I/O threading capability, we've further reimagined how Redis handles concurrent operations. With 8 I/O threads enabled, Redis 8.2 achieves up to 49% throughput improvement compared to Redis 8.0 for a typical caching workload ratio of 20% writes and 80% reads.
 
-![Up to 49% more throughput to exceed 1M opssec](/images/blog/a6e4d5b78377a7157577097fee909333750e963d-1600x995.webp)
+![Up to 49% more throughput to exceed 1M opssec](/images/site-mirror/a6e4d5b78377a7157577097fee909333750e963d-1600x995.webp)
 
 We're exceeding 1 million operations per second on a single Redis 8.2 instance for mixed write and read workloads—a milestone that showcases how far we've pushed the boundaries of in-memory performance.
 
@@ -48,7 +48,7 @@ Redis 8.2 introduces a fundamental change to how we store key-value data. We now
 
 Instead of maintaining separate pointers for keys, values, and TTLs, Redis now uses a single pointer to the unified kvobj from both the values and TTL hash tables. For hash slots with a single key, we can even avoid allocating an entry entirely.
 
-![Before 8.2 & Release 8.2](/images/blog/3d788e41b23117f8a4a2b26d2fb813dc2d8f8e71-1033x427.webp)
+![Before 8.2 & Release 8.2](/images/site-mirror/3d788e41b23117f8a4a2b26d2fb813dc2d8f8e71-1033x427.webp)
 
 This architectural change from multiple to single memory allocation per key delivers 25% to 37% memory reduction for short strings along with:
 

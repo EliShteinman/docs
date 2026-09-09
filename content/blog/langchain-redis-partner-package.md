@@ -14,7 +14,7 @@ hidden: true
 
 *By Brian Sam-Bodden, Principal Applied AI Engineer · Published 11 September 2024 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/987201315c1d3724d9c52a12121b972b3a9c29f6-772x552.webp)
+![Blog tile image](/images/site-mirror/987201315c1d3724d9c52a12121b972b3a9c29f6-772x552.webp)
 
 Introducing [langchain-redis](https://github.com/langchain-ai/langchain-redis), our new partner package integrating Redis capabilities with the LangChain ecosystem. This collaboration gives developers the tools they need to build fast AI apps, especially those powered by Retrieval Augmented Generation (RAG).
 

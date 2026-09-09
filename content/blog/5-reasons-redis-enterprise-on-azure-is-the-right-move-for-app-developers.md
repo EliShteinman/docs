@@ -14,7 +14,7 @@ hidden: true
 
 *By DaShaun Carter, Partner Solution Architect · Published 31 March 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2327a52741cbbb9eb4a664adab08c67cd6da5870-386x260.webp)
+![Blog tile image](/images/site-mirror/2327a52741cbbb9eb4a664adab08c67cd6da5870-386x260.webp)
 
 The [Azure Cache for Redis Enterprise tiers](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/garantiadata.redis_enterprise_1sp_public_preview?ocid=redisga_mktg_blog_5reasons_cta1) are now released for general availability, and that’s great news for app developers. It brings together the advanced performance, high availability, and extended data structure functionality of Redis Enterprise with Azure’s global presence, flexibility, security, and compliance in an incredible tool for developers.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Martin Forstner, Solution Architect · Published 24 November 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/05ab753c22c0e8a39798f318e8ea5d39427d1f04-1440x738.webp)
+![Blog tile image](/images/site-mirror/05ab753c22c0e8a39798f318e8ea5d39427d1f04-1440x738.webp)
 
 Back in 2019, I wrote about how to [create an event store in Redis](/blog/use-redis-event-store-communication-microservices/). I explained that Redis Streams are a good fit for an event store, because they let you store events in an immutable append-only mechanism like a transaction log. Now, with an update of the sample OrderShop application introduced in that blog, I’m going to demonstrate how to [use Redis as a message queue](/solutions/messaging/), further demonstrating Redis Enterprise’s many use cases [beyond caching](/blog/goodbye-cache-redis-as-a-primary-database/).
 

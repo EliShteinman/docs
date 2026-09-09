@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike  Moss , SVP, Worldwide Channels & Alliances · Published 26 January 2026 · updated 1 June 2026*
 
-![Redis-on-AWS](/images/blog/54b7d2b7c0497b605485dba64638b8dfc384ce94-1200x628.webp)
+![Redis-on-AWS](/images/site-mirror/54b7d2b7c0497b605485dba64638b8dfc384ce94-1200x628.webp)
 
 Businesses in every industry are quickly using generative AI to power chatbots, copilots, automation, customer experiences, and smart apps. But when teams move from experiments to real production workloads, the same issues show up every time:
 
@@ -81,7 +81,7 @@ Want to use RDI in AWS? [Join the public preview.](https://redis.io/data-integra
 
 Below is the high-level reference architecture showing how AWS and Redis components work together:
 
-![Redis](/images/blog/3c901795ecf8742ecd1ad620fcfff583a5993c60-1047x599.webp)
+![Redis](/images/site-mirror/3c901795ecf8742ecd1ad620fcfff583a5993c60-1047x599.webp)
 
 ## Enabling scalable AI apps on AWS
 

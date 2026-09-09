@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 26 September 2025*
 
-![Redis](/images/blog/d3f247dba74c3042fbdb0cd1e1011ec53af71f47-772x552.webp)
+![Redis](/images/site-mirror/d3f247dba74c3042fbdb0cd1e1011ec53af71f47-772x552.webp)
 
 Today, most organizations aren’t just in the cloud. They’re in more than one. Sometimes that’s a strategic decision. Other times, it’s the result of mergers, customer requirements, or regulations. Whatever the reason, building real-time apps across cloud boundaries adds complexity.
 

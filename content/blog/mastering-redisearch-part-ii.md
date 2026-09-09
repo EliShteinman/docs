@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 7 December 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d5aae5e828916206e497a5d3802c021bf8c5a232-300x237.webp)
+![Blog tile image](/images/site-mirror/d5aae5e828916206e497a5d3802c021bf8c5a232-300x237.webp)
 
 ## Abstracting RediSearch
 

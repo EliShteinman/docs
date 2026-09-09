@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 25 April 2019 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/8839e39d3d641c5a8ce7ef2468e3fe863a5572ce-2000x887.webp)
+![Blog tile image](/images/site-mirror/8839e39d3d641c5a8ce7ef2468e3fe863a5572ce-2000x887.webp)
 
 Redis Day New York is fast approaching (June 27th – get your tickets NOW). This will be a new event for New York, but not a new event for us. We’ve done it three times in Tel Aviv, once in London and now we’re adding New York. The Redis Day format is fairly unique and very different from RedisConf. At RedisDay, we have a single track, short talks and (generally) we don’t have a public Q&A time per session. What does that mean? A few things:
 

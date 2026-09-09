@@ -14,7 +14,7 @@ hidden: true
 
 *By Vick Kelkar, Principal Product Manager · Published 10 December 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/32ee5db9cd1fd9039f0e358217b6aa816272c948-1200x1000.webp)
+![Blog tile image](/images/site-mirror/32ee5db9cd1fd9039f0e358217b6aa816272c948-1200x1000.webp)
 
 This December, Redis — the company behind Redis — is headed to [KubeCon and CloudNativeCon](https://events.linuxfoundation.org/events/kubecon-cloudnativecon-north-america-2018/) in Seattle. [Redis](/community/oss-projects/) is a NoSQL in-memory database and is known for its simplicity and efficient performance. Furthermore, Redis is also the most popular database on Stackoverflow and has surpassed one [billion container](/blog/redis-enters-billion-downloads-club/) downloads on Docker Hub. While in Seattle, our team will be showcasing the work that makes [Redis Enterprise](/redis-enterprise/) containers a great choice for developing containerized, stateful microservices on a cloud native platform like Kubernetes.
 
@@ -28,6 +28,6 @@ Redis Enterprise is an excellent choice of database for your microservices. It s
 1. Auto-bootstrapping multi-node Redis Enterprise clusters using Kubernetes secrets.
 1. Maintaining and upgrading Redis Enterprise using rolling upgrades.
 
-![Redis Enterprise Headless Service](/images/blog/8b4f2e10667ad9fd8a8700dd68ed977ba8034387-1687x848.webp)
+![Redis Enterprise Headless Service](/images/site-mirror/8b4f2e10667ad9fd8a8700dd68ed977ba8034387-1687x848.webp)
 
 Come to the Redis booth at KubeCon and CloudNativeCon to hear about new features of Redis, like the [Redis Streams](/blog/use-redis-streams-apps/) data structure, or how you can extend the functionality of Redis using modules like [RediSearch](/blog/mastering-redisearch-part/) and [RedisGraph](/blog/announcing-redis-enterprise-release-redisgraph-streams-redis-5-0-popular-redis-java-python-clients/). If you would like to learn how your business can run Redis Enterprise on Kubernetes and/or OpenShift cluster, please don’t hesitate to stop by our booth! If you would like to start experimenting with our Redis Enterprise release for cloud native platforms, please [contact us](/meeting/).

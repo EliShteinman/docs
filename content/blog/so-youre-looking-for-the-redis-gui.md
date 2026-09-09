@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 11 September 2014 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![RedisInsight](/images/blog/ee932eea0bdbb68bb1d8ca8fdbac4c4ed514e983-120x120.svg)
+![RedisInsight](/images/site-mirror/ee932eea0bdbb68bb1d8ca8fdbac4c4ed514e983-120x120.svg)
 
 ### RedisInsight
 
@@ -24,7 +24,7 @@ hidden: true
 
 ---
 
-![](/images/blog/57c334d5218119cde4c7c946c2ae2f76ed43e319-635x200.webp)
+![](/images/site-mirror/57c334d5218119cde4c7c946c2ae2f76ed43e319-635x200.webp)
 
 It all comes down to preferences. While there are Redis users who are familiar with the Redis command line interface (CLI) and rely on it to inspect, visualize and perform manual updates, there are those who prefer to using a Graphical User Interface (GUI) to achieve that. There are several Redis GUIs available, for different platforms, and in this article I’ll try to review a few of them.
 
@@ -32,7 +32,7 @@ It all comes down to preferences. While there are Redis users who are familiar w
 
 ## Redsmin: My Go-To-Tool for the Cloud (and Below)
 
-![](/images/blog/ad1247f6bfde4120e6e9eee7c0ddd26a0670f393-635x227.webp)
+![](/images/site-mirror/ad1247f6bfde4120e6e9eee7c0ddd26a0670f393-635x227.webp)
 
 [https://redsmin.com/](https://redsmin.com/)
 
@@ -46,7 +46,7 @@ Redsmin has plenty of extra features, such as slowlog inspection, a list of curr
 
 ## Redis Commander: A Free Node.js Powerful Choice
 
-![](/images/blog/da8ae4a637ff33772abf626343a20dd0b55aabfb-635x505.webp)
+![](/images/site-mirror/da8ae4a637ff33772abf626343a20dd0b55aabfb-635x505.webp)
 
 [https://www.npmjs.org/package/redis-commander](https://www.npmjs.org/package/redis-commander)
 
@@ -62,7 +62,7 @@ Redis Commander does require direct access to your Redis servers, but you can ge
 
 ## Redis Desktop Manager: Cross-Platform, Pure Desktop GUI
 
-![](/images/blog/7954183c38fac72ee39229736346f0928c56ff49-1085x678.webp)
+![](/images/site-mirror/7954183c38fac72ee39229736346f0928c56ff49-1085x678.webp)
 
 [https://redisdesktop.com/](https://resp.app/)
 
@@ -92,7 +92,7 @@ The alpha version is free available under an open source license.
 
 ## redis-browser: The Runner Up
 
-![](/images/blog/f05dacca586ac70d79162a865e28f45dd502847e-635x343.webp)
+![](/images/site-mirror/f05dacca586ac70d79162a865e28f45dd502847e-635x343.webp)
 
 [https://github.com/humante/redis-browser](https://github.com/humante/redis-browser)
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 6 February 2026*
 
-![Redis](/images/blog/8b85e0c83b9c9c6fdad38ce79bfd76bba23f8fa6-1200x628.webp)
+![Redis](/images/site-mirror/8b85e0c83b9c9c6fdad38ce79bfd76bba23f8fa6-1200x628.webp)
 
 You've built a fintech app with impressive features: instant payment processing, AI-powered fraud detection with real-time pattern recognition, millisecond-level risk scoring, and AI-driven personalization. Your product roadmap looks solid and your features check every box.
 

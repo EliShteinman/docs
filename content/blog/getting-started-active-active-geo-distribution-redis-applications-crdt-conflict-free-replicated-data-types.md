@@ -15,7 +15,7 @@ hidden: true
 
 *By Cihan B · Published 4 October 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/596c3ea19d4b8cf4dd61486448533bdce983c8a3-885x641.webp)
+![Blog tile image](/images/site-mirror/596c3ea19d4b8cf4dd61486448533bdce983c8a3-885x641.webp)
 
 This content was written prior to a change in Redis’ naming convention – Redis Enterprise is now the moniker for all our products.
 
@@ -61,11 +61,11 @@ For cluster 1, direct your browser to https://localhost:8443 on the host machine
 
 *Note: Depending on your browser, you may see a certificate error. Simply choose continue to the website to get to the setup screen.*
 
-![](/images/blog/1cf52a942bb782cd639c0c56fffb8ecc908061a3-2000x1125.webp)
+![](/images/site-mirror/1cf52a942bb782cd639c0c56fffb8ecc908061a3-2000x1125.webp)
 
 On the node configuration page, select your default settings and provide a cluster **FQDN**: *cluster1.local*. Then simply click the Next button.
 
-![](/images/blog/c70b5a522f6483fd1a1bef034938d19359300f1f-2000x1125.webp)
+![](/images/site-mirror/c70b5a522f6483fd1a1bef034938d19359300f1f-2000x1125.webp)
 
 #### 
 
@@ -73,7 +73,7 @@ If you don’t have a license key, click the Next button to try the trial versio
 
 On the next screen, set up a Cluster Administrator account using an email for the login and a password.
 
-![](/images/blog/d1748e4704f5bc7f82390cfb5075f01dc9bb2675-2000x1125.webp)
+![](/images/site-mirror/d1748e4704f5bc7f82390cfb5075f01dc9bb2675-2000x1125.webp)
 
 You are done on cluster1.local.
 
@@ -95,11 +95,11 @@ Before you issue the call below, place the ***<admin-email>*** and ***<admin-pas
 
 Under the databases tab, choose the Redis database with deployment type set to Geo-Distributed.
 
-![](/images/blog/dceb7bbe1aece1d9dc41b7a820581acad549ad3f-600x608.webp)
+![](/images/site-mirror/dceb7bbe1aece1d9dc41b7a820581acad549ad3f-600x608.webp)
 
 On the create database page, click the **show advanced option** link and enter **database1** for the database name and **12000** for the endpoint port number. Make sure to add both **http://cluster1.local:8080** and **http://cluster2.local:8080** to the participating cluster list.
 
-![](/images/blog/c70e0fe9544301104aceddb43f395c196b2a4f98-1000x611.webp)
+![](/images/site-mirror/c70e0fe9544301104aceddb43f395c196b2a4f98-1000x611.webp)
 
 Once you activate the database, you will have CRDB instances on each participating cluster that you can connect to.
 
@@ -144,7 +144,7 @@ You now have a working CRDB deployment. Lets see how CRDBs simplify development 
 
 Here is a simple test. Lets see how INCR on k1 across 2 CRDB Instances on cluster1 and cluster2 sync to ensure an accurate final value. t1 to t5 represents the order of events. operations under cluster1.local is performed on rp1 container and operations under cluster2.local are performed on rp2 container.
 
-![](/images/blog/a518770d0fd0e071529f5c4056878d0bf142133f-1363x647.webp)
+![](/images/site-mirror/a518770d0fd0e071529f5c4056878d0bf142133f-1363x647.webp)
 
 **Simulating network failures: **Sync between the clusters happen fast. For some of the advanced testing, you will also find simulating network failures between cluster1 and cluster2 so you can observe how CRDTs in each data type work.
 
@@ -171,6 +171,6 @@ docker exec --privileged rp2 iptables -F
 
 Here is another one to try. This time we will simulate a network failure in between operations to observe the issues. In this case, we’ll see how a Redis SET works with CRDTs. we’ll create the set and let it sync across clusters. We’ll break the network and privately add a new distinct member to the SET in each cluster. Once the communication is restored, you will see how CRDTs resolve the conflicting write and union both sets.
 
-![](/images/blog/ace43ebb75b9f1d27697418fbc2030f0a3bd75bc-1406x812.webp)
+![](/images/site-mirror/ace43ebb75b9f1d27697418fbc2030f0a3bd75bc-1406x812.webp)
 
 We just scratched the surface of the CRDTs in Redis. You can sign up for the private preview to get more details and documentation on the capabilities. Simply follow the instructions [here](/blog/announcing-private-preview-program-upcoming-redis-enterprise-pack-5-0/).

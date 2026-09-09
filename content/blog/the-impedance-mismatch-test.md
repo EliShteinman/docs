@@ -16,7 +16,7 @@ hidden: true
 
 *By Raja Rao, Head of Growth Marketing · Published 6 August 2021 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/7a47106f52277bb053ee89c78a5d523a41054648-772x520.webp)
+![Blog tile image](/images/site-mirror/7a47106f52277bb053ee89c78a5d523a41054648-772x520.webp)
 
 *“Simplicity is the ultimate sophistication”*—Leonardo da Vinci
 
@@ -74,7 +74,7 @@ The way the test works is to simply calculate the “transformational overhead�
 
 Here is the formula to calculate IMS:
 
-![](/images/blog/261de2a3e70b738e836c9263e970f14e48ee0b62-446x41.webp)
+![](/images/site-mirror/261de2a3e70b738e836c9263e970f14e48ee0b62-446x41.webp)
 
 The formula simply adds both types of overheads and then divides them by the number of features. This way, you’ll get the total overhead/feature (i.e. complexity score).
 
@@ -86,7 +86,7 @@ Say you are getting millions of button-click events from mobile devices and you 
 
 Case 1: Say you just used a RDBMS to store these events, although the tables might not fit.
 
-![](/images/blog/7890473770e649164503df7c8e9a4fc883bf38e6-1024x381.webp)
+![](/images/site-mirror/7890473770e649164503df7c8e9a4fc883bf38e6-1024x381.webp)
 
 1. Transformational overhead = 1
   1. You need to transform event streams into tables.
@@ -94,11 +94,11 @@ Case 1: Say you just used a RDBMS to store these events, although the tables mig
   1. You have a single DB in your pipeline.
 1. Number of features = 1
 
-![](/images/blog/9f8baaad8177c16684ef0ba3002a0651848a62e8-628x103.webp)
+![](/images/site-mirror/9f8baaad8177c16684ef0ba3002a0651848a62e8-628x103.webp)
 
 Case 2: Say you used Kafka to process these events and then stored them into the RDBMS.
 
-![](/images/blog/9f53009dc45fdc1bc54a5ccafacdc9b135d80dbc-1024x416.webp)
+![](/images/site-mirror/9f53009dc45fdc1bc54a5ccafacdc9b135d80dbc-1024x416.webp)
 
 1. Transformational overhead = 1
   1. Kafka can easily handle click streams; however, Kafka to RDBMS is an overhead.
@@ -106,11 +106,11 @@ Case 2: Say you used Kafka to process these events and then stored them into the
   1. You have two systems (RDBMS and Kafka). Note that we are ignoring Zookeeper.
 1. Number of features = 1
 
-![](/images/blog/1e0a198614c083410b22f6a7bbf7c093aff40cdb-482x87.webp)
+![](/images/site-mirror/1e0a198614c083410b22f6a7bbf7c093aff40cdb-482x87.webp)
 
 Case 3: Say you used Kafka to process these events and then stored them into KsqlDB.
 
-![](/images/blog/024e054f8b3a871405565b72e81991a9e30fd0e2-1024x324.webp)
+![](/images/site-mirror/024e054f8b3a871405565b72e81991a9e30fd0e2-1024x324.webp)
 
 1. Transformational overhead = 0
   1. Kafka can easily handle click streams
@@ -118,11 +118,11 @@ Case 3: Say you used Kafka to process these events and then stored them into Ksq
   1. You have just one system ( Kafka + KSqlDB). Note that we are ignoring Zookeeper.
 1. Number of features = 1
 
-![](/images/blog/1ea791f765626792d2c225b3ffb41c8f793101b1-476x86.webp)
+![](/images/site-mirror/1ea791f765626792d2c225b3ffb41c8f793101b1-476x86.webp)
 
 Case 4: Say you used [Redis Streams](https://bit.ly/2TkPyZN) to process these events and then stored them into RedisTimeseries (both are part of Redis and work natively with Redis).
 
-![](/images/blog/5c22b9b211db258402bcb58c520855bd2ffeee0e-1024x347.webp)
+![](/images/site-mirror/5c22b9b211db258402bcb58c520855bd2ffeee0e-1024x347.webp)
 
 1. Transformational overhead = 0
   1. Redis Streams can easily handle click streams
@@ -130,7 +130,7 @@ Case 4: Say you used [Redis Streams](https://bit.ly/2TkPyZN) to process these ev
   1. You have just one system (Redis Streams + RedisTimeSeries)
 1. Number of features = 1
 
-![](/images/blog/1ea791f765626792d2c225b3ffb41c8f793101b1-476x86.webp)
+![](/images/site-mirror/1ea791f765626792d2c225b3ffb41c8f793101b1-476x86.webp)
 
 ### Conclusion after Phase 1:
 
@@ -144,7 +144,7 @@ Let’s say you are building the same app but want to make sure they come from o
 
 Case 1: Say you just used RDBMS to store these events, although the tables might not fit and they used Redis or MemCached for IP-whitelisting.
 
-![](/images/blog/2930462719a8a3737a47cd1595c5e9a388fbbed6-1024x582.webp)
+![](/images/site-mirror/2930462719a8a3737a47cd1595c5e9a388fbbed6-1024x582.webp)
 
 1. Transformational overhead = 1
   1. For IP-whitelisting, you don’t need any transformation. However, you need to transform event streams into tables
@@ -152,11 +152,11 @@ Case 1: Say you just used RDBMS to store these events, although the tables might
   1. You have Redis + RDBMS
 1. Number of features = 2
 
-![](/images/blog/94986d136215124fe04f203e9f4de1f715631d9d-602x92.webp)
+![](/images/site-mirror/94986d136215124fe04f203e9f4de1f715631d9d-602x92.webp)
 
 Case 2: Say you are using Redis + Kafka + RDBMS.
 
-![](/images/blog/323798aca24d86027d43d3ea2b25d403995dae25-1024x568.webp)
+![](/images/site-mirror/323798aca24d86027d43d3ea2b25d403995dae25-1024x568.webp)
 
 1. Transformational overhead = 1
   1. For IP-whitelisting, you don’t need any transformation. Also, Kafka can easily handle streams.
@@ -164,11 +164,11 @@ Case 2: Say you are using Redis + Kafka + RDBMS.
   1. You have Redis + Kafka + RDBMS. Note: We are ignoring that Kafka also needs Zookeeper. If you add that, the number will go down further.
 1. Number of features = 2
 
-![](/images/blog/6db999c64f156466e38ba2ed99251b5867725e91-538x82.webp)
+![](/images/site-mirror/6db999c64f156466e38ba2ed99251b5867725e91-538x82.webp)
 
 Case 3: Say you are using Redis + Kafka + KsqlDB.
 
-![](/images/blog/5b057db94d212a00bdf99e047c807256addf9c02-1024x612.webp)
+![](/images/site-mirror/5b057db94d212a00bdf99e047c807256addf9c02-1024x612.webp)
 
 1. Transformational overhead = 0
   1. For IP-whitelisting, you don’t need any transformation. Also, Kafka and KsqlDB can easily handle streams.
@@ -176,11 +176,11 @@ Case 3: Say you are using Redis + Kafka + KsqlDB.
   1. You have Redis + (Kafka + KsqlDB). Note: In this case, we are considering Kafka + KsqlDB part of the same system.
 1. Number of features = 2
 
-![](/images/blog/d140a5ba7b9b322cc71a0951ed0e4a55c36fe750-550x84.webp)
+![](/images/site-mirror/d140a5ba7b9b322cc71a0951ed0e4a55c36fe750-550x84.webp)
 
 Case 4: Say you are using Redis + Redis Streams + RedisTimeSeries.
 
-![](/images/blog/bcdc66856509c458382f4dac6abb172121c4ceec-1024x424.webp)
+![](/images/site-mirror/bcdc66856509c458382f4dac6abb172121c4ceec-1024x424.webp)
 
 1. Transformational overhead = 0
   1. For IP-whitelisting, you don’t need any transformation. Also, Redis Streams and RedisTimeseries can easily handle streams and alerts.
@@ -188,7 +188,7 @@ Case 4: Say you are using Redis + Redis Streams + RedisTimeSeries.
   1. You have Redis + Redis Streams + Redis TimeSeries. Note: In this case, all three are part of the same system.
 1. Number of features = 2
 
-![](/images/blog/fc6625719db010c3209236e6cc9bddfbc1cba669-599x91.webp)
+![](/images/site-mirror/fc6625719db010c3209236e6cc9bddfbc1cba669-599x91.webp)
 
 ### Conclusion after Phase 2:
 
@@ -218,11 +218,11 @@ Here is how you use it:
 
 **Data Pipeline 1**
 
-![](/images/blog/204f3765d9f2f43bcfa741e6b2feaf402f8efb95-694x394.webp)
+![](/images/site-mirror/204f3765d9f2f43bcfa741e6b2feaf402f8efb95-694x394.webp)
 
 **Data Pipeline 2**
 
-![](/images/blog/5893863012cd844c4bcb3b27f2b59d9da1088538-689x394.webp)
+![](/images/site-mirror/5893863012cd844c4bcb3b27f2b59d9da1088538-689x394.webp)
 
 ## Summary
 

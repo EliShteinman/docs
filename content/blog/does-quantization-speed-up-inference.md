@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 5 July 2026 · updated 14 July 2026*
 
-![Does quantization speed up inference?](/images/blog/73ac8c8b3d052f47b5a36f0870ff3907d9a64d2d-2400x1256.webp)
+![Does quantization speed up inference?](/images/site-mirror/73ac8c8b3d052f47b5a36f0870ff3907d9a64d2d-2400x1256.webp)
 
 Running a large language model isn't cheap. Every response burns GPU time, memory, and money, and those costs grow as your app grows. Quantization is one of the most common tricks for making models cheaper and faster to run, which is why you'll see it come up in almost any conversation about AI infrastructure costs.
 

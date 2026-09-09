@@ -15,9 +15,9 @@ hidden: true
 
 *By Jay Johnson · Published 6 April 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a6d23a5672ca252a317a739da64b3bb24f31cf3e-435x589.webp)
+![Blog tile image](/images/site-mirror/a6d23a5672ca252a317a739da64b3bb24f31cf3e-435x589.webp)
 
-![](/images/blog/a6d23a5672ca252a317a739da64b3bb24f31cf3e-435x589.webp)
+![](/images/site-mirror/a6d23a5672ca252a317a739da64b3bb24f31cf3e-435x589.webp)
 
 ###### Utilizing a machine learning API to create a scalable model artifact pipeline
 
@@ -39,7 +39,7 @@ We wanted to share how to automate these common steps within a machine learning 
 
 Here is the workflow for using a machine learning data store powered by Redis and an S3 artifact backbone:
 
-![](/images/blog/8715f21681c54c5aa0660d29588f4159e4ca2e7d-845x747.webp)
+![](/images/site-mirror/8715f21681c54c5aa0660d29588f4159e4ca2e7d-845x747.webp)
 
 
 This workflow is built to help find highly predictive models because it uses an API that can scale out expensive tasks (like building, learning, training and testing models) and natively manages machine learning models with Redis caching with an S3 backbone for archiving. Just like DevOps in the enterprise software world, automating build workflows enables your organization to focus on stuff that matters like: finding the most predictive models, defining quality datasets, and testing newly engineered features.

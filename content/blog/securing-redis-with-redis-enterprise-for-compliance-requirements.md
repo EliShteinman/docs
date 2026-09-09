@@ -15,7 +15,7 @@ hidden: true
 
 *By Cihan B · Published 10 January 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 ## Redis Enterprise for Compliance Requirements
 
@@ -37,7 +37,7 @@ One essential improvement that Redis Enterprise brings is the separation of path
 - **Administrative Path:** Administrative access is for performing actions that could change fundamental cluster behavior. Redis Enterprise administrators can change cluster topology, manage databases or change settings of the cluster.
 - **Data Access Path:** Data access is engaged for performing operations on data in a given database.
 
-![](/images/blog/cde7a49d6bc6f219df9d39d71df7e5269f9e5720-1176x374.webp)
+![](/images/site-mirror/cde7a49d6bc6f219df9d39d71df7e5269f9e5720-1176x374.webp)
 
 *Figure: Redis Enterprise architecture showing the separate administration and data access paths.*
 
@@ -46,7 +46,7 @@ With Redis Enterprise, security controls can be divided up into a few main areas
 **Defense in Depth**
 Even though Redis Enterprise provides a great deal of security controls, a fully secured deployment requires considering all attack vectors. To have a full defense against attacks, it is important to go beyond configuring Redis Enterprise security controls and secure the infrastructure itself.
 
-![](/images/blog/9553278378ef31065874b9d4e71fa3774c963da4-2000x1125.webp)
+![](/images/site-mirror/9553278378ef31065874b9d4e71fa3774c963da4-2000x1125.webp)
 
 *Figure: Defensive firewalls at each border between public internet and the cluster internal network create the layers of defense.*
 
@@ -97,13 +97,13 @@ Redis provides the Redis Enterprise platform as a managed service on public clou
 
 - **Redis Enterprise Cloud** runs inside Redis’ compute environment. Customers running RC purchase both compute resources as well as database management services directly from Redis as one service. You can find detailed information about Redis Enterprise Cloud [here](/redis-enterprise-cloud/overview/).
 
-![](/images/blog/5aefc444e80fa1f01a28cebea066bd080b2246d7-1278x424.webp)
+![](/images/site-mirror/5aefc444e80fa1f01a28cebea066bd080b2246d7-1278x424.webp)
 
 *Figure: Redis Cloud deployment model. Redis Enterprise is running under Redis’ cloud account.*
 
 - **Redis Enterprise VPC** runs inside the customer’s cloud compute environment. Customers running REV utilize their own compute resources while getting the full benefits of database management services from Redis. This model helps customers achieve full isolation, simplifying compliance for customers looking to maintain ownership of their own data and infrastructure. Visit Redis to find detailed information about [Redis Enterprise VPC](/redis-enterprise-cloud/).
 
-![](/images/blog/417e9be035b870757879100005cb81f444443b65-1328x416.webp)
+![](/images/site-mirror/417e9be035b870757879100005cb81f444443b65-1328x416.webp)
 
 
 *Figure: Redis Enterprise VPC deployment model. Redis Enterprise is running under the customer’s cloud account.*

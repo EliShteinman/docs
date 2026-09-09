@@ -15,7 +15,7 @@ hidden: true
 
 *By Adi Shtatfeld, Senior Product Manager · Published 12 October 2021 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/7a3f6645d19da96029282cff3157b0daa1481569-772x520.webp)
+![Blog tile image](/images/site-mirror/7a3f6645d19da96029282cff3157b0daa1481569-772x520.webp)
 
 Enterprises today face a fast-changing market where the time-to-market keeps shrinking. This hyper-competitive market requires organizations to implement changes to applications and infrastructure much faster than they did in the past.
 

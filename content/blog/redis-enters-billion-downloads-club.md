@@ -14,7 +14,7 @@ hidden: true
 
 *By Madhukar Kumar, VP of Technical and Product Marketing · Published 26 September 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 If you attended RedisConf earlier this year you may have been mildly surprised to hear – “Redis is Everywhere.” From web applications to mobile apps to IoT devices, Redis is one of those silent but efficient elements of our day-to-day lives that is rarely seen but is present everywhere..
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 13 July 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/f0bb5cc303edaa86e77c556d6c42b34637041960-772x520.webp)
+![Blog tile image](/images/site-mirror/f0bb5cc303edaa86e77c556d6c42b34637041960-772x520.webp)
 
 We’re excited to announce the availability of our most popular modules on [Redis Enterprise Cloud Essentials](/try-free/). Redis Enterprise Cloud Essentials databases are ideal for trying out new projects and can grow with you as you scale your application. Even better, Redis Enterprise Cloud Essentials offers a **free tier for databases up to 30MB**, which can be scaled to higher tiers at minimal cost.
 
@@ -40,7 +40,9 @@ To create a new Redis Enterprise Cloud Essentials subscription:
   1. Enter a name for the subscription
 1. Click **Create**
 
-![](/images/blog/0b68055a53ff943f427ddb599d9baa0b619738e5-1024x908.webp)
+![](/images/site-mirror/0b68055a53ff943f427ddb599d9baa0b619738e5-1024x908.webp)
+
+*How to subscribe to the free tier in Redis Enterprise Cloud Essentials*
 
 **Step 2: Create a database with a module enabled**
 
@@ -50,7 +52,9 @@ After you create a subscription, you can create a database:
 1. Enable the modules and select the module you want to use
 1. Click **Activate**
 
-![](/images/blog/1ecee7cb312342f2db4e26b539bc1be8ed419992-1024x731.webp)
+![](/images/site-mirror/1ecee7cb312342f2db4e26b539bc1be8ed419992-1024x731.webp)
+
+*Creating a database in Redis Enterprise Cloud*
 
 The database is in “Pending” status. When the database is created, you will be able to see the database settings, including:
 
@@ -73,7 +77,9 @@ To get started with the modules, go to the quick-start guide for the module that
 
 RedisInsight is an intuitive and efficient GUI for Redis, letting you interact with your databases and manage your data—with built-in support for most popular Redis modules. RedisInsight makes it easy to interact with your database hosted on Redis Enterprise Cloud Essentials, helping you get started with the rich data structures and providing the appropriate visualizations as well as interactive tools to help you iterate quickly when building your queries. (This is especially helpful when you are not yet familiar with the syntax.)
 
-![](/images/blog/f5c9d4ca5fa905eea50c3b4cb3e2b3aeb2afb2c6-1024x346.webp)
+![](/images/site-mirror/f5c9d4ca5fa905eea50c3b4cb3e2b3aeb2afb2c6-1024x346.webp)
+
+*A look at RedisInsight*
 
 RedisInsight is free and available for Windows, Mac, and Linux:
 

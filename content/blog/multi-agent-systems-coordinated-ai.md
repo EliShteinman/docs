@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 3 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/d4626594072461a39a0c37a9ce1818d93eb7256a-1200x628.webp)
+![Redis](/images/site-mirror/d4626594072461a39a0c37a9ce1818d93eb7256a-1200x628.webp)
 
 Your single AI agent starts a customer support conversation tracking their billing issue. Fifteen turns later, it's forgotten the original problem and is now suggesting solutions for a completely different issue. Or it's analyzing a 50-page security audit, finds three critical vulnerabilities in the first section, then loses track of them by page 30.
 

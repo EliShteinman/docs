@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 February 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/f9fb3a69b8f25b62d72260af87cde4f3ca64cc5d-1200x628.webp)
+![Redis](/images/site-mirror/f9fb3a69b8f25b62d72260af87cde4f3ca64cc5d-1200x628.webp)
 
 Your architecture choice determines your AI agent's cost structure, reliability, and scaling path before you write a single line of code. Single-agent patterns keep things simple with fewer LLM calls per task, but multi-agent systems can [boost performance 81%](https://research.google/blog/towards-a-science-of-scaling-agent-systems-when-and-why-agent-systems-work/) on parallel tasks, or tank it by up to 70% on sequential tasks if you pick wrong.
 

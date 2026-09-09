@@ -14,7 +14,7 @@ hidden: true
 
 *By Miguel Allende, Customer Advocacy Manager · Published 1 February 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4780bfe4b8a21c0e58cc8e9bf836824911c09359-1200x1000.webp)
+![Blog tile image](/images/site-mirror/4780bfe4b8a21c0e58cc8e9bf836824911c09359-1200x1000.webp)
 
 I love my job. As a Customer Advocacy Manager, I get to hear first-hand accounts from the people we impact, including challenges they’ve had to overcome, their innovative implementations and the success they’ve achieved with our product. But working in the customer advocacy field can be volatile. To be frank, the success of my position is largely dependent on the happiness of our customers. Technically, everyone’s job here is dependent on our customers’ success. But my role feels the direct impact, whether positive or negative, of each customer experience. I can’t share a customer’s achievements (a key part of my job) if they haven’t had success with our products.
 

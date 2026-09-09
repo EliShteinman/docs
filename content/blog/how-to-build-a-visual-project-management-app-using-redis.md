@@ -16,7 +16,7 @@ hidden: true
 
 *By Growth Team · Published 27 October 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/199fa2fa348a3e91130683750326fdc9637a3c3a-772x520.webp)
+![Blog tile image](/images/site-mirror/199fa2fa348a3e91130683750326fdc9637a3c3a-772x520.webp)
 
 Task management can be gruelling. For managers, monitoring tasks that are scattered and disconnected from one another remains just as much a norm as a bane in their profession. Being able to instantly understand the progress of projects without having to waste time digging for this information is an invaluable asset to any manager.
 
@@ -54,7 +54,7 @@ From start to finish, the core objective of this application is to make monitori
 
 ## 3. Architecture
 
-![](/images/blog/24d9118801fb9a09ee3c88f7e0902121d9da641b-1024x724.webp)
+![](/images/site-mirror/24d9118801fb9a09ee3c88f7e0902121d9da641b-1024x724.webp)
 
 - The application is conceived as a single Ruby on Rails monolith. The app also stores its data relationally by using PostgreSQL and in a graph using RedisGraph.
 - Administrative data (such as users and projects) are stored relationally, while storage of tasks and the relationships between them is delegated to the graph storage.
@@ -139,7 +139,7 @@ First click on the plus sign on the top left hand side of the screen to create a
 
 Sitting just below the title you’ll see a panel of drop down menus. On the far left you can decide on the nature of the task. In the middle you can set the due date for the task to be completed and on the far right you can assign the task to a specific individual.
 
-![](/images/blog/61105a89dcbc8debe4d4c9b930e0482741cdc1b2-1600x945.webp)
+![](/images/site-mirror/61105a89dcbc8debe4d4c9b930e0482741cdc1b2-1600x945.webp)
 
 ### Creating relationships
 
@@ -149,9 +149,9 @@ To achieve this, first click on a task to get access to its core menu. From here
 
 On the right-hand side of this bar, you can choose which task you want the relationship to be shared with.
 
-![](/images/blog/1499756da30e0f596e0d152e888d61ecc4ed9565-948x986.webp)
+![](/images/site-mirror/1499756da30e0f596e0d152e888d61ecc4ed9565-948x986.webp)
 
-![](/images/blog/a9d3d437cab82da40bcc30b6293b66c85e5b4527-1580x1312.webp)
+![](/images/site-mirror/a9d3d437cab82da40bcc30b6293b66c85e5b4527-1580x1312.webp)
 
 ### How to view a task
 
@@ -167,7 +167,7 @@ To delete a task, simply click on the trash icon at the bottom right hand side o
 
 ### Fetching relationships
 
-![](/images/blog/24215e5a8dae0910e99aa6032de03294308cb1ed-1363x1600.webp)
+![](/images/site-mirror/24215e5a8dae0910e99aa6032de03294308cb1ed-1363x1600.webp)
 
 ### Adding relationships
 
@@ -189,7 +189,7 @@ related
 
 At some point you’ll probably want to delete a relationship. No confirmation modal should be displayed before the task is deleted.
 
-![](/images/blog/9a6791b5d9f5f59363e4a4373ee0ad549bdc176d-1494x1488.webp)
+![](/images/site-mirror/9a6791b5d9f5f59363e4a4373ee0ad549bdc176d-1494x1488.webp)
 
 ### How to create projects
 
@@ -205,7 +205,7 @@ The project is linked to a graph (using id as graph name) A graph has many tasks
 
 ### How to create tasks
 
-![](/images/blog/f95cfb145c9fe17bf19fe95382adf24549ee960b-1600x995.webp)
+![](/images/site-mirror/f95cfb145c9fe17bf19fe95382adf24549ee960b-1600x995.webp)
 
 Tasks are stored as nodes in Redis Graph. A task is a graph node and has the following properties:
 
@@ -215,9 +215,9 @@ Tasks are stored as nodes in Redis Graph. A task is a graph node and has the fol
 - **Status:** One of Todo, In Progress, Review or Done
 - **Type: One** of Idea, Goal, Epic, Feature, Task or Bug – user: Assignee
 
-![](/images/blog/815cd2693014ebf1ab05f4a74221d8d9c160749e-1542x1124.webp)
+![](/images/site-mirror/815cd2693014ebf1ab05f4a74221d8d9c160749e-1542x1124.webp)
 
-![](/images/blog/22b409325f65d109a35d8b863793ae84b3f92505-1600x1046.webp)
+![](/images/site-mirror/22b409325f65d109a35d8b863793ae84b3f92505-1600x1046.webp)
 
 A task can be linked to many other tasks by relationships.
 
@@ -336,11 +336,11 @@ RedisGraph is a crucial component as it allows data to be transmitted efficientl
 
 If you want to learn more about this app you can visit it on the [Redis Launchpad](https://launchpad.redis.com/?id=project%3Acode-red). And whilst you’re there, make sure to explore all of[ the other innovative applications](https://launchpad.redis.com/) that we have available for you.
 
-![](/images/blog/478133b790db7cb070dd0b045833e75d9aa8a207-1600x593.webp)
+![](/images/site-mirror/478133b790db7cb070dd0b045833e75d9aa8a207-1600x593.webp)
 
 ## Who created this application?
 
-![](/images/blog/af580a05cd43f696490244bdc366469eeb9d1d31-500x500.webp)
+![](/images/site-mirror/af580a05cd43f696490244bdc366469eeb9d1d31-500x500.webp)
 
 **Florian Dejonckheere**
 

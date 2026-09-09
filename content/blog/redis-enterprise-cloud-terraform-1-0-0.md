@@ -14,7 +14,7 @@ hidden: true
 
 *By Noam Stern, Sr. Product Manager, Products · Published 31 August 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 **Redis is investing in its Terraform registry, helping developers manage their databases across multiple modules easily. Let’s see what new updates Redis Enterprise Cloud’s Terraform version 1.0.0 brings, how to implement it, and what to consider before upgrading.**
 

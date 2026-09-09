@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 25 June 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/3462a1af44bf10378534ede475b586c6266ee871-635x200.webp)
+![](/images/site-mirror/3462a1af44bf10378534ede475b586c6266ee871-635x200.webp)
 
 [Today we are ](/press-releases/redis-labs-closes-15-million-in-series-b-funding-to-expand-reach-to-large-enterprises)[announcing](/press-releases/redis-labs-closes-15-million-in-series-b-funding-to-expand-reach-to-large-enterprises) Redis’ Series B funding of $15M. Our leadership team secured these funds to continue fueling the incredible growth we’ve been so fortunate to enjoy, both with our ever-popular Redis Cloud service as well as with our newest product, Redis Enterprise Cluster (RLEC), which we [unveiled earlier this year](/blog/redis-labs-enterprise-cluster-in-beta-now).
 

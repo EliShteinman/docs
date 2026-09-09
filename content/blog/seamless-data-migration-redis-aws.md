@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 27 June 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7243c4b5b4622723a77f589858d71a62204246f6-772x550.webp)
+![Blog tile image](/images/site-mirror/7243c4b5b4622723a77f589858d71a62204246f6-772x550.webp)
 
 **Moving to the cloud can seem like a huge, complicated undertaking that can disrupt your organization. It doesn’t have to be that difficult, though, if you work with the right tools and partners. If you remove the friction, migration can be downright easy.**
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 27 March 2025 · updated 14 October 2025*
 
-![Blog tile image](/images/blog/5035c8b995ab3cd3c08b5fcd3797be977d341fb8-772x552.webp)
+![Blog tile image](/images/site-mirror/5035c8b995ab3cd3c08b5fcd3797be977d341fb8-772x552.webp)
 
 ## Why Redis stands out for GenAI & vector search
 

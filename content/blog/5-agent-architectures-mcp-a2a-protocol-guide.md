@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 22 July 2026*
 
-![MCP, A2A, or neither: which protocol your agent architecture actually needs](/images/blog/05e8d4579ffa1248c2d04e0f322fc34017063553-1200x628.webp)
+![MCP, A2A, or neither: which protocol your agent architecture actually needs](/images/site-mirror/05e8d4579ffa1248c2d04e0f322fc34017063553-1200x628.webp)
 
 We've watched enterprise teams go from vague "we might do agent stuff" conversations to full internal agent environments in a matter of months, and the same protocol question comes up in almost every one: does the design need the Model Context Protocol (MCP) or the Agent2Agent Protocol (A2A)? MCP connects an agent to the tools and data it needs; A2A lets agents built by different teams or vendors work together. Both are real and useful. But it can be hard to know which one you actually need, or whether you need one at all. This article walks through five common agent architectures, what each one actually requires, and why the useful question is "which boundary am I crossing?" rather than "which protocol is trending?"
 

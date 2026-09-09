@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 2 February 2015 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/cb2f58623409ff478f16db59a7ef5e53905878dd-140x92.webp)
+![Blog tile image](/images/site-mirror/cb2f58623409ff478f16db59a7ef5e53905878dd-140x92.webp)
 
-![](/images/blog/9c9889f694eefcd1c379cfbeca1952f6c6ad5bb2-635x200.webp)
+![](/images/site-mirror/9c9889f694eefcd1c379cfbeca1952f6c6ad5bb2-635x200.webp)
 
 The 7th principle, as laid out in the [Redis Manifesto](https://github.com/antirez/redis/blob/unstable/MANIFESTO), really aligns with my beliefs and views, and probably those of all engineers (regardless of experience). There’s little in this world as satisfying as that rush of excitement you get from devising a clever way to do something new and/or better. This joyous rush, in turn, can and often does lead to developing a serious addiction, as recognized by Donald Knuth (“premature optimization is the root of all evil”) and Randall Munroe (e.g. [http://xkcd.com/1205/](http://xkcd.com/1205/), [http://xkcd.com/1445/](http://xkcd.com/1445/) and [http://xkcd.com/1319/](http://xkcd.com/1319/)) long ago.
 
@@ -160,7 +160,7 @@ sys	0m0.007s
 
 ```
 
-![](/images/blog/23f1a585685c6a007887fdce73b67fd41069a65f-635x423.webp)
+![](/images/site-mirror/23f1a585685c6a007887fdce73b67fd41069a65f-635x423.webp)
 
 That’s a really nice trick – copying by dumping and restoring is much faster because you bypass all of the data structure’s management logic (sort of like good ol’ [POKE](http://en.wikipedia.org/wiki/PEEK_and_POKE) in BASIC, and the furthest you can go until pointers to values are introduced to Redis :P). It is almost 20-times better than the naive approach and in theory it should work for any data type – Lists, Hashes, Sets and Sorted Sets. I’ll have to remember this little hack for when I need to copy values quickly.
 

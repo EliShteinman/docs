@@ -14,7 +14,7 @@ hidden: true
 
 *By Cassie Zimmerman, Director, Strategic Alliances · Published 19 December 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d55f35c6b745a04695e4756bb6c21a792ea89063-630x324.webp)
+![Blog tile image](/images/site-mirror/d55f35c6b745a04695e4756bb6c21a792ea89063-630x324.webp)
 
 Earlier this year, we released Redis Enterprise as a fully managed [Database-as-a-Service (DBaaS)](/blog/what-is-dbaas/) on [Microsoft Azure](/cloud-partners/microsoft-azure/), and are now authorized to sell Redis Enterprise through the [Microsoft One Commercial Partner program](https://www.microsoftpartnercommunity.com/t5/Blog-Discussions/One-Commercial-Partner-Putting-Partners-First/td-p/1901).
 

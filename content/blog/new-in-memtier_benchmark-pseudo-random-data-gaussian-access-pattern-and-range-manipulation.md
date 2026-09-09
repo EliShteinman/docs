@@ -14,9 +14,9 @@ hidden: true
 
 *By Oran Agra, Senior Software Architect at Redis Labs · Published 8 July 2014 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/2514d22fb5e530914e6cf102c0e8d8173b4aa393-250x158.webp)
+![](/images/site-mirror/2514d22fb5e530914e6cf102c0e8d8173b4aa393-250x158.webp)
 
 Last year we [open-sourced memtier_benchmark](/blog/memtier_benchmark-a-high-throughput-benchmarking-tool-for-redis-memcached), a high-throughput benchmarking tool for Redis and Memcached resources. At Redis, we use this tool on a daily basis, and those of you who gave it a shot came back to us with great feedback. Based on these suggestions, we made several improvements to the project that I wanted to share with you today.
 

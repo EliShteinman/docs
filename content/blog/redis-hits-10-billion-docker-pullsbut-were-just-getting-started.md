@@ -14,7 +14,7 @@ hidden: true
 
 *By Jon Fritz, Chief Product Officer · Published 7 November 2025*
 
-![Redis hits 10 billion Docker pulls—but we’re just getting started](/images/blog/b55039366dff7f775539097849590f2861c9566a-1200x628.webp)
+![Redis hits 10 billion Docker pulls—but we’re just getting started](/images/site-mirror/b55039366dff7f775539097849590f2861c9566a-1200x628.webp)
 
 Seven years ago, in September of 2018, we announced that [Redis passed 1 billion pulls on Docker Hub](https://redis.io/press/redis-establishes-new-industry-benchmark-one-billion-downloads-docker/). At the time, we were one of the first technologies to hit that number. A little more than five years later in 2023, we hit 5 billion Docker pulls. Over the last year, our Docker pulls have grown by 20% quarter over quarter, and we’ve been averaging more than 2.25 million pulls per day over the last two months.
 

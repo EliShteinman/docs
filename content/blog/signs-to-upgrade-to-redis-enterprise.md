@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 13 October 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/6323f6e5e36dc627a8322b3284b09d0a548e070a-772x550.webp)
+![Blog tile image](/images/site-mirror/6323f6e5e36dc627a8322b3284b09d0a548e070a-772x550.webp)
 
 **If you’re starting to notice these pain points in your business, it might be an indicator that your Redis open source (Redis OSS) instance is no longer sufficient to support your growth.**
 

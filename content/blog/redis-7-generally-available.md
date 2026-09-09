@@ -18,7 +18,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 27 April 2022 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/9e755fcc13280b99668203867278dc015a4389b7-772x550.webp)
+![Blog tile image](/images/site-mirror/9e755fcc13280b99668203867278dc015a4389b7-772x550.webp)
 
 Today we’re happy to tell the world about the general availability of [Redis](/try-free/) version 7.0, as announced at the [Redis Days SF keynote](/blog/redisdays-san-francisco-2022-overview/) earlier this year. The release has been under development for almost a year, and three release candidates preceded it, so we feel it is stable enough for use in production.
 

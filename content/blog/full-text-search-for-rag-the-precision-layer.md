@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 February 2026 · updated 27 February 2026*
 
-![Redis](/images/blog/47b9d04e1a795817f9c6c7b88a367a2861def708-1200x628.webp)
+![Redis](/images/site-mirror/47b9d04e1a795817f9c6c7b88a367a2861def708-1200x628.webp)
 
 Vector search gets all the hype in AI circles. But if your retrieval augmented generation (RAG) app can't find a document when a user types an exact product SKU, a legal clause number, or a specific API endpoint name, your fancy vector embeddings aren't helping anyone.
 

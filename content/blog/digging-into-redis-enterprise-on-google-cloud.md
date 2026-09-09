@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 27 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/76d62bead0954c01c1053088a89e87726add512f-800x500.webp)
+![Blog tile image](/images/site-mirror/76d62bead0954c01c1053088a89e87726add512f-800x500.webp)
 
 It used to be that Redis Enterprise was just one of many offerings in the Google Cloud Marketplace, but now thanks to [the partnership](/blog/redis-enterprise-google-cloud-platform-marketplace/) between Redis and Google, Redis Enterprise is integrated into the [Google Cloud Console](https://console.cloud.google.com/getting-started). This integration means you not only can enjoy unified billing, but also that you can use your Google Cloud credits to pay for Redis Enterprise.
 
@@ -24,13 +24,13 @@ Let’s take a look at how to enable the Redis Enterprise API in your Google Clo
 
 The starting point is the sidebar of your Cloud Console. At the bottom you will find Redis Enterprise alongside other third-party services. Click on Redis Enterprise to go to a page where you can set up your billing information.
 
-![](/images/blog/83cc8839dda8dcc92d9e7d4a142ee0ea06bbbdf9-483x395.webp)
+![](/images/site-mirror/83cc8839dda8dcc92d9e7d4a142ee0ea06bbbdf9-483x395.webp)
 
 I won’t go into the details of this step. It’s straightforward if you have a personal account, but you will have to coordinate with your IT management if you’re part of a big organization. Once you have set up billing and enabled the API, you can start creating Redis Enterprise databases.
 
 ## Connect an application
 
-![](/images/blog/ff9e98ad3fddd43aa0938233f41dbabc9b6443f5-300x300.webp)
+![](/images/site-mirror/ff9e98ad3fddd43aa0938233f41dbabc9b6443f5-300x300.webp)
 
 Once you set up your Redis Enterprise API, you’re ready to see how it works. The sample application [in this GitHub repository](https://github.com/RedisLabs/redis-microservices-for-dummies) was written for the new [Redis Microservices for Dummies](/docs/redis-microservices-for-dummies/) book. It implements some of the functionality of a fully automated library using a microservices architecture. You can request books and return them, and all the code can be run on your computer. The application also depends on a Redis database, so we will create one on our new Redis Enterprise service.
 
@@ -38,7 +38,7 @@ Once you set up your Redis Enterprise API, you’re ready to see how it works. T
 
 Click the “MANAGE ON PROVIDER” button to go to the Redis’ website, where you can create a new subscription and corresponding database.
 
-![](/images/blog/7f9965624b2cf1ae6035fb5a665d57a21b200b3f-628x217.webp)
+![](/images/site-mirror/7f9965624b2cf1ae6035fb5a665d57a21b200b3f-628x217.webp)
 
 Select a name for your subscription and specify whether you want Redis on Flash and where your nodes should be located. If you want more information about a specific topic, the (i) icons provide more details.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Itai Raz · Published 2 November 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b403ed85e80743acbb2eca3e98595362f84d9735-140x92.webp)
+![Blog tile image](/images/site-mirror/b403ed85e80743acbb2eca3e98595362f84d9735-140x92.webp)
 
-![RLEC 4.2.1 Brings More Granular Controls to High Availability and Performance](/images/blog/01393dc2f87a2ca6a9879a0aa3294f65421da441-635x200.webp)
+![RLEC 4.2.1 Brings More Granular Controls to High Availability and Performance](/images/site-mirror/01393dc2f87a2ca6a9879a0aa3294f65421da441-635x200.webp)
 
 Redis Enterprise Cluster (RLEC) has been very successful since its initial release. It serves [many customers’ production Redis deployments](/press-releases/customers-reap-benefits-of-highly-available-and-scalable-redis-deployments-powered-by-redis-labs-enterprise-cluster-rlec), enabling them to use the fastest database in the world with minimal operational overhead.
 
@@ -47,7 +47,7 @@ In addition, the feature has also been enhanced to allow defining multiple sourc
 
 Here is an architecture example that shows how multiple replicas in the same cluster can help scale read load, and a replica in another cluster on another cloud platform can handle remote reads or serve for disaster recovery purposes.
 
-![Cross region / cloud Replica of](/images/blog/6287fdf61da18180d1ce2617b1c23c35e2e9762d-615x264.webp)
+![Cross region / cloud Replica of](/images/site-mirror/6287fdf61da18180d1ce2617b1c23c35e2e9762d-615x264.webp)
 
 ## Multi-IP and IPv6 support
 
@@ -57,7 +57,7 @@ Another nice feature that can greatly improve security is our support for IPv6 a
 
 Here is an architecture example that shows how multiple clients can connect to the same node using different IPs, or connect to a different node using IPv6. This is a great way to logically separate different client connections to a database, or to distribute the traffic.
 
-![Multi-IP and IPv6 support](/images/blog/57dab724369c8c9036e81bcb8070ed81b6164054-637x477.webp)
+![Multi-IP and IPv6 support](/images/site-mirror/57dab724369c8c9036e81bcb8070ed81b6164054-637x477.webp)
 
 ## Improved AOF
 

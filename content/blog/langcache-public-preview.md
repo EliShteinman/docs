@@ -15,7 +15,7 @@ hidden: true
 
 *By Jim Allen Wallace, Jen Agarwal · Published 4 September 2025 · updated 13 August 2026*
 
-![Redis](/images/blog/78668b0e444913872c442baf1ffc34bd5c7052ac-1544x1104.webp)
+![Redis](/images/site-mirror/78668b0e444913872c442baf1ffc34bd5c7052ac-1544x1104.webp)
 
 If you’re building AI-powered apps—chatbots, agent workflows, or tackling retrieval augmented generation (RAG)—you know every LLM call adds up in cost and latency. That's why we built LangCache to eliminate redundant queries and dramatically reduce both costs and response times.
 
@@ -41,7 +41,7 @@ What LangCache delivers:
 
 **LangCache sits between your application and any repeatable AI workflow**—whether that's LLM calls (like OpenAI), RAG pipelines, or other AI services that generate responses you want to reuse. When your app makes a request, LangCache automatically generates embeddings and searches for matching cached responses, serving them instantly if available. If there's no cache hit, your application proceeds with the original call (to the LLM, RAG system, etc.), and you can then store that fresh result in LangCache for future use.
 
-![Redis LangCache public preview](/images/blog/3718d1d2b894cc274a5a92a0cf533196b8037d2b-761x470.webp)
+![Redis LangCache public preview](/images/site-mirror/3718d1d2b894cc274a5a92a0cf533196b8037d2b-761x470.webp)
 
 ## LangCache vs. DIY alternatives
 
@@ -80,6 +80,6 @@ Getting started is simple:
 1. **Configure settings** — customize as needed or use our defaults
 1. **Integrate with your app** — and use our [quickstart guide](https://redis.io/docs/latest/develop/ai/langcache/api-examples/)
 
-![Redis Langcache](/images/blog/d3a6a1f0f0059bf9361cfd94418da1c3b73c111a-2041x1214.webp)
+![Redis Langcache](/images/site-mirror/d3a6a1f0f0059bf9361cfd94418da1c3b73c111a-2041x1214.webp)
 
 [Go to our docs](https://redis.io/docs/latest/operate/rc/langcache/create-service/) to get detailed instructions on how to create your service.

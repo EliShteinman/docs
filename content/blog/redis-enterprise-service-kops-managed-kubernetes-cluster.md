@@ -15,7 +15,7 @@ hidden: true
 
 *By Vick Kelkar, Principal Product Manager · Published 16 April 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 This tutorial will show you how to easily set up a Kubernetes cluster on a public cloud using a tool called “Kops.” This post is a complement to our[Kubernetes webinar](/events/redis-enterprise-on-kubernetes/), in which we explained the basic Kubernetes primitives, and our previous blog posts about[Redis Enterprise Service](/blog/containers-kubernetes-redis-enterprise-kubernetes-service-explained/) and[local Kubernetes development.](/blog/local-kubernetes-development-using-minikube-redis-enterprise/) For this tutorial, we will use the latest publicly available container[image](https://hub.docker.com/_/redis) of Redis Enterprise Software. You can read about the high performance, in-memory Redis Enterprise 5.0.2 software release[here.](/blog/redis-enterprise-5-0-2/)
 
@@ -43,11 +43,15 @@ brew install awscli
 
 Kops requires a valid domain name for your Kubernetes cluster. Kops will also create DNS entries for the API and bastion host. For this tutorial, I will use Route 53 Hosted Zones k8.vkelkar.com:
 
-![DNS Zone Info](/images/blog/2b71fd1708cebc79fdc1e4694a9f699efc4f22b4-748x236.webp)
+![DNS Zone Info](/images/site-mirror/2b71fd1708cebc79fdc1e4694a9f699efc4f22b4-748x236.webp)
+
+*DNS Zone Information*
 
 We will use ”demo” as the name of the Kubernetes cluster. Once the cluster is spun up, Kops will add additional DNS entries to the delegated subdomain of k8.vkelkar.com:
 
-![DNS Entries](/images/blog/1612ad565c27c366351573630b50a201d8ce9db7-752x362.webp)
+![DNS Entries](/images/site-mirror/1612ad565c27c366351573630b50a201d8ce9db7-752x362.webp)
+
+*DNS Entries*
 
 
 **STEP 3: Configure bucket**
@@ -106,26 +110,36 @@ redacted.compute.internal Ready node 6m v1.8.7
 
 Here are the additional labels, as shown in the console:
 
-![Kubernetes nodes with additional labels](/images/blog/30508c1267e9b95fb8f8e7dd42f898524ebcb174-1487x414.webp)
+![Kubernetes nodes with additional labels](/images/site-mirror/30508c1267e9b95fb8f8e7dd42f898524ebcb174-1487x414.webp)
+
+*Nodes with additional labels*
 
 You can find out about the AMI used in this tutorial by running the command:
 aws ec2 describe-images –image-id ami-5c97f024
 
-![AWS AMI information](/images/blog/54d687045f6570be5f194b2330af9a97e7bdb235-1853x1412.webp)
+![AWS AMI information](/images/site-mirror/54d687045f6570be5f194b2330af9a97e7bdb235-1853x1412.webp)
+
+*AMI information*
 
 **STEP 5: Deploy Redis Enterprise Service on Kubernetes Cluster**
 
 For this tutorial, we will deploy a three-node Redis Enterprise cluster in the Kubernetes cluster:
 
-![Redis Enterprise Cluster Nodes](/images/blog/3e5ac1299797baac3e73c554bc815c8f0449e0e6-2006x460.webp)
+![Redis Enterprise Cluster Nodes](/images/site-mirror/3e5ac1299797baac3e73c554bc815c8f0449e0e6-2006x460.webp)
+
+*Redis Enterprise Cluster Nodes*
 
 Using the `[rladmin](https://docs.redis.com/latest/rs/references/cli-utilities/rladmin/)` command-line utility included with [Redis Enterprise](https://docs.redis.com/latest/rs/) service, we can take a look at the three-node Redis Enterprise cluster and the “awsdb” created on the cluster:
 
-![rladmin utility output](/images/blog/ce17116eb7f193d46cceb1847efa13123c2126ce-2248x966.webp)
+![rladmin utility output](/images/site-mirror/ce17116eb7f193d46cceb1847efa13123c2126ce-2248x966.webp)
+
+*Redis Enterprise rladmin utility output showing ‘awsdb’ database*
 
 The resource consumption of [Redis Enterprise](https://docs.redis.com/latest/rs/) in the Kubernetes cluster will look like:
 
-![Redis Enterprise resources in Kubernetes](/images/blog/b58f85f796f80f0dc43034c0843b59b1585b29cb-2230x782.webp)
+![Redis Enterprise resources in Kubernetes](/images/site-mirror/b58f85f796f80f0dc43034c0843b59b1585b29cb-2230x782.webp)
+
+*Redis Enterprise Release resources in Kubernetes Cluster*
 
 **STEP 6: Delete Kops Kubernetes Cluster**
 

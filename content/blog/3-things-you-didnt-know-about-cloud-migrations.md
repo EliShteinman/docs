@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 6 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9e7f85c50d88dd52661d7a39e4e505cf856b2aeb-772x550.webp)
+![Blog tile image](/images/site-mirror/9e7f85c50d88dd52661d7a39e4e505cf856b2aeb-772x550.webp)
 
 The cloud is no longer a disruptive new concept. It’s been around for well over 10 years, which may seem short but is an eternity for technology. When AWS’ nascent S3 service launched we were still doing things like calling in food delivery with our flip phones and renting movies from Blockbuster Video. Think about how much our lives have changed since then. Much of that change is thanks to the exponential innovation unlocked by the cloud.
 
@@ -56,25 +56,25 @@ These managed services unlock the power of specialization, allowing companies th
 
 ## Read more
 
-![Redis | IT'S TIME TO RE:INVENT YOUR DATA LAYER](/images/blog/b3a653ab132bcd145f2356ee1b8e8487ccb6f71f-442x254.webp)
+![Redis | IT'S TIME TO RE:INVENT YOUR DATA LAYER](/images/site-mirror/b3a653ab132bcd145f2356ee1b8e8487ccb6f71f-442x254.webp)
 
 Looking to re:Invent? It’s Time for a New Approach to Your Data Layer
 
 Learn More
 
-![Redis Enterprise Cloud Flexible Plan on AWS Marketplace](/images/blog/dbc49a38fa5f89e73a5e88c5379675c22350d32d-442x254.webp)
+![Redis Enterprise Cloud Flexible Plan on AWS Marketplace](/images/site-mirror/dbc49a38fa5f89e73a5e88c5379675c22350d32d-442x254.webp)
 
 New Plan Brings Increased Simplicity and Flexibility to Redis Enterprise Cloud in AWS
 
 Learn More
 
-![Redis | Digital Transformation Index 2.0 Survey Report](/images/blog/92f0c484934317c9f1071f5c851aedf981fe7889-442x254.webp)
+![Redis | Digital Transformation Index 2.0 Survey Report](/images/site-mirror/92f0c484934317c9f1071f5c851aedf981fe7889-442x254.webp)
 
 Digital Transformation Is Accelerating: Is Your Data Layer Ready?
 
 Learn More
 
-![Redis](/images/blog/4bd1c155bc0f810f6b65b441cdb5bed93aae7236-442x254.webp)
+![Redis](/images/site-mirror/4bd1c155bc0f810f6b65b441cdb5bed93aae7236-442x254.webp)
 
 RedisJSON: Performance Benchmarking
 

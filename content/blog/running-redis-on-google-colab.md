@@ -15,13 +15,13 @@ hidden: true
 
 *By Nava Levy, Developer Advocate, Data Science & ML Operations · Published 28 January 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/bf06bd62eb0cdad539214994a4674468e34b0d73-772x550.webp)
+![Blog tile image](/images/site-mirror/bf06bd62eb0cdad539214994a4674468e34b0d73-772x550.webp)
 
 Because of the increasing use of Redis for data science and machine learning, it is handy to run Redis directly from a Google Colab notebook. However, running Redis on Google Colab differs from how you would set it up on your local machine or using Docker. In this post, I show you how you can run Redis on your Colab notebook, in two simple steps, directly from your browser.
 
 [Google Colab](https://www.kdnuggets.com/2020/06/google-colab-deep-learning.html) is a popular browser-based environment for executing Python code on hosted Jupyter notebooks and training models for machine learning (ML), including free access to GPUs. It is a platform for data scientists and machine learning (ML) engineers to help them learn and develop ML models in Python. [Redis](https://hub.docker.com/_/redis) is an in-memory open source database that is increasingly being used in machine learning – from caching, [messaging](/solutions/messaging/) and [fast data ingest](/solutions/fast-data-ingest/), to semantic search and [online feature stores](/blog/building-feature-stores-with-redis-introduction-to-feast-with-redis/).
 
-![An image with Redis and Colab logos](/images/blog/c972e1669e96d1fbf9934fa9aa7057bdd4689ccb-960x540.webp)
+![An image with Redis and Colab logos](/images/site-mirror/c972e1669e96d1fbf9934fa9aa7057bdd4689ccb-960x540.webp)
 
 ### Step 1: Installation
 

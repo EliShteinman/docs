@@ -15,17 +15,17 @@ hidden: true
 
 *By David Maier, Technical Enablement Mananger · Published 3 August 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 In [Redis Enterprise](/redis-enterprise/) 5.0, we introduced support for the Open Source (OSS) cluster API, which allows a Redis Enterprise cluster to scale infinitely and linearly by adding shards and nodes. [This post](/blog/10m-opssec-1msec-latency-6-ec2-nodes/) describes the first of our linear scaling benchmark tests and how Redis Enterprise works with the OSS cluster API and demonstrates infinite linear performance scalability.
 
 Over the course of the last few months, we conducted tests that included additional benchmarking—n-shard database on a k-node Redis Enterprise cluster, as noted below:
 
-![Table 1: Redis Enterprise scale linearly while delivering sub-millisecond performance](/images/blog/dde1f7b2580f01f1c7bf8a4f42d155cecc2b3775-386x234.webp)
+![Table 1: Redis Enterprise scale linearly while delivering sub-millisecond performance](/images/site-mirror/dde1f7b2580f01f1c7bf8a4f42d155cecc2b3775-386x234.webp)
 
 *Table 1: Redis Enterprise scale linearly while delivering sub-millisecond performance*
 
-![Figure 1: Cluster throughput (@ 1 msec latency)](/images/blog/7911717161c946cdf815ae9600712523697fe4e3-600x371.webp)
+![Figure 1: Cluster throughput (@ 1 msec latency)](/images/site-mirror/7911717161c946cdf815ae9600712523697fe4e3-600x371.webp)
 
 *Figure 1: Cluster throughput (@ 1 msec latency)*
 
@@ -55,18 +55,18 @@ There have been many benchmarks and blogs published by other database vendors on
 
 The chart below is the outcome of a benchmark that one of the other NoSQL vendors performed. It compares NoSQL databases such as Apache Cassandra, Hbase, MongoDB, and Couchbase.
 
-![Table 2: Nodes and throughput by vendor](/images/blog/04f311489349d160f777726058ec599ffb2a6690-860x275.webp)
+![Table 2: Nodes and throughput by vendor](/images/site-mirror/04f311489349d160f777726058ec599ffb2a6690-860x275.webp)
 
 
 *Table 2: Nodes and throughput by *vendor
 
-![Cassandra: Linear vs. Actual Scale graph](/images/blog/63cb0ad1f6f6c11607503c53cb611690aeb5cb04-420x260.webp)
+![Cassandra: Linear vs. Actual Scale graph](/images/site-mirror/63cb0ad1f6f6c11607503c53cb611690aeb5cb04-420x260.webp)
 
-![HBase: Linear vs. Actual Scale graph](/images/blog/7a1a4f6d7cef86eb8a86a04262c793268ecb8f5c-420x260.webp)
+![HBase: Linear vs. Actual Scale graph](/images/site-mirror/7a1a4f6d7cef86eb8a86a04262c793268ecb8f5c-420x260.webp)
 
-![MongoDB: Linear vs. Actual Scale](/images/blog/d0ab0ac7d26ff9c18783fd34cb70088855d64e38-420x260.webp)
+![MongoDB: Linear vs. Actual Scale](/images/site-mirror/d0ab0ac7d26ff9c18783fd34cb70088855d64e38-420x260.webp)
 
-![Couchbase: Linear vs. Actual Scale](/images/blog/e96cbdadfbc8a080182dc0f6126df3bec01fcdad-420x260.webp)
+![Couchbase: Linear vs. Actual Scale](/images/site-mirror/e96cbdadfbc8a080182dc0f6126df3bec01fcdad-420x260.webp)
 
 As is obvious from the charts, all of these vendors deliver sub-linear scale. For instance, if we analyze Cassandra’s throughput by node, Cassandra can process ~18,700 ops/second (rounding up) with 1 node. Then, at 32 nodes, it should have been able to process ~600,000 ops/second. However, as illustrated above, it can only process about ~330,000 operations/second—only 55% of what a truly linearly scaling database should be able to process.
 
@@ -76,11 +76,11 @@ The fact that these databases are measuring tens of thousands of requests per se
 
 With its [latest benchmark](/docs/linear-scaling-benchmark-50m-ops-sec/), Redis Enterprise has proven its ability to process millions of operations per second, even when using its most basic configuration. As demonstrated in the chart below, Redis Enterprise simply outperforms the other databases and delivers super-linear scale without any compromise to performance!
 
-![Table 3: Redis Enterprise - Optimal vs. Actual Throughput by Node](/images/blog/e76e9b268bc9612d1c5e13a912449a16d8423b88-634x139.webp)
+![Table 3: Redis Enterprise - Optimal vs. Actual Throughput by Node](/images/site-mirror/e76e9b268bc9612d1c5e13a912449a16d8423b88-634x139.webp)
 
 
 *Table 3: Redis Enterprise – Optimal vs. Actual Throughput by Node*
 
-![Redis Enterprise: Linear Scale vs. Actual Scale graph](/images/blog/530d797633fd982896743f48ed4386ab37dd03ce-541x335.webp)
+![Redis Enterprise: Linear Scale vs. Actual Scale graph](/images/site-mirror/530d797633fd982896743f48ed4386ab37dd03ce-541x335.webp)
 
 This new benchmark demonstrates Redis Enterprises’ ability to achieve true linear scalability, while delivering the predictable and fast performance with the most efficient use of your resources, helping you build scalable modern applications cost-effectively.

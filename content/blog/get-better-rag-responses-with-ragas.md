@@ -14,7 +14,7 @@ hidden: true
 
 *By Robert Shelton, AI Engineer at Redis · Published 26 September 2024 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/678fe97776452ca56562463e89aaa31fbf0f9ea2-772x552.webp)
+![Blog tile image](/images/site-mirror/678fe97776452ca56562463e89aaa31fbf0f9ea2-772x552.webp)
 
 A lot of teams have a hard time measuring their RAG apps. LLMs and techniques for vector search have come a long way, but they still hallucinate, or generate incorrect information. And those out-of-the-box solution architectures still can’t address every pitfall of your specific use case.
 

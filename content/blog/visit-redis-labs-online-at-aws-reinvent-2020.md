@@ -14,7 +14,7 @@ hidden: true
 
 *By Paul Bushell · Published 20 November 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a2589c2cde4e3ed3ebe2f3b3d6295669221cb3ed-920x612.webp)
+![Blog tile image](/images/site-mirror/a2589c2cde4e3ed3ebe2f3b3d6295669221cb3ed-920x612.webp)
 
 Most years, when the weather turns cold, tens of thousands of cloud computing professionals around the world get busy booking tickets to Las Vegas for [AWS re:Invent](https://reinvent.awsevents.com/?trk=direct) for a few days of cloud-centric networking, learning, and partying. Like just about everything else this year, though, AWS re:Invent 2020 is going virtual—but that doesn’t mean it’s not going to be amazing!
 
@@ -32,7 +32,9 @@ Just as important, don’t miss our [Redis @ AWS re:Invent page](/aws-reinvent/)
 
 ## Session: How Freshworks scaled using Redis Enterprise Cloud
 
-![freshworks logo](/images/blog/814bcf1468001dc6b59c99b0af25a439cbe7983f-660x600.webp)
+![freshworks logo](/images/site-mirror/814bcf1468001dc6b59c99b0af25a439cbe7983f-660x600.webp)
+
+*freshworks logo*
 
 **Date: Thursday, Dec. 3, 3:15–3:45 p.m. PT (Live and on-demand at our virtual booth)**
 

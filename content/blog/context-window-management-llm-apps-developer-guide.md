@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 17 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/b56fc70c5d7df80686260cbf11a36e3978459a49-1200x628.webp)
+![Redis](/images/site-mirror/b56fc70c5d7df80686260cbf11a36e3978459a49-1200x628.webp)
 
 Here's the thing about context windows: every token you send costs money and adds latency. So which tokens actually improve your output?
 

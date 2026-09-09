@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 5 April 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7ba94e54dd715cc098b35f5ed780af06089b9466-772x550.webp)
+![Blog tile image](/images/site-mirror/7ba94e54dd715cc098b35f5ed780af06089b9466-772x550.webp)
 
 **What role do microservices play in creating applications? We offer a foundational understanding of what microservices are, how they differ from monolithic structures, and what to consider when you evaluate microservices for your own adoption.**
 

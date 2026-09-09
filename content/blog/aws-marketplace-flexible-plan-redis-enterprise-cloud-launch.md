@@ -16,7 +16,7 @@ hidden: true
 
 *By Nir Schachter, Product Manager · Published 1 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fbcda99a401b525b6e8909452e0fcdbc98380587-1185x804.webp)
+![Blog tile image](/images/site-mirror/fbcda99a401b525b6e8909452e0fcdbc98380587-1185x804.webp)
 
 AWS customers can now procure Redis Enterprise Cloud in AWS with a simplified consolidated bill, spend that counts toward EDP consumption, and flexible on-demand pricing.
 
@@ -48,37 +48,37 @@ First, go to the AWS Marketplace and search for Redis Enterprise Cloud – Flexi
 
 Select Flexible plan, which will allow you to provision according to your business needs, without any budget commitment.
 
-![](/images/blog/32734f9e97921a2711ed5f0be26e9710c81d813c-1024x184.webp)
+![](/images/site-mirror/32734f9e97921a2711ed5f0be26e9710c81d813c-1024x184.webp)
 
 ### Step 2: Subscribe to Redis Enterprise Cloud
 
 Click **Subscribe** to confirm your subscription through AWS Marketplace.
 
-![](/images/blog/8ca6e2682ccdd20a48d59d649ad1c2fa6b4a937b-1024x367.webp)
+![](/images/site-mirror/8ca6e2682ccdd20a48d59d649ad1c2fa6b4a937b-1024x367.webp)
 
 ### Step 3: Redirect to Redis Enterprise Cloud
 
 Click **Set Up Your Account** to redirect to Redis Enterprise Cloud and register a new account or log in to an existing account.
 
-![](/images/blog/d8a166a5fd90af3123fadd86b4c2b83dd40378fc-1024x337.webp)
+![](/images/site-mirror/d8a166a5fd90af3123fadd86b4c2b83dd40378fc-1024x337.webp)
 
 ### Step 4: Register or log in to Redis Enterprise Cloud
 
 Register a new Redis account or log in to an existing one.
 
-![](/images/blog/64027d4f70b079de91f76e66f7cd13b51b7febe4-1024x555.webp)
+![](/images/site-mirror/64027d4f70b079de91f76e66f7cd13b51b7febe4-1024x555.webp)
 
 ### Step 5: Map Redis account and AWS Marketplace
 
 After registering/logging in, there’s one final step before creating your databases: mapping between your AWS Marketplace account and your Redis account. If you have multiple accounts, choose one from the list.
 
-![](/images/blog/e135eacb1c9ffc9d3f2672a9ecf46ea064dff96e-1024x732.webp)
+![](/images/site-mirror/e135eacb1c9ffc9d3f2672a9ecf46ea064dff96e-1024x732.webp)
 
 ### Step 6: Create a Flexible Subscription on Redis Enterprise Cloud
 
 Create a new subscription in your account. The AWS Marketplace logo in the top left corner will confirm the mapping has been successfully created.
 
-![](/images/blog/4cef329876adb694765f8fb93afdb50b0a564986-1024x564.webp)
+![](/images/site-mirror/4cef329876adb694765f8fb93afdb50b0a564986-1024x564.webp)
 
 ### Step 7: Use AWS Marketplace as a payment method
 
@@ -86,7 +86,7 @@ Choose Flexible Subscription and follow the subscription creation wizard. You sp
 
 At the final stage, AWS Marketplace will be automatically chosen as the payment method for the subscription.
 
-![](/images/blog/62a2ad7c66745b353d19dd8e7fc2181803c4239b-1024x577.webp)
+![](/images/site-mirror/62a2ad7c66745b353d19dd8e7fc2181803c4239b-1024x577.webp)
 
 It’s that simple. Want to deploy the best version of Redis in AWS with a unified bill, flexible on-demand pricing, and consumption toward your AWS commit? Click [here to start now!](https://aws.amazon.com/marketplace/pp/prodview-mwscixe4ujhkq)
 

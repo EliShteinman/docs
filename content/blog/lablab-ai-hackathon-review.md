@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 28 June 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/977e093b32d94db37802f8221c97f8110882a183-772x550.webp)
+![Blog tile image](/images/site-mirror/977e093b32d94db37802f8221c97f8110882a183-772x550.webp)
 
 **Redis has co-sponsored several AI hackathons. These three winners – from Memoiz, RedAGPT, and SmartHealth – may inspire you to add AI features to your own applications.**
 
@@ -34,7 +34,9 @@ Below, we examine the top three projects: Memoiz, RedAGPT, and SmartHealth. We d
 
 In the wake of large language models (LLMs), we’ve seen a surge of applications that encourage users to chat with their notes, capitalizing on LLMs’ language comprehension and language generation capabilities. While the concept isn’t necessarily groundbreaking, its application to specialized use cases, like the one pursued by [Memoiz](https://lablab.ai/event/ai-startup-hackathon-episode-2/we-absolutely-have-no-idea/memoiz), is potentially transformative.
 
-![Memoiz mood tracker interface](/images/blog/b9ea437a941fc892ce4d0e9f4ec0812f12ddc3f5-1134x1182.webp)
+![Memoiz mood tracker interface](/images/site-mirror/b9ea437a941fc892ce4d0e9f4ec0812f12ddc3f5-1134x1182.webp)
+
+*Memoiz mood tracker interface*
 
 Memoiz is developing a platform for creating, storing, and interacting with personal diary content. It’s akin to having a personal librarian for your memories, thoughts, and moods. You write notes, recall memories, track your daily moods, and explore historical shifts over time. The novelty lies in the ability to “chat” with your personalized librarian as you access past reflections.
 
@@ -42,7 +44,9 @@ Our Redis team sees huge potential in an application like Memoiz to shift the wa
 
 When the Redis judges (Brian Sam-Bodden, Paul Ford, Taimur Rashid, Sam Partee, and I) spoke with the Memoiz team, Thanasan Kumdee and Nutchanon Taechasuk, the two Japanese university students’ joy, humility, and honor were palpable. Now backed by the [NewNative](https://newnative.ai/) Slingshot AI Accelerator program, Kumdee’s and Taechasuk’s enthusiasm is obvious. The developers’ plans for the project include integrations with other note-taking applications, such as Notion or Obsidian, for broader access. They also intend to work on improving temporal understanding and querying of the underlying memories.
 
-![Memoiz technical architecture including Redis and Cohere](/images/blog/c5729d4fdd1ed044619d9c59edb9e46324b650ab-1390x736.webp)
+![Memoiz technical architecture including Redis and Cohere](/images/site-mirror/c5729d4fdd1ed044619d9c59edb9e46324b650ab-1390x736.webp)
+
+*Memoiz technical architecture including Redis and Cohere*
 
 Under the hood, Memoiz uses Redis Cloud for storing and searching through vector embeddings that symbolize the memories and queries. Married with a [Cohere LLM](http://cohere.ai), this enables users to delve into their past in a conversational way. The Redis-Cohere combination, an increasingly popular pattern in the generative AI boom, offers superior speed and semantic accuracy, which enhances Memoiz’s end-user experience.
 
@@ -60,7 +64,9 @@ At its core, RedAGPT conducts a series of tests to uncover network and system vu
 
 We were impressed with the team behind SmartHealth: a talented group of computer science, medical, arts, and business professionals.
 
-![SmartHealth chat application UI](/images/blog/d07d125864c9e4c51fe5727ec508604080ecf82e-1004x1072.webp)
+![SmartHealth chat application UI](/images/site-mirror/d07d125864c9e4c51fe5727ec508604080ecf82e-1004x1072.webp)
+
+*The SmartHealth chat application UI*
 
 The tech stack includes GPT-3, Redis as a vector database, Python, and React. The team assembled a robust database of health conditions, symptoms, causes, and treatments, which, when paired with GPT-3, helps users understand their health status without needing an in-person doctor visit.
 

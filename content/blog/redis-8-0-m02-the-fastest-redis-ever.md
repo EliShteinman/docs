@@ -16,7 +16,7 @@ hidden: true
 
 *By Lior Kogan, Filipe Oliveira · Published 4 November 2024 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/72be60152e9d17c094c468caec47ac6810707689-772x552.webp)
+![Blog tile image](/images/site-mirror/72be60152e9d17c094c468caec47ac6810707689-772x552.webp)
 
 We’re happy to announce the second milestone of [Redis 8](/blog/introducing-another-era-of-fast/), our most advanced and performant offering yet, available for you to try in Community Edition (CE) today.
 
@@ -38,17 +38,17 @@ For the complete list of performance optimizations, please take a look at the �
 
 The following chart depicts, per data structure, the p50 (median) latency reduction in Redis 8.0-M02 compared to Redis 7.2.5. We can see p50 latency improvements across data types ranging from 9% to 53% latency reduction.
 
-![](/images/blog/13f649037c1ce22f3c3a224f59a35126be74a9d5-600x371.webp)
+![](/images/site-mirror/13f649037c1ce22f3c3a224f59a35126be74a9d5-600x371.webp)
 
 When looking at the p50 latency per command, we can see for example, up to 36% reduction in the median latency for ZADD and up to 28% reduction in the median latency for SMEMBERS.
 
-![commands](/images/blog/233cffa5edfd74a2f6cbc22ee60de7451e712570-1600x991.webp)
+![commands](/images/site-mirror/233cffa5edfd74a2f6cbc22ee60de7451e712570-1600x991.webp)
 
 The (% of DBs) for each command is the percentage of databases on our managed service that use this command.
 
 Not only the median latency is significantly lower; also the tail latencies were reduced, as can be seen on the p99 chart below. This means Redis 8.0 commands are faster with more predictable and constant performance per command.
 
-![Redis Edition 8.0](/images/blog/576ad160ca1e0ebbf8ab28cf762a8cf16ee8e017-1600x991.webp)
+![Redis Edition 8.0](/images/site-mirror/576ad160ca1e0ebbf8ab28cf762a8cf16ee8e017-1600x991.webp)
 
 We see significant performance improvements over 20 commands of Redis, some of which with a broad usage and impact. 70% of the Redis databases use the SET/SETEX command and 30% use ZADD. Overall, the vast majority of Redis users will see significant performance improvements.
 
@@ -56,7 +56,7 @@ We see significant performance improvements over 20 commands of Redis, some of w
 
 Community Edition 8.0 also includes two scaling features of the Redis Query Engine that were previously only available on Redis Cloud and Redis Software. The first feature enables querying in clustered databases, allowing you to manage very large data sets with indices and support for higher throughput of reads and writes by scaling out to more Redis processes. The second feature allows you to add more processing power scaling your query throughput vertically, [enabling up to 16 times more throughput tha](/blog/announcing-faster-redis-query-engine-and-our-vector-database-leads-benchmarks/)n before. With these additions, Redis Community Edition is now the fastest vector database available, for free.
 
-![](/images/blog/5e542cf4369ac4e3e67619cdde68e095254c4959-2000x1400.webp)
+![](/images/site-mirror/5e542cf4369ac4e3e67619cdde68e095254c4959-2000x1400.webp)
 
 ### Searching 1 billion 768-dimensions vectors
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 9 June 2026 · updated 10 June 2026*
 
-![Context engineering for AI agents: the infrastructure behind every decision](/images/blog/260ce2e01fd30c991b2ccdfa73189efba4372ab2-2400x1256.webp)
+![Context engineering for AI agents: the infrastructure behind every decision](/images/site-mirror/260ce2e01fd30c991b2ccdfa73189efba4372ab2-2400x1256.webp)
 
 Your agent is only as good as the information it can see at decision time. The data sitting in your infrastructure doesn't count, and neither does what the model learned in training months ago. What counts is the specific tokens loaded into its context window the moment it picks its next action.
 

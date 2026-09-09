@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 13 August 2013 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/89f080f5a7074123da59075bd3711320268b6fdf-140x92.webp)
+![Blog tile image](/images/site-mirror/89f080f5a7074123da59075bd3711320268b6fdf-140x92.webp)
 
 Everybody knows you should always use protection, or things can get pretty ugly fast. In the Cloud world, this translates to our in-memory datastore’s fault resilience, which effectively determines if and how it will withstand and recover from failure scenarios.
 
@@ -28,7 +28,7 @@ Redis’ integrated data persistence mechanisms (namely snapshots and Append Onl
 
 Repcached’s major handicaps are its inability to scale and its exclusive availability for Memcached v1.2.x, and client-side writes’ multiplicity can become a major performance damper. In order to have a real-world production-grade setup deployed on cloud compute resources you need to season it with extra availability auspices.
 
-![](/images/blog/ab6aca214243de8985f1e46714c4731f1b6c37e6-652x489.webp)
+![](/images/site-mirror/ab6aca214243de8985f1e46714c4731f1b6c37e6-652x489.webp)
 
 ### Replication & Auto-Failover
 

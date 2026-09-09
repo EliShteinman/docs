@@ -14,9 +14,9 @@ hidden: true
 
 *By Ajeet Raina, Technical Marketing Manager · Published 2 February 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3ab9a5e76621e9e3c8b7b5bac221b9db66dc0dd6-1999x695.webp)
+![Blog tile image](/images/site-mirror/3ab9a5e76621e9e3c8b7b5bac221b9db66dc0dd6-1999x695.webp)
 
-![](/images/blog/3781b0e5b1f939a749a1cc2200c914e565052e86-1024x356.webp)
+![](/images/site-mirror/3781b0e5b1f939a749a1cc2200c914e565052e86-1024x356.webp)
 
 Imagine you’re an air-conditioner manufacturing company that sells millions of smart AC units to consumers. You are building a centralized, smart climate control system that collects sensor data about a house’s temperature, pressure, and humidity and sends it to a central location for an efficiency analysis to help end users trim their electricity bills.
 
@@ -28,7 +28,7 @@ Here’s what we used:
 1. The[**RedisTimeSeries module**](/timeseries/) to add time-series capabilities to Redis and store the data in time-series format
 1. [**Grafana with Redis Data Source**](https://grafana.com/grafana/plugins/redis-datasource) to create graphs for usage analysis
 
-![](/images/blog/adc1855790479608f47e78d7327f4846056d8dec-1024x419.webp)
+![](/images/site-mirror/adc1855790479608f47e78d7327f4846056d8dec-1024x419.webp)
 
 **Hardware requirements:**
 
@@ -48,19 +48,19 @@ Here’s what we used:
 - Insert the SD card into your system.
 - Bring up the Etcher tool and select the target SD card to which you want to flash the image.
 
-![](/images/blog/a0ac0945fb2e3e6afa030f45e45c132fd3a12614-1024x597.webp)
+![](/images/site-mirror/a0ac0945fb2e3e6afa030f45e45c132fd3a12614-1024x597.webp)
 
 Follow this 10-step process to see how it all fits together:
 
 ## Step 1: Get your sensors
 
-![](/images/blog/827ab4d828fee3084880a92066231f7812c6db41-1024x1024.webp)
+![](/images/site-mirror/827ab4d828fee3084880a92066231f7812c6db41-1024x1024.webp)
 
 There’s a huge variety of sensors on the market, but this demonstration uses a Pimoroni BME680 breakout board. [BME680](https://cdn-shop.adafruit.com/product-files/3660/BME680.pdf) is an integrated environmental sensor developed for mobile applications and wearables, where size and low power consumption are key requirements. It can measure temperature, pressure, humidity, and indoor air quality, and is Raspberry Pi and Arduino-compatible.
 
 ## Step 2: Set up your IoT board
 
-![](/images/blog/9199492c37ac544a873854de250e95370df3a85a-1024x762.webp)
+![](/images/site-mirror/9199492c37ac544a873854de250e95370df3a85a-1024x762.webp)
 
 For this demonstration, we’re using an [NVIDIA ](https://developer.nvidia.com/embedded/jetson-nano)[**Jetson Nano**](https://developer.nvidia.com/embedded/jetson-nano)[ board](https://developer.nvidia.com/embedded/jetson-nano), a small, powerful computer for developers to learn, explore, and build AI applications for edge devices. Priced at $59, it’s basically a developer kit that includes a Jetson Nano module with 2GB memory and delivers 472 GFLOPS of compute power. This demonstration should also work with other popular IoT devices, such as the Raspberry Pi, Arduino, Banana Pi, etc.
 
@@ -68,7 +68,7 @@ For this demonstration, we’re using an [NVIDIA ](https://developer.nvidia.com/
 
 The BME680 plugs directly into a Jetson Nano board without any connecting wires.
 
-![](/images/blog/b927723eb5b4dd3f319248d4624160da218ea691-768x1024.webp)
+![](/images/site-mirror/b927723eb5b4dd3f319248d4624160da218ea691-768x1024.webp)
 
 ## Step 4: Get your sensor working
 
@@ -100,7 +100,7 @@ If you are completely new to RedisTimeSeries, check out our [RedisTimeSeries Qui
 - Port number
 - Default user password
 
-![](/images/blog/2572c476f599233da5b1ce6773e36619a701e7d4-1024x689.webp)
+![](/images/site-mirror/2572c476f599233da5b1ce6773e36619a701e7d4-1024x689.webp)
 
 ## Step 7: Clone the project repository
 
@@ -272,73 +272,73 @@ Be sure that you have [Docker Engine](https://www.docker.com/products/container-
 
 Point your browser to https://<IP_ADDRESS>:3000. Use “admin” as username and password to log in to the Grafana dashboard.
 
-![](/images/blog/9bd0d0a532c8fa0f9b48d07b52db2d2a39cef7ec-1024x982.webp)
+![](/images/site-mirror/9bd0d0a532c8fa0f9b48d07b52db2d2a39cef7ec-1024x982.webp)
 
 Click the Data Sources option on the left side of the Grafana dashboard to add a data source.
 
-![](/images/blog/1ba23f00c39956980046da3117421fc382e31f05-1024x513.webp)
+![](/images/site-mirror/1ba23f00c39956980046da3117421fc382e31f05-1024x513.webp)
 
 Under the Add data source option, search for Redis and the Redis data source will appear as shown below:
 
-![](/images/blog/72da1b2a4de03cf8911d97d59a63eaf63bf955c7-1024x648.webp)
+![](/images/site-mirror/72da1b2a4de03cf8911d97d59a63eaf63bf955c7-1024x648.webp)
 
-![](/images/blog/50a9d0b6e29145985e7af81d6af04f4b8c5c9370-1024x489.webp)
+![](/images/site-mirror/50a9d0b6e29145985e7af81d6af04f4b8c5c9370-1024x489.webp)
 
 Supply the name, Redis Enterprise Cloud database endpoint, and password, then click Save & Test.
 
-![](/images/blog/544b4527a62f10a2d328cf33ac552cd7dce2cb0a-906x1024.webp)
+![](/images/site-mirror/544b4527a62f10a2d328cf33ac552cd7dce2cb0a-906x1024.webp)
 
 Click Dashboards to import Redis and Redis Streaming. Click Import for both these options.
 
-![](/images/blog/012fe9f0773758d5bd17111898c8e3a85165ba5f-1024x425.webp)
+![](/images/site-mirror/012fe9f0773758d5bd17111898c8e3a85165ba5f-1024x425.webp)
 
 Click on Redis to see a fancy Grafana dashboard that shows the Redis database information:
 
-![](/images/blog/e3cc002bd7109a8b4c91785b3603aeda6a8e366f-1024x253.webp)
+![](/images/site-mirror/e3cc002bd7109a8b4c91785b3603aeda6a8e366f-1024x253.webp)
 
-![](/images/blog/ca58dc6a9fcbfc6e98e99e1a401d68967549e8bf-1024x475.webp)
+![](/images/site-mirror/ca58dc6a9fcbfc6e98e99e1a401d68967549e8bf-1024x475.webp)
 
 ## Step 10: Plot RedisTimeSeries sensor data in Grafana
 
 Finally, let’s create a sensor dashboard that shows temperature, pressure, and humidity. To start with temperature, first click on + on the left navigation window. Under Create option, Select Dashboard and click on the Add new panel button.
 
-![](/images/blog/efa65d12d4b7bdc2990d00fd5fa562664cd19570-1024x445.webp)
+![](/images/site-mirror/efa65d12d4b7bdc2990d00fd5fa562664cd19570-1024x445.webp)
 
 A new window will open showing the Query section. Select SensorT from the drop-down menu, choose RedisTimeSeries as type, TS.GET as command and ts”temperature as key.
 
-![](/images/blog/bf24481a31d4bfa1e146c972cd06582a564e4aaf-1024x461.webp)
+![](/images/site-mirror/bf24481a31d4bfa1e146c972cd06582a564e4aaf-1024x461.webp)
 
 Choose TS.GET as a command.
 
-![](/images/blog/1b3eb6b3cdbafcc81cf5159ed755a45fc81165ec-1024x404.webp)
+![](/images/site-mirror/1b3eb6b3cdbafcc81cf5159ed755a45fc81165ec-1024x404.webp)
 
 Type ts”temperature as the key.
 
-![](/images/blog/f9cef15901c083f6885d2bcd63aa5084432352c4-1024x371.webp)
+![](/images/site-mirror/f9cef15901c083f6885d2bcd63aa5084432352c4-1024x371.webp)
 
 Click Run followed by Save, as shown below:
 
-![](/images/blog/97653db111fffe5155d4adce692c0d11220c10c3-1024x415.webp)
+![](/images/site-mirror/97653db111fffe5155d4adce692c0d11220c10c3-1024x415.webp)
 
 Now you can save the dashboard by your preferred name:
 
-![](/images/blog/bea0e8e1deaf09bb696a78f539820af5158bd86f-936x688.webp)
+![](/images/site-mirror/bea0e8e1deaf09bb696a78f539820af5158bd86f-936x688.webp)
 
 Click Save. This will open up a sensor dashboard. You can click on Panel Title and select Edit.
 
-![](/images/blog/feb7b300f7179ac5b70952beb2386dd2c4805f5d-1024x542.webp)
+![](/images/site-mirror/feb7b300f7179ac5b70952beb2386dd2c4805f5d-1024x542.webp)
 
 Type Temperature and choose Gauge under Visualization.
 
-![](/images/blog/16cea49974d63fea558d160ffdef8354566b1a45-494x1024.webp)
+![](/images/site-mirror/16cea49974d63fea558d160ffdef8354566b1a45-494x1024.webp)
 
 Click Apply and you should be able to see the temperature dashboard as shown here:
 
-![](/images/blog/3cbf71105a1c73af7c9a004206e33890d43fed85-1024x514.webp)
+![](/images/site-mirror/3cbf71105a1c73af7c9a004206e33890d43fed85-1024x514.webp)
 
 Follow the same process for pressure (ts:pressure) and humidity (ts:humidity), and add them to the dashboard. You should be able to see the complete dashboard readings for temperature, humidity, and pressure. Looks amazing. Isn’t it?
 
-![](/images/blog/657e86897fe057e19f1e9d28868d5e474623bd87-1024x902.webp)
+![](/images/site-mirror/657e86897fe057e19f1e9d28868d5e474623bd87-1024x902.webp)
 
 ## What’s next
 

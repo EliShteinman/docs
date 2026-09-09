@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 20 July 2026 · updated 22 July 2026*
 
-![Cache Consistency: Strategies to Keep Data Fresh](/images/blog/8618767cb25c823847ff249098bb8f1ede6935d7-2400x1256.webp)
+![Cache Consistency: Strategies to Keep Data Fresh](/images/site-mirror/8618767cb25c823847ff249098bb8f1ede6935d7-2400x1256.webp)
 
 A cache that has drifted from your database will happily serve wrong prices, expired permissions, or phantom inventory, and it won't feel a shred of guilt about it. Cache consistency is the discipline behind keeping that drift small, so cached values don't wander away from the source database. The speed advantage of caching depends on knowing how far cached values can drift from the source data, then keeping that drift within the bounds your app can handle.
 

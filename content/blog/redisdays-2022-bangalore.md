@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 30 October 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b8052350c25ec3f58ac35e2af58179d11f0fd5e6-772x550.webp)
+![Blog tile image](/images/site-mirror/b8052350c25ec3f58ac35e2af58179d11f0fd5e6-772x550.webp)
 
 **It’s time to meet your peers in person! We’re excited to bring together the Redis community.**
 

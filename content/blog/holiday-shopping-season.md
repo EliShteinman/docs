@@ -14,7 +14,7 @@ hidden: true
 
 *By Henry Tam · Published 3 November 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/cd9b1e07587511b81a84b901837e8cc758c07c7d-935x628.webp)
+![Blog tile image](/images/site-mirror/cd9b1e07587511b81a84b901837e8cc758c07c7d-935x628.webp)
 
 Another year has flown by, and Black Friday/CyberMonday (and the holidays!) are right around the corner. If forecasts are accurate, shoppers and retailers are going to be busier than ever. Historically, purchases in November and December represent 20% of annual retail sales. This year, [NRF](https://nrf.com/topics/holiday-and-seasonal-trends/winter-holidays) predicts 57% of shopping will be done online—and consumer expectations are higher than ever. Unfortunately, 75% of the retailers experienced increased latency and downtime during last year’s holiday season (Retail Holiday Reality [Report](https://inthecloud.withgoogle.com/harris-research/the-impact-of-covid-19-on-holiday-shopping.html) 2020 by GCP Harris Poll). According to [Akamai](https://www.liveseysolar.com/website-speed-study-finds-1-second-delay-in-website-load-time-means-a-7-reduction-in-conversions/), one-second delay in response time can cut conversions by 7% and customer satisfaction by 16%.
 
@@ -31,7 +31,7 @@ Redis Enterprise improves response time by [caching](/solutions/caching/) freque
 > *“RediSearch has allowed us to make the online shopping experience for our customers absolutely seamless. Aggregate searches bring faster, more accurate results so that a customer finds exactly what they need right away. We were facing scalability issues before, but the secondary indexes that are utilized now with our dynamic product offerings mean we can create a convenient and effective buyer journey that keeps customers returning for the healthy and natural products that they have grown to love since our inception.”*
 *—Ferry Wijaya, VP Engineering, Lemonilo*
 
-![](/images/blog/dc7289b200df97d617d3bcaf4e7956289297cfe2-300x60.webp)
+![](/images/site-mirror/dc7289b200df97d617d3bcaf4e7956289297cfe2-300x60.webp)
 
 ## Real-time inventory management
 
@@ -39,7 +39,7 @@ According to a Square [report](https://squareup.com/us/en/townsquare/future-of-r
 
 Delayed or inaccurate inventory information can frustrate customers, leading to shopping cart abandonment and order cancellations, lost revenues, higher costs, and brand damage. Redis Enterprise can provide data consistency and bilateral updates between stores, distribution centers, and other channels in real-time, while elastically scaling on-demand with zero downtime to support increased traffic during seasonal events like Black Friday. A [real-time inventory management system](/solutions/real-time-inventory/) can even support the use of predictive data analytics to send the appropriate stock to stores before it’s needed.
 
-![Holiday shopping with an omnichannel experience](/images/blog/75ac3c522c912a040033a27e4377d63f7cf0ee13-1024x575.webp)
+![Holiday shopping with an omnichannel experience](/images/site-mirror/75ac3c522c912a040033a27e4377d63f7cf0ee13-1024x575.webp)
 
 ## Personalized omnichannel experience
 

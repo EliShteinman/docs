@@ -16,7 +16,7 @@ hidden: true
 
 *By Pieter Cailliau, Filipe Oliveira · Published 19 May 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/51af28fa5f2a46b9abe0e7abb97ffc8f3a15a757-368x260.webp)
+![Blog tile image](/images/site-mirror/51af28fa5f2a46b9abe0e7abb97ffc8f3a15a757-368x260.webp)
 
 As modern mission-critical applications incorporate more and more machine learning techniques, they face some surprisingly [complex challenges](/blog/the-challenges-in-building-an-ai-inference-engine-for-real-time-applications/). Those challenges center around coping with real-time model serving requirements and monitoring the impact of these new features on end users.
 
@@ -33,15 +33,21 @@ This blog is intended to help developers and architects see under the hood of Re
 
 Most artificial intelligence (AI) frameworks ship with a runtime for executing the models developed with it, and the common practice for serving these is building a simple server around them. Because RedisAI is implemented as a [Redis module](/redis-enterprise/modules/), it automatically benefits from the server’s capabilities, including Redis’ native data types and robust ecosystem of clients, as well as its persistence and clustering, not to mention the flexibility provided by Redis modules and the peace of mind of proven Redis Enterprise support. Of course, there’s also Redis’ [high availability](/redis-enterprise/technology/highly-available-redis/) (99.999%) and [infinite linear scalability](/blog/redis-enterprise-extends-linear-scalability-200m-ops-sec/).
 
-![](/images/blog/036d9e730e2e383a02eac959aaed7ef6e2790df3-1024x766.webp)
+![](/images/site-mirror/036d9e730e2e383a02eac959aaed7ef6e2790df3-1024x766.webp)
+
+*RedisAI architecture.*
 
 Because Redis is an extendable in-memory data structures server, RedisAI uses it for storing its machine learning (ML) native data types. The main data type supported by RedisAI is the [tensor](https://en.wikipedia.org/wiki/Tensor), which is the common representation of ML data.
 
-![](/images/blog/0fd841b80fcc708ba97dbf62d7acd6822ebc5970-1024x383.webp)
+![](/images/site-mirror/0fd841b80fcc708ba97dbf62d7acd6822ebc5970-1024x383.webp)
+
+*What are tensors?*
 
 Additionally, RedisAI adds two data structures—models and scripts—for model runtime features. Models represent a computation graph by one of the supported deep learning (DL) or machine learning framework backends and are set with information about which device they should run on (CPU or GPU) and backend-specific parameters. RedisAI has several integrated backends, including TensorFlow, Pytorch, and ONNXRuntime.
 
-![](/images/blog/0b01daee699a6dcbd379109fef35468eb4afa91d-1024x272.webp)
+![](/images/site-mirror/0b01daee699a6dcbd379109fef35468eb4afa91d-1024x272.webp)
+
+*Supported backends in RedisAI.*
 
 Scripts can run both on CPUs and GPUs, and let you manipulate tensors via [TorchScript](https://pytorch.org/docs/stable/jit.html), a Python-like domain specific language (DSL) for tensor operations. This lets you pre-process your input data before you execute your model, and post-process the results, such as for [ensembling](https://en.wikipedia.org/wiki/Ensemble_learning) different models to improve performance.
 
@@ -90,25 +96,31 @@ On top of that, we wanted to reduce the impact of reference data in this benchma
 
 The first test compares the solutions without any reference data for single client performance. All serving solutions in this benchmark are essentially a serving wrapper around their core libraries. The setup and data flow is shown here:
 
-![](/images/blog/33dbfa9066f888e618fc0ac848d980d1a1529f98-674x161.webp)
+![](/images/site-mirror/33dbfa9066f888e618fc0ac848d980d1a1529f98-674x161.webp)
+
+*The baseline setup for all AI serving solutions under test.*
 
 The table below shows the end-to-end inference time measured on the benchmark client. This test sets the baseline. It shows that RedisAI does not introduce any overhead on running a model compared to other serving solutions. In certain cases it is even more optimized, largely due to the programming languages that were chosen (RedisAI is written in C/C++, TensorFlow Serving in C++, TorchServe is written in Java, and the common REST API servers are written in Python).
 
-![](/images/blog/097418a92cf4c9f89ab8aa585ee59b02147ef1a1-581x177.webp)
+![](/images/site-mirror/097418a92cf4c9f89ab8aa585ee59b02147ef1a1-581x177.webp)
 
 **Impact of latency with reference data**
 
 Now that we have set the baseline, let’s look at how the latency is impacted when the model requires 1KB of reference data. For TensorFlow Serving, TorchServe, and Gunicorn, the reference data will reside in a different host.
 
-![](/images/blog/3f874488f17fded7f3bd6827dd69fac92df4239f-674x314.webp)
+![](/images/site-mirror/3f874488f17fded7f3bd6827dd69fac92df4239f-674x314.webp)
+
+*Benchmark setup with reference data for Tensorflow Serving, TorchServe, and Gunicorn.*
 
 As explained above, for RedisAI, the reference data resides within Redis, already as a tensor. That’s why the setup is simpler:
 
-![](/images/blog/59c3fc2d4c94c1b4de2f9997ee35b5f6140f2f12-674x169.webp)
+![](/images/site-mirror/59c3fc2d4c94c1b4de2f9997ee35b5f6140f2f12-674x169.webp)
+
+*Benchmark setup with reference data for RedisAI.*
 
 The table below captures the results of this second test, and shows that **RedisAI reduces end-to-end inference latency up to 8x compared to other model serving solutions** when there is reference data at play for single-client performance. The q99 numbers, meanwhile, show that RedisAI delivers a much more stable solution than any others:
 
-![](/images/blog/6ee78e732b2cf61170d6490d74a19b703539aa71-619x181.webp)
+![](/images/site-mirror/6ee78e732b2cf61170d6490d74a19b703539aa71-619x181.webp)
 
 **How do these solutions handle scale?**
 
@@ -116,21 +128,21 @@ After analyzing the single-client performance, the next question is how do these
 
 For a dataset consisting of 1 million distinct credit-card transactions, the common HTTP server solution was limited at around 21K full inference cycles per second, TensorFlow Serving at around 40K full inferences cycles per second, TorchServe at around 50K full inference cycles per second, and RedisAI at around 192K full inference cycles per second.
 
-![](/images/blog/38930cee1de156414c5da05ca67dbfe3c76f4904-1024x783.webp)
+![](/images/site-mirror/38930cee1de156414c5da05ca67dbfe3c76f4904-1024x783.webp)
 
 On the same hardware and serving based on the same model, **RedisAI handles 4.8 times more inferences than TensorFlow serving, 4 times more inferences than TorchServe, and 9 times more inferences than common web APIs**, as shown here:
 
-![](/images/blog/7e19ffa905aad893424bde4bf7ede22f765a3709-1024x634.webp)
+![](/images/site-mirror/7e19ffa905aad893424bde4bf7ede22f765a3709-1024x634.webp)
 
 Considering the best results for each distinct model serving solution, note that while other model servers are overloaded at around 50K inferences per second, RedisAI is performing at steady and stable sub-millisecond latencies, without requiring additional virtual machines to be added to the cluster, at up to 190K inferences per second, as seen in these charts:
 
-![](/images/blog/33ad339a0e21151faba9969ca7ed664ac5517701-1024x680.webp)
+![](/images/site-mirror/33ad339a0e21151faba9969ca7ed664ac5517701-1024x680.webp)
 
-![](/images/blog/d64bc7f135fd7336769d4be20d55132017875b04-1024x634.webp)
+![](/images/site-mirror/d64bc7f135fd7336769d4be20d55132017875b04-1024x634.webp)
 
 If you relate the speedup factors on throughput and inference latency, RedisAI presents an overall speedup of 16x vs. TorchServe, 25x vs. TensorFlow Serving, and 81x vs. the common HTTP server. This means that on the same underlying hardware RedisAI can be 81x more efficient on serving the total 1 million inferences, as illustrated here:
 
-![](/images/blog/10a024300120608e7cfd0bd8dec0369c076ca934-1024x634.webp)
+![](/images/site-mirror/10a024300120608e7cfd0bd8dec0369c076ca934-1024x634.webp)
 
 **Benchmark analysis**
 

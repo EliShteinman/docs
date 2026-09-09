@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 10 October 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/59a6269771994cd59bc450b5414a5c89486e2ae8-600x400.webp)
+![Blog tile image](/images/site-mirror/59a6269771994cd59bc450b5414a5c89486e2ae8-600x400.webp)
 
 When writing a server application that connects to a database, you often have to deal with connection pools, with problematic repercussions if you ignore the issue for too long. So, let’s dive into the problem, and explore how connection pools address it.
 

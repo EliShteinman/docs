@@ -14,7 +14,7 @@ hidden: true
 
 *By Angel Camacho, Contributor · Published 5 June 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7a381b4cafcc78f73333778e4542dd57ed3666e2-772x550.webp)
+![Blog tile image](/images/site-mirror/7a381b4cafcc78f73333778e4542dd57ed3666e2-772x550.webp)
 
 **Just as a LEGO set consists of multiple pieces that you put together to build different structures, microservices are small, independent components that you can combine to build larger applications. This is a stark departure from the traditional monolithic architecture, where an application is developed as a single unit, often leading to less flexible and harder-to-maintain monolithic apps.**
 

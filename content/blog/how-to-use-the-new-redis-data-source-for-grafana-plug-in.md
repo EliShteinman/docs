@@ -14,7 +14,7 @@ hidden: true
 
 *By Mikhail Volkov, Americas Enterprise Customer Success Manager · Published 2 September 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fc264800a21148c7991c47fc0b4ab061b1b24e5e-917x421.webp)
+![Blog tile image](/images/site-mirror/fc264800a21148c7991c47fc0b4ab061b1b24e5e-917x421.webp)
 
 Earlier this month, Redis released the new [Redis Data Source for Grafana plug-in](https://grafana.com/grafana/plugins/redis-datasource), which connects the widely used open source application monitoring tool to Redis. To give you an idea of how it all works, let’s take a look at a self-referential example: using the plug-in to see how many times it has been downloaded over time. ([The Grafana plug-in repository](https://grafana.com/grafana/plugins/redis-datasource) itself does not provide such statistics out of the box.)
 
@@ -254,7 +254,9 @@ The command TS.MRANGE with filter `plugin` retrieves samples only for the `redis
 
 Open Grafana in a web browser using `http://localhost:3000` and create the data source by selecting Configuration -> Data Sources. Redis Data Source for Grafana supports transport layer security ([TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security)) and can connect to open source Redis OSS, Redis Enterprise, and Redis Enterprise Cloud databases anywhere using a direct connection.
 
-![](/images/blog/2c8e013b47ec3a2e328fe02cab7ce0aac5eede90-749x851.webp)
+![](/images/site-mirror/2c8e013b47ec3a2e328fe02cab7ce0aac5eede90-749x851.webp)
+
+*Adding Redis Data Source to Grafana configuration information.*
 
 The next step is to create a dashboard with a graph panel to visualize data. Select “Redis Datasource” and “RedisTimeSeries commands” in the query editor. Use the command TS.MRANGE with a plug-in name filter.
 

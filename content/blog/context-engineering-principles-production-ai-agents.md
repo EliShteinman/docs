@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 14 June 2026 · updated 17 June 2026*
 
-![Five context-engineering principles that survive production](/images/blog/a9acf4e2456981cfbd09a21753d49d64410251ba-2400x1256.webp)
+![Five context-engineering principles that survive production](/images/site-mirror/a9acf4e2456981cfbd09a21753d49d64410251ba-2400x1256.webp)
 
 Your agent passes every test you throw at it. The demo is clean, the eval suite is green, and you ship. Then a week later, the support tickets start: agents looping, costs spiking, responses that confidently cite facts that were never true. The model didn't change. The context around it did.
 

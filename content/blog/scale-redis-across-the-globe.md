@@ -14,7 +14,7 @@ hidden: true
 
 *By William Johnston, Head of Technical Marketing · Published 28 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a604f93a719583f870b14efeb765b4ddaef0db8b-772x550.webp)
+![Blog tile image](/images/site-mirror/a604f93a719583f870b14efeb765b4ddaef0db8b-772x550.webp)
 
 We love technical articles that go deep. However, sometimes you’re on the go and need a quick summary to get the gist of something. This is why we’re continuing our “[Redis in 90 Seconds](/blog/learn-how-redis-simplifies-your-architecture-in-90-seconds/)” series with a short post about how to scale Redis.
 

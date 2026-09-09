@@ -14,7 +14,7 @@ hidden: true
 
 *By Cedric Turner, Solution Architect · Published 17 August 2026 · updated 19 August 2026*
 
-![Choosing & integrating LLM APIs: a practical guid](/images/blog/8395858c859969177c787a4ac0a603d51925c875-2400x1256.webp)
+![Choosing & integrating LLM APIs: a practical guid](/images/site-mirror/8395858c859969177c787a4ac0a603d51925c875-2400x1256.webp)
 
 Making your first LLM API call is easy: with most provider SDKs, it's about five lines of code. Keeping that call fast, affordable, and reliable once real users show up is where the actual engineering happens: costs can compound as conversations grow, rate limits arrive at the worst moment, and many stateless LLM endpoints forget conversation state after each request. This guide covers what LLM APIs provide and how they're priced, how to choose a provider and access model, and how to build the caching, retry, and memory layer your app needs around those calls.
 

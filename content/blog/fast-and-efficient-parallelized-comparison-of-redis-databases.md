@@ -14,11 +14,11 @@ hidden: true
 
 *By Yoav Steinberg · Published 16 April 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/1b6fdc2e664fbb627d82768d4fe0ab77a6a1a7cd-270x225.webp)
+![Blog tile image](/images/site-mirror/1b6fdc2e664fbb627d82768d4fe0ab77a6a1a7cd-270x225.webp)
 
 The process of comparing two versions of a database is a fairly common practice, generally used for testing and development purposes, as well as supporting application updates and new releases. Comparing databases provides a number of advantages. Beginning by ensuring two databases are fully synced, then enabling users to assess the functionality of the backup setup and various processes, including verification of backup restoration or master-slave replication. This process is highly useful to anyone who uses a Redis database. As such, at Redis, we compare older versions of databases with our own newly developed ones, ensuring the replication mechanism between the different versions is satisfactory. In addition, we continuously validate our database synchronizations between different cloud zones and regions as a means to support customers with their [fully managed and highly available Redis databases](/redis-cloud). The following information expands upon the process I underwent to develop the Redis comparison tool.
 
-![](/images/blog/489fa71d38ddce27cb86c758812bb7ea531283ba-635x200.webp)
+![](/images/site-mirror/489fa71d38ddce27cb86c758812bb7ea531283ba-635x200.webp)
 
 ### The Redis RDB Tools
 

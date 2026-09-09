@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 29 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3241aff147643c864e2728d8786ae4dd83521920-772x550.webp)
+![Blog tile image](/images/site-mirror/3241aff147643c864e2728d8786ae4dd83521920-772x550.webp)
 
 **We updated Redis Cloud with Redis Open Source 7.0 compatible features, including Redis functions and Pub/Sub ACL changes, in a limited release.**
 
@@ -50,7 +50,7 @@ Starting with Redis OSS 7.0, the default access is more restrictive in response 
 
 To ease the upgrade process from version 6.x to 7.x, Redis Cloud continues to support the permissive approach by default. We provide additional support within the ACL Rule Builder UI to allow you to adapt to this change at your own pace.
 
-![Rule builder interface for creating REdis ACL rules](/images/blog/21b9bf0a72712af3ac0db8b08d9019c708cc72b9-694x777.webp)
+![Rule builder interface for creating REdis ACL rules](/images/site-mirror/21b9bf0a72712af3ac0db8b08d9019c708cc72b9-694x777.webp)
 
 You are not required to take immediate action when upgrading your applications from Redis 6.x to Redis 7.x. However, if you use ACLs and Pub/Sub channels, we recommend that you make your Pub/Sub ACL rules explicit for increased security. For more, see the Redis Cloud [ACLs documentation](https://docs.redis.com/latest/rc/security/database-security/passwords-users-roles/#define-permissions).
 
@@ -60,17 +60,17 @@ We have additional information about the [Redis OSS 7.0 changes that are relevan
 
 If you already have an account with Redis Cloud, create a new Fixed subscription.
 
-![](/images/blog/b68a4a23f7c1e086b0a869bda4ef11c1438fd23f-1999x898.webp)
+![](/images/site-mirror/b68a4a23f7c1e086b0a869bda4ef11c1438fd23f-1999x898.webp)
 
 When you get to the vendor/region selection section, you’ll notice a new toggle for **Redis 7.0 preview**. Selecting it narrows the region list to regions that support Redis 7.0. (We will gradually add more regions to the list.)
 
-![](/images/blog/b3a252e783000383f131ea984fefe5d2e29a738e-1660x664.webp)
+![](/images/site-mirror/b3a252e783000383f131ea984fefe5d2e29a738e-1660x664.webp)
 
 All the databases you create with this subscription will be compatible with the features and capabilities of Redis OSS 7.0.
 
 Don’t have an account yet? No worries! Create a [new free account](/try-free/), and you can choose Redis 7.0 there as well.
 
-![](/images/blog/201c97c0734b3b46b6f9a95035804888aefcc63a-1035x628.webp)
+![](/images/site-mirror/201c97c0734b3b46b6f9a95035804888aefcc63a-1035x628.webp)
 
 ## What’s next?
 

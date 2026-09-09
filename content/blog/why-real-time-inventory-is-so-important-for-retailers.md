@@ -14,9 +14,9 @@ hidden: true
 
 *By Fredric Paul, Director of Content · Published 10 June 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/7d224c54063ca3be4a85abf1ef6e3511ec9c92c7-368x260.webp)
+![Blog tile image](/images/site-mirror/7d224c54063ca3be4a85abf1ef6e3511ec9c92c7-368x260.webp)
 
-![](/images/blog/bf251fbc2a01503f00975d8ab9555f762c90cc64-250x327.webp)
+![](/images/site-mirror/bf251fbc2a01503f00975d8ab9555f762c90cc64-250x327.webp)
 
 *This blog post was excerpted from our new e-book, *[*Real-Time Inventory: Building Competitive Advantage with Redis Enterprise*](/docs/real-time-inventory-building-competitive-advantage-with-redis-enterprise/)*. Download it for free now!*
 

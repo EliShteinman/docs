@@ -14,7 +14,7 @@ hidden: true
 
 *By Simon Prickett, Curriculum Software Engineer · Published 3 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/47b48b93f4d549f318229af5b7364f4b7cd9bda8-386x260.webp)
+![Blog tile image](/images/site-mirror/47b48b93f4d549f318229af5b7364f4b7cd9bda8-386x260.webp)
 
 [Redis University](https://university.redis.com/) is pleased to announce the immediate availability of free, self-paced, on-demand online courses. A lot has changed in recent weeks, and many of us are now at home, perhaps a bit more than we’d like to be.
 

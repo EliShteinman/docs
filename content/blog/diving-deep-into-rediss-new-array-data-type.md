@@ -14,7 +14,7 @@ hidden: true
 
 *By Ricardo Ferreira, Lead Developer Advocate at Redis · Published 2 June 2026*
 
-![Diving deep into Redis’s new array data type](/images/blog/0efa10bbf4c17f61f38abf3499bc59bcd75b05c0-1200x628.webp)
+![Diving deep into Redis’s new array data type](/images/site-mirror/0efa10bbf4c17f61f38abf3499bc59bcd75b05c0-1200x628.webp)
 
 The most popular data types in Redis are [strings](https://redis.io/docs/latest/develop/data-types/strings/), [lists](https://redis.io/docs/latest/develop/data-types/lists/), [hashes](https://redis.io/docs/latest/develop/data-types/hashes/), [sets](https://redis.io/docs/latest/develop/data-types/sets/), and [sorted sets](https://redis.io/docs/latest/develop/data-types/sorted-sets/). Each is purpose-built around a specific way of organizing data, enabling developers to solve a wide range of technical problems. What none of them offer is effectively constant-time access to a specific position. A list gives you O(N) index access, a Hash has no position concept, and a sorted set uses scores as metadata, not as addresses. That gap matters on its own. It matters even more when the index itself is part of your data model. Where position 47, for example, isn't just the 47th item in a sequence. It means something. Maybe it's the 47th minute of the hour, the 47th line of a Markdown file, or the event number 47 in a machine log.
 
@@ -100,11 +100,11 @@ One thing to keep in mind: `ARRING` is designed to be called with a fixed capaci
 
 For example, here's what happens when a new event comes in, and the buffer is already full. In the diagram below, the buffer holds five entries — "a" through "e" — with "a" being the oldest at position 0 and "e" the newest at position 4. Writing "f" doesn't expand the array. It overwrites position 0 (where "a" was) and updates the head pointer. The buffer stays at five slots; only the oldest entry is gone.
 
-![Redis](/images/blog/3f64af432ade274f25118ea8ad8906b7680f54a1-950x383.svg)
+![Redis](/images/site-mirror/3f64af432ade274f25118ea8ad8906b7680f54a1-950x383.svg)
 
 Now the buffer holds "b" through "f". Reading the three most recent entries with the command `ARLASTITEMS myring 3` doesn't walk the list from the beginning. It uses the head pointer and modular arithmetic to calculate exactly which positions hold the three newest entries, then reads each one directly. In the diagram below, you can see it stepping back from position 0 to position 4 to position 3, returning "f", "e", "d" in newest-to-oldest order (or "d", "e", "f" oldest-first, which is the default).
 
-![Redis](/images/blog/d3b584e7fca166970d7aa60372f9f81603d54d61-950x240.svg)
+![Redis](/images/site-mirror/d3b584e7fca166970d7aa60372f9f81603d54d61-950x240.svg)
 
 `ARLASTITEMS` returns results oldest-first by default. If you want newest-first, you can add `REV`.
 
@@ -137,7 +137,7 @@ ARGREP myarray - + GLOB "err:*" WITHVALUES
 
 The diagram below shows exactly how the traversal works.
 
-![Redis](/images/blog/59b2604cdab730b0837048df23de2b38c510d9a2-950x420.svg)
+![Redis](/images/site-mirror/59b2604cdab730b0837048df23de2b38c510d9a2-950x420.svg)
 
 `ARGREP` supports four matching modes: `EXACT` for literal equality, `MATCH` for substring search, `GLOB` for wildcard patterns using the same `*`, `?`, and `[...]` syntax as `KEYS` and SCAN, and RE for regular expressions. Predicates can be combined with `AND` or `OR` logic. The - and + range sentinels follow the same convention as sorted set range commands.
 
@@ -174,13 +174,13 @@ ARSET myarray 2 "c"
 
 The array will change its internal state from all groups empty and nothing allocated to creating one active slot block, and leaving three groups still costing just 8 bytes each.
 
-![Redis](/images/blog/2f6844d6375791b8882cb86e57937e92c53f43bd-950x473.svg)
+![Redis](/images/site-mirror/2f6844d6375791b8882cb86e57937e92c53f43bd-950x473.svg)
 
 Small integers, floats, and short strings are stored directly inside the pointer slot, with no separate heap allocation. The low bits of a pointer that would otherwise go unused due to memory alignment are used to encode the value and its type. A dense array of small values ends up with essentially the same memory footprint as a raw C array of pointers. For sensor readings, counters, or short status strings, you're allocating for the data and nothing else.
 
 Executing `ARGET myarray 1` follows the path shown below: one step to find group 0 in the index table, then a binary search within that group to locate position 1. By default, this will always be two steps, except in scenarios where the array has more than 8M entries, as we will see later in this section. Because the number of steps is determined by the structure and not the amount of data, this is effectively constant-time access.
 
-![Redis](/images/blog/970a8a26e0d68b2cd2d4afc98ba44a4e5f93f0d1-950x240.svg)
+![Redis](/images/site-mirror/970a8a26e0d68b2cd2d4afc98ba44a4e5f93f0d1-950x240.svg)
 
 ### Writing data sparsely
 
@@ -194,13 +194,13 @@ ARSET myarray 8194 "b"
 
 The diagram below shows what the index table looks like after both writes. Group 0 holds position 2. Position 8194 lands in group 2 (because 8194 = 8192 + 2). Group 1, covering positions 4096 through 8191, never received a write; it exists only as a null pointer (8 bytes). A gap covering 4096 positions costs the same as a gap covering 40,960 positions: 8 bytes.
 
-![Redis](/images/blog/f542482affd38d436249dfafe14b399e0e738ba3-950x646.svg)
+![Redis](/images/site-mirror/f542482affd38d436249dfafe14b399e0e738ba3-950x646.svg)
 
 A job with a million input rows and 200 errors costs the memory of 200 stored values plus a handful of null pointers. And scanning with `ARSCAN` doesn't visit a million positions: it looks at the directory, finds the groups that have data, jumps the empty ones entirely, and returns just the occupied entries. The same design that makes gaps free also makes scanning fast.
 
 Reading a specific index in a sparse array follows the same two-step path as before: the first hop identifies the group and relative position; the second hop reaches the sparse block; and then a binary search within that block locates the exact entry. The diagram below shows an example. The search is over a small bounded set, never more than 10 entries per block by default, so it stays fast regardless of how spread out the data is.
 
-![Redis](/images/blog/150b44d2e630e295216d628b056eb4030caab2e4-950x240.svg)
+![Redis](/images/site-mirror/150b44d2e630e295216d628b056eb4030caab2e4-950x240.svg)
 
 ### When the array gets very large
 
@@ -213,11 +213,11 @@ ARSET myarray 50000000 "x"
 
 This happens silently. You just write, and the structure adapts. `ARGET myarray 50000000` still works exactly like `arr[50000000]`; you will get "x" back. The diagram below shows the before and after: a flat directory at the top and the newly promoted three-level structure at the bottom, with the top-level `superdir` pointing to blocks, and blocks pointing to the slices that hold actual values.
 
-![Redis](/images/blog/e0b767e1dfb988cc83060ea3754f46bcde000f5a-950x850.svg)
+![Redis](/images/site-mirror/e0b767e1dfb988cc83060ea3754f46bcde000f5a-950x850.svg)
 
 After the upgrade, the structure always has exactly three levels: a top-level superdir, a block, and a slice. The depth is fixed; it will never grow to four or five levels, regardless of how much data you add. The diagram below shows a read for index 50,000,000 traversing those three levels: a binary search in the superdir to locate the right block, which runs efficiently because there are very few blocks, then a direct index into the block, then a lookup within the slice; a binary search for sparse data, or a direct index for dense data.
 
-![Redis](/images/blog/9848a2fe41cdff5cbf599775fba0411b72d4ff88-950x240.svg)
+![Redis](/images/site-mirror/9848a2fe41cdff5cbf599775fba0411b72d4ff88-950x240.svg)
 
 The lookup within the top level involves a binary search over the superdir entries, but the number of superdir blocks stays very small relative to the data. The search is over structured metadata, not your actual values, so in practice, the cost stays tight and predictable even at very large scales.
 
@@ -259,13 +259,13 @@ AROP metrics:device-01 0 8300 USED
 
 Under the hood, `AROP` uses the same scan iterator as `ARSCAN` and `ARGREP`. The traversal starts at the first directory entry that overlaps the requested range and walks forward. For each group pointer in the directory, the iterator checks whether it is null. If it is, the entire group of 4096 positions is skipped in a single step, no values are touched, no slots are visited. Only groups that have been written to are entered. The diagram below shows this path for the example above: the range 0–8300 spans three groups. Group 0 has data and is entered. Groups 1 and 2 are null pointers and are each skipped in a single step.
 
-![Redis](/images/blog/137f49f13ca3f37f09ed8b3d681aba78ace92093-950x488.svg)
+![Redis](/images/site-mirror/137f49f13ca3f37f09ed8b3d681aba78ace92093-950x488.svg)
 
 Once the iterator enters a group, it visits only the occupied slots within the requested range. For each slot, the stored value is extracted and fed into the accumulator. For `SUM`, each value is parsed as a number and added to a running total. For `MAX`, it replaces the current maximum if larger. For `USED`, the counter increments by one regardless of the value. At the end of the scan, the accumulated result is returned as a single reply.
 
 The diagram below shows the accumulator receiving values from group 0: positions 0, 1, 5, and 6, the only four occupied slots in the range. Groups 1 and 2 were skipped at the directory level and contributed nothing.
 
-![Redis](/images/blog/fa6314ff56c41008d7c3e38c480efa5ee0cd93c9-950x446.svg)
+![Redis](/images/site-mirror/fa6314ff56c41008d7c3e38c480efa5ee0cd93c9-950x446.svg)
 
 `USED` is worth separating from `ARCOUNT`. `ARCOUNT` returns the total populated count across the entire array in O(1) because it reads a stored counter directly. `AROP USED` scans the range and counts what it finds, which makes it the range-scoped equivalent: useful when you need the active count within a specific window rather than across the whole array.
 
@@ -292,7 +292,7 @@ ARCOUNT myarray
 
 The memory behavior mirrors the write path exactly. When a deletion empties a slice entirely, the slice is freed immediately, and its slot in the directory is set back to null, the same 8-byte cost as a gap that was never written to. There's no deferred cleanup, no background pass. The memory is recovered within the same command that deleted the last entry.
 
-![Redis](/images/blog/f6e7c66d99df1a6f6382235a22be5d543c192aa6-950x646.svg)
+![Redis](/images/site-mirror/f6e7c66d99df1a6f6382235a22be5d543c192aa6-950x646.svg)
 
 `ARCOUNT` decrements immediately. It's a stored counter updated on every write and delete, so the cost is always O(1) and the answer is always exact. `ARLEN` updates dynamically as well. It always reflects the current highest occupied index plus one. Delete a position in the middle, and `ARLEN` is unchanged, because the highest occupied index didn't move. Delete the position at the top — the current highest — and `ARLEN` decreases to the next occupied position plus one. The source scans backward through the directory to find it.
 

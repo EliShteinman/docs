@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 11 July 2026 · updated 16 July 2026*
 
-![Dynamic chunking for RAG: building context infrastructure that adapts](/images/blog/008061fb0f1c65a00a1f9b89315e1cae551b1714-2400x1256.webp)
+![Dynamic chunking for RAG: building context infrastructure that adapts](/images/site-mirror/008061fb0f1c65a00a1f9b89315e1cae551b1714-2400x1256.webp)
 
 Most teams pick a chunk size once and never touch it again. Copy the settings a tutorial used (usually 512-token chunks with 50 tokens of overlap between them), and ship it. Then the corpus grows, the queries get stranger, and that early choice quietly caps retrieval quality.
 

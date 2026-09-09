@@ -14,7 +14,7 @@ hidden: true
 
 *By Kyle Banker, Sr. Director, Field Engineering · Published 18 August 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/41bfbde67a28d594c783f244ddfa4da403e597ba-1999x1158.webp)
+![Blog tile image](/images/site-mirror/41bfbde67a28d594c783f244ddfa4da403e597ba-1999x1158.webp)
 
 For the past few months, the Redis education team has been working hard on a new course covering Redis security. Today, we’re pleased to announce the general availability of [RU330: Redis Security](https://university.redis.com/courses/ru330/)! If you run Redis in production, then you’ll definitely want to [sign up](https://university.redis.com/courses/ru330/).
 
@@ -52,7 +52,9 @@ This ACL directive creates a user capable of running exactly one Redis command: 
 
 You can think of this course as a series of techniques for avoiding a Redis horror story. In fact, because Redis is deployed so widely, it can be a target for [hackers](https://en.wikipedia.org/wiki/Hacker#Black_hat_hacker) (the bad kind) and [script kiddies](https://en.wikipedia.org/wiki/Script_kiddie). As a kind of motivation, Jamie and I had the idea of featuring a different Redis horror story each week in the course. You’ll learn about some infamous Redis exploits and what might’ve been done to avoid them.
 
-![](/images/blog/904be32ba34695896e498a694e825481ce14a3b8-1024x578.webp)
+![](/images/site-mirror/904be32ba34695896e498a694e825481ce14a3b8-1024x578.webp)
+
+*Jamie Scott telling a Redis horror story.*
 
 ## Open source Redis
 

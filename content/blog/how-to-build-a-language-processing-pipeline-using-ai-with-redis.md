@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 20 October 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/b2a0bdd433cde0b9ab6e644f87dee914a417249c-772x520.webp)
+![Blog tile image](/images/site-mirror/b2a0bdd433cde0b9ab6e644f87dee914a417249c-772x520.webp)
 
 Confirmation bias is a problem that all medical professionals have to wrestle with. Not being able to consider different ideas that challenge pre-existing views blights their ability to entertain a new diagnosis in the face of an established one.
 
@@ -40,7 +40,7 @@ Let’s explore how you can build a pipeline for Natural Language Processing (NL
 
 We’ll reveal how Redis was used to bring this idea to life by highlighting each of the components used as well as unpacking their functionality.
 
-![](/images/blog/e9ed7aaac99db3e887c71d5a98ae3bd505fc03c5-1600x867.webp)
+![](/images/site-mirror/e9ed7aaac99db3e887c71d5a98ae3bd505fc03c5-1600x867.webp)
 
 ## 2. What will you need?
 
@@ -55,7 +55,7 @@ We’ll reveal how Redis was used to bring this idea to life by highlighting eac
 
 ### NLP Pipeline 1: Turning Text into a Knowledge Graph
 
-![](/images/blog/e5407bca7240bdcf3a646a307a0736adc2c56d76-1024x620.webp)
+![](/images/site-mirror/e5407bca7240bdcf3a646a307a0736adc2c56d76-1024x620.webp)
 
 From start to finish, Redis is the data fabric of this pipeline. Its function is to turn text into a knowledge graph. Let’s have a quick overview of what a knowledge graph is and its function in this project.
 
@@ -72,7 +72,7 @@ A knowledge graph is made up of 2 main components:
 
 Below is an example of how nodes and edges are used to integrate data.
 
-![](/images/blog/dd038100b5267906a8585b09ef7ae54180775673-1084x964.webp)
+![](/images/site-mirror/dd038100b5267906a8585b09ef7ae54180775673-1084x964.webp)
 
 ### How it works
 
@@ -211,7 +211,7 @@ This is necessary because RedisGears doesn’t support the submission of project
 
 ### NLP pipeline 2: BERT QA
 
-![](/images/blog/ad4ff28b4c2f2942bf3e589e2acc2549f44018e4-1600x906.webp)
+![](/images/site-mirror/ad4ff28b4c2f2942bf3e589e2acc2549f44018e4-1600x906.webp)
 
 BERT stands for Bidirectional Encoder Representations from Transformers. It was created by researchers at Google AI and is a world leader in processing national language tasks, including Question Answering (SQuAD v1.1.), Natural Language Inference (MNLI) and others.
 
@@ -257,7 +257,7 @@ For the non-blocking main thread mode, models are preloaded on each shard using 
 
 ### NLP Pipeline 3: T5 for Summarization
 
-![](/images/blog/2aab384d0547e68e6f247765305cefff30526644-1600x1098.webp)
+![](/images/site-mirror/2aab384d0547e68e6f247765305cefff30526644-1600x1098.webp)
 
 Summarization works by running on sentence: prefix and running t5-base transformers tokenizer, saving results in RedisGraph using simple SET command and python.pickle module, adding summary key (derived from article_id) into:
 
@@ -406,7 +406,7 @@ python3 summary_processor_t5.py
 
 While RedisGears allows you to deploy and run machine learning libraries like [spacy](https://github.com/AlexMikhalev/cord19redisknowledgegraph/blob/master/spacy_sentences_geared.py) and [BERT transformers](https://github.com/AlexMikhalev/cord19redisknowledgegraph/blob/master/tokenizer_bert_geared.py), the solution below adopts a simpler approach:
 
-![](/images/blog/38739d23a220769bc34a1bed2f8315703484a80a-1600x376.webp)
+![](/images/site-mirror/38739d23a220769bc34a1bed2f8315703484a80a-1600x376.webp)
 
 **Here’s a quick overview of the overall pipeline: **The above 7 lines allow you to run logic either in a distributed cluster or on a single machine using all available CPUs. As a side note, no changes are required until you need to scale over more than 1000 nodes.
 
@@ -420,11 +420,11 @@ Overall, pre-processing is a straightforward process. You can access the full co
 
 1. The node process can only save locally. We don’t move data, anything you want to save should have a hashtag. For example, to add to the set of processed_docs, use the following:
 
-![](/images/blog/5598acbe04ae2631b466abffbb26a56fb33f2de9-1546x108.webp)
+![](/images/site-mirror/5598acbe04ae2631b466abffbb26a56fb33f2de9-1546x108.webp)
 
 1. Make sure to load external libraries into the computational threat. For example, symspell requires additional dictionaries and needs two steps to load:
 
-![](/images/blog/e9612fc2db3f41a6f25c1c937783d060c891bf61-1546x856.webp)
+![](/images/site-mirror/e9612fc2db3f41a6f25c1c937783d060c891bf61-1546x856.webp)
 
 You can build Aho-Corasick automata directly from UMLS data. Aho-Corasick will allow you to match incoming sentences into pairs of nodes, and present sentences as edges in a graph. The Gears related code is simple:
 
@@ -440,21 +440,21 @@ bg.register('sentence:*',  mode="async_local",onRegistered=OnRegisteredAutomata)
 
 The Redis Knowledge Graph is designed to create knowledge graphs based on long and detailed queries.
 
-![](/images/blog/71482313f4bbf5eb5302ea92f487accfd1f09c24-1600x995.webp)
+![](/images/site-mirror/71482313f4bbf5eb5302ea92f487accfd1f09c24-1600x995.webp)
 
 **Preliminary step**: Select ‘Get Started’ and choose either ‘Nurse’ or ‘Medical student.”
 
 **Step 1: **Type in your query into the search bar
 
-![](/images/blog/ae80345679854ff9f163ccb83403b08d59559c91-1600x941.webp)
+![](/images/site-mirror/ae80345679854ff9f163ccb83403b08d59559c91-1600x941.webp)
 
 **Step 2: **Select the query that’s most relevant to your search
 
-![](/images/blog/ad77c94f6d6926e5bc7fead57ae9c9ce001ccd58-1600x1249.webp)
+![](/images/site-mirror/ad77c94f6d6926e5bc7fead57ae9c9ce001ccd58-1600x1249.webp)
 
 **Step 3: **Browse between the different nodes and change the dates of your search with toggle bar at the bottom
 
-![](/images/blog/e9ed7aaac99db3e887c71d5a98ae3bd505fc03c5-1600x867.webp)
+![](/images/site-mirror/e9ed7aaac99db3e887c71d5a98ae3bd505fc03c5-1600x867.webp)
 
 ## Conclusion: Eliminating confirmation bias with Redis
 
@@ -464,13 +464,13 @@ You can discover more about the ins and outs of this innovative application by v
 
 You can head over to the [Launchpad](https://launchpad.redis.com/) to discover more about the application along with many others in our exciting collections of apps.
 
-![](/images/blog/4286535b4f0ad548b626a7e3bc36792d2aa0c568-1600x593.webp)
+![](/images/site-mirror/4286535b4f0ad548b626a7e3bc36792d2aa0c568-1600x593.webp)
 
 ## Who created this application?
 
 **Alexander Mikhalev**
 
-![](/images/blog/af58554337a114041f2726a41a9b10c17254305b-800x800.webp)
+![](/images/site-mirror/af58554337a114041f2726a41a9b10c17254305b-800x800.webp)
 
 Alexander is a passionate researcher and developer who’s always ready to dive into new technologies and develop ‘new things.’
 

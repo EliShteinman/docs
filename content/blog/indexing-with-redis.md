@@ -15,7 +15,7 @@ hidden: true
 
 *By David Maier, Technical Enablement Mananger · Published 10 August 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/d75b51f6d811874093f54bfd83f6615b7f728a6b-91x78.webp)
+![Blog tile image](/images/site-mirror/d75b51f6d811874093f54bfd83f6615b7f728a6b-91x78.webp)
 
 *This article was originally posted on *[*nosqlgeek.org*](http://www.nosqlgeek.org)
 

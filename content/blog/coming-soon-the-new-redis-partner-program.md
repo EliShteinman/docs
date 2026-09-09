@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike  Moss , SVP, Worldwide Channels & Alliances · Published 3 September 2025*
 
-![Redis partner program](/images/blog/8218cd81005f626b79b2434951298c2e9e623fd9-772x552.webp)
+![Redis partner program](/images/site-mirror/8218cd81005f626b79b2434951298c2e9e623fd9-772x552.webp)
 
 Redis is excited to announce the upcoming launch of our new Partner Program, set to debut in February 2026. This program is a big step forward in how we work with our global AI, SI and Cloud partners. It is designed to make engaging with Redis sellers consistent, clear, and growth-based at every stage.
 

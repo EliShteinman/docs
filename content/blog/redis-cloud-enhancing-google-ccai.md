@@ -14,7 +14,7 @@ hidden: true
 
 *By Shyam Kathiresan · Published 21 April 2025 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/3b11a9b9f6b9e1220f0bfd79c4789c36fa81a8cd-1544x1104.webp)
+![Blog tile image](/images/site-mirror/3b11a9b9f6b9e1220f0bfd79c4789c36fa81a8cd-1544x1104.webp)
 
 **See how Redis and Arhasi make CCAI faster, smarter, and more cost effective**
 
@@ -38,7 +38,7 @@ CCAI’s is great at building conversational AI agents that understand and respo
 
 **Redis Cloud: The real-time engine powering CCAI’s core**
 
-![](/images/blog/475ff164102dc295a1dd540bcc46de621bd54b18-3840x1738.webp)
+![](/images/site-mirror/475ff164102dc295a1dd540bcc46de621bd54b18-3840x1738.webp)
 
 Redis Cloud solves the core performance issues that can slow CCAI down:
 

@@ -17,7 +17,7 @@ hidden: true
 
 *By Lior Kogan, Ozan Tezcan, Yuan Wang, Paulo Sousa · Published 2 April 2026*
 
-![Atomic slot migration with Redis 8.4](/images/blog/f23b4e1c9c204cd18fa7e25ec9d1a3b5d6c13a8d-1200x628.webp)
+![Atomic slot migration with Redis 8.4](/images/site-mirror/f23b4e1c9c204cd18fa7e25ec9d1a3b5d6c13a8d-1200x628.webp)
 
 [In Redis 8.4](/blog/redis-8-4-open-source-ga/), we introduced atomic slot migration (ASM), a significant improvement for anyone operating Redis Cluster at scale. We wrote this blog to teach the Redis community what Redis hash slots are and help you uncover:
 
@@ -144,7 +144,7 @@ Redis 8.4 cluster running on multiple `c4-standard-8` GCP instances (8 vCPUs, 32
 
 The Redis Cluster was launched with three nodes and ***scaled out*** to four after the 85-second mark. ASM was used to rebalance the cluster by migrating one-third of the hash slots from each existing node to the newly added node.
 
-![Scale out: from 3 to 4 shards](/images/blog/a4a7978e7d4320adc5b25d281c173f273c224fa0-1500x780.webp)
+![Scale out: from 3 to 4 shards](/images/site-mirror/a4a7978e7d4320adc5b25d281c173f273c224fa0-1500x780.webp)
 
 The migration completed in **6.4 seconds** in total: 0.9, 2.7, and 2.8 seconds to transfer a third of the slots from the first, second, and third shard respectively.
 
@@ -156,7 +156,7 @@ Average** latency** remained within the normal range, with a temporary increase 
 
 For this test, the Redis Cluster was launched with four nodes and ***scaled in*** to three, also just after the 85-second mark. Now, ASM was used to redistribute the hash slots from the fourth node to the remaining three nodes.
 
-![Scale in: from 4 to 3 shards](/images/blog/1e8c4f7bebf7c9614414fd684a6e5a6ebd274c30-1500x780.webp)
+![Scale in: from 4 to 3 shards](/images/site-mirror/1e8c4f7bebf7c9614414fd684a6e5a6ebd274c30-1500x780.webp)
 
 Migrating the slots from the fourth node into the remaining three nodes took **8.6 seconds** in total (3.1, 2.8, and 2.7 seconds for each shard, respectively).
 
@@ -168,9 +168,9 @@ As observed during scale-out, the scaling-in process introduced no noticeable im
 
 ASM delivers up to **30x faster migrations**,** **up to **73% lower latency spikes** and **almost no client redirect** compared to legacy slot migration. These improvements stem from ASM’s atomic bulk transfer architecture, which eliminates the key-by-key migration overhead and continuous cluster state updates that impact legacy resharding.
 
-![ASM vs legacy slot migration](/images/blog/cd68e45830ab8f5a61c54082e84207eeae72b77e-1500x780.webp)
+![ASM vs legacy slot migration](/images/site-mirror/cd68e45830ab8f5a61c54082e84207eeae72b77e-1500x780.webp)
 
-![ASM vs. legacy migration table](/images/blog/3d7da9f9b3bf258355a0212154a02526b7c3f6ce-848x407.webp)
+![ASM vs. legacy migration table](/images/site-mirror/3d7da9f9b3bf258355a0212154a02526b7c3f6ce-848x407.webp)
 
 **Migration Speed (30x faster):** ASM migrates entire slot ranges atomically in 6-8 seconds versus legacy migration, which takes 192-219 seconds using a key-by-key approach. This translates to up to 640 slots/second for ASM versus 21 slots/second for legacy.
 
@@ -184,7 +184,7 @@ ASM delivers up to **30x faster migrations**,** **up to **73% lower latency spik
 
 Read on for a peek under the hood at how ASM works.
 
-![Under the hood](/images/blog/c3961647f68a23f8504f2d74cece243bdc120eb2-1503x1600.webp)
+![Under the hood](/images/site-mirror/c3961647f68a23f8504f2d74cece243bdc120eb2-1503x1600.webp)
 
 ** 1. Migration starts from the destination
 **ASM starts by sending `CLUSTER MIGRATION IMPORT <start-slot> <end-slot>` to the destination node. The migration is initiated from the destination node, just like the `REPLICAOF` command.

@@ -16,7 +16,7 @@ hidden: true
 
 *By Redis   · Published 24 August 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 It’s always exciting when a new version of RediSearch comes out—we just released version 1.4 (yes, we skipped 1.3 to align with a new versioning methodology). This new version has two key features which add quite a bit of smarts to querying:
 

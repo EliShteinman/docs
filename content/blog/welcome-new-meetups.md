@@ -14,7 +14,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 28 July 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/a19a476f2558cc890117e230a0f1f1c485839f75-600x450.webp)
+![Blog tile image](/images/site-mirror/a19a476f2558cc890117e230a0f1f1c485839f75-600x450.webp)
 
 Meetups are a great opportunity for community members to learn more about unfamiliar features in Redis and new releases such as [Redis 4.0](/blog/redis-4-0-0-released). Here at Redis we love to support burgeoning Redis community events and wanted to say welcome to the newest Redis meetups.
 

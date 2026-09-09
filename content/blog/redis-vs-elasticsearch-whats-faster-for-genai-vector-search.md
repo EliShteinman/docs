@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 21 May 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/19ab99708a5ab196315648d372ea12a49b1469ee-772x552.webp)
+![Blog tile image](/images/site-mirror/19ab99708a5ab196315648d372ea12a49b1469ee-772x552.webp)
 
 ## Redis and Elasticsearch take very different approaches to GenAI and vector search. Here’s why that matters.
 

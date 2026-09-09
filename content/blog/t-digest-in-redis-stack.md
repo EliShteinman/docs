@@ -14,7 +14,7 @@ hidden: true
 
 *By Lior Kogan, Contributor · Published 14 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c4b0dcfca0bdaa5a15c9344fd191501231486b8a-772x550.webp)
+![Blog tile image](/images/site-mirror/c4b0dcfca0bdaa5a15c9344fd191501231486b8a-772x550.webp)
 
 **With the introduction of the **[**latest Redis Stack**](/blog/introducing-redis-stack-6-2-6-and-7-0-6/)**, we celebrate a new probabilistic data structure: **[**t-digest**](https://redis.io/commands/?group=tdigest)**.**
 

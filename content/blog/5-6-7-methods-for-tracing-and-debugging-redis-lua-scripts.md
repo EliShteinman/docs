@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 2 December 2014 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/afcebf9575dc3e10f6b13ae99439084870b7bddf-635x200.webp)
+![Blog tile image](/images/site-mirror/afcebf9575dc3e10f6b13ae99439084870b7bddf-635x200.webp)
 
-![](/images/blog/f2bb038a924e9656027418ea98c4f563c1657d62-635x200.webp)
+![](/images/site-mirror/f2bb038a924e9656027418ea98c4f563c1657d62-635x200.webp)
 
 ### Or: To Err is Human, To Fix Debug.
 

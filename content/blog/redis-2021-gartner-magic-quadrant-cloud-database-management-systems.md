@@ -15,7 +15,7 @@ hidden: true
 
 *By Steve Naventi, Senior Director of Communications · Published 6 January 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/72b21e6a9681098514567d99648ba3839bec69df-772x550.webp)
+![Blog tile image](/images/site-mirror/72b21e6a9681098514567d99648ba3839bec69df-772x550.webp)
 
 Over the past two years, the database market has transformed dramatically. As we started 2020 we were still in the early stages of moving data processing and analytics to the cloud. Within a few months, businesses have accelerated from the crawl and walk phase with cloud initiatives to running and sprinting in modernizing their existing apps and launching new greenfield apps.
 
@@ -33,7 +33,7 @@ Gartner delves into greater detail in the accompanying December 2021 report “C
 
 Redis Enterprise Cloud not only met the inclusion requirements for all four use cases, but ranked within the top 10 vendors in each use case in Gartner’s evaluation. We also were in the top five for the Operational Intelligence use case with a score of 3.47 out of 5 (as of December 1, 2021). We believe this validates one of our key initiatives and customer use cases in 2021 and beyond.
 
-![gartner graph showing vendors' product scores for operational intelligence use cases, including Redis Enterprise](/images/blog/5c8c0b0d1fe731e42f451cf302e46bbf22c795df-926x1024.webp)
+![gartner graph showing vendors' product scores for operational intelligence use cases, including Redis Enterprise](/images/site-mirror/5c8c0b0d1fe731e42f451cf302e46bbf22c795df-926x1024.webp)
 
 This year we reimagined [Redis as an operational analytics platform](https://thenewstack.io/deliver-search-and-analytics-at-the-speed-of-transactions/) through [new capabilities introduced in RediSearch](/blog/redisearch-2-build-modern-applications-interactive-search/) that can deliver search and analytics at the speed of transactions. As companies capture increasing amounts of structured and unstructured data they face performance bottlenecks, but RediSearch now allows users to easily index their datasets, query, and aggregate the data in a fully distributed manner in real-time, at the speed of Redis.
 

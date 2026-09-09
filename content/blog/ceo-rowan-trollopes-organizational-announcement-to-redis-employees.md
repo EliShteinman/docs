@@ -15,7 +15,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 15 July 2026 · updated 19 August 2026*
 
-![CEO Rowan Trollope’s organizational announcement to Redis employees](/images/blog/16b31b7f3b996f586856f3ef7efdf1b6460d8dce-1200x628.webp)
+![CEO Rowan Trollope’s organizational announcement to Redis employees](/images/site-mirror/16b31b7f3b996f586856f3ef7efdf1b6460d8dce-1200x628.webp)
 
 Today, we are announcing an organizational change at Redis, including a reduction of approximately 200 roles globally and a realignment of roles, teams, and priorities across the company.
 

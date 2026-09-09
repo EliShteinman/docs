@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 17 September 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/982857fb3b57db29fbfe252734054aa84a79eaef-386x260.webp)
+![Blog tile image](/images/site-mirror/982857fb3b57db29fbfe252734054aa84a79eaef-386x260.webp)
 
 RediSearch, a real-time secondary index with full-text search capabilities for Redis, is one of the most mature and feature-rich Redis modules. It is also becoming even more popular every day—in the past few months RediSearch Docker pulls have jumped 500%! That soaring popularity has led customers to come up with a wide variety of interesting use cases ranging from [real-time inventory management](/solutions/real-time-inventory/) to [ephemeral search](/blog/the-case-for-ephemeral-search/).
 
@@ -27,13 +27,15 @@ Having a rich query-and-aggregation engine in your Redis database enables a wide
 
 For RediSearch 2.0 we re-architected the way indices are kept in sync with the data. Instead of having to write data through the index (using the FT.ADD command), RediSearch now follows the data written in hashes and synchronously indexes it. This re-architecture comes with several changes in the API, which we discussed in a previous post when [RediSearch 2.0 Hit Its First Milestone](/blog/redisearch-2-0-hits-its-first-milestone/).
 
-![](/images/blog/85e8608cf0cbd59a364e313598c0db04b35df681-1024x720.webp)
+![](/images/site-mirror/85e8608cf0cbd59a364e313598c0db04b35df681-1024x720.webp)
 
 This new architecture brings two main benefits. First, it’s now easier than ever to create a secondary index on top of your existing data. You can just **add RediSearch to your existing Redis database, create an index, and start querying it**, without having to migrate your data or use new commands for adding data to the index. This drastically lowers the learning curve for new RediSearch users and lets you create indexes on your existing Redis databases—without even having to restart them.
 
 In addition to implementing a new way to index data, we also took the index out of the keyspace. This enables Redis Enterprise’s [Active-Active technology](/active-active/), which is based on [conflict-free replicated data types (CRDTs)](/blog/diving-into-crdts/). Merging two inverted indices conflict-free is difficult, but Redis already has [a proven CRDTs implementation](/customers/mutualink/) of Hashes. So the second big benefit of **this new architecture is making RediSearch 2.0 even more scalable**. Because RediSearch now follows Hashes and the index was moved out of the keyspace, you can now run RediSearch in an Active-Active geo-distributed database.
 
-![](/images/blog/21799b951e82708047f632a0e0e870797d5db68d-1024x608.webp)
+![](/images/site-mirror/21799b951e82708047f632a0e0e870797d5db68d-1024x608.webp)
+
+*Active-Active technology seamlessly resolves conflicts between documents, and RediSearch updates local indices accordingly.*
 
 A document will be replicated to all databases in the replication set in a [strongly eventual consistent manner](/docs/under-the-hood/). In each replica, RediSearch will simply follow all the updates on the Hashes, which means all indices are strongly eventual consistent as well.
 
@@ -51,9 +53,9 @@ All benchmark variations were run on Amazon Web Services instances, provisioned 
 
 Given that RediSearch 2.0 comes with the ability to follow changes in Hashes in Redis and automatically index them, we’ve added variants for the FT.ADD and [HSET](https://redis.io/commands/hset/) commands. To make upgrades easier, we remapped the now deprecated FT.ADD command to the HSET commands in RediSearch 2.0. The two charts below display overall ingestion rate and latency for both RediSearch 1.6 and RediSearch 2.0, while retaining sub-millisecond latencies.
 
-![](/images/blog/20d78ae72ae6ea6a2ee63717285a069ccc4007a7-1024x639.webp)
+![](/images/site-mirror/20d78ae72ae6ea6a2ee63717285a069ccc4007a7-1024x639.webp)
 
-![](/images/blog/963f74f62cd9a3e6e522976b6dfd38472af410e0-1024x658.webp)
+![](/images/site-mirror/963f74f62cd9a3e6e522976b6dfd38472af410e0-1024x658.webp)
 
 [RediSearch has always been fast](/blog/redisearch-1-6-boosts-performance-up-to-64/), but with this architectural change we’ve moved from indexing 96K documents per second to 132K docs/sec at an overall p50 ingestion latency of 0.4ms, drastically improving write scaling.
 

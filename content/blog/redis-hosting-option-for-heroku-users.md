@@ -15,17 +15,17 @@ hidden: true
 
 *By Raja Rao, Head of Growth Marketing · Published 8 September 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 **Heroku may have discontinued its free platform support for Redis, which may discourage those who have depended on it. But not to worry! Redis has several ways to add continued support, including a starting plan far cheaper than Heroku Redis.**
 
 Heroku is a fantastic product. For years, developers have praised this pioneer in the Platform as a Service (PaaS) category for the platform and the developer experience the tool provides. However, Heroku recently announced that it would discontinue its free platform tiers, Heroku Data for Redis and Heroku Postgres.
 
-![](/images/blog/aeb41a25ac1abd1917e9d20c7f516feb645cbd78-1024x132.webp)
+![](/images/site-mirror/aeb41a25ac1abd1917e9d20c7f516feb645cbd78-1024x132.webp)
 
 This is not the first time we’ve seen a third-party hosted provider that hosts Redis open source abruptly change or discontinue its service. For example, RedisToGo, which also offered a hosted Redis, recently announced its closure.
 
-![](/images/blog/840297d684629cb3b7938fa5ecd0694a3035299b-1024x498.webp)
+![](/images/site-mirror/840297d684629cb3b7938fa5ecd0694a3035299b-1024x498.webp)
 
 Now, imagine you are using Redis in production, an easy-to-imagine scenario. You’re suddenly given a rush project: purchase a new service, set up a new service, upgrade your server, migrate live production data, and so on. It can be a nightmare. You deserve a service you can depend on and one you can be confident will grow with you.
 
@@ -68,7 +68,7 @@ REDIS_ENDPOINT_URL = "Redis server URI"
 
 REDIS_PASSWORD = "Password to the server"
 
-![](/images/blog/2012470ec980da194d80715330230fde7826f282-1452x318.webp)
+![](/images/site-mirror/2012470ec980da194d80715330230fde7826f282-1452x318.webp)
 
 Alternatively, to use the Redis Enterprise addon directly via Heroku, run the following:
 

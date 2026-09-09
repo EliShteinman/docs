@@ -18,7 +18,7 @@ hidden: true
 
 *By Gilbert Lau, Abhishek Srivastava · Published 6 April 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/5f8cce3a025d1e8da1aea15c7b09b9d41303c667-772x550.webp)
+![Blog tile image](/images/site-mirror/5f8cce3a025d1e8da1aea15c7b09b9d41303c667-772x550.webp)
 
 We are very excited to share that our fully managed Redis Enterprise service in the [Google Cloud Platform](/cloud-partners/google/) is now available in the Delhi region (Asia-South2) in addition to the Mumbai (Asia-South1) region of India. Today, there are over 20 Google Cloud Platform regions where customers can deploy Redis Enterprise through GCP Marketplace to support their real-time data use cases; those include enterprise cache, session management, gaming leaderboard, fraud detection, high-speed transactions, asynchronous communication, and more. Many of our customers have been using Redis Enterprise as their primary database in retail, gaming, the [financial services industry](/industries/financial-services/), and more to improve customer experience through sub-millisecond response time.
 
@@ -41,7 +41,9 @@ The following diagram is a reference architecture that leverages Delhi and Mumba
 
 We have separate GKE clusters in each of these regions. The applications in each region connect to their respective Redis Enterprise cluster. This architecture utilizes the Multi-Cluster Ingress controller for GKE. It’s a Google-hosted service that supports deploying shared load balancing resources across clusters and across regions.
 
-![](/images/blog/76a9bc92104b56f91f9e5155aa432247b27af1e3-1040x306.webp)
+![](/images/site-mirror/76a9bc92104b56f91f9e5155aa432247b27af1e3-1040x306.webp)
+
+*Redis Enterprise’s Active-Active Geo Distribution for local read/write latency in India*
 
 More Google Cloud Platform regions are expected to come online on a regular basis to make their managed cloud services more accessible to their customers. Redis is the same. We will run in lockstep with the Google Cloud Platform region roadmap to make Redis Enterprise available and truly accessible to an ever-growing Google Cloud Platform customer base around the globe. Digital natives who exist primarily or entirely online are no longer coming exclusively from advanced economies. Entrepreneurs of many developing countries are leveraging Google Cloud Platform’s global footprint to jumpstart their digital businesses and serve their valuable customers at a regional or global scale in no time and without any limitation.
 

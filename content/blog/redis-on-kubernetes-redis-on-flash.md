@@ -15,7 +15,7 @@ hidden: true
 
 *By Brad Ascar, Contributor · Published 3 November 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/61093b5c4d24f242d211564632a31487b6a22bbf-772x550.webp)
+![Blog tile image](/images/site-mirror/61093b5c4d24f242d211564632a31487b6a22bbf-772x550.webp)
 
 **Redis on Flash works with Redis Enterprise for Kubernetes. That’ll speed up your software – and save your company money.**
 
@@ -29,7 +29,7 @@ RoF is based on a multi-threaded asynchronous architecture that guarantees no bl
 
 Redis on Flash is not designed as an alternative mechanism for data persistence. The same Append Only File and snapshot data-persistence mechanisms, persisting data to disk, are used with RoF as with Redis Enterprise.
 
-![](/images/blog/c24d5ecd071f21b1ede0c8c0d2a4b2d669d1b930-767x294.webp)
+![](/images/site-mirror/c24d5ecd071f21b1ede0c8c0d2a4b2d669d1b930-767x294.webp)
 
 So far, so good. We’ve had RoF for several years. Beyond its technical merit, [RoF has saved companies a lot of money](https://www.youtube.com/watch?v=hFQnhPstqLM).
 

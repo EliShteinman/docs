@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 11 February 2026 · updated 12 February 2026*
 
-![Redis](/images/blog/e8e39a553c92edaf760236ce1bde4fa2f27375a5-1200x628.webp)
+![Redis](/images/site-mirror/e8e39a553c92edaf760236ce1bde4fa2f27375a5-1200x628.webp)
 
 You've probably hit this before: a network timeout fires during a large language model (LLM) API call, your app retries, and now you're not sure if you just paid for that response twice. If you retry a paid LLM call, you can end up paying twice, and output tokens are often priced higher than input tokens depending on the model.
 

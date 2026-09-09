@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 4 December 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d47fbd2db17b7b58619d0f6a25565d1dcc78b6ec-386x201.webp)
+![Blog tile image](/images/site-mirror/d47fbd2db17b7b58619d0f6a25565d1dcc78b6ec-386x201.webp)
 
 2020 promises to be a big year for Redis, and we’re starting off strong with [Redis Day Seattle](https://events.redis.com/redis-day-seattle-2020/) on January 13–14!
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 19 May 2026 · updated 21 May 2026*
 
-![What Is a Context Layer? The Real-Time Infrastructure Behind Reliable AI Agents](/images/blog/a15341ccef5de12855d2785d6b96729fcb8b604e-1200x628.webp)
+![What Is a Context Layer? The Real-Time Infrastructure Behind Reliable AI Agents](/images/site-mirror/a15341ccef5de12855d2785d6b96729fcb8b604e-1200x628.webp)
 
 In a demo, your agent only has to hold one conversation with one user, against fresh data, for a few minutes. Production is different. It has to remember users across sessions, reconcile retrieved documents that disagree, filter out irrelevant search results, and resume workflows hours later, all while staying within a finite context window.
 

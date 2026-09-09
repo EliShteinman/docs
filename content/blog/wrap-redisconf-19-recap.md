@@ -14,7 +14,7 @@ hidden: true
 
 *By Madhukar Kumar, VP of Technical and Product Marketing · Published 4 April 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/49b35cc96bb9df676f7e7d0f0e7c042bbcf0e499-1539x1142.webp)
+![Blog tile image](/images/site-mirror/49b35cc96bb9df676f7e7d0f0e7c042bbcf0e499-1539x1142.webp)
 
 ***Editor’s note:**** This post recaps RedisConf 2019. Join us at *[***RedisConf 2020***](/blog/rediscover-redis-at-redisconf-2020/)* on May 12-14 in San Francisco! You won’t want to miss keynote speaker Julia Liuson, Corporate Vice President of Microsoft’s Developer Division, who headlines a roster of more than 50 speakers sharing their expertise on the world’s most-loved database.*
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Prasanna Rajagopal · Published 7 October 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a44793d0570fc2d3a19326791adcf8cf70987ed4-4793x2663.webp)
+![Blog tile image](/images/site-mirror/a44793d0570fc2d3a19326791adcf8cf70987ed4-4793x2663.webp)
 
 The financial industry faces massive challenges. Consumer expectations have increased while regulators have ramped up their scrutiny of financial institutions.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 4 January 2016 · updated 14 August 2026*
 
-![Blog tile image](/images/blog/69faaddee0249560719b486739ca0bf055511080-1200x628.webp)
+![Blog tile image](/images/site-mirror/69faaddee0249560719b486739ca0bf055511080-1200x628.webp)
 
 Just before Christmas, [Salvatore Sanfilippo](https://twitter.com/antirez) published the [first release candidate for Redis v3.2](https://www.reddit.com/r/redis/comments/3xyhyn/redis_32_release_candidate_1_is_out/). The upcoming v3.2 delivers new features (such as geo spatial indexes and cluster rebalancing) and many great improvements (including Matt Stancliff’s Quick Lists and Oran Agra’s SDS and Jemalloc optimizations). For this post, I’ll focus on just one of these – the Redis Lua Debugger (LDB) – and also share a New Year’s present from Redis ([spoiler](#redis-lua-with-zerobrane-studio)).
 
@@ -41,7 +41,7 @@ With the Redis interpreter selected, Lua scripts that you execute or debug will 
 
 Specify your script’s KEYS and ARGS via the **Project->Command Line Parameters** dialog. In it, use the syntax that redis-cli --eval expects: a) a space-delimited list of key names that’s followed by b) a space, a comma (‘,’) and another space, which is in turn followed by c) a space-delimited list of arguments. This example shows how to pass the script two key names (foo and bar) and a single argument (42)…
 
-![Autocompletion for Redis in ZeroBrane Studio Lua IDE](/images/blog/ebdef5f68c5d5cc8e89b2822fbe64fc83355b428-635x489.webp)
+![Autocompletion for Redis in ZeroBrane Studio Lua IDE](/images/site-mirror/ebdef5f68c5d5cc8e89b2822fbe64fc83355b428-635x489.webp)
 
 The editor is simple but packs a lot of punch on top of syntax highlighting, helpful tooltips and autocompletion for everything including the Redis Lua API. You can do regular expression searches, rename variables, jump to definitions, comment/fold/ident code and, my personal favorite, use Shift-Alt-Arrows to edit multiple lines at once.
 
@@ -51,7 +51,7 @@ But before you run off to try all this yourself (and you really should!), the la
 
 Even more handy is the ability to call any Redis API command (that’s allowed from the scripts) in the remote console by either prefixing the command with a ‘@’ or just by CAPITALIZING it. This allows you to change the database’s contents during the script’s execution (though remember that changes will be discarded or retained depending on LDB’s mode):
 
-![ZeroBrane Studio's remote Redis console](/images/blog/5ff3d120db1bc90c2dbd3efaf859be796602f2e6-633x278.webp)
+![ZeroBrane Studio's remote Redis console](/images/site-mirror/5ff3d120db1bc90c2dbd3efaf859be796602f2e6-633x278.webp)
 
 The full Redis Lua API and libraries (e.g. cjson and cmsgpack) are supported, including the new debugger commands, so you can call redis.debug to print messages to the output console and trigger conditional breakpoints with redis.breakpoint. Quick jumping to a problematic line of code by double-clicking on the error in the console and infinite loop detection are included as well. The plugin’s configuration is documented at the end of its file.
 

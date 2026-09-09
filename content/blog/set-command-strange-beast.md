@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 13 May 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/c7af871aa5afedd94ab0d40e643e0aa4e1221a8b-1600x1116.webp)
+![Blog tile image](/images/site-mirror/c7af871aa5afedd94ab0d40e643e0aa4e1221a8b-1600x1116.webp)
 
 The Helicoprion is a now extinct but strange animal that roamed the seas of the early Permian. It looks more or less similar in both size and shape to a contemporary Great White Shark. Most likely, it was a formidable predatory of the seas. The thing that set it apart was that it had a “Tooth-whorl,” which is somewhat akin to having a shark-toothed circular saw located inside the lower jaw. Seems like it would be a good idea, but evolution had a different idea and we don’t have any existent animals like that. An evolutionary dead end.
 

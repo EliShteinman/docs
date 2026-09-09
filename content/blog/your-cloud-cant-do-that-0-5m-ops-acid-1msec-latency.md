@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 6 July 2017 · updated 13 August 2025*
 
-![Blog tile image](/images/blog/559c1be1112dbc821980db1f519f665ce8b3092b-1863x777.webp)
+![Blog tile image](/images/site-mirror/559c1be1112dbc821980db1f519f665ce8b3092b-1863x777.webp)
 
 For those of you familiar with Redis, it should be relatively straightforward to create a configuration that guarantees [ACID](https://en.wikipedia.org/wiki/ACID)-ish (Atomicity, Consistency, Isolation, Durability) operations: merely create a single Redis instance with a ‘master’ role and have it configured with AOF every write (‘appendfsync always’) to a persistent storage device. This configuration provides ACID characteristics in the following ways:
 
@@ -39,7 +39,7 @@ We deployed the following benchmark configuration inside an AWS VPC:
 - 1x x1.16xlarge instance for running the master-shards only [Redise Pack](/products/redis-pack/) cluster version 4.4.2-30
 - 4x io1 EBS volumes with a total of 5TB and 75K IOPS/sec
 
-![](/images/blog/433570fa7feee966e687a8d597a57699c8f489ff-720x405.webp)
+![](/images/site-mirror/433570fa7feee966e687a8d597a57699c8f489ff-720x405.webp)
 
 ### Running the benchmark
 

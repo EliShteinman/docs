@@ -14,7 +14,7 @@ hidden: true
 
 *By Sowmya Narayanan, Senior Group Product Manager, Redis · Published 28 August 2024 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/99bdc2facb9b1e27fc2a0e0304366c4c82c0344e-772x552.webp)
+![Blog tile image](/images/site-mirror/99bdc2facb9b1e27fc2a0e0304366c4c82c0344e-772x552.webp)
 
 Starting today, **Redis Cloud** is available on the **Vercel Marketplace**, unlocking fast data and GenAI use cases for next gen apps for devs building on Next.js. With Redis Cloud, you can build GenAI apps and bring them to production faster, with the speed and efficiency that Redis is known for, right within your Vercel environment.
 

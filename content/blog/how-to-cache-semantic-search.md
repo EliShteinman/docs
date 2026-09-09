@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 21 January 2026 · updated 23 January 2026*
 
-![Redis](/images/blog/b4bc6aba9d8b572ca4ad673dd0abe3f9044fd198-1200x628.webp)
+![Redis](/images/site-mirror/b4bc6aba9d8b572ca4ad673dd0abe3f9044fd198-1200x628.webp)
 
 You're watching your large language model (LLM) API bills climb as users ask the same questions differently. "What's machine learning?" and "Can you explain ML?" hit your LLM twice at double the cost. Semantic caching fixes this by recognizing semantically equivalent queries and returning cached responses instead of making duplicate API calls.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Miguel Allende, Customer Advocacy Manager · Published 13 February 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/1f454240fda8bbde19298809dca9ff23e48c26b4-300x191.webp)
+![](/images/site-mirror/1f454240fda8bbde19298809dca9ff23e48c26b4-300x191.webp)
 
 Alice loves to flash her favorite clothing store’s corporate credit card. As a frequent shopper, Alice receives points for her purchases that she can redeem for discounts, free shipping, and other perks. And the benefits go both ways—the store can collect information about her shopping habits to tailor its marketing, loyalty programs, and promotional materials.
 

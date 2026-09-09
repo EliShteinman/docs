@@ -14,7 +14,7 @@ hidden: true
 
 *By David Gaule, Contributor · Published 17 May 2023 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/e5603f39fb91af3a33b638e06d8b5c7d1a37f36f-772x550.webp)
+![Blog tile image](/images/site-mirror/e5603f39fb91af3a33b638e06d8b5c7d1a37f36f-772x550.webp)
 
 **How well do *****you***** know Redis?**
 

@@ -18,7 +18,7 @@ hidden: true
 
 *By Adriano Amaral, Filipe Oliveira, Jim Allen Wallace, Dvir Dukhan · Published 20 June 2024 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/3987f889806fb73f6a8e41ab98f06f6b084c7ae9-772x552.webp)
+![Blog tile image](/images/site-mirror/3987f889806fb73f6a8e41ab98f06f6b084c7ae9-772x552.webp)
 
 At Redis, we’re fast. To show how fast we are, we benchmarked the top providers in the market for vector databases using our new Redis Query Engine, now GA for Redis Software. This feature enhances our engine enabling concurrent access to the index, improving throughput for Redis queries, search, and vector database workloads. This blog post shows our benchmark results, explains the challenges with increasing query throughput, and how we overcame those with our new Redis Query Engine. This blog has three main parts:
 
@@ -36,7 +36,7 @@ To ensure we cover both, we’ve proceeded with two benchmarks, one multi-client
 
 Our tests show that Redis is faster for vector database workloads compared to any other vector database we tested, at recall >= 0.98. Redis has 62% more throughput than the second-ranked database for lower-dimensional datasets (deep-image-96-angular) and has 21% more throughput for high-dimensional datasets (dbpedia-openai-1M-angular).
 
-![](/images/blog/1f228ce10f6b04aa0171a69a26ca3d18eaf5969f-2042x1240.webp)
+![](/images/site-mirror/1f228ce10f6b04aa0171a69a26ca3d18eaf5969f-2042x1240.webp)
 
 Caveat: MongoDB tests only provided results when using a smaller recall level for the gist-960-euclidean dataset. The results for this dataset considered a median of the results for recall between 0.82 and 0.98. For all other datasets we’re considering recall >=0.98
 
@@ -98,7 +98,7 @@ Redis has [a proven single-thread](/blog/redis-architecture-13-years-later/) arc
 
 Search is not a O(1) time complexity command. Searches usually combine multiple scans of indexes to comply with the several query predicates. Those scans are usually done in logarithmic time complexity O(log(n)) where *n* is the amount of data points mapped by the index. Having multiple of those, combining their results and aggregating them, is considerably heavier with respect to computing, compared to typical Redis operations for GET, SET, HSET, etc. This is counter to our assumption that commands are simple and have a short runtime.
 
-![](/images/blog/2531c34bd3372386762fd3c24fdeee64a8a3c981-2000x1400.webp)
+![](/images/site-mirror/2531c34bd3372386762fd3c24fdeee64a8a3c981-2000x1400.webp)
 
 ### Horizontal scaling isn’t always sufficient to scale throughput.
 
@@ -107,7 +107,7 @@ Scaling out with sublinear time complexity doesn’t help reduce the single clie
 1. The time complexity of index access is often O(log(n)). So for example, splitting the dataset into two shards, and halving the data set into two shards doesn’t reduce the latency in half. Mathematically, O(log(n/2)) is the equivalent of O(log(n)).
 1. We also have distribution costs, including the overhead of communicating across shards and post-processing sharded results. This scatter and gather cost becomes highly evident when combined with higher concurrency (at high throughput) in a multi-client scenario.
 
-![](/images/blog/5e542cf4369ac4e3e67619cdde68e095254c4959-2000x1400.webp)
+![](/images/site-mirror/5e542cf4369ac4e3e67619cdde68e095254c4959-2000x1400.webp)
 
 For example, searching for a similar vector today, even with the state-of-art algorithms is compute-heavy since it compares the queried vector to each of the candidate vectors the index provides. This comparison is not a O(1) comparison but is O(d) where d is the vector dimension. In simple terms, each computation is comparing the entire two vectors. This is computer-heavy. When running on the main thread, this holds the Redis’ main thread longer than regular Redis workloads and even other search cases.
 
@@ -115,7 +115,7 @@ For example, searching for a similar vector today, even with the state-of-art al
 
 Scaling search efficiently requires combining the distribution of data loads horizontally (going out) and multi-threading vertically, enabling concurrency on accessing the index (going up). The image below illustrates the architecture of a single shard.
 
-![](/images/blog/5f21819bfc9f2ea07bf406e82bf4d7a1767df253-2000x1400.webp)
+![](/images/site-mirror/5f21819bfc9f2ea07bf406e82bf4d7a1767df253-2000x1400.webp)
 
 Multiple queries are being executed, each on a separate thread. We incorporated the simple but famous [producer-consumer pattern](https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem). 1. The query context (planning) is prepared on the main thread and queued on a shared queue. 2. From here, threads consume the queue and execute the query pipeline, concurrently to other threads. This allows us to execute multiple concurrent queries while keeping the main thread alive to handle more incoming requests, such as other Redis commands, or prepare and queue additional queries. 3. Once finished, the query results are sent back to the main thread.
 
@@ -125,11 +125,11 @@ To benchmark our Redis Query Engine, we’ve tested Redis with both full-text an
 
 The performance improvements were consistent, demonstrating that for every 2X increase in query throughput, a 3X increase in threads was required, indicating efficient resource utilization across all configurations. We tested the [FLAT](https://redis.io/docs/latest/develop/interact/search-and-query/advanced-concepts/vectors/#flat) (Brute-Force) algorithm and the [HNSW](https://redis.io/docs/latest/develop/interact/search-and-query/advanced-concepts/vectors/#hnsw) scaling, and our tests confirmed that the vertical scaling speedup ratio (how effectively the added resources increased the achievable throughput) for each scaling factor applied to both algorithms. The graph below illustrates the scalable factor for the vector workload.
 
-![](/images/blog/9e040e18cf53ef57884dd0b146b8bc9bd9516abc-667x399.webp)
+![](/images/site-mirror/9e040e18cf53ef57884dd0b146b8bc9bd9516abc-667x399.webp)
 
 Based on these findings, we introduce the ‘scaling factor’ concept, a ratio to significantly boost query throughput by activating additional threads and vCPUs, thereby enhancing performance. Extending the results also for full-text search use cases, we can confirm that the theoretical scaling factor aligns closely with the empirical results.
 
-![](/images/blog/753019628ab4d90cbb144c2dbc688152ddef01e9-2043x1400.webp)
+![](/images/site-mirror/753019628ab4d90cbb144c2dbc688152ddef01e9-2043x1400.webp)
 
 ### We are just getting started.
 

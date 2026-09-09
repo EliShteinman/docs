@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 13 December 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/df6a2cc06c06e92ffec19474b01fb9600bbc5337-1200x628.webp)
+![Redis](/images/site-mirror/df6a2cc06c06e92ffec19474b01fb9600bbc5337-1200x628.webp)
 
 If you’re a bank, insurer, or fintech, you’re probably under pressure to "do something with AI." Board decks are full of pilot proposals, vendors are lining up with demos, and somewhere in your organization, someone is building a chatbot that will never see production.
 

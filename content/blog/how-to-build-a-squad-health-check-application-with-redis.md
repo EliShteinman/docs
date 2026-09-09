@@ -14,7 +14,7 @@ hidden: true
 
 *By Growth Team · Published 7 October 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/a91cf23633867c41bdd5cec28392246cbfe0e125-772x520.webp)
+![Blog tile image](/images/site-mirror/a91cf23633867c41bdd5cec28392246cbfe0e125-772x520.webp)
 
 Squad health checks are crucial for businesses to assess the team chemistry of their workforce. They pave the way for a better working environment by enabling managers to measure cohesion and learn about areas of concern from employees. But to fully reap their benefits, they need to be primed with a database that’s capable of providing instant feedback.
 
@@ -58,7 +58,7 @@ Now let’s have a look at the different components you’ll need, their functio
 
 Let’s look at the overall architecture and components used for this project.
 
-![Health Check Diagram](/images/blog/51cd68ba0bf8894a7906d0eb937a8778c6820950-1024x758.webp)
+![Health Check Diagram](/images/site-mirror/51cd68ba0bf8894a7906d0eb937a8778c6820950-1024x758.webp)
 
 1.A user registers and logs in to access Feature Creep Dashboard UI. [RedisJSON ](https://redis.io/docs/get-started/document-database/)is used in the background to store session details.
 
@@ -185,7 +185,7 @@ If you require a production-grade set up, then you’ll need to set up an authen
 
 Cognito should be used because it’ll provide you with instant authentication, allowing you to move wrt creating features more efficiently. What’s more is that Cognito handles a range of tasks that include email verification, forgotten password reminders and much more.
 
-![](/images/blog/74698c6e5e03aac5378f24765787b2d797825182-1024x615.webp)
+![](/images/site-mirror/74698c6e5e03aac5378f24765787b2d797825182-1024x615.webp)
 
 Please note that deploying this requires a valid AWS account. Follow the below steps to configure AWS
 

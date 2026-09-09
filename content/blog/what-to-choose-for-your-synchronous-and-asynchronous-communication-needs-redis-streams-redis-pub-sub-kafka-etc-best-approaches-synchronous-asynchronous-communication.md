@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 3 May 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/cf158c174f42fcf8888ac4679f389f38a3c5fef0-4500x3000.webp)
+![Blog tile image](/images/site-mirror/cf158c174f42fcf8888ac4679f389f38a3c5fef0-4500x3000.webp)
 
 Let’s talk about communication tools and patterns. With the introduction of Streams in Redis, we now have another communication pattern to consider in addition to Redis Pub/Sub and other tools like [Kafka](https://redis.io/compare/redis-enterprise-and-kafka/) and RabbitMQ. In this article, I will guide you through the defining characteristics of various communication patterns, and I’ll briefly introduce the most popular tools used to implement each. Finally, I’ll leave you with a small take-away that will hopefully help you build better solutions faster.
 
@@ -132,7 +132,7 @@ PUBLISH live-notifs "New error event in service1!"
 
 EXEC
 
-![](/images/blog/015fb5174f0fb5ab73f02c857b226bbceda3d312-1024x547.webp)
+![](/images/site-mirror/015fb5174f0fb5ab73f02c857b226bbceda3d312-1024x547.webp)
 
 *To get to a working solution, you’ll need to defeat seven evil concurrency problems.*
 *Plot of *[*Redis Pilgrim vs. The World*](https://www.imdb.com/title/tt0446029/)

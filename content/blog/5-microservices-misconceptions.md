@@ -14,7 +14,7 @@ hidden: true
 
 *By David Gaule, Contributor · Published 28 February 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/cdde96f6cbc9ec52e88e9bb064f865f3cd50a390-772x550.webp)
+![Blog tile image](/images/site-mirror/cdde96f6cbc9ec52e88e9bb064f865f3cd50a390-772x550.webp)
 
 **Many misconceptions about microservices persist, often to the detriment of companies hoping it’s the silver bullet to solve all their problems.**
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 3 April 2014 · updated 14 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Two weeks ago the Redis team had exhibited in the 2014 Game Developers Conference. As the name suggests, the conference was packed with game developers and I had great discussions about how Redis is used in building games that scale. Here’re the top use cases for Redis in the multi-player gaming industry.
 

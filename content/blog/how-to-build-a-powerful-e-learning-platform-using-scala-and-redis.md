@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 5 November 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3466217c8543b62c874674d5c4b850710d58766f-772x520.webp)
+![Blog tile image](/images/site-mirror/3466217c8543b62c874674d5c4b850710d58766f-772x520.webp)
 
 Never before has online learning been so accessible. Whether you want to discover more about cryptocurrency, sharpen your programming skills or even just learn a new language, the digital age has gifted everyone access to a phenomenal amount of content.
 
@@ -40,7 +40,7 @@ You’ll build a powerful e-learning platform that will connect students and tea
 
 Below we’ll reveal what components are required to make this application come to fruition along with the functionality of each item.
 
-![](/images/blog/3b66592d52173a2842509e7cbd67c1f86c9e13ef-1600x871.webp)
+![](/images/site-mirror/3b66592d52173a2842509e7cbd67c1f86c9e13ef-1600x871.webp)
 
 ## 2. What will you need?
 
@@ -57,11 +57,11 @@ Below we’ll reveal what components are required to make this application come 
 
 ## 3. Architecture
 
-![](/images/blog/3200b1cfaca0beb68a23217599b808ff6a803ed4-1024x554.webp)
+![](/images/site-mirror/3200b1cfaca0beb68a23217599b808ff6a803ed4-1024x554.webp)
 
 The data model is expressed through nodes and relations using RedisGraph. The model is very simple since it involves the Student, Course and Topic entities expressing the different kinds of relations between each other.
 
-![](/images/blog/e0609071215e6593548055613407978b27f2659d-1600x1184.webp)
+![](/images/site-mirror/e0609071215e6593548055613407978b27f2659d-1600x1184.webp)
 
 X-Mentor follows an Event Driven Architecture approach in which the following Domain Events are considered:
 
@@ -106,15 +106,15 @@ $
 
 Wait until Keycloak and x-mentor-core are ready, then go to http://localhost:3000.
 
-![](/images/blog/3c54d8f60ad299c96e5e7ab1facbf23c944467e1-1600x430.webp)
+![](/images/site-mirror/3c54d8f60ad299c96e5e7ab1facbf23c944467e1-1600x430.webp)
 
 You can access Keycloak via 8880 port as shown below:
 
-![](/images/blog/2bd8a17460176ca9123bac5fdbd01e5bb79679b6-1600x925.webp)
+![](/images/site-mirror/2bd8a17460176ca9123bac5fdbd01e5bb79679b6-1600x925.webp)
 
 Use admin/admin to login into keycloak.
 
-![](/images/blog/a09ba6839d6d1316975f405cf5d27da048f11609-1600x927.webp)
+![](/images/site-mirror/a09ba6839d6d1316975f405cf5d27da048f11609-1600x927.webp)
 
 #### Step 4: Logging in
 
@@ -130,7 +130,7 @@ BF.EXISTS users '${student.username}'
 
 ```
 
-![](/images/blog/f7c6d6d8c603a921a9eb58dd791bae0e776cf91d-1181x1600.webp)
+![](/images/site-mirror/f7c6d6d8c603a921a9eb58dd791bae0e776cf91d-1181x1600.webp)
 
 #### Step 5: Signing up
 
@@ -141,7 +141,7 @@ Signing up involves 4 steps:
 1. Creating a user in RedisGraph
 1. Adding student’s time series key (needed for registering student progress)
 
-![](/images/blog/c443e77f1d319954bf0b376be011a7cc76c7a5dd-1600x1077.webp)
+![](/images/site-mirror/c443e77f1d319954bf0b376be011a7cc76c7a5dd-1600x1077.webp)
 
 - To add a username to users bloom filter, insert the following code
 
@@ -218,7 +218,7 @@ XADD course-created $timestamp title ${course.title} topic ${course.topic}
 
 Here we’ll uncover how you can enroll a student in a specific course.
 
-![](/images/blog/9a290d390fb99247df6db4dbe425db9cf19a5067-1600x845.webp)
+![](/images/site-mirror/9a290d390fb99247df6db4dbe425db9cf19a5067-1600x845.webp)
 
 Below are the steps for you to follow:
 
@@ -254,7 +254,7 @@ As part of any online resource, users generally are able to provide a review. To
 
 The following diagram illustrates the interaction between Redis Graph and Redis Streams.
 
-![](/images/blog/26352c34243590d74e4147e1f2155bac20908165-1600x1012.webp)
+![](/images/site-mirror/26352c34243590d74e4147e1f2155bac20908165-1600x1012.webp)
 
 To bring make this functionality happen, follow the below commands:
 
@@ -319,7 +319,7 @@ Now we’ll show you how to allow students to filter preferred courses based on 
 
 The following diagram shows the interaction between RedisGraph and Redis Streams.
 
-![](/images/blog/08677c925b64eb41bab4ccaafcaa1b02a2fb6053-1600x1228.webp)
+![](/images/site-mirror/08677c925b64eb41bab4ccaafcaa1b02a2fb6053-1600x1228.webp)
 
 Below are the commands for you to follow:
 
@@ -457,7 +457,7 @@ GRAPH.QUERY xmentor "MATCH (student)-[:studying]->(course), (topic)-[:has]->(cou
 
 This functionality will allow you to track the amount of time users spend watching courses on the platform. That information will then be used to implement the Leaderboard.
 
-![](/images/blog/5eed96cbe004fefec9c7aff70024aeffcc7fc3c8-1600x743.webp)
+![](/images/site-mirror/5eed96cbe004fefec9c7aff70024aeffcc7fc3c8-1600x743.webp)
 
 Once x-mentor-core receives the request, it will then publish the Student Progress Registration Domain Event. This will end up as an element inside student-progress-registered stream (which is a Redis Stream) via the following command:
 
@@ -482,7 +482,7 @@ To accomplish this, you need to separate two functionalities:
 - Register the student progress
 - Getting the board data
 
-![](/images/blog/7907da80d3003b9c2528d265019cbe09d58c7364-1600x860.webp)
+![](/images/site-mirror/7907da80d3003b9c2528d265019cbe09d58c7364-1600x860.webp)
 
 When the user request for the leaderboard data, first look at Redis for the time series keys
 
@@ -517,11 +517,11 @@ To get a more visual insight into how this application was created, then you can
 
 So make sure to check them out!
 
-![](/images/blog/4286535b4f0ad548b626a7e3bc36792d2aa0c568-1600x593.webp)
+![](/images/site-mirror/4286535b4f0ad548b626a7e3bc36792d2aa0c568-1600x593.webp)
 
 ## Who built this application?
 
-![](/images/blog/98e6dbe33e1f12e074c30278fa4afe98c728436c-460x460.webp)
+![](/images/site-mirror/98e6dbe33e1f12e074c30278fa4afe98c728436c-460x460.webp)
 
 **Sergio Cano**
 

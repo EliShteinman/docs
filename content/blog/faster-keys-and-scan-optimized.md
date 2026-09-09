@@ -14,7 +14,7 @@ hidden: true
 
 *By Evangelos  Resvanis · Published 3 February 2026 · updated 1 June 2026*
 
-![Redis blog card](/images/blog/9455e6c08f37179bdbebeab3403fc6fe1df96655-1200x628.webp)
+![Redis blog card](/images/site-mirror/9455e6c08f37179bdbebeab3403fc6fe1df96655-1200x628.webp)
 
 For years, the standard guidance around Redis search on Strings has been simple: **use KEYS with extreme care - or avoid - in production **(reference [here](https://redis.io/docs/latest/commands/keys/)), and treat SCAN carefully as iterative scanning can take a long time to complete even if it does not block the server. That guidance was correct for standalone and pre‑Redis 8 cluster deployments where these commands had to walk entire keyspaces or full shards.
 
@@ -147,13 +147,13 @@ To understand how much this optimization changes behavior, we ran a series of in
 
 ### 7.2 Cluster
 
-![7.2 cluster](/images/blog/2dd416a392c14dfee6676f30a998c1482d5d9a33-712x484.webp)
+![7.2 cluster](/images/site-mirror/2dd416a392c14dfee6676f30a998c1482d5d9a33-712x484.webp)
 
 In Redis 7.2, the performance of both patterns is comparable, as the optimization was not yet implemented. Both methods necessitate scanning all cluster nodes, which accounts for the slow performance, with SCAN operations requiring between 12 and 14 seconds.
 
 8.4 Cluster
 
-![8.4 Cluster](/images/blog/18c2adc352350ee3b482df51a4e37118a3f7adb0-2121x2169.webp)
+![8.4 Cluster](/images/site-mirror/18c2adc352350ee3b482df51a4e37118a3f7adb0-2121x2169.webp)
 
 Redis 8.4 demonstrates the profound effect of the optimization:
 

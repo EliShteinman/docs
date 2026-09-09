@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 23 January 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2a71332a0c21e631f3c2b4fc81cdfbdfed3eb41d-1600x840.webp)
+![Blog tile image](/images/site-mirror/2a71332a0c21e631f3c2b4fc81cdfbdfed3eb41d-1600x840.webp)
 
 ***Update (May 9th 2019):**** Changed the code to account for the new release of Zig version 0.4.0*
 

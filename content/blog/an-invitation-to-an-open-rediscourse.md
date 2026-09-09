@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 18 September 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/1e5ce16de97edd6f44b100b44fa8a735dd9679f7-635x200.webp)
+![](/images/site-mirror/1e5ce16de97edd6f44b100b44fa8a735dd9679f7-635x200.webp)
 
 Arguably, one of the strongest benefits of the open source movement is that the community can get actively involved in the development of projects. Having access to the source code of an application allows anyone to modify it at will to suit specific needs (within the boundaries of its licensing). Naturally, we at Garantia Data not only use the open sourced Redis and Memcached software in our service, but also contribute our own developments back to the community.
 

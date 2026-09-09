@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 16 July 2013 · updated 14 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Redis’ replication is an indispensable tool – it can be used both to heighten the availability of your Redis setup (you can read more about Redis availability in [this post](/blog/available-now-redis-memcached-clouds-across-multiple-availability-zones)) as well as to scale it out by doing reads against read-only slaves.
 

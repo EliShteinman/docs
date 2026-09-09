@@ -15,7 +15,7 @@ hidden: true
 
 *By Thomas Gregg, Gil Oliveira · Published 15 January 2026*
 
-![Redis](/images/blog/79cfadb552bb1679b04b457ea08bda51af37f7e4-1200x628.webp)
+![Redis](/images/site-mirror/79cfadb552bb1679b04b457ea08bda51af37f7e4-1200x628.webp)
 
 Redis and [Adfinis](https://www.adfinis.com/) have entered into a new reseller partnership to bring customers fast, resilient, and scalable data architectures. The partnership will initially focus on the resale and optimal sizing of the Redis data platform, making sure it is precisely tailored to customer needs. Available to customers across the EMEA and APAC regions, the partnership accelerates organizations’ digital transformation with enterprise-grade support that is free from vendor lock-in.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 7 July 2021 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/1bc52f14a1815b2ddf4f83221623b923b2bd04f5-772x520.webp)
+![Blog tile image](/images/site-mirror/1bc52f14a1815b2ddf4f83221623b923b2bd04f5-772x520.webp)
 
 *Related Resource: Click to *[*download RedisJSON module*](/json/)*.*
 
@@ -23,7 +23,9 @@ RedisJSON and RediSearch are by far the most popular Redis modules in our cloud.
 
 In this blog, we’ll give you an overview of the current RedisJSON capabilities. After that we’ll dive into the new capabilities section of this private preview. The ability to index, query, and use full-text search on JSON documents using RediSearch is the coolest new feature of this release. Finally, we’ll show you how to quickly get started.
 
-![modules by REC](/images/blog/bd8042cf72910b77c6caa158ecdc26aeb9a77dc9-1024x690.webp)
+![modules by REC](/images/site-mirror/bd8042cf72910b77c6caa158ecdc26aeb9a77dc9-1024x690.webp)
+
+*Fig1. Redis Cloud databases using at least one module (May 2021)*
 
 ## JSON capabilities
 
@@ -195,7 +197,7 @@ The implementation is based on [Conflict-free Replicated Data-Type](https://en.w
 
 Application developers can now rely on this to build geo-distributed applications using JSON documents. Here is an example of a succession of operations in an active-active environment with two clusters:
 
-![Clusters](/images/blog/18603d579c87da76682981fccec677afcf597b6b-565x240.webp)
+![Clusters](/images/site-mirror/18603d579c87da76682981fccec677afcf597b6b-565x240.webp)
 
 Let see the detail of each operations:
 

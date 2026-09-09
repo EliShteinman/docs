@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 5 May 2026 · updated 6 May 2026*
 
-![Advantages of building a vector search solution](/images/blog/39fce0e212910e84a9b2eeae613030c63f40f4ab-2400x1256.webp)
+![Advantages of building a vector search solution](/images/site-mirror/39fce0e212910e84a9b2eeae613030c63f40f4ab-2400x1256.webp)
 
 Your users don't search the way databases expect them to. They might type "warm zip-up jacket" when your catalog says "thermal fleece pullover," or ask for "the dude who teaches rock" when the answer is "School of Rock." Traditional keyword search returns zero results when terms don't overlap—and suddenly your app looks broken.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Daniel Jones · Published 27 April 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 We are [FreeWheel](https://freewheel2018.tv/), a Comcast company providing solutions to the Media Advertising industry to enable efficiency and insight into all aspects of campaign workflows, across media for media buyers and publishers.
 
@@ -23,13 +23,13 @@ Our system is based on a [microservices architecture](/solutions/microservices/)
 
 A few years ago, our system’s caching mechanism was a simple per-server-per-application store, utilising the built-in technologies available on Microsoft IIS and running .NET web applications. This was sufficient for isolated domain data with no shared concerns outside of a single request. But as the ecosystem grew, so did the need to share that data with processes running in a different application or a different server pool. Problems with stale caches surfaced. Rolling out our own orchestrations that attempted to ensure an up-to-date store resulted in unmaintainable and hard-to-scale code. We looked at many solutions, including memcache and various derivatives such as Couchbase, but in the end we settled on [Redis](https://redis.io/).
 
-![](/images/blog/3c1a42bfc9898e42cd2489cedea380a2269ee0b5-466x416.webp)
+![](/images/site-mirror/3c1a42bfc9898e42cd2489cedea380a2269ee0b5-466x416.webp)
 
 ## Old Model
 
 Redis brought with it a growing reputation as the standard bearer in lightweight data storage, performance and reliability. In short, it just worked, and we weren’t required to waste time troubleshooting the underlying technology. Instead, our time was spent fine tuning a clean implementation, which ensured failover support and handling of flexible [cache invalidation](/glossary/cache-invalidation/) policies (depending on the use case). We could also be sure that the data we stored in Redis persisted quickly to a farm of servers and was available to many different deployed applications so that users were always getting the correct data.
 
-![](/images/blog/3537ed96e9d8a4c5b36f4cb4b833b2e9ef58babf-464x501.webp)
+![](/images/site-mirror/3537ed96e9d8a4c5b36f4cb4b833b2e9ef58babf-464x501.webp)
 
 ## Fine Tuning With Redis
 

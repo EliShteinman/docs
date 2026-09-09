@@ -16,7 +16,7 @@ hidden: true
 
 *By Redis   · Published 15 November 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a98878bd61760a63d5bec9fbf397bf9814af6c6f-772x550.webp)
+![Blog tile image](/images/site-mirror/a98878bd61760a63d5bec9fbf397bf9814af6c6f-772x550.webp)
 
 It’s been almost four years since we introduced the Redis Source Available License 1.0 (RSALv1) for our Redis modules. During this time, we’ve held an open dialogue with the Redis community about our approach to licensing. Most users like our license’s permissive, non-[copyleft](https://en.wikipedia.org/wiki/Copyleft) spirit. But we’ve also seen a couple of challenges: first, it’s hard for many users to understand the practical implications of the text of the RSAL license; second, we have not standardized on any widely-used source-available license.
 

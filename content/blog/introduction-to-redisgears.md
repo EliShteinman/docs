@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 16 July 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3b575e8f344a604c9bebbb5724d0a1ffe82754b7-3948x2627.webp)
+![Blog tile image](/images/site-mirror/3b575e8f344a604c9bebbb5724d0a1ffe82754b7-3948x2627.webp)
 
 At [RedisConf19](https://events.redis.com/redis-conf/redis-conf-2019/), we announced the release of a new module called RedisGears. You may have already seen some other modules by either Redis or the community at large, but Gears will defy any expectations you have. It really pushes the limits of what is possible with modules. The only caveat is that it’s still in Preview so, while you can already try it out, you will have to wait a bit more for it to get to General Availability and become officially supported.
 

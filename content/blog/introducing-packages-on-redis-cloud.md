@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 20 June 2024 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/7a90b0bf5f7f30d54a4f2ab84156536e00e3c1bc-772x552.webp)
+![Blog tile image](/images/site-mirror/7a90b0bf5f7f30d54a4f2ab84156536e00e3c1bc-772x552.webp)
 
 Redis Cloud Packages are a game changer in how you can use Redis. Redis Cloud Packages offer ready-to-use, pre-configured setups, letting you deploy Redis instances fast and customized for your use cases without manual tuning. This enables you to get the most out of Redis out of the gate, providing the optimal solution for your needs and maximizing performance, reliability, and efficiency.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 27 September 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/ab705c72e2c437f970c3c92ffbacddcd0d5ebe40-772x550.webp)
+![Blog tile image](/images/site-mirror/ab705c72e2c437f970c3c92ffbacddcd0d5ebe40-772x550.webp)
 
 **Just getting started with Redis? These books help you grasp the technical essentials and smooth the learning curve.**
 
@@ -28,7 +28,7 @@ Redis developer advocate [Brian Sam Bodden](/blog/author/brian-sam-bodden/) reco
 
 The book is also a top choice for [Raja Rao](/blog/author/raja-rao/), Redis’s vice president of growth marketing. “This book provides developers with an understanding of the modern database landscape by giving a good analysis of several databases and how they work.” And, he adds, you get an overview of the [NoSQL](/nosql/what-is-nosql/) community without leading you into a web of complexity.
 
-![](/images/blog/871b257e4d66ac9ce0de02997584fb8db6d32c87-853x1024.webp)
+![](/images/site-mirror/871b257e4d66ac9ce0de02997584fb8db6d32c87-853x1024.webp)
 
 You need to integrate NoSQL databases into your architecture to store, process, and retrieve data efficiently. *Seven Databases in Seven Weeks* offers a thorough dissection of the NoSQL database ecosystem. Perkins presents conceptual introductions to seven databases – one of them being Redis – including how to deploy each one, when to use it, when not to use it, its benefits, its downsides, and how it relates to a real-life project.
 
@@ -42,7 +42,7 @@ In [*Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scala
 
 For example, Kleppmann introduces MapReduce, then relates it to the technology that was created years before.
 
-![](/images/blog/cdad5b4465f121b78e0ca5098702458d250339f9-780x1024.webp)
+![](/images/site-mirror/cdad5b4465f121b78e0ca5098702458d250339f9-780x1024.webp)
 
 Doing so reveals how we’ve progressed from batch-processing systems to technologies like MapReduce through to stream-based processing.
 
@@ -54,7 +54,7 @@ To wrap your head around SQL, Bodden recommends starting with[*NoSQL Distilled: 
 
 The authors adopt a conceptual approach and shun the coding aspect, going straight to the heart of [what NoSQL is about](/nosql/what-is-nosql/) and how NoSQL databases differ from relational databases.
 
-![](/images/blog/b99f73033c5ec55196482e2e20878b33c343b9dc-500x653.webp)
+![](/images/site-mirror/b99f73033c5ec55196482e2e20878b33c343b9dc-500x653.webp)
 
 As [Fowler](https://twitter.com/martinfowler) wrote on his own website, the authors aimed to provide a background on how NoSQL databases work so that you can make those judgments yourself without having to trawl the whole web. “We’ve deliberately made this a small book (just 152 pages), so you can get this overview pretty quickly,” he wrote.
 
@@ -66,7 +66,7 @@ Rao recommends [*Redis in Action*](https://www.manning.com/books/redis-in-action
 
 Although the book is old, in tech terms – it’s from 2013 and has no mention of features released since then – Rao says this book helps new developers understand the basics of Redis through real-world examples.
 
-![](/images/blog/459c5d3ee45aac010ff6af6c5d31876045f382cb-817x1024.webp)
+![](/images/site-mirror/459c5d3ee45aac010ff6af6c5d31876045f382cb-817x1024.webp)
 
 Carlson introduces the foundational topics, shedding light on important areas such as how to minimize the chances of data loss. Then it dives into common challenges, including how to model non-trivial data, deal with index data, and search, sort, and filter data. Scaling is covered in some depth, including techniques to help you scale read queries, write queries, total memory available, and suggestions for scaling complicated queries.
 
@@ -76,7 +76,7 @@ It’s a starting point – which is just what newbies need. You get a holistic 
 
 Recommended by Henry Tam, Redis’s principal solutions marketing manager, you can view [*Caching at Scale*](https://www.leeatchison.com/book/caching-at-scale-with-redis) [*with Redis*](https://www.leeatchison.com/book/caching-at-scale-with-redis) by Lee Atchison as the [caching](/solutions/caching/) blueprint for Redis. “The book provides a really broad overview of caching the different patterns, and why Redis is the ideal fit for enterprises that need a caching solution,” Tam says.
 
-![Caching at Scale With Redis book](/images/blog/2bd824920e71d88c8af02ea4e61ddfc7898fda13-966x990.webp)
+![Caching at Scale With Redis book](/images/site-mirror/2bd824920e71d88c8af02ea4e61ddfc7898fda13-966x990.webp)
 
 Atchison provides readers with a comprehensive insight into what caching is, why and when it’s needed, and how to maximize application performance through specific caching techniques.
 
@@ -86,7 +86,7 @@ The Wiley Dummies guides earned a reputation for no-nonsense instructions that a
 
 The short [Redis Microservices for Dummies](/docs/redis-microservices-for-dummies/) book – which incidentally is free – teaches new Redis programmers how to develop and operate high-performance [microservices](/solutions/microservices/) with Redis architecture in the easiest possible way.
 
-![Redis Microservices for Dummies](/images/blog/761e6375b0d6edeb6540f27005995fc130426f9c-1024x842.webp)
+![Redis Microservices for Dummies](/images/site-mirror/761e6375b0d6edeb6540f27005995fc130426f9c-1024x842.webp)
 
 Talon Miller, Redis Technical Product Manager, says, “Redis was somewhat of a complicated database for me to grasp, specifically because of all the variety of data structures. *Redis for Dummies* simply explained all of the core basics that I needed to know about Redis to get started using it.”
 

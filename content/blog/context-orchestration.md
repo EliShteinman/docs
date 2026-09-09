@@ -15,7 +15,7 @@ hidden: true
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 26 May 2026 · updated 27 May 2026*
 
 ![Context orchestration: what it is & how it works
-](/images/blog/e1a6420cf2261e9c1e4f0d1c828fd5f0bb972096-2400x1256.webp)
+](/images/site-mirror/e1a6420cf2261e9c1e4f0d1c828fd5f0bb972096-2400x1256.webp)
 
 Your LLM application works fine in a demo. You ship it to production, and it starts hallucinating on stale data, looping through the same tool calls, and burning through tokens in retry cycles. The model itself is probably fine. The system feeding it context is the problem. Production AI systems have outgrown basic retrieval-augmented generation (RAG) and prompt engineering. Context orchestration is the runtime discipline that fills the gap.
 

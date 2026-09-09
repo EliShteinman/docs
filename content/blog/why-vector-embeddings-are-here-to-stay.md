@@ -15,7 +15,7 @@ hidden: true
 
 *By Jim Allen Wallace, Nick Moore · Published 23 June 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/f6b52c4ce63b1d327a4d93601b940fa745ae3b06-772x552.webp)
+![Redis](/images/site-mirror/f6b52c4ce63b1d327a4d93601b940fa745ae3b06-772x552.webp)
 
 Every few weeks, a new GenAI model arrives—smarter, faster, cheaper, and poised to outshine the rest. The claims stay the same, even as the names change. In just the past few weeks alone, we’ve seen:
 
@@ -41,7 +41,7 @@ Embeddings transform text, images, and audio into vectors that machine learning 
 
 This idea of a common language, of representing data by its relationships to other data, traces back to the 1950s. John Rupert Firth, an English linguist, wrote in a [1962 paper](https://cs.brown.edu/courses/csci2952d/readings/lecture1-firth.pdf), “You shall know a word by the company it keeps!” There was meaning, linguists thought, not just in words themselves but in the context you found them in.
 
-![Redis](/images/blog/6950254a022e49bae7b82ded030ab1d42cfd7c98-1197x1118.webp)
+![Redis](/images/site-mirror/6950254a022e49bae7b82ded030ab1d42cfd7c98-1197x1118.webp)
 
 ([Source](https://en.wikipedia.org/wiki/Word_embedding))
 
@@ -51,7 +51,7 @@ In 2013, Google researchers introduced Word2Vec, a toolkit that made it possible
 
 The image below, for example, uses color encodings to illustrate and compare the relationships between words and the different levels of similarity between them. “Man” and “woman,” for example, are more similar to each other than either is to “king” or “queen.”
 
-![Redis](/images/blog/afd79d70534fd1b4c2df496eb222d5abd1430cd4-1398x751.webp)
+![Redis](/images/site-mirror/afd79d70534fd1b4c2df496eb222d5abd1430cd4-1398x751.webp)
 
 ([Source](https://jalammar.github.io/illustrated-word2vec/))
 
@@ -95,7 +95,7 @@ Most recommender and personalization systems rely on embeddings. In this context
 
 Take Netflix for example. The company built a [foundation model for personalized learning](https://netflixtechblog.com/foundation-model-for-personalized-recommendation-1a0bd8e02d39) that uses embeddings throughout. The diagram below illustrates how each type of metadata associated with a show or movie can be represented by its corresponding embeddings.
 
-![Redis](/images/blog/20fdb8ee516f81813c7d591cdda760d93410fc9e-1339x745.webp)
+![Redis](/images/site-mirror/20fdb8ee516f81813c7d591cdda760d93410fc9e-1339x745.webp)
 
 ([Source](https://netflixtechblog.com/foundation-model-for-personalized-recommendation-1a0bd8e02d39))
 
@@ -111,7 +111,7 @@ Multimodal embeddings allow ML models to encode images, audio, and other data in
 
 For example, with Google's [Multimodal Embeddings API](https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-multimodal-embeddings), you can, as shown in the image below, search for the text “cat” or a picture of a cat.
 
-![Redis](/images/blog/3088af95b623055c0fc7358ccad12db1b79795d7-1196x790.webp)
+![Redis](/images/site-mirror/3088af95b623055c0fc7358ccad12db1b79795d7-1196x790.webp)
 
 Embeddings have long been able to incorporate multimodal sources, but advancements in this area hold considerable promise.
 
@@ -129,7 +129,7 @@ In March of 2025, for example, Google touted [advancements in text embedding](ht
 
 Embeddings already play a significant role in RAG, so their importance will likely increase as RAG becomes more widely adopted. Menlo Ventures [research](https://menlovc.com/2024-the-state-of-generative-ai-in-the-enterprise/) shows that in 2024, embeddings became the most popular enterprise AI design pattern.
 
-![Redis](/images/blog/48cfdf33a7de59044a82d17f898bde48cc8f166e-2041x1005.webp)
+![Redis](/images/site-mirror/48cfdf33a7de59044a82d17f898bde48cc8f166e-2041x1005.webp)
 
 For enterprise use cases, where accuracy is a priority and alignment with internal knowledge is paramount, RAG promises to be one of the most impactful approaches to GenAI, making embeddings a core technique for all enterprise engineering leaders to learn.
 
@@ -143,7 +143,7 @@ The key point is that companies can’t rely on a “good enough” approach to 
 
 Redis delivers vector storage and search with standout performance, including high throughput, low latency, and full support for use cases like RAG. It also integrates seamlessly with a wide range of AI and data tools. Our research, based on [objective benchmarking](/blog/benchmarking-results-for-vector-databases/), proves that Redis is, by far, the fastest option on competitive vector metrics.
 
-![Redis](/images/blog/535a483ffd59b24e5fd1e00a83e1a681719ad6f8-800x486.webp)
+![Redis](/images/site-mirror/535a483ffd59b24e5fd1e00a83e1a681719ad6f8-800x486.webp)
 
 Harrison Chase, Co-Founder and CEO of LangChain, says, “We’re using Redis Cloud for everything persistent in OpenGPTs, including as a vector store for retrieval and a database to store messages and agent configurations. The fact that you can do all of those in one database from Redis is really appealing.”
 

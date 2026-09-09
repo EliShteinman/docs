@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 19 December 2025 · updated 21 May 2026*
 
-![What is context rot](/images/blog/b96d5dab4fac9045365a9f7c699f206ae630b7b6-2400x1278.webp)
+![What is context rot](/images/site-mirror/b96d5dab4fac9045365a9f7c699f206ae630b7b6-2400x1278.webp)
 
 The thing with LLMs is that the longer the context they’re working with, the less accurate they become. A [2023 Stanford study](https://arxiv.org/abs/2307.03172) found that with just 20 retrieved documents (~4,000 tokens), an LLM's accuracy can drop from 70-75% down to 55-60%. The information isn't wrong or missing, the model just pays less attention to it. Place the same facts at position 1 and you get 75% accuracy. Put them at position 10 and accuracy falls to 55%.
 

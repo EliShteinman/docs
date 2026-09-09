@@ -15,7 +15,7 @@ hidden: true
 
 *By Madhukar Kumar, VP of Technical and Product Marketing · Published 16 November 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 As we gear up for 2019, we are very excited to announce the latest release of Redis Enterprise which marks a significant milestone in our journey towards a zero latency future, and comes packed with all sorts of goodies. Let’s review three capabilities that make the new Redis Enterprise especially interesting.
 

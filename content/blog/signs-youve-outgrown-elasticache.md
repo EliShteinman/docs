@@ -15,7 +15,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 11 October 2024 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/6c8c76130fb1b7f13122c5fa039b96016681ff46-772x550.webp)
+![Blog tile image](/images/site-mirror/6c8c76130fb1b7f13122c5fa039b96016681ff46-772x550.webp)
 
 Note: *This article was originally published May 6, 2022. It has been updated to add new product information*.
 

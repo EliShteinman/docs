@@ -14,7 +14,7 @@ hidden: true
 
 *By Adriano Amaral · Published 2 September 2025 · updated 9 September 2025*
 
-![Redis Quantization and dimensionality reduction](/images/blog/ac543c3074075c1ff8ded4615e120fd2ff403b29-772x552.webp)
+![Redis Quantization and dimensionality reduction](/images/site-mirror/ac543c3074075c1ff8ded4615e120fd2ff403b29-772x552.webp)
 
 Picture this—our AI app is crushing it. Users love your recommendations, your RAG system delivers spot-on answers, and your vector search is lightning fast. Then your Cloud Service Provider bill arrives. Your vector database alone is consuming $50,000 monthly in memory costs, and your CFO is asking uncomfortable questions about AI ROI. Sound familiar? You're not alone. According to [CIO.com’s report](https://www.cio.com/article/3808191/cost-concerns-put-cios-ai-strategies-on-edge.html) 46% of 1,000-plus IT pros surveyed said the lack of predictability in pricing is a primary obstacle to implementing AI.
 
@@ -24,7 +24,7 @@ Today, we're announcing quantization that cuts your vector memory footprint by u
 
 Our testing across diverse datasets shows consistent memory efficiency gains that translate directly to cost savings. The memory savings ranged from 26% to 37% total memory reduction, using different compression algorithms for LeanVec and LVQ. Comparing the vector index alone SVS-VAMANA with the existing HNSW implementation yields a memory gain of 51-74% in index memory reduction.
 
-![Redis  index memory reduction](/images/blog/b8b089537ea0fe12394e3d7d776653ef94b85c0b-600x371.webp)
+![Redis  index memory reduction](/images/site-mirror/b8b089537ea0fe12394e3d7d776653ef94b85c0b-600x371.webp)
 
 ## Improve search performance while keeping accuracy
 
@@ -35,7 +35,7 @@ In terms of query throughput (QPS), the gains vary from 0% to 144% QPS, for FP32
 
 LAION, a 512 dimensions dataset, using cosine similarity for the KNN queries: Minimal gains (0-15% RPS, some degradation)
 
-![Redis RPS, some degradation](/images/blog/20bffb9f1917f630cef97a16e7d76c4ff2d20180-600x371.webp)
+![Redis RPS, some degradation](/images/site-mirror/20bffb9f1917f630cef97a16e7d76c4ff2d20180-600x371.webp)
 
 ## The savings are simple to implement
 

@@ -30,7 +30,7 @@ In this post, we share one popular design pattern that developers use with Redis
 
 For the purposes of this post, our demonstration application showcases a movie application that uses basic create, read, update, and delete (CRUD) operations.
 
-![Movie application demo](/images/blog/4c3e6d98c0e680f2d24b843c68b122ee263ed58c-624x322.webp)
+![Movie application demo](/images/site-mirror/4c3e6d98c0e680f2d24b843c68b122ee263ed58c-624x322.webp)
 
 The movie application dashboard contains a search section at the top and a list of movie cards in the middle. The floating plus icon displays a pop-up when the user selects it, permitting the user to enter new movie details. The search section has a text search bar and a toggle link between text search and basic (that is, form-based) search. Each movie card has edit and delete icons, which are displayed when a mouse hovers over the card.
 
@@ -51,7 +51,9 @@ Master data generally changes infrequently. Country lists, genres, and movie lan
 
 From a developer’s point of view, master data lookup refers to the process by which master data is accessed in business transactions, in application setup, and any other way that software retrieves the information. Examples of master data lookup include fetching data for user interface (UI) elements (such as drop-down dialogs, select values, multi-language labels), fetching constants, user access control, theme, and other product configuration. And you can do that even when you rely primarily on MongoDB as a [persistent data](/redis-enterprise/technology/durable-redis/) store.
 
-![redis, mongodb, and application diagram](/images/blog/d22b0d4041d39f0b0ad89bcc85fc2303fdc8d800-1163x285.webp)
+![redis, mongodb, and application diagram](/images/site-mirror/d22b0d4041d39f0b0ad89bcc85fc2303fdc8d800-1163x285.webp)
+
+*To serve master data from Redis, preload the data from MongoDB.*
 
 1. Read the master data from MongoDB on application startup and store a copy of the data in Redis. This pre-caches the data for fast retrieval. Use a script or a cron job to repeatedly copy master data to Redis.
 1. The application requests master data.
@@ -71,7 +73,9 @@ The image below illustrates a standard way to showcase a UI that is suitable for
 
 Consider the pop-up dialog that appears when a user who wants to add a new movie clicks the movie application plus the icon. The pop-up includes drop-down menus for both country and language. In this demonstration, Redis loads the values.
 
-![movie interface language selection](/images/blog/25de617cf07f3ead866b1dd86b5c48703d48ddf2-1304x557.webp)
+![movie interface language selection](/images/site-mirror/25de617cf07f3ead866b1dd86b5c48703d48ddf2-1304x557.webp)
+
+*Pop-up screen to add a new movie*
 
 ## Code
 
@@ -81,9 +85,13 @@ Previously, if the application used MongoDB, it searched the static database to 
 
 Instead, the “after” views in the code blocks (on right) show that the master data can be accessed with only a few lines of code—and much faster response times.
 
-![Query to fetch masters from MongoDB and Redis](/images/blog/c66a6153d1ae9af1da30e9b8488f359900e8e428-624x266.webp)
+![Query to fetch masters from MongoDB and Redis](/images/site-mirror/c66a6153d1ae9af1da30e9b8488f359900e8e428-624x266.webp)
 
-![Query to fetch masters from MongoDB Atlas and Redis](/images/blog/92585081fd29559c9e3937475972b750bbd39752-624x380.webp)
+*Query to fetch masters from MongoDB and Redis*
+
+![Query to fetch masters from MongoDB Atlas and Redis](/images/site-mirror/92585081fd29559c9e3937475972b750bbd39752-624x380.webp)
+
+*Query to fetch masters from MongoDB Atlas and Redis*
 
 ## Sensing a pattern here?
 

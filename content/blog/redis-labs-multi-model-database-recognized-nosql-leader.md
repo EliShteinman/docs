@@ -14,9 +14,9 @@ hidden: true
 
 *By Priya Balakrishnan, Sr. Director of Product and Partner Marketing · Published 14 March 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7e44dba74d30e86bee8de998e64e7ec2dcad90b9-343x367.webp)
+![Blog tile image](/images/site-mirror/7e44dba74d30e86bee8de998e64e7ec2dcad90b9-343x367.webp)
 
-![](/images/blog/7e44dba74d30e86bee8de998e64e7ec2dcad90b9-343x367.webp)
+![](/images/site-mirror/7e44dba74d30e86bee8de998e64e7ec2dcad90b9-343x367.webp)
 
 We’re honored to announce that Forrester Research this week cited Redis as a Leader in The Forrester WaveTM: Big Data NoSQL, Q1 2019. In this evaluation, we believe that the leading independent research firm placed us as a leader based on Redis’ high-performance and multi-model approach, which powers a broad set of enterprise applications. In fact, we received the third-highest score out of 15 vendors in the current offering category, with Forrester noting that “Customer references like its innovation for machine learning apps, performance, scale, customer support, and support for diverse [NoSQL](/nosql/what-is-nosql/) use cases.”
 

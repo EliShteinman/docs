@@ -15,7 +15,7 @@ hidden: true
 
 *By Shyam Kathiresan · Published 21 April 2025 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/410050c6e8423f8ff5cf0dab5fb46065fe767d91-1544x1104.webp)
+![Blog tile image](/images/site-mirror/410050c6e8423f8ff5cf0dab5fb46065fe767d91-1544x1104.webp)
 
 **In today’s API economy, milliseconds matter. See how Redis Cloud takes Apigee from great to exceptional.**
 
@@ -53,7 +53,7 @@ They deployed Redis Cloud via the GCP Marketplace and saw 2x better performance 
 
 **Future-proofing Apigee with Redis Cloud**
 
-![GCP Marketplace](/images/blog/eed7f11181262c9b673535ae878ead192c9a4ba3-2048x1152.webp)
+![GCP Marketplace](/images/site-mirror/eed7f11181262c9b673535ae878ead192c9a4ba3-2048x1152.webp)
 
 Beyond immediate benefits, Redis Cloud plays a crucial role in future-proofing Apigee deployments:
 

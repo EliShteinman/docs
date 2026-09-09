@@ -14,13 +14,15 @@ hidden: true
 
 *By Jane Paek, Solution Architect Manager · Published 22 January 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/1800d303b814db4266f0329b2d1d68fa45218902-1600x1200.webp)
+![Blog tile image](/images/site-mirror/1800d303b814db4266f0329b2d1d68fa45218902-1600x1200.webp)
 
 A little snow couldn’t stop the Redis community from coming out in force to our first Redis Day of the year in Seattle. Held on January 13–14 at the Hyatt Regency, [Redis Day Seattle](https://connect.redis.com/redisdayseattle/mktg) brought together some 300 developers, engineers, software architects, programmers, and business professionals for intensive training, thought leadership, and networking.
 
 On day one, Redis users from beginners to experts packed the conference room for a full schedule of hands-on training covering everything from Redis basics to [Redis Streaming Architectures](/docs/build-apps-using-redis-streams/), [Probabilistic Data Structures](/blog/how-to-get-started-with-probabilistic-data-structures-count-min-sketch/), [RediSearch](/redis-enterprise/redis-search/), and [RedisTimeSeries](/redis-enterprise/redis-time-series/). The following day, attendees heard from representatives of Zulily, Twilio, MDmetrix, AWS, and other cutting-edge customers on how Redis helps solve some of their business problems.
 
-![](/images/blog/ba07c766e590c75f1e977c5e4d82923c13fb75fc-1024x768.webp)
+![](/images/site-mirror/ba07c766e590c75f1e977c5e4d82923c13fb75fc-1024x768.webp)
+
+*Redis’ Head of Developer Advocacy Kyle Davis and Developer Advocate Guy Royse present during training day.*
 
 We had a grand time in Seattle, and can’t wait to be back again. For now though, here’s a recap on what went down.
 
@@ -42,7 +44,9 @@ Many attendees were surprised to learn about Redis’ capabilities beyond cachin
 
 Redis Day Seattle attendees were also treated to a special keynote from Redis CTO and Co-Founder [Yiftach Shoolman](https://twitter.com/Yiftachsh), who traced the growth of NoSQL data models like TimeSeries, Graph, JSON, Key-value, and Search, as discussed some of the most-desired features of the upcoming Redis 6. Later in the day, Redis’ Security Product Manager [Jamie Scott](https://twitter.com/iamateapot418) explained some of the new security features in Redis 6, including TLS and ACLs. And, of course, it wouldn’t be a Seattle tech event without tech staples Amazon Web Services and Microsoft, who presented on Redis Commands and ASP.NET Core with Redis, respectively.
 
-![](/images/blog/a9edc0aea544f0897666d69cd4ef0d2707727701-1024x768.webp)
+![](/images/site-mirror/a9edc0aea544f0897666d69cd4ef0d2707727701-1024x768.webp)
+
+*Yiftach Shoolman, CTO and Co-Founder of Redis, shared some of the new features of Redis 6.*
 
 The second day closed with a networking happy hour where developers, presenters, and experts alike could mingle and share their Redis stories. It was a great opportunity to bounce ideas off Redis users with a wide variety of experiences, all eager to learn something new. Plus, everyone left happy with a brand new Redis t-shirt and laptop stickers.
 

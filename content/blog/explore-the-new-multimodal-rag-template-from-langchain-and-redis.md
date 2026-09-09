@@ -15,7 +15,7 @@ hidden: true
 
 *By Tyler Hutcherson, Lance Martin · Published 16 May 2024 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/3b9140d0db061972cbc22ce08e2f391a58e4d30d-772x552.webp)
+![Blog tile image](/images/site-mirror/3b9140d0db061972cbc22ce08e2f391a58e4d30d-772x552.webp)
 
 Large language models (LLMs) are trained on massive sets of public data and excel at generating human-like text based on that information. However, they don’t have access to private or corporate data, which limits how effective they are for enterprise use cases. Retrieval-augmented generation (RAG) is a popular approach to connect LLMs to this specialized data, broadening their knowledge bases beyond their initial training data. With RAG, companies are using LLMs to answer questions about their unique documents and data.
 
@@ -35,7 +35,7 @@ In this post, we’ll:
 
 The typical RAG pipeline involves indexing text documents with [vector embeddings](https://redis.io/glossary/vector-embeddings/) and metadata, retrieving relevant context from the database, forming a grounded prompt, and synthesizing an answer with an LLM. For more on this, see LangChain’s video series [RAG From Scratch](https://www.youtube.com/watch?v=wd7TZ4w1mSw).
 
-![](/images/blog/ef9a5fb5c5b346f30edb669e010a2907d75a4135-1327x626.webp)
+![](/images/site-mirror/ef9a5fb5c5b346f30edb669e010a2907d75a4135-1327x626.webp)
 
 *But what about non-textual data like images or graphics? *For these other data types, we have to extract semantics with a unique process. For example, consider analyzing a slide deck of the Nvidia Q3 FY24 investor presentation. The slides are a combination of text, images, tables, and charts. Standard PDF extraction techniques will only extract text, leaving information-rich images outside retrieval scope.
 
@@ -135,13 +135,13 @@ langchain serve
 
 8. **Access the API **at [http://127.0.0.1:8000](http://127.0.0.1:8000) and test your app via the playground at [http://127.0.0.1:8000/playground](http://127.0.0.1:8000/playground):
 
-![](/images/blog/fedc9163b36717b7f7f4b6b76aac486d63f944fb-1402x602.webp)
+![](/images/site-mirror/fedc9163b36717b7f7f4b6b76aac486d63f944fb-1402x602.webp)
 
-![](/images/blog/21596ca289ca53d9d7c06761c878896d1c68336f-1432x988.webp)
+![](/images/site-mirror/21596ca289ca53d9d7c06761c878896d1c68336f-1432x988.webp)
 
 Validate the answer from the RAG system by quickly checking the referenced PDF image from the slide deck.
 
-![](/images/blog/52860fb5b30dcbfec6f1461678bb72d833c36b51-1064x814.webp)
+![](/images/site-mirror/52860fb5b30dcbfec6f1461678bb72d833c36b51-1064x814.webp)
 
 In addition to LangServe, LangChain also has an observability platform called [LangSmith](https://www.langchain.com/langsmith). This will log all generations performed by the template, allowing for inspection of the prompt and validation of the images passed to GPT-4V. For example, you can see a trace on [langchain.com](https://smith.langchain.com/public/d77b7b52-4128-4772-82a7-c56eb97e8b97/r/ed6726ad-b733-4cbe-bc9a-0e6378d80e24) on multi-modal data that shows extraction of information from financial charts.
 

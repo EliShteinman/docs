@@ -14,7 +14,7 @@ hidden: true
 
 *By Lalit Pandit, Software Development Manager · Published 19 June 2019 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/af8cd92e892e69cbe569f72942c141bfc9cf8b7f-800x800.webp)
+![Blog tile image](/images/site-mirror/af8cd92e892e69cbe569f72942c141bfc9cf8b7f-800x800.webp)
 
 In my [previous post](/blog/inovonics-uses-redis-enterprise-drive-real-time-iot-data-analytics/), I gave a high-level overview of our Redis-based, industrial Internet of Things (IoT) technology at Inovonics, which is the leader in wireless networks. I will give more details on each of our system components in this and subsequent posts, and introduce you to some of the more technical features of Redis (and Redis Enterprise in particular) that we use at Inovonics.
 

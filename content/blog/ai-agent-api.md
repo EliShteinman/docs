@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 25 March 2026 · updated 1 April 2026*
 
-![AI agent API: How agents connect to the real world](/images/blog/e139ffb5da4929a4753032cb7caf52cb812a65e1-2400x1256.webp)
+![AI agent API: How agents connect to the real world](/images/site-mirror/e139ffb5da4929a4753032cb7caf52cb812a65e1-2400x1256.webp)
 
 LLMs are impressive text generators, but without application code connecting them to external systems, they can't check your calendar, update a database, or trigger a deployment. The moment you want an AI agent to *do* something, not just say something, you need an API layer that connects the model's reasoning to real-world systems.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Simba Khadder, Head of Context Engine at Redis. · Published 17 June 2026 · updated 18 June 2026*
 
-![FAQ: Real-time context engine, agent memory, and retrieval](/images/blog/82e03b2435f0e3d5fa4b7bf69f7d9cca70941781-3750x1963.webp)
+![FAQ: Real-time context engine, agent memory, and retrieval](/images/site-mirror/82e03b2435f0e3d5fa4b7bf69f7d9cca70941781-3750x1963.webp)
 
 AI agents are getting better at reasoning, planning, and using tools. But even the smartest model can give a bad answer if it has the wrong context, stale data, or too much irrelevant information.
 

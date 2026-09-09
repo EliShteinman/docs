@@ -14,7 +14,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 9 October 2025 · updated 1 June 2026*
 
-![Real-time structured data for AI agents: Featureform is joining Redis](/images/blog/0f1b7fc0da1a297112c1339e3a3760268e39cf10-1200x628.webp)
+![Real-time structured data for AI agents: Featureform is joining Redis](/images/site-mirror/0f1b7fc0da1a297112c1339e3a3760268e39cf10-1200x628.webp)
 
 For developers building AI agents, context is everything.
 

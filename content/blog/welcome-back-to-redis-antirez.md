@@ -15,7 +15,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 10 December 2024 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/8b46993897b9ef2527ca875233fe855afc3cab0e-772x552.webp)
+![Blog tile image](/images/site-mirror/8b46993897b9ef2527ca875233fe855afc3cab0e-772x552.webp)
 
 *We’re beyond excited to welcome Salvatore Sanfilippo – you probably know him as “antirez” – back to Redis. Salvatore built Redis in 2009, and the project until 2020 when he took a break to focus on his family and other projects. In this post, he explains what brought him back to Redis after an extended break. We’re thrilled to have him back in his new role as a Redis evangelist, and look forward to him helping us continue to build our community. This post originally appeared under the title *[*“From where I left” *](https://antirez.com/news/144)*on Salvatore’s personal blog. We’re republishing it with permission.*
 

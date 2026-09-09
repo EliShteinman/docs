@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 24 June 2014 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 It is with great pleasure that I share Redis’ successes regarding customer care and performance. This case study, in particular, epitomizes the need for clear communication and instant response times, especially in the world of mobile gaming. [Scopely](http://scopely.com), a very special customer of ours, is a successful gaming company whose journey to the top exposes the real challenges encountered by gaming companies across the globe, as well as how Redis aided in turning those challenges into distant memories.
 

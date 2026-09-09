@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 16 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/1b424f9c44996ac932d5e3c98982fb865661f744-1200x628.webp)
+![Redis](/images/site-mirror/1b424f9c44996ac932d5e3c98982fb865661f744-1200x628.webp)
 
 Your support team gets a Slack message: "Customer X wants pricing for our enterprise plan with custom SLA terms." Simple request, right? But the work isn't simple. Someone needs to research what competitors charge for similar tiers, draft a comparison showing where you have advantages, update the internal strategy doc with the new data point, and loop back with a recommendation.
 

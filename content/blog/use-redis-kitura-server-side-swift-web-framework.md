@@ -14,7 +14,7 @@ hidden: true
 
 *By Shabih Syed, Shabih is a Sr. Director of Product Marketing at Redis Labs. He has 13+ years of experience with software development, product management and marketing of cloud-based data management & application integration platforms. Most recently he led product marketing at Liaison Technologies (now OpenText) and has worked for HP and IBM before that. Shabih is based out of NYC. · Published 28 March 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/8eed7b3a6cd0dccd9052b8700ea39770c39b18f1-200x200.webp)
+![Blog tile image](/images/site-mirror/8eed7b3a6cd0dccd9052b8700ea39770c39b18f1-200x200.webp)
 
 During a recent project, I needed to develop application services using varied technology stacks. One of my requirements was to pick a different programming language for each microservice in my application. While Java, Node and Python were easy choices, I wanted to try something new and obscure. During a conversation with my brother, who happens to be an active iOS developer, I learned for the first time about Swift and Kitura and decided to give it a try.
 
@@ -75,7 +75,7 @@ Creating Tests/MyKituraAppTests/MyKituraAppTests.swift
 
 Creating Tests/MyKituraAppTests/XCTestManifests.swift
 
-![](/images/blog/784525697edf8d075896a65f6fb9f1b41d0ec52e-1024x151.webp)
+![](/images/site-mirror/784525697edf8d075896a65f6fb9f1b41d0ec52e-1024x151.webp)
 
 3. To add Kitura to your dependencies, edit `Package.swift`.
 Open `Package.swift` and edit it so it has the following text:
@@ -122,7 +122,7 @@ swift run
 
 7. Navigate to http://localhost:8080 in your browser, and it will return the following:
 
-![](/images/blog/d5494af136f09061a26ca4b164978a5caafd0830-1024x543.webp)
+![](/images/site-mirror/d5494af136f09061a26ca4b164978a5caafd0830-1024x543.webp)
 
 ### Step 3: Get Redis
 
@@ -130,20 +130,20 @@ I use Redis Cloud, a fully managed Redis database-as-a-service in this example. 
 
 1. Visit the Redis [Get Started](/try-free/) page, and click SIGN UP under the “Cloud Hosted” section. You will land at the following page:
 
-![](/images/blog/e8f4355a4097dfa1799f76b145c376383877274a-1024x814.webp)
+![](/images/site-mirror/e8f4355a4097dfa1799f76b145c376383877274a-1024x814.webp)
 
 2. Login to create your subscription and select a free (30MB) Redis database.
 
-![](/images/blog/a637d7741a52d3fa6a1056012604682b64cd58c4-1024x933.webp)
+![](/images/site-mirror/a637d7741a52d3fa6a1056012604682b64cd58c4-1024x933.webp)
 
 3. Name your database and activate it.
 
-![](/images/blog/acf93fb38fd498389dcd97818bd29c1d20acbb3f-1024x540.webp)
+![](/images/site-mirror/acf93fb38fd498389dcd97818bd29c1d20acbb3f-1024x540.webp)
 
 
 4. Take note of your database endpoint and password.
 
-![](/images/blog/9e7ed64baa902698f704675e6d50f44948c71d53-1024x822.webp)
+![](/images/site-mirror/9e7ed64baa902698f704675e6d50f44948c71d53-1024x822.webp)
 
 In this example, redis-15878.c91.us-east-1-3.ec2.cloud.redis.com is the URL of your Redis database and 15878 is the port.
 

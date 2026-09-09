@@ -14,7 +14,7 @@ hidden: true
 
 *By Yusuf Bahadur,  Yusuf Bahadur Senior Partner Solution Architect • Customer Org · Published 9 December 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/7a4f5d16c933f272d698c9c351976ef6aece75b1-1200x628.webp)
+![Redis](/images/site-mirror/7a4f5d16c933f272d698c9c351976ef6aece75b1-1200x628.webp)
 
 ## We built powerful Agents. Then we broke them.
 
@@ -55,7 +55,7 @@ Instead of reasoning over every tool, Tool Filtering with Redis retrieves only w
 
 We store all the tools and their meaning in Redis. When a user asks "why are payments failing," Redis finds the most relevant tools based on intent. Retrieving 3-5 tools instead of 50+. The model then picks the best one from a shortlist, not a haystack.
 
-![Redis](/images/blog/ed857af91e2756a08ea1b4c75b1f434fa2445928-1609x936.webp)
+![Redis](/images/site-mirror/ed857af91e2756a08ea1b4c75b1f434fa2445928-1609x936.webp)
 
 ## Real-world impact
 

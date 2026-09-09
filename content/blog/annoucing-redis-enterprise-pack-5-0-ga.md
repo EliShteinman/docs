@@ -15,7 +15,7 @@ hidden: true
 
 *By Cihan B · Published 27 November 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/724d91083e1b650d172bc4bc9b8f5bfe48cd6212-2000x1125.webp)
+![Blog tile image](/images/site-mirror/724d91083e1b650d172bc4bc9b8f5bfe48cd6212-2000x1125.webp)
 
 This content was written prior to a change in Redis’ naming convention – Redis Enterprise is now the moniker for all our products.
 
@@ -31,7 +31,7 @@ Developing globally distributed applications can be challenging, as developers h
 
 Visit [Getting Started](/redis-enterprise-documentation/getting-started/creating-database/crdbs/) in our Redis Enterprise Pack documentation to learn more. And for information on how to develop applications with Redis CRDTs, check out our [Developing with Redis CRDTs](/redis-enterprise-documentation/developing/crdbs/) page.
 
-![](/images/blog/724d91083e1b650d172bc4bc9b8f5bfe48cd6212-2000x1125.webp)
+![](/images/site-mirror/724d91083e1b650d172bc4bc9b8f5bfe48cd6212-2000x1125.webp)
 
 **Fulltext Search with RediSearch**
 

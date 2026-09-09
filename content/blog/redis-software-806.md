@@ -16,7 +16,7 @@ hidden: true
 
 *By Yoav Peled, Alon Magrafta, Maayan Agranat · Published 15 January 2026 · updated 16 January 2026*
 
-![Redis](/images/blog/557d090ba02ba737c1385c3eb50d0feb44e6ed09-1200x628.webp)
+![Redis](/images/site-mirror/557d090ba02ba737c1385c3eb50d0feb44e6ed09-1200x628.webp)
 
 Redis Software 8.0.6 continues our commitment to making Redis the fastest, most reliable, and most secure data platform for enterprises. This release introduces a range of enhancements that improve performance, security, and observability for both Redis operators and developers.
 
@@ -30,7 +30,7 @@ Redis Software 8.0.6 brings Redis Software all the innovation and enhancements i
 
 Redis Software 8.0.6 delivers measurable latency reductions across multiple Redis commands—pushing efficiency and responsiveness even further. In benchmark testing, median (p50) latency improvements reached up to **72%** when comparing Redis Software 8.0.6 (based on Redis Open Source version 8.2) against Redis Enterprise Software 7.8.6 (based on Redis Open Source version 7.4). These gains are driven by a powerful combination of Redis Open Source 8.2 performance optimizations and targeted enhancements in the Redis Enterprise proxy, which together deliver faster data processing and reduced command latency.
 
-![Redis](/images/blog/27feaafdc0568f1b0a727b316beb4b8b70594975-512x271.webp)
+![Redis](/images/site-mirror/27feaafdc0568f1b0a727b316beb4b8b70594975-512x271.webp)
 
 This translates directly into customer value: you can now handle higher traffic, more users, and more demanding workloads on the same infrastructure. Higher efficiency means scaling thresholds are pushed further out, which saves money by reducing the need for infrastructure expansion. The most significant gains - seen in commands like BITCOUNT, SUNION, ZADD and HSCAN directly benefit use cases such as real-time analytics, recommendation engines, fraud detection, leaderboards, and large-scale metadata or session scans. This is another example of how Redis keeps improving. It keeps pushing the limits of performance so customers can move faster, scale smarter, and set new expectations for what real-time data platforms can do.
 

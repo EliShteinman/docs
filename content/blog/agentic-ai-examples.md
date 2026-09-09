@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 10 April 2026 · updated 15 April 2026*
 
-![Agentic AI in production: Six industry examples & the infrastructure behind them](/images/blog/ca8e65dc8fc3ff1e4d4698b6e006bfa9387db974-2400x1256.webp)
+![Agentic AI in production: Six industry examples & the infrastructure behind them](/images/site-mirror/ca8e65dc8fc3ff1e4d4698b6e006bfa9387db974-2400x1256.webp)
 
 You've chained together a few LLM calls, added retry logic, thrown in a tool call or two—and suddenly you're debugging something that looks less like a prompt and more like a distributed system. That's the jump from a single LLM call to an agentic system. Agentic systems don't just generate responses. They plan, act, use tools, and remember what happened along the way. And [industry rollouts](https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/the-top-trends-in-tech) are already showing up across industries where these capabilities matter.
 

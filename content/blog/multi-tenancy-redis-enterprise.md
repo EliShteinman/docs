@@ -16,7 +16,7 @@ hidden: true
 
 *By James Tessier, John Noonan · Published 14 May 2024 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/ec9ba318b8d5c1330d0a39a48b1af491fab5ba28-772x552.webp)
+![Blog tile image](/images/site-mirror/ec9ba318b8d5c1330d0a39a48b1af491fab5ba28-772x552.webp)
 
 In a multi-tenant architecture, a single software instance serves many distinct user groups (or “tenants”). Each tenant’s data is securely isolated, ensuring that it remains invisible and inaccessible to others. Think of it like an apartment building with people living in separate and isolated units of a shared building.
 
@@ -30,7 +30,7 @@ With Redis, you can create a multi-tenant environment on-prem or in any cloud in
 
 Multi-tenant and multi-instance architectures have notable differences. In a multi-instance architecture, you install a new software instance for each tenant. The picture below shows an example of multi-instance architecture for Redis. In this scenario, you deploy a new Redis instance for every tenant, accommodating the need for tenant data segregation. But as the number of your tenants grows, so does the complexity of deploying, monitoring, maintaining, and upgrading multiple software instances.
 
-![multi-instance architecture](/images/blog/fe9fa3ec42cbe110d78c5bacc2f83c5ad9bed3f6-1320x491.webp)
+![multi-instance architecture](/images/site-mirror/fe9fa3ec42cbe110d78c5bacc2f83c5ad9bed3f6-1320x491.webp)
 
 1. Multi-tenancy achieved through virtualization/containerization
 
@@ -38,13 +38,13 @@ In this scenario, Redis is deployed either as a container or a virtual machine, 
 
 Many common services like Amazon ElastiCache employ this model. These services charge based on the number of Redis instances used. While this pricing model and the scalability of services like these often result in economies of scale and scope, these benefits tend to favor the service providers more than the end users.
 
-![ElastiCache](/images/blog/408cd358eb48be5d449a83b7613601b474a3c45a-1443x692.webp)
+![ElastiCache](/images/site-mirror/408cd358eb48be5d449a83b7613601b474a3c45a-1443x692.webp)
 
 1. Multi-tenancy in Redis
 
 Redis provides software multi-tenancy where a single deployment—typically a cluster of nodes—efficiently supports hundreds of tenants. Each tenant is assigned a distinct Redis endpoint, ensuring complete isolation from others. This maximizes efficiency while improving security and performance across the database setup.
 
-![cluster of nodes](/images/blog/3760a7245f4ffb23f36f10f2cd1855ed307a952a-1443x891.webp)
+![cluster of nodes](/images/site-mirror/3760a7245f4ffb23f36f10f2cd1855ed307a952a-1443x891.webp)
 
 Deploying Redis in your data center, private cloud, or virtual private cloud leverages the economic advantages of our multi-tenant architecture. With just a single cluster of a few Redis nodes, you can support a range of activities from development and testing to full production. This setup allows you to efficiently accommodate the varying requirements of different tenants within the same infrastructure.
 
@@ -67,7 +67,7 @@ A node is the hardware foundation—be it a physical server, virtual machine, co
 - **Clustered database**: Multiple primary shards, each handling a segment of the dataset
 - **HA clustered database**: Multiple pairs of primary and replica shards
 
-![databases](/images/blog/894c00e5c8d6613c30fb0b833d09dbef58828830-1102x536.webp)
+![databases](/images/site-mirror/894c00e5c8d6613c30fb0b833d09dbef58828830-1102x536.webp)
 
 **Control plane**:
 
@@ -83,7 +83,7 @@ A node is the hardware foundation—be it a physical server, virtual machine, co
 - **Node watchdog: **Oversees processes on each Redis node, triggering shard failure events when necessary
 - **Cluster watchdog:** Ensures the health of Redis cluster nodes, triggering node failure events as needed
 
-![cluster paths](/images/blog/c345f737169710b0d30e1d2a4ba985fc6eddb6fa-2048x762.webp)
+![cluster paths](/images/site-mirror/c345f737169710b0d30e1d2a4ba985fc6eddb6fa-2048x762.webp)
 
 There are a ton of deployment capabilities, with the only limitation being the total memory available across the cluster. Each database endpoint is assigned a fully qualified domain name (FQDN), and zero-latency proxies on all nodes efficiently redirect client requests to the correct primary shard.
 

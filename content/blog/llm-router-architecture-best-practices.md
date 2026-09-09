@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 1 July 2026 · updated 2 July 2026*
 
-![LLM model router architecture best practices ](/images/blog/e340409791d0a8ce17d0d46edda4ca9b8c76cda4-2400x1256.webp)
+![LLM model router architecture best practices ](/images/site-mirror/e340409791d0a8ce17d0d46edda4ca9b8c76cda4-2400x1256.webp)
 
 You picked GPT-5 for every LLM call in your app because it was the safe call: chat, autocomplete, classification, summarization, all of it. Then the bill arrived, and you traced part of it back to queries like "what are your business hours?" getting routed through a frontier reasoning model built for much harder problems. That's the problem a model router helps address: sending each request to the model that actually fits it, instead of paying premium prices for questions a small model could answer in milliseconds.
 

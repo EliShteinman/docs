@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 26 October 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/2929aee74632e57cb0324107c4aa9003214b75fb-1198x985.webp)
+![Blog tile image](/images/site-mirror/2929aee74632e57cb0324107c4aa9003214b75fb-1198x985.webp)
 
 [Watch the video](/docs/power-of-personalization-driving-digital-banking-success/)
 

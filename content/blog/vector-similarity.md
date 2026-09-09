@@ -14,7 +14,7 @@ hidden: true
 
 *By Rini Vasan, AI Product Marketing Manager · Published 18 December 2025 · updated 21 May 2026*
 
-![Redis Vector similarity](/images/blog/efc83067af64d084f82d41de4fecd8ef220d9891-772x552.webp)
+![Redis Vector similarity](/images/site-mirror/efc83067af64d084f82d41de4fecd8ef220d9891-772x552.webp)
 
 Building AI apps that understand meaning requires more than keyword matching. Your search engine needs to understand that "cheap flights" and "budget airfare" are asking for the same thing. Your RAG system needs to find relevant documents without exact matches. Your AI agent needs to recall past conversations even when the wording changes. Vector similarity makes all of this possible.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By John Noonan, Ryan Powers · Published 16 September 2022 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/4a54ab1973e8468c973694ea14adf55eac9048bb-772x550.webp)
+![Blog tile image](/images/site-mirror/4a54ab1973e8468c973694ea14adf55eac9048bb-772x550.webp)
 
 **Introducing the Redis Caching Assessment, a fast and simple tool that quickly analyzes the state of your cache and delivers actionable solutions in less than 5 minutes. We explain how we built this exciting new framework and how it can help you get started with boosting your cache’s performance to build modern applications.**
 
@@ -26,7 +26,7 @@ For decades, databases have been working behind the scenes to power businesses a
 
 We couldn’t agree more. Modern applications require an [enterprise-grade cache](/redis-enterprise-cloud/overview/) to power them to meet today’s real-time consumer demands.
 
-![](/images/blog/a4ecdbd54fb274313d5fa2fc5052961815cda4c8-1024x463.webp)
+![](/images/site-mirror/a4ecdbd54fb274313d5fa2fc5052961815cda4c8-1024x463.webp)
 
 ## Why cache?
 

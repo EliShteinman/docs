@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 6 January 2025 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/b62fa2068a852ccd3a777c9ef8c0d1459d73a0c2-772x552.webp)
+![Blog tile image](/images/site-mirror/b62fa2068a852ccd3a777c9ef8c0d1459d73a0c2-772x552.webp)
 
 [Click here to view video](https://www.youtube.com/embed/K6uFvHgEZhQ?si=gRsXmiZVUOm8w8w0)
 
@@ -22,7 +22,7 @@ Welcome to “What’s new in two,” your quick hit of Redis releases you might
 
 ## Welcome back Salvatore Sanfilippo
 
-![](/images/blog/51c15abd4b722cff5c7060fe43d9b3353e71f447-751x364.webp)
+![](/images/site-mirror/51c15abd4b722cff5c7060fe43d9b3353e71f447-751x364.webp)
 
 The creator of Redis, Salvatore Sanfilippo, is back at Redis Inc. as of December 10. There’s a lot in his recent blog post about what he’s been up to, why he’s coming back, his opinion on the license change, AI trends, and more. I particularly enjoyed reading about the connecting points between the early days of Redis and the license change. Read his [blog post here](https://lnkd.in/g5jQpzTj).
 

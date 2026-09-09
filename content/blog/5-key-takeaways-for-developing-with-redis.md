@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 18 May 2022 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
-![redis namespace](/images/blog/ecc6a0858fe54fe19e69c00e009af3bc3d324aff-300x200.webp)
+![redis namespace](/images/site-mirror/ecc6a0858fe54fe19e69c00e009af3bc3d324aff-300x200.webp)
 
 [*Download Nine Essential Database Capabilities*](/docs/9-essential-database-capabilities/)* and make sure your database has what it takes to meet all your demands*
 

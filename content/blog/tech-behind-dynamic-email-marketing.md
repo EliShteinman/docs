@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 19 September 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/846f1f66f87df13c49a5e7b64e541edd79a35d11-800x298.webp)
+![Blog tile image](/images/site-mirror/846f1f66f87df13c49a5e7b64e541edd79a35d11-800x298.webp)
 
 E-mail marketing is an effective way to reach customers, but it comes with a variety of challenges that can be difficult to overcome. The nature of email is static after delivery: once the message has left your e-mail server, you have very little control — or do you? Let’s take a look at a technique that can provide some level of dynamic control *after *you send your e-mail.
 
@@ -29,7 +29,9 @@ The item intermediate URL is a little simpler — this URL records that a vi
 
 Here is a diagram of the whole process:
 
-![](/images/blog/a0388c3927eb8ed5cca604869f459fce39135b25-1000x408.webp)
+![](/images/site-mirror/a0388c3927eb8ed5cca604869f459fce39135b25-1000x408.webp)
+
+*It’s less complicated than it looks.*
 
 ## How we’re going to calculate hotness
 
@@ -57,7 +59,7 @@ minutesSinceEpoch = countEpoch.getMinutesBetween(new Date())
 
 As an example, at 1am on July 1, 2017, the* minutesSinceEpoch *would be 59 (not 60, because of zero-based counting). We’ll flip a single bit each time a person interacts with an item. Note that if two users interact with the same item during the same minute period, it is only counted once — we’re getting the activity rather than the count in this case. This is very space efficient and provides some very rich data with a minimal storage footprint. Each day from the *countEpoch *would consume 180-bytes, ~5.4kb a month or ~65kb per year. Not bad.
 
-![](/images/blog/846f1f66f87df13c49a5e7b64e541edd79a35d11-800x298.webp)
+![](/images/site-mirror/846f1f66f87df13c49a5e7b64e541edd79a35d11-800x298.webp)
 
 To flip the bits, we can use the Redis function [SETBIT](https://redis.io/commands/setbit) with the offset being the *minutesSinceEpoch *and the value being a 1, representing a visit. Give the example above (1am on July 1), our Redis command would look like this:
 

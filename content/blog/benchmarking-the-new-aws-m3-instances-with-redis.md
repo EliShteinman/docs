@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 15 November 2012 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/584fe8cc1f7f6798f6c888946e07c4abdce2036d-960x720.webp)
+![Blog tile image](/images/site-mirror/584fe8cc1f7f6798f6c888946e07c4abdce2036d-960x720.webp)
 
 Two weeks ago, Amazon launched its next generation of standard instances (M3 instances), adding twice the computational capability/cores while providing customers with the same balanced set of CPU and memory resources as M1 instances. We don’t use the M1 instances in our Redis Cloud clusters (they can’t cope with the high throughput, low latency requirements of Redis as detailed [here](/blog/its-true-even-modest-datasets-can-enjoy-the-speediest-performance#.UKSQ1uPZ_7l)), but wanted to know whether the M3 double extra-large instance (m3.2xlarge) would really perform better than the m2.2xlarge high memory instance that we use in many of our clusters nodes. Both instances come with similar memory configuration and use the same type of vcores, so what intrigues us most is the fact that M3 instances can run in Xen hardware virtualized mode (HVM). Therefore, they should overcome the Xen fork time issues that significantly affect Redis performance (as described in detail [here](https://garantiadata.com/blog/testing-fork-time-on-awsxen-infrastructure)). In-addition, the m3.2xlarge instance has two times the number of vcores as an m2.2xlarge instance at less than 30% additional cost:
 

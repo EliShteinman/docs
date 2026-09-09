@@ -14,7 +14,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 12 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ea439aea66779d924218acb0ca02b7d02a9b2296-601x601.webp)
+![Blog tile image](/images/site-mirror/ea439aea66779d924218acb0ca02b7d02a9b2296-601x601.webp)
 
 When you think about it, “life is a time series.”
 
@@ -36,7 +36,7 @@ Uncompressed, the timestamp and the value each consume 8 bytes (or 16 bytes/128 
 
 In many time-series use cases, samples are collected at fixed intervals. Imagine we are collecting measurements from a temperature sensor every 5 seconds. In milliseconds, the *delta* between two consecutive samples would be 5,000. Because the intervals remain constant, however, the delta between two deltas—***the double-delta***—would be 0.
 
-![](/images/blog/c1f0950a68997eca56753283ea79ddfb94f06f40-1024x581.webp)
+![](/images/site-mirror/c1f0950a68997eca56753283ea79ddfb94f06f40-1024x581.webp)
 
 Occasionally data will arrive at second 6 or second 4, but usually this is the exception. Rather than storing this ΔΔ (double-delta) in its entirety in 64 bits, [variable-length encoding](https://en.wikipedia.org/wiki/Variable-length_code) is used according to the following pseudo code:
 
@@ -56,7 +56,7 @@ Occasionally data will arrive at second 6 or second 4, but usually this is the e
 
 The basis of the value compression is the assumption that the difference between consecutive values is typically small and happens gradually instead of abruptly. In addition, floats are inherently wasteful and contain many repeating zeros that can be eliminated. So, when two consecutive values are XORed, only a few meaningful bits will be present in the result. For simplicity, the example below uses a single-precision double—RedisTimeSeries uses double-precision doubles:
 
-![](/images/blog/2392273c02d5ddc477deaf4e37d8d8fb4408322b-1024x764.webp)
+![](/images/site-mirror/2392273c02d5ddc477deaf4e37d8d8fb4408322b-1024x764.webp)
 
 You can see that the XOR operation between the first two equal numbers is, obviously, 0. But also there are often a number of leading and trailing 0s around the *meaningful XOR value*. The variable-length encoding of the XOR differences of the values removes leading and trailing zeros.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By David Maitland · Published 9 January 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/1b8bddd3fd2667752b211015f47fd45547c8f4e6-270x120.webp)
+![Blog tile image](/images/site-mirror/1b8bddd3fd2667752b211015f47fd45547c8f4e6-270x120.webp)
 
-![Ringing in the New Year with a New Office in London](/images/blog/1b8bddd3fd2667752b211015f47fd45547c8f4e6-270x120.webp)
+![Ringing in the New Year with a New Office in London](/images/site-mirror/1b8bddd3fd2667752b211015f47fd45547c8f4e6-270x120.webp)
 
 On New Year’s Eve, I was lucky enough to ring in 2017 from the top of Tower 42, one of the best spots in London to watch the city’s famed fireworks show. Even more exciting was the fact that, at the end of the traditional midnight countdown, this landmark London skyscraper officially became home to Redis’ newest global office!
 

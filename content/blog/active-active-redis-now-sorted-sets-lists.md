@@ -16,7 +16,7 @@ hidden: true
 
 *By Paz Yanover, Principal Product Manager · Published 26 June 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 We’re delighted to announce the availability of [Redis Enterprise v5.2](/redis-enterprise/software/downloads/), with much-anticipated features such as:
 

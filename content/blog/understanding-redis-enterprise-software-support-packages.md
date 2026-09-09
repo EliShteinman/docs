@@ -14,13 +14,13 @@ hidden: true
 
 *By Vanessa Hoying, Contributor · Published 3 January 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/54d3ed914502893dc2d398b993c8ca280dff2d10-772x550.webp)
+![Blog tile image](/images/site-mirror/54d3ed914502893dc2d398b993c8ca280dff2d10-772x550.webp)
 
 **We ask for a lot of information when you contact our support teams. We’re not being capricious or demanding. There are good reasons why we ask for this information.**
 
 You’re driving down the road. The car’s “check engine” light turns on. Uh-oh.
 
-![check engine icon in midnight blue](/images/blog/3cd6d3c34218bfcb7477ecdda4ecd92ce68b9bf8-500x500.webp)
+![check engine icon in midnight blue](/images/site-mirror/3cd6d3c34218bfcb7477ecdda4ecd92ce68b9bf8-500x500.webp)
 
 Naturally, since you’re a do-it-yourself technical person, your first thought is to go online to research the problem. The online advice suggests that you acquire an OBDII diagnostic tool to determine what the diagnostic code for that check engine light means. A bigger uh-oh: The diagnostic code suggests a dire problem with the catalytic converter, which might cost $2,500 to repair.
 
@@ -36,7 +36,9 @@ A support package contains all the essential information to help troubleshoot re
 - configuration files
 - cluster statistics
 
-![](/images/blog/fdc21a3dc79158fd2b55e5d0e52661521b0c738c-226x470.webp)
+![](/images/site-mirror/fdc21a3dc79158fd2b55e5d0e52661521b0c738c-226x470.webp)
+
+*The logs that Customer Success analyzes*
 
 We look at the overall health of your clusters. We aim to find areas for improvement, fix problems before they arise, and guide you on best practices. Your account success is our account success, and your business is our business.
 
@@ -56,7 +58,7 @@ Here is what we check from a support package:
 
 There are two ways to obtain a support package. You can do this through the Redis Enterprise GUI or the Redis command-line interface. Both accomplish exactly what you need; it’s only a matter of preference.
 
-![Redis support hotline information](/images/blog/7913595a0bed60e1ace10f41b9240c60d98c3564-748x389.webp)
+![Redis support hotline information](/images/site-mirror/7913595a0bed60e1ace10f41b9240c60d98c3564-748x389.webp)
 
 If you ever have difficulty obtaining your support package, do not hesitate to create a support ticket to reach out to our phenomenal support team.
 
@@ -68,15 +70,21 @@ If you prefer to use your terminal or PowerShell, you can aggregate a support pa
 
 When you submit a support ticket to our support team, our first step is to learn how you encountered the issue. Yes, screenshots and detailed information about the issue help; however, every issue has multiple ways of being diagnosed.
 
-![support package review areas](/images/blog/ef46a1aff7c8643ae5fb33136489b09fd3c8cc3d-671x413.webp)
+![support package review areas](/images/site-mirror/ef46a1aff7c8643ae5fb33136489b09fd3c8cc3d-671x413.webp)
+
+*Areas we examine when reviewing support packages*
 
 These logs provide further insight for the team to troubleshoot the issue. The logs help our support team to identify the issue and to make Redis Enterprise an even better product.
 
-![log history chart](/images/blog/41a8d93ae95d703be0b8edcc3b07fd6b800beb5b-624x279.webp)
+![log history chart](/images/site-mirror/41a8d93ae95d703be0b8edcc3b07fd6b800beb5b-624x279.webp)
+
+*What we see in these logs that indicates failures within the cluster*
 
 We do this all in a timely manner, so you don’t have to spend hours (or days!) looking at the logs and trying to guess what’s going on. Please do provide this information, as it helps us help you – and gives you the feedback to make your system run smoothly.
 
-![redis enterprise support package healhty cluster view](/images/blog/2c269aedc3286ccc26a103fd1091d50de9a9a15f-1150x1256.webp)
+![redis enterprise support package healhty cluster view](/images/site-mirror/2c269aedc3286ccc26a103fd1091d50de9a9a15f-1150x1256.webp)
+
+*What we see in a healthy cluster*
 
 We have experts in this field to ensure you’re in good hands. Just as a car mechanic is an expert in their field, our Customer Success team works to find all the nooks and crannies that could be missed.
 

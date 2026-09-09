@@ -14,7 +14,7 @@ hidden: true
 
 *By Helene Brulin, Contributor · Published 8 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/cd192c1073ef775a9b57e4d386aaa9c9136937a7-772x550.webp)
+![Blog tile image](/images/site-mirror/cd192c1073ef775a9b57e4d386aaa9c9136937a7-772x550.webp)
 
 The purpose of Redis OSS’s logical databases, either self-deployed or launched as a managed service such as [ElastiCache](/redis-enterprise-cloud/compare-us-with-aws-elasticache/), is to simplify a developer’s work by reducing administrative needs and by providing out-of-the-box one-size-fits-all defaults.
 
@@ -64,7 +64,7 @@ Another example are the [slowlog](https://redis.io/commands/slowlog/) commands. 
 - I run the debug command twice on Index 0, and once on Index 1
 - Then I run slowlog get in Index 1
 
-![Redis server output for a single command](/images/blog/86f998a20d936825cf9ee0918ac9fa64e0e0f866-554x860.webp)
+![Redis server output for a single command](/images/site-mirror/86f998a20d936825cf9ee0918ac9fa64e0e0f866-554x860.webp)
 
 The same goes for logs, [latency subcommands](https://redis.io/commands/latency/), or if you want to grep or get any values from the Redis [info](https://redis.io/commands/info/?ref=techvblogs.com) command: number of connected clients, used_memory, current IOPS, number of evicted keys, etc.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Simran Regmi, Product Marketing · Published 12 August 2026 · updated 13 August 2026*
 
-![Fresh context: CDC, not batch ETL](/images/blog/aa029458c192b9be87a8d43b12937a8024279f9a-2400x1256.webp)
+![Fresh context: CDC, not batch ETL](/images/site-mirror/aa029458c192b9be87a8d43b12937a8024279f9a-2400x1256.webp)
 
 In many systems, the reason an agent quotes yesterday's data isn't the model. It's the pipeline behind it: a nightly ETL job that refreshed the agent's context hours ago. Change data capture (CDC) can shrink that staleness window [from hours to seconds](https://engineering.linkedin.com/data-replication/open-sourcing-databus-linkedins-low-latency-change-data-capture-system).
 

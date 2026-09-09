@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 31 May 2026 · updated 3 June 2026*
 
-![Context graphs: when nearest-neighbor search isn't enough](/images/blog/c64be5ba12c3a00fa3cff0f953b6cec5d0154c5a-2400x1256.webp)
+![Context graphs: when nearest-neighbor search isn't enough](/images/site-mirror/c64be5ba12c3a00fa3cff0f953b6cec5d0154c5a-2400x1256.webp)
 
 Your retrieval-augmented generation (RAG) pipeline works well on simple questions. You embedded your documents, built a vector index, and retrieval does its job. Then someone asks something that requires distributed facts, and the whole thing falls apart. The answer exists in your data. Your vector search often won't surface it reliably.
 

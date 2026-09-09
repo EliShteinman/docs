@@ -14,7 +14,7 @@ hidden: true
 
 *By Blair Pierson, Sr. Director- AI/Tech partners AMER · Published 29 August 2025*
 
-![Redis  Tavily, & IBM’s BeeAI](/images/blog/74f9dba6746fd90ef52e2e7ff1a10d03375f3525-772x552.webp)
+![Redis  Tavily, & IBM’s BeeAI](/images/site-mirror/74f9dba6746fd90ef52e2e7ff1a10d03375f3525-772x552.webp)
 
 The next wave of AI apps demands more than just powerful models. Developers need a foundation that can orchestrate complex workflows, retrieve the right information instantly, and hold on to context without slowing down. No single tool delivers all of that, which is why open, modular stacks matter.
 

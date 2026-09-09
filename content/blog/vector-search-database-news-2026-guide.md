@@ -14,7 +14,7 @@ hidden: true
 
 *By Simran Regmi, Product Marketing · Published 13 August 2026 · updated 19 August 2026*
 
-![Vector Search Database: News & 2026 Guide](/images/blog/328c3f48bfb0f21c3c028a0c570417f5a7c7c9a6-2400x1256.webp)
+![Vector Search Database: News & 2026 Guide](/images/site-mirror/328c3f48bfb0f21c3c028a0c570417f5a7c7c9a6-2400x1256.webp)
 
 If you've built anything on top of an LLM in the past couple of years, you may have hit the wall many builders hit: the model writes fluently but has no view into your data. A vector search database helps close that gap. It stores vector embeddings and retrieves the items closest in meaning to a query. That retrieval step now sits underneath a lot of production AI, from chatbots to [AI agents](/blog/what-is-an-ai-agent/).
 

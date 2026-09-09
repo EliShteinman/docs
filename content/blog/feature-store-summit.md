@@ -15,7 +15,7 @@ hidden: true
 
 *By Nava Levy, Taimur Rashid · Published 27 October 2021 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/1cc247bb91b262151e4c1d1e2e8ac5d9a1ee3929-772x520.webp)
+![Blog tile image](/images/site-mirror/1cc247bb91b262151e4c1d1e2e8ac5d9a1ee3929-772x520.webp)
 
 Two weeks ago was the first [Feature Store Summit ](https://www.featurestoresummit.com/)event, filled with talks, panels, and a lively Slack channel with more than 800 active members. The summit brought together industry thought leaders and practitioners from over 25 organizations—all focused on feature stores! The size of the summit and enthusiasm of the attendees shows the growing [importance of feature stores](/solutions/feature-store/) and the key role they play in machine learning operations.
 
@@ -40,7 +40,7 @@ We found the slide above from [Hopswork’s](https://www.featurestore.org/featur
 
 During the summit, a poll was conducted on the best strategy for feature stores. Should you build a feature store, or buy one? Here are the results:
 
-![Building vs. Buying a Feature Store. 50% build, 35% buy, 15% are still deciding.](/images/blog/9800cf5e3da7a86e98f899885e4d907460810104-1024x632.webp)
+![Building vs. Buying a Feature Store. 50% build, 35% buy, 15% are still deciding.](/images/site-mirror/9800cf5e3da7a86e98f899885e4d907460810104-1024x632.webp)
 
 Despite the growing maturity of feature stores as a category, 50% of the surveyed companies prefer to build their own feature store rather than buy a commercial off the shelf solution, while only 35% prefer to buy, and 15% are still deciding. Companies who adopted a build strategy include [Spotify](https://youtu.be/eHdiWzPUt3k), [Wix](https://youtu.be/E8839ENL-WY), [Uber](https://youtu.be/3Edcx1etACY), and [DoorDash](https://doordash.engineering/2020/11/19/building-a-gigascale-ml-feature-store-with-redis/).
 
@@ -54,7 +54,7 @@ While a lot of emphasis is placed on the centralized nature of managing and stor
 
 In addition to collaboration, robust feature engines that ensure proper data preparation and minimize (or ideally prevent) challenges like data leakage are also hallmark capabilities required of feature platforms. [Vaso Bank](https://youtu.be/mDwYD3ThGPE) shared how their centralized feature store allows them to build a fraud detection system that avoids training and inference skew. This helps them maximize reusability, discoverability, and ensure consistency. [Kaskada and Redis](https://youtu.be/a_eHJDvbraI) shared how they combine an extensible feature engine with time travel and feature storage with low-latency in-memory Redis to operationalize ML models from event-based data (see the slide below).
 
-![Core machine learning and AI computing and serving with Kaskada as a feature engine and Redis as a primary data store.](/images/blog/592d7cc1cebf5f183b6df80575d176b6c2c1dad5-1024x576.webp)
+![Core machine learning and AI computing and serving with Kaskada as a feature engine and Redis as a primary data store.](/images/site-mirror/592d7cc1cebf5f183b6df80575d176b6c2c1dad5-1024x576.webp)
 
 Modern feature platforms provide a solution that closes the entire loop. First, you have an online feature store for low-latency serving, then an offline feature store for training and batch inference. Model binaries get stored in a model store, and as the model is served for predictions, model monitoring is used to determine model effectiveness. This is captured into an evaluation store, which can then be fed back to the feature engine so that models can be updated when the features are no longer predictive (as referenced above). This architecture goes well beyond storage, and ensures ML features are live, fresh, and fast, enabling them to support low-latency serving, augmented vector predictions, and continuous re-training at low latency.
 

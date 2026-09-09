@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 7 July 2026 · updated 14 July 2026*
 
-![Multi-step AI agents: what they are & how they work](/images/blog/a49ff73bf594bdd59f1a2292b115cb9602ea36a1-2400x1256.webp)
+![Multi-step AI agents: what they are & how they work](/images/site-mirror/a49ff73bf594bdd59f1a2292b115cb9602ea36a1-2400x1256.webp)
 
 You ask a chatbot to summarize a long email thread, and it hands back a tidy paragraph. Useful, but that's a single-step system—one prompt, one response, done. A multi-step [AI agent](/blog/what-is-an-ai-agent/) works differently. Ask it the same question, and it can check your order history, query the shipping API, notice the package is stuck in a warehouse, draft a support ticket, and follow up when the status changes. It breaks a goal into pieces, takes actions, checks the results, and keeps going until the job is done.
 

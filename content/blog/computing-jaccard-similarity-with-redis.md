@@ -14,7 +14,7 @@ hidden: true
 
 *By Guy Royse, Developer Advocate · Published 13 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fe64cf78ffcb607f90acf514709db241042355a2-1000x1000.webp)
+![Blog tile image](/images/site-mirror/fe64cf78ffcb607f90acf514709db241042355a2-1000x1000.webp)
 
 Many things in the world have fancy-sounding names, but are actually really simple ideas. [Jaccard similarity](https://en.wikipedia.org/wiki/Jaccard_index) is one of those things. It’s a simple calculation—created by botanist Paul Jaccard in 1901—that you can make with sets to determine how similar they are.
 
@@ -26,23 +26,23 @@ Redis, with its [Set data structure](https://redis.io/topics/data-types-intro#se
 
 If you have even the slightest background in set theory, this will be a review. We’ll start with sets. A *set* is a collection of unique objects. In mathematical notation, they are represented with curly braces and a list of the members of the set. Here’s a simple set of movies I like:
 
-![](/images/blog/7b81e382175235e9e0c24f3fc257b8eea9e499a2-300x218.webp)
+![](/images/site-mirror/7b81e382175235e9e0c24f3fc257b8eea9e499a2-300x218.webp)
 
 You can count a set’s members. This is the *cardinality* of the set. The above set has a cardinality of 6.
 
 Of course, you can have more than one set. Here is a simple set of movies that my wife likes:
 
-![](/images/blog/2642b3bdc95f128b59f87456bd53754f13d444eb-300x245.webp)
+![](/images/site-mirror/2642b3bdc95f128b59f87456bd53754f13d444eb-300x245.webp)
 
 You can see that she and I have some movie preferences in common, but she also has several that I’m not as fond of. And vice versa. You can also see that her set has a cardinality of 7.
 
 Now that we have two sets we can start doing some interesting stuff. First, we can combine the sets. This is called the *union*. The union is itself a set, and like all sets, has a cardinality (in this case 9). We can write the union of these two sets as an equation using the union symbol as shown below:
 
-![](/images/blog/6585d0e153195cbf1badf6ee3252cadbc1a7a19e-1024x340.webp)
+![](/images/site-mirror/6585d0e153195cbf1badf6ee3252cadbc1a7a19e-1024x340.webp)
 
 We can also determine what the sets have in common. This is called the *intersection*. The intersection is also a set and also has a cardinality—which is 4—just like a union. We can write the intersection of our two sets as an equation using the intersection symbol as shown below:
 
-![](/images/blog/ab54b53a330727422af7e7f8b103b93d4b90c31a-1024x272.webp)
+![](/images/site-mirror/ab54b53a330727422af7e7f8b103b93d4b90c31a-1024x272.webp)
 
 There’s lots more to set theory, but this is all we need to know to understand and calculate a Jaccard similarity.
 

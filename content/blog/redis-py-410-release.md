@@ -15,7 +15,7 @@ hidden: true
 
 *By Chayim Kirshen, Software Team Leader · Published 18 January 2022 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/dd803210e9ea43497bf6c58b9d070cd550956aed-772x550.webp)
+![Blog tile image](/images/site-mirror/dd803210e9ea43497bf6c58b9d070cd550956aed-772x550.webp)
 
 #### redis-py 4.1.0 is released!
 

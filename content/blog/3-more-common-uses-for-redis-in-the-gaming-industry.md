@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 14 August 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c29e76ba28eed51f582145f86d6591b3d1040412-300x200.webp)
+![Blog tile image](/images/site-mirror/c29e76ba28eed51f582145f86d6591b3d1040412-300x200.webp)
 
 At the [Game Developers Conference](https://www.gdconf.com/) (GDC) four months back, I had great discussions with game developers that use Redis – here’re [my takes](/blog/the-top-3-game-changing-redis-use-cases) from that event. And this week, I was pleased to check out [GDC Europe](https://www.gdceurope.com/) and at [Gamescom](https://www.gamescom.global/). While GDC’s European version is significantly smaller than its American equivalent, it was still a lot of fun meeting and conversing with developers. Gamescom is, well, gamescom (see photo of yours truly).
 

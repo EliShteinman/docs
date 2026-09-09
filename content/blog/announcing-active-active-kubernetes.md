@@ -14,7 +14,7 @@ hidden: true
 
 *By Angel Camacho, Contributor · Published 16 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d350b833ef5018f73773116694e7dcc7a26dcf39-772x550.webp)
+![Blog tile image](/images/site-mirror/d350b833ef5018f73773116694e7dcc7a26dcf39-772x550.webp)
 
 We recently introduced [Redis Enterprise 6.4.2-30](/blog/redis-enterprise-software-6-4-2/) at its core, which has an emphasis on security features such as including extended client certificate validation and pub/sub access management.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 21 January 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/a4034d23dc264744f6fe24ba3491e56bf646db23-1200x628.webp)
+![Redis](/images/site-mirror/a4034d23dc264744f6fe24ba3491e56bf646db23-1200x628.webp)
 
 Your RAG prototype works great with 1,000 documents and three test users. Your RAG prototype works great with 1,000 documents and three test users. But at millions of vectors and thousands of concurrent queries, things break. Response times spike, your autoscaler kicks in too late, and LLM costs spiral because every request hits the API without caching.
 

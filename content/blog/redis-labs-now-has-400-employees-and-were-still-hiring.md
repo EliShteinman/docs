@@ -14,7 +14,7 @@ hidden: true
 
 *By Adi Stern, VP of Human Resources · Published 6 February 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/f8e4cd6f273eed05ca5c8e77b474380911a6a295-640x480.webp)
+![Blog tile image](/images/site-mirror/f8e4cd6f273eed05ca5c8e77b474380911a6a295-640x480.webp)
 
 Every month new faces appear at Redis—the home of [Redis](https://redis.io/)—and this past week we marked a major milestone in our company’s growth as we welcomed our 400th employee to the organization. We’re proud to employ a diverse team of talented and hard-working software engineers, product gurus, technology wizards, super-successful salespeople, marketing experts, and finance and HR professionals, and we’re hiring remotely all around the world and looking to staff our offices in Mountain View, California; Tel Aviv, Israel; London, United Kingdom; and Austin, Texas.
 

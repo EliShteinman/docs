@@ -14,7 +14,7 @@ hidden: true
 
 *By Manish Gupta, Chief Marketing Officer · Published 8 November 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4bab157d0fecf6aff3aeb9df21f6cb322cce0431-600x200.webp)
+![Blog tile image](/images/site-mirror/4bab157d0fecf6aff3aeb9df21f6cb322cce0431-600x200.webp)
 
 Whoa! We are proud to be recognized as the fastest growing Enterprise Software company in Silicon Valley and to be ranked 50th overall in North America in Deloitte’s 2017 Technology Fast 500™ awards. Deloitte’s Technology Fast 500™is a widely recognized ranking of the 500 fastest growing technology, media, telecommunications, life sciences and energy tech companies in North America.
 
@@ -24,4 +24,4 @@ The success can be fully attributed to the loyal Redis community, innovative har
 
 Thank You.
 
-![](/images/blog/4bab157d0fecf6aff3aeb9df21f6cb322cce0431-600x200.webp)
+![](/images/site-mirror/4bab157d0fecf6aff3aeb9df21f6cb322cce0431-600x200.webp)

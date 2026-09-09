@@ -14,7 +14,7 @@ hidden: true
 
 *By Henry Tam · Published 9 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/6d8ea508ce03795ed157cc164cd3820c4a4961af-772x550.webp)
+![Blog tile image](/images/site-mirror/6d8ea508ce03795ed157cc164cd3820c4a4961af-772x550.webp)
 
 **Concerns about complexity, eventual consistency, and latency: all these can generate reservations from those who are new to adopting microservices. Our solution brief, *****Cache and Message Broker for Microservices, *****highlights the design patterns that can help you work around such common obstacles.**
 

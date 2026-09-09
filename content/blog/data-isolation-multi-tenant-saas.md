@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 6 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/61bee1d78ec60b12aa1d2421e14634bcc9a2ed80-1200x628.webp)
+![Redis](/images/site-mirror/61bee1d78ec60b12aa1d2421e14634bcc9a2ed80-1200x628.webp)
 
 Your SaaS app works fine with 50 customers. But what happens when tenant #51's data accidentally shows up in tenant #50's dashboard? You can't patch that quietly. It's the kind of incident that ends up in breach reports and customer churn spreadsheets.
 

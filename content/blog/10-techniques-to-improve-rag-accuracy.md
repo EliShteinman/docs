@@ -14,7 +14,7 @@ hidden: true
 
 *By Manvinder Singh, VP of AI Products · Published 25 February 2026 · updated 21 May 2026*
 
-![10 techniques to improve RAG accuracy](/images/blog/3dba1b5ab4cfe322abc368e4e885ea99dcd6f5dd-772x552.webp)
+![10 techniques to improve RAG accuracy](/images/site-mirror/3dba1b5ab4cfe322abc368e4e885ea99dcd6f5dd-772x552.webp)
 
 ### Key takeaways
 

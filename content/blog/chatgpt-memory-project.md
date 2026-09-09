@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 2 May 2023 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/df61308923a1454a2ba0d3fa61b56a5ca44b9ad3-772x550.webp)
+![Blog tile image](/images/site-mirror/df61308923a1454a2ba0d3fa61b56a5ca44b9ad3-772x550.webp)
 
 **ChatGPT Memory responds to context length limitations in large language models (LLMs) used in AI applications. The ChatGPT package uses Redis as a vector database to cache historical user interactions per session, which provides an adaptive prompt creation mechanism based on the current context.**
 
@@ -67,7 +67,9 @@ The subsequent interactions are carried out as follows:
 
 This empowers users to get better, personalized answers because the system has more information to draw on.
 
-![an illustration with arrows, a redis logo, and a human head icon dead center](/images/blog/021b5f9335e3e19f26de0fb1ef969602b6f940bd-593x471.webp)
+![an illustration with arrows, a redis logo, and a human head icon dead center](/images/site-mirror/021b5f9335e3e19f26de0fb1ef969602b6f940bd-593x471.webp)
+
+*ChatGPT offers a powerful mechanism for automatic retrieval-based prompt augmentation.*
 
 ## Code walkthrough
 
@@ -159,13 +161,17 @@ So, what’s it look like? Consider these two examples of conversations with Cha
 
 ### Without ChatGPT memory
 
-![A chatgpt conversation without memory](/images/blog/15d22487cfe780544547d8075caa919b3916d68d-1999x1214.webp)
+![A chatgpt conversation without memory](/images/site-mirror/15d22487cfe780544547d8075caa919b3916d68d-1999x1214.webp)
+
+*The ChatGPT user told the system his name and age in this low-context example… but it doesn’t remember it even a sentence or two later.*
 
 When the memory feature is not activated, the ChatGPT model can’t retrieve any information provided by the user in previous interactions – even from only a few sentences back.
 
 ### With ChatGPT memory
 
-![a chatgpt conversation](/images/blog/be5461d11077e5c3f661da52afa8cb660460d878-1999x1165.webp)
+![a chatgpt conversation](/images/site-mirror/be5461d11077e5c3f661da52afa8cb660460d878-1999x1165.webp)
+
+*With ChatGPT enabled, the information provided by the user goes into the system to be accessed in later parts of the conversation.*
 
 The two conversations presented have a similar message flow. However, the conversation where the memory feature was not enabled showed that the ChatGPT model could not recall any information that the user had provided. In contrast, when the memory feature was enabled, the model remembered specific details about the user and offered a personalized and customizable conversational experience.
 

@@ -17,7 +17,7 @@ hidden: true
 
 *By Mirko Ortensi, Pieter Cailliau · Published 19 September 2024 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/e8056277925e8c4d8c5ecb7cef67d0e285e0cff3-772x552.webp)
+![Blog tile image](/images/site-mirror/e8056277925e8c4d8c5ecb7cef67d0e285e0cff3-772x552.webp)
 
 We have announced [Redis 8](/blog/introducing-another-era-of-fast/), the most advanced and performant Redis offering yet. Today, we’re happy to announce that the first milestone of Redis 8 is available in the Community Edition for you to try.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By David Maier, Technical Enablement Mananger · Published 24 August 2026 · updated 25 August 2026*
 
-![Efficient Bulk Hash Insertion with Redis 8.10’s HIMPORT](/images/blog/bc814910b574816d68a64ae00b98cb62c579f6ba-2400x1256.webp)
+![Efficient Bulk Hash Insertion with Redis 8.10’s HIMPORT](/images/site-mirror/bc814910b574816d68a64ae00b98cb62c579f6ba-2400x1256.webp)
 
 I’m not a Ruby developer, and my code samples might make that clear. However, there are two reasons I’m using Ruby for the examples in this article:
 

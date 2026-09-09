@@ -16,7 +16,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 8 April 2025 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/41328b9a2aafc3f3c511e8acbd077848d0e8d71a-1544x1104.webp)
+![Blog tile image](/images/site-mirror/41328b9a2aafc3f3c511e8acbd077848d0e8d71a-1544x1104.webp)
 
 Today, we announced two new offerings for AI developers to help them build better apps. Redis LangCache, a new fully-managed semantic caching service for AI apps and agents, provides a hosted semantic cache using an API connection that makes AI apps faster and more accurate. Vector sets, a new native data type for Redis, allows developers to easily access and work with vectors and use them in more composable and scalable ways. Both give developers a simpler way to work with the complex data needed to build agentic apps.
 

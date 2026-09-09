@@ -15,7 +15,7 @@ hidden: true
 
 *By Adi Shtatfeld, Senior Product Manager · Published 23 February 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ffee4c018d17dcb311675868068392fa6592f384-772x550.webp)
+![Blog tile image](/images/site-mirror/ffee4c018d17dcb311675868068392fa6592f384-772x550.webp)
 
 **In Redis Enterprise 6.4.2, we enhanced existing security features: extended client certificate validation and publish/subscribe access management. Here’s what they mean to you.**
 
@@ -53,7 +53,7 @@ Using mTLS in Redis Enterprise involves a few steps:
 - Add a list of allowed subject lines
 - Select the “Additional Certificate Validations by full subject” option
 
-![](/images/blog/ecf2cf1ae0c893e886860219046bff6d91eb6da3-1228x483.webp)
+![](/images/site-mirror/ecf2cf1ae0c893e886860219046bff6d91eb6da3-1228x483.webp)
 
 ### Enhanced access management for Redis ACL publish and subscribe
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Fredric Paul, Director of Content · Published 5 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 As Amazon, Microsoft, and Google fight it out in an epic struggle to dominate the cloud, a lot of companies and analysts are tossing around the term “multi-cloud.” But as Inigo Montoya immortally states in the movie *Princess Bride*, “[You keep using that word. I do not think it means what you think it means](https://www.gutcheckit.com/blog/i-dont-think-that-word-means-what-you-think-it-means/#:~:text=Throughout%20The%20Princess%20Bride%2C%20the,You%20keep%20using%20that%20word.).”
 
@@ -39,7 +39,7 @@ Alternatively, a single application or service could run in multiple clouds beca
 
 ## Multiple workloads, each in its own cloud
 
-![hybrid cloud strategy pictured as flavors of ice cream](/images/blog/39d79df73f3a2a6241ff0c8eb554641509c65b6a-300x200.webp)
+![hybrid cloud strategy pictured as flavors of ice cream](/images/site-mirror/39d79df73f3a2a6241ff0c8eb554641509c65b6a-300x200.webp)
 
 But while those approaches may be useful in some situations, they’re actually less-common implementations of a multi-cloud strategy. More common by far are companies where a multi-cloud strategy means running different workloads in different clouds. That can be on purpose, to let one application take advantage of specific proprietary services and features in a given cloud offering while other applications take advantage of other services from other providers.
 
@@ -59,7 +59,7 @@ Fortunately, there are ways to make multi-cloud environments easier to work with
 
 ## What about the hybrid cloud?
 
-![private cloud vs public cloud. hybrid cloud strategy ](/images/blog/2a4ece820548b48333d3c7367ba18a77e923febb-300x192.webp)
+![private cloud vs public cloud. hybrid cloud strategy ](/images/site-mirror/2a4ece820548b48333d3c7367ba18a77e923febb-300x192.webp)
 
 You may have noticed something missing from this multi-cloud discussion so far: What about the hybrid cloud? The idea behind the hybrid cloud is combination of at least one public cloud with at least one private cloud and/or an on-premises data center. I left hybrid cloud for the end of this post because the cloud community can’t quite seem to agree on exactly how the two concepts fit together.
 

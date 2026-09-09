@@ -16,7 +16,7 @@ hidden: true
 
 *By Lior Kogan, Filipe Oliveira, Paulo Sousa · Published 2 June 2026*
 
-![Redis 8.8 performance improvements Faster string, hash, streams, SCAN & more](/images/blog/0ff729d19ee466bf1707c06bb2a06517d574ee5d-1200x628.webp)
+![Redis 8.8 performance improvements Faster string, hash, streams, SCAN & more](/images/site-mirror/0ff729d19ee466bf1707c06bb2a06517d574ee5d-1200x628.webp)
 
 Every Redis release continues a simple commitment: the same command, on the same hardware, should do more work. [Redis 8.6](/blog/announcing-redis-86-performance-improvements-streams/) delivered a step change for vector workloads, sorted sets, and GET-dominated caching paths. Redis 8.8 carries that cadence forward, with the biggest wins landing on the commands that carry most real-world traffic — MGET, MSET, HGETALL, and the SCAN family — alongside meaningful improvements in streams, sorted sets, bitmaps, and the persistence and replication paths.
 
@@ -55,7 +55,7 @@ MSET and MSETNX now do a batched dict bucket prefetch for groups of keys inside 
 
 Measured on m7i.metal-24xl (x86) vs Redis 8.6:
 
-![Measured on m7i.metal-24xl (x86) vs Redis 8.6](/images/blog/25159fb52bcc5cc700124896401fda68e58ecec9-1624x1004.webp)
+![Measured on m7i.metal-24xl (x86) vs Redis 8.6](/images/site-mirror/25159fb52bcc5cc700124896401fda68e58ecec9-1624x1004.webp)
 
 The MGET gain is the largest. In pipelined deployments with io-threads, it moves the bottleneck out of Redis' dict traversal and into the network for all but the largest values. There is no new command, no new flag, and no protocol change — upgrading is the entire deliverable.
 
@@ -69,7 +69,7 @@ First, HGETALL benefits from a [broader infrastructure change](https://github.co
 
 On a 1,000-field hashtable-encoded hash, the two changes compound to approximately +15% to +25% vs Redis 8.6 on x86, depending on pipeline depth and hash field count.
 
-![Improvements on Redis 8.8](/images/blog/4fcaf3587c5d3a9e7a4c0a4c7d85d115c7c7a0bc-1744x1004.webp)
+![Improvements on Redis 8.8](/images/site-mirror/4fcaf3587c5d3a9e7a4c0a4c7d85d115c7c7a0bc-1744x1004.webp)
 
 Small, listpack-encoded hashes see the +4.6% from the broader prefetch extension alone — listpack is already cache-resident and does not need the HGETALL-specific prefetch.
 
@@ -79,7 +79,7 @@ On every SCAN, HSCAN, SSCAN, and ZSCAN call, the reply callback previously alloc
 
 Measured vs current unstable, on both x86 m7i and ARM m8g: SCAN COUNT 500 pipeline-10 gains +38.0% on x86 and +39.7% on ARM.
 
-![Measured vs 8.6, on both x86 m7i and ARM m8g](/images/blog/5e55c458e3adaf94aa78bc39f268c1e58b0a9e1d-1744x1004.webp)
+![Measured vs 8.6, on both x86 m7i and ARM m8g](/images/site-mirror/5e55c458e3adaf94aa78bc39f268c1e58b0a9e1d-1744x1004.webp)
 
 ### Streams: up to +83% on large XREADGROUP
 
@@ -90,7 +90,7 @@ Streams see the [largest single improvement](https://github.com/redis/redis/pull
 
 Measured on Redis 8.6 vs Redis 8.8:
 
-![Measured on Redis 8.6 vs Redis 8.8](/images/blog/4ad5ec5322c2d3c357de25ee72a8305383024483-1744x1004.webp)
+![Measured on Redis 8.6 vs Redis 8.8](/images/site-mirror/4ad5ec5322c2d3c357de25ee72a8305383024483-1744x1004.webp)
 
 ## Sorted sets: up to +74% on score-parsing workloads
 
@@ -98,7 +98,7 @@ Redis 8.0 introduced the fast_float library ([#11884)](https://github.com/redis/
 
 On the canonical sorted-set-with-double-scores load benchmark:
 
-![Redis 8.8](/images/blog/660f74278e4a91e9079a3e72dfab88a63476840d-1744x1004.webp)
+![Redis 8.8](/images/site-mirror/660f74278e4a91e9079a3e72dfab88a63476840d-1744x1004.webp)
 
 This matters for any ZADD, ZINCRBY, or ZRANGEBYSCORE workload with double-precision scores — leaderboards, time-series secondary indexes, and any pattern where scores come from timestamps or client-side float-to-string conversions.
 
@@ -106,7 +106,7 @@ This matters for any ZADD, ZINCRBY, or ZRANGEBYSCORE workload with double-precis
 
 BITOP AND, OR, XOR, and NOT are now vectorized with AVX-512 on Ice Lake and newer Intel and AMD CPUs. Upstream measurements show up to +80% on value sizes of 10,000 bytes and above, with smaller gains on shorter values where the fixed dispatch overhead does not amortize.
 
-![Bitmap operations: AVX-512 on modern x86](/images/blog/d7ed5658bf741c24e84a5f1f31cf7663b9f1bc64-1744x1004.webp)
+![Bitmap operations: AVX-512 on modern x86](/images/site-mirror/d7ed5658bf741c24e84a5f1f31cf7663b9f1bc64-1744x1004.webp)
 
 ## Persistence and replication: Faster full sync, lower BGSAVE overhead
 

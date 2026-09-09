@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 9 February 2026*
 
-![Redis](/images/blog/54490bc9b5fa3087082101f9ec06dab2672f8591-1200x628.webp)
+![Redis](/images/site-mirror/54490bc9b5fa3087082101f9ec06dab2672f8591-1200x628.webp)
 
 AI systems don't fail on a schedule. They drift in production while you're busy writing the quarterly report or firefighting an unrelated outage—and that drift creates exposure. [Third-party breaches have doubled](https://www.verizon.com/business/resources/reports/dbir/) from 15% to 30% in just one year, with AI systems adding new attack surfaces that traditional audits weren't built to catch.
 

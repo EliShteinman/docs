@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 2 September 2025 · updated 13 August 2026*
 
-![Redis ISO 42001 Certification](/images/blog/f24ed44b80b9c2955912d550a3a73e18bd439bbc-772x552.webp)
+![Redis ISO 42001 Certification](/images/site-mirror/f24ed44b80b9c2955912d550a3a73e18bd439bbc-772x552.webp)
 
 Every day, Redis is dedicated to delivering effective and reliable solutions through our products and services. We also know that trust must be earned, not simply asserted.
 

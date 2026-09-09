@@ -15,7 +15,7 @@ hidden: true
 
 *By Ajeet Raina, Technical Marketing Manager · Published 7 April 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/853bf7df65250f937b1c4bb351d07dc35646af1d-386x260.webp)
+![Blog tile image](/images/site-mirror/853bf7df65250f937b1c4bb351d07dc35646af1d-386x260.webp)
 
 
 The Redis community is constantly innovating, and our annual hackathons bring creative minds together and provide developers with a platform to build new ideas using Redis. [Last year](/blog/announcing-the-winners-of-the-redis-beyond-cache-hackathon/) we challenged more than 320 hackers to build applications using Redis beyond caching. This year, join us for the “Build on Redis” hackathon for a chance to win one of 52 prizes totaling $100,000 USD! **Building begins on Thursday, April 15**—five days before [RedisConf](/redisconf/)—and will run for a full month until Saturday, May 15.
@@ -58,7 +58,7 @@ And if you weren’t convinced yet, we’re offering more than 50 prizes totalin
 
 Plus, all winning teams will receive Redis swag—one Redis t-shirt and sticker per team member—along with the promotion of their projects on the hackathon website, in a [Redis blog post](/blog/), and on Redis social media accounts.
 
-![](/images/blog/f07430af182098ca81ad1e6214ebf09d7b451466-1024x763.webp)
+![](/images/site-mirror/f07430af182098ca81ad1e6214ebf09d7b451466-1024x763.webp)
 
 ## 5 tips for winning this hackathon
 
@@ -86,7 +86,9 @@ A hackathon is like a “roller-coaster ride.” It’s full of non-stop ups and
 
 ## What and when?
 
-![](/images/blog/1f976d7fbc7e809e1f3667838f8fad012635d0e0-1024x199.webp)
+![](/images/site-mirror/1f976d7fbc7e809e1f3667838f8fad012635d0e0-1024x199.webp)
+
+*All dates are in Pacific Time*
 
 ## Who can participate?
 

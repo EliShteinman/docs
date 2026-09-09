@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike Kwon, VP of Demand and Growth Marketing · Published 10 December 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Like everyone else, we rocked a week of sleepless nights filled with networking, partying, and gambling, all in the name of [AWS re:Invent 2019](https://reinvent.awsevents.com/)… but we wouldn’t have it any other way. More than 65,000 cloud professionals descend on Las Vegas the week after Thanksgiving for the cloud industry’s biggest event of the year, and we’re happy to say that this was our favorite and most successful re:Invent yet.
 
@@ -60,9 +60,13 @@ It was a huge upset, as Takeshi was smaller than the other wrestlers, but just a
 
 ## Caching, microservices, and starships
 
-![](/images/blog/d753fbeddac4844bbe9db707d378197921c99360-300x280.webp)
+![](/images/site-mirror/d753fbeddac4844bbe9db707d378197921c99360-300x280.webp)
 
-![](/images/blog/60bca6ffa4ea2dbc5e5ccb9281e8937fff1d676d-300x225.webp)
+*Craig Bryan, left, poses with Redis Chief Product Officer Alvin Richards and his new Millennium Falcon.*
+
+![](/images/site-mirror/60bca6ffa4ea2dbc5e5ccb9281e8937fff1d676d-300x225.webp)
+
+*Brandon Mahoney, Enterprise Architect at Alliance Data, presents during our breakout session.*
 
 Hundreds of attendees packed the room for our Thursday breakout session, Using Redis Beyond Caching. Our own Chief Product Officer Alvin Richards kicked off the session with a short recap of Redis’ 11-year history and its popularity as the most-launched, most-used, and most-loved database.
 
@@ -83,7 +87,7 @@ Vines, plants, and leaves covered our entire Redis booth in the Venetian. Thousa
 
 Our Redis Geeks were also available to answer any questions on Redis. Plus, we raffled off a [VanMoof electric bike](https://www.vanmoof.com/en_us/electrified-s2-x2) and electric scooters, and gave away plenty of swag, including limited-edition pins and socks.
 
-![](/images/blog/4e1646150111116fdde427470e1dc6569cd72e60-1024x768.webp)
+![](/images/site-mirror/4e1646150111116fdde427470e1dc6569cd72e60-1024x768.webp)
 
 It wasn’t all Redis experts, though. The booth also welcomed Redis customers, like [MGM Grand](https://mgmgrand.mgmresorts.com/en.html) and [HolidayMe](https://www.holidayme.com/), who were available to answer questions about how they used Redis to grow their businesses. Rajat Panwar, Chief Technology Officer at HolidayMe, explained that if Redis was a superhero, its strength would be in simplicity: “I’ve been using Redis for the past seven years. It was pretty simple even using it in that instance, and right now it’s still pretty simple even though the performance and features have increased.”
 

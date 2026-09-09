@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 29 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/109d6e2316c32d9de3849f9151ccd7f954133b5e-710x701.webp)
+![Blog tile image](/images/site-mirror/109d6e2316c32d9de3849f9151ccd7f954133b5e-710x701.webp)
 
 [RedisConf 2020 ](/redisconf/)[*Takeaway*](/redisconf/) is just around the corner, and [free registration is still open](/redisconf/) to attend the world’s largest annual gathering of the Redis community—online and on demand. This year we’re inviting you to Rediscover Redis and leverage developers’ favorite database to its full potential beyond caching use cases.
 
@@ -50,7 +50,9 @@ While our Training Day sessions are available to view on demand, the experts tea
 
 We hosted our first-ever Hackathon at Redis Day Bangalore, challenging 37 competitors across a dozen teams to demonstrate how to use Redis “beyond cache.” If you weren’t in Bangalore, don’t worry—we’re now hosting [our first fully online hackathon](https://redisbeyondcache2020.devpost.com/), and awarding $15,000 in prizes!
 
-![](/images/blog/9d76e78e7ac7f65550e706f5ecf3f54e72401f72-1024x682.webp)
+![](/images/site-mirror/9d76e78e7ac7f65550e706f5ecf3f54e72401f72-1024x682.webp)
+
+*Hackathon participants at Redis Day Bangalore in January 2020*
 
 This year’s RedisConf theme is Rediscover, and we want you to demonstrate how you’ve pushed the boundaries of Redis beyond caching. Entries must meet at least one of two categories:
 

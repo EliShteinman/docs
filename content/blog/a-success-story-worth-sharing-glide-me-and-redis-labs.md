@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 5 May 2014 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 I would like to take this opportunity to share a story that wholeheartedly exemplifies the nature of Redis’ dedication to our customers. After a reminiscent conversation with one of our longtime clients, Max Rabin, the Head of Server Development at [Glide](http://glide.me/), we put together a case study that suitably represents the success of our work together.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 13 June 2025 · updated 1 June 2026*
 
-![Why your caching strategies might be holding you back (and what to consider next)](/images/blog/dca0756dc0e9af63209b8576f963f57f6aa5cbc7-772x552.webp)
+![Why your caching strategies might be holding you back (and what to consider next)](/images/site-mirror/dca0756dc0e9af63209b8576f963f57f6aa5cbc7-772x552.webp)
 
 Caching is the process of storing copies of data in temporary storage, allowing new requests for that data to be served more quickly. Without that temporary storage – the cache – requests would take longer. With a cache, systems can retrieve commonly used data in milliseconds or less.
 
@@ -70,9 +70,9 @@ There is a wide range of caching strategies to choose from, each varying in effe
 
 The primary differences tend to revolve around how the caching approach handles cache misses, when the system attempts to retrieve data from a cache and the data isn’t available, what happens with database writes and data expires, and implementation, which can vary depending on the complexity of the systems in question and the use cases at hand.
 
-![Redis Caching Strategy](/images/blog/5899986f57ecf6bc81425155d33973dbfb954ddd-1600x1210.webp)
+![Redis Caching Strategy](/images/site-mirror/5899986f57ecf6bc81425155d33973dbfb954ddd-1600x1210.webp)
 
-![Redis Caching Strategies Diagram](/images/blog/410d9b40363791746cdfa7efb3638b4160a315aa-1280x696.webp)
+![Redis Caching Strategies Diagram](/images/site-mirror/410d9b40363791746cdfa7efb3638b4160a315aa-1280x696.webp)
 
 ### Read-through cache
 

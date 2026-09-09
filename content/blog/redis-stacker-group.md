@@ -15,7 +15,7 @@ hidden: true
 
 *By Charlie Henderson, Jason Marra · Published 3 December 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/5f571fc22f7cc2f78edf5f8ab058199edaa927b4-1200x628.webp)
+![Redis](/images/site-mirror/5f571fc22f7cc2f78edf5f8ab058199edaa927b4-1200x628.webp)
 
 ## Real-time decisions that drive real business value
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 6 June 2026 · updated 10 June 2026*
 
-![Redis vs Memorystore: unified real-time platform vs managed cache 2026](/images/blog/478071bbb19d7691a7bfd612d4fed97c151306e5-2400x1256.webp)
+![Redis vs Memorystore: unified real-time platform vs managed cache 2026](/images/site-mirror/478071bbb19d7691a7bfd612d4fed97c151306e5-2400x1256.webp)
 
 If you're building on Google Cloud and need an in-memory data store, you've probably looked at Memorystore in the console. It's right there, a few clicks to provision, and it speaks the Redis protocol you already know. But the architectural difference between Redis and Memorystore matters more than the convenience of staying inside one cloud console.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/7006808f10b37c15e49f2ff4965e40011f9e3738-1200x628.webp)
+![Redis](/images/site-mirror/7006808f10b37c15e49f2ff4965e40011f9e3738-1200x628.webp)
 
 Payment systems have roughly 100 milliseconds to pull data, score fraud risk, route transactions, and get authorization. Miss that window and you're either losing money to fraud or losing customers to friction.
 

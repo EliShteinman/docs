@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 10 June 2026*
 
-![Context window in AI: why every token is a budget decision](/images/blog/4ba6c8382f068d07fe669c56c1b3e223a170c31b-2400x1256.webp)
+![Context window in AI: why every token is a budget decision](/images/site-mirror/4ba6c8382f068d07fe669c56c1b3e223a170c31b-2400x1256.webp)
 
 Some of today's most capable LLMs now support very large context windows. That doesn't mean you should fill them. Context windows have grown fast, but the underlying cost and quality tradeoffs haven't gone away. They've just gotten easier to ignore.
 

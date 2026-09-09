@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 4 October 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7d1cd6bca48300fc0a27ecd706a7a5b8dcb7aa8f-770x568.webp)
+![Blog tile image](/images/site-mirror/7d1cd6bca48300fc0a27ecd706a7a5b8dcb7aa8f-770x568.webp)
 
 *(Note: This blog post was adapted from a webinar I presented in June. To go even deeper into RedisTimeSeries, *[*register and watch the webinar now*](/events/unlocking-timeseries-data-with-redis/)*!)*
 
@@ -70,7 +70,7 @@ The first thing you need to learn about is ‘the chunk.’ You actually never m
 
 For example, let’s say I want to put a timestamp into my time-series database. It goes on the first row in the two arrays. If you have additional samples, they would just go into the array.
 
-![](/images/blog/411b156dca9bf25eb14ac3f60a9f984125238486-768x355.webp)
+![](/images/site-mirror/411b156dca9bf25eb14ac3f60a9f984125238486-768x355.webp)
 
 Chunks are a fixed size. When chunk is full, additional data automatically goes to the next chunk. Adding to the beginning or end of a linked list is computationally trivial, so when new chunks are added it is very lightweight.
 
@@ -78,13 +78,13 @@ But unlike most Redis data types, it’s best practice to first create your time
 
 So let’s say that we want to add in some metadata to this key. Imagine we’re running a vegetable nursery and we want to track cabbage number 47 in greenhouse number 4; we would call this metadata labels. This would apply to every single sample across the entire time series:
 
-![](/images/blog/eea0c4de75311510e7f40c6f521cce2dde35faa9-768x350.webp)
+![](/images/site-mirror/eea0c4de75311510e7f40c6f521cce2dde35faa9-768x350.webp)
 
 Another important part of working with time-series data is retention. Let’s say that we don’t care about anything older than 60 seconds. RedisTimeSeries can trim off things that are outside the retention time periods you specify.
 
 We can add values using an operation called [TS.ADD](https://oss.redis.com/redistimeseries/commands/#tsadd). The first argument is the key myTS and the asterisk is syntax borrowed from Redis Streams indicating that Redis will auto generate the timestamp. In this case, the value is 834.
 
-![](/images/blog/a7222a7748e1e346b23c41f6670cbfee82298594-768x346.webp)
+![](/images/site-mirror/a7222a7748e1e346b23c41f6670cbfee82298594-768x346.webp)
 
 Lets let’s add another sample, and specify a timestamp. Note that timestamps are effectively append-only, so you can’t go in and add something past the most recently used timestamp. The subsequent TS.ADD would have to be a timestamp greater than that value.
 
@@ -92,7 +92,7 @@ Next, to get bounded results, you would ask for all the samples between the two 
 
 That’s useful, but maybe you want the average for every 30-second time period. Here, avg is is our keyword and the 917, of course, is the average of 834 and 1,000.
 
-![](/images/blog/2e0b47227cab8c67ea058feeba11ad4999534b2c-768x258.webp)
+![](/images/site-mirror/2e0b47227cab8c67ea058feeba11ad4999534b2c-768x258.webp)
 
 But what happens when you have a lot more data? You might not want to run that [TS.RANGE](https://oss.redis.com/redistimeseries/commands/#tsrange) command all the time and just want to granularly extract that data.
 

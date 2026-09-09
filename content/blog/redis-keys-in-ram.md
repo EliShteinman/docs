@@ -14,13 +14,13 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 5 October 2015 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/3319a3cec387cd4e94d0023116555615140d1dd4-140x92.webp)
+![Blog tile image](/images/site-mirror/3319a3cec387cd4e94d0023116555615140d1dd4-140x92.webp)
 
-![Redis Keys in RAM](/images/blog/2182571fcb2a3e3be98baa5d32141d08915bbf40-635x356.webp)
+![Redis Keys in RAM](/images/site-mirror/2182571fcb2a3e3be98baa5d32141d08915bbf40-635x356.webp)
 
 *Adapted from Dr. Seuss’ “Green Eggs and Ham”. *[*Link to text*](https://www.site.uottawa.ca/~lucia/courses/2131-02/A2/trythemsource.txt)*, art copyrighted by Dr. Seuss.*
 
-![I am San. Do you like Redis keys in RAM?](/images/blog/6a9b5041099e641b45eade1fb9972729e29506cf-635x357.webp)
+![I am San. Do you like Redis keys in RAM?](/images/site-mirror/6a9b5041099e641b45eade1fb9972729e29506cf-635x357.webp)
 
 I am San.
 I am San.
@@ -35,7 +35,7 @@ Do you like Redis keys in RAM?
 I do not like them San-I-am
 I do not like Redis keys in RAM.
 
-![Would you like them large or small?](/images/blog/1a7c8a634a8d96dccd60762179dced610dda0c21-635x357.webp)
+![Would you like them large or small?](/images/site-mirror/1a7c8a634a8d96dccd60762179dced610dda0c21-635x357.webp)
 
 Would you like them large[1](#fn1) or small?
 
@@ -44,7 +44,7 @@ I would not like them not at all.
 I do not like Redis keys in RAM.
 I do not like them San-I-am.
 
-![Would you like them as a String?](/images/blog/a8654c74b77928223c26189c9aa8b4bc1332bdf0-635x357.webp)
+![Would you like them as a String?](/images/site-mirror/a8654c74b77928223c26189c9aa8b4bc1332bdf0-635x357.webp)
 
 Would you like them as a String?
 Would you serialize everything?
@@ -56,7 +56,7 @@ I do not like them not at all.
 I do not like Redis keys in RAM.
 I do not like them San-I-am.
 
-![Would you like them in a Hash?](/images/blog/41608e0c2c036d83e5845531dc70d1a387e9cb78-635x357.webp)
+![Would you like them in a Hash?](/images/site-mirror/41608e0c2c036d83e5845531dc70d1a387e9cb78-635x357.webp)
 
 <a
 </a
@@ -71,7 +71,7 @@ I do not want Redis keys in RAM.
 I do not want them, San-I-am.<a
 </a
 
-![Would you want them as a List instead?](/images/blog/f9faa914300c834ee7f748724c08f2fa67e1e0ae-635x357.webp)
+![Would you want them as a List instead?](/images/site-mirror/f9faa914300c834ee7f748724c08f2fa67e1e0ae-635x357.webp)
 
 <a
 </a
@@ -83,7 +83,7 @@ Not as a String. Not as a cache.
 Small or large I will have naught.
 Goodbye San-I-am and thanks a lot.
 
-![Would you? Could you? As a Set?](/images/blog/d8aace9135a84572db593f65611603fe470b5fbe-635x357.webp)
+![Would you? Could you? As a Set?](/images/site-mirror/d8aace9135a84572db593f65611603fe470b5fbe-635x357.webp)
 
 <a
 </a
@@ -97,7 +97,7 @@ You’ll see for sure.
 You may like
 Sorted Sets by score?
 
-![http://try.redis.io](/images/blog/6f0a1fca3c20c3a9de9759d1212ac116bb65ff31-635x356.webp)
+![http://try.redis.io](/images/site-mirror/6f0a1fca3c20c3a9de9759d1212ac116bb65ff31-635x356.webp)
 
 <a
 </a
@@ -114,7 +114,7 @@ You do not like them. So you say.
 [https://redis.io/try-free/](https://redis.io/try-free/)! Try them! And you may.
 Try them and you may, I say.
 
-![Say! Data structures are so much FUN!](/images/blog/c5d78187d48212ad2307026d25ff9297adc221d2-635x357.webp)
+![Say! Data structures are so much FUN!](/images/site-mirror/c5d78187d48212ad2307026d25ff9297adc221d2-635x357.webp)
 
 San! If you will let me be,
 I will try them. You will see.

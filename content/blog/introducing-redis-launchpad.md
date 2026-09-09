@@ -16,7 +16,7 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 22 September 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/40073852eb25d73ab1a8e16a2cca121e140e7adf-772x520.webp)
+![Blog tile image](/images/site-mirror/40073852eb25d73ab1a8e16a2cca121e140e7adf-772x520.webp)
 
 The Redis community has always been at the core of what makes Redis great. Thanks to this group, Redis, for the 5th time in a row, was picked as the most-loved database in the [Stack Overflow’s developer survey](https://insights.stackoverflow.com/survey/2021). As Redis’s popularity grows, so do the use cases across developer communities, industries verticals, and geographies.
 
@@ -49,14 +49,18 @@ And here is how the rest of it works:
 1. We have an independent backend service that regularly goes through all the repositories in the Redis-Developer Github account and looks into the marketplace.json file. If it finds that file, then push the content into Redis Hashes data structure inside a production Redis database cluster running on our [Redis Enterprise Cloud](/try-free).
 1. RediSearch instantly indexes the data in real-time and makes them available for searching.
 
-![](/images/blog/b83f86d572c54fe3eca75067ca090a580b3e3f76-1024x712.webp)
+![](/images/site-mirror/b83f86d572c54fe3eca75067ca090a580b3e3f76-1024x712.webp)
+
+*Picture 1: Shows how we add and index apps metadata from different repositories into RediSearch running on Redis Enterprise.*
 
 And once we have the data in the database, the next step is to simply query it and show the result in the browser. This is how it works:
 
 1. We have a different backend Node.js app that queries the database using numerous search queries (Picture 2).
 1. Finally, we have a frontend Next.JS (React) app that implements faceted search, pagination, fuzzy search, and displays search results in a simple grid.
 
-![](/images/blog/8a56b4a339dfaf714bf3e5794e1de0a41072af57-1024x352.webp)
+![](/images/site-mirror/8a56b4a339dfaf714bf3e5794e1de0a41072af57-1024x352.webp)
+
+*Picture 2: Shows how Launchpad web app talks to Redis and RediSearch.*
 
 ## How can you add your app to Redis Launchpad?
 

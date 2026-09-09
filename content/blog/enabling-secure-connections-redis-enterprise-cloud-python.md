@@ -15,9 +15,9 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 5 June 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/b1c78e7d2ff709be89b3439713327f51535830fd-4500x3000.webp)
+![](/images/site-mirror/b1c78e7d2ff709be89b3439713327f51535830fd-4500x3000.webp)
 
 Enabling encrypted connections on a server is a bit like weaving a magic spell: nothing works until you get the incantations exactly right, but once you do, everything clicks into place and you have established a secure connection to your server. Configuring encryption can get even more arcane when you also use cryptography to authenticate clients on connection.
 
@@ -48,7 +48,7 @@ As of June 2018, Redis Enterprise Cloud uses TLS version 1.2 to secure connectio
 
 Naturally, the first step in using SSL with Redis Enterprise Cloud is to enable SSL for our database. Start by logging in to your Redis Enterprise Cloud account and creating a new database you can experiment with. As you step through the database creation process, you will get to the *Create Database* page. Once you reach the *Create Database* page (you can also turn on SSL from the *Edit Database* page as well), find the *Access Controls & Security* group and enable *SSL Client Authentication*.
 
-![](/images/blog/ccbdda9655e50c60ea37e72869dd7904856d86ef-1193x996.webp)
+![](/images/site-mirror/ccbdda9655e50c60ea37e72869dd7904856d86ef-1193x996.webp)
 
 Client Authentication (sometimes shortened to Client-AUTH) is an optional part of the SSL specification which requires the client, in addition to the server, to authenticate via public-key cryptography. Although it is an optional part of the TLS protocol, Redis Enterprise Cloud requires Client-AUTH to use SSL. Once *SSL Client Authentication* is enabled, your client software will need to authenticate with both a password and a public-key. In SSL, public-key information is exchanged via digital certificates.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By André Srinivasan, Solutions Architect · Published 17 June 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/32fe174d68c8a5353ecbc90283702415b0cb8643-772x550.webp)
+![Blog tile image](/images/site-mirror/32fe174d68c8a5353ecbc90283702415b0cb8643-772x550.webp)
 
 We recently had an opportunity to work with the [Cohesity](https://www.cohesity.com/) team to verify integration between Helios and Redis Enterprise as a step in onboarding into the [Redis Technical Partner Program](/partners/). Cohesity SmartFiles, a service that runs on Helios, provides a single view and global management of [unstructured data](/glossary/unstructured-data/), irrespective of where the data resides. In the context of Redis Enterprise, SmartFiles provides a single view of database snapshots.
 
@@ -26,7 +26,7 @@ All data in a Redis database is stored and managed exclusively in either RAM or 
 
 To the question of persistence, Redis supports append-only files (AOF) for better durability, though requires more resources, and snapshots (RDB), which are less durable while requiring fewer resources. As with all things, there are tradeoffs that can be further explored in the [Redis Enterprise documentation](https://docs.redis.com/latest/rs/concepts/memory-performance/persistence/). For the purposes of this article, we will assume we want AOF for better durability.
 
-![illustration of data persistence](/images/blog/f68d2583b50107b83063d8fd472ae5d76e6f2628-1024x536.webp)
+![illustration of data persistence](/images/site-mirror/f68d2583b50107b83063d8fd472ae5d76e6f2628-1024x536.webp)
 
 ## Backup
 

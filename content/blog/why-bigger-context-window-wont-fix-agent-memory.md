@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 17 June 2026*
 
-![Why a bigger context window won't fix your agent's memory](/images/blog/3994b3b967d430026fef435014b86d23d01cb2f5-2400x1256.webp)
+![Why a bigger context window won't fix your agent's memory](/images/site-mirror/3994b3b967d430026fef435014b86d23d01cb2f5-2400x1256.webp)
 
 Context windows have grown fast. Models that once capped out at a few thousand tokens now advertise hundreds of thousands, and the natural assumption was that the agent memory problem would shrink as the window grew. Stuff more into the prompt, the thinking went, and your agent stops forgetting.
 

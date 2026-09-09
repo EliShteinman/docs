@@ -14,11 +14,11 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 2 October 2014 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 [*Click here to get started with Redis Enterprise. *](/try-free/)*Redis Enterprise lets you work with any real-time data, at any scale, anywhere.*
 
-![](/images/blog/c9ac6e4964b88ec417f80b0e98598c7d9b439c2a-635x200.webp)
+![](/images/site-mirror/c9ac6e4964b88ec417f80b0e98598c7d9b439c2a-635x200.webp)
 
 Redis is blazing fast and can easily handle [hundreds of thousands](https://redis.io/topics/benchmarks) to [millions](/blog/the-1-2m-opssec-redis-cloud-cluster-single-server-unbenchmark) of operations per second (of course, YMMV depending on your setup), but there are cases in which you may feel that it is underperforming. This slowness of operations – or latency – can be caused by a variety of things, but once you’ve ruled out the usual suspects (i.e. the server’s hardware/virtualware, storage and network) you should also examine your Redis settings to see what can be optimized.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 27 January 2015 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/4bbc40ee7a42c6f1ee8302191a8e1d69e537de81-140x92.webp)
+![Blog tile image](/images/site-mirror/4bbc40ee7a42c6f1ee8302191a8e1d69e537de81-140x92.webp)
 
-![](/images/blog/3006e929cd5cfe48cece4bc555a7c75e940be641-635x200.webp)
+![](/images/site-mirror/3006e929cd5cfe48cece4bc555a7c75e940be641-635x200.webp)
 
 Making the right Redis decision isn’t easy. Should I build out my own Redis environment or pay a consultant or service to manage it for me? When is the right time to start using Redis? Is my current solution scalable and available?
 

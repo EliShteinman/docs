@@ -14,7 +14,7 @@ hidden: true
 
 *By Aviad Abutbul, Senior Director of Product Management · Published 5 January 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/f4498e81407d2779428d60198d1bf00dc9383e8a-772x550.webp)
+![Blog tile image](/images/site-mirror/f4498e81407d2779428d60198d1bf00dc9383e8a-772x550.webp)
 
 Today we are pleased to announce the availability of the [HashiCorp Terraform Redis Enterprise Cloud provider.](https://registry.terraform.io/providers/RedisLabs/rediscloud/latest) While development teams embrace more and more DevOps principles such as continuous integration/continuous delivery (CI/DC), the need to manage infrastructure as code has become almost a must-have capability for any cloud service. A leading tool in the infrastructure as code space is HashiCorp Terraform, supporting the major cloud providers and services with its [providers and modules cloud infrastructure automation ecosystem](https://www.hashicorp.com/resources/an-introduction-to-terraform-providers-and-modules-in-the-terraform-community) for provisioning, compliance, and management of any cloud, infrastructure, and service.
 
@@ -155,7 +155,7 @@ As you can see, we have now provisioned two new databases. All you have to do is
 
 The Redis Enterprise Cloud console displays the new subscription and database:
 
-![](/images/blog/c9f86c2efcfa8fe891af654d834e6171399fda94-1024x214.webp)
+![](/images/site-mirror/c9f86c2efcfa8fe891af654d834e6171399fda94-1024x214.webp)
 
 Once you are done having fun with your database you can tear down everything by running this command:
 

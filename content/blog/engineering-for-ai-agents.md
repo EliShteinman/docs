@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 12 December 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/d42fc3e0f66fccc12296ca969e0c5ad024458871-1200x628.webp)
+![Redis](/images/site-mirror/d42fc3e0f66fccc12296ca969e0c5ad024458871-1200x628.webp)
 
 ## From prompting to programming: A guide to context engineering for AI agents
 

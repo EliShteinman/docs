@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 31 July 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/054c7db64f8852366ddd221e6dac97de26cbc710-635x200.webp)
+![](/images/site-mirror/054c7db64f8852366ddd221e6dac97de26cbc710-635x200.webp)
 
 A little over 18 months ago we took our first baby steps in what has since then proved to be a wild and exciting ride. To the uninitiated outsider, a cloud service provider’s existence might seem dull and uneventful. However, anyone who has tirelessly searched for the one platform tweak to rule them all; who has tracked the elusive flow of the river of Through(put); who has courageously battled the Hydra Serpent of Many Heads (also known as the Ssssp-lit) will tell a different tale.
 

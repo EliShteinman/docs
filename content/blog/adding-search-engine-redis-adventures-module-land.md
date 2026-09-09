@@ -15,9 +15,9 @@ hidden: true
 
 *By Dvir Dukhan · Published 5 October 2016 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fc4895044628f73304dba5e61ce5ef9a8443853a-800x535.webp)
+![Blog tile image](/images/site-mirror/fc4895044628f73304dba5e61ce5ef9a8443853a-800x535.webp)
 
-![](/images/blog/e0029cef2b58910ea375e53972a2577d16481621-300x201.webp)
+![](/images/site-mirror/e0029cef2b58910ea375e53972a2577d16481621-300x201.webp)
 
 TL;DR: We’ve utilized the powerful Redis Modules API to build a super-fast and feature-rich search engine inside Redis, from scratch — with its own custom data types and algorithms.
 
@@ -60,7 +60,7 @@ Our first design choice with RediSearch was to model [Inverted Indexes](https://
 
 We save the Inverted Indexes in Redis using a technique that combines [Delta Encoding](https://en.wikipedia.org/wiki/Delta_encoding) and [Varint Encoding](https://developers.google.com/protocol-buffers/docs/encoding#varints) to encode entries – minimizing space used for indexes, while keeping decompression and traversal efficient.
 
-![Storing document content and index data on different redis data types](/images/blog/0df955a0423e506a0efd88688efe608a3ee72f2f-620x300.webp)
+![Storing document content and index data on different redis data types](/images/site-mirror/0df955a0423e506a0efd88688efe608a3ee72f2f-620x300.webp)
 
 ### Auto-Complete and Fuzzy Suggestions
 
@@ -93,23 +93,23 @@ To assess the performance of RediSearch compared to other open source search eng
 
 Here are some of the results, showing RediSearch outperforming other open source search engines by significant margins (of course, as always, benchmarks results should be taken with a grain of salt. [**See the linked whitepaper**](/docs/redisearch-a-high-performance-search-engine-as-a-redis-module/) for more results and info on the benchmarks):
 
-![Benchmark 1: Easy single-word query - hello](/images/blog/51b33a2aa32c629f2170448dc8218b6ee1ac2325-792x450.webp)
+![Benchmark 1: Easy single-word query - hello](/images/site-mirror/51b33a2aa32c629f2170448dc8218b6ee1ac2325-792x450.webp)
 
-![Benchmark 1: Easy single-word query - hello](/images/blog/78eeab8a53fe4e9a3e17b27a7c735dd305650e82-792x450.webp)
+![Benchmark 1: Easy single-word query - hello](/images/site-mirror/78eeab8a53fe4e9a3e17b27a7c735dd305650e82-792x450.webp)
 
 Benchmark 1: Easy single-word query – **hello**
 
 
-![Benchmark 2: two word query - barack obama](/images/blog/83d398fb84c0091930d7da8129063d3a48231bd1-792x450.webp)
+![Benchmark 2: two word query - barack obama](/images/site-mirror/83d398fb84c0091930d7da8129063d3a48231bd1-792x450.webp)
 
-![Benchmark 2: two word query - barack obama](/images/blog/dc9d4ff659bda1fae7f4a5e82efda8850ae090af-792x450.webp)
+![Benchmark 2: two word query - barack obama](/images/site-mirror/dc9d4ff659bda1fae7f4a5e82efda8850ae090af-792x450.webp)
 
 Benchmark 2: two word query – **barack obama**
 
 
-![Benchmark 3: Autocomplete - 1100 top 2-3 letter prefixes in Wikipedia](/images/blog/373b4a7759cb6f2ecdc59419dc17c4238471d134-792x450.webp)
+![Benchmark 3: Autocomplete - 1100 top 2-3 letter prefixes in Wikipedia](/images/site-mirror/373b4a7759cb6f2ecdc59419dc17c4238471d134-792x450.webp)
 
-![Benchmark 3: Autocomplete - 1100 top 2-3 letter prefixes in Wikipedia](/images/blog/5954730de2e75492e39935df60f54339d4428af3-792x450.webp)
+![Benchmark 3: Autocomplete - 1100 top 2-3 letter prefixes in Wikipedia](/images/site-mirror/5954730de2e75492e39935df60f54339d4428af3-792x450.webp)
 
 Benchmark 3: Autocomplete – **1100 top 2-3 letter prefixes in Wikipedia**
 

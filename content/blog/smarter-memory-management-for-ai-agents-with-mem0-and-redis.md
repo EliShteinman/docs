@@ -15,7 +15,7 @@ hidden: true
 
 *By Jim Allen Wallace, Taranjeet Singh · Published 20 February 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/196e2b9676a77f145c04bd5ab8266cafb2bbe47f-772x552.webp)
+![Blog tile image](/images/site-mirror/196e2b9676a77f145c04bd5ab8266cafb2bbe47f-772x552.webp)
 
 We’re happy to announce the integration of [Mem0](https://mem0.ai/) with [Redis](https://redis.io/), a powerful combination that enhances the capabilities of AI agents by providing efficient and scalable memory management. Mem0 is a self-improving memory layer for LLM applications and AI agents, enabling personalized AI experiences that save costs and delight users. Key features of Mem0 include:
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 20 October 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/00a45a3e0e033dc16f1ef61ab4c854ea99c0c4e4-1324x132.webp)
+![Blog tile image](/images/site-mirror/00a45a3e0e033dc16f1ef61ab4c854ea99c0c4e4-1324x132.webp)
 
 ## Exploring the performance of Redis Enterprise with Flash memory extension.
 
@@ -53,7 +53,7 @@ $ memtier_benchmark -s your-nodes-fully-qualified-name-or-ip-endpoint -p your-en
 
 You will need to alter the values of the two items in red. You can find the endpoint address and port on the Redis Enterprise dashboard by selecting your database on the Database page and then clicking on the Configuration tab; the table should have a line that looks similar to this:
 
-![](/images/blog/00a45a3e0e033dc16f1ef61ab4c854ea99c0c4e4-1324x132.webp)
+![](/images/site-mirror/00a45a3e0e033dc16f1ef61ab4c854ea99c0c4e4-1324x132.webp)
 
 This benchmark will fill the database with 75 million keys each with a 500 byte payload.
 

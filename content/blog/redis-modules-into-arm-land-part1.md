@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 13 November 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9edb1b030928cadef01f34e5876fc208ba004b07-720x508.webp)
+![Blog tile image](/images/site-mirror/9edb1b030928cadef01f34e5876fc208ba004b07-720x508.webp)
 
 Here at Redis, our motivation to bring Redis modules into ARM land was RedisEdge. Redis, of course, has long been native in this land, in both glibc and alpine/musl variants. Redis modules have already been on the multi-platform scene, running on various Linux distributions and supporting macOS mainly for the sake of development experience. However, it was more enterprise/data-center-oriented until RedisEdge, which targets IoT devices. In this series of posts, I’ll describe our vision of ARM platform support and the developer user experience, as well as the steps we took to get there.
 
@@ -22,11 +22,11 @@ If you follow along, you’ll end up with a fully functional ARM build laborator
 
 ## Inside RedisEdge
 
-![](/images/blog/9ca5c542715032a843db744bcead779efd246c5a-700x182.webp)
+![](/images/site-mirror/9ca5c542715032a843db744bcead779efd246c5a-700x182.webp)
 
 Let’s take a look at RedisEdge. RedisEdge is not a Redis [module](/modules/) but an aggregate of three Redis modules: RedisGears, RedisAI, and RedisTimeSeries. It is distributed as a Docker image, which is based on Redis Server 5.0. Thus, one can simply pull the image, run it, and start issuing Redis commands; load models into RedisAI; and execute Python gears scripts on RedisGears. Although one can easily remove Docker from the equation by installing a Redis server and copying Redis modules files, we’ll see that Docker actually provides significant added value and is worthwhile to keep.
 
-![](/images/blog/15971d051aeef94b2ebdf46d465ef025d40ee268-1791x786.webp)
+![](/images/site-mirror/15971d051aeef94b2ebdf46d465ef025d40ee268-1791x786.webp)
 
 *Inside RedisEdge: modules structure*
 

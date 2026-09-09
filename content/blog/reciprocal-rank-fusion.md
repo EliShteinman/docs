@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 9 August 2026 · updated 12 August 2026*
 
-![Reciprocal rank fusion: why combining search results is harder than it looks](/images/blog/bcefbc5e7620f682170ea0815b23342a676d02eb-2400x1256.webp)
+![Reciprocal rank fusion: why combining search results is harder than it looks](/images/site-mirror/bcefbc5e7620f682170ea0815b23342a676d02eb-2400x1256.webp)
 
 You run a keyword search and get back a ranked list with Best Matching 25 (BM25) scores. You run a vector search over the same documents and get a second list with cosine similarities. You want to merge them into a single ranking that surfaces the most relevant documents, keeping the exact-term matches keyword search catches and the meaning-based matches vector search catches. Adding the two scores together seems like the obvious way to get there, but it can break your ranking in ways that are easy to miss. The approach many search systems settled on instead is a formula from 2009 that fits on a napkin: reciprocal rank fusion (RRF). This guide covers what reciprocal rank fusion is, why raw scores from different retrievers usually shouldn't be added directly, where rank fusion shows up in production systems, and why retrieval speed matters more than the fusion step itself.
 

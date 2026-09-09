@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 16 January 2026 · updated 21 January 2026*
 
-![Redis](/images/blog/3456a04da8a17d7d230e9c5333ed097d250ea5fc-1200x628.webp)
+![Redis](/images/site-mirror/3456a04da8a17d7d230e9c5333ed097d250ea5fc-1200x628.webp)
 
 Most SaaS teams treat AI as a feature. Just plug in an API, add some chat functionality, and ship it. But production AI demands infrastructure that your existing stack wasn't designed to handle, like vector embeddings, semantic search, and real-time inference at scale.
 

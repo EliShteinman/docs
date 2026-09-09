@@ -15,7 +15,7 @@ hidden: true
 
 *By Nava Levy, Gilbert Lau · Published 10 August 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 Every day, more and more companies are building [feature stores for machine learning (ML)](/solutions/feature-store/) with Redis and Redis Enterprise as the [online feature store](/solutions/feature-store/). In previous blog posts, we shared use cases and [benchmarks](/blog/feature-stores-for-real-time-artificial-intelligence-and-machine-learning/) illustrating how Redis Enterprise is the most performant and cost-effective online feature store for high throughput, low latency, or real-time use cases.
 
@@ -24,7 +24,7 @@ We also shared tutorials on running Redis with the popular open source feature s
 
 In this blog post, we focus on why leading companies, such as Feast co-creator [Gojek](https://www.cnbc.com/2021/06/09/goto-how-gojek-and-tokopedia-teamed-up-in-indonesias-biggest-merger.html), are migrating to [Redis Enterprise on Google Cloud](/blog/redis-enterprise-on-google-cloud-five-deployment-scenarios/). We also share a quickstart tutorial on **how to run Redis Enterprise with Feast on Google Cloud Platform (GCP).**
 
-![diagram displaying feature store with google colab using redis enterprise](/images/blog/cebef0e194fd6988b79b2665b05e64d066185e50-1024x703.webp)
+![diagram displaying feature store with google colab using redis enterprise](/images/site-mirror/cebef0e194fd6988b79b2665b05e64d066185e50-1024x703.webp)
 
 ### Redis Enterprise as the online feature store on Google Cloud Platform
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Henry Tam · Published 14 January 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0d071c66ce7d8baba095d0a1e9563b1dd1688c0d-772x550.webp)
+![Blog tile image](/images/site-mirror/0d071c66ce7d8baba095d0a1e9563b1dd1688c0d-772x550.webp)
 
 Player engagement is the number one priority for game companies. The [gaming](/industries/gaming/) industry is fiercely competitive and it’s sink or swim. To keep your head above the water and overtake your competition, it’s crucial that you optimize all areas of performance to keep players tethered to your game.
 
@@ -30,7 +30,7 @@ Player engagement is the lifeblood of any game. To maximize it, you’ll need a 
 
 ## 1. Build strong communities with smart matchmaking
 
-![Gaming Matchmaking Screenshot](/images/blog/aba4ddc010c25f5b8c439834b2530b7a045cccf5-1024x449.webp)
+![Gaming Matchmaking Screenshot](/images/site-mirror/aba4ddc010c25f5b8c439834b2530b7a045cccf5-1024x449.webp)
 
 A strong online community is the beating heart of any [successful game](https://www.youtube.com/watch?v=5jwuDM6Z3F8). It’s also the cash cow that places you in a golden situation where players will naturally gravitate towards your brand and spark a chain of events that accelerate growth.
 
@@ -44,7 +44,7 @@ This is where real-time matchmaking comes in. It identifies the right connection
 
 ## 2. Give players what they need with game inventories
 
-![Gaming Inventory Screenshot](/images/blog/e8687bc7a75ed1870c6a2e089edfad30ae7d2501-1024x529.webp)
+![Gaming Inventory Screenshot](/images/site-mirror/e8687bc7a75ed1870c6a2e089edfad30ae7d2501-1024x529.webp)
 
 Inventories are a crucial component of gaming. Games today are flooded with millions of inventories for weapons, equipment, swag, currencies, and more.
 
@@ -56,7 +56,7 @@ Real-time data processing removes these deficiencies and creates a more immersiv
 
 ## 3. Mold the game to players with personalization
 
-![Gaming Personalization Screenshot](/images/blog/1a4b2ea2016131d6a08e74cbbc3f5457ca64c966-1024x529.webp)
+![Gaming Personalization Screenshot](/images/site-mirror/1a4b2ea2016131d6a08e74cbbc3f5457ca64c966-1024x529.webp)
 
 Personalization is the magic that allows players to blend their tastes, preferences, and styles in with the playing experience. It’s a powerful component of gaming that can make gameplay truly immersive.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 26 April 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d8679fcc176b1a75e84985ac1eb5d5b6cda68b93-772x550.webp)
+![Blog tile image](/images/site-mirror/d8679fcc176b1a75e84985ac1eb5d5b6cda68b93-772x550.webp)
 
 **Database vendors need to become more active in the cloud-native community — particularly to counter the scaling issues related to Kubernetes and stateful applications.**
 

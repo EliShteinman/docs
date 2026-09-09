@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 23 May 2014 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/04d1bc57de5ba3542613f13dbe995fe3794a53de-625x200.webp)
+![](/images/site-mirror/04d1bc57de5ba3542613f13dbe995fe3794a53de-625x200.webp)
 
 The [recent Redis’ v2.8.9](https://groups.google.com/forum/#!msg/redis-db/32VPw9X46Sg/GxHLzKeqRc0J) was “the strangest beast” in its history of releases. Unlike previous versions, this release solely introduced new Redis functionality rather than defect fixes. As we are nearing the completion of 2.8.9’s rollout in our Redis Cloud service, I wanted to use this chance to briefly summarize these updates for our users.
 

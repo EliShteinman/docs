@@ -15,9 +15,9 @@ hidden: true
 
 *By Alon Magrafta, Product Manager · Published 30 April 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/bbc53e468747e6300679ce8da02c3f7f26286bac-270x190.webp)
+![Blog tile image](/images/site-mirror/bbc53e468747e6300679ce8da02c3f7f26286bac-270x190.webp)
 
-![](/images/blog/57bbd453e954c0726b8214377225d61f9ceef0cc-300x294.webp)
+![](/images/site-mirror/57bbd453e954c0726b8214377225d61f9ceef0cc-300x294.webp)
 
 Based on high demand from the Redis community and users, the [newly released open source Redis 6](/blog/diving-into-redis-6) dramatically improves Redis security and operational safety. We are excited to announce the general availability of [Redis Enterprise 6.0](/download-center/#downloads), which utilizes Redis 6’s important improvements, and takes Redis security to an even higher level. This release features access control lists (ACLs) and role-based access control (RBAC), allowing you to exercise fine-grained control over the security of your Redis Enterprise deployment. In addition, Redis Enterprise 6 incorporates many changes from open source Redis 6, and provides support for Redis Streams on Active-Active databases.
 
@@ -48,13 +48,13 @@ Role-based access control lets you scale your Redis deployments while minimizing
 
 **ACL roles**
 
-![](/images/blog/449dc6c15f84a33ad14d4c95cdc91e2cf5d64fce-1023x317.webp)
+![](/images/site-mirror/449dc6c15f84a33ad14d4c95cdc91e2cf5d64fce-1023x317.webp)
 
 *In the diagram above, which represents Redis Enterprise 6.0, Bob, Sue, and Alice would receive access via the CachedReader role. In the diagram below, which represents OSS Redis 6.0, these users’ CachedReader permissions are set individually.*
 
 **ACL open source**
 
-![](/images/blog/74e0d1a8354d498b5f214a2db915711161cb4a80-1024x340.webp)
+![](/images/site-mirror/74e0d1a8354d498b5f214a2db915711161cb4a80-1024x340.webp)
 
 ## Redis Streams with Active-Active databases
 

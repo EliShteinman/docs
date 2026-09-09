@@ -15,7 +15,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 24 January 2017 · updated 24 October 2025*
 
-![Blog tile image](/images/blog/fa32adbf7fabd14844d7325c09e430f850a438c3-772x553.webp)
+![Blog tile image](/images/site-mirror/fa32adbf7fabd14844d7325c09e430f850a438c3-772x553.webp)
 
 *It is my absolute pleasure to present you with this guest post by Brandur Leach, *[*redis-cell*](https://github.com/brandur/redis-cell)*‘s author and winner of the 1st place in the *[*Redis Modules Hackathon*](/blog/first-ever-redis-modules-hackathon)*. The module is an efficient implementation of a *[*rate limiter*](/glossary/rate-limiting/)* that can be used, for example, to protect from activity spikes. In this post, Brandur explains why the module came into being, how it works and the reasons behind his choice of programming language (spoiler: Rust).*
 

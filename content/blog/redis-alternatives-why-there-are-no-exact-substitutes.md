@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 13 March 2026 · updated 21 May 2026*
 
-![Redis alternatives: Why there are no exact substitutes](/images/blog/ffaf8972bfcacc34c650e73f31bd8ab01eeffc7c-1200x628.webp)
+![Redis alternatives: Why there are no exact substitutes](/images/site-mirror/ffaf8972bfcacc34c650e73f31bd8ab01eeffc7c-1200x628.webp)
 
 Redis set the standard for fast. But sometimes you need different trade-offs like cost, scalability, simplicity, data durability, or licensing. That’s when teams start asking, “What else is out there?”
 
@@ -72,7 +72,7 @@ While Redis has its origins as a simple cache or key-value store, it’s evolved
 
 Then:
 
-![Reddit Screenshot](/images/blog/9b636320aafdc5aa011948ced0992bfc4fa199a6-1096x234.webp)
+![Reddit Screenshot](/images/site-mirror/9b636320aafdc5aa011948ced0992bfc4fa199a6-1096x234.webp)
 
 Now:
 

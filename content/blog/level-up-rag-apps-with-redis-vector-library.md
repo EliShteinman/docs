@@ -15,7 +15,7 @@ hidden: true
 
 *By Robert Shelton, Justin Cechmanek · Published 9 October 2024 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/7f464df2761ec8bfa320e46cb6b5d12191da6e2d-772x552.webp)
+![Blog tile image](/images/site-mirror/7f464df2761ec8bfa320e46cb6b5d12191da6e2d-772x552.webp)
 
 A few months back, Redis [launched the Redis Vector Library](/blog/introducing-the-redis-vector-library-for-enhancing-genai-development/) (RedisVL) to simplify development of AI apps. Since then, we’ve introduced powerful new features and functionality that support Large Language Models (LLMs) at scale. RedisVL is a dedicated Python client library for using [Redis for AI](https://redis.io/redis-for-ai/).
 As of redisvl>=0.3.0, you get:

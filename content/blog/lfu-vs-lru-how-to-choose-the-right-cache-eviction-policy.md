@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 23 July 2025 · updated 21 May 2026*
 
-![LFU vs. LRU: How to choose the right cache eviction policy](/images/blog/1dc804192072ac8367fc0487c81efefbcde225c2-772x552.webp)
+![LFU vs. LRU: How to choose the right cache eviction policy](/images/site-mirror/1dc804192072ac8367fc0487c81efefbcde225c2-772x552.webp)
 
 Least Frequently Used (LFU) and Least Recently Used (LRU) are two of the most common cache eviction policies for determining which data to evict when a cache fills up. Without a policy in place, the cache can become full, defeating the purpose of building a database system that supports rapid retrieval.
 

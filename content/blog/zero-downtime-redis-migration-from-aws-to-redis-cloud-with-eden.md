@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 19 February 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/bf49d996318f13da40ef55aaea0bd81a87310ba0-2400x1256.webp)
+![Redis](/images/site-mirror/bf49d996318f13da40ef55aaea0bd81a87310ba0-2400x1256.webp)
 
 Redis migrations can suck.
 
@@ -109,17 +109,17 @@ Setup
 
 Before starting the migration, the source had ~144k keys and was handling ~33k ops/sec. The destination was empty. Because the workload includes continuous writes and TTL expirations, key counts fluctuate throughout the test - so when I say the destination "matched" the source at the end, that means it caught up to the live state at cutover, not some earlier snapshot.
 
-![Redis](/images/blog/5641c9b0e7b9e4b2531ffc4d5815240c95d1aca6-1299x724.webp)
+![Redis](/images/site-mirror/5641c9b0e7b9e4b2531ffc4d5815240c95d1aca6-1299x724.webp)
 
 I walked through Eden’s setup flow—org creation, auth, endpoint registration, interlay creation, migration definition. Once everything was wired up, the migration sat in a pending state waiting to be triggered.
 
-![Redis](/images/blog/9ed948dcd2cdd13b01bdcffc196e91f0f0f9ffe9-1299x705.webp)
+![Redis](/images/site-mirror/9ed948dcd2cdd13b01bdcffc196e91f0f0f9ffe9-1299x705.webp)
 
 When I kicked it off, the destination key count started climbing immediately. Traffic never stopped. No reconnects. No errors.
 
 About two minutes later, the migration completed. Key counts between source and destination were effectively identical.
 
-![Redis](/images/blog/c82c2813653f5e91b9a68fac244fcedec7b6e993-1299x708.webp)
+![Redis](/images/site-mirror/c82c2813653f5e91b9a68fac244fcedec7b6e993-1299x708.webp)
 
 `analytics-demo `kept pushing traffic the entire time.
 
@@ -164,11 +164,11 @@ Setup
 
 Before starting, I confirmed the Redis Cloud database was empty using Redis Insight.
 
-![Redis](/images/blog/6e9ae0c9542ddd7098195df7c675a02051416a5f-1294x838.webp)
+![Redis](/images/site-mirror/6e9ae0c9542ddd7098195df7c675a02051416a5f-1294x838.webp)
 
 Once load stabilized, the source sat at ~62k keys. Destination was still empty.
 
-![Redis](/images/blog/0b4febe149947e57039c18adae724e4634bc18c1-845x450.webp)
+![Redis](/images/site-mirror/0b4febe149947e57039c18adae724e4634bc18c1-845x450.webp)
 
 Then I ran through the same Eden workflow:
 
@@ -181,7 +181,7 @@ I went with a big bang strategy for this test, but Eden supports canary, blue-gr
 
 The entire migration finished in about seven minutes. At the end, Redis Cloud held ~69k keys, matching what was on the source.
 
-![Redis](/images/blog/241b2c9e3e7ed35f4e8e9a594e3a192b6876d536-1294x846.webp)
+![Redis](/images/site-mirror/241b2c9e3e7ed35f4e8e9a594e3a192b6876d536-1294x846.webp)
 
 
 Traffic stayed steady the whole time.

@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 26 February 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/5c2fd02d53671728a71e0368f149b0ff2d3ee150-400x400.webp)
+![Blog tile image](/images/site-mirror/5c2fd02d53671728a71e0368f149b0ff2d3ee150-400x400.webp)
 
 10 years ago, [a link was posted](https://news.ycombinator.com/item?id=494649) on Hacker News to a new software project called Redis. In [the comments](https://news.ycombinator.com/item?id=494649), its creator Salvatore Sanfilippo (a.k.a. [antirez](http://antirez.com/news/127)) says “one of the major points of Redis is to support more complex types as values”. From Day 1, Salvatore knew what he wanted to build. And to his credit, [he stayed focused](http://oldblog.antirez.com/post/one-year-of-redis.html). Redis now has 10 complex types and a module system that enables developers to build more. And as a result, Redis is [the most popular key-value store](https://db-engines.com/en/ranking/key-value+store) on the planet.
 

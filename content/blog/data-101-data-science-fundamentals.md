@@ -14,7 +14,7 @@ hidden: true
 
 *By Amine El Kouhen, Data Architect · Published 10 July 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ed09a60bf931ecae830dbe93c60420897e58575f-772x550.webp)
+![Blog tile image](/images/site-mirror/ed09a60bf931ecae830dbe93c60420897e58575f-772x550.webp)
 
 **Let’s start with data science fundamentals, and consider the concept of data, its typology of data, its main characteristics, and its impact on our way of life.**
 
@@ -22,7 +22,9 @@ Data is any organization’s most valuable asset. Beyond the obvious reasons to 
 
 Data is any information you collect that is organized and structured to make it worthwhile for analysis. Data is collected every time you make a purchase, navigate a website, travel, make a phone call, or post on a social media site. Data can come from many sources, including sensors, surveys, experiments, observations, or existing records (historical data) such as financial transactions. Never before has so much data about many different things been collected and stored every second of every day.
 
-![](/images/blog/15cb93adccbf731fdb28a87d05e8601ac86ef4ef-823x467.webp)
+![](/images/site-mirror/15cb93adccbf731fdb28a87d05e8601ac86ef4ef-823x467.webp)
+
+*Data is everywhere!*
 
 The theory of information pushed the concept of data way further. The Theory of Information is a field of study that seeks to understand the nature and origin of information. According to this study, everything can be considered data. This includes physical objects as well as abstract concepts such as ideas or emotions. Furthermore, data is defined as any set of symbols that conveys meaning when interpreted by a receiver. Therefore anything that has some form of symbolic representation (such as DNA sequences, words, or numbers) could be classified as data in this context.
 
@@ -48,7 +50,9 @@ This kind of data can be divided into nominal or ordinal.
 
 Statistically, qualitative variables must be transformed into dummy variables before any analysis. For example, we can artificially assign numbers to categories. For instance, if your categories are colors, we could assign the number 1 to red and 2 to blue, but these do not have meaning in any mathematical sense. We would not conclude that blue is twice as much as red is!
 
-![](/images/blog/7e650e5ce7014fa58b9757033b8a5ca471603482-610x589.webp)
+![](/images/site-mirror/7e650e5ce7014fa58b9757033b8a5ca471603482-610x589.webp)
+
+*Types of data*
 
 ## Impact of data
 
@@ -56,7 +60,9 @@ Data… information… knowledge. What is the difference? The DIKW model, which 
 
 In the DIKW model, data is considered raw material for wise decision-making because it provides an objective basis for drawing conclusions. By analyzing large amounts of data in various ways, such as through statistical analysis or machine learning algorithms, we can uncover patterns within the data that may not previously have been obvious. This information is then processed into meaningful insights, forming the basis of decision-making processes. Finally, wisdom comes in when these insights are applied with experience and judgment so that someone can make an informed choice about what action should occur next, influencing future strategies.
 
-![](/images/blog/0713bec13f03e97cf0379cb637f28fd37e6c4e7d-1735x720.webp)
+![](/images/site-mirror/0713bec13f03e97cf0379cb637f28fd37e6c4e7d-1735x720.webp)
+
+*The DIKW pyramid*
 
 Thus, data adds value by providing insights and information that can be used to make informed decisions. Data helps organizations identify trends, measure performance, optimize processes, improve customer experience, and drive innovation. It also enables businesses to gain a competitive edge in the market through better decision-making capabilities based on data analysis.
 
@@ -82,7 +88,9 @@ In an organization, the meaning can constantly change, significantly impacting d
 
 - **Visualization**: Using charts and graphs to visualize complex data has become a standard way to convey meaning, improving on expecting people to understand the raw data in spreadsheets, numbers, and formulas.
 
-![](/images/blog/399107ce086ef9a7ddc7c1361b8881d76761e4ad-1202x1168.webp)
+![](/images/site-mirror/399107ce086ef9a7ddc7c1361b8881d76761e4ad-1202x1168.webp)
+
+*The 7 Vs of data*
 
 Ultimately, data scientists today pay attention to 7 Vs of data – and as I continue in this series, you will too.
 

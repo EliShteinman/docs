@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 28 April 2026 · updated 1 May 2026*
 
-![AI agents vs AI workflows: when to use each & combine both](/images/blog/787c2c9fb8953bca1b0f25d9c19e883321cb350f-2400x1256.webp)
+![AI agents vs AI workflows: when to use each & combine both](/images/site-mirror/787c2c9fb8953bca1b0f25d9c19e883321cb350f-2400x1256.webp)
 
 Everyone building with LLMs right now is bumping into the same question: should you wire up a predictable, step-by-step workflow, or let an AI agent figure things out on its own? The answer shapes your system's reliability, cost, latency, and how many 3 AM pages you'll field.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Amiram Mizne, Director of Product Management · Published 12 November 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/31e676bf473413391fb0d02a673d0370aee7fec1-386x260.webp)
+![Blog tile image](/images/site-mirror/31e676bf473413391fb0d02a673d0370aee7fec1-386x260.webp)
 
 [Released in October 2018](/press/redis-labs-collaborates-with-red-hat-to-deliver-redis-enterprise-with-built-in-support-for-kubernetes-operators-on-red-hat-openshift-container-platform/), the Redis Enterprise Kubernetes Operator is only about a year old, but multiple customers are already using it to run Redis Enterprise clusters in production. Now, as we celebrate our Kubernetes Operator’s first birthday, we are adding another powerful Day-2 operations enabler to its toolset: Automated cluster recovery.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 14 April 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Today we are happy to make two exciting announcements: we’ve made SSL support available for Redsmin and we’re releasing a couple of Redis clients that we’ve patched to support SSL. Since Redis [doesn’t](https://code.google.com/p/redis/issues/detail?id=71) [include](https://twitter.com/antirez/status/243763404341403648) [native](https://github.com/antirez/redis/issues/675) [support](https://redis.io/topics/security) for secured communication – an extremely valid design decision – all the heavy lifting (e.g. [setting up a secure stunnel proxy](http://bencane.com/2014/02/18/sending-redis-traffic-through-an-ssl-tunnel-with-stunnel/), /ht Benajmin Cane, a.k.a [@madflojo](https://twitter.com/madflojo)) is left to Redis admins and developers. As both Redsmin and Redis offer a turn-key solution for Redis needs (each in its own domain), it is only natural that we rise to the challenge and provide a secure and easy Redis environment.
 

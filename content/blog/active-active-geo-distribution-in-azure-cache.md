@@ -16,7 +16,7 @@ hidden: true
 
 *By Shreya Verma, Principal Product Manager · Published 2 February 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/34ebd5ff9f40e03d38da3b0f67cd729c744ab45f-772x550.webp)
+![Blog tile image](/images/site-mirror/34ebd5ff9f40e03d38da3b0f67cd729c744ab45f-772x550.webp)
 
 We’re excited to announce the general availability of Active-Active Geo-Distribution from Redis in Azure Cache for Redis’ Enterprise and Enterprise Flash tiers. Azure Cache for Redis customers can now have up to five Enterprise tier cache database instances in different Azure regions to form an active geo-replicated cache using [conflict-free replicated ](/blog/diving-into-crdts/)data types. An Enterprise tier active-active deployment allows businesses to create global applications that provide local sub-millisecond read/write latencies with considerably better resilience to failure, [covered by 99.999% Azure availability SLA](https://azure.microsoft.com/en-us/support/legal/sla/cache/v1_1/). In addition, Active-Active Geo-Distribution provides [strong eventual consistency](https://en.wikipedia.org/wiki/Eventual_consistency#:~:text=Whereas%20eventual%20consistency%20is%20only,be%20in%20the%20same%20state.), supporting writes to multiple Redis instances across the globe, and takes care of merging local changes while predictably resolving conflicts.
 
@@ -35,7 +35,7 @@ Active geo-replication must be initially set up when creating the Redis instance
 
 1. Create a new Redis Enterprise instance.
 
-![Image of Azure Cache for Redis](/images/blog/6abbd41626261d891daa412d02f981b85ebf4a6e-1024x895.webp)
+![Image of Azure Cache for Redis](/images/site-mirror/6abbd41626261d891daa412d02f981b85ebf4a6e-1024x895.webp)
 
 2. Click on the ‘Advanced’ tab in the create experience.
 
@@ -43,7 +43,7 @@ Active geo-replication must be initially set up when creating the Redis instance
 
 4. Select an existing replication group, to add a new cache instance to the existing group. Or create a new replication group, by providing a new replication group name.
 
-![Image of Azure Cache for Redis](/images/blog/6abbd41626261d891daa412d02f981b85ebf4a6e-1024x895.webp)
+![Image of Azure Cache for Redis](/images/site-mirror/6abbd41626261d891daa412d02f981b85ebf4a6e-1024x895.webp)
 
 Detailed steps to create and set up active geo-replication on enterprise and enterprise flash tiers can be found [in Azure Cache for Redis documentation.](https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-active-geo-replication)
 
@@ -51,7 +51,7 @@ Detailed steps to create and set up active geo-replication on enterprise and ent
 
 ### Business continuity with up to 99.999% service availability
 
-![image showing regional Azure outages](/images/blog/2eaaa2f1cb26306e2e817876ff3386d142a3df68-856x789.webp)
+![image showing regional Azure outages](/images/site-mirror/2eaaa2f1cb26306e2e817876ff3386d142a3df68-856x789.webp)
 
 Active-Active in the Enterprise tier is designed to provide **business continuity**, enabling quick disaster recovery in the event of regional Azure outages. With Active-Active, cache instances can be configured in two or more Azure regions (up to five). It gives you the flexibility to either deploy the application nationwide in multiple regions within the national boundaries or distribute the application across the globe.
 
@@ -59,7 +59,7 @@ When an Azure region experiences a large-scale event or an outage, other cache i
 
 ### Global application scaling with local read and write latencies
 
-![image of reads and writes via active-active geo-replication](/images/blog/4b3033a115f8e05596f55adfcdf236cd9c8f7dfc-786x785.webp)
+![image of reads and writes via active-active geo-replication](/images/site-mirror/4b3033a115f8e05596f55adfcdf236cd9c8f7dfc-786x785.webp)
 
 An application connecting to an Active-Active instance can connect to the geographically closest instance. Bi-directional replication is used between all instances participating in Active-Active in a mesh-like topology to replicate all the writes. All writes made by the application to the local instance are automatically replicated to all other instances. The offers local latency on read and write operations, regardless of the number of geo-distributed regions and their distance from each other.
 
@@ -67,7 +67,7 @@ A globally distributed application can send all their read and write requests to
 
 ### Data consistency across the globe – Follow the sun!
 
-![image of seamless conflict resolution with active-active](/images/blog/7c380b1e201496ab351975d95fcf3287f1b4d1fd-697x681.webp)
+![image of seamless conflict resolution with active-active](/images/site-mirror/7c380b1e201496ab351975d95fcf3287f1b4d1fd-697x681.webp)
 
 Active-Active enables seamless conflict resolution between two or more geo-distributed cache instances. You can write to multiple cache instances and changes are automatically merged by the underlying replication technology, which is based on the principles of conflict-free replicated data types.
 

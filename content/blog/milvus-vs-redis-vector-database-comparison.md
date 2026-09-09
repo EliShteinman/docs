@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 5 March 2026*
 
-![Redis](/images/blog/41f445362eaeb7fc463f4e0a1d6f18a359b3c541-1200x628.webp)
+![Redis](/images/site-mirror/41f445362eaeb7fc463f4e0a1d6f18a359b3c541-1200x628.webp)
 
 You're building an AI app: maybe a RAG system, an agent with memory, or a chatbot with semantic caching. You need vector search, and you're choosing between Milvus (a purpose-built vector database) and Redis (a unified real-time platform that includes vector search alongside caching and streaming).
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Robert Shelton, AI Engineer at Redis · Published 21 July 2025*
 
-![Retrieval optimizer: Grid search](/images/blog/060d3e0b4b4f5e9edbd62c0a9b054b547dce190c-772x552.webp)
+![Retrieval optimizer: Grid search](/images/site-mirror/060d3e0b4b4f5e9edbd62c0a9b054b547dce190c-772x552.webp)
 
 One of the most valuable pieces of feedback I’ve ever received as an engineer came as an intern. I was debugging some data issues and, truthfully, didn’t really know what was going on. When my manager asked me for an update, I responded with something vague like, “I think it happens when event A occurs, but not all the time—so maybe it’s a network thing?”
 
@@ -242,7 +242,7 @@ Once complete the metrics variable, shown in the last code block, will be a data
 
 From this grid study, we can say that the embedding model had more impact on the overall performance of our retrieval than did the search method. The top 3 results all used OpenAi’s text-embeeding-3-small over the hugging face alternatives. However, this is where the real engineering begins and we can start to offer informed opinions. For example, we can see that using weighted_rrf with the all-mpnet-base-v2 model had the same accuracy as the top 3. But maybe for the system we’re measuring that’s good enough to justify the cost savings of an open source model over hitting the OpenAI service.
 
-![Output and analysis](/images/blog/cdcfdf2131607b8e7457baec0e24f02d55d52696-1600x606.webp)
+![Output and analysis](/images/site-mirror/cdcfdf2131607b8e7457baec0e24f02d55d52696-1600x606.webp)
 
 ## Next steps
 

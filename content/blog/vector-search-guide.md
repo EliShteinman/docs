@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 5 December 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/cbd3a9315de675d58e12df737a330b7e5dcb0d75-1200x628.webp)
+![Redis](/images/site-mirror/cbd3a9315de675d58e12df737a330b7e5dcb0d75-1200x628.webp)
 
 If you've ever searched for something online and been frustrated by irrelevant results, you've experienced the limits of traditional search. You might search for "running shoes for rocky trails," but get results for road-racing flats. The search engine matched your keywords but missed your intent. This gap between what you type and what you mean is one of the biggest challenges in building modern, intelligent applications.
 

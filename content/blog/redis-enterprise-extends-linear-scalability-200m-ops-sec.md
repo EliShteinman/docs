@@ -15,7 +15,7 @@ hidden: true
 
 *By Nail Sirazitdinov · Published 27 June 2019 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/d50b9a308de567dc4b7782ab800375eca33a8b75-2498x1802.webp)
+![Blog tile image](/images/site-mirror/d50b9a308de567dc4b7782ab800375eca33a8b75-2498x1802.webp)
 
 All modern consumer applications must scale easily and cost-efficiently, and for this, linear database performance is key. With our shared-nothing architecture, we’ve proven again and again that a single Redis Enterprise cluster can scale infinitely in a linear manner by simply adding shards and nodes. But that doesn’t mean we’re resting on our laurels. At RedisConf18 we demonstrated that a single Redis Enterprise cluster could reach [50 million operations per second (ops/sec) with only 26 AWS instances](/docs/linear-scaling-benchmark-50m-ops-sec/) while keeping latency under 1 millisecond, and today we’re pleased to share that Redis Enterprise has set yet another new industry performance record.
 

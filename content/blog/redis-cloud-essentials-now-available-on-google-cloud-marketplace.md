@@ -15,7 +15,7 @@ hidden: true
 
 *By Sowmya Narayanan, Shyam Kathiresan · Published 11 July 2024 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/a00b6a3a1a15c121fb02f70437bf6b71cc0488e3-772x552.webp)
+![Blog tile image](/images/site-mirror/a00b6a3a1a15c121fb02f70437bf6b71cc0488e3-772x552.webp)
 
 Starting today, Redis Cloud Essentials is available on Google Cloud Marketplace. It’s never been easier to deploy and manage Redis in the cloud while billing through the Google Cloud Marketplace.
 
@@ -23,7 +23,7 @@ Starting today, Redis Cloud Essentials is available on Google Cloud Marketplace.
 
 Redis Cloud Essentials is a managed Redis service that makes getting started with Redis on Google Cloud simple and affordable. Whether you’re new to Redis or need a lightweight Redis solution, it’s perfect for developers of all levels working on small apps or development environments.
 
-![Redis Cloud Essentials](/images/blog/b30a5d8756b8b7bd6101acf51cd7cd0b2f0d9e36-451x512.webp)
+![Redis Cloud Essentials](/images/site-mirror/b30a5d8756b8b7bd6101acf51cd7cd0b2f0d9e36-451x512.webp)
 
 **Why choose Redis Cloud Essentials?**
 

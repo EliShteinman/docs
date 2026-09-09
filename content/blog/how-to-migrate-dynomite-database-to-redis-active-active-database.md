@@ -16,7 +16,7 @@ hidden: true
 
 *By Helene Brulin, Contributor · Published 15 April 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9ef90e96cc5c6e1184e54db294ddfdc92390cb20-772x550.webp)
+![Blog tile image](/images/site-mirror/9ef90e96cc5c6e1184e54db294ddfdc92390cb20-772x550.webp)
 
 In Part I of this article, “[Why Migrate a Dynomite Database to a Redis Enterprise Active-Active Database?](/blog/why-migrate-dynomite-database-to-redis-enterprise-active-active-database/),” we compared Dynomite and Redis Enterprise’s architectures and features. We’ve shown how Redis Enterprise can help you geo-distribute Redis Enterprise in a feature-rich, easily manageable way, and not worry about conflicts between concurrent writes.
 
@@ -33,7 +33,7 @@ Let’s get practical and see how we can run two types of migration:
 
 For the purposes of illustration, let’s assume that we have a Dynomite cluster spanning two datacenters: dc-a and dc-b. Each datacenter has one rack, and each rack is composed of two nodes, between which the dataset is distributed.
 
-![migration racks](/images/blog/9bda29988b442af6c220f631e1ba45b9fcaa2d66-598x374.webp)
+![migration racks](/images/site-mirror/9bda29988b442af6c220f631e1ba45b9fcaa2d66-598x374.webp)
 
 If we remember our description of Dynomite’s architecture, we know that each Dynomite rack contains the full dataset.
 
@@ -202,7 +202,7 @@ Optionally, you can also:
 - Change the directory in which the RDB files will be stored with the “dir” directive.
 - Change the snapshotting interval or disable automatic snapshotting. In this tutorial, we’ll use the SAVE Redis command to trigger snapshotting, so that we can be sure to dump the full dataset once we’ve stopped the traffic.
 
-![migration file names](/images/blog/67dd9ee452daee6bdfbd60a82e678b63bd0ee8b0-1024x402.webp)
+![migration file names](/images/site-mirror/67dd9ee452daee6bdfbd60a82e678b63bd0ee8b0-1024x402.webp)
 
 Note that after editing the Redis OSS configuration files, you need to restart the Redis OSS server so that your changes are taken into account.
 
@@ -250,7 +250,7 @@ gsutil cp path_to_dump_file gs://your_bucket
 
 We can now see our two RDB files in our Google Cloud bucket:
 
-![dump1 and dump2 files](/images/blog/d4c6eeca56629ef5a9a5cb7149e17abc641fc1d3-774x85.webp)
+![dump1 and dump2 files](/images/site-mirror/d4c6eeca56629ef5a9a5cb7149e17abc641fc1d3-774x85.webp)
 
 We are now ready to import them to our Active-Active database.
 
@@ -285,7 +285,7 @@ print(WHOLE_COPIED_KEY)
 
 We now have the following import configuration:
 
-![google cloud storage](/images/blog/312836f75fcb61842ebf87683bcbab89d8267988-856x1024.webp)
+![google cloud storage](/images/site-mirror/312836f75fcb61842ebf87683bcbab89d8267988-856x1024.webp)
 
 Click Import and wait for the import to be finished which will be dependent on the size of the database.
 
@@ -341,7 +341,7 @@ The first option is to peer the VPC in which your Dynomite rack lives with the V
 
 Once you have peered your networks, you just need to edit the “bind” directive in the redis.conf file: Add the private IP of your Dynomite machine after the default loopback interface addresses.
 
-![migration warning](/images/blog/130add7f0afa1df6659c1bd059dfb56b91d80984-1024x396.webp)
+![migration warning](/images/site-mirror/130add7f0afa1df6659c1bd059dfb56b91d80984-1024x396.webp)
 
 Do this for all nodes in the rack and that’s it! Don’t forget to restart your Redis OSS instances.
 
@@ -352,7 +352,7 @@ If you can’t or don’t want to peer your networks, then you need to update th
 - Comment the “bind” directive, which will expose your Redis OSS instance to everyone on the internet
 - Set “protected-mode” to “no”, so that clients from other hosts can connect to Redis even if no authentication is configured, nor a specific set of interfaces are explicitly listed using the “bind” directive.
 
-![migration binding](/images/blog/b1fd4ec242dd385d21804996110139a6896cd424-1024x956.webp)
+![migration binding](/images/site-mirror/b1fd4ec242dd385d21804996110139a6896cd424-1024x956.webp)
 
 **IMPORTANT:** This last step is required as Dynomite does not support Redis’ OSS AUTH command, which prevents us from setting a database password. Therefore, if you don’t use a firewall to control who connects to the ports in use, **anyone** can connect to the Redis OSS instance and access/change/delete its data. Open port 6379 only to the host of your Redis Enterprise cluster.
 
@@ -392,7 +392,7 @@ Please note:
 
 In our case, with VPC Peering, this is what our sources look like:
 
-![migration replica of toggle](/images/blog/508c2ff80937645774eab5db93693f8a06e51e63-655x112.webp)
+![migration replica of toggle](/images/site-mirror/508c2ff80937645774eab5db93693f8a06e51e63-655x112.webp)
 
 ### Start the migration
 

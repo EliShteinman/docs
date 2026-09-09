@@ -15,7 +15,7 @@ hidden: true
 
 *By Jim Allen Wallace, Ben Gutkovich · Published 7 August 2024 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/6a71a9acaec9d96e208bc95c752c9e3aee943d5f-772x552.webp)
+![Blog tile image](/images/site-mirror/6a71a9acaec9d96e208bc95c752c9e3aee943d5f-772x552.webp)
 
 ## Build smarter and faster GenAI apps with Superlinked and Redis
 
@@ -299,7 +299,7 @@ Superlinked is a compute framework for your information retrieval and feature en
 
 Compute tooling for vector-powered apps.
 
-![Close](/images/blog/96e244338b2f3fee742526528445ee7fd0a56a5c-17x17.svg)
+![Close](/images/site-mirror/96e244338b2f3fee742526528445ee7fd0a56a5c-17x17.svg)
 
 *(interactive chart, not available offline)*
 

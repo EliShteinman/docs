@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 15 July 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0c3dbf03d1ae1202c31acf431e6dc0f918872392-136x136.webp)
+![Blog tile image](/images/site-mirror/0c3dbf03d1ae1202c31acf431e6dc0f918872392-136x136.webp)
 
 I usually begin this type of post with a variation on the sentence “Today I am delighted to…” Today, however, these words aren’t filler — they truly are the best way to express that I am delighted to welcome Antirez (a.k.a Salvatore Sanfilippo), Redis’ creator, to Redis. You can read more about this development on [Antirez’s blog](http://antirez.com/news/91) and in [our press release](/press-releases/redis-creator-salvatore-sanfilippo-antirez-joins-redis-labs), but here’s another perspective – mine.
 

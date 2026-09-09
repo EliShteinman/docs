@@ -16,7 +16,7 @@ hidden: true
 
 *By Jim Allen Wallace, Rini Vasan, Maria Khalusova · Published 22 April 2025 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/b9e98d00955ea9cb0782fba33be4242561c8eb11-772x552.webp)
+![Blog tile image](/images/site-mirror/b9e98d00955ea9cb0782fba33be4242561c8eb11-772x552.webp)
 
 We’re thrilled to announce our partnership with Unstructured, combining their powerful data preprocessing expertise with Redis’ real-time AI capabilities. Together, we’re making it easier than ever for organizations to make their AI workflows faster by simplifying how data is ingested, transformed, and retrieved. This integration provides an optimized, end-to-end solution for building retrieval augmented generation (RAG) pipelines and other AI-driven apps.
 
@@ -62,13 +62,13 @@ Here’s how to configure the [Redis Cloud integration](https://docs.unstructure
 
 Screenshots of a sample Redis Cloud destination connector configuration:
 
-![Redis Unstructured Blog 1](/images/blog/23dd6fe816b9818fbd4bc52b830fc28d8ec102a7-1412x1384.webp)
+![Redis Unstructured Blog 1](/images/site-mirror/23dd6fe816b9818fbd4bc52b830fc28d8ec102a7-1412x1384.webp)
 
-![Redis Unstructured Blog 2](/images/blog/07214498bf44167c6e2fd5f6326d644ab7562b5c-1398x880.webp)
+![Redis Unstructured Blog 2](/images/site-mirror/07214498bf44167c6e2fd5f6326d644ab7562b5c-1398x880.webp)
 
-![Redis Unstructured Blog 3](/images/blog/2bb1cbf51ef0a351dec2d4340e9ea17b637f5078-1400x788.webp)
+![Redis Unstructured Blog 3](/images/site-mirror/2bb1cbf51ef0a351dec2d4340e9ea17b637f5078-1400x788.webp)
 
-![Unstructured Blog 4](/images/blog/d5ac869917aa39ba7ea766b389d1938f05952bac-1398x1110.webp)
+![Unstructured Blog 4](/images/site-mirror/d5ac869917aa39ba7ea766b389d1938f05952bac-1398x1110.webp)
 
 ### Using the Unstructured API
 

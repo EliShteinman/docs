@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 May 2026 · updated 27 May 2026*
 
-![Agentic retrieval techniques: hybrid search, routing, query planning & caching](/images/blog/51b3882dc0c20fdd1041103159bf4bd86f880abe-2400x1256.webp)
+![Agentic retrieval techniques: hybrid search, routing, query planning & caching](/images/site-mirror/51b3882dc0c20fdd1041103159bf4bd86f880abe-2400x1256.webp)
 
 Your AI assistant just answered a complex, multi-part question by pulling data from three different sources, checking its own work, and re-querying when the first results fell short. That's agentic retrieval in action.
 

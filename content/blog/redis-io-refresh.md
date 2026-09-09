@@ -15,7 +15,7 @@ hidden: true
 
 *By Kyle Banker, Itamar Haber · Published 23 March 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/bf06bd62eb0cdad539214994a4674468e34b0d73-772x550.webp)
+![Blog tile image](/images/site-mirror/bf06bd62eb0cdad539214994a4674468e34b0d73-772x550.webp)
 
 Today we’re pleased to announce the relaunch of [Redis.io](https://redis.io). Redis.io has always been the home of Redis and the entry point for new Redis users. With this launch, we’ve revised the core Redis documentation while modernizing the site’s design and updating its infrastructure.
 
@@ -23,7 +23,9 @@ In this post, we’d like to explain our motivations for the site relaunch, shar
 
 ## Refreshing Redis.io
 
-![](/images/blog/55a4e632fc2cb655a51cc820c6ec09caa570db8f-914x361.webp)
+![](/images/site-mirror/55a4e632fc2cb655a51cc820c6ec09caa570db8f-914x361.webp)
+
+*Screenshots of the new Redis.io documentation page, home page, and commands page*
 
 Redis has come a long way in the thirteen years since [its first commit](https://github.com/redis/redis/commit/ed9b544e10b84cd43348ddfab7068b610a5df1f7). Now established as a foundational database technology, deployed widely across data centers and clouds the world over, and reliably processing untold billions of requests every second, the Redis open source project continues to advance.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Esther Schindler · Published 30 January 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2e5f566d83e521ed70a5977e56b9607c4359321e-772x550.webp)
+![Blog tile image](/images/site-mirror/2e5f566d83e521ed70a5977e56b9607c4359321e-772x550.webp)
 
 **Nobody is motivated to buy a development tool when the marketing pitch is “leverage synergy.”**
 

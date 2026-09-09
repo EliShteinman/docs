@@ -14,9 +14,9 @@ hidden: true
 
 *By Matan Kehat · Published 23 July 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/b42bfda714ca695bb984febb91367a00bc3be0fc-635x200.webp)
+![](/images/site-mirror/b42bfda714ca695bb984febb91367a00bc3be0fc-635x200.webp)
 
 Recently we released the [Memcached Cloud Plugin for WordPress](https://wordpress.org/plugins/memcached-cloud/), implementing the WordPress Object Cache. The plugin is based on the [PECL Memcached extension](https://pecl.php.net/package/memcached) (note the ending ‘d’), working against the [libmemcached](https://libmemcached.org/) library, ensuring a better and efficient performance as well as advanced features on top of the core memcached functions, such as multi set and get methods, ‘by key’ functions and many more- all are [documented on php.net](https://il1.php.net/memcached). We basically extended the [wordpress-memcached-backend](https://github.com/tollmanz/wordpress-memcached-backend), so credits and many thanks goes to [Zack Tollman](https://github.com/tollmanz).
 

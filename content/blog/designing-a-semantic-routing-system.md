@@ -14,7 +14,7 @@ hidden: true
 
 *By Tony Wu, Sr. Solution Architect · Published 8 April 2026*
 
-![Designing a semantic routing system: From static rules to dynamic intelligence with Redis and Java](/images/blog/5af107492cc62cc440f95b210bde904289dfdde6-1200x628.webp)
+![Designing a semantic routing system: From static rules to dynamic intelligence with Redis and Java](/images/site-mirror/5af107492cc62cc440f95b210bde904289dfdde6-1200x628.webp)
 
 A **semantic routing pattern** is a powerful technique used in intelligent systems to classify incoming requests based on their meaning and direct them to the most appropriate processing path. Unlike traditional rule-based approaches that rely on keywords or binary logic, semantic routing leverages embeddings and similarity matching to understand user intent. By comparing an input against predefined categories—such as FAQ, restricted topics, or complex queries—the system can efficiently determine how to handle each request. This enables use cases like routing simple questions to low-cost pipelines, blocking sensitive topics, or escalating complex queries to advanced models, all within milliseconds.
 
@@ -186,23 +186,23 @@ The frontend might appear as shown below.
 
  1. The Semantic routing configuration is visible to the user.
 
-![Semantic routing settings](/images/blog/67a0643b66010bb76a72b677c8178952563de7b1-1600x503.webp)
+![Semantic routing settings](/images/site-mirror/67a0643b66010bb76a72b677c8178952563de7b1-1600x503.webp)
 
  2. The user has the ability to submit queries for verification of the routing outcome.
 
-![Router for questions](/images/blog/d559d8c843878fd4fb30c848b5a5cacac11da389-545x182.webp)
+![Router for questions](/images/site-mirror/d559d8c843878fd4fb30c848b5a5cacac11da389-545x182.webp)
 
  3. User can submit new question list and assign a category like “health”
 
-![Submit question list](/images/blog/16941d85e0e4dc1c84f390a7c5a5e5b804c15579-688x356.webp)
+![Submit question list](/images/site-mirror/16941d85e0e4dc1c84f390a7c5a5e5b804c15579-688x356.webp)
 
  4. Load the router for questions can get the updated routing settings
 
-![Load the router for questions can get the updated routing settings](/images/blog/bc8f5a36be46d1c2750131b10bc2de76ace1c1de-721x289.webp)
+![Load the router for questions can get the updated routing settings](/images/site-mirror/bc8f5a36be46d1c2750131b10bc2de76ace1c1de-721x289.webp)
 
  5. The user can then inquire about "Health" to retrieve results for a new question category.
 
-![The user can then inquire about "Health" to retrieve results for a new question category.](/images/blog/d7906dd1bb40b615da53baa222bb302e7e633a68-411x176.webp)
+![The user can then inquire about "Health" to retrieve results for a new question category.](/images/site-mirror/d7906dd1bb40b615da53baa222bb302e7e633a68-411x176.webp)
 
 ## Flexible and scalable system architecture
 

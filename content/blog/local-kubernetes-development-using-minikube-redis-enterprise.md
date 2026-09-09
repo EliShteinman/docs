@@ -15,7 +15,7 @@ hidden: true
 
 *By Vick Kelkar, Principal Product Manager · Published 5 January 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Kubernetes is an open-source container orchestration system used to deploy, scale and manage containerized applications. Kubernetes is a project hosted by the Cloud Native Computing Foundation ([CNCF](https://www.cncf.io/)). At a very high level, it contains two types of resources: a master node (which is the cluster coordinator) and nodes, which are the workers that run containerized applications.
 
@@ -44,7 +44,9 @@ $ minikube start --memory 12288 --disk-size 30g --vm-driver vmwarefusion
 
 The output of the command should look like:
 
-![Minikube startup output](/images/blog/cfb11634b1155ac2fc63d164e9b618f061cdee97-600x209.webp)
+![Minikube startup output](/images/site-mirror/cfb11634b1155ac2fc63d164e9b618f061cdee97-600x209.webp)
+
+*Minikube startup output*
 
 ## Verify Minikube installation
 
@@ -82,7 +84,9 @@ We can verify that three pods were created by issuing the command
 Kubectl get pods -o wide
 ```
 
-![Output of kubectl get pods](/images/blog/5b6f68d8d73f255ee297fa7a9b8f14513568438e-717x95.webp)
+![Output of kubectl get pods](/images/site-mirror/5b6f68d8d73f255ee297fa7a9b8f14513568438e-717x95.webp)
+
+*Output: kubectl get pods -o wide*
 
 ### Prerequisite for Cluster Configuration
 
@@ -136,7 +140,9 @@ curl -k -u "vick@redis.com:<password>" --request POST --url "https://localhost:9
 
 We can look at the status of the cluster and database using the rladmin utility included in Redis Enterprise download:
 
-![rladmin cluster status](/images/blog/1d2749b5949ce2f465880dc07049489094613c13-1012x362.webp)
+![rladmin cluster status](/images/site-mirror/1d2749b5949ce2f465880dc07049489094613c13-1012x362.webp)
+
+*rladmin cluster status*
 
 - You can read more about Redis Enterprise’s shard placement policy and proxy policy on our [documentation page](https://docs.redis.com/latest/rs/administering/designing-production/networking/multiple-active-proxy/).
 - Redis Enterprise includes replication and persistence by default. You can read about persistence on our Redis Enterprise [database documentation page](https://docs.redis.com/latest/rs/concepts/data-access/persistence/).
@@ -149,9 +155,13 @@ kubectl port-forward <my-pod-name> <localport>:<pod-port>
 
 Example: kubectl port-forward redis5-58dc568c56-7qk22 8443:8443
 
-![Redis Enterprise Dashboard](/images/blog/e63ae1db04eac9e6ca61203f5c060ec18e19638a-1019x429.webp)
+![Redis Enterprise Dashboard](/images/site-mirror/e63ae1db04eac9e6ca61203f5c060ec18e19638a-1019x429.webp)
 
-![Redis Enterprise Dashboard - Database](/images/blog/70046263cbde70656c327117fda8c54dc0f9cb90-1006x498.webp)
+*Redis Enterprise Dashboard – Nodes*
+
+![Redis Enterprise Dashboard - Database](/images/site-mirror/70046263cbde70656c327117fda8c54dc0f9cb90-1006x498.webp)
+
+*Redis Enterprise Dashboard – Database*
 
 ### Local access to Redis Enterprise
 

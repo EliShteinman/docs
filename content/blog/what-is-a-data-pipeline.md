@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 30 March 2026 · updated 1 April 2026*
 
-![Blog tile image](/images/blog/619123ba351754f4bd133d3962cbb910ba3c4a40-1200x628.webp)
+![Blog tile image](/images/site-mirror/619123ba351754f4bd133d3962cbb910ba3c4a40-1200x628.webp)
 
 Your transactions live in one database, your clickstream events land in another, and your analytics team is waiting on a CSV someone forgot to export. Data pipelines exist to fix exactly this: they collect raw data from one or more sources, process or transform it, and deliver it to a destination (such as a data warehouse, data lake, or operational cache) for storage, analysis, or real-time use.
 
@@ -32,7 +32,7 @@ A data pipeline helps teams move data automatically so it arrives faster, with l
 
 These benefits compound as systems grow, but getting them right starts with understanding how pipelines actually work.
 
-![benefits of a data pipeline](/images/blog/a1e12faa3b24cfc21ddab64abdac906d722cbee5-1024x528.webp)
+![benefits of a data pipeline](/images/site-mirror/a1e12faa3b24cfc21ddab64abdac906d722cbee5-1024x528.webp)
 
 ## How a data pipeline works
 
@@ -68,7 +68,7 @@ Because batch jobs can put higher load on source systems, organizations often sc
 
 Batch pipelines are also simpler to build and operate than streaming alternatives, which makes them a practical starting point for straightforward data movement needs.
 
-![](/images/blog/bd358c5785cf736da0caa8d05efde7bd6882af18-1024x184.webp)
+![](/images/site-mirror/bd358c5785cf736da0caa8d05efde7bd6882af18-1024x184.webp)
 
 ### Streaming data pipelines
 

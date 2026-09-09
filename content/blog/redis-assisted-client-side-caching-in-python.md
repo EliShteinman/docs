@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 9 January 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/9edb1b030928cadef01f34e5876fc208ba004b07-720x508.webp)
+![Blog tile image](/images/site-mirror/9edb1b030928cadef01f34e5876fc208ba004b07-720x508.webp)
 
 Everybody knows that there are only two hard problems in computer science:[ cache invalidation](/glossary/cache-invalidation/) and naming things. This post, as you may have guessed from its name, is about dealing with the first one: cache invalidation problem. I wrote it because a new feature in Redis 6 makes it easier for clients to manage a local cache. This mini-project’s source files can be found in the [rsacsc-py](https://github.com/itamarhaber/rsacsc-py) repository.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Sheryl Sage, Director of Partner Marketing · Published 27 September 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/596e87c312695d3bec187f4e290b34bdeb567e36-389x387.webp)
+![Blog tile image](/images/site-mirror/596e87c312695d3bec187f4e290b34bdeb567e36-389x387.webp)
 
 As we head into Fall, I can’t think of a better place to start thinking about your new digital initiatives than at [SpringOne Platform 2019](https://springone.io/2019). The crowds converge in Austin, Texas, [the live music capital of the world](https://www.nme.com/blogs/nme-blogs/nme-guide-austin-texas-live-music-capital-world-1999291), from October 7 – 10, and it’s shaping up to be a can’t-miss event for all things cloud native, microservices, and Kubernetes.
 

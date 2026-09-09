@@ -16,7 +16,7 @@ hidden: true
 
 *By Rachel McCafferty · Published 16 October 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Digital transformation is now a strategic imperative for companies across all industries. As a result, organizations are modernizing their core infrastructures, exploiting cloud capabilities and adopting next-gen architectures to drive new ways of developing, delivering and integrating applications. In this era of transformation, applications have to be developed, tested and released more quickly and methodologies such as agile and DevOps break down the size of the code delivered into manageable chunks. Consequently, microservices designs, container technologies, and orchestration (i.e. Kubernetes) are leading the charge.
 
@@ -24,7 +24,7 @@ With that in mind, Redis and Red Hat announced a new partnership earlier this we
 
 The [Red Hat OpenShift Container Platform](https://www.openshift.com/products/container-platform/), built on Kubernetes and Red Hat Enterprise Linux, provides a powerful auto-scaling, multi and hybrid cloud application platform for organizations to rapidly develop and deploy modern cloud-native applications. Recently, Red Hat also unveiled the [Kubernetes Operator framework](https://www.redhat.com/en/blog/introducing-operator-framework-building-apps-kubernetes) to remove operational barriers in creating, configuring and managing stateful services (think databases).
 
-![Red hat enterprise service layer](/images/blog/d7d3eebc91ab49293e4b730d1ddd61f7859a48d2-1860x612.webp)
+![Red hat enterprise service layer](/images/site-mirror/d7d3eebc91ab49293e4b730d1ddd61f7859a48d2-1860x612.webp)
 
 Over the last few months, we’ve worked very closely with Red Hat to simplify and automate the creation and management of highly available Redis Enterprise on the OpenShift Container Platform with built-in support for [Redis Enterprise Operator for Kubernetes](/blog/redis-enterprise-operator-kubernetes/).
 

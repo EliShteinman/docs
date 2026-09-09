@@ -16,7 +16,7 @@ hidden: true
 
 *By Simba Khadder, Yusuf Bahadur, Philip Laussermair · Published 3 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/b6110cdc6f97c4b5bb6e719da3c14180466ad69e-772x552.webp)
+![Redis](/images/site-mirror/b6110cdc6f97c4b5bb6e719da3c14180466ad69e-772x552.webp)
 
 ```sql
 npx skills add redis/agent-skills

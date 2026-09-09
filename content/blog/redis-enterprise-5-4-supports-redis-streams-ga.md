@@ -16,7 +16,7 @@ hidden: true
 
 *By Paz Yanover, Principal Product Manager · Published 14 December 2018 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 # Redis Enterprise 5.4 supports Redis Streams GA!
 

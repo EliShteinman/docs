@@ -15,7 +15,7 @@ hidden: true
 
 *By Saman Moayeri · Published 26 April 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/a638111c7920ae29e416a9185c4f62e9bacbf04a-436x317.webp)
+![Blog tile image](/images/site-mirror/a638111c7920ae29e416a9185c4f62e9bacbf04a-436x317.webp)
 
 As one of the most-loved databases by developers, the list of popular applications that rely on Redis today is mind-boggling, and we always appreciate first-person perspectives from our customers who are on the front lines of implementing Redis in their application stack. So, we recently sat down with Ted Knudsen, CTO at [Smartwaiver](https://www.smartwaiver.com/) (and a long time fan of Redis databases). Smartwaiver is an online waiver solution that converts release-of-liability waivers into interactive, digital documents. Thousands of businesses rely on Smartwaiver to streamline their operations and make the waiver signing process secure, simple, fast and as painless as possible. Ted is a pragmatic technologist who’s savvy enough to use the best tools at his disposal and practical enough to pick the ones that make the most business sense. He is also happy to share his ideas on how to use Redis as a primary data store and as a system of engagement for his use case.
 
@@ -37,7 +37,7 @@ We run several internal dashboards out of our Redis database. These use Redis Li
 
 Yes, we also use Redis Enterprise to cache information about Smartwaiver kiosks and implement webhooks to integrate it with other services.
 
-![](/images/blog/a638111c7920ae29e416a9185c4f62e9bacbf04a-436x317.webp)
+![](/images/site-mirror/a638111c7920ae29e416a9185c4f62e9bacbf04a-436x317.webp)
 
 In addition, our interactive reporting relies on the Redis cache for rapid load times. It would just be too slow to use data out of MySQL for our millions of waivers across thousands of customers.
 

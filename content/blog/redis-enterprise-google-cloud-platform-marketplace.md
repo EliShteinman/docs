@@ -14,13 +14,15 @@ hidden: true
 
 *By Hayley Johnson, Global Strategic Alliance Manager · Published 24 October 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/76d62bead0954c01c1053088a89e87726add512f-800x500.webp)
+![Blog tile image](/images/site-mirror/76d62bead0954c01c1053088a89e87726add512f-800x500.webp)
 
 Today, we’re excited to announce the next step in Redis’ partnership with Google Cloud: general availability of Redis Enterprise Cloud, the fully managed [Database-as-a-Service (DBaaS)](/blog/what-is-dbaas/) on Google Cloud, which was [announced](/press/redis-labs-google-cloud-expand-strategic-partnership/) earlier this year at [Google Cloud Next ‘19](https://cloud.withgoogle.com/next/sf/)
 
 At Google Cloud Next, Google Cloud CEO Thomas Kurian and Redis co-founder and CEO Ofer Bengal [stood together on stage to announce](https://www.youtube.com/watch?v=ciA5C6mfBuo) an expanded partnership with the goal of giving our joint customers a simplified and streamlined experience for building and running modern high-performance applications. With a commitment rooted in open source, they promised to offer Redis Enterprise as a tightly integrated service on Google Cloud, giving end users access to the unmatched speed and performance of Redis without the barriers associated with procurement and management.
 
-![google marketplace](/images/blog/b3a7db4e9025dbf5478842e2eca5c8d0864e2268-1832x1024.webp)
+![google marketplace](/images/site-mirror/b3a7db4e9025dbf5478842e2eca5c8d0864e2268-1832x1024.webp)
+
+*Redis co-founder and CEO Ofer Bengal and Google Cloud CEO Thomas Kurian discuss our partnership at Google Cloud Next ‘19.*
 
 ## Redis Enterprise on Google Cloud
 

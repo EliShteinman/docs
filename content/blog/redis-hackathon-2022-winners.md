@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 20 October 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/cc7dc16e7f2e22d539e6bbc59b4a1e437e8e7331-772x550.webp)
+![Blog tile image](/images/site-mirror/cc7dc16e7f2e22d539e6bbc59b4a1e437e8e7331-772x550.webp)
 
 **Three winners. Three unique applications – and plenty of innovation in real-time application performance.**
 
@@ -38,7 +38,9 @@ All of them achieved remarkable things, so we asked three of our grand prize win
 
 Hi, I’m Subham Sahu, an engineer who loves exploring and building things. I’m a recent undergrad from the Indian Institute of Technology Ropar.
 
-![OneSocial application architecture diagram](/images/blog/21b0f134e5fecb8a5f7ae1952c0d57474ecc9052-1024x887.webp)
+![OneSocial application architecture diagram](/images/site-mirror/21b0f134e5fecb8a5f7ae1952c0d57474ecc9052-1024x887.webp)
+
+*A look at Subham’s OneSocial architecture*
 
 **What does OneSocial do?**
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Noam Stern, Sr. Product Manager, Products · Published 16 May 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/676937211117dcd0a61f3c035cf1e36c88fdee73-772x552.webp)
+![Blog tile image](/images/site-mirror/676937211117dcd0a61f3c035cf1e36c88fdee73-772x552.webp)
 
 **Redis Cloud is now supported by Pulumi, an infrastructure as code (IaC) platform that allows developers to manage cloud resources using familiar programming languages. With Redis Cloud and Pulumi, you can automate the creation and configuration of Redis Cloud resources and ensure consistency across environments.**
 
@@ -125,7 +125,9 @@ $ pulumi up
 
 This creates the Redis Cloud resources and saves the private endpoint URL in a variable called endpoint so you can use it in your applications.
 
-![created resources with pulumi and redis.](/images/blog/987da05ab863fb33e77d2f7d56ce7367d3a281ef-1999x972.webp)
+![created resources with pulumi and redis.](/images/site-mirror/987da05ab863fb33e77d2f7d56ce7367d3a281ef-1999x972.webp)
+
+*The resources have been created successfully!*
 
 You can now manage your Redis cloud resources using Pulumi. That means you can add and remove Redis Cloud resources and update and delete the ones we just created.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Isaac Sacolick, Contributor · Published 15 March 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2a5174d3eacffadb14a9b7613a0246e313bc8078-772x550.webp)
+![Blog tile image](/images/site-mirror/2a5174d3eacffadb14a9b7613a0246e313bc8078-772x550.webp)
 
 ***The Data Economy**** is a video podcast series about leaders who use data to make positive impacts on their business, customers, and the world. To see all current episodes, explore the podcast episodes library below.*
 
@@ -59,7 +59,7 @@ That’s great advice for developers, data scientists, and engineers, who should
 
 ---
 
-![](/images/blog/4374b3b85c68b4e2c982d62f5e9f98360cfcacbd-200x200.webp)
+![](/images/site-mirror/4374b3b85c68b4e2c982d62f5e9f98360cfcacbd-200x200.webp)
 
 *Isaac Sacolick, President of *[*StarCIO*](http://www.starcio.com)*, is the author of *[*Driving Digital: The Leader’s Guide to Business Transformation through Technology*](http://driving-digital.com/purchase)* which covers many practices such as agile, DevOps, and data science that are critical to successful digital transformation programs. Sacolick is a recognized top social CIO, a long-time blogger at *[*Social, Agile, and Transformation*](http://blogs.starcio.com)*, and a contributor at *[*InfoWorld*](https://www.infoworld.com/author/Isaac-Sacolick/)*.*
 

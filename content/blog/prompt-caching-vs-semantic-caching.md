@@ -14,7 +14,7 @@ hidden: true
 
 *By Jen Agarwal, Senior Principal Product Manager · Published 9 December 2025 · updated 21 May 2026*
 
-![Prompt vs semantic caching: Complementary techniques for high-performance AI agents](/images/blog/1b9c12648464736ab5209dac9166fd85f9b1a3fc-1200x628.webp)
+![Prompt vs semantic caching: Complementary techniques for high-performance AI agents](/images/site-mirror/1b9c12648464736ab5209dac9166fd85f9b1a3fc-1200x628.webp)
 
 Large language models (LLMs) and AI agents are transforming how we interact with technology. But anyone who has built AI systems knows one hard truth: **these models can be slow and expensive if they repeatedly process the same data or answer similar queries.**
 

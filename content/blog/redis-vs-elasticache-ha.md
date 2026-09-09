@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 23 October 2025*
 
-![Redis vs ElastiCache: High availability comparison](/images/blog/5d27026ed031f06412f13bf3c6829086131d9122-1200x628.webp)
+![Redis vs ElastiCache: High availability comparison](/images/site-mirror/5d27026ed031f06412f13bf3c6829086131d9122-1200x628.webp)
 
 When [US-EAST-1 goes haywire](https://www.msn.com/en-us/news/technology/amazon-cloud-computing-outage-disrupts-snapchat-ring-and-many-other-online-services/ar-AA1OOJ6D), everyone feels it. Dashboards light up. Queues back up. Engineers open incident channels and brace for a long night.
 
@@ -69,7 +69,9 @@ Active-Active provides the highest level of HA Redis Cloud can offer, but it isn
 
 By contrast, [**ElastiCache Global Datastore**](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Redis-Global-Datastore.html) uses an **Active-Passive** approach: One writable primary and up to two read-only replicas. Failover requires [manually promoting a replica](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Redis-Global-Datastores-Console.html#Redis-Global-Datastores-Console-Promote-Secondary), reestablishing DNS routes, and manually repopulating and reattaching the region on recovery, each step adding delay and risk.
 
-![Redis](/images/blog/c976e531b1fa1b3c72ea06e7575df8f2eb983d54-719x237.webp)
+![Redis](/images/site-mirror/c976e531b1fa1b3c72ea06e7575df8f2eb983d54-719x237.webp)
+
+*Active-Active systems keep every region available, so operations continue without failover. Active-Passive systems depend on a single writable primary. When it fails, replicas must be promoted.*
 
 Side-by-side comparison of Redis Active-Active and ElastiCache global datastore:
 

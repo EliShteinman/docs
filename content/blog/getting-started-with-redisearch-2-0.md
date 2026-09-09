@@ -15,7 +15,7 @@ hidden: true
 
 *By Tugdual Grall, Technical Marketing Manager · Published 17 September 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/982857fb3b57db29fbfe252734054aa84a79eaef-386x260.webp)
+![Blog tile image](/images/site-mirror/982857fb3b57db29fbfe252734054aa84a79eaef-386x260.webp)
 
 RediSearch 2.0 is now out in public preview! Most of the features in this major new release have been driven by your feedback, with a focus on improving the developer experience and enhanced scalability. But this blog post concentrates on helping you get started using RediSearch 2.0’s new data indexing capabilities and better ways to create an index.
 

@@ -14,11 +14,13 @@ hidden: true
 
 *By Redis   · Published 14 November 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/435cc41a052bc81648702127046f8fb157918213-740x608.webp)
+![Blog tile image](/images/site-mirror/435cc41a052bc81648702127046f8fb157918213-740x608.webp)
 
 Early on Tuesday, November 12, the Redis DevOps team started to get bursts of alerts from our production clusters located in the Amazon Web Services eu-central region (Frankfurt, Germany). Upon further examination, they realized a significant outage was happening in AWS’ eu-central-1 data center, which was confirmed on the [AWS status page](https://status.aws.amazon.com/), and eventually [covered in the press](https://digistatement.com/aws-500-server-error-aws-not-working/):
 
-![](/images/blog/0cd5bc41f78f67f38c8aab6ebcd3f2aec6546015-793x783.webp)
+![](/images/site-mirror/0cd5bc41f78f67f38c8aab6ebcd3f2aec6546015-793x783.webp)
+
+*Screenshot of the AWS Status page on November 12, 2019.*
 
 Cloud outages are not new to us. We have been running production Redis clusters since early 2013 and during that time we’ve experienced more than 3,000 instances failures and over 100 complete data center outages. We deeply appreciate the hard work the cloud providers do to stabilize their infrastructure, but we also know that failures are inevitable. That’s why we invested extensive engineering resources over the years to make sure that our [Redis Enterprise Cloud service](/redis-enterprise-cloud/) is built to provide an industry-leading five-nines (99.999%) availability.
 
@@ -36,7 +38,7 @@ How is this possible? Here are the principles behind running Redis Enterprise in
 
 **1.** In-memory replication. All Redis Enterprise databases use pure in-memory replication (a feature we contributed back to the OSS project that will soon be a part of Redis 6.0). In-memory replication makes replication twice as fast, which minimizes the time Redis is exposed to double failure events.
 
-![](/images/blog/32d1d471fb8017bbb78d4a670c9529d5e2daebca-974x449.webp)
+![](/images/site-mirror/32d1d471fb8017bbb78d4a670c9529d5e2daebca-974x449.webp)
 
 **2.** Master and replica instances of the same dataset (hash-slots) are deployed on different nodes. In a multi-AZ deployment they are also deployed in a different availability zone.
 
@@ -50,13 +52,13 @@ How is this possible? Here are the principles behind running Redis Enterprise in
 
 A typical Redis Enterprise Cloud multi-AZ configuration might look like this:
 
-![](/images/blog/c74c73b9fb42dd90f238b2577d78666c7d2e56e8-974x529.webp)
+![](/images/site-mirror/c74c73b9fb42dd90f238b2577d78666c7d2e56e8-974x529.webp)
 
 ## Multi-AZ architecture is only the beginning
 
 Every modern database should provide multi-AZ capabilities, but that alone is not enough to guarantee 99.999% availability. Five-nines availability, or less than 26.3 seconds of downtime a month, cannot be achieved without a true Active-Active multi-region deployment that lets customers instantly recover from a complete region failure. The following figure summarizes the types of [SLA we provide with Redis Enterprise Cloud](/wp-content/uploads/2019/10/cloud-sla.pdf):
 
-![](/images/blog/8f33b1f11054a151f0b0e30fab69543abcedc207-974x531.webp)
+![](/images/site-mirror/8f33b1f11054a151f0b0e30fab69543abcedc207-974x531.webp)
 
 It’s always satisfying when a capability we worked so hard to build actually works as designed under extreme and unexpected production conditions. This event represents yet another example of how Redis Enterprise can be used as primary database for mission-critical use cases, especially for customers who require sub-millisecond latency at extremely high throughput.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Fionce Siow, Senior Product Marketing · Published 12 January 2026 · updated 15 April 2026*
 
-![Redis](/images/blog/546e9315e4fa3b53bbd1e10536651d98539a997d-1200x628.webp)
+![Redis](/images/site-mirror/546e9315e4fa3b53bbd1e10536651d98539a997d-1200x628.webp)
 
 Your app worked fine in staging. Then you hit production traffic, and everything slowed down.
 

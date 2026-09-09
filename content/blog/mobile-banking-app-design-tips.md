@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 8 May 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fca75f6a869d095639260b2a1820778f34a1915a-772x550.webp)
+![Blog tile image](/images/site-mirror/fca75f6a869d095639260b2a1820778f34a1915a-772x550.webp)
 
 **Mobile apps are super easy and convenient for banking customers to use. But to build and maintain them? Not so much. Here are a few tips to make a developer’s job easier.**
 

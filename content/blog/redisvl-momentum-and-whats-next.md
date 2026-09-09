@@ -16,7 +16,7 @@ hidden: true
 
 *By Tyler Hutcherson, Brian Sam-Bodden, Justin Cechmanek · Published 14 November 2025*
 
-![RedisVL momentum & what’s next](/images/blog/208db42c6122dd15c4a08f01413bca5d765fa5f5-1200x628.webp)
+![RedisVL momentum & what’s next](/images/site-mirror/208db42c6122dd15c4a08f01413bca5d765fa5f5-1200x628.webp)
 
 Redis, a longtime favorite of developers, is seeing unprecedented velocity around AI use cases. RedisVL, initially a simple convenience layer for vector search, has quickly evolved into the AI-native developer interface for using Redis as a real-time context engine for LLM applications, including agents.
 
@@ -24,11 +24,15 @@ Redis, a longtime favorite of developers, is seeing unprecedented velocity aroun
 
 We’ve seen steady package downloads growth over the course of the calendar year with a surge to ~500k downloads in October alone. In Q3 of this year we saw a ~67% increase in cumulative downloads compared to Q2.
 
-![Fig 1. RedisVL downloads by day, month, and quarter during 2025.](/images/blog/67cee742a308190ce478aab72d6ccbfd15720fa1-1600x946.webp)
+![Fig 1. RedisVL downloads by day, month, and quarter during 2025.](/images/site-mirror/67cee742a308190ce478aab72d6ccbfd15720fa1-1600x946.webp)
+
+*Fig 1. RedisVL downloads by day, month, and quarter during 2025.*
 
 The RedisVL growth is being heavily driven by the adoption of our [LangGraph Checkpointer ](https://github.com/redis-developer/langgraph-redis)integration that helps developers scale and manage agent state.
 
-![Fig 2. LangChain and LangGraph partner package contributions to overall RedisVL downloads.](/images/blog/e6a37f5626fcda54ffef9f152510bf09a6d0d66f-1600x496.webp)
+![Fig 2. LangChain and LangGraph partner package contributions to overall RedisVL downloads.](/images/site-mirror/e6a37f5626fcda54ffef9f152510bf09a6d0d66f-1600x496.webp)
+
+*Fig 2. LangChain and LangGraph partner package contributions to overall RedisVL downloads.*
 
 Redis is also showing up in more customer POCs, production deployments, and open source projects as the go-to agent storage layer because it can satisfy both the speed and flexibility requirements.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 18 May 2026 · updated 21 May 2026*
 
-![Context retrieval for agents: what it is & why it matters](/images/blog/10b7dfd27faea329dbb51380a4a0c96b6e29420a-2400x1256.webp)
+![Context retrieval for agents: what it is & why it matters](/images/site-mirror/10b7dfd27faea329dbb51380a4a0c96b6e29420a-2400x1256.webp)
 
 Your AI agent can reason, plan, and call tools, so why does it keep giving wrong answers? Most of the time, the problem isn't the model itself, but what the model is working with. [Retrieval bottlenecks](https://arxiv.org/html/2501.09136v4) are the real culprit: when an agent pulls the wrong document, misses a critical fact, or drowns in irrelevant context, every subsequent step inherits that mistake.
 

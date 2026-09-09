@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 18 December 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c2f238b00e7a4cc7b0cc257cddb4b21ad302d21e-772x552.webp)
+![Blog tile image](/images/site-mirror/c2f238b00e7a4cc7b0cc257cddb4b21ad302d21e-772x552.webp)
 
 **The recent launch of **[**LangChain Templates**](https://blog.langchain.dev/langchain-templates/)** introduces a transformative approach for developers to create and deploy generative AI APIs. LangChain Templates, including the new Redis Retrieval Augmented Generation (RAG) template, provide deployable reference architectures that blend efficiency with adaptability.**
 
@@ -35,7 +35,7 @@ The Redis RAG template serves a REST API for developers to chat with public fina
 - [Redis](/solutions/vector-database) as the vector database for realtime context retrieval
 - [OpenAI](https://platform.openai.com) ‘gpt-3.5-turbo-16k’ LLM to generate answers to user queries
 
-![LangChain_RAG_Redis.drawio](/images/blog/fdbd29997e875472c14bf2fa1f3af41b081ace7f-934x491.webp)
+![LangChain_RAG_Redis.drawio](/images/site-mirror/fdbd29997e875472c14bf2fa1f3af41b081ace7f-934x491.webp)
 
 To run the RAG application with the template, you will need two things:
 
@@ -85,7 +85,7 @@ cd test-rag
 
 Looking at the directory tree, we should see the following structure:
 
-![directory tree](/images/blog/46d89eea40328c17dfdacdbc878cf38db68dd4db-237x423.webp)
+![directory tree](/images/site-mirror/46d89eea40328c17dfdacdbc878cf38db68dd4db-237x423.webp)
 
 5. To use the rag-redis package, **add the following snippet** to your app/server.py file:
 
@@ -103,7 +103,7 @@ python ingest.py
 
 This may take a few minutes. The ingest.py script executes a pipeline, as visualized below, that loads the source PDF docs, converts text into smaller chunks, creates text embeddings using a [HuggingFace](https://huggingface.co/) sentence transformer model, and loads data into Redis.
 
-![ ingest.py script executes a pipeline](/images/blog/c07ea38c9cdd188f2ff7d03ad4f834f5b6cd9588-715x170.webp)
+![ ingest.py script executes a pipeline](/images/site-mirror/c07ea38c9cdd188f2ff7d03ad4f834f5b6cd9588-715x170.webp)
 
 7. **Serve the FastAPI** app with LangServe:
 
@@ -114,13 +114,13 @@ langchain serve
 
 8. **Access the API **on port 8000. After spinning up, you should see the following output:
 
-![Langserve](/images/blog/5a1af31646367f2f4507247967e3bfd579fee2af-690x355.webp)
+![Langserve](/images/site-mirror/5a1af31646367f2f4507247967e3bfd579fee2af-690x355.webp)
 
 Navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to see documentation.
 
 Visit [http://127.0.0.1:8000/rag-redis/playground](http://127.0.0.1:8000/rag-redis/playground) to use the testing playground, seen below:
 
-![LangServ Playground](/images/blog/318de9c226f7912baef975e1bd259e373ce88561-644x439.webp)
+![LangServ Playground](/images/site-mirror/318de9c226f7912baef975e1bd259e373ce88561-644x439.webp)
 
 Use the playground to test your API by asking a question. The LangChain application responds with an answer that combines rich context from the Nike company PDF, retrieved from Redis, with the generative abilities of the OpenAI LLM.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 1 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ed76c13eff5863c77ee648a9a09c49f508748b64-635x628.webp)
+![Blog tile image](/images/site-mirror/ed76c13eff5863c77ee648a9a09c49f508748b64-635x628.webp)
 
 First, let me warn you that I am not a game developer. So this post, which has been rattling around in my head for a number of years now, is partly a look at how a theoretical game would work with Redis but also a metaphor to help readers understand how Redis works.
 
@@ -38,13 +38,13 @@ Modeling the game mechanics of collecting coins, we’ll use a single key for al
 
 (**Note:** Obviously, I am not a game artist!)
 
-![](/images/blog/5b0d7e0c085a468368329a33769e2137e48cc7ca-1024x576.webp)
+![](/images/site-mirror/5b0d7e0c085a468368329a33769e2137e48cc7ca-1024x576.webp)
 
 So, as Redisman comes in contact with the 10 coin, we useZINRCBY to increase the score of the member by 10. The same thing happens when Redisman comes in contact with the 20 coin, except with the appropriate value.
 
 Also in the above graphic you can see the heads-up coin display. The initial value can be retrieved by using ZSCORE, which, when supplied with the key and member name will return the score. Upon collecting points, ZINCRBY will return the new score of the member, so the result can be used to update the coins heads-up display.
 
-![](/images/blog/2196531637506ab346dc2e0a2259e838a25af974-1024x576.webp)
+![](/images/site-mirror/2196531637506ab346dc2e0a2259e838a25af974-1024x576.webp)
 
 Let’s look at some more operations. Say we want to implement a power up that exchanges 10 coins for freezing enemies. This can be implemented by using the same ZINCRBY command, except with a negative increment argument. Another encounter might be something that reduces your coin count to zero (think Sonic the Hedgehog losing his rings). In this case we’d use ZADD with a score of 0. ZADD might seem counterintuitive in this situation, but think of ZADD as an upsert—this operation will update a score if the member already exists or add it with the new score when it doesn’t exist. Like ZINCRBY, ZADD will return the score, so we can also use this to update the heads up display.
 
@@ -80,7 +80,7 @@ Sorted Sets are a near-perfect data structure for leaderboards. In this example,
 
 This will show the top ten players with the highest scoring player first. It will keep track of ties as well, so it’s possible that the top ten will have 10 players all with the same score.
 
-![](/images/blog/8cd2d6eff4d19c2a1f8913b909ee8a27e1f3e5dc-220x300.webp)
+![](/images/site-mirror/8cd2d6eff4d19c2a1f8913b909ee8a27e1f3e5dc-220x300.webp)
 
 Showing the top ten might not be optimal in all situations, though, especially for new players with a low score. What a player probably wants to see is the people they are slightly better than and those who are slightly worse than them. To do this, first you want to get the rank of the player in question. You can use ZREVRANK, then feed the results into ZREVRANGE with the number of results you want above and below the player in question.
 

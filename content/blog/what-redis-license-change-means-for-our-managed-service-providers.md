@@ -14,7 +14,7 @@ hidden: true
 
 *By Ash Vijay, Contributor · Published 29 March 2024 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/a72d9eb984988837860d724e6428893a9ed22b3a-772x550.webp)
+![Blog tile image](/images/site-mirror/a72d9eb984988837860d724e6428893a9ed22b3a-772x550.webp)
 
 Since we announced last week that[ future versions of Redis](/blog/redis-adopts-dual-source-available-licensing/) will be released under dual source-available licenses, we decided to outline a few changes in how we will work with managed service providers going forward. Redis considers companies offering Redis OSS embedded in a solution or Redis-complementary services as managed service providers (“MSPs”).
 

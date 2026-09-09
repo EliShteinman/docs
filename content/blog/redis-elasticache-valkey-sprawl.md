@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 9 October 2025 · updated 1 June 2026*
 
-![Redis vs. Valkey ](/images/blog/005ca838808fcb1ca4858a21c1159e4b94afdcb3-772x552.webp)
+![Redis vs. Valkey ](/images/site-mirror/005ca838808fcb1ca4858a21c1159e4b94afdcb3-772x552.webp)
 
 ## The problem of ElastiCache & Valkey sprawl
 
@@ -43,7 +43,7 @@ Redis was designed to solve this problem. Instead of requiring one cluster per w
 - More efficient infrastructure usage
 - [Multi-tenancy](/blog/multi-tenancy-redis-enterprise/) with strong isolation at the database level
 
-![multi-tenancy](/images/blog/064affd381789e73bfb1a34bee35421953c5651b-2048x1265.webp)
+![multi-tenancy](/images/site-mirror/064affd381789e73bfb1a34bee35421953c5651b-2048x1265.webp)
 
 ## Risks of AWS’s Redis to Valkey shift
 

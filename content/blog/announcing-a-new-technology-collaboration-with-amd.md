@@ -15,7 +15,7 @@ hidden: true
 
 *By Filipe Oliveira, Yiftach Shoolman · Published 21 August 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/938429530ed9b5ea28b6290156e64af19a2e4ff9-1201x628.webp)
+![Blog tile image](/images/site-mirror/938429530ed9b5ea28b6290156e64af19a2e4ff9-1201x628.webp)
 
 We’re excited to announce a new technology collaboration with[ AMD](https://www.amd.com/en), which is using Redis Enterprise to benchmark Redis database on publicly launched and available AMD EPYCTM 7002 series processor powered systems, and instances in the cloud. The first series of cloud instances tested in this collaboration are[ the AWS EC2 C5a instances](https://aws.amazon.com/ec2/amd/), which are powered by 2nd generation AMD EPYCTM processors. The 2nd generation AMD EPYCTM processors used in the AWS C5a instances run at frequencies up to 3.3 GHz[i] and are available in eight virtualized sizes—ranging from 2 vCPUs to 96 vCPUs—and offer up to 192GB of memory. These C5a instances provide customers with options to optimize cost and performance for a variety of compute-intensive workloads and can be up to[ 10% less expensive than comparable instances](https://aws.amazon.com/ec2/amd/).
 
@@ -33,7 +33,7 @@ The goal of this benchmark was to see how many operations per second a single C5
 
 To validate this level of performance and scalability with the new C5a instance, AMD engineers set-up memtier_benchmark with five runs on each C5a instance under test, and the scores reflect the medians of all runs, as shown in the chart below:
 
-![Redis](/images/blog/fff8fcca391ec674e90c773e0a1736d0b64fb15c-998x660.webp)
+![Redis](/images/site-mirror/fff8fcca391ec674e90c773e0a1736d0b64fb15c-998x660.webp)
 
 These results demonstrate the exceptional throughput performance and linear scalability among the different instances, making it clear that Redis running on AWS C5a instances can help boost application performance and can easily scale with application growth.
 

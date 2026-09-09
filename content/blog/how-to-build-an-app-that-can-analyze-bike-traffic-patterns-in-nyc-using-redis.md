@@ -16,7 +16,7 @@ hidden: true
 
 *By Growth Team · Published 29 October 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d94bbe446173e5cd65337bd134d0e60d2b383326-772x520.webp)
+![Blog tile image](/images/site-mirror/d94bbe446173e5cd65337bd134d0e60d2b383326-772x520.webp)
 
 [Citi Bike](https://citibikenyc.com/homepage) remains the nation’s favorite bike share program. With over 20,000 bikes scattered across Manhattan, Brooklyn, Queens, and the Bronx, getting from A to B has never been easier. It’s cheap, it’s convenient and it’s green.
 
@@ -59,7 +59,7 @@ Using a ride code or a member’s key, you’ll be able to unlock a nearby bike 
 
 ## 3. Architecture
 
-![](/images/blog/72bf073dc348a2bd8e231ed78639f61dd37be06b-1600x564.webp)
+![](/images/site-mirror/72bf073dc348a2bd8e231ed78639f61dd37be06b-1600x564.webp)
 
 ### The architecture flow
 
@@ -92,11 +92,11 @@ https://github.com/redis-developer/nycbike
 
 Create a new account by clicking [https://www.mapbox.com/](https://www.mapbox.com/)
 
-![](/images/blog/512df75840a531ed61e629bd67c3e2a583189f15-1600x1093.webp)
+![](/images/site-mirror/512df75840a531ed61e629bd67c3e2a583189f15-1600x1093.webp)
 
 Access MapBox Access token by clicking [https://account.mapbox.com/access-tokens/](https://account.mapbox.com/access-tokens/)
 
-![](/images/blog/907bf80e1ffe0d7c72918030157a09bc6c7ade7d-1600x573.webp)
+![](/images/site-mirror/907bf80e1ffe0d7c72918030157a09bc6c7ade7d-1600x573.webp)
 
 #### Step 3. Copy the access token and add it to .env file
 
@@ -133,7 +133,7 @@ nginx_1     | 172.18.0.1 - - [13/May/2021:03:13:02 +0000] "GET /api/journey_quer
 
 The frontend should now be accessible at [http://localhost:80/](http://localhost/), but the map will be blank as Redis is empty.
 
-![](/images/blog/c0638e821eec0671f142082ec790a2299947e242-1600x940.webp)
+![](/images/site-mirror/c0638e821eec0671f142082ec790a2299947e242-1600x940.webp)
 
 #### Step 5. Running the containers:
 
@@ -158,13 +158,13 @@ nginx_1     | 172.18.0.1 - - [13/May/2021:03:13:02 +0000] "GET /api/journey_quer
 
 Each reload of the UI at http://localhost:80/ should show these trips accumulating. On the [live demo](https://nycbike.mitchsw.com/), there is a pre-built dump.rdb which is 674MB on disk.
 
-![](/images/blog/c805e3631f505ff75b9e649f0194c75ca5c23730-1600x881.webp)
+![](/images/site-mirror/c805e3631f505ff75b9e649f0194c75ca5c23730-1600x881.webp)
 
 Drag the orange circle to some other location and you might notice that RedisGraph displays trips inms.
 
-![](/images/blog/ef8fdf9277bf12287b14fa0d768227b3391221f6-1600x922.webp)
+![](/images/site-mirror/ef8fdf9277bf12287b14fa0d768227b3391221f6-1600x922.webp)
 
-![](/images/blog/b80db21225af224b9b5f84bb6801fb072dcaaefd-1600x227.webp)
+![](/images/site-mirror/b80db21225af224b9b5f84bb6801fb072dcaaefd-1600x227.webp)
 
 ## 5. How it works
 
@@ -178,7 +178,7 @@ Citi Bike publishes all of their trip data online, providing users with answers 
 
 The graph has a source and a destination for each trip. This is highlighted by the two circles on the map, with the blue circle representing the area from where bikes depart and the red circle representing where the journey ends. The flow of traffic within each circle is depicted in the graph below.
 
-![](/images/blog/ead049cbb572a66ac6c906b0f1962b8188a01e83-1600x777.webp)
+![](/images/site-mirror/ead049cbb572a66ac6c906b0f1962b8188a01e83-1600x777.webp)
 
 An amazing feature of this application is flexibility on the user interface. You can drag and drop both circles to any desired location on the map to discover that area’s flow of traffic. Equally, you can zoom in and out of each circle and decide on the size of its circumference based on your preference.
 
@@ -251,11 +251,11 @@ Redis’ ability to process queries at a phenomenal rate allowed the app to func
 
 You can discover more about the ins and outs of this innovative application by visiting the [Redis Launchpad](https://launchpad.redis.com/?id=project%3Athe-pattern). While you’re there, you might also want to browse around our [exciting range of applications](https://launchpad.redis.com/) that we have available.
 
-![](/images/blog/d8e86f579ce14f6d46b751208cbf8f1f96883039-1600x593.webp)
+![](/images/site-mirror/d8e86f579ce14f6d46b751208cbf8f1f96883039-1600x593.webp)
 
 ## Who created this application?
 
-![](/images/blog/68aa885757df450102eb8b807f6a1462fa0070dc-424x424.webp)
+![](/images/site-mirror/68aa885757df450102eb8b807f6a1462fa0070dc-424x424.webp)
 
 **Mitch Ward**
 

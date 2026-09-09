@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 3 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/fbbf4f74fd0366bade58f86adf93007566100990-1200x628.webp)
+![Redis](/images/site-mirror/fbbf4f74fd0366bade58f86adf93007566100990-1200x628.webp)
 
 Building production AI agents? You'll quickly discover that orchestrating multiple specialized agents requires infrastructure that traditional databases weren't designed for. Sub-millisecond state access, memory management, and real-time coordination often become requirements as systems scale. This guide compares leading orchestration platforms and explains how Redis fits into production agent infrastructure.
 

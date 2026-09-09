@@ -14,7 +14,7 @@ hidden: true
 
 *By Brandon Felker, Contributor · Published 19 May 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/75ed0055a3331176e223ebd163657c388c58573f-772x550.webp)
+![Blog tile image](/images/site-mirror/75ed0055a3331176e223ebd163657c388c58573f-772x550.webp)
 
 [Redis Enterprise 6.2.4](https://docs.redis.com/latest/rs/release-notes/rs-6-2-4-august-2021/) introduced internode encryption. The scope of internode encryption in Redis Enterprise is to achieve TLS encryption for all internal Redis cluster connections between nodes, including:
 
@@ -23,7 +23,7 @@ hidden: true
 1. Data plane connections to encrypt shard replication between nodes.
 1. All proxy to shard connections between nodes.
 
-![](/images/blog/bd573d2826a32720f525f433b6385ac90b40de25-1024x909.webp)
+![](/images/site-mirror/bd573d2826a32720f525f433b6385ac90b40de25-1024x909.webp)
 
 ## Redis Enterprise: Design Considerations
 

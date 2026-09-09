@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 30 January 2025 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/f8c009ed806692174cb957f8625f2a1571035244-772x552.webp)
+![Blog tile image](/images/site-mirror/f8c009ed806692174cb957f8625f2a1571035244-772x552.webp)
 
 Artificial intelligence is transforming the way organizations operate, innovate, and compete. But building an effective AI strategy requires more than just technology. It’s about leadership, a strong data-driven culture, and the right tools to reach success. As AI advances, developers and tech leaders need to assess their readiness to fully capitalize on its potential.
 

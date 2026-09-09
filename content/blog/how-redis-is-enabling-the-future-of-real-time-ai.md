@@ -16,7 +16,7 @@ hidden: true
 
 *By William King, CTO & Co-founder, Subspace · Published 2 October 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fd397c94203a7a285c1fd44cbd34f2d747bbf331-772x520.webp)
+![Blog tile image](/images/site-mirror/fd397c94203a7a285c1fd44cbd34f2d747bbf331-772x520.webp)
 
 *The wave of cloud-based, real-time analytics and AI-driven applications is gaining momentum across multiple industries. Organizations want to empower their businesses and teams with emerging technologies, and AI and ML initiatives are front and center for many. We’re in the golden age of AI and ML. It’s becoming a core part of businesses around the world, and its importance has been accelerated by the COVID-19 pandemic. This informative and comprehensive post by William King, CTO and Co-Founder of Subspace, is about the future of real-time AI—and how the Redis technology is a driving force behind it. Drawing from foundational examples such as ML feature stores to more vertically specific applications like NLP for scientific and medical research, there are many ways Redis is being used to bring real-time to AI/ML use cases. And this is just the beginning.*
 
@@ -41,13 +41,13 @@ In April 2021, the company [announced](/press/redis-labs-ushers-real-time-era-wi
 
 For people who don’t work on databases every day, it’s easy to miss the significance of Redis 7. However, these advances illustrate how the world is racing toward real-time applications and highlight the technical underpinnings that make those advances possible. A better understanding of Redis can shed valuable light on the broader trends shaping tomorrow’s application environments.
 
-![](/images/blog/5c0fc169b62b3e3b15e561aef174efa362b70e05-860x388.webp)
+![](/images/site-mirror/5c0fc169b62b3e3b15e561aef174efa362b70e05-860x388.webp)
 
 ## Local deployment speeds, global distribution
 
 As noted, in-memory architecture favors real-time application performance because it keeps data in RAM, closer to the CPU. The architecture minimizes data travel time. Similarly, Redis’ Active-Active Geo-Distributed topology spans a global database across multiple node clusters. The system achieves inter-node consistency through a mesh of concurrent updating and [data replication](/blog/what-is-data-replication/). Even if the majority of nodes in a database somehow fail, the remaining geo-replicated nodes will continue to provide uninterrupted service with full data integrity. This decentralized approach echoes the internet’s own architecture (designed for maximum network viability) while simultaneously allowing users to access data from the closest possible point and thus achieve near-local performance. Again, the idea is to minimize read/write data travel time without sacrificing consistency.
 
-![Diagram Active-Active CRDB Deployment](/images/blog/48d6ef33f0b9840db2c2fce8ed4115c4b9c8f02b-900x399.webp)
+![Diagram Active-Active CRDB Deployment](/images/site-mirror/48d6ef33f0b9840db2c2fce8ed4115c4b9c8f02b-900x399.webp)
 
 Redis has been talking up its [Active-Active Geo-Distributed](/active-active/) topology since at least 2018, but each year brings iterative improvement and expansion. For example, Redis 7.0 updated the platform’s implementation not only to accept the data interchange format JSON as a supported data type but also support JSON with Active-Active Geo-Distribution. With this addition, Redis goes beyond its usual asynchronous replication. Now, Redis facilitates local operational autonomy by enabling read/write execution without waiting for commits from any single centralized master. Not waiting for permission means faster operational performance.
 
@@ -61,7 +61,7 @@ As [Redis explains](/blog/dbless-architecture-and-why-its-the-future/), traditio
 
 The more Redis extends its database features and functionality, the more Redis will make its competition obsolete. Hence, Redis calls its approach “DBLess,” although the term is meant to go beyond databases in particular and instead convey the idea of a new, much more efficient technology than legacy approaches have produced.
 
-![Databaseless table for Redis Enterprise vs. Traditional Primary DBs](/images/blog/d33efbac7f5667901303a18c80e25d6d345fec6c-860x759.webp)
+![Databaseless table for Redis Enterprise vs. Traditional Primary DBs](/images/site-mirror/d33efbac7f5667901303a18c80e25d6d345fec6c-860x759.webp)
 
 Redis believes that its real-time DBLess architecture offers a significant enough leap in solution value to disrupt major incumbents and potentially change markets.
 
@@ -71,11 +71,11 @@ In parallel with this DBLess push, Redis has bolstered support for [feature stor
 
 Redis and AI also figured prominently in the company’s RedisConf [2021 Hackathon](/blog/build-on-redis-hackathon-winners/). Dr. Alexander Mikhalev was one of five Platinum Prize winners for his submission “[The Pattern: Machine Learning Natural Language Processing meets VR/AR](https://www.youtube.com/watch?v=c9BLQZ6pPFE).” *(Editor’s note: Check out *[*The Pattern*](https://launchpad.redis.com/?id=project%3Athe-pattern)* and other examples of what you can do with Redis on *[*Redis Launchpad*](https://launchpad.redis.com/)*.)* Mikhalev perceived a problem with the lack of proper review and vetting in modern medical sources, even referencing [one interesting paper](https://www.the-scientist.com/opinion-using-pokmon-to-detect-scientific-misinformation-68098) published in the American Journal of Biomedical Science & Research “claiming that eating a bat-like Pokémon sparked the spread of COVID-19.” (The purpose of the paper was to spotlight predatory scientific journals.) He used Redis AI and UX tools to turn documents into analyzed language that could then be searchable and visualized as three-dimensional graphs. The user then might explore those more intuitively in augmented or virtual realities.
 
-![](/images/blog/398bc8a362ee99aad96e4cea2d626dcb802e94f9-860x377.webp)
+![](/images/site-mirror/398bc8a362ee99aad96e4cea2d626dcb802e94f9-860x377.webp)
 
 Another Platinum Prize winner, Dustin Wilson, used multiple Redis tools to create a [live view of the Helsinki metro system](https://launchpad.redis.com/?id=project%3Aexpert-garbanzo). *(Editor’s note: Check out* *this app and other examples of what you can do with Redis on *[*Redis Launchpad*](https://launchpad.redis.com/)*.)* Users could click on any transport to trace its position and delay statuses for the prior two hours. The live view, which showed transports moving in real time (similar to Uber), was accurate to within five seconds. A different view allowed users to click on any neighborhood to see the current average speed and delay time of transports in that area.
 
-![](/images/blog/2c246fd2526ed8d2c9162e5cade7280e14c5e23e-860x423.webp)
+![](/images/site-mirror/2c246fd2526ed8d2c9162e5cade7280e14c5e23e-860x423.webp)
 
 The applicability of Redis to a dazzling spectrum of challenges was truly impressive. One Diamond Prize winner created an [e-learning platform](https://launchpad.redis.com/?id=project%3Ax-mentor) stocked with back-end metrics for educators. One Silver Prize winner created an [RSS reader application](https://launchpad.redis.com/?id=project%3Areread), and another created a [social network for movie buffs](https://launchpad.redis.com/?id=project%3Aletus).
 

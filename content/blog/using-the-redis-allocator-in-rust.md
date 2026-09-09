@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 November 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9edb1b030928cadef01f34e5876fc208ba004b07-720x508.webp)
+![Blog tile image](/images/site-mirror/9edb1b030928cadef01f34e5876fc208ba004b07-720x508.webp)
 
 ## Introduction
 

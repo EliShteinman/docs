@@ -15,13 +15,13 @@ hidden: true
 
 *By Redis   · Published 9 January 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 *This blog post was adapted from our new e-book, “Redis Microservices for Dummies” by Kyle Davis with Loris Cro. The excerpt was *[*originally published on The New Stack on December 20, 2019*](https://thenewstack.io/how-redis-fits-with-a-microservices-architecture/)*. *[*Download the complete e-book here.*](/docs/redis-microservices-for-dummies/)
 
 Many of today’s widely used database systems were developed in an era where a company adopted a single database across the entire enterprise. This single database system would store and run all the functions of the enterprise in one place. You can probably picture it: a room full of refrigerator-sized machines, many sporting oversize reel-to-reel tape drives.
 
-![](/images/blog/cd65d2a4a9c251417a73b540ac22800d8f8dbd16-300x184.webp)
+![](/images/site-mirror/cd65d2a4a9c251417a73b540ac22800d8f8dbd16-300x184.webp)
 
 But Redis evolved differently than many other popular database systems. Built in the NoSQL era, Redis is a flexible and versatile database specifically designed not to bother storing massive amounts of data that will be mostly idle. A microservices architecture has related goals: each service is designed to fit a particular use—not to run everything in the business.
 

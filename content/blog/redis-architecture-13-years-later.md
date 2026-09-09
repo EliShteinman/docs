@@ -16,7 +16,7 @@ hidden: true
 
 *By Yiftach Shoolman, Yossi Gottlieb, Filipe Oliveira · Published 28 June 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 Redis is a bedrock technology and, as such, we occasionally see people considering alternative architectures. A few years ago, this was brought up by [KeyDB](https://techcrunch.com/2022/05/12/snap-snaps-up-database-developer-keydb-to-make-its-infrastructure-more-snappy/?guccounter=1&guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&guce_referrer_sig=AQAAAERh5Uc3pzkcIu_nIASnKwS3RDxZDbvAlT2lgU37YD3WoEZIvdIyP8vew5QL9y_s-ruShiFHe3TjTHVJLU0jAzxApY5dmtct5nmFj4DLrdG8A8ArFef5N6MvwTlJ13WSoBCRBCVOmJUTmP9yAXyptXkGHwQJgoq7HVnWIQe4ruWA), and recently a new project, Dragonfly, claimed to be the fastest Redis-compatible in-memory datastore. We believe these projects bring many interesting technologies and ideas worth discussing and debating. Here at Redis, we like this kind of challenge, as it requires us to reaffirm the architectural principles that Redis was initially designed with (hat tip to Salvatore Sanfilippo aka [antirez](https://github.com/antirez)).
 
@@ -28,9 +28,9 @@ So in the next sections, we highlight our perspectives on speed and architectura
 
 [The Dragonfly benchmark](https://github.com/dragonflydb/dragonfly) compares a standalone single process Redis instance (that can only utilize a single core) with a multithreaded Dragonfly instance (that can utilize all available cores on a VM/server). Unfortunately, this comparison does not represent how Redis is run in the real world. As technology builders, we strive to understand exactly how our technologies compare to others, so we did what we believe is a fair comparison and compared a 40-shard [Redis 7.0](/blog/redis-7-generally-available/) Cluster (that can utilize most of the instance cores) with Dragonfly, using a set of performance tests on the largest instance type used by the Dragonfly team in their benchmarks, [AWS c6gn.16xlarge](https://aws.amazon.com/ec2/instance-types/c6g/). In our trials, we saw Redis achieve 18% – 40% greater throughput than Dragonfly, even when utilizing only 40 out of the 64 vCores.
 
-![](/images/blog/634dd2e1ada44a0b43f99e1899c53a9a310606ed-1024x617.webp)
+![](/images/site-mirror/634dd2e1ada44a0b43f99e1899c53a9a310606ed-1024x617.webp)
 
-![](/images/blog/f1cf7ae9ea160fb0a61bbfdd9fcc1092d95953b4-1024x221.webp)
+![](/images/site-mirror/f1cf7ae9ea160fb0a61bbfdd9fcc1092d95953b4-1024x221.webp)
 
 ## Architectural differences
 
@@ -113,9 +113,9 @@ Last, we also found that both Redis and Dragonfly were not limited by the networ
 
 ## Analyzing the results
 
-![](/images/blog/634dd2e1ada44a0b43f99e1899c53a9a310606ed-1024x617.webp)
+![](/images/site-mirror/634dd2e1ada44a0b43f99e1899c53a9a310606ed-1024x617.webp)
 
-![](/images/blog/f1cf7ae9ea160fb0a61bbfdd9fcc1092d95953b4-1024x221.webp)
+![](/images/site-mirror/f1cf7ae9ea160fb0a61bbfdd9fcc1092d95953b4-1024x221.webp)
 
 - **GET pipeline 1 sub-ms**:
   - OSS Redis: 4.43M ops/sec, where both avg and p50 achieved sub-millisecond latency. The average client latency was 0.383 ms

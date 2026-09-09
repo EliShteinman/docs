@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 30 March 2025 · updated 5 March 2026*
 
-![Redis](/images/blog/42e4af04ae77b370770e1402e0051cad125265d5-1200x628.webp)
+![Redis](/images/site-mirror/42e4af04ae77b370770e1402e0051cad125265d5-1200x628.webp)
 
 Pinecone may work well for pure vector search, but teams often want more than a standalone vector database. Running a separate database alongside your operational data means extra infrastructure, additional coordination when AI workloads need application context, and costs that compound as your dataset scales.
 

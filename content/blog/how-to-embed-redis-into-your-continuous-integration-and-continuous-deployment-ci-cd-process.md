@@ -14,7 +14,7 @@ hidden: true
 
 *By Shabih Syed, Shabih is a Sr. Director of Product Marketing at Redis Labs. He has 13+ years of experience with software development, product management and marketing of cloud-based data management & application integration platforms. Most recently he led product marketing at Liaison Technologies (now OpenText) and has worked for HP and IBM before that. Shabih is based out of NYC. · Published 26 April 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/67a983cf6c2345801a976ed72c2ff177da42df14-512x574.webp)
+![Blog tile image](/images/site-mirror/67a983cf6c2345801a976ed72c2ff177da42df14-512x574.webp)
 
 Earlier this week, I wrote about how Redis can benefit distributed development teams by helping them release new features safely and roll them back with minimal impact when required. Today, I’ll dive into specific details about how feature toggles, feature context and error logs can enhance your continuous integration and continuous deployment (CI/CD) process.
 
@@ -22,7 +22,9 @@ Earlier this week, I wrote about how Redis can benefit distributed development t
 
 “Feature toggling” is a set of patterns that help you deliver new functionality to application users rapidly but safely. Feature toggles are also referred to as feature flags, feature bits or feature flippers.
 
-![Redis - Figure 5: Feature toggles stored in redis_ent_1](/images/blog/27c2c020572c51bc1088ea7555801f5c8da53de8-300x239.webp)
+![Redis - Figure 5: Feature toggles stored in redis_ent_1](/images/site-mirror/27c2c020572c51bc1088ea7555801f5c8da53de8-300x239.webp)
+
+*Figure 5: Feature toggles stored in redis_ent_1*
 
 In Redis Enterprise, it’s very easy to structure a toggle strategy using the native [Redis HASH](/redis-best-practices/data-storage-patterns/object-hash-storage/) data structure.
 
@@ -63,7 +65,9 @@ Response:
 
 “Feature context” is a dynamic routing decision based on certain context, such as which user is making the request. It can be read directly from session management, which is a popular use case for Redis.
 
-![](/images/blog/9b4facb00c0980759106ed64e410332b324785f9-300x255.webp)
+![](/images/site-mirror/9b4facb00c0980759106ed64e410332b324785f9-300x255.webp)
+
+*Figure 6: Feature context (session stores) stored in redis_ent_1*
 
 Again, using the native [Redis HASH](/redis-best-practices/data-storage-patterns/object-hash-storage/) data structure and [Redis-cli](https://redis.io/download) (or any [Redis client](/resources/redis-clients/)), you can store session data in keys and look it up at runtime to read real-time values.
 
@@ -173,7 +177,9 @@ Response:
 
 A “logs database” is a centralized data store that tracks log messages. You can use Redis to store a recent list of log messages, which will give you a snapshot view of your logs at any time.
 
-![Figure 8: Logs stored in redis_ent_3](/images/blog/a15c28cd17a84c3ff063cfe76981f317dfcd088d-300x236.webp)
+![Figure 8: Logs stored in redis_ent_3](/images/site-mirror/a15c28cd17a84c3ff063cfe76981f317dfcd088d-300x236.webp)
+
+*Figure 8: Logs stored in redis_ent_3*
 
 To keep a recent list of logs, you can [LPUSH](https://redis.io/commands/lpush) log messages to a LIST and then trim that LIST to a fixed size.
 

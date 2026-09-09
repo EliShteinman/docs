@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 2 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Earlier today, security firm TrendMicro published a [blog post](https://blog.trendmicro.com/trendlabs-security-intelligence/more-than-8000-unsecured-redis-instances-found-in-the-cloud/) with findings from the company’s security researchers. The team had used [Shodan](https://shodan.io/), the popular search engine for internet-connected or Internet of Things (IoT) devices, to identify more than 8,000 unsecure Redis servers across various clouds. When left unsecured, such servers could be used by cybercriminals for nefarious purposes.
 

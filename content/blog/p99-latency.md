@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 April 2026 · updated 8 April 2026*
 
-![P99 latency: What it means, why it matters & how to fix it in LLM apps](/images/blog/d0ddf8de280e59d6b18e2185f5e0a8474f12a41a-2400x1256.webp)
+![P99 latency: What it means, why it matters & how to fix it in LLM apps](/images/site-mirror/d0ddf8de280e59d6b18e2185f5e0a8474f12a41a-2400x1256.webp)
 
 Your LLM app's average response time looks great, but users are still complaining. That disconnect comes down to math. Average latency can mask how bad the slowest requests are, while p99 latency shows you what the worst 1% of requests look like. When your P50 says 200ms but your p99 says 3 seconds, the average won't tell you that story.
 

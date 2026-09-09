@@ -15,9 +15,9 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 1 March 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/e6f4cc372303d615943d2326f8fca8178a887015-2400x1260.webp)
+![](/images/site-mirror/e6f4cc372303d615943d2326f8fca8178a887015-2400x1260.webp)
 
 This year’s [RedisConf](http://www.redisconf.com/) is just a couple of months away—April 24th through the 26th in San Francisco. We’re working on putting together a fantastic program of community speakers, industry leaders, hands-on Redis training and a few fun surprises. If you haven’t registered for the conference already, stop and sign up before moving on to the next paragraph.
 

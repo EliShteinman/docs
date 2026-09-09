@@ -14,7 +14,7 @@ hidden: true
 
 *By Rini Vasan, AI Product Marketing Manager · Published 31 October 2025 · updated 4 November 2025*
 
-![Introducing Haink: Redis’ applied AI agent](/images/blog/59243b92f9b4153365024ac3806213d82a561165-1200x628.webp)
+![Introducing Haink: Redis’ applied AI agent](/images/site-mirror/59243b92f9b4153365024ac3806213d82a561165-1200x628.webp)
 
 ## Meet Haink, Redis’ always-on AI teammate
 
@@ -56,7 +56,9 @@ The flow is asynchronous and optimized for performance:
 1. Bedrock returns the LLM output, which the worker writes back to Redis to update the conversation state.
 1. Finally, the worker posts the response to Slack, often including references and source links.
 
-![Haink AI Blog](/images/blog/75e952bca0485044d9e69cd3c7037f3cc90a65c8-842x1034.webp)
+![Haink AI Blog](/images/site-mirror/75e952bca0485044d9e69cd3c7037f3cc90a65c8-842x1034.webp)
+
+*Figure 1: Haink system architecture combining Redis for real-time data and AWS Bedrock for managed LLM inference.*
 
 Each component plays a distinct role:
 
@@ -65,11 +67,15 @@ Each component plays a distinct role:
 - AWS Bedrock (Claude) provides scalable, managed access to foundation models for reasoning and text generation.
 - Redis Cloud, deployed in AWS, stores memory, manages event queues, and powers vector search for retrieval-augmented generation (RAG).
 
-![Stage Applied AI Agent Cluster](/images/blog/1680054be7d938ba84bd76128642a677b799fb4c-1600x689.webp)
+![Stage Applied AI Agent Cluster](/images/site-mirror/1680054be7d938ba84bd76128642a677b799fb4c-1600x689.webp)
+
+*Figure 2: Haink deployment on AWS ECS cluster integrating API, worker, and memory services.*
 
 In addition to its runtime environment, Haink includes an internal content management panel that powers its knowledge ingestion pipeline. This interface tracks each piece of content as it moves through stages such as ingestion, vectorization, and completion, ensuring Redis knowledge sources remain current and ready for retrieval.
 
-![Content Management](/images/blog/f2ebe64c9b01ad500e1589c0d001be32b9efc233-1600x625.webp)
+![Content Management](/images/site-mirror/f2ebe64c9b01ad500e1589c0d001be32b9efc233-1600x625.webp)
+
+*Figure 3: Haink content management admin panel showing ingestion and vectorization pipelines for Redis knowledge sources.*
 
 This architecture makes Haink modular, scalable, and production-ready. Redis enables sub-millisecond access to memory and vector data, while Bedrock delivers managed and compliant large language model inference. Together, they form a real-time, intelligent agent system that is deployable at scale.
 

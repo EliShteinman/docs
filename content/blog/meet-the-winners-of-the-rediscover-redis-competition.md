@@ -14,7 +14,7 @@ hidden: true
 
 *By Britiana Andrade, Marketing Manager · Published 20 May 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d04b18f4b6634720923410ce62979a47d0a7416d-1200x628.webp)
+![Blog tile image](/images/site-mirror/d04b18f4b6634720923410ce62979a47d0a7416d-1200x628.webp)
 
 In honor of the Rediscover theme of [RedisConf 2020 ](/blog/the-experience-you-missed-at-redisconf-2020-takeaway/)[*Takeaway*](/blog/the-experience-you-missed-at-redisconf-2020-takeaway/), the Rediscover Redis Competition [collected stories](/blog/enter-the-rediscover-redis-competition/) from the Redis community to highlight examples of Redis’ versatility and demonstrate how Redis powers some of the world’s most innovative applications. For every valid entry received, we donated $100 to the [COVID-19 Solidarity Response Fund](https://covid19responsefund.org/), which supports the World Health Organization’s work to ensure patients get proper care, frontline workers get essential supplies, and development of a vaccine and treatments can be accelerated.
 
@@ -30,7 +30,7 @@ While MDmetrix uses Redis exclusively for all data storage, RedisGraph is partic
 
 ## Randall Shane, Referred.ai
 
-![](/images/blog/db0579a51c607f6f34f3e2463ac26e301983c2da-150x150.webp)
+![](/images/site-mirror/db0579a51c607f6f34f3e2463ac26e301983c2da-150x150.webp)
 
 [Randall Shane](https://strategysourcellc.com/about-the-team/consulting/randall-shane/) is an adjunct professor and machine learning and AI developer at Boise State University. He built a platform designed to help patients find trusted doctors that match their preferences by using a natural language processing candidate referral digestion and interpretation system.
 
@@ -38,7 +38,7 @@ Referred.ai uses Redis for the entire application, including data storage as wel
 
 ## Luiz Santos, ProvTransaction
 
-![](/images/blog/74f3bde7d3177819cc9e3d01269a01cac08538a1-108x150.webp)
+![](/images/site-mirror/74f3bde7d3177819cc9e3d01269a01cac08538a1-108x150.webp)
 
 Luiz is a senior electrical engineer and software developer working in information security. His project, ProvTransaction, is an approval platform for online banking systems, which allows free generation and safe storage of password token seeds—saving banks millions of dollars a year.
 

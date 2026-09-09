@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 February 2026 · updated 3 February 2026*
 
-![Redis](/images/blog/426c29058320d0751664a60631b3e88b487a9bc7-1200x628.webp)
+![Redis](/images/site-mirror/426c29058320d0751664a60631b3e88b487a9bc7-1200x628.webp)
 
 If you're building AI systems that can actually *do* things (not just answer questions) you're working with agentic AI. These systems observe what's happening, figure out what to do, execute on it, and get better over time.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Ariel Shtul · Published 2 July 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7d68123acde860f40ab8690e8cc5f1ea5ab76267-691x500.webp)
+![Blog tile image](/images/site-mirror/7d68123acde860f40ab8690e8cc5f1ea5ab76267-691x500.webp)
 
 ## Background
 
@@ -43,7 +43,7 @@ Redis’ Sorted Set data structure provides an easy and popular way to maintain 
 
 [In this benchmark](https://github.com/RedisBloom/RedisBloom/tree/master/tests/benchmark.py), we extracted a list of the most common words in the book [War and Peace](https://en.wikipedia.org/wiki/War_and_Peace), which contains over 500,000 words. To accomplish this task, Redis Sorted Set took just under 6 seconds and required almost 4MB of RAM with guaranteed 100% accuracy. By comparison, Top-K took, on average, a quarter of that time and a fraction of the memory, especially for lower K values. Its accuracy was 100% in most cases, except for very high Ks where it ‘only’ achieved 99.9% accuracy3.
 
-![](/images/blog/2ca9d42f22b0d653946d485d4504f6c2e21d3d12-1456x2289.webp)
+![](/images/site-mirror/2ca9d42f22b0d653946d485d4504f6c2e21d3d12-1456x2289.webp)
 
 Some interesting takeaways from the results above include:
 

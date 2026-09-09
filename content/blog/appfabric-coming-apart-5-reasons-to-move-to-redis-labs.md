@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 17 June 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![AppFabric Coming Apart? 5 Reasons to Move to Redis](/images/blog/4aa9f2b59b35a67d81cc68ccdb36f18cc52e7d2b-635x200.webp)
+![AppFabric Coming Apart? 5 Reasons to Move to Redis](/images/site-mirror/4aa9f2b59b35a67d81cc68ccdb36f18cc52e7d2b-635x200.webp)
 
 Microsoft recently announced that Microsoft AppFabric 1.1 for Windows Server will be at the end of support on April 2, 2016. Less than a year away! Don’t panic yet, there is another, better solution.
 

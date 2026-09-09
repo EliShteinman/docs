@@ -16,7 +16,7 @@ hidden: true
 
 *By Filipe Oliveira, Performance Engineer · Published 21 February 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/506c3acf7600ef6af7ee21c54908511b708bf001-772x550.webp)
+![Blog tile image](/images/site-mirror/506c3acf7600ef6af7ee21c54908511b708bf001-772x550.webp)
 
 **Intel and Redis have made significant performance enhancements! Here we share the optimization techniques we used to evaluate and maximize Redis GEO command performance, such as reducing wasteful computation and simplifying algorithms.**
 

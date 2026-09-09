@@ -14,7 +14,7 @@ hidden: true
 
 *By Tyler Hutcherson, Manager, Applied AI Engineering · Published 27 February 2024 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/a794680f4b66e07ff222a595491e646485f38b7d-772x552.webp)
+![Blog tile image](/images/site-mirror/a794680f4b66e07ff222a595491e646485f38b7d-772x552.webp)
 
 [**Redis Vector Library**](https://github.com/redis/redis-vl-python)** simplifies the developer experience by providing a streamlined client that enhances Generative AI (GenAI) application development. Redis Enterprise serves as a real-time vector database for vector search, LLM caching, and chat history.**
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Pieter Cailliau, Alex Milowski · Published 7 April 2020 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/e16c4f6d29d0d217f605d83d1f54b42984a860c3-368x260.webp)
+![Blog tile image](/images/site-mirror/e16c4f6d29d0d217f605d83d1f54b42984a860c3-368x260.webp)
 
 Redis is a noSQL database that enables users to store a variety of data in a variety of data structures. We saw a need for our customers to create highly connected data and derive insight by using graph technology. Originally released in 2018, [RedisGraph](/blog/new-redisgraph-1-0-achieves-600x-faster-performance-graph-databases/) is the result of that effort.
 
@@ -48,7 +48,7 @@ What follows the CALL expression can be a variety of Cypher expressions. The nod
 
 An example of graph-aided search is finding someone who is connected to an individual by a certain number of degrees of separation. A common example of this is the search functionality in LinkedIn, where people who are more closely connected to you are listed towards the top of the search matches.
 
-![](/images/blog/10c86129c7cdbdb8c03712d62ba49ce1c54b04a7-495x235.webp)
+![](/images/site-mirror/10c86129c7cdbdb8c03712d62ba49ce1c54b04a7-495x235.webp)
 
 The following query demonstrates how this could be implemented:
 
@@ -70,7 +70,7 @@ WHERE me.name='Pieter'
 
 RETURN friend.name, fof.name
 
-![Redis](/images/blog/22588800fe207c10f5e7c72bef08767c96dc1788-1024x404.webp)
+![Redis](/images/site-mirror/22588800fe207c10f5e7c72bef08767c96dc1788-1024x404.webp)
 
 With a [full-graph response](https://redis.io/docs/stack/graph/design/result_structure/), you can return nodes and relations directly. For example, the previous query can return the friend, the friend of the friend, and the relationship between them:
 
@@ -80,7 +80,7 @@ WHERE me.name='Pieter'
 
 RETURN friend, f, fof
 
-![Redis](/images/blog/939556ee0135a768b1b8699080f40fdd68e4f3e7-1024x487.webp)
+![Redis](/images/site-mirror/939556ee0135a768b1b8699080f40fdd68e4f3e7-1024x487.webp)
 
 This new feature enables such uses like Object Graph Mapping (OGM), querying subgraphs, and visualizations where the receiving application needs all the nodes and their relationships.
 
@@ -90,7 +90,7 @@ To demonstrate the power of this full-graph response, we want to showcase some t
 
 One such application is [RedisInsight](/insight/), where a user can now enter a query and receive a visualization (as shown above). The full-graph response allows RedisInsight to present a visualization and allows the inspection of all the properties of the nodes and edges returned by the query without having to know these properties in advance.
 
-![](/images/blog/ff260eb890f83d62f4946446bc9a732ccdd1f736-1361x619.gif)
+![](/images/site-mirror/ff260eb890f83d62f4946446bc9a732ccdd1f736-1361x619.gif)
 
 [RedisInsight 1.2](https://docs.redis.com/latest/ri/installing/) provides direct support for exploring and querying the graphs stored in Redis. The new support for full-graph response allows RedisInsight to present the query subgraph as a visualization directly to the user. Subsequently, a user can click on nodes and edges in the graph to inspect property values or expand the graph further.
 
@@ -100,13 +100,13 @@ Redis has partnered with the French software developer [Linkurious](https://link
 
 In addition, the full-graph response now available in RedisGraph 2.0 allows integration with Linkurious’ graph visualization and analysis platform. We expect even deeper integration in the future.
 
-![](/images/blog/4501f39e8d32f3d50533c684fe639b107972ebba-1024x578.webp)
+![](/images/site-mirror/4501f39e8d32f3d50533c684fe639b107972ebba-1024x578.webp)
 
 **In addition, the full-graph response now available in RedisGraph 2.0 allows integration with Linkurious’ graph visualization and analysis platform. We expect even deeper integration in the future.**
 
 **Graphileon**
 
-![](/images/blog/e83dfc4ef6b56e696c4aaf1e0afbfe0ffd8d23fb-1024x294.webp)
+![](/images/site-mirror/e83dfc4ef6b56e696c4aaf1e0afbfe0ffd8d23fb-1024x294.webp)
 
 On January 27th, 2020, Redis and Dutch software company [Graphileon](https://graphileon.com/) announced a partnership to let RedisGraph users manage their data and build applications in Graphileon’s advanced graphing tools. The combination of RedisGraph and Graphileon enables our customers to enjoy fast and easy data management and to query and analyze the data using the power of the Cypher query language all the while leveraging the specific strengths of RedisGraph.
 

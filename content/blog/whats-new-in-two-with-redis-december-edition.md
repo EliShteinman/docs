@@ -15,13 +15,15 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 11 January 2024 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 [Click To Play Video](https://www.youtube.com/embed/nOA9wtL_taY?si=udx_8ys0jC5K1YrU)
 
 Happy New Year! Are you a Redis enthusiast eager to stay ahead of the game with the latest releases? Welcome to my third episode of “What’s New in Two,” your go-to source for Redis updates. In this article, we’ll delve deeper into developments from December, expanding on what I covered in our latest video. I’ve included a video thumbnail above for those who prefer watching a quick recap of this month’s updates. Let’s dive in!
 
-![](/images/blog/05b5fffae29e359f2ce20199e05a845a75aee603-512x366.webp)
+![](/images/site-mirror/05b5fffae29e359f2ce20199e05a845a75aee603-512x366.webp)
+
+*AWS Transit Gateway*
 
 First, in response to user demand, we’re announcing private preview for AWS Transit Gateway for Redis Enterprise. It’s always been possible to connect Redis Enterprise with virtual private cloud (VPCs) in any cloud but this takes it a step further for those who use AWS Transit Gateway.
 
@@ -29,7 +31,7 @@ If you use AWS Transit Gateway and are using Redis Enterprise, reach out to us t
 
 ### New Low-Cost Fixed Plans for Redis Cloud
 
-![](/images/blog/b529c894d72f2d2e5587470e9a017a8a9cd05124-1920x1080.gif)
+![](/images/site-mirror/b529c894d72f2d2e5587470e9a017a8a9cd05124-1920x1080.gif)
 
 Next, some huge news! Our new low-cost Fixed Plans are now LIVE, making Redis Cloud the most affordable per gig compared with other providers. Redis in the cloud has never been this cost-effective, providing a low-end entry point for those looking to get started with Redis in a cloud environment. Not only did we reduce the price but we also increased the memory. It’s the best and only cloud-managed offering brought to you by the same developers who build and maintain Redis Open Source and Redis Enterprise. And it’s packed with functionality, such as JSON, Search, and even Vector database capabilities you won’t find anywhere else.
 

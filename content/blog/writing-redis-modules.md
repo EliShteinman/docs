@@ -14,9 +14,9 @@ hidden: true
 
 *By Dvir Dukhan · Published 2 August 2016 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![Redis Enterprise modules around a database](/images/blog/6a121721b932e0aff48482412da0ec13ddda1114-300x200.webp)
+![Redis Enterprise modules around a database](/images/site-mirror/6a121721b932e0aff48482412da0ec13ddda1114-300x200.webp)
 
 I’ve been using Redis for about six years now, and over the years I’ve exploited its few data types to do some pretty versatile things such as geographical queries, text search, machine learning and more.
 

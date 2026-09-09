@@ -15,7 +15,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 12 March 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 On March 7th 2018, only ten days after Redis’ ninth birthday and for the third year in a row, the Israeli Redis community got together to share use cases and learn about the newest developments. The fast-paced, 16-sessions-long whole-day event was attended by nearly 300 people packed into the urban circus, [Basucla](https://bascula.co.il/). The experience was positively overwhelming and we thank everybody who helped and attended.
 

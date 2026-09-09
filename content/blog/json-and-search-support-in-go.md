@@ -14,7 +14,7 @@ hidden: true
 
 *By Mirko Ortensi, Sr. Product Manager, Products · Published 12 November 2024 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/e305e79e49035a8237a6e0f7dc9735040feb5098-772x552.webp)
+![Blog tile image](/images/site-mirror/e305e79e49035a8237a6e0f7dc9735040feb5098-772x552.webp)
 
 You can now explore advanced data modeling, with support for secondary indexing, JSON documents, and the ability to search your data with the go-redis client library.
 

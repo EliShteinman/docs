@@ -14,7 +14,7 @@ hidden: true
 
 *By Yossi Gottlieb, Chief Architect at Redis Labs · Published 23 June 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/43c082ae3a08f3bc9087ca5c8b4b56a31dc51e47-368x260.webp)
+![Blog tile image](/images/site-mirror/43c082ae3a08f3bc9087ca5c8b4b56a31dc51e47-368x260.webp)
 
 [RedisRaft ](https://github.com/RedisLabs/redisraft)(under development) is a new module for open source Redis that makes it possible to operate a number of Redis servers as a single fault-tolerant, strongly consistent cluster. As its name suggests, it is based on the [Raft consensus algorithm](https://raft.github.io/) and an [open-source C library](https://github.com/willemt/raft) that implements it.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 August 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a7ac54457a87080a2ffb6abcbd641735c0177a1c-140x92.webp)
+![Blog tile image](/images/site-mirror/a7ac54457a87080a2ffb6abcbd641735c0177a1c-140x92.webp)
 
 [Watch the video](/blog/linuxcon-containerday-seattle-2015/blog-linuxcon)
 

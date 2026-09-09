@@ -15,11 +15,11 @@ hidden: true
 
 *By Baptiste Leterrier · Published 29 March 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 First a little bit about us: created in 2011, [Silkke](http://silkke.com/) strives to create animated 3D avatars of unsurpassed quality that are usable in various applications, virtual universes and compatible internet websites. Our mission is to create a human element in digital platforms, integrating with various brands to bring them closer to their customers by offering them a unique, personalized experience.
 
-![](/images/blog/67492acb72449a053a9be84da2fc16f2eaa7a5eb-87x43.webp)
+![](/images/site-mirror/67492acb72449a053a9be84da2fc16f2eaa7a5eb-87x43.webp)
 
 ## Managing our RabbitMQ queue content
 
@@ -33,13 +33,13 @@ This presents another challenge: how best to organize the content that’s in th
 
 As it fills up, we can’t know the order of a set of instructions in the queue. And what if we need to modify an instruction on the go—we can’t edit something without removing all the initial elements and then requeuing them, thus changing the global order and potentially risking a slow down of production.
 
-![](/images/blog/356df8a3a314038bae3336239b392ceb3bc354e0-560x335.webp)
+![](/images/site-mirror/356df8a3a314038bae3336239b392ceb3bc354e0-560x335.webp)
 
 First, we needed a system that could process a lot—and fast!— so we used RabbitMQ. But we also needed a simple system that supports designing and querying on the software side (query all then parse and show), as well as that ability to natively propose FIFO. Rather than develop a new queuing solution from scratch, one that can address all of our needs, why not take the practical approach and integrate an existing technology that works well with RabbitMQ? , That’s why we chose Redis!
 
 We introduced a new process that duplicated all instructions: one in RabbitMQ for processing and one in Redis for monitoring/editing:
 
-![](/images/blog/1299b791b6582ad6dcd068ceda6c208ef8aa9554-805x506.webp)
+![](/images/site-mirror/1299b791b6582ad6dcd068ceda6c208ef8aa9554-805x506.webp)
 
 As one message goes into RabbitMQ, the same is put in a Redis Set FIFO style. As the workers process the queue, they also remove/put the messages in Redis, keeping our Set in sync with the RabbitMQ.
 
@@ -55,7 +55,7 @@ The Answer: rooms.
 
 Like chat room for text, we needed a solution to register which avatar is currently present. As for the previous problem, we could have three avatars to several thousands at the same time, but only with random connection spikes.
 
-![](/images/blog/1caf58b323ed5ecc7a333824b62c29ebd25d1290-1202x969.webp)
+![](/images/site-mirror/1caf58b323ed5ecc7a333824b62c29ebd25d1290-1202x969.webp)
 
 Luckily Redis came to save the day again! We can create rooms where we store the ID of avatars for each person that connects to the app. The architecture is simple: a set for each person. But by benchmarking it, we thought of a new way to implement Redis. How about using it for the chat system, using the pub sub system and a socket system? Then things got pretty good. We could handle 5,000 people in one room. And rather than only using it for text messages, it doubles as a relay for commands.
 

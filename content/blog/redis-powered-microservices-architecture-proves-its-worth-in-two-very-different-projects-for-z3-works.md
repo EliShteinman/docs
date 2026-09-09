@@ -14,17 +14,17 @@ hidden: true
 
 *By Miguel Allende, Customer Advocacy Manager · Published 10 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 *(As organizations look to modernize their applications, many are turning to a microservices architecture to deconstruct their legacy apps into collections of loosely coupled services. This profound change inspired us to reach out to Redis users in various stages of this journey to microservices architectures. We are telling their microservices stories in a series of blog posts, which *[*began in late 2019*](/blog/how-mutualink-uses-redis-to-support-a-life-saving-microservices-architecture/)*.)*
 
-![](/images/blog/c015aa9e05a1de16c909d59b35f2fcc78c97e152-300x300.webp)
+![](/images/site-mirror/c015aa9e05a1de16c909d59b35f2fcc78c97e152-300x300.webp)
 
 If you thought microservices architectures could be used for only a limited set of projects, a quick chat with the folks at [Z3 Works](http://www.z3works.com/) might convince you of the approach’s versatility. At the Brazilian software agency, Co-Founder Marcelo Nozari’s 20-person team designs and builds software for projects across a variety of industries, then passes off the code to his clients to deploy.
 
 ## Monoliths to microservices
 
-![](/images/blog/602a935c4ef780b1fcc7abde8507b19d2f0ee0b1-290x300.webp)
+![](/images/site-mirror/602a935c4ef780b1fcc7abde8507b19d2f0ee0b1-290x300.webp)
 
 Marcelo’s team helps a home-security company collect data from its video cameras, doorbell activity, and more, for example, providing real-time notifications to its clients. And Z3 Works’ newest project is helping a retailer transition its monolithic applications to a microservices architecture. While each project is in a different stage of production, microservices play a critical role in ensuring that the applications run effectively and in real-time.
 
@@ -34,7 +34,7 @@ To show the value Z3 is getting from its microservices approach, let’s take a 
 
 ## Home security systems
 
-![](/images/blog/eb97875f328840a0f927b1f136526f67845a4d1f-1024x683.webp)
+![](/images/site-mirror/eb97875f328840a0f927b1f136526f67845a4d1f-1024x683.webp)
 
 If your family is on a month-long vacation, chances are you’ll want to check on your home every so often. That can create a challenge for home-security companies. With so many different pieces in a home security system—from doorbells to security cameras to motion detectors to alarms—these companies need to compile all interactions in a single, up-to-date application.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 25 May 2026 · updated 27 May 2026*
 
-![Context compaction: keeping AI agents on task as sessions grow](/images/blog/a4840624ce2d8c66371129bfe27792148aa87075-2400x1256.webp)
+![Context compaction: keeping AI agents on task as sessions grow](/images/site-mirror/a4840624ce2d8c66371129bfe27792148aa87075-2400x1256.webp)
 
 Your agent just spent 40 turns debugging a gnarly authentication issue. It found the root cause, mapped out a fix, and started implementing. Then, somewhere around turn 45, it forgot everything it learned and started investigating from scratch.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Redis   · Published 13 June 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Apple Vulnerability Research made us aware of a potentially exploitable bug in Redis during May 2018. We took this disclosure very seriously and devoted resources to properly fixing this issue. We are happy to tell you that Salvatore Sanfilippo (the creator and Lead Developer of open source Redis) made the patch for open source users and contacted all major Redis providers. We have pushed the fix to all our Redis Enterprise offerings: Cloud, VPC and Software.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 12 December 2025 · updated 16 January 2026*
 
-![Redis](/images/blog/802611669f8884160a7f55464b6c0150567d5786-1200x628.webp)
+![Redis](/images/site-mirror/802611669f8884160a7f55464b6c0150567d5786-1200x628.webp)
 
 Ever notice how Uber adjusts your fare in real time based on demand that's changing by the second? Or how your bank catches fraud and texts you an alert before a stolen transaction clears? That's stream processing analyzing data the moment it arrives.
 

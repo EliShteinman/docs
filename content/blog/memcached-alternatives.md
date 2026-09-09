@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 4 March 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/3d61ce15adb88401c5d186c0779eb769ad364f60-1200x628.webp)
+![Redis](/images/site-mirror/3d61ce15adb88401c5d186c0779eb769ad364f60-1200x628.webp)
 
 Memcached may work well for simple key-value caching, but teams often need more than basic cache functionality. Running separate systems for caching, session management, and data processing adds infrastructure complexity and operational overhead that compounds as you scale.
 

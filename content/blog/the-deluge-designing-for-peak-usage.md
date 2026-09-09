@@ -14,7 +14,7 @@ hidden: true
 
 *By Guy Royse, Developer Advocate · Published 10 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b8a44449adb817a8e6ecc171fd5b2139559e544a-1000x1000.webp)
+![Blog tile image](/images/site-mirror/b8a44449adb817a8e6ecc171fd5b2139559e544a-1000x1000.webp)
 
 A few years back, I was at a conference and a small group of us were talking about scaling software. One individual in the discussion introduced the idea of a company’s “day of deluge.” The day of deluge is the day your organization, and its software systems, experiences their maximum load. If you’re an American pizza delivery chain, the day of deluge is probably Super Bowl Sunday. If you’re a florist, it’s likely Valentine’s Day. Perhaps the most famous deluge day of all is Black Friday—that special day right after Thanksgiving when consumers across America swarm stores to gobble up the goods therein.
 
@@ -30,7 +30,7 @@ I don’t know that I have *the* answer. I’m not sure anyone has the one true 
 
 The first and easiest scaling trick is scaling up your hardware. Get a more powerful machine with more processor, more memory… more of everything. While this works well if your Twitch streaming rig needs some extra oomph, it is of limited use for applications at even moderate scale. The box can only get so big. Eventually, you’ll start to see this pattern:
 
-![](/images/blog/c2058b572174ecb3719747c88a1c6e54a97c01a9-1024x576.webp)
+![](/images/site-mirror/c2058b572174ecb3719747c88a1c6e54a97c01a9-1024x576.webp)
 
 Diminishing returns and then a plateau. You keep upping the processors and the memory and the everything, but it just doesn’t get any faster. I worked at a company that had architected itself into a corner and this was its solution. It worked in the short term. But the costs increased dramatically even as less and less capability was being added.
 
@@ -38,7 +38,7 @@ The next solution is to scale *out* your hardware. Instead of buying bigger and 
 
 What you need is a solution that allows you to scale linearly. Like this:
 
-![](/images/blog/57d4b268048ac8ea76f2a74a198cb98011047443-1024x576.webp)
+![](/images/site-mirror/57d4b268048ac8ea76f2a74a198cb98011047443-1024x576.webp)
 
 But how can we do that? Read on.
 

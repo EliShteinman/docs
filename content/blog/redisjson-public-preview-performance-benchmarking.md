@@ -16,7 +16,7 @@ hidden: true
 
 *By Pieter Cailliau, Filipe Oliveira · Published 16 November 2021 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/94f287852101ccc936ae780214b204a6d01e9242-1200x628.webp)
+![Blog tile image](/images/site-mirror/94f287852101ccc936ae780214b204a6d01e9242-1200x628.webp)
 
 **Note:** this post has been edited to reflect the general availability of Redis JSON 2.0 and Redis Search 2.2
 
@@ -50,9 +50,9 @@ This allows us, in a concise methodical way, to keep bumping up performance with
 
 The next two diagrams show the results of running the NYC taxi benchmark ([details here](https://github.com/RediSearch/ftsb/blob/master/docs/nyc_taxis-benchmark/description.md)). This benchmark measures both the throughput and the latency observed while ingesting about 12 million documents (the rides that have been performed in yellow taxis in New York in 2015).
 
-![](/images/blog/42896d4670e7d3ba9f4c2526b613e2ed72a632dc-1024x639.webp)
+![](/images/site-mirror/42896d4670e7d3ba9f4c2526b613e2ed72a632dc-1024x639.webp)
 
-![](/images/blog/b80c42689a1ddb01c2af96f0068361929565920e-1024x639.webp)
+![](/images/site-mirror/b80c42689a1ddb01c2af96f0068361929565920e-1024x639.webp)
 
 As can be seen on these diagrams, each new version of Redis Search comes with a substantial performance improvement.
 
@@ -60,9 +60,9 @@ As can be seen on these diagrams, each new version of Redis Search comes with a 
 
 To evaluate search performance, we indexed 5.9 million Wikipedia abstracts. Then we ran a panel of full-text search queries ([details here](https://github.com/RediSearch/ftsb/blob/master/docs/enwiki-abstract-benchmark/description.md)).
 
-![](/images/blog/1e49a5197ce72d5e7bcce4093e760501c1bb2928-1024x598.webp)
+![](/images/site-mirror/1e49a5197ce72d5e7bcce4093e760501c1bb2928-1024x598.webp)
 
-![](/images/blog/07204af39fde8a47c5aa986c972bb5de1e870303-1024x639.webp)
+![](/images/site-mirror/07204af39fde8a47c5aa986c972bb5de1e870303-1024x639.webp)
 
 As seen above, you’ll benefit from faster writes/reads/searches (latency charts) by moving from v2.0 to v2.2 and consequently increase the achievable throughput of the same hardware on which Search and JSON are running.
 
@@ -96,9 +96,9 @@ In addition, **Redis JSON is the only solution we tested that atomically updates
 
 When combining the latency and throughput improvements, Redis JSON is 5.4x times faster than Mongodb and >200x faster than ElasticSearch for isolated writes.
 
-![](/images/blog/25dbf8427b8ebe1fea1a4fc719991a3cc2ab100c-1024x577.webp)
+![](/images/site-mirror/25dbf8427b8ebe1fea1a4fc719991a3cc2ab100c-1024x577.webp)
 
-![](/images/blog/2d5217f05c0ed584a391414b49073c30f6bf9811-1024x577.webp)
+![](/images/site-mirror/2d5217f05c0ed584a391414b49073c30f6bf9811-1024x577.webp)
 
 ### 100% read benchmarks
 
@@ -106,9 +106,9 @@ Similarly to writes, we can observe that Redis is the top performer for reads, a
 
 When combining the latency and throughput improvements, Redis JSON is 12.7x times faster than MongoDB and >500x faster than ElasticSearch for isolated reads.
 
-![](/images/blog/1e7c162d04b81164036bb9ea2c94899e1c2bea2e-1024x577.webp)
+![](/images/site-mirror/1e7c162d04b81164036bb9ea2c94899e1c2bea2e-1024x577.webp)
 
-![](/images/blog/f73605f7ce3119cc7363e39d0dfa9a13d6a8658a-1024x633.webp)
+![](/images/site-mirror/f73605f7ce3119cc7363e39d0dfa9a13d6a8658a-1024x633.webp)
 
 ### Mixed read/write/search benchmarks
 
@@ -120,7 +120,7 @@ As a starting point, we considered the scenario with 65% searches and 35% reads,
 
 On each test variation, we’ve added 10% writes to mix and reduce the search and read percentage in the same proportion. The goal of these test variations was to understand how well each product handles real-time updates of the data, which is something we believe is the de facto architecture goal, i.e. writes are immediately committed to the index and reads are always up to date.
 
-![](/images/blog/4e15d1f9b811699c3f39cab28aac2a27e9c3463e-1024x658.webp)
+![](/images/site-mirror/4e15d1f9b811699c3f39cab28aac2a27e9c3463e-1024x658.webp)
 
 As you can see on the charts, continuously updating the data and increasing the write proportion on Redis JSON doesn’t impact the read or search performance and increases the overall throughput. The more updates produced on the data, the more affected ElasticSearch performance is, ultimately making the reads and searches slower.
 
@@ -143,17 +143,17 @@ Looking at the throughput chart from the previous section, and focusing on the 1
 
 In the first image below, showcasing the percentiles from p0 to p9999, it’s clear that MongoDB is deeply outperformed by Elastic and Redis JSON on each individual time to search. Furthermore, focusing on ElasticSearch vs. Redis JSON, it’s clear that ElasticSearch is susceptible to higher latencies which are most likely caused by Garbage Collection (GC) triggers or search query cache misses. The p99 of Redis JSON was below 2.61ms, in contrast to the ElasticSearch p99 search that reached 10.28ms.
 
-![](/images/blog/918a05818c57e540828d5e0f704915cb79eac524-1024x512.webp)
+![](/images/site-mirror/918a05818c57e540828d5e0f704915cb79eac524-1024x512.webp)
 
 In the read and update charts below, we can see that Redis JSON is the top performer across all latency spectrums, followed by MongoDB and ElasticSearch.
 
 Redis JSON was the only solution to maintain sub-millisecond latency across all analyzed latency percentiles. At p99, Redis JSON had a latency of 0.23ms, followed by MongoDB at 5.01ms, and ElasticSearch at 10.49ms.
 
-![](/images/blog/c60ad82205aa999bcdaec88958aa3aaeeaf279aa-1024x512.webp)
+![](/images/site-mirror/c60ad82205aa999bcdaec88958aa3aaeeaf279aa-1024x512.webp)
 
 On writes, MongoDB and Redis JSON maintained sub-millisecond latencies even at p99. ElasticSearch, on the other hand, showed high tail latencies (>10ms), for most likely the same reasons (GC) that cause the Search spikes for ElasticSearch.
 
-![](/images/blog/5efa448de0a609fff6f04473a9c131370cd112dc-1024x512.webp)
+![](/images/site-mirror/5efa448de0a609fff6f04473a9c131370cd112dc-1024x512.webp)
 
 #### Latency analysis for ElasticSearch vs. Redis JSON
 
@@ -161,15 +161,15 @@ Focusing solely on ElasticSearch and Redis JSON, while retaining a sustainable l
 
 On updates, Redis JSON retained a p99 of 3ms vs. a p99 of 167ms for ElasticSearch.
 
-![Read Latency by Percentiles](/images/blog/0e16d66417b248d11b906b237a89a9e529c9e8e4-1024x512.webp)
+![Read Latency by Percentiles](/images/site-mirror/0e16d66417b248d11b906b237a89a9e529c9e8e4-1024x512.webp)
 
-![](/images/blog/9a40edca3a8af4f0093a887d7cc0609755428c81-1024x512.webp)
+![](/images/site-mirror/9a40edca3a8af4f0093a887d7cc0609755428c81-1024x512.webp)
 
 Focusing on the Search operations, ElasticSearch and Redis JSON start with single-digit p50 latencies (p50 Redis JSON of 1.13ms vs. p50 of ElasticSearch of 2.79ms) with ElasticSearch paying the price of GC triggering and query cache misses on the higher percentiles, as is clearly visible on the >= p90 percentiles.
 
 Redis JSON retained a p99 below 33ms vs. the 5x higher p99 percentile at 163ms on ElasticSearch.
 
-![](/images/blog/086dc529e017a373ef7c557d0ac1d7d2f34b74bd-1024x512.webp)
+![](/images/site-mirror/086dc529e017a373ef7c557d0ac1d7d2f34b74bd-1024x512.webp)
 
 ## The road ahead…
 

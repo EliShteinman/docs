@@ -15,7 +15,7 @@ hidden: true
 
 *By Nitin Kanukolanu, Robert Shelton · Published 6 May 2026*
 
-![Use Redis with SQL](/images/blog/ee9a2aa0641e22180c118d2d3ae29bd78de3a790-1200x628.webp)
+![Use Redis with SQL](/images/site-mirror/ee9a2aa0641e22180c118d2d3ae29bd78de3a790-1200x628.webp)
 
 Yes, you heard that right. Query Redis with SQL. No LLMs needed.
 

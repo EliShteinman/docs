@@ -14,7 +14,7 @@ hidden: true
 
 *By Guy Royse, Developer Advocate · Published 7 July 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/d3aa64b8c3ed74e977d61bcf419daff241c8ada0-368x260.webp)
+![Blog tile image](/images/site-mirror/d3aa64b8c3ed74e977d61bcf419daff241c8ada0-368x260.webp)
 
 If you’re a Python developer—and since you’re reading this, you probably are—you’ve almost certainly used Redis and thought it was a great cache. (That was my first impression, too.) And Redis *does* make a great cache. But it turns out that Redis can solve a lot more problems than just caching.
 
@@ -28,7 +28,7 @@ Redis has numerous data structures for you to take advantage of: strings, hashes
 
 To use a list as a queue, you simply push new items to the end of the list using RPUSH and then pop them off the front of the list using LPOP or BLPOP. Since Redis makes all changes in a single thread, these operations are guaranteed to be atomic.
 
-![](/images/blog/266fabab91123363f0ea542c8ae63fe1b8ac1170-1024x428.webp)
+![](/images/site-mirror/266fabab91123363f0ea542c8ae63fe1b8ac1170-1024x428.webp)
 
 Take a look at this code that adds a few Bigfoot sightings to a queue:
 
@@ -174,7 +174,7 @@ The important code here is in lines 17 and 18, where we use the redis.xadd funct
 
 Each added event has a unique identifier containing the timestamp in milliseconds since the start of 1970 and a sequence number joined with a dash. For example, as I write this, 1,593,120,357,193 milliseconds (1.59 gigaseconds?) have expired since midnight on January 1, 1970 (the Unix epoch). So, if I had run the code and that command had executed in Redis at that exact moment the event id would be 1593120357193-0.
 
-![](/images/blog/14291c03c0c83134ed21f0e4d2c779e1f8b70059-1000x620.webp)
+![](/images/site-mirror/14291c03c0c83134ed21f0e4d2c779e1f8b70059-1000x620.webp)
 
 When you add an event, you can specify ‘*’ instead of one of these identifiers and Redis will use the current time to generate one. And, since the redis.xadd function defaults it to that value for you, you don’t need to worry about it too much.
 
@@ -292,7 +292,7 @@ asyncio.run(main())
 
 ```
 
-![](/images/blog/8914b296ccff6f6ed6bdf08bbe6420763ab61c17-1024x218.webp)
+![](/images/site-mirror/8914b296ccff6f6ed6bdf08bbe6420763ab61c17-1024x218.webp)
 
 I know what you’re thinking: “What if I turn the computer off? What if it crashes? Then I lose everything!” Nope. You can modify your redis.conf file to persist your data in a couple of different ways. And, if you’re using Redis Enterprise, we [have solutions](/redis-enterprise/technology/durable-redis/) that manage that for you so you can just use it and not worry about it.
 
@@ -310,13 +310,13 @@ And once you’re done playing and want to build some software, sign up and try 
 
 ## Related Articles
 
-![](/images/blog/2f0829e5ef9897c83abe4e5667fb38f042c16eb4-442x254.webp)
+![](/images/site-mirror/2f0829e5ef9897c83abe4e5667fb38f042c16eb4-442x254.webp)
 
 Async/Await Programming Basics with Python Examples
 
 Learn More
 
-![Bigfoot really exists](/images/blog/a4e192d815eda27fbc25cc3b5d831ec8360d4f6e-442x254.webp)
+![Bigfoot really exists](/images/site-mirror/a4e192d815eda27fbc25cc3b5d831ec8360d4f6e-442x254.webp)
 
 Tracking Bigfoot with Redis and Geospatial Data
 

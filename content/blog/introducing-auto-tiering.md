@@ -14,7 +14,7 @@ hidden: true
 
 *By Alon Magrafta, Product Manager · Published 15 August 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e08e5a5f7e013cc1cf119d73d93223ae08ced899-772x550.webp)
+![Blog tile image](/images/site-mirror/e08e5a5f7e013cc1cf119d73d93223ae08ced899-772x550.webp)
 
 **More and more applications rely on huge data collections – and those applications have to respond quickly. Redis Enterprise 7.2 makes it possible to create super-fast applications with no extra work on a developer’s part. What’s not to like?**
 
@@ -36,19 +36,25 @@ Everything happens automatically. The developer doesn’t need to write extra co
 
 Auto tiering automatically manages data. It promotes data that becomes hot into DRAM and intelligently demotes unused data to SSDs. This opens new possibilities for applications that rely on large data collections.
 
-![Auto tiering architecture](/images/blog/32f2c74b1ff9037f7e0ac7ed93c2560ca955ab01-800x547.webp)
+![Auto tiering architecture](/images/site-mirror/32f2c74b1ff9037f7e0ac7ed93c2560ca955ab01-800x547.webp)
+
+*Auto tiering architecture*
 
 Fast data on large datasets is not the only benefit. Saving money is another advantage – and a reason that the finance department understands. In-memory storage can be expensive. By offloading less frequently accessed data to SSD, developers can optimize memory usage and reduce the costs associated with high-capacity memory requirements.
 
 Practically speaking, that makes data-heavy applications run faster without extra effort on the developer’s part. It also saves up to 70% in infrastructure costs, compared to deployments only using DRAM. And because auto tiering efficiently and automatically manages data access patterns, you don’t have to spend cycles (computing or human-brain-wise) identifying hot data versus warm data.
 
-![Auto tiering improves TCO by combining DRAM and SSDs](/images/blog/66d065b4910e4cde62e506b7e19a8b3eb57b705c-800x322.webp)
+![Auto tiering improves TCO by combining DRAM and SSDs](/images/site-mirror/66d065b4910e4cde62e506b7e19a8b3eb57b705c-800x322.webp)
+
+*Auto tiering improves TCO by combining DRAM and SSDs*
 
 To boost this feature, Redis forged a strategic partnership with Speedb, an innovative key-value storage engine. We integrate its technology as the default auto tiering engine.
 
 With the integration of Speedb, Redis Enterprise achieves a remarkable enhancement in performance, doubling the throughput and cutting latencies in half while using the same resources**. **This significantly widens the range of use cases that can leverage auto tiering’s benefits. Following this improvement, Redis Enterprise sizing for databases using Auto Tiering got increased to 10k ops/sec per core.
 
-![Double the core throughput with auto tiering](/images/blog/f3ff89f8e8fbe6d84d961b21e4d9b38cba977e35-300x91.webp)
+![Double the core throughput with auto tiering](/images/site-mirror/f3ff89f8e8fbe6d84d961b21e4d9b38cba977e35-300x91.webp)
+
+*Double the core throughput with auto tiering*
 
 ## How fast is fast?
 
@@ -59,14 +65,18 @@ The following graphic shows a sample of the performance evolution of auto tierin
 To simulate the most standard Redis’ use case, we defined two different payloads, 1KiB and 10KiB, over a configuration with 20% DRAM and 80% SSD with three possible use patterns, balanced read/write (1:1), heavy read (1:4), and heavy write (4:1). In both scenarios we measured the throughput in operations per second, and the corresponding latency. The following charts show the results.
 
 ![Auto tiering throughput results with 1KiB values
-](/images/blog/d2877bc23a764c2d8a88d11c38bc4400daf2f609-800x419.webp)
+](/images/site-mirror/d2877bc23a764c2d8a88d11c38bc4400daf2f609-800x419.webp)
+
+*Auto tiering throughput results with 1KiB values*
 
 Compared to RS 6.4 (RocksDB), RS 7.2 (Speedb) improves:
 
 - 85% hit rate: 1.4x to 1.6x more ops/sec, while reaching up to 2.4x lower latencies
 - 50% hit rate: 1.9x to 2.3x more ops/sec, while reaching up to 3.8x lower latencies
 
-![Auto tiering throughput results with 10KiB values](/images/blog/97234267db743d55a82a892f70f24586568c6a3e-800x419.webp)
+![Auto tiering throughput results with 10KiB values](/images/site-mirror/97234267db743d55a82a892f70f24586568c6a3e-800x419.webp)
+
+*Auto tiering throughput results with 10KiB values*
 
 Compared to RS 6.4 (RocksDB), RS 7.2 (Speedb) improves:
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Paul Bushell · Published 13 December 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fa54ddc0209fedc4c0f7b5d0df97289cc3bd8f0d-386x257.webp)
+![Blog tile image](/images/site-mirror/fa54ddc0209fedc4c0f7b5d0df97289cc3bd8f0d-386x257.webp)
 
 We love how much passion the Indian tech community has for Redis, so we’re excited to kick off the new year at the first Redis Day Bangalore! We have two jam-packed days planned for January 21–22, including a special keynote from Redis creator Salvatore Sanfilippo, our first-ever hackathon, a training day to help you brush up your Redis skills, and presentations from [HolidayMe](https://www.holidayme.com/home/en-ww), [Zoomcar](https://www.zoomcar.com/), and some of our other Indian customers on the creative ways they’re using Redis.
 
@@ -32,7 +32,9 @@ You’re in for a treat: Flying in from Italy and Israel respectively, Redis cre
 
 The rest of the day is full of presentations from our customers on creative and innovative ways they’re using Redis. Amit Agrawal, Co-Founder and CTO of [sRide](https://sride.co/), will share how the carpool and bikepool platform uses Redis to reduce response time, authenticate APIs, and scale websocket server. [HolidayMe](https://www.holidayme.com/home/en-ww) CTO Rajat Panwar will discuss using Redis as a key component for very-low-latency logging framework. And AI researcher and consultant Jayesh Ahire will lead a session on using TensorFlow 2.0 and Redis to deploy a deep-learning model in production.
 
-![](/images/blog/c6cdab96b263a9994ab56454f603cd6a99ac4683-1024x348.webp)
+![](/images/site-mirror/c6cdab96b263a9994ab56454f603cd6a99ac4683-1024x348.webp)
+
+*From left: Rajat Panwar (HolidayMe), Amit Agrawal (sRide), and Jayesh Ahire (AI researcher and consultant)*
 
 These are just a few of our confirmed speakers—be sure to check our [official Redis Day Bangalore programming page](https://connect.redis.com/redisdaybangalore) to see the full list.
 

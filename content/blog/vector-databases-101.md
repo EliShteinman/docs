@@ -14,7 +14,7 @@ hidden: true
 
 *By Savannah Norem, Contributor · Published 29 February 2024 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/1c8ece8ae7bad3af1f62fdf460f4cafa298a7eca-772x552.webp)
+![Blog tile image](/images/site-mirror/1c8ece8ae7bad3af1f62fdf460f4cafa298a7eca-772x552.webp)
 
 Storing and accessing data efficiently is a looming concern. Vector databases have emerged as a crucial technology in the field of data management and artificial intelligence applications, playing a significant role in modern computing. Unlike a traditional relational database, a vector database is designed to efficiently handle and retrieve vector embeddings of complex data types like images, videos, and audio. This makes them particularly suited for advanced search capabilities and AI-driven data analysis. But what are vector embeddings, what makes them so useful, and when should you use a vector database?
 
@@ -22,13 +22,13 @@ Storing and accessing data efficiently is a looming concern. Vector databases ha
 
 Classically, when people thought of “data” they thought of spreadsheets and charts. This is what we now call structured data, and it only makes up a very small fraction of the data we have access to these days. This type of data fits well in a traditional database. But all the unstructured data, things like images and blog posts where there are no neat tables of columns and rows, how can that best be stored?
 
-![vector-db-101-inline](/images/blog/55d6a8baff534e58acd9db3d3fec3514a4354163-1200x628.webp)
+![vector-db-101-inline](/images/site-mirror/55d6a8baff534e58acd9db3d3fec3514a4354163-1200x628.webp)
 
 A vector database is a type of database designed for this very purpose: it not only stores unstructured data like images and blog posts but also the vector embeddings of these items. Through a process called vectorization we can transform complex, high-dimensional unstructured data into a lower-dimensional, numerical form that captures the essence of the data and then store each vector. These vector embeddings capture a huge amount of information about whatever piece of data they’re representing. The process of vectorization also normalizes your data, meaning that each vector you store will have the same dimensionality.
 
 Their capabilities in handling large-scale datasets, providing fast and accurate vector search, and integrating with existing technologies make them a cornerstone for businesses and researchers aiming to leverage the power of AI.
 
-![vector-db-101-inline-2-1200x628-1.png](/images/blog/e65c8b7e96de91e6cf357910022fda6c282f953e-1200x628.webp)
+![vector-db-101-inline-2-1200x628-1.png](/images/site-mirror/e65c8b7e96de91e6cf357910022fda6c282f953e-1200x628.webp)
 
 ## How Vector Databases Work
 
@@ -38,7 +38,7 @@ Vector databases are optimized to store these vectors and to allow users to effi
 
 For instance the vector embeddings for an image could include information about colors used, if the image has soft versus hard lines throughout, if there are distinct shapes or figures, as well as the context of what those figures are doing. This type of contextual information that the embeddings capture are a result of the type of model used and the data it was trained on. This context dramatically improves search experiences for users. Imagine using an image of two people dancing to search, and getting back a top result of an image of two fish swimming beside each other because the colors of the pixels line up pretty closely. That’s probably not the most desirable search result. Using vector search instead can retrieve an image of two people dancing where the individual pixels might not match as closely but the overall image is a much closer match.
 
-![imagine using an image of two people ](/images/blog/0a1cfbd7014520d86b62d92e0936f44758fcc002-2500x1309.webp)
+![imagine using an image of two people ](/images/site-mirror/0a1cfbd7014520d86b62d92e0936f44758fcc002-2500x1309.webp)
 
 Each high dimensional vector in our getting started walkthrough stores 768 different numbers that each represent some piece of information about the data they’re describing, in this case the text of the descriptions of bicycles. A vector db uses different types of similarity measurements, that you can read more about here {vec sim 101 is also coming out}, to determine which vectors are closest to the one being searched.
 

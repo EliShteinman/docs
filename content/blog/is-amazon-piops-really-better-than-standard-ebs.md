@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 4 October 2012 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 **UPDATE:** read our followup post [Take #2 – Is Amazon SSD PIOPS Really Better?](/blog/take-2-is-amazon-ssd-piops-really-better)
 
@@ -32,7 +32,7 @@ For our benchmark, we also reviewed cost implications, and used what we believe 
 1. 100B and 1KB object size
 1. 50%/50% read/write scenario, and 100% write scenario (for imposing load on EBS)
 
-![](/images/blog/395fa9ebdeb9f523ab539be4cf896ef4c0cd3c8f-573x370.webp)
+![](/images/site-mirror/395fa9ebdeb9f523ab539be4cf896ef4c0cd3c8f-573x370.webp)
 
 **Benchmark Results **Note – we have chosen to show the results from the 1KB object size tests, which impose higher load on the EBS. **RPS (Requests Per Seconds)** **Latency** The RPS and Latency results aggregated from our two memteir_benchmark tools are shown above. Our latency tests take into account the network round-trip, the Redis processing time, and the time it takes for the memtier_benchmark tool to parse the result. As you can see, RPS and latency are approximately the same on all tests, though there are some differences which might be due to the fluctuations in the AWS infrastructure during the test time. Needless to say, Redis runs better with fewer disk accesses. **iostats**
 

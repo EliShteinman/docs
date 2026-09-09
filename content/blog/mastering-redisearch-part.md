@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 22 September 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/979210462f1d193a00f5897d3b403c8b62486991-1272x1688.webp)
+![Blog tile image](/images/site-mirror/979210462f1d193a00f5897d3b403c8b62486991-1272x1688.webp)
 
 I’ve been working with the [RediSearch](/search/) module quite a bit lately — it’s one of the more fascinating developments in the Redis ecosystem and it deserves it’s own series.
 

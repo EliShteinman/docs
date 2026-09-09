@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 22 January 2024 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/28424c6c1d732c072a5af518f15d6ade07873016-772x552.webp)
+![Blog tile image](/images/site-mirror/28424c6c1d732c072a5af518f15d6ade07873016-772x552.webp)
 
 You want to spend your time building, not managing your budget. Today, we’re excited to share that [Redis Cloud](/cloud/) is now more accessible than ever, with the Essentials plan starting at just $5 per month!
 

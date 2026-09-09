@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 3 July 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d5f66087270aa88fff842f8c450c3535a87cf41b-772x550.webp)
+![Blog tile image](/images/site-mirror/d5f66087270aa88fff842f8c450c3535a87cf41b-772x550.webp)
 
 **We bust persistent myths about migrating your workloads to a large cloud provider like AWS.**
 

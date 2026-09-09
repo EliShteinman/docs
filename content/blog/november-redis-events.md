@@ -14,7 +14,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 3 November 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fda9caee35e41e1a25e44a98c30203a4836868c7-4255x2837.webp)
+![Blog tile image](/images/site-mirror/fda9caee35e41e1a25e44a98c30203a4836868c7-4255x2837.webp)
 
 [Watch the video](https://www.flickr.com/photos/captin_nod/14861023866)
 

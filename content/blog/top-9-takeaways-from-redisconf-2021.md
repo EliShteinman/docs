@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 30 April 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/529e4704fbbf970043079e1dc032f1691735339d-772x520.webp)
+![Blog tile image](/images/site-mirror/529e4704fbbf970043079e1dc032f1691735339d-772x520.webp)
 
 Every year Redis enthusiasts from around the world gather at RedisConf 2021, our annual real-time data conference. Last year was our first virtual RedisConf, and this year was bigger and better—more than 12,000 developers, architects, and business and technology leaders from 122 countries registered for keynotes, fireside chats, 60+ breakout sessions, and training from April 20–21.
 

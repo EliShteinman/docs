@@ -14,7 +14,7 @@ hidden: true
 
 *By Michelle Luna, Manager of Documentation · Published 1 December 2025 · updated 13 August 2026*
 
-![Redis](/images/blog/942a5ccb229dfb89897bd37b6d80f0fbd94d4699-1200x628.webp)
+![Redis](/images/site-mirror/942a5ccb229dfb89897bd37b6d80f0fbd94d4699-1200x628.webp)
 
 Building AI agents is exciting, but getting started can be overwhelming. You need to choose an LLM provider, set up vector search, implement conversation memory, handle data persistence, and write all the integration code before you can even test your first agent. What should be a quick prototype ends up taking days of setup and configuration.
 
@@ -36,7 +36,7 @@ Our AI agent builder is a new interactive tool built directly into our documenta
 
 • Copy or download: Get your code instantly and start building
 
-![Redis](/images/blog/5628d6ff420fc5c18444d711a9c820166e1cd326-891x581.webp)
+![Redis](/images/site-mirror/5628d6ff420fc5c18444d711a9c820166e1cd326-891x581.webp)
 
 ### Two types of intelligent agents
 
@@ -74,7 +74,7 @@ The code includes conversation history management, context retention across sess
 
 Using the agent builder is simple:
 
-![Redis](/images/blog/d34406c9895de0c81a931391cf23bea0c51a2ac3-891x750.webp)
+![Redis](/images/site-mirror/d34406c9895de0c81a931391cf23bea0c51a2ac3-891x750.webp)
 
 1. Visit the builder: Go to the agent builder page
 1. Choose your agent type: Select recommendation engine or conversational assistant
@@ -95,7 +95,7 @@ Using the agent builder is simple:
 
 • Detailed setup instructions
 
-![Redis](/images/blog/30ae64ec0aabd6bd44594e4f0fc22124746496a1-910x829.webp)
+![Redis](/images/site-mirror/30ae64ec0aabd6bd44594e4f0fc22124746496a1-910x829.webp)
 
 ## Why Redis helps you build better AI agents
 

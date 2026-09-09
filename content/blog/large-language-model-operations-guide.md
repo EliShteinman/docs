@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/5dd27d0afbba096f12c329b42506801596cc77af-1200x628.webp)
+![Redis](/images/site-mirror/5dd27d0afbba096f12c329b42506801596cc77af-1200x628.webp)
 
 Your app works fine during testing, but production hits and your inference costs spiral out of control. Response times balloon during peak traffic. You spend more time debugging hallucinations than shipping features.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Redis   · Published 20 March 2024 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c6a1e8ef62d09f3b5bd30380d9b922777d6975bc-772x552.webp)
+![Blog tile image](/images/site-mirror/c6a1e8ef62d09f3b5bd30380d9b922777d6975bc-772x552.webp)
 
 *Future Redis releases will continue to offer free and permissive use of the source code under dual RSALv2 and SSPLv1 licenses; these releases will combine advanced data types and processing engines previously only available in Redis Stack.*
 

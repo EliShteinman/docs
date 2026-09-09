@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 28 April 2026 · updated 29 April 2026*
 
-![Long-term memory architectures for AI agents: Pipelines, retrieval & tradeoffs](/images/blog/6f55fd17156553f794121ca0143e380d6c65aee5-2400x1256.webp)
+![Long-term memory architectures for AI agents: Pipelines, retrieval & tradeoffs](/images/site-mirror/6f55fd17156553f794121ca0143e380d6c65aee5-2400x1256.webp)
 
 Most AI agents start every session from scratch. Without [persistent memory](https://arxiv.org/pdf/2603.19935), they're stateless responders that reprocess context on every invocation and can't build continuity across interactions.
 

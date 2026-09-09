@@ -15,7 +15,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 21 November 2023 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/5188beb4d526c740ab7632d61f483c25fe61b8a6-772x553.webp)
+![Blog tile image](/images/site-mirror/5188beb4d526c740ab7632d61f483c25fe61b8a6-772x553.webp)
 
 A lot has changed since last re:Invent.
 

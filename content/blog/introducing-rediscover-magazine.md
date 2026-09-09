@@ -14,7 +14,7 @@ hidden: true
 
 *By Fredric Paul, Director of Content · Published 14 August 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/40a0c8aabaa1e03698403fa27d8923ce76dd364d-2000x1429.webp)
+![Blog tile image](/images/site-mirror/40a0c8aabaa1e03698403fa27d8923ce76dd364d-2000x1429.webp)
 
 [Watch the video](/rediscover-magazine/)
 

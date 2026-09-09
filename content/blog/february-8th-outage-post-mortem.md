@@ -14,7 +14,7 @@ hidden: true
 
 *By DevOps Team · Published 10 February 2016 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/9116a25b5bda9c63ea60b7c82a264d51f0be24d2-635x200.webp)
+![Blog tile image](/images/site-mirror/9116a25b5bda9c63ea60b7c82a264d51f0be24d2-635x200.webp)
 
 [Watch the video](/wp-content/uploads/2016/02/RL-banner-Service-Availability-635x200-v2b2.png)
 

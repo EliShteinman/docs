@@ -15,13 +15,15 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 23 May 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/4bb12096c9a1469d051c01f856e2cb16af1e74d1-1920x1280.webp)
+![](/images/site-mirror/4bb12096c9a1469d051c01f856e2cb16af1e74d1-1920x1280.webp)
 
 Over 1,200 Redis enthusiasts took over Pier 27 on the San Francisco waterfront for three days of training, talks and fun at RedisConf18. The theme of this year’s conference was “Everywhere” and with over 60 breakout sessions across six concurrent tracks, Redis really was everywhere.
 
-![](/images/blog/319e41e60f91f8a62f6234fb75815d670fbe8362-801x1277.webp)
+![](/images/site-mirror/319e41e60f91f8a62f6234fb75815d670fbe8362-801x1277.webp)
+
+*San Francisco’s Landmark Transamerica Building*
 
 This year RedisConf moved to the beautiful Pier 27 with panoramic views of the San Francisco Bay, both bridges and several iconic San Francisco landmarks. Pier 27 is the San Francisco Cruise Terminal originally built as a staging site for the 2013 America’s Cup. The pier serves as a cruise terminal and a conference venue during the off-season.
 
@@ -33,7 +35,9 @@ A host of food trucks rolled up for lunch, providing attendees with everything f
 
 Salvatore Sanfillipo, the creator of Redis, kicked off the all-day Redis training with his explanation of the primary data structures of Redis, followed by a talk on the new Streams data structure. This year’s training day featured two tracks: an introductory track for new
 
-![Salvatore Sanfillipo on stage](/images/blog/e6b1cd98e33f2b65d6d0a93bbe8c726e01da5587-444x608.webp)
+![Salvatore Sanfillipo on stage](/images/site-mirror/e6b1cd98e33f2b65d6d0a93bbe8c726e01da5587-444x608.webp)
+
+*Salvatore Sanfillipo on stage*
 
 Redis users and an advanced track for power users. Developers who attended either track had a chance to learn about Redis directly from folks like Salvatore, Dvir Volk, Itamar Haber and several other contributors to the Redis project.
 
@@ -45,13 +49,15 @@ This is the second year we’ve hosted a training event on the day before RedisC
 
 RedisConf18 featured six concurrent speaking sessions and over 75 speakers sharing their knowledge and experience with the community; Redis truly was *everywhere*. This year’s talks covered everything, from using Redis on an avocado farm to deploying Redis applications with Google Skaffold, as well as a practical tutorial on Redis memory optimization.
 
-![Matt Rickard of Google speaking on Kubernetes](/images/blog/26dac1059d2d052c25d8f9c0f58675787fb44b15-891x1100.webp)
+![Matt Rickard of Google speaking on Kubernetes](/images/site-mirror/26dac1059d2d052c25d8f9c0f58675787fb44b15-891x1100.webp)
+
+*Matt Rickard of Google speaking on Kubernetes*
 
 Following Salvatore’s keynote, Ofer Bengal and Yiftach Shoolman of Redis made a [series of announcements](/press/redis-labs-broadens-redis-enterprise-capabilities/) around Redis modules, Active-Active geo distribution using CRDTs for all major Redis data types, a new University for Redis, and upcoming innovations with Persistent Memory. The Redis modules announcement included the new RediSearch aggregations functionality and changes to the architecture of the Redis Graph module that utilize GraphBLAS technology for even greater efficiency in execution. Prof. Tim Davis of Texas A&M University, the creator of GraphBlas, explained the sparse matrix multiplication algorithms behind GraphBLAS while Roi Lipman from Redis laid out the usage of GraphBlas supercharges Redis Graph to outperform other graph databases by up to 100x. Prof. Carlos Baquero of the Universidade do Minho (one of the lead CRDT researchers) explained the history and research behind CRDT, the technology used to add active-active functionality to Redis CRDTs. Ken Gibson and Andy Rudoff from Intel explained how Redis on Flash can benefit from utilizing Intel’s new Persistent Memory technology.
 
 Over 75 speakers from all over the world joined us at the conference to share their unique experiences with Redis. First-time speaker Glenn Edgar of LaCima Ranch had one of the most unique talks in RedisConf history, detailing how he combines Redis with IoT sensors to run LaCima Avocado Ranch. Using Redis, Linux and ARM devices, Glenn walked us through a history of building a custom, open-source system to manage irrigation and other tasks on the ranch.
 
-![](/images/blog/2cbda5e7b1dfc41911e7b014a028ab12d883c86a-1012x1036.webp)
+![](/images/site-mirror/2cbda5e7b1dfc41911e7b014a028ab12d883c86a-1012x1036.webp)
 
 Many other first-time speakers like Jiaqi Wang of [Redfin](http://www.redfin.com/) (“Serving Automated Home Values with Redis and Kafka”), Aditya Vaidya of Oath (“Video Experience Operational Insights in Real Time”), and Darren Chinen of Malwarebytes (“Transforming Vulnerability Telemetry with Redis Enterprise”) joined Glenn in making their debut appearances this year.
 
@@ -69,4 +75,6 @@ Even though we just finished this year’s conference, the team is already think
 
 We want to thank all of our sponsors, speakers and attendees for contributing to a fantastic conference this year! We hope to see you next year for RedisConf 2019 for what should be, in the words of our attendees, another:
 
-![The Giant Light Bright](/images/blog/e5340600538dd10cd72172e3c42c888c86fdcee0-730x544.webp)
+![The Giant Light Bright](/images/site-mirror/e5340600538dd10cd72172e3c42c888c86fdcee0-730x544.webp)
+
+*The Giant Light Bright*

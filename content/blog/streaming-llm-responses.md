@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 26 April 2026 · updated 29 April 2026*
 
-![Streaming LLM responses: How to make your AI app feel fast](/images/blog/62cdfd1eb7af1132b1288fa744d587fb070c8d9b-2400x1256.webp)
+![Streaming LLM responses: How to make your AI app feel fast](/images/site-mirror/62cdfd1eb7af1132b1288fa744d587fb070c8d9b-2400x1256.webp)
 
 Watch someone use a ChatGPT-style app for the first time and you'll notice they start reading before the response is finished. That reading-as-it-appears behavior is the whole reason streaming exists. It turns a multi-second wait into something that feels like a conversation, even when the underlying generation time hasn't budged.
 

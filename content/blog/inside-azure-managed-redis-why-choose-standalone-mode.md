@@ -14,7 +14,7 @@ hidden: true
 
 *By Purna  Mehta, Senior Product Manager · Published 9 December 2025 · updated 10 December 2025*
 
-![Redis](/images/blog/03e210a7aeebbaa2903c4c319f23934f4660e116-1200x639.webp)
+![Redis](/images/site-mirror/03e210a7aeebbaa2903c4c319f23934f4660e116-1200x639.webp)
 
 Azure Managed Redis introduces clustered mode as the flexible, scalable default. But alongside it, you’ll also find a standalone option. If clustering with a single shard can scale out seamlessly, why would anyone choose standalone mode? In this second post of the [“Inside Azure Managed Redis”](/blog/inside-azure-managed-redis-a-guide-to-azures-two-redis-services/) series, we’re exploring why standalone still exists, the scenarios where it makes sense, and share that non-clustered mode is now generally available in [Azure Managed Redis.](https://learn.microsoft.com/en-us/azure/redis/architecture#clustering)
 

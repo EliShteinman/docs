@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 1 July 2026 · updated 16 July 2026*
 
-![Token efficiency: getting more signal into the context window](/images/blog/a8f2d3a546812ae893e967b86b3dec93f2a4dde0-2400x1256.webp)
+![Token efficiency: getting more signal into the context window](/images/site-mirror/a8f2d3a546812ae893e967b86b3dec93f2a4dde0-2400x1256.webp)
 
 You've probably hit this counterintuitive moment: you give your model more context to work with, expecting better answers, and the answers get worse. More tokens were supposed to mean more information, more grounding, fewer hallucinations. Instead, your agent starts repeating itself, picking the wrong tool, or confidently making things up.
 

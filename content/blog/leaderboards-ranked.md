@@ -14,7 +14,7 @@ hidden: true
 
 *By Carol Pinchefsky, Contributor · Published 16 November 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ebbfb805686a1a68f64f9dedc66d07979a6f38dc-772x550.webp)
+![Blog tile image](/images/site-mirror/ebbfb805686a1a68f64f9dedc66d07979a6f38dc-772x550.webp)
 
 **You undoubtedly are used to computer game leaderboards, where a visual display tracks player scores. But applications can use leaderboards for non-gaming purposes, too. They measure progress, status, and other competitive metrics, and they often encourage participation by using gamification. This short guide helps you brainstorm how you might incorporate these common leaderboard types in your own applications.**
 

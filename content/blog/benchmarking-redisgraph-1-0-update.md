@@ -14,7 +14,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 17 January 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 ## Introduction
 
@@ -39,7 +39,7 @@ For your convenience, below are the results we originally published. The times p
 | Twitter | time (msec) | 117 | 7,200 | 12,923 | 138,000 | 286,018 | 2,019,000 | 3,117,964 | 18,900,000 |
 | normalized | 1 | 61.5 | 1 | 10.7 | 1 | 7.1 | 1 | 6.1 |  |
 
-![Benchmark blog image extrapolated](/images/blog/9985e9693f80d4677dba62ed890dbb2d8ac20ed2-1506x930.webp)
+![Benchmark blog image extrapolated](/images/site-mirror/9985e9693f80d4677dba62ed890dbb2d8ac20ed2-1506x930.webp)
 
 ### Newly Measured Results: January 2019
 
@@ -52,7 +52,7 @@ The numbers below represent the overall benchmark time we recently measured for 
 | Twitter | time (msec) | 117 | 979 | 12,923 | 72,460 | 286,018 | 1,556,425 | 3,117,964 | 14,864,898 |
 | normalized | 1 | 8.4 | 1 | 5.6 | 1 | 5.4 | 1 | 4.8 |  |
 
-![Benchmark blog image measured](/images/blog/14c2853e6440118c721b6c80c10bcf62d98b7149-1510x934.webp)
+![Benchmark blog image measured](/images/site-mirror/14c2853e6440118c721b6c80c10bcf62d98b7149-1510x934.webp)
 
 While we found that RedisGraph is still faster than TigerGraph, this new data finds that we are **5-15 times faster** (as opposed to the 6-65x estimate we originally published). The biggest change was in the 1-hop queries, whereas for longer path queries the times decreased slightly. This is due to the fact that 1-hop queries are far less computationally expensive than multiple hop queries, allowing for more concurrency. [But to quote TigerGraph](https://www.tigergraph.com/2018/11/19/benchmarking-redisgraph/): *“In the real world, if you only need to do one hop, a key-value database or RDBMS is sufficient enough; you don’t need a graph product.”*
 
@@ -69,7 +69,7 @@ A more correct metric is *average query time*, which averages the individual res
 | Twitter | time (msec) | 8 | 53 | 711 | 4,834 | 20,269 | 107,704 | 224,539 | 1,069,360 |
 | normalized | 1 | 6.9 | 1 | 6.8 | 1 | 5.3 | 1 | 4.8 |  |
 
-![Benchmark blog image average](/images/blog/692892e1e4c51582a8699cd09f1a2f640eb46876-1518x938.webp)
+![Benchmark blog image average](/images/site-mirror/692892e1e4c51582a8699cd09f1a2f640eb46876-1518x938.webp)
 
 This shows that RedisGraph’s *average query times* are **5-20** times faster than TigerGraph under parallel load. We believe this is what really matters for our RedisGraph users — a database that enables the highest throughput at the lowest latency.
 

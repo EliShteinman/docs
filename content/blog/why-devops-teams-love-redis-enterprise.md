@@ -14,7 +14,7 @@ hidden: true
 
 *By Ajeet Raina, Technical Marketing Manager · Published 10 December 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e666dadd038d1041ed410ca247ef5713c8a1a31e-772x595.webp)
+![Blog tile image](/images/site-mirror/e666dadd038d1041ed410ca247ef5713c8a1a31e-772x595.webp)
 
 DevOpsDevOps
 
@@ -42,7 +42,7 @@ Forward-thinking DevOps teams designing applications, including the data layer, 
 
 Redis fits very well into the DevOps model due to its ease of deployment, rigorous unit and functionality testing of core and supplementary Redis technology, and ease of automation through tools such as [Docker](https://www.docker.com/), [Ansible](https://www.ansible.com/), and [Puppet](https://puppet.com/). Redis Enterprise is an enterprise-grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis. Redis Enterprise extends open source Redis and delivers stable high performance, zero-downtime [linear scaling](/redis-enterprise/technology/linear-scaling-redis-enterprise/) and high availability. It is uniquely positioned to help DevOps teams meet their goals with less management toil and lower overhead.
 
-![](/images/blog/c81850026dd236d84b51180474b8b716494895fa-904x522.webp)
+![](/images/site-mirror/c81850026dd236d84b51180474b8b716494895fa-904x522.webp)
 
 ## Why DevOps teams choose Redis Enterprise
 
@@ -61,7 +61,9 @@ This unique combination of [high-availability technologies](/redis-enterprise/te
 
 1. **Flexible deployment options**
 
-![](/images/blog/2fa6c3f45854a72ca78f2d2ae05a56f1605b235f-904x578.webp)
+![](/images/site-mirror/2fa6c3f45854a72ca78f2d2ae05a56f1605b235f-904x578.webp)
+
+*Redis Enterprise has flexible deployment options.*
 
 In the current technology landscape, the amount of choice available when it comes to platforms is simply astonishing.It’s practically impossible to take the time to investigate every option, so enterprises often stick to platforms that they’re comfortable with, even if they aren’t necessarily the best tools for the task. Part of successfully implementing DevOps involves choosing the best platforms for the unique context of your organization’s environment and the nature of your processes. That’s exactly why Redis Enterprise takes a platform-agnostic stance towards DevOps.
 
@@ -87,7 +89,9 @@ Whether your environment includes applications running on-premises, in a hybrid 
 
 5. **Multi-tenant architecture**
 
-![](/images/blog/3b5cead657964c8033d92ce446f4a75d321a36ad-904x448.webp)
+![](/images/site-mirror/3b5cead657964c8033d92ce446f4a75d321a36ad-904x448.webp)
+
+*Multi-tenancy in Redis Enterprise.*
 
 In a multi-tenant software architecture, a single instance of a software application(including database) serves multiple tenants . Each tenant’s data is isolated from other tenants sharing the application instance. This ensures data security and privacy for all tenants. When choosing a database for multi-tenant applications, developers have to strike a balance between customers’ need or desire for data isolation and a solution that scales quickly and affordably in response to growth or spikes in application traffic. Hence, to ensure complete isolation, the developer can allocate a separate database instance for each tenant; at the other extreme, to ensure maximum scalability, the developer can have all tenants share the same database instance.
 

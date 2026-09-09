@@ -15,7 +15,7 @@ hidden: true
 
 *By Jim Allen Wallace, Brian Sam-Bodden · Published 29 August 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/a566ba4b1b259a7d18edb6ecc5ec6dfc06afeacc-772x552.webp)
+![Redis](/images/site-mirror/a566ba4b1b259a7d18edb6ecc5ec6dfc06afeacc-772x552.webp)
 
 ## A performance-driven redesign for production AI agents
 

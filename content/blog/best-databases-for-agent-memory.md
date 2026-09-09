@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 10 July 2026 · updated 12 August 2026*
 
-![Redis](/images/blog/8fd993c6b24c60659b0e43fdd2f85133a7927b48-1200x628.webp)
+![Redis](/images/site-mirror/8fd993c6b24c60659b0e43fdd2f85133a7927b48-1200x628.webp)
 
 AI agents don't have one memory requirement. They have three: recalling what happened seconds ago, retrieving what they learned weeks ago, and tracking what they're doing right now. Most databases handle one of those patterns well, which is why so many agent architectures end up stitching together a vector store, a cache, and an operational database just to keep a single agent coherent. Coverage is what separates the options below. Each one handles a different number of those three patterns before you need another system alongside it. This guide compares Redis, Pinecone, MongoDB, and Weaviate as agent memory databases: what each is built for, where each falls short, and what it takes to cover the full memory stack in one system.
 

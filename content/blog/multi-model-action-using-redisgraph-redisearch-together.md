@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 1 May 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9f05d18f19a9767e49f512e3bd677c15fb553040-968x606.webp)
+![Blog tile image](/images/site-mirror/9f05d18f19a9767e49f512e3bd677c15fb553040-968x606.webp)
 
-![](/images/blog/9f05d18f19a9767e49f512e3bd677c15fb553040-968x606.webp)
+![](/images/site-mirror/9f05d18f19a9767e49f512e3bd677c15fb553040-968x606.webp)
 
 At RedisConf19, I demoed a solution for running full-text RediSearch over nodes in RedisGraph. The days leading up to the event are a bit of a fog, but now, a few weeks later, I realized we should explain more about how we did this and release the source code.
 

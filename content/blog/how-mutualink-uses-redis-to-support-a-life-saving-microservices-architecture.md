@@ -14,7 +14,7 @@ hidden: true
 
 *By Sheryl Sage, Director of Partner Marketing · Published 15 January 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/98923d2ca8e84b52306450f3658e454a2a964c7d-2000x1405.webp)
+![Blog tile image](/images/site-mirror/98923d2ca8e84b52306450f3658e454a2a964c7d-2000x1405.webp)
 
 *(As organizations look to modernize their applications, many are turning to a microservices architecture to deconstruct their legacy apps into collections of loosely coupled services. This profound change inspired us to reach out to Redis customers in various stages of this journey to microservice architectures. We will be telling their microservices stories in a series of blog posts in the coming weeks.)*
 
@@ -34,7 +34,7 @@ Mutualink runs Redis Enterprise on virtual machines that store upwards of 32 ter
 
 From the beginning, Mutualink worked to enable high availability so the platform could survive the loss of a software instance, compute node, or even an entire data center. One way the team accomplishes this is through [Redis Enterprise’s Active-Active replication](/active-active/), in which data is automatically synchronized between multiple data centers for geographic redundancy. “Our focus on instant access to data is critical. It’s what made Redis an attractive solution to be the central data store to our application,” Paul noted. “The Active-Active functionality was our deciding factor in using Redis Enterprise, and it saved my team many, many staff years’ of time trying to invent a cross-data site synchronization model.”
 
-![](/images/blog/bf273442b64d8e1f623c6183d6574a9b76aefe81-1024x590.webp)
+![](/images/site-mirror/bf273442b64d8e1f623c6183d6574a9b76aefe81-1024x590.webp)
 
 Mutualink’s Redis data model supports near real-time, eventual consistency—if an event triggers a change to data on the company’s server in its Boston region, for example, the response to the event-triggering client is immediate, while the data is reflected on its server in its Dallas region in near real-time. Additional clients can subscribe to events in Redis in whichever region is closest.
 
@@ -44,7 +44,9 @@ Taking a closer look, the microservice that handles signaling for voice over IP 
 
 While Mutualink originally planned to use Redis for just one central component of its microservices architecture, the team quickly learned how easy it was to plug other services into Redis and use its simple APIs to maintain their own data. Rather than having one service (which they called “the World”) act as the gatekeeper to all of the platform’s data, Mutualink now has 15 – 20 different services directly using Redis Enterprise to serve various needs.
 
-![](/images/blog/7df7094971f69f0860635ee4283c353add9f4129-1024x311.webp)
+![](/images/site-mirror/7df7094971f69f0860635ee4283c353add9f4129-1024x311.webp)
+
+*Mutualink Microservices Architecture with Redis*
 
 Redis’s extensibility and data model diversity help the Mutualink team avoid vendor sprawl, since its data structures can support a wide range of business capabilities. Features Mutualink has built with Redis include:
 
@@ -53,7 +55,7 @@ Redis’s extensibility and data model diversity help the Mutualink team avoid v
 - Managing authentication stores and search trees with Redis Strings, Sets, and Lists
 - Supporting inter-service communications (HTTP, POST, PATCH, GET, and DELETE) by using [Redis as a simple message queue](/solutions/messaging/).
 
-![](/images/blog/061b43a20f376d08922c8926b66ff80cab2bf888-642x333.webp)
+![](/images/site-mirror/061b43a20f376d08922c8926b66ff80cab2bf888-642x333.webp)
 
 Redis helps each of these microservices transform data without requiring changes to the back-end stores. Mutualink benefits from a common, yet decentralized, data layer in Redis that all services can access. Plus, each service can use the right language, database, or other developer tools for the job at hand. Since Redis supports multiple data formats, individual services can employ key-value, graph, hierarchical, JSON, streams, search, or other data models as needed.
 

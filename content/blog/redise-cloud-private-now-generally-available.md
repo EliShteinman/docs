@@ -15,7 +15,7 @@ hidden: true
 
 *By Aviad Abutbul, Senior Director of Product Management · Published 6 December 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/b3d6622de300342201b9c658d970c5eb2ba7e252-968x647.webp)
+![Blog tile image](/images/site-mirror/b3d6622de300342201b9c658d970c5eb2ba7e252-968x647.webp)
 
 This content was written prior to a change in Redis’ naming convention – Redis Enterprise is now the moniker for all our products.
 
@@ -29,7 +29,7 @@ Over the last few months during the preview period, we have been working hard to
 
 Take RCP for a test drive with our unlimited 14-day trial option, no credit card required.
 
-![](/images/blog/edd1b641146f572d66c5dcc751c4b12d63239c2c-790x112.webp)
+![](/images/site-mirror/edd1b641146f572d66c5dcc751c4b12d63239c2c-790x112.webp)
 
 **Simplified Sign-up**
 
@@ -47,7 +47,7 @@ For better security and compliance, you can now enable data-at-rest encryption w
 
 For convenience, we have created a price calculator that uses your cloud and region preferences, along with throughput and data size needs, in order to estimate your bill.
 
-![](/images/blog/b3d6622de300342201b9c658d970c5eb2ba7e252-968x647.webp)
+![](/images/site-mirror/b3d6622de300342201b9c658d970c5eb2ba7e252-968x647.webp)
 
 **Get Started Today!**
 

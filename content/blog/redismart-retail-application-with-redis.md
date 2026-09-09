@@ -16,7 +16,7 @@ hidden: true
 
 *By Dylan Kreisman, Content Marketing Intern · Published 29 July 2021 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0cc3a30a638a86f16d616e5339454e5cd74e2b33-772x520.webp)
+![Blog tile image](/images/site-mirror/0cc3a30a638a86f16d616e5339454e5cd74e2b33-772x520.webp)
 
 Do you remember RedisConf’s keynote demo? If yes, you might enjoy seeing the behind-the-curtain development of the retail application (RedisMart) that was presented. If not, then it’s time to watch Yiftach and Ash present it. Here’s the link to the video again:
 
@@ -45,11 +45,13 @@ Now that we know the requirements, let me draw an idea of how Redis is able to h
 - Redis Enterprise’s Active-Active feature provides geo-replicated real-time updates across inventories out of the box.
 - RedisAI, RedisGears, and RediSearch are leveraged for building a database-integrated machine-learning pipeline for real-time inference and vector-similarity search.
 
-![RedisMart application blog post image](/images/blog/1b4d78d0ff0564ab20c7af229a26620eb89d91a3-1024x715.webp)
+![RedisMart application blog post image](/images/site-mirror/1b4d78d0ff0564ab20c7af229a26620eb89d91a3-1024x715.webp)
 
 From there, it wasn’t too hard to imagine the following design:
 
-![RedisMart application blog post image](/images/blog/c5ea6d99a0100dbd632d1fde7f4df25748900787-1024x664.webp)
+![RedisMart application blog post image](/images/site-mirror/c5ea6d99a0100dbd632d1fde7f4df25748900787-1024x664.webp)
+
+*RedisMart application blog post image*
 
 The blue boxes represent services. The red boxes show the databases that are used by those services.
 
@@ -73,39 +75,39 @@ As mentioned before, this is the first article of a series. Please stay tuned to
 
 Now that we’ve looked behind the curtain, let’s see how the application looks on stage.
 
-![](/images/blog/e57eaac1a045f10135561fc5fb8459e3da53ec55-1024x581.webp)
+![](/images/site-mirror/e57eaac1a045f10135561fc5fb8459e3da53ec55-1024x581.webp)
 
 The home page shows you the main product categories. A click on a category triggers a search query via the product catalog service by returning the first 16 products that belong to such a category.
 
 The “Search products” field allows you to perform a full-text search for products. It leads to the following search results page:
 
-![](/images/blog/cc236d600a62334d389d702ee7d86e1f3b1db15b-1024x622.webp)
+![](/images/site-mirror/cc236d600a62334d389d702ee7d86e1f3b1db15b-1024x622.webp)
 
 The search results page has two sections: Faceted search and the actual result list. The faceted search can be used to further limit the search results. You can do so by filtering through main category, sub-category, price, and rating. We’ll talk about the implementation details of how such a faceted search is realized with RediSearch in part two of the blog series. Let me give you a hint by letting you take a look at RedisMart’s debug view:
 
-![](/images/blog/14caf01a9f6fdba6047ad4ca9e2d32168a2f4c04-825x563.webp)
+![](/images/site-mirror/14caf01a9f6fdba6047ad4ca9e2d32168a2f4c04-825x563.webp)
 
 As you can see, tags and aggregation play a role.
 
 Clicking on the little camera icon in the upper right corner allows you to take an image of something that you want to find within the product catalog. The following photo of Doug didn’t find any other Dougs in our database…
 
-![](/images/blog/d2dc68f0923caab978736eddfa0eb6febd71888d-821x478.webp)
+![](/images/site-mirror/d2dc68f0923caab978736eddfa0eb6febd71888d-821x478.webp)
 
 …but it nicely found some headphones.
 
-![](/images/blog/1db0298c0308fa40328a15b74a0627b0fa26a67c-860x577.webp)
+![](/images/site-mirror/1db0298c0308fa40328a15b74a0627b0fa26a67c-860x577.webp)
 
 Let’s assume that you decide on a pair of headphones and want to purchase them. After making your choice, RedisMart allows you to add them to your shopping cart. During the checkout process, you can decide to get them delivered or collect them at a close-by location.
 
-![](/images/blog/0d46f82b01f81947d65f92418795dcda3b01f233-1024x620.webp)
+![](/images/site-mirror/0d46f82b01f81947d65f92418795dcda3b01f233-1024x620.webp)
 
 RediSearch’s geo-search powers this local pickup feature. The debug view gives you again a hint of how this is realized behind the scenes.
 
-![](/images/blog/dfeacf761cb76fbad8897e8da53951eec963167b-1024x949.webp)
+![](/images/site-mirror/dfeacf761cb76fbad8897e8da53951eec963167b-1024x949.webp)
 
 As soon as a customer completes the purchase, the inventory service gets involved by reducing the number of items in stock. This brings us directly to the backend of the application, which allows us to manage the inventory. RedisMart visualizes how immediate inventory updates are observed on each of the replicated sites. A purchase in the US (GCP us-central1) is replicated with a blink of an eye to Europe (Azure north-europe).
 
-![](/images/blog/449c66eeb79350f80a2929b96c42d68bf67189a1-1024x398.webp)
+![](/images/site-mirror/449c66eeb79350f80a2929b96c42d68bf67189a1-1024x398.webp)
 
 Once again, we’ll cover more details later. The main point here is that you can access the data from a close-by location at a very low network latency, while counter losses are prevented when data is modified concurrently across multiple sites.
 

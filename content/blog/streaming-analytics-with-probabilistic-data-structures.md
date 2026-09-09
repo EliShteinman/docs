@@ -14,7 +14,7 @@ hidden: true
 
 *By Savannah Norem, Contributor · Published 11 August 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3ace11fe856ce404c030cbd5fc1c7a2f92ca854a-772x550.webp)
+![Blog tile image](/images/site-mirror/3ace11fe856ce404c030cbd5fc1c7a2f92ca854a-772x550.webp)
 
 Hello World! My name is Savannah, and I’m a new-ish Developer Advocate at Redis. I’ve hopped on livestream to talk about [RedisJSON ](https://www.youtube.com/watch?v=ZP2j7bmWfmU&list=PL83Wfqi-zYZHSnOXH3kCkgyfk3Rqo_wzH)with our Senior Developer Advocates Justin and Guy to discuss probabilistic data structures. That exploration with Guy is ephemeral on Twitch, but I recently did some coding using a few more probabilistic data structures that you can watch on [YouTube](https://www.youtube.com/watch?v=_TGJSXZvLT8&list=PL83Wfqi-zYZHSnOXH3kCkgyfk3Rqo_wzH&index=2). There can be some confusion about what a probabilistic data structure is, so I figured I’d take some time to write out the highlights of these data structures that take large datasets.
 

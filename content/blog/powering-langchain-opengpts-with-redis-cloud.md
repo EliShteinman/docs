@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 27 November 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a6c1a69440f0d8df0ce9c5f1b61d18a8b10de815-772x552.webp)
+![Blog tile image](/images/site-mirror/a6c1a69440f0d8df0ce9c5f1b61d18a8b10de815-772x552.webp)
 
 [**OpenGPTs**](/press/redis-cloud-powers-langchain-opengpts-project/)** is a low-code, open-source framework for building custom AI agents. Because of Redis’ speed and reliability, LangChain chose Redis Cloud as the default vector database for this exciting new project.**
 
@@ -32,15 +32,15 @@ With a few configuration steps, we can use [OpenGPTs](https://opengpts-example-v
 
 Below you can see our choice of LLM, System Message (the primary behavior-influencing prompt), and Tools, including DuckDuckGo search, Wikipedia search, and access to public press releases thanks to [Kay.ai](https://www.kay.ai/).
 
-![ChatGpt-01](/images/blog/80e9f5c2ce2b8278ba0e774cbd971a5ebe66fb72-950x640.webp)
+![ChatGpt-01](/images/site-mirror/80e9f5c2ce2b8278ba0e774cbd971a5ebe66fb72-950x640.webp)
 
 With RedisGuru configured and deployed, we can now test the agent:
 
-![bot-initial-convo](/images/blog/8925f5935df900300fa6c953ca26a47f7e67d31d-796x488.webp)
+![bot-initial-convo](/images/site-mirror/8925f5935df900300fa6c953ca26a47f7e67d31d-796x488.webp)
 
 We can also ask questions about Redis data structures. Notice that RedisGuru remembers my name when prompted:
 
-![bot-initial-convo](/images/blog/7718121c96f12d251c4d1cb5be7711c25165fbe1-795x701.webp)
+![bot-initial-convo](/images/site-mirror/7718121c96f12d251c4d1cb5be7711c25165fbe1-795x701.webp)
 
 I constructed this RedisGuru agent in a matter of minutes. The possibilities are endless for what you might build next: an email copy editor, an intelligent research assistant, a code reviewer, and more.
 

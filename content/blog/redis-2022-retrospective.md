@@ -14,7 +14,7 @@ hidden: true
 
 *By Allen Terleto, Contributor · Published 29 December 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b0ca0c584d3a24cb99316314685e11521ba1c36b-772x550.webp)
+![Blog tile image](/images/site-mirror/b0ca0c584d3a24cb99316314685e11521ba1c36b-772x550.webp)
 
 **Recession, personalization, and ChatGPT, oh my!** **2022 was a wild ride!**
 

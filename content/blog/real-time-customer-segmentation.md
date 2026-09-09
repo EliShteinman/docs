@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 17 March 2026*
 
-![How real-time customer segmentation works in retail](/images/blog/5cbeafa50c8d9c900d170406edd678158f7012df-2400x1256.webp)
+![How real-time customer segmentation works in retail](/images/site-mirror/5cbeafa50c8d9c900d170406edd678158f7012df-2400x1256.webp)
 
 Your customer searched for espresso machines, spent six minutes comparing mid-range models, and just opened your app from a kitchen store parking lot. That's a high-intent moment, but your segmentation system won't know about it until tonight's batch job runs. By then, the customer has walked into the store and bought from whoever showed them the right offer first.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Rini Vasan, AI Product Marketing Manager · Published 3 February 2025 · updated 13 June 2025*
 
-![Blog tile image](/images/blog/35fa1e78ad65887c9aa3b5969c3792f98487822b-772x552.webp)
+![Blog tile image](/images/site-mirror/35fa1e78ad65887c9aa3b5969c3792f98487822b-772x552.webp)
 
 You know that mix of excitement and uncertainty when you’re starting something new? That’s exactly how I felt when I set out to build a Retrieval Augmented Generation (RAG) pipeline using the Redis Vector Library.
 
@@ -135,7 +135,7 @@ print("Done preprocessing. Created", len(chunks), "chunks of the original pdf", 
 
 This is what the output should look like in the Colab.
 
-![](/images/blog/3006a2ad1a4e8fdc793bb74482570fe9659d2c1c-1521x78.webp)
+![](/images/site-mirror/3006a2ad1a4e8fdc793bb74482570fe9659d2c1c-1521x78.webp)
 
 Preprocess the document by splitting it into manageable chunks using *RecursiveCharacterTextSplitter.*
 
@@ -279,7 +279,7 @@ These are the results outputted in Colab notebook.
 
 
 ![Colab notebook.
-](/images/blog/8583a8f2b7778f1c43ed1c3ac5160ed0eab7c0ec-1567x322.webp)
+](/images/site-mirror/8583a8f2b7778f1c43ed1c3ac5160ed0eab7c0ec-1567x322.webp)
 
 ```python
 ​​# paginate through results
@@ -291,7 +291,7 @@ for result in index.paginate(vector_query, page_size=1):
 
 This is what pagination through the results looked like in the Colab notebook.
 
-![ pagination](/images/blog/35e8362a1bfe46251d9944119c334800097b265a-410x155.webp)
+![ pagination](/images/site-mirror/35e8362a1bfe46251d9944119c334800097b265a-410x155.webp)
 
 Perform similarity searches, pull relevant results, and explore additional filtering/sorting options.
 
@@ -342,7 +342,7 @@ pd.DataFrame(result)
 
 These are the results of the query from the Colab notebook.
 
-![results of the query](/images/blog/e478b484a4f215f7b2aaa7aa992e51382e752b45-1463x394.webp)
+![results of the query](/images/site-mirror/e478b484a4f215f7b2aaa7aa992e51382e752b45-1463x394.webp)
 
 ```python
 from redisvl.query import RangeQuery
@@ -373,7 +373,7 @@ pd.DataFrame(result)
 
 These are the results of the range query from the Colab notebook.
 
-![range query from the Colab notebook](/images/blog/f45de83562536362d738a34744e3ffa427b29525-1456x390.webp)
+![range query from the Colab notebook](/images/site-mirror/f45de83562536362d738a34744e3ffa427b29525-1456x390.webp)
 
 Build the RAG pipeline
 
@@ -504,7 +504,7 @@ for i, r in enumerate(results):
 
 Here we can finally see some of the answers to our questions from the Colab notebook.
 
-![answers to our questions from the Colab notebook.](/images/blog/d577f6f661dec6664dd41fb76364b624790b0f06-2035x623.webp)
+![answers to our questions from the Colab notebook.](/images/site-mirror/d577f6f661dec6664dd41fb76364b624790b0f06-2035x623.webp)
 
 **Highlights of my journey**
 

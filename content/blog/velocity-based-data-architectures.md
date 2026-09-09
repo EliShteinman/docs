@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 7 August 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/866318dbf534f5bd46480bcd1bebfcc7f3d20b04-772x550.webp)
+![Blog tile image](/images/site-mirror/866318dbf534f5bd46480bcd1bebfcc7f3d20b04-772x550.webp)
 
 **There are several ways to classify and understand data architectures, each with its own pros and cons. They can help you make an informed decision about the best design for your needs. Here, I explain velocity-based data architectures, and where they fit in the grand scheme of things.**
 
@@ -46,7 +46,9 @@ Lambda architecture’s critical distinction is that it uses two separate proces
 
 Lambda architecture solves the problem of computing arbitrary functions, whereby the system has to evaluate the data processing function for any given input (whether in slow motion or in real-time). Furthermore, it provides fault tolerance by ensuring that the results from either system can be used as input into the other if one fails or becomes unavailable. The efficiency of this architecture becomes evident in high throughput, low latency, and near-real-time applications.
 
-![Lambda architecture](/images/blog/103d8a23d230f0613def6398bf22ae6f63ca7040-1000x374.webp)
+![Lambda architecture](/images/site-mirror/103d8a23d230f0613def6398bf22ae6f63ca7040-1000x374.webp)
+
+*Lambda architecture*
 
 Lambda architecture consists of an ingestion layer, a batch layer, a speed layer (or stream layer), and a serving layer.
 
@@ -70,7 +72,9 @@ At its core, Kappa relies on streaming architecture. Incoming data is first stor
 
 Kappa architecture is designed to provide a scalable, fault-tolerant, and flexible system for processing large amounts of data in real-time. The Kappa architecture is considered a simpler alternative to the Lambda architecture; it uses a single technology stack to handle both real-time and historical workloads, and it treats everything as streams. The primary motivation for the Kappa architecture was to avoid maintaining two separate code bases (pipelines) for the batch and speed layers. This allows it to provide a more streamlined and simplified data processing pipeline while still providing fast and reliable access to query results.
 
-![Kappa architecture](/images/blog/da11af01c5e666c27be83aa48146c4c18086f8cf-1000x433.webp)
+![Kappa architecture](/images/site-mirror/da11af01c5e666c27be83aa48146c4c18086f8cf-1000x433.webp)
+
+*Kappa architecture*
 
 Data reprocessing is a key requirement of Kappa, making visible the effects of any changes in the source side on the outcomes. Consequently, the Kappa architecture is composed of only two layers: the stream layer and the serving one.
 
@@ -97,7 +101,9 @@ Unifying multiple code paths is a significant challenge in managing batch and st
 
 The fundamental premise of the dataflow model is to treat all data as events and perform aggregations over different types of windows. Real-time event streams are unbounded data, while data batches are bounded event streams that have natural windows.
 
-![Windowing patterns](/images/blog/ac341b25dcdd67473dcb237754fff20af667042f-1000x386.webp)
+![Windowing patterns](/images/site-mirror/ac341b25dcdd67473dcb237754fff20af667042f-1000x386.webp)
+
+*Windowing patterns*
 
 Data engineers can choose from different windows, such as sliding or tumbling, for real-time aggregation. The dataflow model enables real-time and batch processing to occur within the same system, using almost identical code.
 

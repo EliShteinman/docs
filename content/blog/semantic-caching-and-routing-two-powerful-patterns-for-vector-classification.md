@@ -14,7 +14,7 @@ hidden: true
 
 *By Robert Shelton, AI Engineer at Redis · Published 13 March 2026*
 
-![Semantic Caching and Routing](/images/blog/9600db19abed34bce1585a956a614a9354070953-1200x628.webp)
+![Semantic Caching and Routing](/images/site-mirror/9600db19abed34bce1585a956a614a9354070953-1200x628.webp)
 
 Redis’ vector datatype allows you to perform unsupervised classification in milliseconds. This core technology powers both semantic caching and semantic routing — two powerful optimization techniques. Semantic caching answers the question “Have I seen something similar before?”, while semantic routing answers “Which path should this take?”. Together, they provide a highly cost-effective way to optimize systems for different use cases.
 
@@ -62,7 +62,7 @@ sem_cache.check("password reset?")
 
 The code above could be used in a system as shown below to avoid the latency and cost of invoking a more expensive LLM for duplicate similar questions.
 
-![Semantic caching architecture](/images/blog/ad2e9a04f92158f9f2ab372b363832f6c47de73e-1382x1056.webp)
+![Semantic caching architecture](/images/site-mirror/ad2e9a04f92158f9f2ab372b363832f6c47de73e-1382x1056.webp)
 
 Keep in mind that a “semantic cache” can be implemented at any phase in a process; it doesn't mean it can only be implemented in front of an LLM call. It could also be implemented in front of agent requests, tool calls, or within an agent workflow itself.
 
@@ -133,7 +133,7 @@ route_match = ecom_router("Whatup how do i reset my password?")
 
 In diagram form this code would power a system like this wherein at a very low latency and very low cost your system would be able to more appropriately respond to a variety of inputs.
 
-![Architectural example](/images/blog/421751a2a95b7040310f5eee38be970b5b792ce1-1600x820.webp)
+![Architectural example](/images/site-mirror/421751a2a95b7040310f5eee38be970b5b792ce1-1600x820.webp)
 
 More specifically, using a semantic router avoids the pitfall I see many developers fall into creating where they invoke an LLM to answer a prompt over and over again like:
 

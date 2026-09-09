@@ -15,7 +15,7 @@ hidden: true
 
 *By Cihan B · Published 16 October 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4f3ab4532ac918f5fcc94239bb30c809071f5eb9-270x230.webp)
+![Blog tile image](/images/site-mirror/4f3ab4532ac918f5fcc94239bb30c809071f5eb9-270x230.webp)
 
 For many interactive applications, responsiveness is key to engaging and fluid experiences. However, RAM is expensive. Keeping a large amount of data with Redis can be costly. Given the infrastructure cost, you end up choosing between the following 2 options;
 
@@ -35,7 +35,7 @@ A Redis Enterprise cluster is composed of identical nodes that are deployed with
 – The **Management path** is composed of proxy which helps scale connections and cluster manager which is responsible for orchestrating the cluster and the placement of database shards, as well as detecting and mitigating failures.
 – The **Data Access path** is composed of master and slave Redis shards. Clients perform data operations on the master shard. Master shards maintain slave shards using the in-memory replication.
 
-![](/images/blog/6a397a28ed591aded729b311df62b9d287d7c09e-1319x517.webp)
+![](/images/site-mirror/6a397a28ed591aded729b311df62b9d287d7c09e-1319x517.webp)
 
 *Figure 1*
 *Redis Enterprise nodes, with blue tiles representing the management path and red tiles representing the data access path with Redis as the shards.*
@@ -48,14 +48,14 @@ Besides the intra-cluster replication, Redis Enterprise also has built-in WAN-ba
 
 Each database can contain few or many Redis shards. Sharding is transparent to Redis applications. Master shards in the database process data operations for a given subset of keys. The number of shards per database is configurable and depend on the throughput needs of the applications. Databases in Redis Enterprise can be resharded into more Redis shards to scale throughput while maintaining sub-millisecond latencies. Re-sharding is performed without downtime.
 
-![](/images/blog/d3bacd229aa5fd049cdaba22b7a01bc433c70847-2000x1125.webp)
+![](/images/site-mirror/d3bacd229aa5fd049cdaba22b7a01bc433c70847-2000x1125.webp)
 
 *Figure 2*
 *Redis Enterprise places master (M) and slave (S) replicas in separate nodes, racks and zones and use in-memory replication to protect data against failures.*
 
 In Redis Enterprise, each database has a quota of RAM. The quota cannot exceed the limits of the RAM available on the node. However, with Redis Enterprise Flash, RAM is extended to the local flash drive (SATA, NVMe SSDs etc). The total quota of the database can take advantage of both RAM and flash drive. The administrator can choose the RAM vs Flash ratio using the slide seen in figure 3. This ratio can be updated at any moment in the lifetime of the database without downtime.
 
-![](/images/blog/74e55bffda948c3d00f7e6570d5c5831e06582c6-2000x1125.webp)
+![](/images/site-mirror/74e55bffda948c3d00f7e6570d5c5831e06582c6-2000x1125.webp)
 
 *Figure 3*
 *Create Database dialog in Redis Enterprise Pack with the view of the RAM and Flash configuration.*
@@ -64,7 +64,7 @@ In Redis Enterprise, each database has a quota of RAM. The quota cannot exceed t
 
 With Redis Enterprise Flash, you get an enhanced version of Redis as a shard. Besides other modifications, with this shard, instead of storing all keys and data in RAM, less frequently accessed values are pushed to flash. In figure 4, you can see the RAM and Flash combined together for storing data as 2 separate shades of gray.
 
-![](/images/blog/7b7221291508df237f583078d2e581f0b9c858d7-2000x1125.webp)
+![](/images/site-mirror/7b7221291508df237f583078d2e581f0b9c858d7-2000x1125.webp)
 
 
 *Figure 4*

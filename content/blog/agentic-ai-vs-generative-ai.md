@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 14 March 2026 · updated 17 March 2026*
 
-![Agentic systems vs. GenAI: when generation isn't enough](/images/blog/b4ebd5efb317c0d46d34dd14b3f8ab07aa1a345a-2400x1256.webp)
+![Agentic systems vs. GenAI: when generation isn't enough](/images/site-mirror/b4ebd5efb317c0d46d34dd14b3f8ab07aa1a345a-2400x1256.webp)
 
 Generative AI (GenAI) can write you a function. An agent can read the GitHub webhooks docs, detect a bug, create a branch, ship a fix, and open a pull request, all without you touching the keyboard. That's a vastly different system architecture, with different design patterns.
 

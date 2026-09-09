@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 10 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Let’s say you’re working on an e-commerce website for home improvement products, like nails, screws, wood, tile, putty knives… that kind of thing. These types of stores (brick-and-mortar or online) typically sell a huge variety of products. Notably, when a person buys something from a store like this, it’s pretty common to need more of the same items at a later time—because who knows exactly how many nails you’ll need for a project?
 
@@ -60,17 +60,17 @@ Digging a bit deeper, let’s see how to create your index on a per-user basis:
 
 The only unusual thing about creating this index is the TEMPORARY argument. This tells Search and Query to make the search index ephemeral and delete it after the specified 3600 seconds (or whatever aligns with your session timeout). Any time the search index is used, adding/deleting documents or querying, resets the idle timer. Once the time expires the index will be deleted. Also, note the name of the index includes a user identifier.
 
-![](/images/blog/d0516fc4b0de56d16484ecb583a9a7dd0035a2e1-1024x576.webp)
+![](/images/site-mirror/d0516fc4b0de56d16484ecb583a9a7dd0035a2e1-1024x576.webp)
 
 At login, the index would be populated with FT.ADD from the other data source. Nothing special needed here—Search and Query will take care of the document and keys as temporary with no other syntax. Adding the documents will be quick—in the low-single-digit-milliseconds range for most documents. This doesn’t have to be done synchronously, so as a user initially browses the site, the purchase history can be loaded in the background.
 
 One general note about Search and Query that should be restated, especially in this multi-index context: all document names should be unique across all indexes to prevent key contention at the hash level. Finally, in some circumstances you can save space by using the NOSAVE option on FT.ADD. This will not store the document, but rather just index it, providing you with the document ID only on FT.SEARCH, though this does complicate the result retrieval process.
 
-![](/images/blog/49ed96cde8ccf57b96233a48ce57a0001034c084-1024x576.webp)
+![](/images/site-mirror/49ed96cde8ccf57b96233a48ce57a0001034c084-1024x576.webp)
 
 Implementing the search functionality itself is straightforward. Take the user input as the query argument to FT.SEARCH. The only difference from any implementation of Search and Query is that the index name will be derived in some way from the user identifier.
 
-![](/images/blog/48bdff0bb056bf57631287a7cd6b82dc9db64646-1024x576.webp)
+![](/images/site-mirror/48bdff0bb056bf57631287a7cd6b82dc9db64646-1024x576.webp)
 
 When a user explicitly logs out of the service, the FT.DROP command removes the index and documents. Strictly speaking, this is not a required operation since the TEMPORARY index will expire automatically, but using the explicit FT.DROP will free up resources a little sooner.
 

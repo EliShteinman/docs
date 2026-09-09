@@ -14,7 +14,7 @@ hidden: true
 
 *By Jamie Scott, Product Manager · Published 12 May 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/cafb43074ab4accfbc0478da84113fa9589d4c93-772x520.webp)
+![Blog tile image](/images/site-mirror/cafb43074ab4accfbc0478da84113fa9589d4c93-772x520.webp)
 
 If you work in cybersecurity, or if you’ve interacted with your organization’s cybersecurity team, you’ve likely heard the question, “Is everything encrypted in transit and at rest?” Encryption in transit protects data while in motion, and encryption at rest protects data in storage.
 
@@ -64,7 +64,9 @@ Secure enclaves promise to help reduce the barriers to encryption in use. Secure
 
 So, what do secure enclaves need to achieve broad success? According to the [theory of the diffusion of innovation](https://en.wikipedia.org/wiki/Diffusion_of_innovations), many emerging technologies struggle to cross the chasm between attracting early adopters and making headway with the early majority. As secure enclave technology develops and finds new followers, it is approaching that chasm, which has been the graveyard of many promising technologies. But given the technology’s momentum and the ecosystem building around it, we’re really excited about the prospects for secure enclaves.
 
-![](/images/blog/3cb4a8c1c2eff66c89cade487e587354a2019bfd-1024x357.webp)
+![](/images/site-mirror/3cb4a8c1c2eff66c89cade487e587354a2019bfd-1024x357.webp)
+
+*The chasm of innovation adoption.*
 
 Four critical things must happen for secure enclaves to successfully cross that chasm:
 

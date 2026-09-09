@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 14 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/2e5fea26a8e585879aaeeddaa9e5d6b16d84f5c3-1200x628.webp)
+![Redis](/images/site-mirror/2e5fea26a8e585879aaeeddaa9e5d6b16d84f5c3-1200x628.webp)
 
 You've probably hit this before: searching for "authentication middleware" returns exact function names but misses related security docs. Or searching "database connection timeout" finds the error code but nothing about fixing it.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Martin Dimitrov, Contributor · Published 6 December 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e6ba29a22a15161251aa8dd3736f7cd6de36f8ab-772x550.webp)
+![Blog tile image](/images/site-mirror/e6ba29a22a15161251aa8dd3736f7cd6de36f8ab-772x550.webp)
 
 **Intel and Redis are working together to investigate potential performance optimizations for the RedisTimeSeries compression/decompression algorithm. Here’s how that exploration works.**
 
@@ -41,7 +41,9 @@ It could be faster. (Then again, when it comes to performance optimizations, it 
 
 While Gorilla achieves excellent compression ratios and computational efficiency, in some situations – e.g. when computing filtering operations across the time-series database – the decompression routine takes up a significant amount of time. For example, in the flame graph below, we see that decompressChunk takes up a large portion of the execution time, up to 85% in one instance.
 
-![image of a flame graph](/images/blog/96e70beaf4e69d25b0cbd453c4ac303f894a83b9-1300x847.webp)
+![image of a flame graph](/images/site-mirror/96e70beaf4e69d25b0cbd453c4ac303f894a83b9-1300x847.webp)
+
+*Figure 1: Flame graph generated when computing a max filtering function. Note that decompressChunk takes up a significant portion of the execution time.*
 
 ## Exploring even-better options
 
@@ -57,7 +59,9 @@ In Figure 2, we show the best-performing algorithms in terms of compression rati
 
 Since Gorilla offers a better compression ratio than TurboPFor, we decided to stay with the existing algorithm and turn our attention to further fine-tuning the Gorilla implementation.
 
-![bar graph of compression ratio for turbopfor and gorilla](/images/blog/a5fc7dfc9e1b24ff2f2ab8cdcd25038aae82f475-624x387.webp)
+![bar graph of compression ratio for turbopfor and gorilla](/images/site-mirror/a5fc7dfc9e1b24ff2f2ab8cdcd25038aae82f475-624x387.webp)
+
+*Figure 2. Compression ratios for TurboPFor algorithms*
 
 ### Data patterns of compressed values
 

@@ -17,7 +17,7 @@ hidden: true
 
 *By Redis   · Published 20 October 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/f2757e486f26feabe53f3a5071977a5d05b8d102-772x520.webp)
+![Blog tile image](/images/site-mirror/f2757e486f26feabe53f3a5071977a5d05b8d102-772x520.webp)
 
 As of October 20, 2021, we’re updating the [RedisRaft](https://github.com/RedisLabs/redisraft) license from dual AGPLv3 + RSAL to [RSAL](/legal/licenses/) only.
 

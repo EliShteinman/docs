@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 21 June 2026 · updated 24 June 2026*
 
-![Dynamic batching: a practical how-to guide](/images/blog/3d7c1965536902ef1df230af1de8b244e28b7528-2400x1256.webp)
+![Dynamic batching: a practical how-to guide](/images/site-mirror/3d7c1965536902ef1df230af1de8b244e28b7528-2400x1256.webp)
 
 You're load-testing a new inference endpoint before rollout. Traffic looks healthy on the client side, but your GPU dashboard tells a different story: utilization stuck at [low single digits](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/tutorials/Conceptual_Guide/Part_2-improving_resource_utilization/README.html) while requests arrive one at a time. That gap between what your hardware can do and what it's actually doing is the problem dynamic batching is built to address. Inference servers process requests far more efficiently in groups than one by one, but most clients send requests individually. Dynamic batching bridges that gap by combining separate requests into batches on the server side at runtime.
 

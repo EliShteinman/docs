@@ -15,7 +15,7 @@ hidden: true
 
 *By Mirko Ortensi, Vasko Chomakov · Published 17 November 2025*
 
-![Redis Redis MCP Server now available in Gemini CLI ](/images/blog/06d2a51ae0512d2e437147c2f1dd0165f3db101a-1200x628.webp)
+![Redis Redis MCP Server now available in Gemini CLI ](/images/site-mirror/06d2a51ae0512d2e437147c2f1dd0165f3db101a-1200x628.webp)
 
 Following [Gemini CLI](https://github.com/google-gemini/gemini-cli)’s [recent ](https://blog.google/technology/developers/gemini-cli-extensions/)support for extensions, the [Redis MCP Server](https://github.com/redis/mcp-redis) is now available in the Gemini CLI [extensions gallery](https://geminicli.com/extensions/).
 

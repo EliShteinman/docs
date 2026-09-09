@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 March 2026 · updated 24 March 2026*
 
-![AI agent benchmarks: Where they fall short & why your infrastructure matters](/images/blog/0eb3587c1396df4aae6b6a361df52ca0a3785880-2400x1256.webp)
+![AI agent benchmarks: Where they fall short & why your infrastructure matters](/images/site-mirror/0eb3587c1396df4aae6b6a361df52ca0a3785880-2400x1256.webp)
 
 Your LLM scored 90% on a reasoning benchmark, but can the agent built on top of it actually book a flight, recover from an API error mid-workflow, and remember what the customer said three turns ago?
 

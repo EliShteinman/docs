@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 12 June 2026 · updated 24 June 2026*
 
-![AI agent access control: a practical guide](/images/blog/9bd1cab3089ffef1cae16469bf95ed5469c68ba1-2400x1256.webp)
+![AI agent access control: a practical guide](/images/site-mirror/9bd1cab3089ffef1cae16469bf95ed5469c68ba1-2400x1256.webp)
 
 Picture a support agent that's authorized to read customer tickets, summarize them, and draft replies. A user asks it to "pull up everything related to account 4471's billing dispute." The agent authenticates fine, queries the vector store, and returns a clean summary, along with three chunks from an internal finance doc that mention account 4471 in a footnote. Nobody approved that. Nothing was hacked. The retrieval just didn't know it shouldn't surface those chunks for this user, on this task, right now.
 

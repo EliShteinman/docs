@@ -15,7 +15,7 @@ hidden: true
 
 *By William Johnston, Head of Technical Marketing · Published 17 August 2022 · updated 5 September 2026*
 
-![Blog tile image](/images/blog/0bc7402bde711b779a0a0fe4a7eb44e262ff42cc-772x550.webp)
+![Blog tile image](/images/site-mirror/0bc7402bde711b779a0a0fe4a7eb44e262ff42cc-772x550.webp)
 
 **“**[**8 Data Modeling Patterns in Redis**](https://redis.io/resources/8-data-modeling-patterns-in-redis/)**,” a comprehensive e-book on data modeling in NoSQL, thoroughly examines eight data models that developers can utilize in Redis to build modern applications without the obstacles presented by traditional relational databases. Here’s a bit of what you can expect within its pages.**
 

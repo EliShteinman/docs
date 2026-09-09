@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 31 December 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e4a9513232aff1833607baff3d87c6b5fcb32924-635x200.webp)
+![Blog tile image](/images/site-mirror/e4a9513232aff1833607baff3d87c6b5fcb32924-635x200.webp)
 
-![](/images/blog/41f747c83134c98f3c3e551ad1e8ec298b940cbb-635x200.webp)
+![](/images/site-mirror/41f747c83134c98f3c3e551ad1e8ec298b940cbb-635x200.webp)
 
 ### Update: redis-lua-debugger is not compatible with Redis v3 and above
 

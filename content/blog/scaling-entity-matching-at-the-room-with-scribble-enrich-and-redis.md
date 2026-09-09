@@ -14,7 +14,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 29 June 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0d96f4b826087f3cab40fa360e1d0228225b1c54-772x520.webp)
+![Blog tile image](/images/site-mirror/0d96f4b826087f3cab40fa360e1d0228225b1c54-772x520.webp)
 
 [The Room’s](https://www.theroom.com/) mission is to connect top talent from around the world to meaningful opportunities. Envisioned as a technology-driven, community-centric platform to help organizations quickly find high-quality, vetted talent at scale, The Room will host tens of millions of members in its system and have a worldwide presence.
 
@@ -26,7 +26,9 @@ After experimentation, The Room’s ML team settled on an approach using vector 
 
 The overall flow of data is shown in the architecture diagram in Figure 1. While fairly standard, the key challenge was to put the entire production system in place with a small team, tight timelines, and the need for flexibility.
 
-![](/images/blog/032ead487ac8d4ab2729109c5e1ef07d461084bd-716x403.webp)
+![](/images/site-mirror/032ead487ac8d4ab2729109c5e1ef07d461084bd-716x403.webp)
+
+*Figure 1: Data flow around The Room Intelligence Platform (TRIP)*
 
 Scribble Data’s [Enrich feature store](http://www.scribbledata.io/product) and its apps provided the overall framework for implementation of The Room Intelligence Platform which is responsible for entity matching. Enrich handled integration with approximately 15 data sources, data quality, batch, and streaming-feature engineering including vectorization, as well as integration with in-memory database backends such as Redis, cataloging, and compliance. Enrich’s pipelining and orchestration was also used for modeling, and future versions of implementations will use a standalone model database such as MLFlow.
 
@@ -59,7 +61,9 @@ Three approaches were tested:
 
 For approaches (1) and (2) above, a key sort was performed on the scores to get the indices of the top-*k* similar candidate vectors. Various values of *N* and *k* were tested. All three approaches used the same dataset of vectors. The results are shown in Table 1.
 
-![](/images/blog/2def02c7e0ff73169bb863f2af332144b6de7f5b-800x358.webp)
+![](/images/site-mirror/2def02c7e0ff73169bb863f2af332144b6de7f5b-800x358.webp)
+
+*Table 1: Speedup comparison using various methods for retrieving top-k closest vectors given a query vector*
 
 We see a consistent 15 times speedup in top-*k* vector retrieval performance. The larger the data size, the greater the speedup. Our hypothesis is that this speedup is due to elimination of Python and Pandas overhead in compute and memory, and that this speedup can be expected in production consistently.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 22 July 2021 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/54ba91ad5fa926d984bbc9b39e770c0792692531-772x520.webp)
+![Blog tile image](/images/site-mirror/54ba91ad5fa926d984bbc9b39e770c0792692531-772x520.webp)
 
 *With over 34 years of experience architecting and building SaaS applications, *[*Lee Atchison*](https://www.linkedin.com/in/leeatchison/)* is a recognized thought leader and expert on application modernization, cloud migration, and DevOps transformations. You can read or watch his expertise on display through any of his three books, 70+ published articles, or 100s of presentations, classes, and seminars.*
 
@@ -44,7 +44,9 @@ Headaches happen within complex applications, and a cache is there to minimize t
 
 In [*Caching at Scale With Redis*](/docs/caching-at-scale-with-redis/)*,* Lee introduces what caching is, why and when you need it, and caching practices that will help your application achieve the highest performance possible.
 
-![](/images/blog/0b43f3ad608f87d4fbcc4dad8235ea79f4e23114-1024x491.webp)
+![](/images/site-mirror/0b43f3ad608f87d4fbcc4dad8235ea79f4e23114-1024x491.webp)
+
+*A simple cache (p. 4)*
 
 When a user requests data from a service, an operation is performed to acquire that data from a store, then relay that information back to the consumer. Yet, Lee notes that these operations can be very resource and time intensive—especially if the same data is being retrieved over and over again.
 

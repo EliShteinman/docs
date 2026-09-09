@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 16 April 2015 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/62f7c31d343148f296aebcf3372dacb4783ae801-140x92.webp)
+![Blog tile image](/images/site-mirror/62f7c31d343148f296aebcf3372dacb4783ae801-140x92.webp)
 
-![](/images/blog/39e0ae10ad81628baafd79df0a090abbfae056cf-635x200.webp)
+![](/images/site-mirror/39e0ae10ad81628baafd79df0a090abbfae056cf-635x200.webp)
 
 > “…as we know, there are known knowns; there are things we know we know. We also know there are known unknowns; that is to say we know there are some things we do not know. But there are also unknown unknowns – the ones we don’t know we don’t know.”
 United States Secretary of Defense Donald Rumsfeld, 2002
@@ -35,7 +35,7 @@ So, Redis is a piece of software and as such it requires RAM to operate. But Red
 
 ### What is the airspeed velocity of an unladen swallow?
 
-![](/images/blog/c53e21b844ac8a18c3135490778acf3f9e170ecc-300x165.webp)
+![](/images/site-mirror/c53e21b844ac8a18c3135490778acf3f9e170ecc-300x165.webp)
 
 We’ll begin our journey with a quick peek at Redis’ Operational RAM.
 
@@ -142,7 +142,7 @@ Each of our coconuts is different, so Redis uses different encodings. The “int
 
 ### Going (coco)nuts
 
-![](/images/blog/dc12d3345c5177c53e35caf7ff3a5eaeab06e5d5-300x200.webp)
+![](/images/site-mirror/dc12d3345c5177c53e35caf7ff3a5eaeab06e5d5-300x200.webp)
 
 What about other coconut structures? Strings are the simplest data structure that Redis offers and they are used internally to make other, more advanced structures. The Hash is made of a bunch of Strings (fields & values) added with a dictionary data structure, in which each entry is a linked list… BUT they could be encoded entirely as a ziplist. And speaking of lists, we have the linked lists and ziplists (and perhaps even **Matt Stancliff @mattsta**‘s [quicklists](https://matt.sh/redis-quicklist-visions) soon) that are also used by Sets and Sorted Sets…
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Alexey Smolyanyy, Enterprise Technical Account Manager · Published 8 June 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/24ee7cfcfae09da33f5a81d487b9773c6006de44-8428x3758.webp)
+![Blog tile image](/images/site-mirror/24ee7cfcfae09da33f5a81d487b9773c6006de44-8428x3758.webp)
 
 What would you say if you started a new role and arrived at your very first meeting with your very first customer, equipped with two days worth of plans for capacity planning, DNS matters, geo-distribution, and development in .NET … and the first question you got was: “How do we efficiently monitor the cluster and database?”
 

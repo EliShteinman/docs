@@ -14,7 +14,7 @@ hidden: true
 
 *By Alex Milowski, Product Evangelist · Published 24 June 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3d190b5725a90ba434fdff2ed2d13b4140997f98-368x260.webp)
+![Blog tile image](/images/site-mirror/3d190b5725a90ba434fdff2ed2d13b4140997f98-368x260.webp)
 
 [Kineviz](https://www.kineviz.com) is a software developer and consultancy focused on visual analytics. Its GraphXR platform provides a unified visual environment for analysts, business users, and investigators to work with big, connected, and high-dimensional data. GraphXR supports a wide range of applications including law enforcement, medical research, and business intelligence, accelerating time to insight and enabling needle-in-haystack discoveries that evade traditional analytic workflow.
 
@@ -26,13 +26,13 @@ Want to learn more about knowledge graphs? Check out our blog on [Getting Starte
 
 ## Related Articles
 
-![](/images/blog/73c844e3ab3096303a05229d21b6cbd337a00fae-368x254.webp)
+![](/images/site-mirror/73c844e3ab3096303a05229d21b6cbd337a00fae-368x254.webp)
 
 Getting Started with Knowledge Graphs in RedisGraph
 
 Learn More
 
-![](/images/blog/892ec95ee1f154177aa1b93021184fdcad20e358-442x254.webp)
+![](/images/site-mirror/892ec95ee1f154177aa1b93021184fdcad20e358-442x254.webp)
 
 RedisGraph and Redis: What, Why, and How
 

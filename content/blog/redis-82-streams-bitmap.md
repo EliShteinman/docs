@@ -14,7 +14,7 @@ hidden: true
 
 *By Lior Kogan, Contributor · Published 12 August 2025*
 
-![Redis 8.2 streams and bitmap enhancements](/images/blog/2ae9bb3778f80a0e9ce155dc54a9faad5d7d87b8-772x552.webp)
+![Redis 8.2 streams and bitmap enhancements](/images/site-mirror/2ae9bb3778f80a0e9ce155dc54a9faad5d7d87b8-772x552.webp)
 
 Redis 8.2 delivers powerful new enhancements to the streams and bitmap data structures that solve real challenges devs face every day.
 

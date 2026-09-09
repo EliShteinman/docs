@@ -16,7 +16,7 @@ hidden: true
 
 *By Steve Lorello, Developer Advocate · Published 4 August 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3317475c449f3066691f0e8f9e1b2b562c195f99-772x550.webp)
+![Blog tile image](/images/site-mirror/3317475c449f3066691f0e8f9e1b2b562c195f99-772x550.webp)
 
 **Embedded documents, indexed arrays, and other awesome additions to Redis OM .NET!**
 

@@ -17,7 +17,7 @@ hidden: true
 
 *By Amiram Mizne, Director of Product Management · Published 10 September 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 The world of microservices is an exciting place where we are witnessing fast-paced, frequent, meaningful advances. One of the most significant recent steps forward in the OpenShift/Kubernetes ecosystem was the introduction of Operator-based deployments, which we [touched on in a recent blog post](/blog/redis-enterprise-operator-kubernetes/).
 
@@ -38,11 +38,11 @@ Before you get started, make sure you have:
 - Log in to your OpenShift account as a super admin (so you have access to all the default projects).
 - Create a new project, fill in the name and other details for the project and hit “Create.”
 
-![OpenShift "new project" screen](/images/blog/147475921dbda94caac5575f83eb27e77e008791-734x454.webp)
+![OpenShift "new project" screen](/images/site-mirror/147475921dbda94caac5575f83eb27e77e008791-734x454.webp)
 
 - Click on Admin (upper right corner) and then “Copy Login.”
 
-![OpenShift "copy login" screen](/images/blog/0239e4c8a4d5167c28d21e145d68a7575e26f5af-1436x771.webp)
+![OpenShift "copy login" screen](/images/site-mirror/0239e4c8a4d5167c28d21e145d68a7575e26f5af-1436x771.webp)
 
 - Paste the login command into your shell; it should look something like this:
 oc login https://your-cluster.acme.com –token=your$login$token
@@ -128,7 +128,7 @@ deployment.apps/redis-enterprise-operator created
 Now, run kubectl get Deployment and verify that your redis-enterprise-operator deployment is running. A Typical response will look like this:
 
 
-![redis-enterprise-deployment-response](/images/blog/5e7a3e1b7175a7931e8c8cffe58229e5e560d7d7-1320x168.webp)
+![redis-enterprise-deployment-response](/images/site-mirror/5e7a3e1b7175a7931e8c8cffe58229e5e560d7d7-1320x168.webp)
 
 - [redis-enterprise-cluster.yaml](https://raw.githubusercontent.com/Redis/redis-enterprise-k8s-docs/master/redis-enterprise-cluster.yaml)
 
@@ -227,12 +227,12 @@ Next, create your database.
 
 - Open a browser window and navigate to localhost:8443
 
-![Reds Enterprise login screen](/images/blog/cef4ae15f06922580ba653cabd4c9b06fec6bcdf-1358x1024.webp)
+![Reds Enterprise login screen](/images/site-mirror/cef4ae15f06922580ba653cabd4c9b06fec6bcdf-1358x1024.webp)
 
 - In order to retrieve your password, navigate to the OpenShift management console, select your project name, go to Resources->Secrets->your_cluster_name
 - Retrieve your password by selecting “Reveal Secret.”
 
-![OpenShift "reveal secret" screen](/images/blog/64e731b4e7ba2427af8ca14a9a387219cbc4def9-690x585.webp)
+![OpenShift "reveal secret" screen](/images/site-mirror/64e731b4e7ba2427af8ca14a9a387219cbc4def9-690x585.webp)
 
 - Follow the interface’s [instructions to create your database](/redis-enterprise-documentation/administering/database-operations/creating-database/).
 
@@ -240,7 +240,7 @@ Next, create your database.
 
 *Applications->Services. You will see 2 newly created services representing the database along with their IP and port information, similar to the screenshot below.*
 
-![OpenShift services screen](/images/blog/225289681505d6fe4d17b581b58ce5d6ccdcf6cf-1999x498.webp)
+![OpenShift services screen](/images/site-mirror/225289681505d6fe4d17b581b58ce5d6ccdcf6cf-1999x498.webp)
 
 **Conclusion**
 

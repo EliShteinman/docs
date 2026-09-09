@@ -14,7 +14,7 @@ hidden: true
 
 *By Drew Kreiger, Developer Community Manager · Published 29 June 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/763db966696a0fc1ca7c6cd35e24dbc2095ccbdf-368x260.webp)
+![Blog tile image](/images/site-mirror/763db966696a0fc1ca7c6cd35e24dbc2095ccbdf-368x260.webp)
 
 The results are in!
 

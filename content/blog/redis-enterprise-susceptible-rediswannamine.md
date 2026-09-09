@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 22 March 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 On March 8th, [Imperva published a blog post](https://www.imperva.com/blog/2018/03/rediswannamine-new-redis-nsa-powered-cryptojacking-attack/) about a new cryptojacking attack that incorporates Redis. From an engineering perspective, this attack isn’t so much a marvel as a complicated Rube Goldberg machine that happens to have Redis as one of the cogs. Good news though:
 

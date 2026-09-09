@@ -14,7 +14,7 @@ hidden: true
 
 *By Andrew Brookins, Former Curriculum Software Engineer at Redis · Published 11 August 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/77a8fa4bdc8389a26ea4de9142bc72db1a68bf18-1592x922.webp)
+![Blog tile image](/images/site-mirror/77a8fa4bdc8389a26ea4de9142bc72db1a68bf18-1592x922.webp)
 
 Our latest course, Redis for Python Developers (RU102PY) is now live at Redis University! You can [sign up for free](https://university.redis.com/courses/ru102py/) today.
 
@@ -28,7 +28,9 @@ I’m a 10+ year Python veteran and author of the book [The Temple of Django Dat
 
 There are plenty of established patterns in Python for working with relational databases, but what about Redis? I’ve seen many one-off calls to Redis scattered through Python projects, and encountered plenty of apps that could have benefitted from [Redis’ geospatial](https://redis.io/commands/geoadd) capabilities or [Redis Streams](https://redis.io/docs/latest/develop/) but failed to use them. I built this course to give you the definitive patterns for writing Python code using all the powerful features that Redis has to offer. In the course, you’ll integrate Redis deeply with a [Flask](https://flask.palletsprojects.com/) application, gaining hands-on experience modeling data in Hashes, Sets, and Sorted sets, building geospatial indexes, and using [Redis Streams](https://university.redis.com/courses/ru202/).
 
-![](/images/blog/f92e2d4751cf051d36fb5c5e832b351ae0ed3f52-1024x587.webp)
+![](/images/site-mirror/f92e2d4751cf051d36fb5c5e832b351ae0ed3f52-1024x587.webp)
+
+*A map of solar sites in the RediSolar example application*
 
 You’ll also learn how to squeeze every ounce of performance out of Redis with pipelines and Lua scripts. You’ll build rate limiters and leaderboards, learn how Redis 6’s new access control lists (ACLs) work, and more.
 

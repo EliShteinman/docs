@@ -16,7 +16,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 1 May 2025 · updated 23 May 2025*
 
-![Blog tile image](/images/blog/38b8d34b5522578b9a15d13c0245eb539317faa0-1544x1104.webp)
+![Blog tile image](/images/site-mirror/38b8d34b5522578b9a15d13c0245eb539317faa0-1544x1104.webp)
 
 The rise of hyperscalers like AWS and GCP has unlocked incredible speed and scale for startups and enterprises alike. But for companies rooted in open source, it has posed a fundamental challenge: how do you keep innovating and investing in OSS projects when cloud providers reap the profits and control the infrastructure without proportional contributions back to the projects that they exploit?
 

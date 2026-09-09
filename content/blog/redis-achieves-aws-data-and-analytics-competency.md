@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 19 December 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9c65fbec871c4e6ef18b55df8fa685312b9c3dce-772x550.webp)
+![Blog tile image](/images/site-mirror/9c65fbec871c4e6ef18b55df8fa685312b9c3dce-772x550.webp)
 
 **Redis has achieved AWS Data and Analytics Competency Status. But what does that mean? And more important, here’s what that means to you.**
 

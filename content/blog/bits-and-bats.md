@@ -14,7 +14,7 @@ hidden: true
 
 *By Sandro Pasquali · Published 21 May 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 In this article you’re going to learn how to perform bithree books on NodeJStwise operations on Redis keys, as well as setting, getting and comparing binary values. To begin, let’s think about how “flipping bits” can be a useful way of storing information in general, and then how we can execute binary operation with Redis.
 

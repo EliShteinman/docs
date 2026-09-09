@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 17 February 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/9793a73d73cff241cde85856d08992c1199683e5-1200x628.webp)
+![Redis](/images/site-mirror/9793a73d73cff241cde85856d08992c1199683e5-1200x628.webp)
 
 Caching – storing frequently accessed data in fast storage (often memory) – has long been a staple of modern applications and high-scale architectures. Similarly, the ability to deliver data quickly and efficiently has long been critical to software systems.
 

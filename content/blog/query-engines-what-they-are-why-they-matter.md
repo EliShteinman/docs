@@ -14,7 +14,7 @@ hidden: true
 
 *By Joey Whelan · Published 15 January 2025 · updated 31 October 2025*
 
-![Blog tile image](/images/blog/59c61fc62906d4959a5333565b546fe9f347543e-772x552.webp)
+![Blog tile image](/images/site-mirror/59c61fc62906d4959a5333565b546fe9f347543e-772x552.webp)
 
 ## Get to know query engines, their benefits, and how they simplify data management for modern apps.
 
@@ -33,7 +33,7 @@ A query engine is a core component of a database management system that processe
 
 Examples of query engines include PostgreSQL for relational data, MongoDB for document-based queries, Elasticsearch for search and analytics, and Redis for real-time data retrieval, search, and secondary indexing. These tools are essential for efficiently managing and retrieving data from large datasets.
 
-![Query Engine](/images/blog/a98e2f75f6eb6c57ed8a624bef05e9bfb2735047-1920x880.webp)
+![Query Engine](/images/site-mirror/a98e2f75f6eb6c57ed8a624bef05e9bfb2735047-1920x880.webp)
 
 ## Benefits of a query engine
 

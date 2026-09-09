@@ -14,7 +14,7 @@ hidden: true
 
 *By Esther Schindler · Published 20 December 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e51d96303a576d32bef886b80a3530c02c4ea994-772x550.webp)
+![Blog tile image](/images/site-mirror/e51d96303a576d32bef886b80a3530c02c4ea994-772x550.webp)
 
 **As 2022 draws to a close, we take a look back at the Redis blog posts that resonated with our readers this year – judged by how often they were read, shared, and discussed. The results reflect the company’s progress. Look how much we accomplished!**
 

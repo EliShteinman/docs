@@ -16,7 +16,7 @@ hidden: true
 
 *By Filipe Oliveira, Martin Dimitrov · Published 17 November 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/21c7008cc4456c5a4cb93769743a7b80e2c2b55c-772x550.webp)
+![Blog tile image](/images/site-mirror/21c7008cc4456c5a4cb93769743a7b80e2c2b55c-772x550.webp)
 
 **Redis and Intel are collaborating on a “zero-touch” performance and profiling automation to scale Redis’s ability to pursue performance regressions and improve database code efficiency. The Redis benchmarks specification describes cross-language and tools requirements and expectations to foster performance and observability standards around Redis-related technologies.**
 
@@ -56,13 +56,17 @@ When a new build variant request is received, the build agent ([redis-benchmarks
 
 New commits to the same work branch produce a set of new benchmark events and repeat the process above.
 
-![example diagram for a workflow with PR triggered benchmark run](/images/blog/e905f620c5f5f1b7fa9b32c8636dc92f648efb8c-962x809.webp)
+![example diagram for a workflow with PR triggered benchmark run](/images/site-mirror/e905f620c5f5f1b7fa9b32c8636dc92f648efb8c-962x809.webp)
+
+*Figure 1. Architecture of the platform from the stage of triggering a workflow from a pull request until the multiple benchmark agents produce the final benchmark and profiling data.*
 
 ### Hardware configuration of Intel Lab
 
 The framework can be deployed both on-prem and on the cloud. In our collaboration, Intel is hosting an on-prem cluster of servers dedicated to the always-on automatic performance testing framework (see Figure 2).
 
-![intel lab cloud benchmark diagram](/images/blog/1caa915417d8a585bf89518b4f504d7a19ee7960-1280x720.webp)
+![intel lab cloud benchmark diagram](/images/site-mirror/1caa915417d8a585bf89518b4f504d7a19ee7960-1280x720.webp)
+
+*Figure 2. Intel lab setup*
 
 The cluster contains six current generation (IceLake) servers and six prior generation (CascadeLake) servers connected to a high-speed 40Gb switch (see Figure 3). The older servers are used for performance testing across hardware generations, as well as for load generation clients in client-server benchmarks.
 
@@ -70,7 +74,9 @@ We plan to expand the lab to include multiple generations of servers, including 
 
 One of the observed benefits of the dedicated on-prem setup is that we can obtain more stable results with less run-to-run variation. In addition, we have the flexibility to modify the servers to add or remove components as needed.
 
-![intel lab configuration](/images/blog/2814f64819a91cf59321a62bb96fc2ae0ca9ccf2-633x499.webp)
+![intel lab configuration](/images/site-mirror/2814f64819a91cf59321a62bb96fc2ae0ca9ccf2-633x499.webp)
+
+*Figure 3. Server configuration*
 
 ## Looking forward
 
@@ -89,7 +95,9 @@ We see benefits already. In the [Redis 7.0](/blog/redis-7-generally-available/) 
 
 In summary, the above work allowed for up to 68% performance boost on the covered commands.
 
-![intel benchmarks](/images/blog/369e2b625fdb6a9454a9898310a69d21e359d893-1845x939.webp)
+![intel benchmarks](/images/site-mirror/369e2b625fdb6a9454a9898310a69d21e359d893-1845x939.webp)
+
+*Figure 4. Sample visualization of the Redis Developer Group Grafana tracking the performance of each platform/benchmark/version over time.*
 
 ### Future work
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Lior Kogan, Adriano Amaral, Filipe Oliveira · Published 7 March 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/cca9b1ebf1366dd3cf286f869bd01bc82f8b5a89-772x552.webp)
+![Blog tile image](/images/site-mirror/cca9b1ebf1366dd3cf286f869bd01bc82f8b5a89-772x552.webp)
 
 As more and more companies get GenAI apps into production, we’re seeing increasing requests from customers for larger vector databases. We see use cases for a billion or more vectors and we’re happy to share our benchmarking results at this scale.
 

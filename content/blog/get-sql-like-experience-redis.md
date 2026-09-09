@@ -15,7 +15,7 @@ hidden: true
 
 *By Roshan Kumar, Senior Product Manager · Published 14 April 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/438362d90c26e20f2a19776b45644c691fa1cecd-772x550.webp)
+![Blog tile image](/images/site-mirror/438362d90c26e20f2a19776b45644c691fa1cecd-772x550.webp)
 
 *Related E-Book download: *[*The Importance of In-Memory NoSQL Databases*](/docs/real-time-applications-need-real-time-data/)
 
@@ -45,7 +45,9 @@ Figure 1 shows an example of how you could map a table into Redis data structure
 
 The row with primary id, 10001 will go in as a Hash with the key: product:10001. We have two Sorted Sets in this example: the first to iterate through the data set by the primary key and the second to query based on price.
 
-![](/images/blog/ffeb19ec07b56b145bc3611fde96e7d20ed18041-1024x479.webp)
+![](/images/site-mirror/ffeb19ec07b56b145bc3611fde96e7d20ed18041-1024x479.webp)
+
+*Figure 1. Mapping a table to Redis data structures*
 
 
 With this option, you need to make changes to your code to use Redis queries instead of SQL commands. Below are some examples of SQL and Redis equivalent commands:
@@ -105,7 +107,9 @@ Now, if you want to maintain the SQL interface in your solutions and only change
 
 Spark-Redis library allows you to use the DataFrame APIs to store and access Redis data. In other words, you can insert, update and query data using SQL commands, but the data is internally mapped to Redis data structures.
 
-![](/images/blog/71f83d4e1c7bef51bd915a0b6bcfa6e5c1394210-907x1024.webp)
+![](/images/site-mirror/71f83d4e1c7bef51bd915a0b6bcfa6e5c1394210-907x1024.webp)
+
+*Figure 2. The stack for Spark SQL and Redis*
 
 First, you need to download spark-redis and build the library to get the jar file. For example, with spark-redis 2.3.1, you get spark-redis-2.3.1-SNAPSHOT-jar-with- dependencies.jar.
 

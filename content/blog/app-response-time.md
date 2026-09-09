@@ -14,7 +14,7 @@ hidden: true
 
 *By Fionce Siow, Senior Product Marketing · Published 22 January 2026 · updated 4 February 2026*
 
-![Redis](/images/blog/3a91e164fcd3951b105a6566735352fc49e897d2-1200x628.webp)
+![Redis](/images/site-mirror/3a91e164fcd3951b105a6566735352fc49e897d2-1200x628.webp)
 
 Every app has a breaking point. You've tested your code, optimized your queries, and everything runs smoothly in staging. Then you push to production, traffic picks up, and suddenly your app starts falling apart.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Vick Kelkar, Principal Product Manager · Published 29 August 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Over the last few months our team has been busy working on deploying [Redis Enterprise](/redis-enterprise/) on Kubernetes. Our journey started with writing a simple [controller](https://hub.docker.com/r/redislabs/k8s-controller-internal/tags) for the Kubernetes release of Redis Enterprise. A few months later, we introduced [Helm Chart](/blog/redis-enterprise-release-using-helm-charts/) support, and over the last couple of months, we have been writing an [operator](/blog/redis-enterprise-operator-kubernetes/) for our Kubernetes release.
 
@@ -73,13 +73,13 @@ $ pks cluster redis Name: redis Plan Name: large UUID: 5f4af2c0-5330-4dae-bdfc-
 1. Verify that your Redis Enterprise Cluster is in a healthy state using Redis Enterprise Web Interface which is exposed on port 8443. This shows a three-node Redis Enterprise cluster running on top of a PKS cluster:
 1. Verify all deployed Redis Enterprise resources on the PKS cluster. This image shows a three-node Redis Enterprise deployment footprint:
 
-![Three-node Redis Enterprise deployment footprint](/images/blog/7ffaf617af6c39a24308413dc0778c2e7a46c273-1638x876.webp)
+![Three-node Redis Enterprise deployment footprint](/images/site-mirror/7ffaf617af6c39a24308413dc0778c2e7a46c273-1638x876.webp)
 
 #### Benchmarking Redis Enterprise on PKS
 
 In order to measure performance, you can create a Redis database using the Redis Enterprise UI (or API) with the following parameters (Note: this setup assumes there are enough cores in the Kubernetes node to support Redis Enterprise cluster. In the example below we used a 14-shard database):
 
-![14-shard database](/images/blog/e19c49bef908ea42d99c5794465f503fc74dbbae-1644x1480.webp)
+![14-shard database](/images/site-mirror/e19c49bef908ea42d99c5794465f503fc74dbbae-1644x1480.webp)
 
 Next, deploy [memtier_benchmark](/redis-enterprise-documentation/getting-started/memtier_benchmark/) on another POD on the same Kubernetes cluster and run memtier_benchmark with the following parameters:
 
@@ -87,7 +87,7 @@ Next, deploy [memtier_benchmark](/redis-enterprise-documentation/getting-started
 
 Use the metrics screen in the Redis Enterprise UI to monitor the performance of your database under load. As you can see in the figure below, Redis Enterprise can easily reach over 0.5M ops/sec using just one of the cluster nodes over Kubernetes infrastructure, while keeping latency under sub-millisecond.
 
-![Redis Enterprise can easily reach over 0.5M ops/sec using just one of the cluster nodes over Kubernetes infrastructure, while keeping latency under sub-millisecond.](/images/blog/1a170f004198edccbaad3c925f148cd1186021c2-1670x1314.webp)
+![Redis Enterprise can easily reach over 0.5M ops/sec using just one of the cluster nodes over Kubernetes infrastructure, while keeping latency under sub-millisecond.](/images/site-mirror/1a170f004198edccbaad3c925f148cd1186021c2-1670x1314.webp)
 
 **What’s Next?**
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Adi Wabisabi, Principal Software Architect, Demo Engineering · Published 16 November 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/f7a57fc0de33ea1c22e48549024343b15110fc8e-929x628.webp)
+![Blog tile image](/images/site-mirror/f7a57fc0de33ea1c22e48549024343b15110fc8e-929x628.webp)
 
 RedisJSON powered by RediSearch is [now out in public preview](/blog/redisjson-public-preview-performance-benchmarking/). In this blog post, we’ll dive into getting you started using RedisJSON’s new JSON indexing, querying, and full-text search capabilities by looking at how it was used to build RedisMart’s product catalog service. In case you missed it, RedisMart is the fully-functional [real-time retail](/industries/retail/) store we demoed during the [RedisConf 2021 keynote presentation](https://www.youtube.com/watch?v=Q6LfMTNbQOs). We also published a [blog](/blog/redismart-retail-application-with-redis/) with a deep-dive into the main requirements and architecture of the RedisMart retail application.
 
@@ -123,11 +123,11 @@ Next, we’ll make this search functionality accessible to the rest of the appli
 
 One requirement for this project was that we’d be able to query the product catalog using different attributes. Querying by name of the product is an obvious choice, but we also implemented filtering by price, rating, and category as well. In the faceted navigation menu, you can use it to quickly find what you are looking for.
 
-![](/images/blog/0ca9abe257ee49d6c6c4af11853ea5932d88f99b-1024x596.webp)
+![](/images/site-mirror/0ca9abe257ee49d6c6c4af11853ea5932d88f99b-1024x596.webp)
 
 The category also shows up in the autocomplete drop-down powered by the fuzzy search feature of RedisJSON:
 
-![](/images/blog/6e3b0f203c11e1aeaf69176cf78e67f6292f3f4a-640x342.webp)
+![](/images/site-mirror/6e3b0f203c11e1aeaf69176cf78e67f6292f3f4a-640x342.webp)
 
 Fuzzy search is easy to do using the Suggestions feature, which we can add to any data that we’re adding to the catalog:
 
@@ -208,7 +208,7 @@ Last, but not least, we’ll need to add the ability to add and modify items fro
 
 For RedisMart, we put the product catalog inside of a microservice.
 
-![](/images/blog/5b9b9020b28f62858e7a020a2128fd97070060f1-1024x664.webp)
+![](/images/site-mirror/5b9b9020b28f62858e7a020a2128fd97070060f1-1024x664.webp)
 
 In order to complete the REST API, we’ll need to add our creation, update and delete flows.
 

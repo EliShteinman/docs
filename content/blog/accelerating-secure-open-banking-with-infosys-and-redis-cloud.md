@@ -15,7 +15,7 @@ hidden: true
 
 *By Mike  Moss , Divyanshu Tiwari · Published 25 November 2025*
 
-![Redis](/images/blog/5c01e57a8f2b730ce2f157257836075472509bea-1200x628.webp)
+![Redis](/images/site-mirror/5c01e57a8f2b730ce2f157257836075472509bea-1200x628.webp)
 
 ### Tokenization: The engine of secure financial innovation
 

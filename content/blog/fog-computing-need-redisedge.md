@@ -16,7 +16,7 @@ hidden: true
 
 *By Rob Schauble, Senior Executive · Published 25 October 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Internet of Things (IoT) solutions present a unique challenge for any database. They produce increasingly large and fast data from a very broad spectrum of IoT devices, while requiring near-instant response times. Given this, the solution’s data processing and analysis must increasingly be handled at the network edge, as close as possible to the sensors, actuators and other IoT devices. We no longer have the luxury of being able to crunch IoT data in a cloud environment, where there is seemingly limitless compute and storage resources, because the latency would be unacceptable. Thankfully, there are powerful databases and platforms tackling this challenge head-on. But before we explore the solutions, it’s important to have a solid grasp of the data requirements unique to IoT environments.
 
@@ -26,7 +26,7 @@ Edge computing has increasingly become table stakes for IoT and big data applica
 
 Fortunately, in this case – with the popularization and growing trend of fog computing – the answer is yes. The solution is to bring cloud principals to the edge, where the fog and cloud environments operate in tandem to handle complex IoT use cases. When you have critical latency requirements (for example with smart city or connected car IoT use cases), that data must be handled by ruggedized fog nodes close to the IP cameras and other sensors, while non-latency critical data can still be synchronized to the core or cloud. In this way, data from all edge devices and fog nodes in your IoT solution can be aggregated at a core level (for example, a city block in the smart city use case), and ultimately to the cloud or data center environment for more in-depth business intelligence and other analytics.
 
-![Fog Bridging the continuum between Cloud and Things](/images/blog/20daa0af1efb926875fc46e02f0e7e3f925dfcee-1513x1072.webp)
+![Fog Bridging the continuum between Cloud and Things](/images/site-mirror/20daa0af1efb926875fc46e02f0e7e3f925dfcee-1513x1072.webp)
 
 With fog computing, we refer to data communication between IoT devices, edge devices, fog nodes and the cloud as “north-south” communication, and data communication between the edge/fog nodes across the system as “east-west” communication. For this to be effective, you must have common cloud or data center environment capabilities at the edge, such as machine learning, deep learning and image recognition. This presents our next challenge: how do we handle these needs, given the distributed nature and modest storage and compute capabilities of edge devices and fog nodes? Having fog and cloud environments operating in tandem is critical. For example, with machine learning, you might need to train models in the cloud (where you have vast compute and storage resources), and deploy those trained models to fog nodes and/or edge devices (so they can be served close to IoT devices for minimal latency).
 

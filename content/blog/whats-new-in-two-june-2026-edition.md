@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 6 July 2026*
 
-![What’s new in two: June 2026 edition](/images/blog/2697060446aca394f1a252c820023ff9f7d5c6c0-1200x628.webp)
+![What’s new in two: June 2026 edition](/images/site-mirror/2697060446aca394f1a252c820023ff9f7d5c6c0-1200x628.webp)
 
 [Click here to view video](https://youtu.be/f_i7C-yJYgE?si=fUcZWNc9KqNwA1Wo)
 

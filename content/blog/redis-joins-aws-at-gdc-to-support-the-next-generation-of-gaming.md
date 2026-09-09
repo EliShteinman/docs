@@ -15,7 +15,7 @@ hidden: true
 
 *By Molly Zeiger, Yusuf Bahadur · Published 3 April 2026*
 
-![Redis joins AWS at GDC to support the next generation of gaming](/images/blog/baaf67727730964755a1d2f5aaa8773ee632e4c5-1200x628.webp)
+![Redis joins AWS at GDC to support the next generation of gaming](/images/site-mirror/baaf67727730964755a1d2f5aaa8773ee632e4c5-1200x628.webp)
 
 Game Developers Conference is where the future of game infrastructure takes shape. Every year developers, cloud providers, and platform teams come together to share ideas, pressure test architectures, and explore how the next generation of games will be built.
 

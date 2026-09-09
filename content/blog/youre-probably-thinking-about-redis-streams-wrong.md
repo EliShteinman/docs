@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 6 July 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/45192aea9c8bc8ed5ad59d6df82c2a8a521d9c75-1200x628.webp)
+![Blog tile image](/images/site-mirror/45192aea9c8bc8ed5ad59d6df82c2a8a521d9c75-1200x628.webp)
 
 *Download the Tutorial: *[*How to Build Apps using Redis Streams*](/docs/build-apps-using-redis-streams/)* now*
 
@@ -218,7 +218,7 @@ As it turns out, Streams actually work for this. Take, for example, the e-commer
 
 To model this type of data in a Stream, you would determine a particular “chunk” size and make that an entry. Why chunks and not full result pages at an entry? This allows for you to have different-size pages in your pagination (e.g. 10 items per page could be made of 2 chunks of 5 each, while 25 per page would be 5 chunks of 5 each). Each entry would contain fields that map to product IDs and the values would be the product data. Take a look at this simplified example with an artificially low chunk size:
 
-![](/images/blog/0c498754c63a761cbc8db2aff4b402f3a8d36c15-682x383.webp)
+![](/images/site-mirror/0c498754c63a761cbc8db2aff4b402f3a8d36c15-682x383.webp)
 
 When you want to retrieve the cached values, you would run XRANGE with the COUNT argument set to the number of chunks that make up a result page for your interface. So, if you want to get the first page of four items you would run:
 

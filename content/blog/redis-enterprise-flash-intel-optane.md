@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 8 August 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/150d3c2cc7560f1147b5b859fd87441ca00ede70-528x257.webp)
+![Blog tile image](/images/site-mirror/150d3c2cc7560f1147b5b859fd87441ca00ede70-528x257.webp)
 
 ### Overview
 
@@ -23,9 +23,9 @@ Our partners at Intel have recently [announced the availability of Optane](https
 
 ### Intel Optane Technology
 
-![](/images/blog/150d3c2cc7560f1147b5b859fd87441ca00ede70-528x257.webp)
+![](/images/site-mirror/150d3c2cc7560f1147b5b859fd87441ca00ede70-528x257.webp)
 
-![](/images/blog/8d9e52a2397cd2cc5eea6df50cf20bb845f4e15d-514x260.webp)
+![](/images/site-mirror/8d9e52a2397cd2cc5eea6df50cf20bb845f4e15d-514x260.webp)
 
 One of the main advantages of 3DXP is that it gives the application a way to decide which part of the dataset should be stored on fast memory, e.g. DRAM, and which part on a slower memory, e.g. Flash/Nand. Our Redis Enterprise Flash (RF) product was built from the ground-up with the same approach in mind.
 We therefore decided to conduct an RF benchmark using Optane drives and compare the results with the benchmark we ran using the previous generation of Intel’s NVMe-based SSD, the [P3700](https://www.intel.com/content/www/us/en/products/memory-storage/solid-state-drives/data-center-ssds/dc-p3700-series.html). We knew that achieving better results with Optane would be challenging, as [RF had performed impressively with P3700](/docs/redis-on-flash-with-intel-nvme-benchmark/).
@@ -48,7 +48,7 @@ We benchmarked the performance of Redis(e) Flash using the following setup:
 
 The graph below show the 1000B results respectively for 50%, 85% and 95% RAM hit ratio.
 
-![](/images/blog/019520daea373a09196637e5719bf3044bffdd4e-980x566.webp)
+![](/images/site-mirror/019520daea373a09196637e5719bf3044bffdd4e-980x566.webp)
 
 ### Performance Improvement
 
@@ -62,7 +62,7 @@ The table below summarizes the average improvement factor of the Intel Optane SS
 
 #### Web UI of the throughput on 95% RAM hit ratio
 
-![](/images/blog/402db8bcd319edfb6a13531bdde17197271865cf-926x392.webp)
+![](/images/site-mirror/402db8bcd319edfb6a13531bdde17197271865cf-926x392.webp)
 
 ### Summary
 

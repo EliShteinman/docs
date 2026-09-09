@@ -15,7 +15,7 @@ hidden: true
 
 *By Paz Yanover, Principal Product Manager · Published 16 April 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 We just released a new version of [Redis Enterprise – v5.4.2](/redis-enterprise/software/downloads/) and are happy to announce that we’ve added a much requested feature. One of the big highlights of this release is improved compatibility for active-active Redis (through CRDBs, or conflict-free replicated databases) COUNTER operations with open source Redis.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 15 September 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c7915e6de3de4bb7f1efd2de820a28800ea44a4b-772x520.webp)
+![Blog tile image](/images/site-mirror/c7915e6de3de4bb7f1efd2de820a28800ea44a4b-772x520.webp)
 
 Much ink has been spilled on digital transformation in the past decade. At Redis, we see a direct connection between a set of technology layers that enable transformations (cloud, microservices, containers, and NoSQL databases) and how quickly and successfully companies are able to push through their transformation journeys.
 
@@ -32,13 +32,13 @@ The results give us an accurate view into the digital transformation journey and
 
 Organizations moving forward with NoSQL had a DTI nearly 1.4 higher than those who are moving away from NoSQL. That’s the biggest gap for any question in the survey. It shows how the greater speed, flexibility, and scalability of NoSQL databases are essential for an upgraded data stack.
 
-![](/images/blog/f7ba6bf6b60b05e4ac25f82451596d74170d6a05-1024x712.webp)
+![](/images/site-mirror/f7ba6bf6b60b05e4ac25f82451596d74170d6a05-1024x712.webp)
 
 ### 2. The number one organization hurdle? Cultural changes.
 
 By a wide margin, cultural changes were named the most significant issue when mobilizing an organization to transform. This probably isn’t a surprise to anyone who’s implemented technical initiatives across an organization, but we were struck by the magnitude of the problem. Cultural changes were a bigger challenge than technical and talent hurdles combined. It shows why it’s important to remember that it’s a “digital transformation” and not “technology upgrades.” You’re changing how your company operates, which means sometimes it’s just as important to focus on change management as onboarding new technology.
 
-![](/images/blog/13d2b87448713105a7ca99f7bdb7e46b268eeb23-1024x1010.webp)
+![](/images/site-mirror/13d2b87448713105a7ca99f7bdb7e46b268eeb23-1024x1010.webp)
 
 The good news here is that executive support for digital transformation is the least common problem. Finding the right talent and overcoming technical challenges, such as breaking down monoliths, were far less difficult than making cultural changes.
 
@@ -51,7 +51,7 @@ Caching at Scale With Redis
 
 While we’re on the subject of caching, we can’t help but recommend [Caching at Scale With Redis](/docs/caching-at-scale-with-redis/). Packed with examples, advice, and architectural diagrams, it’s a great resource for anyone interested in building modern applications that scale.
 
-![](/images/blog/e9f6d772fbf8a8e33594fb5b06bf06e82f2df364-863x1024.webp)
+![](/images/site-mirror/e9f6d772fbf8a8e33594fb5b06bf06e82f2df364-863x1024.webp)
 
 Overall, the survey shows how our customers are moving forward with their digital transformations. The pace of innovation is picking up, making cultural changes is the most difficult part of a transformation, and caching is playing an evermore important role in modern architectures. And, of course, none of this matters without a modern, performant, scalable data layer.
 

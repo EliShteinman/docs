@@ -14,7 +14,7 @@ hidden: true
 
 *By Thomas Caudron, Contributor · Published 15 August 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/47332548fb454cdc2f83aefd5a0b6701156b5b58-772x550.webp)
+![Blog tile image](/images/site-mirror/47332548fb454cdc2f83aefd5a0b6701156b5b58-772x550.webp)
 
 **Developers can use Redis to build and maintain real-time applications. You can create JavaScript functions that automatically execute code on data changes directly in the Redis database, and thus ensure a lower latency.**
 
@@ -145,7 +145,9 @@ OK
 
 To test the new keyspace trigger, create a new key starting with fellowship: and check the fields using RedisInsight. The keyspace trigger is executed with the command, so the *last_updated* field is already added when the key is created.
 
-![Check the results in RedisInsight](/images/blog/7f2b152e653ab173627df483dd76531df3c35ae5-1577x1045.webp)
+![Check the results in RedisInsight](/images/site-mirror/7f2b152e653ab173627df483dd76531df3c35ae5-1577x1045.webp)
+
+*Check the results in RedisInsight*
 
 ## Sound cool? Try it for yourself
 

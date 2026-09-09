@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 22 April 2026 · updated 23 April 2026*
 
-![Redis](/images/blog/7dfb02e345b84a155205702fce7d340bc899443f-1200x628.webp)
+![Redis](/images/site-mirror/7dfb02e345b84a155205702fce7d340bc899443f-1200x628.webp)
 
 Adding more agents doesn't always make a system smarter. In some cases, [single-agent setups outperform](https://arxiv.org/pdf/2601.22290) multi-agent ones on the same tasks with the same model — particularly on sequential reasoning, where coordination overhead outweighs any parallelization benefit. When multi-agent systems do fail, [architecture and coordination](https://arxiv.org/html/2503.13657v3) are the most common culprits. Model capability is rarely the root cause.
 

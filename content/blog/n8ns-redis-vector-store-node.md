@@ -15,7 +15,7 @@ hidden: true
 
 *By Tisho Mateev, Fionce Siow · Published 29 December 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/19912c08dee308962def44efcc397e2ee4721951-1200x628.webp)
+![Redis](/images/site-mirror/19912c08dee308962def44efcc397e2ee4721951-1200x628.webp)
 
 The [Redis vector store node](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.vectorstoreredis/) is now available in n8n, adding vector search to n8n workflows by giving users a way to build retrieval, semantic lookup, and caching patterns in a single Redis-backed system. Many teams already rely on Redis for caching or session management, so this integration makes it possible to use the same system for vector workloads without introducing a new database.
 
@@ -70,7 +70,7 @@ To show how these features work in practice, we built two n8n workflows that use
 
 ### RAG pattern with GitHub issues
 
-![Redis RAG pattern with GitHub issues](/images/blog/b9ef4eca2d33ea1a0337290df5e3b133a6cd294d-555x438.webp)
+![Redis RAG pattern with GitHub issues](/images/site-mirror/b9ef4eca2d33ea1a0337290df5e3b133a6cd294d-555x438.webp)
 
 **Workflow**: [Chat with GitHub Issues using OpenAI and Redis Vector Search](https://n8n.io/workflows/10837-chat-with-github-issues-using-openai-and-redis-vector-search/)
 
@@ -80,7 +80,7 @@ Metadata stored with each vector enables workflows to apply filters or use struc
 
 ### Semantic caching pattern
 
-![Redis Semantic caching pattern](/images/blog/1cce885a2bb4c0c0e4ae463c16dfc72bb7331c34-620x229.webp)
+![Redis Semantic caching pattern](/images/site-mirror/1cce885a2bb4c0c0e4ae463c16dfc72bb7331c34-620x229.webp)
 
 **Workflow**: [Reduce LLM Costs with Semantic Caching using Redis Vector Store and HuggingFace](https://n8n.io/workflows/10887-reduce-llm-costs-with-semantic-caching-using-redis-vector-store-and-huggingface/)
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike  Moss , SVP, Worldwide Channels & Alliances · Published 17 November 2025 · updated 18 November 2025*
 
-![Redis Fierce Software](/images/blog/cd46914029a55f45307cafa4a1507e145f2099be-1200x628.webp)
+![Redis Fierce Software](/images/site-mirror/cd46914029a55f45307cafa4a1507e145f2099be-1200x628.webp)
 
 Redis is proud to announce a new partnership with **Fierce Software**, officially joining their ecosystem of industry-leading technology partners. This collaboration expands Redis’ reach into the **Federal, Defense, and System Integrator** markets – empowering organizations across the public sector to harness real-time data for faster innovation, enhanced operational efficiency, and mission success.
 

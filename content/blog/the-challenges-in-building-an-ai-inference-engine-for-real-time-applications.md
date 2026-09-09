@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 17 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 The artificial intelligence (AI) boom took off when people realized that they can utilize GPU technology to train deep-learning models much faster than waiting days for a general-purpose CPU to complete one cycle of model training. (Check out this [informative Quora thread ](https://www.quora.com/Who-introduced-GPU-to-deep-learning)for more details.)
 
@@ -82,7 +82,7 @@ There’s only one way to solve this problem: a purpose-built serverless platorm
 
 Going back to the transactions scoring example, this is how fast (and simple) the solution can look if we apply these principles:
 
-![](/images/blog/307fedfc0cdce60b05fc18001f09e1b1dd4de5aa-1024x544.webp)
+![](/images/site-mirror/307fedfc0cdce60b05fc18001f09e1b1dd4de5aa-1024x544.webp)
 
 ## AI in production
 

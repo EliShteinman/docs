@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 3 August 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4b1d7ec9338e96d67c1f0f1cab48ed8c85f86830-772x550.webp)
+![Blog tile image](/images/site-mirror/4b1d7ec9338e96d67c1f0f1cab48ed8c85f86830-772x550.webp)
 
 Today’s world requires real-time responses – latency **is **the new outage, and your customers’ expectations for speed have only gone up. Real-time use cases are only possible with real-time solutions. An RDBMS isn’t capable of providing the speed and performance an in-memory database like Redis Enterprise can provide.
 
@@ -38,25 +38,25 @@ Let’s take a look at six different ways that data ingestion of part of your da
 
 ## Data migration: blue-green deployment
 
-![diagram of blue-green deployment](/images/blog/e22d9bd98786d3b090c56def884b45b8bf7b83f5-1024x440.webp)
+![diagram of blue-green deployment](/images/site-mirror/e22d9bd98786d3b090c56def884b45b8bf7b83f5-1024x440.webp)
 
 Applications simply cannot take on the many risks of data migration, like unexpected (and usually longer than expected) outages. The less risky route that enterprises commonly rely on is blue-green deployments to ingest data in which the application continues to use the “blue” legacy database while a new “green” cloud-native database is deployed in parallel for live-production testing and cut-over of this new data pipeline with the assurance of rollback. Redis Data Integration (RDI) is a fast data ingestion tool that automatically converts data to Redis data structures such as Streams, Lists, Sets, Sorted Sets, and Hashes that make data processing simple and efficient. Redis’ Pub/Sub capabilities also make it an efficient message broker between distributed data ingest nodes.
 
 ## Database migration: multi-phase replatforming
 
-![multi-phase replatforming diagram](/images/blog/3ee32319fd79bd3541819623dc24faea0ac46f69-1024x277.webp)
+![multi-phase replatforming diagram](/images/site-mirror/3ee32319fd79bd3541819623dc24faea0ac46f69-1024x277.webp)
 
 Mission-critical applications that are too complex and/or contain large amounts of big data are not appropriate for data ingestion blue-green deployment. They require a multi-phase data ingestion migration plan that can span months or even years to complete. Typically, these projects incrementally migrate small workloads to newly created modular applications or more recently to microservices. This application’s legacy database will often act as the system of record or data warehouse for the duration of the project, which makes consistency a challenge with the new database(s) that support the microservice architecture. Redis Connect can be used on a single, or small set of tables, to maintain consistency between the legacy system of record and new databases, sometimes even data ingest bi-laterally.
 
 ## Database read-replica: cache prefetching
 
-![](/images/blog/434af24bcc27a34029224c287bb0fbcb133fc29d-1024x286.webp)
+![](/images/site-mirror/434af24bcc27a34029224c287bb0fbcb133fc29d-1024x286.webp)
 
 It is common for businesses to keep their legacy databases as a system of record to support their existing operations while, at the same time, leveraging read-replicas, or cache prefetching, ingest data in order to enable these real-time solutions. Redis Connect is used for streaming data indefinitely from the legacy database to Redis Enterprise. A very easy and nearly zero-risk way to finally enable real-time data use cases.
 
 ## Hybrid cloud deployment
 
-![diagram of hybrid-cloud deployment with microsoft azure, aws and google cloud and redis enterprise](/images/blog/7543ab7eaba1c7a461517a0fe0f6eaee3431b4a4-1024x306.webp)
+![diagram of hybrid-cloud deployment with microsoft azure, aws and google cloud and redis enterprise](/images/site-mirror/7543ab7eaba1c7a461517a0fe0f6eaee3431b4a4-1024x306.webp)
 
 Legacy enterprise architectures, compliance risks, and operational concerns often act as barriers to migrating to the cloud. To overcome these challenges, enterprises have adopted a hybrid cloud architecture that splits deployments between on-premises and public clouds. Commonly, a stateless application is hosted on the cloud while operational data remains on-premises acting as the legacy system-of-record database. Redis Connect can be used for streaming data from the on-premises database to Redis Enterprise, which supports bi-lateral replication between its on-prem and public cloud replicas.
 
@@ -66,7 +66,7 @@ Many industries are seeing unprecedented increases in transactions and high expe
 
 ## Microservice pattern: Command Query Responsibility Segregation (CQRS)
 
-![image of command query responsibility segregation](/images/blog/447f71da7cb0a23a89f416f6440d8a0c37daf98f-1024x470.webp)
+![image of command query responsibility segregation](/images/site-mirror/447f71da7cb0a23a89f416f6440d8a0c37daf98f-1024x470.webp)
 
 Microservices architecture adoption continues to grow as application modernization and cloud migration strategies accelerate. One of the most popular microservices design patterns is CQRS. In this pattern, different data structures (commonly supported by different databases) are used to independently optimize for writes (command) and reads (query). Implementing this pattern can be complex within a microservices architecture since consistency between command and query must be maintained. Redis Connect can be used to implement CQRS by streaming and transforming changed-data-events (CDC) from the command database to a read-optimized data structure in a query database/cache.
 

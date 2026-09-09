@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 16 March 2026 · updated 17 March 2026*
 
-![Payment orchestration & vault architecture in retail](/images/blog/1b099f2aa18c79a66790b8c268cf69fe5195a44f-2400x1256.webp)
+![Payment orchestration & vault architecture in retail](/images/site-mirror/1b099f2aa18c79a66790b8c268cf69fe5195a44f-2400x1256.webp)
 
 You've probably hit this before: a single provider goes down during a flash sale and suddenly checkout is broken for everyone. Payment orchestration and token vaults are the stack layers that sit between your checkout and the messy reality of global payment processing, handling routing decisions, keeping credentials safe under Payment Card Industry (PCI) compliance requirements, and making sure a provider outage doesn't take down your busiest selling hours.
 

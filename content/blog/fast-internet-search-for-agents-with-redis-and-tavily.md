@@ -18,7 +18,7 @@ hidden: true
 
 *By Tyler Hutcherson, Noah Nefsky, Sofia Guzowski, Jim Allen Wallace, Rini Vasan · Published 12 September 2025 · updated 8 October 2025*
 
-![Fast internet search for agents with Redis & Tavily](/images/blog/8de567524f7bd95be797d4facb377de85b8e4599-772x552.webp)
+![Fast internet search for agents with Redis & Tavily](/images/site-mirror/8de567524f7bd95be797d4facb377de85b8e4599-772x552.webp)
 
 Every AI agent sounds smart at first. But the cracks show fast. They don’t have the most recent information, lose track of the conversation, repeat themselves, and waste time (and money) hitting the same APIs over and over. You need to manage the data going into the context window for your agents. Enter Tavily & Redis to help streamline your context engineering.
 
@@ -127,7 +127,7 @@ The application will:
 - ✅ Load the user management interface
 - ✅ Enable calendar export/open from finalized itineraries
 
-![AI Travel Concierge](/images/blog/725e708133ea69dfce8c8b0eaee79e7fffc5ddc4-844x649.webp)
+![AI Travel Concierge](/images/site-mirror/725e708133ea69dfce8c8b0eaee79e7fffc5ddc4-844x649.webp)
 
 ## 👤 User Profile Configuration
 

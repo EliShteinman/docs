@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 30 August 2023 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/66844dda42348f10b83752f962ab2b2b1f2f8bf5-772x550.webp)
+![Blog tile image](/images/site-mirror/66844dda42348f10b83752f962ab2b2b1f2f8bf5-772x550.webp)
 
 **Here’s a real-world scenario. You set up a Redis database, and it’s doing wonders at speeding up your application. But as the data flows in and the volume increases, you notice a potential issue: the cache is filling up. What will happen when it’s full? You may have heard about cache eviction but, perhaps, you’re fuzzy on the details.**
 

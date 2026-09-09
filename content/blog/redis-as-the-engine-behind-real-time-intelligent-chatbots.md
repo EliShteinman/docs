@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 24 October 2025 · updated 26 November 2025*
 
-![Redis chatbot card](/images/blog/cd97fd7d092eb1912ffb90920d60d4ccc45f113d-1200x628.webp)
+![Redis chatbot card](/images/site-mirror/cd97fd7d092eb1912ffb90920d60d4ccc45f113d-1200x628.webp)
 
 Chatbots are the most popular AI technology in businesses today. Almost 70% of companies already use them for customer service and internal use. For good reason: They’re transforming how businesses interact with customers, employees, and data.
 
@@ -51,7 +51,7 @@ And our customers are seeing measurable results. [Asurion](https://redis.io/cust
 
 To understand how Redis fits in, let’s trace what happens behind the scenes when a user interacts with a chatbot — say, asking ChatGPT for a 2-day San Diego itinerary.
 
-![Redis](/images/blog/c1e0685e71853fe0b54a76904a618eb0d65c90cc-1845x803.webp)
+![Redis](/images/site-mirror/c1e0685e71853fe0b54a76904a618eb0d65c90cc-1845x803.webp)
 
 1. **User query ingestion: **When a user submits a query, it first enters an event queue to ensure concurrency management and reliability at scale. The system then parses and embeds the query, breaking it into key concepts and converting them into vector embeddings. When a user asks for a 2-day San Diego itinerary, Redis springs into action behind the scenes.
 1. **Vector retrieval with Redis: **Redis searches for semantically relevant information—such as restaurants, parks, and travel blogs—from preprocessed content stored as embeddings.
@@ -70,11 +70,11 @@ With Redis, a query like “update payment settings” will also match “change
 
 That means chatbots can handle both “How do I update my profile?” and “Show me document ID #48392”—all with sub-millisecond latency.
 
-![Redis](/images/blog/9d4fbc4a6e35dbc5a83e943ef5e620957ac5fd62-1198x758.webp)
+![Redis](/images/site-mirror/9d4fbc4a6e35dbc5a83e943ef5e620957ac5fd62-1198x758.webp)
 
 ### Semantic caching reduces costs and latency
 
-![Redis](/images/blog/307f9727612d8d63f3cd3b4181a6b835f6beb7e3-1152x630.webp)
+![Redis](/images/site-mirror/307f9727612d8d63f3cd3b4181a6b835f6beb7e3-1152x630.webp)
 
 Traditional caching only recognizes identical queries. [Redis’ semantic caching](/blog/what-is-semantic-caching/) identifies when two questions mean the same thing, even if phrased differently.
 
@@ -91,7 +91,7 @@ For teams who want the benefits of semantic caching without managing infrastruct
 
 LangCache automatically manages storage, similarity checks, and LLM fallbacks through a simple REST API. Ideal for teams that want semantic caching without managing servers or clusters.
 
-![Redis](/images/blog/f6979b9088daa104113d1a960801ccea6a0e36cd-1134x739.webp)
+![Redis](/images/site-mirror/f6979b9088daa104113d1a960801ccea6a0e36cd-1134x739.webp)
 
 ### Key benefits:
 

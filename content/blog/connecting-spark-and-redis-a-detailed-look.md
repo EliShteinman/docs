@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 2 February 2016 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/821a3948c41937b5cb942d6274be60848ebb619f-635x200.webp)
+![Blog tile image](/images/site-mirror/821a3948c41937b5cb942d6274be60848ebb619f-635x200.webp)
 
 The [spark-redis package](https://github.com/RedisLabs/spark-redis) on github is our[1](#Sun He) first step in the Spark-Redis journey. Spark has captured the public imagination around the real-time possibilities of big data and we[1](#Sun He) hope to contribute in making this possibility a reality.
 

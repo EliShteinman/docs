@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 22 February 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Redis 4.0 brought an amazing feature to the Redis ecosystem: Modules. [Modules](/community/redis-modules-hub/) are a big shift in Redis — suddenly, it is an open landscape of custom data types and full-speed computation right inside Redis. But while most of the fanfare over this release focused on Modules, the new version also introduced a super important command that is a game changer in its own right: [UNLINK](https://redis.io/commands/unlink).
 

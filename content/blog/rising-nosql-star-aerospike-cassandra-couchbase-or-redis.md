@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 4 June 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/f13b02ddbd943e99efdae5855f6190818e266d33-152x152.webp)
+![Blog tile image](/images/site-mirror/f13b02ddbd943e99efdae5855f6190818e266d33-152x152.webp)
 
-![](/images/blog/09c7d666a72220f3f7b1eae9a698b30da795ac11-635x200.webp)
+![](/images/site-mirror/09c7d666a72220f3f7b1eae9a698b30da795ac11-635x200.webp)
 
 > “I always knew I was a star, and now the rest of the world seems to agree with me.” — Freddie Mercury
 

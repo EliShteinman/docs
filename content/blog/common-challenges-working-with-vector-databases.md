@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 March 2026 · updated 4 March 2026*
 
-![Redis](/images/blog/fe5dc26cb166aa429d3ffb152fe0e196fb52acbe-1200x628.webp)
+![Redis](/images/site-mirror/fe5dc26cb166aa429d3ffb152fe0e196fb52acbe-1200x628.webp)
 
 Vector search works great in development. Queries return relevant results, the demo impresses stakeholders, and you're ready to ship. Then production happens. Memory costs balloon, search quality degrades, and keeping vector embeddings in sync with your source data becomes its own full-time job.
 

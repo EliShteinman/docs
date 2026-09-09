@@ -14,7 +14,7 @@ hidden: true
 
 *By Alex Milowski, Product Evangelist · Published 22 June 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/72ee9959eaf3a9c75ad0ce06d237722fc39a1d3e-368x260.webp)
+![Blog tile image](/images/site-mirror/72ee9959eaf3a9c75ad0ce06d237722fc39a1d3e-368x260.webp)
 
 A knowledge graph can be a simple data structure that represents what we know about part of the real world. For example, imagine searching for a product on your favorite shopping site. You might search for “glitter shoelaces” and expect to see whatever shoe-lacing products that match that specific term.
 
@@ -22,7 +22,7 @@ But how does the site know to display other shoe parts, or shoes themselves? The
 
 This blog post explores how knowledge graphs work, how they’re used in computing, and how to use them with Redis Enterprise’s RedisGraph module. We’ll explore briefly how you can use Cypher queries to access information in a knowledge graph. Finally, we’ll talk about working with knowledge graphs at scale and discuss their future uses. If you’re interested in building a knowledge graph to enhance your machine learning applications, this is a great place to start.
 
-![](/images/blog/71fbf823b304ccaf9092073c94254faf0bf332c9-657x320.webp)
+![](/images/site-mirror/71fbf823b304ccaf9092073c94254faf0bf332c9-657x320.webp)
 
 The search term is a particular kind of product—a shoelace with a coating—that we can represent in an [ontology](https://en.wikipedia.org/wiki/Ontology_(information_science)) of objects in a knowledge graph. While there might appear to be a lot of things going on in the graph above, I’ve simplified it into two kinds of relations: “[is a](https://en.wikipedia.org/wiki/Is-a)” (a category subtype) and “[has a](https://en.wikipedia.org/wiki/Has-a)” (a part of something). For example, a shoelace is a lacing, a part of a shoe, and has a coating, or a laced shoe has a shoelace. The algorithm has no a priori knowledge of the world aside from what we’ve encoded in the graph.
 
@@ -116,13 +116,13 @@ The possibilities for implementing and using knowledge graphs within Redis are w
 
 ## Related Articles
 
-![](/images/blog/892ec95ee1f154177aa1b93021184fdcad20e358-442x254.webp)
+![](/images/site-mirror/892ec95ee1f154177aa1b93021184fdcad20e358-442x254.webp)
 
 RedisGraph and Redis: What, Why, and How
 
 Learn More
 
-![](/images/blog/d9fe55a9a5a08712ac59a8ce33186786b4a24d63-368x254.webp)
+![](/images/site-mirror/d9fe55a9a5a08712ac59a8ce33186786b4a24d63-368x254.webp)
 
 Introducing RedisGraph 2.0
 

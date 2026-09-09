@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 June 2026 · updated 24 June 2026*
 
-![Context engineering vs prompt engineering: the real difference](/images/blog/d6d2f872b85b4d438e21d551df13a416f16cd08b-2400x1256.webp)
+![Context engineering vs prompt engineering: the real difference](/images/site-mirror/d6d2f872b85b4d438e21d551df13a416f16cd08b-2400x1256.webp)
 
 A customer asks your support agent whether their refund went through. The agent checks, says yes, and cites a confirmation number. The refund actually bounced back twenty minutes ago, but the lookup the agent ran hit a store that only syncs overnight. You tighten the system prompt: "always confirm the latest transaction status before answering." Next ticket, same failure, because the prompt was never the problem. The data the agent reached for was already stale.
 

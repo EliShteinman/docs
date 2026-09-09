@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 21 August 2013 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/2707475b91218047674ff2dbdd84430b5226a28a-140x92.webp)
+![Blog tile image](/images/site-mirror/2707475b91218047674ff2dbdd84430b5226a28a-140x92.webp)
 
-![Redis Replication in Action!](/images/blog/c2409d7589e3e98e812bacdea0d6782c248db8e4-635x200.webp)
+![Redis Replication in Action!](/images/site-mirror/c2409d7589e3e98e812bacdea0d6782c248db8e4-635x200.webp)
 
 ### Timing is everything…
 

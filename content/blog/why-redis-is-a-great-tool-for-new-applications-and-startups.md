@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 15 October 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/5a61b00a4a808708885f04e51f34a5c1422e3d9d-635x200.webp)
+![Blog tile image](/images/site-mirror/5a61b00a4a808708885f04e51f34a5c1422e3d9d-635x200.webp)
 
-![](/images/blog/5a61b00a4a808708885f04e51f34a5c1422e3d9d-635x200.webp)
+![](/images/site-mirror/5a61b00a4a808708885f04e51f34a5c1422e3d9d-635x200.webp)
 
 *This article was originally published at *[*Citizen Tekk*](http://citizentekk.com)* on October 7th, 2013*
 *It can also be found *[*here*](http://citizentekk.com/2013/10/07/redis-great-tool-new-applications-startups/)*.*
@@ -41,7 +41,7 @@ Redis is entirely served from RAM, which makes it faster than any other datastor
 
 The diagram below presents benchmark tests carried out for several leading databases.
 
-![](/images/blog/8d3704586af6e33b39a2754375a6ce701108e9fa-685x359.webp)
+![](/images/site-mirror/8d3704586af6e33b39a2754375a6ce701108e9fa-685x359.webp)
 
 Benchmark tests showing the fastest data store systems available today
 

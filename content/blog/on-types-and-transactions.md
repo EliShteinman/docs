@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 4 June 2019 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/2e1bd5ff6bc43ba94c881be573ca73aa2a3b6997-1384x924.webp)
+![Blog tile image](/images/site-mirror/2e1bd5ff6bc43ba94c881be573ca73aa2a3b6997-1384x924.webp)
 
 Transactions in any database are intimidating. It requires a level of understanding beyond just what is stored, but also when it is stored. Unlike the happy world that results when countless layers of abstraction can shield you from complexity, transactions require you to go deeper. Redis is not unusual in this regard. In fact, its entirely different way of thinking about transactions causes a lot of people to say it doesn’t have transactions at all. Redis has them, just with an approach that’s totally different from the rollbacks you’ve probably grown up with.
 

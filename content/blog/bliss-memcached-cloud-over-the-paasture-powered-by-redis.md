@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 18 December 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/aab77b2dc6149b0e9f2168e2bf21cdda46adc03e-140x92.webp)
+![Blog tile image](/images/site-mirror/aab77b2dc6149b0e9f2168e2bf21cdda46adc03e-140x92.webp)
 
-![](/images/blog/43e53148f048bb5c807f52aea1abd3089d38fe21-635x181.webp)
+![](/images/site-mirror/43e53148f048bb5c807f52aea1abd3089d38fe21-635x181.webp)
 
 With winter storms on the attack around much of the world, it’s always nice to visualize some calming imagery, which today’s news inspired us to do. We are pleased to announce the graduation of our Memcached Cloud add-ons from beta to general availability (GA) across major PaaS(ture) providers, including Heroku, AppFog and AppHarbor.
 

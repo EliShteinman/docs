@@ -15,7 +15,7 @@ hidden: true
 
 *By Cihan B · Published 31 August 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/405db99869a0382c8a9fd187cc134a0eefb142ba-804x1050.webp)
+![Blog tile image](/images/site-mirror/405db99869a0382c8a9fd187cc134a0eefb142ba-804x1050.webp)
 
 This content was written prior to a change in Redis’ naming convention – Redis Enterprise is now the moniker for all our products.
 
@@ -25,7 +25,7 @@ Greetings, I am very excited to announce the preview program for our upcoming r
 
 - **Geo-distributed, Active-Active Redis Applications with CRDBs (conflict-free replicated databases):** Globally distributed interactive applications are hard to develop due to read and write conflicts. The new CRDBs enable the same sub-millisecond latencies you are accustomed to getting with Redis applications with globally-distributed deployment topologies. CRDB make building complex geo-distributed apps simple by using the built in smarts of proven [CRDT](/blog/diving-into-crdts/) (conflict free replicated data-types) approach. For always-on availability, CRDTs create a simple to manage, “AP-leaning” deployment of Redis (AP refers to A -“available” and P – “partition-loss tolerant” of CAP).
 
-![](/images/blog/596c3ea19d4b8cf4dd61486448533bdce983c8a3-885x641.webp)
+![](/images/site-mirror/596c3ea19d4b8cf4dd61486448533bdce983c8a3-885x641.webp)
 
 *Figure.1: Geo-distributed CRDBs*
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Roshan Kumar, Senior Product Manager · Published 1 October 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 [Redis Enterprise as an active-active database](/active-active/) is ideal for geo-distributed apps. Its architecture is based on breakthrough academic research surrounding conflict-free replicated data types ([CRDT](/blog/diving-into-crdts/)). This approach offers many advantages over other active-active databases, including:
 
@@ -42,7 +42,7 @@ In this blog, we’ll walk you through the steps to create your Docker-based Red
 
 Before you start, make sure you have a bash shell in place, and enough memory allocated to your docker processes. You can check your memory by going to Docker -> Preferences -> Advanced.
 
-![Docker Memory Preferences Advanced](/images/blog/2e824712518a3a1241d00ae8389d6945648714bd-497x459.webp)
+![Docker Memory Preferences Advanced](/images/site-mirror/2e824712518a3a1241d00ae8389d6945648714bd-497x459.webp)
 
 ## 1. Set up a database
 

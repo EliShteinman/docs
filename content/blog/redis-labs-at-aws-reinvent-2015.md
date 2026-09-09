@@ -14,7 +14,7 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 28 September 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fd782286cdde6795298662a4c65910495e5a052d-140x92.webp)
+![Blog tile image](/images/site-mirror/fd782286cdde6795298662a4c65910495e5a052d-140x92.webp)
 
 [Watch the video](https://reinvent.awsevents.com/)
 

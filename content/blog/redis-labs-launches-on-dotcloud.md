@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 8 December 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/cf2494b7635647c5ae2602284a5528613c267fd8-635x200.webp)
+![](/images/site-mirror/cf2494b7635647c5ae2602284a5528613c267fd8-635x200.webp)
 
 It is my pleasure and privilege to announce that as of today our popular Redis Cloud service is available on cloudControl’s dotCloud PaaS. Running on top of the Google Cloud Platform, dotCloud allows combining best-of-breed services for building the ideal stack for your application. Focus on developing your code instead of wasting your time doing ops – dotCloud keeps your application running 24/7*365 with load-balancing, monitoring, failover and scaling.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Lalit Pandit, Software Development Manager · Published 17 April 2019 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/af8cd92e892e69cbe569f72942c141bfc9cf8b7f-800x800.webp)
+![Blog tile image](/images/site-mirror/af8cd92e892e69cbe569f72942c141bfc9cf8b7f-800x800.webp)
 
 Over the past 30 years, Inovonics has risen to become a leading provider of industrial wireless IoT technology. We’ve deployed tens of millions of devices in challenging commercial environments across a wide variety of critical applications—from life safety to intrusion alerting to multi-family submetering.
 
@@ -32,7 +32,7 @@ Our previous generation system was based on desktop applications connecting to a
 
 When we designed the new generation of our gateway and application, our goal was to consolidate all data from IoT devices in a central repository—and to future proof the architecture with respect to performance and reliability. Providing ubiquitous access to the data and insights in markets such as life safety was also a key requirement. These non-negotiables, along with the desire to keep operational footprint costs as low as possible, led us to build our new generation system in the cloud.
 
-![](/images/blog/4797bf23e80f03e5767e395608461e38587a0432-1754x434.webp)
+![](/images/site-mirror/4797bf23e80f03e5767e395608461e38587a0432-1754x434.webp)
 
 Today, we’re running Redis Enterprise Cloud Pro, a fully-automated database-as-a-service, on Google Cloud Platform (GCP). Redis Enterprise acts as a data ingest, storing the millions of daily messages coming from Inovonics’ sensor networks and providing a central view from which data can be analyzed in the aggregate. Redis Enterprise also stores the application data model so that incoming messages can be correlated with representational information such as sensor location. (Our on-premises gateways have open-source Redis repositories that buffer the messages coming from IoT endpoints before they are sent to the cloud.)
 

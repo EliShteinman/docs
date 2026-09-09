@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 4 March 2026*
 
-![Redis](/images/blog/afd5a974a0602a86527de0c5fbe3c1d161d56843-1200x628.webp)
+![Redis](/images/site-mirror/afd5a974a0602a86527de0c5fbe3c1d161d56843-1200x628.webp)
 
 Vector databases find data by meaning, not by matching keywords. That single difference is reshaping how teams build AI apps, from search and recommendations to chatbots and autonomous agents.
 

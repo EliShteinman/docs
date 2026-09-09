@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 10 September 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/c58cc577e85d446bba4179bbd4a47f9349cec962-635x200.webp)
+![](/images/site-mirror/c58cc577e85d446bba4179bbd4a47f9349cec962-635x200.webp)
 
 Exactly one week from today, the travelling AWS Summit will reach sunny and humid Tel Aviv for a day. The team and I have already been to a [couple](/blog/price-reductions-from-google-amazon-and-redis-labs) of [these](/blog/whatcha-doin-aws-summit-2014-new-york), and one thing I’ve noticed is that while the Summit’s venue changes, its program remains practically static. Whether in Berlin, New York or Tel Aviv, the AWS Summit delivers lots of relevant information in a repeatable and respected manner. It’s no secret that I (and a lot of other folks) admire Amazon’s ability to scale operations, and that admiration definitely extends to the company’s events.
 

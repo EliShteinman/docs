@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 26 March 2026 · updated 1 April 2026*
 
-![Real-time network monitoring: why every minute of delay costs you](/images/blog/b88dcbe75d292e6518afcd549f6149051ed87766-1200x628.webp)
+![Real-time network monitoring: why every minute of delay costs you](/images/site-mirror/b88dcbe75d292e6518afcd549f6149051ed87766-1200x628.webp)
 
 Your network is talking. The question is whether you're hearing it in time. Traditional monitoring polls devices every 5–15 minutes, and in that gap an outage can cascade, a breach can spread, or a latency spike can cost you money. Real-time network monitoring closes that gap by shifting from periodic snapshots to continuous, push-based telemetry that surfaces problems as they happen, not minutes later.
 

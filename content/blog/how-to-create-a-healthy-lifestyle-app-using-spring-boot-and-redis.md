@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis Growth Team · Published 21 March 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/04b8de1e9d739da6919799a473dd5f51221a3c5e-772x550.webp)
+![Blog tile image](/images/site-mirror/04b8de1e9d739da6919799a473dd5f51221a3c5e-772x550.webp)
 
 It’s not easy training your body out of bad habits. Whether that’s having a poor diet or slacking off at the gym, or ignoring it altogether, much of it comes down to mindset. Personal development is a trend that’s galvanized many of us to shake off bad habits and transform ourselves into new and better people.
 
@@ -281,7 +281,7 @@ Head on over. Check it out. And have fun with Redis.
 
 ## Who built this app?
 
-![](/images/blog/58dacae0d09ceea9d234764ac2b06200df232183-500x500.webp)
+![](/images/site-mirror/58dacae0d09ceea9d234764ac2b06200df232183-500x500.webp)
 
 ## Antonis Anagnostou
 

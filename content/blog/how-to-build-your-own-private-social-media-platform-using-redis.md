@@ -15,7 +15,7 @@ hidden: true
 
 *By Growth Team · Published 18 November 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c368779b6d594519b7c38ed5d78ba1f2ec118edd-772x520.webp)
+![Blog tile image](/images/site-mirror/c368779b6d594519b7c38ed5d78ba1f2ec118edd-772x520.webp)
 
 To many, the social media experience has become a stressful experience. Newsfeeds have become pinboards for sponsored content. Statuses, comments, and any online interactions expose users to restless keyboard warriors. Some might say that social media has become *anything but* social.
 
@@ -56,7 +56,7 @@ There won’t be any mysterious algorithm that exposes you to unwanted connectio
 
 ## 3. Architecture
 
-![](/images/blog/6530df506c9e5627b6a29a9e2ea9ae27cb8aec26-1024x480.webp)
+![](/images/site-mirror/6530df506c9e5627b6a29a9e2ea9ae27cb8aec26-1024x480.webp)
 
 ## 4. Getting started
 
@@ -196,9 +196,9 @@ GCP_API_KEY
 
 Click [/try-free/ ](/try-free/)and setup Redis Enterprise cloud database with RedisGraph as shown below:
 
-![](/images/blog/1cfba29eb482d0e3e8942c45d197439ad825399f-1600x1168.webp)
+![](/images/site-mirror/1cfba29eb482d0e3e8942c45d197439ad825399f-1600x1168.webp)
 
-![Redis Insight](/images/blog/c19f556188de448ce42be280dd0f4ce7dfe22c70-1600x776.webp)
+![Redis Insight](/images/site-mirror/c19f556188de448ce42be280dd0f4ce7dfe22c70-1600x776.webp)
 
 - **GetPosts** – The core of Letus. Uses cypher to traverse the current user’s network and return the relevant, most recent posts:
 MATCH (me:Person {userid: $userid})
@@ -353,7 +353,7 @@ Every day people are tapping into the wonders of Redis to create exciting applic
 
 For more inspiration, you can visit the [Redis Launchpad](https://launchpad.redis.com/) where you’ll find a whole range of innovative apps. Likewise, you can also discover more about how this app was made by [clicking here](https://www.youtube.com/watch?v=FmgdHGFYj3U).
 
-![](/images/blog/4286535b4f0ad548b626a7e3bc36792d2aa0c568-1600x593.webp)
+![](/images/site-mirror/4286535b4f0ad548b626a7e3bc36792d2aa0c568-1600x593.webp)
 
 ## Who built this application?
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Paul Bushell · Published 20 November 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b29eace67a77e3b037217fc7d27b19297a074692-386x257.webp)
+![Blog tile image](/images/site-mirror/b29eace67a77e3b037217fc7d27b19297a074692-386x257.webp)
 
 London may be infamous for its rain and gloominess in November, but the sun shined for two rare days as hundreds of developers, engineers, software architects, programmers, and business professionals gathered for Redis Day London.
 
@@ -37,7 +37,9 @@ The day wrapped up with Probabilistic Data Structures, RedisTimesSeries, and Red
 
 On day two, Redis Creator Salvatore Sanfilippo kicked off the day with a discussion on the forthcoming Redis 6.0, and Yiftach Shoolman, Redis CTO and Co-founder, followed with a few product announcements: [RedisInsight](/blog/redisinsight-gui/), automated cluster recovery for [Redis Enterprise Kubernetes Operator](/blog/automated-cluster-recovery-redis-enterprise-kubernetes-operator/), and the first official [Redis Developer Certification](/blog/redis-developer-certification-is-here/) program.
 
-![](/images/blog/f504ab78e530ebb90ffa058f3352423460bcff95-1024x682.webp)
+![](/images/site-mirror/f504ab78e530ebb90ffa058f3352423460bcff95-1024x682.webp)
+
+*Salvatore Sanfilippo, Redis Creator, shares some of the features in the upcoming release of Redis 6.0.*
 
 Customers shared creative and innovative ways they were able to use Redis in their businesses. Mugunthan Soundararajan, SVP of Technology at Matrimony.com, shared how using Redis Streams resulted in a 72% higher observed throughput compared to Apache Kafka for the matchmaking and marriage services site. Thomas Schedler, CEO and Head of Development at Sulu CMS, led a session on how the Symfony Messenger Component uses Redis Streams for event notification across bounded contexts.
 
@@ -51,13 +53,17 @@ Engineers from Play Games 24×7 shared how they translated the rules of cricket 
 
 The original Redis Day London venue, CodeNode, fell through only a week before the event. Luckily, the Redis team was able to secure the beautiful Park Plaza London Riverbank, located along the River Thames, for a last-minute location swap. It was almost a parallel to the Redis product: just like Redis Enterprise has been able to withstand problems and perform under pressure—like during the [AWS eu-central-1 outage](/blog/aws-eu-central-outage/) last week—the Redis team was able to overcome adversity and still produce an insightful and fun conference.
 
-![](/images/blog/f617d65c4979cdf83a592cbb298d582b800343e5-1024x682.webp)
+![](/images/site-mirror/f617d65c4979cdf83a592cbb298d582b800343e5-1024x682.webp)
+
+*A packed audience for the single-track conference.*
 
 ## A uniquely British event
 
 Both evenings ended with lively and insightful conversations at The Black Dog and The Rose, two neighborhood pubs within walking distance of the venue. Redis Day London was a rare opportunity to connect and learn—to bring together Redis users from all corners of the world to share and discuss their applications of Redis.
 
-![](/images/blog/ea03b0e6fa82166e3d34145b8ef108042c918a6b-1024x682.webp)
+![](/images/site-mirror/ea03b0e6fa82166e3d34145b8ef108042c918a6b-1024x682.webp)
+
+*Attendees came from all over the globe—some were local to London, but others flew in from as far as the U.S. and India.*
 
 Interested in attending a future Redis Day? Save the date for our future programming in Seattle, Bangalore, and San Francisco:
 

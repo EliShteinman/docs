@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 17 February 2026*
 
-![Redis-social- card](/images/blog/a951ac777178452c66b895dc732923dc724ef389-1200x628.webp)
+![Redis-social- card](/images/site-mirror/a951ac777178452c66b895dc732923dc724ef389-1200x628.webp)
 
 Modern generative AI is powered by more than models—it runs on fast data. From chatbots to real-time personalization, high-performing AI systems rely on [vector databases](/blog/vector-databases-101/) to store, retrieve, and search the embeddings that fuel every smart response.
 

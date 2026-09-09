@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 28 April 2026 · updated 29 April 2026*
 
-![Prefill vs decode: The two phases shaping your LLM app's speed](/images/blog/75bfcc6f0e694bc947af33b701199bde48b5315b-2400x1256.webp)
+![Prefill vs decode: The two phases shaping your LLM app's speed](/images/site-mirror/75bfcc6f0e694bc947af33b701199bde48b5315b-2400x1256.webp)
 
 Every LLM request runs in two distinct phases: prefill, where the model reads your prompt in one parallel burst, and decode, where it generates the response one token at a time, each one depending on the last. These two phases have different performance characteristics, hit different hardware bottlenecks, and need different optimization strategies.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Eric Silva, Contributor · Published 14 June 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/709839242e64c43849ed33cc08d79d92979bcee1-772x550.webp)
+![Blog tile image](/images/site-mirror/709839242e64c43849ed33cc08d79d92979bcee1-772x550.webp)
 
 **Here’s what prominent retailers are doing to enhance inventory management**.
 

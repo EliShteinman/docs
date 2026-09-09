@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 31 May 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/13d990f789287b75b37ec4fd401c68271cd711a4-772x550.webp)
+![Blog tile image](/images/site-mirror/13d990f789287b75b37ec4fd401c68271cd711a4-772x550.webp)
 
 **Understand your microservice deployment options, including automations to save your team precious time and other practical advice for saving systems from unexpected failures.**
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Roshan Kumar, Senior Product Manager · Published 28 August 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/8a1a2a8c41018fac3b33b81a982a7c006d9f1db0-5000x2590.webp)
+![Blog tile image](/images/site-mirror/8a1a2a8c41018fac3b33b81a982a7c006d9f1db0-5000x2590.webp)
 
 We recently surveyed our customers and received some great and interesting feedback. For instance, we found out that 71% of users increased their usage of Redis Enterprise because their business grew.
 

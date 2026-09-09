@@ -14,9 +14,9 @@ hidden: true
 
 *By Manish Gupta, Chief Marketing Officer · Published 28 August 2016 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/92dd433b1500e5cd49364720500711de73945ba4-600x600.webp)
+![Blog tile image](/images/site-mirror/92dd433b1500e5cd49364720500711de73945ba4-600x600.webp)
 
-![All Substance and Plenty of Deserved Hype Too](/images/blog/f91403a3a208f00cb75be67c1296132748f9cbf0-442x254.webp)
+![All Substance and Plenty of Deserved Hype Too](/images/site-mirror/f91403a3a208f00cb75be67c1296132748f9cbf0-442x254.webp)
 
 In the past 12 months, Redis has celebrated some impressive market leadership milestones—and we have every reason to believe the party’s just getting started.
 

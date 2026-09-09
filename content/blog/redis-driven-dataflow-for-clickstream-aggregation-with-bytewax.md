@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 3 January 2024 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/1dc3bd3bd6e59706e1f19a04dc5e166562016fa0-772x550.webp)
+![Blog tile image](/images/site-mirror/1dc3bd3bd6e59706e1f19a04dc5e166562016fa0-772x550.webp)
 
 ## Harnessing Redis PubSub with Bytewax for Streamlined Data Aggregation
 
@@ -144,7 +144,7 @@ It is worth mentioning that there are different ways to set up pub/sub with redi
 
 Before going forward, let’s recap how our current small echo pipeline looks and agree on some terminology:
 
-![redis_simple_pipeline_overview_](/images/blog/2d6c26ae4b9379adb4461d4fb5072a84adffeb94-1260x348.webp)
+![redis_simple_pipeline_overview_](/images/site-mirror/2d6c26ae4b9379adb4461d4fb5072a84adffeb94-1260x348.webp)
 
 We are going to refer to “everything to the left of Redis” as **“producer”** and “everything on the right of the Redis” as **“consumer”**. It’s just a convention, we could’ve picked “writer”/”reader” or “publisher”/”subscriber”. Technically, if you want to nitpick, those terms have some differences, but in the context of this post, they are irrelevant. Using this terminology we should add that:
 
@@ -279,7 +279,7 @@ op.output('out', stream, StdOutSink())
 
 The entire code is available in the [example repository](https://github.com/bytewax/example-redis). Our present implementation looks like this:
 
-![redis_dataflow_echo_overivew_69f222a6f2](/images/blog/708c86cb6268d46ef9a635e1af182996a0d2d06b-1116x332.webp)
+![redis_dataflow_echo_overivew_69f222a6f2](/images/site-mirror/708c86cb6268d46ef9a635e1af182996a0d2d06b-1116x332.webp)
 
 Structurally, this mirrors our previous implementation, with the left-hand side of the pipeline remaining unchanged.
 
@@ -434,7 +434,7 @@ That’s a lot of steps! If we run this dataflow we should see the following out
 
 The full diagram of our pipeline is a bit more complex now
 
-![redis_dataflow_mobile_counts_overivew_d1536f7727](/images/blog/dcf3ae1dcfdd336cce0c0bb5df1ec3a894b8005b-1116x804.webp)
+![redis_dataflow_mobile_counts_overivew_d1536f7727](/images/site-mirror/dcf3ae1dcfdd336cce0c0bb5df1ec3a894b8005b-1116x804.webp)
 
 Each step performs its specific function and is isolated enough to be easily tested and debugged. If you’re seeking clarification on how the reduce_window works, I’d kindly direct you to our [documentation](https://bytewax.io/docs/getting-started/simple-example), as isn’t the primary focus here. So, what is the main focus, you might wonder? Well, I’m glad you asked! The primary focus is on highlighting **how pythonic and streamlined** the overall pipeline appears now! Each step is straightforward to read and modify; in essence, there are just a few lines of code that efficiently organize the influx of data into a set of counts, ready, for example, for submission to some external BI platform.
 

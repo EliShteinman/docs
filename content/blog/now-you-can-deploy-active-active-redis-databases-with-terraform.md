@@ -15,7 +15,7 @@ hidden: true
 
 *By Noam Stern, Sr. Product Manager, Products · Published 6 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/733959faa9b5117193c27a252af6616508473307-772x550.webp)
+![Blog tile image](/images/site-mirror/733959faa9b5117193c27a252af6616508473307-772x550.webp)
 
 **We are happy to announce that Redis Enterprise Cloud has published its Terraform resources for managing multi-region Active-Active Redis databases.**
 

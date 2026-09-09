@@ -14,11 +14,11 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 18 December 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/939084c5bbe10aa164a9a6efbf88e9fa3a6c5f31-772x552.webp)
+![Redis](/images/site-mirror/939084c5bbe10aa164a9a6efbf88e9fa3a6c5f31-772x552.webp)
 
 [Retrieval-Augmented Generation (RAG)](https://redis.io/glossary/retrieval-augmented-generation/) has become central to how enterprises build AI systems. It allows LLMs to access and reason over proprietary enterprise data without expensive fine-tuning, making AI practical for production use.
 
-![enterprises adopt RAG](/images/blog/2b1fc9718e50eba5faf1240cb393286b2479f38e-1920x840.webp)
+![enterprises adopt RAG](/images/site-mirror/2b1fc9718e50eba5faf1240cb393286b2479f38e-1920x840.webp)
 
 But as enterprises deploy RAG systems, they're hitting limits. Vanilla RAG handles simple queries well but struggles with complexity. It retrieves once, generates an answer, and that's it. There’s no iteration or way to refine when the first pass falls short.
 
@@ -285,7 +285,7 @@ Infrastructure choices matter here. Bottlenecks are risky, especially under high
 
 Objective benchmarking shows Redis outperforms all other vector databases. For agentic RAG, where speed and scalability aren't optional, that makes it the fastest choice.
 
-![Redis](/images/blog/872269d59417a4a81fb87214bc3181b6b230b94a-1920x1080.webp)
+![Redis](/images/site-mirror/872269d59417a4a81fb87214bc3181b6b230b94a-1920x1080.webp)
 
 If you're ready to build an agentic RAG system or support an existing one with faster, more reliable infrastructure, you can [try Redis for free](https://redis.io/try-free/) or [book a demo](https://redis.io/meeting/) today.
 

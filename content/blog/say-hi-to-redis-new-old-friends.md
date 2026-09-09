@@ -15,14 +15,14 @@ hidden: true
 
 *By Guy Korland · Published 4 November 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/f2757e486f26feabe53f3a5071977a5d05b8d102-772x520.webp)
+![Blog tile image](/images/site-mirror/f2757e486f26feabe53f3a5071977a5d05b8d102-772x520.webp)
 
 ## Idiomatic Python, Java, and Node clients
 join the Redis organization
 
 One of the most amazing things a first-time [Redis](https://redis.io) user might notice is a [42-page long list](https://redis.io/docs/latest/) of clients, all developed by the great open source community of Redis. Currently, it consists of **218** different clients!
 
-![](/images/blog/4f46aef3bf15195962a08d646e359a2cd31c00aa-1024x537.webp)
+![](/images/site-mirror/4f46aef3bf15195962a08d646e359a2cd31c00aa-1024x537.webp)
 
 That list not only covers all the major programming languages, but also languages that I, at least, didn’t hear about until I set out to write this blog, like [Racket](https://redis.io/clients#racket), [Rebol](https://redis.io/clients#rebol), and [Lasso](https://redis.io/clients#lasso). To be technically correct, the list covers **36** different programming languages! (I guess you already got the point. Perhaps I can drop the “!” from now on…)
 
@@ -34,7 +34,7 @@ Well, these 264 commands are just the tip of the iceberg. If you really want to 
 
 In order to keep Redis simple and stable, chunks of processing are offloaded to the client. For example, in order to support [Redis Transactions](https://redis.io/topics/transactions), the client has to promise all the operations are done on the same exact socket and can’t multiplex this socket as long as the transaction wasn’t “[executed](https://redis.io/commands/exec).” Such nuances should be taken into consideration when one starts to develop a new Redis client, and it gets even trickier when it comes to supporting High-Availability and [Clustering](https://redis.io/topics/cluster-spec).
 
-![](/images/blog/4613cb169ebda4c7b5198a94cc2ca6f71daac5d9-1024x561.webp)
+![](/images/site-mirror/4613cb169ebda4c7b5198a94cc2ca6f71daac5d9-1024x561.webp)
 
 ## We want to make it even better!
 

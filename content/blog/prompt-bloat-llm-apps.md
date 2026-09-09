@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 24 May 2026 · updated 27 May 2026*
 
-![Prompt bloat: why your LLM apps are sending too many tokens (& what to do about it)](/images/blog/800633d28a25d9a2f240b0f04f6201f116e1ce35-2400x1256.webp)
+![Prompt bloat: why your LLM apps are sending too many tokens (& what to do about it)](/images/site-mirror/800633d28a25d9a2f240b0f04f6201f116e1ce35-2400x1256.webp)
 
 You shipped an agent that handles customer support tickets. In staging it routed cleanly, called the right tools, and stayed on script. A few weeks into production, things drift. The agent forgets constraints you set in the system prompt halfway through a conversation. A token-limit error fires in the middle of a multi-step workflow. Your provider bill for the month is double what your back-of-the-napkin math predicted, and most of that spend is input tokens, not output. You probably have a prompt bloat problem.
 

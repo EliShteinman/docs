@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 15 June 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/615ecb8aa8672014a6e8c4e690da8ddfd18a5747-772x550.webp)
+![Blog tile image](/images/site-mirror/615ecb8aa8672014a6e8c4e690da8ddfd18a5747-772x550.webp)
 
 **This isn’t the first time the tech industry has encountered hard times. Listen to the advice from IT execs who have been there, done that, and developed practical ways to survive … or even thrive.**
 

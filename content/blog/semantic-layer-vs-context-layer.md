@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 3 June 2026*
 
-![Semantic layer vs context layer: where BI modeling ends & AI grounding begins](/images/blog/0776a4601bd0eae1d9678ea9dcbd17f2cca0b670-2400x1256.webp)
+![Semantic layer vs context layer: where BI modeling ends & AI grounding begins](/images/site-mirror/0776a4601bd0eae1d9678ea9dcbd17f2cca0b670-2400x1256.webp)
 
 Your BI semantic layer solved a hard problem: getting every team, dashboard, and report to agree on what shared metrics like "revenue," "active customer," or "customer acquisition cost" actually mean. Those governed definitions won't be enough to ground an AI agent. Dashboards and SQL queries run on standardized metric definitions, but agents also need runtime access to documents, conversation history, fresh operational data, tools, and permissions at every reasoning step.
 

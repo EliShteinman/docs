@@ -14,7 +14,7 @@ hidden: true
 
 *By Yaron Dolev · Published 28 July 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Despite the setbacks that have been the cause of quite a few headaches, solutions do exist, and may be even simpler than anticipated.
 

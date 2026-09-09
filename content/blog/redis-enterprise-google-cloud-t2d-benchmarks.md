@@ -15,7 +15,7 @@ hidden: true
 
 *By Gilbert Lau, Cloud Partner Solution Architect · Published 30 November 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e2488530fbb7387a6e8053f1ca0a694f274e10d6-772x550.webp)
+![Blog tile image](/images/site-mirror/e2488530fbb7387a6e8053f1ca0a694f274e10d6-772x550.webp)
 
 **Google and Redis are working together to ensure the best possible server performance across new CPU architectures. Case in point: Our benchmarks show that T2D has up to 75% better price performance than older-generation Rome Google Cloud machines.**
 
@@ -161,11 +161,11 @@ The following are optimized results for each machine type in terms of shard coun
 
 In the single VM 16-vCPU throughput comparison, the T2D beats N2D Milan machines by about 50% and previous generation N2D Rome by about 75%.
 
-![max throughput bar graph](/images/blog/bd3dabe9101df7b92b064eeaa84560a0cd1914cf-1200x742.webp)
+![max throughput bar graph](/images/site-mirror/bd3dabe9101df7b92b064eeaa84560a0cd1914cf-1200x742.webp)
 
 In the single VM 16-vCPU price-performance comparison, the T2D beats previous generation E2 Rome machines by about 40% and N2D Rome/Milan by about 75%.
 
-![benchmarking google cloud t2d graph](/images/blog/2c40be8f3de98d415063ddb77a57d8e36783350e-1200x742.webp)
+![benchmarking google cloud t2d graph](/images/site-mirror/2c40be8f3de98d415063ddb77a57d8e36783350e-1200x742.webp)
 
 ### Cluster Configuration (scale out)
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 22 June 2026 · updated 24 June 2026*
 
-![Sub-agents: splitting context across specialized AI agents](/images/blog/54b78296d99df391a0ec5548dbddfe1e879a93d3-2400x1256.webp)
+![Sub-agents: splitting context across specialized AI agents](/images/site-mirror/54b78296d99df391a0ec5548dbddfe1e879a93d3-2400x1256.webp)
 
 If you've ever watched a single AI agent lose the plot on a complex task, you've probably wondered whether splitting the work across [multiple agents](/blog/ai-agent-orchestration-platforms/) would help. It can. But the split comes with its own headaches. Agents lose track of each other's work, duplicate steps, and act on stale state. This article covers what sub-agents are, why teams break one agent into many, the context problems that force the split, and why shared memory is a piece many teams underestimate.
 

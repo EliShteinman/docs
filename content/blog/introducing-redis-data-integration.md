@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 15 August 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/796b4067d96607482e0513f57ad3403660f0428c-772x550.webp)
+![Blog tile image](/images/site-mirror/796b4067d96607482e0513f57ad3403660f0428c-772x550.webp)
 
 **Redis is announcing the public preview release of Redis Data Integration (RDI). RDI lets developers offload a database to Redis Enterprise, mirror application data, and operate at in-memory speeds. And you don’t need to invest in coding or integration efforts.**
 
@@ -32,7 +32,9 @@ We decided to take on the challenge ourselves.
 
 [Redis Data Integration](/data-integration/) (RDI) is a tool that runs inside Redis Enterprise. It helps you synchronize data from your existing relational database into Redis in near real-time so thatapplication read queries are completely offloaded from the relational database to Redis.
 
-![The data transformation process](/images/blog/284c6b946aa8c4d51fd338ac1ac840943d29fdf2-1000x506.webp)
+![The data transformation process](/images/site-mirror/284c6b946aa8c4d51fd338ac1ac840943d29fdf2-1000x506.webp)
+
+*The data transformation process*
 
 RDI pipelines have two stages:
 
@@ -43,7 +45,9 @@ The data transformation process
 
 [Debezium](https://debezium.io/), an open-source CDC platform, captures changes to data in the source database and streams it into RDI. Within Redis, the data may be further filtered, transformed, and mapped to one or more Redis keys. RDI supports several [Redis data types](/redis-enterprise/data-structures/) (Hash, JSON, Set, and Stream). RDI writes the data to the destination Redis database.
 
-![Ingest with the Debezium server](/images/blog/7083ad0af23c442db48bf898b12852af8601eba4-1000x546.webp)
+![Ingest with the Debezium server](/images/site-mirror/7083ad0af23c442db48bf898b12852af8601eba4-1000x546.webp)
+
+*Ingest with the Debezium server*
 
 It does the heavy lifting, so developers can focus on application code instead of on integration chores and data transformation code.
 
@@ -57,7 +61,9 @@ Capturing changes from a source database and getting the data from one place to 
 
 RDI provides an option to specify all the filtering and transformation steps required per source table. This is called a *job,* in RDI terms; every job is a YAML file.
 
-![Data transformation pipeline](/images/blog/3149bde972cd4f7950d644fe7b0ccc6752ce23a7-1000x242.webp)
+![Data transformation pipeline](/images/site-mirror/3149bde972cd4f7950d644fe7b0ccc6752ce23a7-1000x242.webp)
+
+*Data transformation pipeline*
 
 Filtering is important. CDC products provide complex filtering, but you have to write custom code. RDI does the same without coding. Instead, a declarative filter using [SQL expressions](https://www.sqlite.org/lang_expr.html) or [Jmespath functions](https://jmespath.org/proposals/functions.html) is applied. RDI comes with additional [custom Jmespath functions](https://jmespath.org/proposals/functions.html) for the convenience of the job creator.
 

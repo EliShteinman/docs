@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 1 June 2022 · updated 21 May 2026*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 What is a *key* anyway in Redis? The original intention of Redis (or any [key-value](/nosql/key-value-databases/) store) was to have a particular key, or identifier, for each individual piece of data. Redis quickly stretched this concept with data types, where a single key could refer to multiple (even millions of) pieces of data. As modules came to the ecosystem, the idea of a key was stretched even further because a single piece of data could now span multiple keys (for a [Search and Query](/search/) index, for example). So, when asked if Redis is a key-value store, I usually respond with “it descends from the key-value line of databases” but note that, at this point, it’s hard to justify Redis as a key-value store alone. One place, however, where keys in Redis are still vitally important is [clustering](/docs/redis-microservices-for-dummies/).
 

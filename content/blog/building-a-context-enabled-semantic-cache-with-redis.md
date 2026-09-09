@@ -14,7 +14,7 @@ hidden: true
 
 *By Philip Laussermair, Senior Solutions Architect on our Azure Managed Redis  · Published 28 August 2025 · updated 1 June 2026*
 
-![Redis blog card](/images/blog/8ba953f56aeea71b0f1e49ea4030d816d3889145-772x552.webp)
+![Redis blog card](/images/site-mirror/8ba953f56aeea71b0f1e49ea4030d816d3889145-772x552.webp)
 
 Generative AI has rapidly evolved into the spotlight of enterprise innovation, transforming everything from customer service to internal knowledge management. Yet, enterprises face emerging issues with large language models in production: high operational costs, slow response times, and generic, impersonal outputs. Previously, most solutions could solve for only a subset of these, usually at the behest of the others. For example, premium model calls are used with complex prompting to solve generic outputs. Solving operational costs meant using fewer premium model calls, increasing latency, and lowering quality outputs. To overcome these challenges, we’ve introduced an innovative architecture called **Context-Enabled Semantic Caching (CESC)**, leveraging the powerful combination of OpenAI models and Redis.
 
@@ -56,7 +56,7 @@ Redis seamlessly integrates RedisVL for vector search and semantic lookups. Embe
 
 Here’s a simplified view of the architecture:
 
-![simplified view of the architecture](/images/blog/57455d5ebc543c42a078612a21886311b4e448f4-960x540.webp)
+![simplified view of the architecture](/images/site-mirror/57455d5ebc543c42a078612a21886311b4e448f4-960x540.webp)
 
 ## Why This Architecture Matters to Enterprises
 

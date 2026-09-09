@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike  Moss , SVP, Worldwide Channels & Alliances · Published 17 December 2025 · updated 18 December 2025*
 
-![Redis Data Integration: Your fast lane from legacy systems to the AI era on AWS](/images/blog/303f03a60640d078988ae6a8dd4f6185285cc3bb-1200x628.webp)
+![Redis Data Integration: Your fast lane from legacy systems to the AI era on AWS](/images/site-mirror/303f03a60640d078988ae6a8dd4f6185285cc3bb-1200x628.webp)
 
 Enterprises aren’t short on valuable data. They’re short on ways to effectively use it. For years, your most important operational data has lived in Oracle, PostgreSQL, MySQL, and even modern cloud databases like AWS RDS and Aurora. That data is the backbone of your business, but the systems holding it weren’t built for the AI era’s demands: sub-millisecond speed, unified real-time access, and intelligence at scale.
 
@@ -55,7 +55,7 @@ This is AI enablement without the migration headaches.
 
 **Redis and AWS: Better together**
 
-![redis AWS provides the secure, scalable cloud foundation enterprises trust](/images/blog/2280c49101ca0b799e2ea7e5632637f4448ef32a-1534x1055.webp)
+![redis AWS provides the secure, scalable cloud foundation enterprises trust](/images/site-mirror/2280c49101ca0b799e2ea7e5632637f4448ef32a-1534x1055.webp)
 
 AWS provides the secure, scalable cloud foundation enterprises trust. Redis Cloud adds the high-speed data and AI capabilities modern applications demand. And RDI ensures your legacy systems can participate in this architecture immediately.
 

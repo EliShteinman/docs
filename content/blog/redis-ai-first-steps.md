@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 17 June 2019 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/32db3a71c9b8f27e19a2b7b93fc2526a2976834a-542x464.webp)
+![Blog tile image](/images/site-mirror/32db3a71c9b8f27e19a2b7b93fc2526a2976834a-542x464.webp)
 
 At RedisConf 2019, Redis [introduced](https://www.youtube.com/watch?v=u9dKmRQj3wE) a new module called RedisAI. The idea is to bring together machine learning (ML) and deep learning (DL) and execute artificial intelligence (AI) models as close as possible to where your data currently lives. This sounds amazing, but what if you’re brand new to all of this? What if you’re interested in machine learning, but you’re not quite sure what the heck it all means? How do you make sense of it all? Your boss’ boss is saying, “we need to integrate machine learning,” and last week you thought that meant he wanted you to run an extra compile step or something. Now you’re sitting here trying to understand a lot of new terms and how you can bring this into your organization.
 
@@ -104,7 +104,7 @@ If these are your first steps into the AI world, the next thing you need to do i
 
 I’ve set up a [repo on Github](https://github.com/JoeCianflone/redisai-example) that you can download and play around with an example Inside that folder you’ll find everything you need to get started:
 
-![](/images/blog/86bcfbda99fc2be82febbd66980d268899b7f36d-717x130.webp)
+![](/images/site-mirror/86bcfbda99fc2be82febbd66980d268899b7f36d-717x130.webp)
 
 Our example project is a CLI image classification app. We’ll give it an image and the app should be able to figure out what’s in the image. For example, we have an image of a panda, and when we give the app the picture, the app should tell us that there’s a giant panda in the image.
 
@@ -114,7 +114,7 @@ $ node mobilenet.js ../img/panda.jpg
 
 The panda.jpg image is the header image of this blog post. If all goes well, your output should look similar to this:
 
-![](/images/blog/08573c8c03fd890b1bc7bc0b73e518ce88b07e1a-718x226.webp)
+![](/images/site-mirror/08573c8c03fd890b1bc7bc0b73e518ce88b07e1a-718x226.webp)
 
 Awesome, we got something back! Great? What does this mean exactly, what did we do? We supplied our node app a picture of a panda and a computer. Our system was trained to look at images and tell us what’s in the picture. So what we’ve done here is supply our app 2 images and the app was able to tell us what it “saw” in the images.
 

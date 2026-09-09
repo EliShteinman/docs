@@ -15,13 +15,13 @@ hidden: true
 
 *By Rahul M · Published 18 April 2018 · updated 23 June 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 [Redis](/redis-features/redis) is a simple, yet powerful in-memory database platform with use cases ranging from session management, queues and pub/sub to general-purpose cache. With its persistence and in-memory replication capabilities, [Redis Enterprise](/redis-enterprise/) is also used as a primary datastore.
 
 As a software engineer, I frequently use Redis to overcome unique problems. In one project, our use case was simple: I wanted to replicate the contents of a file system partition with a fixed, well-defined structure: at the root of the file system we had a fixed set of directories, each with more than a million files. Our previous solution ran two processes in parallel, 24/7 to identify the modified files. The first process scanned all the file contents and identified the changed content since the previous replication. A job ran once every 24 hours to replicate the changed files. The second process indexed all the files that were successfully replicated.
 
-![](/images/blog/56e99344336f7bcf0fc667c771429cbf448cf21a-937x716.webp)
+![](/images/site-mirror/56e99344336f7bcf0fc667c771429cbf448cf21a-937x716.webp)
 
 In our previous solution, we used an SQL database to store the file metadata (such as name, size, permissions, path, etc.) and all the information related to modified files. The scheduled replication job queried the database to pull the list of files that were modified, then replicated the content onto a remote server. After replication, it updated the SQL database, marking the files as ‘copied,’ after which the indexing process picked up the marked list to index the file content.
 

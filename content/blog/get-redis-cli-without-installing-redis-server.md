@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 2 July 2022 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 [Redis CLI](/learn/operate/redis-at-scale/talking-to-redis/command-line-tool/) is invaluable for writing software for getting to know a new module. If you didn’t have a Redis command line interface, understanding [Redis’ data structures](/redis-enterprise/data-structures/) and testing connections would be far more complicated.
 

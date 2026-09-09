@@ -15,7 +15,7 @@ hidden: true
 
 *By Ajeet Raina, Technical Marketing Manager · Published 7 January 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/16f6c86bd0a25a058127ed0cfe9beb14f0ea2f0f-772x550.webp)
+![Blog tile image](/images/site-mirror/16f6c86bd0a25a058127ed0cfe9beb14f0ea2f0f-772x550.webp)
 
 ## What is Database as a Service (DBaaS)?
 
@@ -41,7 +41,7 @@ DBaaS providers host all your database infrastructure and data while enabling ac
 
 In addition, DBaaS providers normally offer various features such as monitoring, alerts and notifications, round-the-clock support, and geo-replication for availability and backups. All maintenance and administrative tasks are handled by the service provider, freeing up users to benefit from using the database without the overhead of managing it.
 
-![DBaaS diagram showing apps on the left that connect through an interface/API to the cloud database](/images/blog/d95a156aa6c1e4499c994c1bb742127214c6efa9-1024x520.webp)
+![DBaaS diagram showing apps on the left that connect through an interface/API to the cloud database](/images/site-mirror/d95a156aa6c1e4499c994c1bb742127214c6efa9-1024x520.webp)
 
 ## What are the benefits of Database as a Service?
 

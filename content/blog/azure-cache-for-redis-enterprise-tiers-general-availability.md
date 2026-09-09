@@ -14,7 +14,7 @@ hidden: true
 
 *By Amiram Mizne, Director of Product Management · Published 2 March 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/f9a3b0d4694e07e6d2757aa5d4287096c7272bab-772x520.webp)
+![Blog tile image](/images/site-mirror/f9a3b0d4694e07e6d2757aa5d4287096c7272bab-772x520.webp)
 
 This morning, Microsoft and Redis jointly announced the general availability of [Azure Cache for Redis, Enterprise tiers](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/garantiadata.redis_enterprise_1sp_public_preview?ocid=redisga_redis_gablog_cta1). The service has been in public preview since last October, and is already serving customers with production Redis workloads. The GA release is now enhanced with previews of [active geo-replication](/active-active/) (with up to 99.999% availability), and [disk persistence with recovery](/redis-enterprise/technology/durable-redis/) while being rolled out to an increasing number of Azure regions.
 
@@ -48,7 +48,7 @@ We’re excited to announce the public preview availability of active geo-replic
 
 Active geo-replication empowers operators to deploy Redis datasets across multiple Azure regions, with managed multi-primary replication across the Azure backbone network. Whether deploying a nationwide multi-region application or a globally distributed one, active geo-replication addresses key use-cases such as global [session management](/solutions/session-management/), world-wide [fraud detection](/solutions/fraud-detection/), geo-distributed search, and [real-time inventory management](/solutions/real-time-inventory/).
 
-![](/images/blog/89f7883a75a74ab678f106b9e1aa760af270b173-581x581.webp)
+![](/images/site-mirror/89f7883a75a74ab678f106b9e1aa760af270b173-581x581.webp)
 
 When it becomes generally available later this year, active geo-replication will provide up to 99.999% availability of service, enabling operators to bring the power of Redis to their organizations’ most mission-critical applications.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Amine El Kouhen, Data Architect · Published 7 April 2026 · updated 8 April 2026*
 
-![Blog tile image](/images/blog/415a8e5fe5f1b6a51cee001cf8097d907be6965a-1200x628.webp)
+![Blog tile image](/images/site-mirror/415a8e5fe5f1b6a51cee001cf8097d907be6965a-1200x628.webp)
 
 You've probably seen this play out: one team builds a dashboard on data that another team doesn't trust, a third team extracts the same dataset into a separate pipeline, and nobody agrees on which customer numbers are correct. Meanwhile, leadership greenlights an AI initiative that depends on data quality nobody can actually verify.
 
@@ -39,7 +39,9 @@ Before building a strategy, it helps to know where your organization sits today.
 
 Organizations typically start data-centric and evolve toward data-driven as their capabilities and culture mature. The components below are what make that progression possible.
 
-![Data-driven vs. data-centric decisions](/images/blog/cb424ef8caf4621f3894874fc4fa848f4fbfa2e1-1731x1394.webp)
+![Data-driven vs. data-centric decisions](/images/site-mirror/cb424ef8caf4621f3894874fc4fa848f4fbfa2e1-1731x1394.webp)
+
+*Data-driven vs. data-centric decisions*
 
 ## The key components of a data strategy
 
@@ -51,11 +53,15 @@ Business alignment ties data work directly to business goals. If a data initiati
 
 Executive support matters here. Data initiatives often stall when they conflict with existing priorities, and without leadership backing, they're the first thing to get deprioritized. Alignment means identifying specific, measurable objectives tied to revenue growth, operational efficiency, or risk management, and then building a roadmap that sequences those objectives against realistic constraints like budget, staffing, and competing initiatives.
 
-![Prioritization matrix](/images/blog/89880fe9ebc79446c100302066797a9f468cccdc-1147x545.webp)
+![Prioritization matrix](/images/site-mirror/89880fe9ebc79446c100302066797a9f468cccdc-1147x545.webp)
+
+*Prioritization matrix*
 
 Data maturity assessment belongs in this phase too. Before committing to a roadmap, you need an honest picture of where you actually stand: which data assets exist, which processes work, and which gaps need to be closed before more ambitious goals become achievable. Skip this step, and you'll end up with a roadmap that assumes capabilities your organization doesn't have yet.
 
-![Data maturity assessment](/images/blog/bf08dab93e3cd95fc821e580e86d17a21549c42e-1254x509.webp)
+![Data maturity assessment](/images/site-mirror/bf08dab93e3cd95fc821e580e86d17a21549c42e-1254x509.webp)
+
+*Data maturity assessment*
 
 ### Data architecture & infrastructure
 
@@ -93,7 +99,9 @@ Data strategy teams typically include a combination of technical and business ro
 
 Common roles in a data strategy team include data engineers, data architects, data scientists, data analysts, business analysts, data managers, and the CDO. What matters more than the exact titles is clarity about who owns what, which data, which processes, and which decisions. Vague accountability is one of the most consistent reasons data strategies fail in execution.
 
-![The data team](/images/blog/5f4fd81829541be8109c07c95972ab4f81553864-1758x1008.webp)
+![The data team](/images/site-mirror/5f4fd81829541be8109c07c95972ab4f81553864-1758x1008.webp)
+
+*The data team*
 
 ### Change management
 

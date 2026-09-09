@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 4 September 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/96eda390f3d1125f7f568efbef40a1d9c93ab6d3-635x200.webp)
+![](/images/site-mirror/96eda390f3d1125f7f568efbef40a1d9c93ab6d3-635x200.webp)
 
 While catching up with the world the other day, I read through the High Scalability guest post by[ Anshu and Rajkumar’s from Aerospike](https://highscalability.com/blog/2014/8/18/1-aerospike-server-x-1-amazon-ec2-instance-1-million-tps-for.html) (great job btw). I really enjoyed the entire piece and was impressed by the heavy tweaking that they did to their EC2 instance to get to the 1M mark, but I kept wondering – how would Redis do?
 

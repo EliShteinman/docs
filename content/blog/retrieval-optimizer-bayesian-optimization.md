@@ -14,7 +14,7 @@ hidden: true
 
 *By Robert Shelton, AI Engineer at Redis · Published 21 July 2025*
 
-![Retrieval optimizer: Bayesian optimization](/images/blog/ea40e751f4c664465805827c525c17df7c8085c7-772x552.webp)
+![Retrieval optimizer: Bayesian optimization](/images/site-mirror/ea40e751f4c664465805827c525c17df7c8085c7-772x552.webp)
 
 In the [last article](https://docs.google.com/document/d/16ywR8VnbHrrgtQGB1r4gmpR6e3q3Z7E3fElRvJFUgfY/edit?tab=t.0), we introduced the retrieval optimizer, why it matters for eval driven development (EDD) and how to get started with a basic grid search. Often selecting the right search method and embedding model are the most influential elements that need to be measured first. However, there are many search index settings that have a tangible impact on the performance of your information retrieval app.
 
@@ -153,13 +153,13 @@ metrics = run_bayes_study(
 
 As you can see from the output, the process selected options (such as a smaller m param and vector_data_type) to reduce footprint and bring down indexing_time while maintaining or improving the f1 score.
 
-![Output example](/images/blog/1621d3f0b892eb501f756965e1205a6a5cf316a9-885x491.webp)
+![Output example](/images/site-mirror/1621d3f0b892eb501f756965e1205a6a5cf316a9-885x491.webp)
 
 ## Process schematics
 
 The following diagram outlines the full process flow for how the retrieval optimizer completes bayesian optimization. The retrieval optimizer uses the [Redisvl embedding cache feature](https://docs.redisvl.com/en/latest/user_guide/10_embeddings_cache.html) and only re-indexes when needed. This makes it much faster to run later tests.
 
-![Process schematics](/images/blog/ac827d8c6793d3d4d6d40856871fa583dae633f5-1600x1153.webp)
+![Process schematics](/images/site-mirror/ac827d8c6793d3d4d6d40856871fa583dae633f5-1600x1153.webp)
 
 ## Next steps
 

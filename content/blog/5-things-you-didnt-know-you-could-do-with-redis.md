@@ -14,7 +14,7 @@ hidden: true
 
 *By Alex Patino · Published 28 September 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a98878bd61760a63d5bec9fbf397bf9814af6c6f-772x550.webp)
+![Blog tile image](/images/site-mirror/a98878bd61760a63d5bec9fbf397bf9814af6c6f-772x550.webp)
 
 **You certainly know Redis as a **[**cache**](/solutions/caching/)** and primary database. It’s earned an excellent reputation among developers worldwide. But Redis also provides a lot of underlying technology to solve lots of business problems, and you might not realize how it might help in your own IT shop.**
 

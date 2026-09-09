@@ -15,7 +15,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 20 September 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/820efa0b01ff2e45d586426137638edcb6a436ed-6400x3600.webp)
+![Blog tile image](/images/site-mirror/820efa0b01ff2e45d586426137638edcb6a436ed-6400x3600.webp)
 
 *This post is the final post in a series delving into the features of the *[*Redis-ML*](/modules/machine-learning/)* module. The first post in the series can be found *[*here*](/blog/introduction-redis-ml/)*.*
 

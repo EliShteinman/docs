@@ -15,7 +15,7 @@ hidden: true
 
 *By Mike  Moss , Yusuf Bahadur · Published 16 April 2026*
 
-![Redis achieves Google Cloud GDC solution validation ahead of Google Cloud Next ‘26](/images/blog/3f754e7bb8d681a48acce0ad77633cf6319f0958-1200x628.webp)
+![Redis achieves Google Cloud GDC solution validation ahead of Google Cloud Next ‘26](/images/site-mirror/3f754e7bb8d681a48acce0ad77633cf6319f0958-1200x628.webp)
 
 We are heading into [Google Cloud Next 2026](https://redis.io/google-cloud-next-2026/) in Las Vegas with momentum.
 

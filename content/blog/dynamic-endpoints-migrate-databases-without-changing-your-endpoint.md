@@ -14,7 +14,7 @@ hidden: true
 
 *By Noam Stern, Sr. Product Manager, Products · Published 12 May 2026*
 
-![Dynamic endpoints: Migrate databases without changing your endpoint](/images/blog/99020b3bed5da7413bdf7a5d1d6bb282d1ac858c-1200x628.webp)
+![Dynamic endpoints: Migrate databases without changing your endpoint](/images/site-mirror/99020b3bed5da7413bdf7a5d1d6bb282d1ac858c-1200x628.webp)
 
 Most teams don’t move Redis databases often. But when they do, the complexity is rarely in Redis itself. It’s in coordinating endpoint changes across apps, services, and jobs.
 
@@ -54,7 +54,7 @@ Redirection is explicit and controlled, and once apps adopt the dynamic endpoint
 
 For example, a company may need to move its Redis database to another region because of infrastructure realignment, proximity to dependent services, or disaster recovery planning. With dynamic endpoints, the app continues to use the same hostname while the backing database changes beneath it.
 
-![Dynamic endpoints](/images/blog/6165c964fbf4e33cf5aa170e2e3094b79bdc1c2a-1306x601.webp)
+![Dynamic endpoints](/images/site-mirror/6165c964fbf4e33cf5aa170e2e3094b79bdc1c2a-1306x601.webp)
 
 ## Example: Upgrade from Redis Cloud Essentials to Redis Cloud Pro with private connectivity
 

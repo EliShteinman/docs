@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 8 March 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fbad662df421a4563d760b72860560e8816f9b31-1544x1040.webp)
+![Blog tile image](/images/site-mirror/fbad662df421a4563d760b72860560e8816f9b31-1544x1040.webp)
 
 Rediscover the power of real-time data at RedisConf 2021! Registration is now open for our annual real-time data conference, to be **held virtually on April 20-21**. Thousands of developers, cloud architects, devops professionals, and IT leaders from around the globe will join Redis product leaders, architects, partners, and experts to dive into the latest Redis capabilities and best practices.
 

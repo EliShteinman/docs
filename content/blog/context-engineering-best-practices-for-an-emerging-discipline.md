@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 26 September 2025 · updated 21 May 2026*
 
-![Context engineering: Best practices for an emerging discipline](/images/blog/16dc6008e0378b18bfbabe743f01ed726206f701-772x552.webp)
+![Context engineering: Best practices for an emerging discipline](/images/site-mirror/16dc6008e0378b18bfbabe743f01ed726206f701-772x552.webp)
 
 LLMs can perform an enormous amount of tasks – that much is now undeniable – but building performance-grade software with LLMs is still difficult because we don’t know *which* tasks an LLM will succeed at until we try. This is the core question at the heart of AI-based development, and context engineering is the answer.
 
@@ -58,7 +58,7 @@ At a high level, prompt engineering is ad hoc, and context engineering is system
 
 That doesn’t mean one is better than the other in all cases, but it does mean that prompt engineering is best understood as a subset of context engineering.
 
-![Context engineering](/images/blog/c56afbdf95f8ebe8a8ea9cf582d9fec353c16d71-1920x1264.webp)
+![Context engineering](/images/site-mirror/c56afbdf95f8ebe8a8ea9cf582d9fec353c16d71-1920x1264.webp)
 
 *(*[*Source*](https://www.philschmid.de/context-engineering)*)*
 

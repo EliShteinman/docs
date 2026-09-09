@@ -14,9 +14,9 @@ hidden: true
 
 *By Roi Lipman, Senior Engineer · Published 16 September 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9edb1b030928cadef01f34e5876fc208ba004b07-720x508.webp)
+![Blog tile image](/images/site-mirror/9edb1b030928cadef01f34e5876fc208ba004b07-720x508.webp)
 
-![](/images/blog/a43d69850546b2d7413c1ddacf1bd69dadc8a06a-676x352.webp)
+![](/images/site-mirror/a43d69850546b2d7413c1ddacf1bd69dadc8a06a-676x352.webp)
 
 I honestly disagree with the conventional wisdom of never using a goto in your code. There are several situations where I find it to be not just convenient but good practice. The most common case is goto cleanup. Consider the following:
 

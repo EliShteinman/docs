@@ -15,7 +15,7 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 1 January 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/904e038dd052d094be488cf89be925438a499985-772x550.webp)
+![Blog tile image](/images/site-mirror/904e038dd052d094be488cf89be925438a499985-772x550.webp)
 
 It’s the time of year when companies take stock of the last twelve months—and lay the groundwork for the next year. It’s a time for big ideas, when you’re not just strategizing about minor improvements and optimizations, but looking for those monumental shifts that propel your business to an entirely new level.
 
@@ -40,7 +40,7 @@ There’s a reason why we use the word reinvention. With reinvention, we fundame
 
 We’ve all seen the power of reinvention with electric cars. On the surface, an electric car looks like an internal combustion engine car. But the second you get in, you know it’s a completely different experience. Getting there wasn’t a simple lift and shift of the engine. It took examining established limitations, then breaking through them to accomplish what was previously thought impossible.
 
-![](/images/blog/2124e0785c59751c55513598599dbe7ed70a066d-1024x498.webp)
+![](/images/site-mirror/2124e0785c59751c55513598599dbe7ed70a066d-1024x498.webp)
 
 Redis is reinventing how you approach data. We’re challenging the assumption that you need separate data platforms for your cache and primary database, or that you need a complex platform with separate services for each data model. We don’t believe in limiting yourself to a separate data platform for every infrastructure, so we give you the flexibility to deploy in any cloud, hybrid, on-premises, or [multicloud environment](/redis-enterprise-cloud/multicloud/). And we’re shattering the illusion that global data layers have to be siloed and slow by giving you uninterrupted high availability (99.999%), diskless replication, instant failure detection, and single-digit-second failover across racks, zones, and geographies.
 

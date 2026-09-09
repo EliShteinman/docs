@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 24 October 2012 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 As a provider of the [Redis Cloud](https://redis.io/cloud/), we’re always testing out different configurations and options for Redis and AWS to help the Redis community achieve the best possible performance. This week, we decided to find out how fork times influence various AWS platforms and Redis dataset sizes. Redis uses Linux [fork](http://en.wikipedia.org/wiki/Fork_(operating_system)) and [COW (Copy On Write)](http://en.wikipedia.org/wiki/Copy-on-write) to generate point-in-time snapshots or rewrite Append Only Files (AOFs) using a background save process. Fork is an expensive operation in most Unix-like systems, since it involves allocating and copying a large amount of memory objects (see more details [here](https://redis.io/topics/latency)). Furthermore, the latency of fork operations on the Xen platform seems to be much more time consuming than on other virtualization platforms (as discussed [here](http://lists.xen.org/archives/html/xen-devel/2012-06/msg01017.html)). Since a fork operation runs on the main Redis thread (and the Redis architecture is single-threaded), the longer the fork operation takes, the longer other Redis operations are delayed. If we take into account that Redis can process anywhere between 50K to 100K ops/sec even on a modest machine, a few seconds delay could mean slowing down hundreds of thousands operations, which might cause severe stability issues for your application. This problem is a real life limitation for Redis users over AWS because most AWS instances are based on Xen. Our **test scenarios** in a nutshell were as follows — We ran Redis (version 2.4.17) on top of the following platforms:
 
@@ -36,7 +36,7 @@ A more detailed description of the test setup can be found at the end of this po
 
 Fork time per GB of memory:
 
-![](/images/blog/deee18b12a0a9da90a5f61f20ecdbe4281e90181-644x356.webp)
+![](/images/site-mirror/deee18b12a0a9da90a5f61f20ecdbe4281e90181-644x356.webp)
 
 As you can see, there is a strong correlation between instance processing power and the execution time of fork operation. Moreover, the Xen HVM instance achieved significantly lower latency than the regular Xen hypervisor instances. **So, should Redis users over AWS migrate their datasets to Cluster Compute instances?** Not necessarily. Here’s why:
 
@@ -45,7 +45,7 @@ As you can see, there is a strong correlation between instance processing power 
 
 **Fork time and the Redis Cloud** We tested fork times in similar scenarios on the Redis Cloud and compared the results to those of corresponding instances in a do-it-yourself (DIY) approach. This is what we found out:
 
-![](/images/blog/8ce1e4901a9cdf12ee62695e9a31a0d5ff8d298b-638x357.webp)
+![](/images/site-mirror/8ce1e4901a9cdf12ee62695e9a31a0d5ff8d298b-638x357.webp)
 
 Fork time per GB of memory:
 
@@ -73,4 +73,4 @@ This was our setup for generating load:
 
 - m2.2xlarge instance that ran our memtier_benchmark load generation tool (an advanced load generator tool we developed, which we will soon share in our [github](https://github.com/GarantiaData) account).
 
-![](/images/blog/3dca085b9f83e5a42d3346a233923182a95c773d-899x579.webp)
+![](/images/site-mirror/3dca085b9f83e5a42d3346a233923182a95c773d-899x579.webp)

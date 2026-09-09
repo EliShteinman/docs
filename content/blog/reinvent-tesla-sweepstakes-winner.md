@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 13 April 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/d02cdd03585c64242c2476ff3966d6e0240a81a7-772x550.webp)
+![Blog tile image](/images/site-mirror/d02cdd03585c64242c2476ff3966d6e0240a81a7-772x550.webp)
 
 “Being an enterprise architect, I’ve always been looking out for something radically different. I’m very passionate about startups because they break the traditional model. I’ve been following Redis for a long time,” says Rameshwar Balanagu, the lucky winner of our [re:Invent](/blog/reinvent-your-data-layer/) Tesla sweepstakes.
 

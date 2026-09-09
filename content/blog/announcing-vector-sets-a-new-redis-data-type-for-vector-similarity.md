@@ -15,7 +15,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 8 April 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/a642b80311aea52001260a31f050ff3949d59de7-1544x1104.webp)
+![Blog tile image](/images/site-mirror/a642b80311aea52001260a31f050ff3949d59de7-1544x1104.webp)
 
 Redis is excited to announce the introduction of vector sets, a groundbreaking data type designed for vector similarity. Inspired by the core principles of Redis and developed by the original creator of Redis, Salvatore Sanfilippo, vector sets enhance Redis’s capabilities as a versatile solution for modern AI applications. Vector sets complement the existing powerful vector search in Redis (Redis Query Engine) by offering a Redis-friendly alternative for specific use-cases. Vector sets will be available [in beta in Redis 8 Community Edition](https://hub.docker.com/_/redis). This means that depending on your feedback, we may change, or even break, the features and the API in future versions.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 10 June 2026*
 
-![Real-time fraud detection for financial transactions](/images/blog/d0920fc00731711f60a4fb2a10b38a80b6648e3c-2400x1256.webp)
+![Real-time fraud detection for financial transactions](/images/site-mirror/d0920fc00731711f60a4fb2a10b38a80b6648e3c-2400x1256.webp)
 
 When a customer taps "pay," a clock starts that your fraud system can't pause. The payment authorization resolves in a fixed window whether your model has scored the transaction or not. If it hasn't, the payment either gets declined or clears without a fraud check. Most of that window goes to network hops and issuer processing you don't control, and fraud scoring gets what's left.
 

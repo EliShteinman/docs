@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 24 November 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/7deb15dbe677284dee592e01279e2b35418b272a-300x200.webp)
+![](/images/site-mirror/7deb15dbe677284dee592e01279e2b35418b272a-300x200.webp)
 
 AWS re:Invent 2014 turned out to be an exciting three days for us at Redis. Amazon revealed a considerable amount of announcements this year that are especially exciting for the developers among us (we’ll discuss the highlights in our summary below). As seasoned AWS re:Invent sponsors and exhibitors, having taken part in all three conferences, we highly enjoyed it, as always, and learned quite a lot from the keynotes, breakout sessions, and interactions with the impressive attendees.
 

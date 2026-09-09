@@ -17,7 +17,7 @@ hidden: true
 
 *By Chi-Lan Tran · Published 4 April 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/2ef85d43512f0237e6feecb0d24f540e5d55302f-772x550.webp)
+![Blog tile image](/images/site-mirror/2ef85d43512f0237e6feecb0d24f540e5d55302f-772x550.webp)
 
 Redis will be at AWS Summits 2022 and we are excited to have one-on-one interactions again with developers, architects, DevOps, and IT teams. This year you can find us on April 12 in **Paris**, [**San Francisco**](/aws-summit-sf/) (April 20-21), at the virtual Summit in [**India**](/events/aws-summit-mumbai/) (May 25-26), and in [**New York City**](/aws-summit-nyc/) (July 12-13).
 

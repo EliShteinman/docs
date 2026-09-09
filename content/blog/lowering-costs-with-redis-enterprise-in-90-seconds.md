@@ -15,7 +15,7 @@ hidden: true
 
 *By William Johnston, Head of Technical Marketing · Published 4 January 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/4ac2f7223c83462c025089d88cfc26da48721778-772x550.webp)
+![Blog tile image](/images/site-mirror/4ac2f7223c83462c025089d88cfc26da48721778-772x550.webp)
 
 We have reached the final post in our “[Redis in 90 seconds](/blog/learn-how-redis-simplifies-your-architecture-in-90-seconds/)” series. The purpose of this series is not to cover every aspect of Redis in-depth. Instead, we want to briefly highlight a few topics that you might not already know about Redis. In this post, we’ll walk you through what you can do to start lowering costs with Redis Enterprise.
 

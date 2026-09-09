@@ -15,13 +15,13 @@ hidden: true
 
 *By Ed Sandoval, Senior Product Manager · Published 18 May 2022 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/74343570134b2a8f3f2a6a3f887b7d7579239310-772x550.webp)
+![Blog tile image](/images/site-mirror/74343570134b2a8f3f2a6a3f887b7d7579239310-772x550.webp)
 
 At [RedisDays](/redisdays/) NY 2022, we announced the public preview of our new [Vector Similarity Search](/solutions/vector-search/) (VSS) capability. VSS is part of [RediSearch](/search/) 2.4 and is available on Docker, [Redis Stack](https://redis.io/docs/stack/), and Redis Enterprise Cloud’s free and fixed subscriptions.
 
 In this article, I’ll walk you through the basics of vector similarity, and its applications and share resources to get you started with [Redis VSS](/blog/build-intelligent-apps-redis-vector-similarity-search/)!
 
-![Vector Similarity Search Diagram](/images/blog/bc4ec2b890dcae3b3b7f28af6f6f01cc9d9b3a10-1024x507.webp)
+![Vector Similarity Search Diagram](/images/site-mirror/bc4ec2b890dcae3b3b7f28af6f6f01cc9d9b3a10-1024x507.webp)
 
 In simple terms, it is a measure of how different (or similar) two or more vectors are. Think of a vector as a list of numbers.
 
@@ -34,7 +34,7 @@ With advances in AI, data scientists can build models that can transform almost 
 
 Not at all! There are several freely available [AI](/press/redis-labs-delivers-powerful-data-platform-for-next-wave-of-ai-applications/) models and libraries that allow developers to generate embeddings from text, image, or time-series data. For example, you can use [HuggingFace Sentence Transformers](https://huggingface.co/sentence-transformers) to generate embeddings for sentences, [Img2Vec](https://github.com/christiansafka/img2vec) to generate embeddings for images, and [Facebook Kats](https://github.com/facebookresearch/Kats) to generate embeddings for time-series data. AI/ML practitioners are familiar with the concept of generating “dense” feature representations (a.k.a embeddings) for their data entities. They can now store these feature vectors in Redis and perform similarity searches on them.
 
-![vector similarity search everyday use cases](/images/blog/965243c87dc84b6cc2acda9571c564a681fb681b-1024x579.webp)
+![vector similarity search everyday use cases](/images/site-mirror/965243c87dc84b6cc2acda9571c564a681fb681b-1024x579.webp)
 
 There are several everyday applications that you interact with that rely on vector similarity search.
 
@@ -52,7 +52,7 @@ From visual search on an e-commerce website to automated chatbots / Q&A systems 
 
 – Similarity of user profile or products: Generate personalized recommendations; refine your customer segmentation based on patterns revealed by embeddings data
 
-![vector similarity search key capabilities](/images/blog/2f6720353961667291c0bf17bb40ef4ed070b058-1024x572.webp)
+![vector similarity search key capabilities](/images/site-mirror/2f6720353961667291c0bf17bb40ef4ed070b058-1024x572.webp)
 
 [RediSearch](https://redis.io/docs/stack/search/) is a Redis module that provides query ability, secondary indexing, and full-text search for Redis data stored as Redis hashes or JSON format. With Redis 2.4, Redis introduced support for vector similarity search.
 
@@ -80,7 +80,7 @@ Try watching replays of these two RedisDays 2022 sessions:
 The sessions are now available to watch [on-demand](/redisdays/). You can always check RediSearch documentation on [“Working with Vectors.”](https://redis.io/docs/stack/search/reference/vectors/)
 
 
-![RediSearch 2.4 availability image](/images/blog/09f9e5f96add2935dbc47e4d3586695a8b1c84df-1024x590.webp)
+![RediSearch 2.4 availability image](/images/site-mirror/09f9e5f96add2935dbc47e4d3586695a8b1c84df-1024x590.webp)
 
 There are three easy ways to create a Redis database with RediSearch 2.4.
 

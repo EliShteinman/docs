@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 11 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/adf83ff136071bcd1672d164478723838664b399-1200x628.webp)
+![Redis](/images/site-mirror/adf83ff136071bcd1672d164478723838664b399-1200x628.webp)
 
 Your LLM performs brilliantly on benchmarks. Then you check the inference bill. Frontier models like GPT-5 cost materially more per token than smaller tiers like GPT-5-mini or GPT-5-nano, and that adds up fast when you're processing millions of requests. Those costs scale linearly with usage while your revenue probably doesn't.
 

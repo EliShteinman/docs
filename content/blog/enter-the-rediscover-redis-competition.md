@@ -14,9 +14,9 @@ hidden: true
 
 *By Britiana Andrade, Marketing Manager · Published 24 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/300b7afa5f1e1f7f4997301bdfb845d022c16642-772x520.webp)
+![Blog tile image](/images/site-mirror/300b7afa5f1e1f7f4997301bdfb845d022c16642-772x520.webp)
 
-![](/images/blog/730e8e7a7fe692778537381bb57129cbbf1eef83-1024x341.webp)
+![](/images/site-mirror/730e8e7a7fe692778537381bb57129cbbf1eef83-1024x341.webp)
 
 As we draw ever closer to [RedisConf 2020 ](/redisconf/)[*Takeaway*](/redisconf/) starting May 12, we want to hear from you about the cool things you use Redis for. The Redis community is one of the most inspiring and creative groups of developers in the world—and we want to showcase the community’s achievements. That’s why we’re excited to announce the Rediscover Redis Competition!
 
@@ -24,13 +24,13 @@ As we draw ever closer to [RedisConf 2020 ](/redisconf/)[*Takeaway*](/redisconf/
 
 We’re challenging members of the Redis community to show off how they have rediscovered Redis. Almost every developer knows how to use Redis as a cache to build top-performing applications. But not everyone is leveraging Redis to its fullest potential.
 
-![](/images/blog/386d2749a6f8e19828ab9611a7c5728e0d796f6e-300x157.webp)
+![](/images/site-mirror/386d2749a6f8e19828ab9611a7c5728e0d796f6e-300x157.webp)
 
 We’re collecting stories from the Redis community to highlight examples of Redis’ versatility and demonstrate how Redis is behind some of our most successful applications. And you can get some pretty sweet prizes from participating—**the top three submissions get their projects featured in the keynote at RedisConf *****Takeaway***** and a **[**Valve Index VR Kit**](https://store.steampowered.com/sub/354231/)** (a $999 value)!**
 
 So what do you have to do? With this year’s [**Rediscover Redis**](/blog/rediscover-redis-at-redisconf-2020/) theme at RedisConf *Takeaway*, we want you to submit your project explaining how you have “rediscovered” Redis and taken advantage of more of its limitless potential.
 
-![](/images/blog/33c78d4815e31c7d3b0f8e8a5dad555150db1348-300x92.webp)
+![](/images/site-mirror/33c78d4815e31c7d3b0f8e8a5dad555150db1348-300x92.webp)
 
 While you can submit your project in a variety of forms, we’re encouraging video submissions—**with every valid submission we receive, Redis will donate $100 to the COVID-19 Solidarity Response Fund**, which supports the World Health Organization’s work to ensure patients get proper care, frontline workers get essential supplies, and development of a vaccine and treatments can be accelerated.
 

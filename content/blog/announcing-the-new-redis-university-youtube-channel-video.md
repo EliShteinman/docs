@@ -14,7 +14,7 @@ hidden: true
 
 *By Kyle Banker, Sr. Director, Field Engineering · Published 15 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/87d6afa4b776ceb005fcb9aa9584e8b71bc829af-386x260.webp)
+![Blog tile image](/images/site-mirror/87d6afa4b776ceb005fcb9aa9584e8b71bc829af-386x260.webp)
 
 Redis University is pleased to announce a new [YouTube channel ](https://www.youtube.com/c/RedisUniversity)dedicated to educating developers with short, focused, instructional videos. The first series is called [Redis Explained](https://www.youtube.com/playlist?list=PLratyGi2ixLvYgh1fmCvwJwk8nc6y0gXr), where we’ll be diving into all of the Redis data structures and the most popular Redis modules.
 

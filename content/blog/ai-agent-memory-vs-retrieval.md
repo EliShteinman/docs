@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 17 June 2026*
 
-![Retrieval vs. memory in AI agents: why context layers need both](/images/blog/16f3d33e951c0e47c515fbbb24aa26b62f98d83c-2400x1256.webp)
+![Retrieval vs. memory in AI agents: why context layers need both](/images/site-mirror/16f3d33e951c0e47c515fbbb24aa26b62f98d83c-2400x1256.webp)
 
 A returning user asks your agent why their bill doubled this month. The agent greets them by name, pulls up last week's billing dispute, and references the workaround your team suggested. Then it confidently quotes a pricing policy that was retired three months ago and points the user toward a plan that no longer exists. The model did its job. What broke was the context layer feeding it. The agent remembered the user but worked from stale knowledge of your current pricing. It had one half of what it needed and was missing the other.
 

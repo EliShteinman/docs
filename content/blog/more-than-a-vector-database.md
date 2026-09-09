@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 3 February 2026 · updated 1 September 2026*
 
-![Redis](/images/blog/afb0f6445b7dff1a99e305d26e6c11f5b19e1f06-1200x628.webp)
+![Redis](/images/site-mirror/afb0f6445b7dff1a99e305d26e6c11f5b19e1f06-1200x628.webp)
 
 If you're running LLMs in production, you already know the bill adds up fast. In talking with one of our enterprise RAG customers, they shared that they spend over $80k per quarter on their OpenAI bill for text generation alone (on input and output tokens). They estimate that somewhere around 30-40% of their calls are similar to previously asked questions.
 
@@ -72,7 +72,7 @@ As apps grow in complexity, you'll likely need additional patterns to manage cos
 
 Below is an example architecture based on Redis that includes many of these components in an end-to-end flow.
 
-![Redis](/images/blog/365c1f8340496b247d9fd2b4febf05a5391a2c1d-1228x594.webp)
+![Redis](/images/site-mirror/365c1f8340496b247d9fd2b4febf05a5391a2c1d-1228x594.webp)
 
 Dell AI Factory built a [reference architecture](https://infohub.delltechnologies.com/en-us/l/bring-real-time-rag-into-production-with-dell-ai-factory-and-redis/solution-approach-18/4/) using Redis that demonstrates a similar end-to-end flow.
 

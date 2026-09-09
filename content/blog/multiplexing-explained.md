@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 February 2020 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 A critical, but important piece of your Redis-powered application is the client library. Client libraries are the glue between the software you are writing and Redis. They perform a few primary major duties:
 
@@ -42,7 +42,7 @@ Finally, we have **multiplexing**. In multiplexing, you take many threads and sh
 
 Visually, you can think of multiplexing a bit like a rope being braided. Many strands are arranged in a particular way to yield a single strand at the other end. In a multithreaded runtime, you’re not exclusively giving any thread full control over the communication with the Redis server. Instead, you’re letting the client library take communication from those threads and intelligently merge it into a single connection. Then, as communication is returned from the Redis server, you’re unwinding the responses back to each individual thread.
 
-![](/images/blog/d2cbc3c5c9ddd353ad53037016c183856f13e64e-300x152.webp)
+![](/images/site-mirror/d2cbc3c5c9ddd353ad53037016c183856f13e64e-300x152.webp)
 
 This gives the client a few obvious advantages. Multiplexing can handle a large number of independent execution threads that get created and destroyed arbitrarily without having to create and destroy connections (which is expensive for both your application and Redis). Secondly, unlike a pooled interface, you don’t have to worry about getting and returning the connection from the pool.
 

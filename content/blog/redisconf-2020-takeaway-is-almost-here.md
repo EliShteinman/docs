@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike Kwon, VP of Demand and Growth Marketing · Published 6 May 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/41e5f511310ef51da6b0c2c0b4cef01e18a192da-2400x1256.webp)
+![Blog tile image](/images/site-mirror/41e5f511310ef51da6b0c2c0b4cef01e18a192da-2400x1256.webp)
 
 We are only a few days away from [RedisConf 2020 ](https://events.redis.com/redisconf20/)[*Takeaway*](https://events.redis.com/redisconf20/), the largest annual gathering of the Redis community! This year is all about Rediscovering Redis and leveraging developers’ favorite database to its full potential—beyond traditional caching use cases.
 
@@ -28,9 +28,9 @@ In case you weren’t already excited, here are the latest goodies we wanted to 
 
 While we won’t be able to meet together in-person this year, we’re working on bringing you the next best thing. At RedisConf 2020 *Takeaway*, you’ll be able to create your own Redis avatar and interact with fellow Redis Geeks in an online landscape filled with keynote and training content, live interactions, games, and more. You’ll be able to navigate throughout the world, and maybe even play a round of ping-pong along the way.
 
-![](/images/blog/617d282955221c57941830ea2874d89158d144f6-600x338.gif)
+![](/images/site-mirror/617d282955221c57941830ea2874d89158d144f6-600x338.gif)
 
-![](/images/blog/8caee3bea7fe04115ef51318318ec7c8bfd18ab1-1024x712.webp)
+![](/images/site-mirror/8caee3bea7fe04115ef51318318ec7c8bfd18ab1-1024x712.webp)
 
 ## [Ask the Expert sessions now available](https://events.redis.com/redisconf20/ask-expert/)
 
@@ -53,7 +53,7 @@ Find more information on the[ RedisConf 2020 ](https://events.redis.com/rediscon
 
 ## Don’t miss Atlassian CTO Sri Viswanath’s [keynote](https://events.redis.com/redisconf20/agenda/)
 
-![](/images/blog/14c1b3a94c071ab1fcf4b031caafaf1afeda4c0f-280x280.webp)
+![](/images/site-mirror/14c1b3a94c071ab1fcf4b031caafaf1afeda4c0f-280x280.webp)
 
 Along with [Julia Liuson](/blog/7-redisconf-2020-speakers-you-wont-want-to-miss/), Corporate Vice President of Microsoft’s Developer Division, Atlassian CTO [Sri Viswanath](https://events.redis.com/speakers/sri-viswanath/) will also be taking the virtual stage for a keynote during RedisConf 2020 *Takeaway*.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 March 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/4eec81f7ee963127036a363a1328d9037bf7565d-390x390.webp)
+![Blog tile image](/images/site-mirror/4eec81f7ee963127036a363a1328d9037bf7565d-390x390.webp)
 
 On a typical day, you might open your web browser and rapidly access social media, do some shopping, newspapers and more. You likely have numerous notifications from various events you may or may not actually attend, and you might expect your preferred shopping site to tailor search results to your order history. Perhaps your media platform of choice presents you with topics in which you’ve previously demonstrated an interest, in order to encourage you to continue to consume. All of these phenomena are indicative of an intelligent session store — that is, a session store that stores data beyond your username or basic preferences.
 

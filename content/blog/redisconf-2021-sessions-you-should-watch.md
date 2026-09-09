@@ -14,7 +14,7 @@ hidden: true
 
 *By Udi Gotlieb, Head of Redis Enterprise Product Marketing · Published 27 May 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c87f7c1acbbd04a1e2a0eaeee8e55b8b822f7b89-772x550.webp)
+![Blog tile image](/images/site-mirror/c87f7c1acbbd04a1e2a0eaeee8e55b8b822f7b89-772x550.webp)
 
 Every year the Redis community gathers for [RedisConf](https://redisconf.com/redisconf21/modules/83000/html&sa=D&source=editors&ust=1622137732959000&usg=AOvVaw24VAQSq47PsGeLNtWE5n70), and this year was all about rediscovering the power of real-time data. More than 12,000 developers, architects, and business and technology leaders from 122 countries registered for live keynotes, fireside chats, and 60+ breakout sessions. As of May 20, all RedisConf 2021 sessions can be viewed on our [YouTube](https://www.youtube.com/channel/UCD78lHSwYqMlyetR0_P4Vig&sa=D&source=editors&ust=1622137732960000&usg=AOvVaw3fRnAllX3vr6TfBGfQtUU7) channel!
 

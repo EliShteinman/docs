@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 17 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/7237e71c19e17110fd3c9b232594005c66afbe84-1200x628.webp)
+![Redis](/images/site-mirror/7237e71c19e17110fd3c9b232594005c66afbe84-1200x628.webp)
 
 Recommendation systems are everywhere: Netflix suggesting your next binge, Amazon predicting what you'll buy, Spotify curating your weekly playlist. Under the hood, they're machine learning pipelines processing millions of interactions to deliver personalized suggestions in milliseconds.
 

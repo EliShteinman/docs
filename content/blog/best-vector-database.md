@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 20 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/0908caa41b42a94df4a57554bf1dd2ec9ac0a93f-1200x628.webp)
+![Redis](/images/site-mirror/0908caa41b42a94df4a57554bf1dd2ec9ac0a93f-1200x628.webp)
 
 Every AI project has a turning point. Your RAG system works great in development, retrieval feels instant, and your embeddings pipeline runs smoothly. Then you hit production. Suddenly you're dealing with concurrent users, p95 latency spikes, and queries that need filtering across metadata dimensions you didn't anticipate.
 

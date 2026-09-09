@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 11 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/5e02e70365e00ef5f71b9f4af216938539f5e1df-1200x628.webp)
+![Redis](/images/site-mirror/5e02e70365e00ef5f71b9f4af216938539f5e1df-1200x628.webp)
 
 AI agents are getting smarter, but they're also getting harder to scale. If you've tried to build an agentic system you know about the latency spikes, memory issues, and coordination failures that weren't obvious until your app hit production.
 

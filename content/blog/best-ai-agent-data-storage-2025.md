@@ -16,7 +16,7 @@ hidden: true
 
 *By Jim Allen Wallace, Rini Vasan · Published 8 August 2025 · updated 1 June 2026*
 
-![It’s official: We’re the #1 AI agent data storage tool](/images/blog/f455a863fd8ae2605d5d1f69ae7c6f04818ab33f-772x552.webp)
+![It’s official: We’re the #1 AI agent data storage tool](/images/site-mirror/f455a863fd8ae2605d5d1f69ae7c6f04818ab33f-772x552.webp)
 
 ## Built for devs. Trusted by devs.
 
@@ -24,7 +24,9 @@ The [2025 Stack Overflow Developer Survey](https://survey.stackoverflow.co/2025)
 
 **43% of devs** building AI agents trust us for memory and data storage. That’s because we’re fast, flexible, and—most importantly—reliable.
 
-![2025 Developer Survey](/images/blog/818d1974e9a6521c8d873bd4a72da391e41307c2-1600x1400.webp)
+![2025 Developer Survey](/images/site-mirror/818d1974e9a6521c8d873bd4a72da391e41307c2-1600x1400.webp)
+
+*Source: Stack Overflow, 2025 Developer Survey*
 
 ## Big deal? Well, it is.
 

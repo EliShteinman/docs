@@ -15,7 +15,7 @@ hidden: true
 
 *By Roshan Kumar, Senior Product Manager · Published 7 September 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/b25aca3c56a4a37f1deea61fbcbdb016ba3fd359-800x437.webp)
+![Blog tile image](/images/site-mirror/b25aca3c56a4a37f1deea61fbcbdb016ba3fd359-800x437.webp)
 
 Imagine visiting an amusement park, consuming large quantities of all four primary amusement park food groups (which are corn dogs, funnel cake, snow cones, and cotton candy of course), and then spinning around wildly on the Tilt-A-Whirl. The volume and variety (and dare we suggest velocity?) of food you’ve just consumed is likely to overwhelm your stomach, causing discomfort and forcing it to slow down and regroup in order to accommodate the day’s indulgences.
 
@@ -27,7 +27,7 @@ And this is where Redis has a real advantage. It tackles these challenges with a
 
 In fact, in an independent survey of Redis customers conducted by TechValidate, 74% reported using Redis for messaging and data ingest.
 
-![](/images/blog/b25aca3c56a4a37f1deea61fbcbdb016ba3fd359-800x437.webp)
+![](/images/site-mirror/b25aca3c56a4a37f1deea61fbcbdb016ba3fd359-800x437.webp)
 
 We’ve outlined a few of the standout features that make Redis so ideally suited for messaging, data streaming, and fast data ingest.
 

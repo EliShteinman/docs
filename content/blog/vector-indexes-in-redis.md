@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 8 March 2026 · updated 11 March 2026*
 
-![Redis](/images/blog/66485f8465e3a924965180c9f28758769f5c523c-1200x628.webp)
+![Redis](/images/site-mirror/66485f8465e3a924965180c9f28758769f5c523c-1200x628.webp)
 
 You ask a support chatbot a question, and it pulls the right answer from thousands of docs in under 100 milliseconds. Behind that retrieval is a vector index: a data structure that makes high-dimensional similarity search fast enough for production. You don't need an ML background to build this into your app. You need the right infrastructure.
 

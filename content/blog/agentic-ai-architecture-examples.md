@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 3 May 2026 · updated 6 May 2026*
 
-![Agentic AI architecture patterns for production systems](/images/blog/48dfefa004f2b7d7fb884266e4ecda85108d82bd-2400x1256.webp)
+![Agentic AI architecture patterns for production systems](/images/site-mirror/48dfefa004f2b7d7fb884266e4ecda85108d82bd-2400x1256.webp)
 
 Most teams building with LLMs hit the same wall. A single prompt and response works fine for simple use cases, but real production work needs systems that can plan, take actions, check their progress, and keep going until the job is done. That's the jump from a chatbot to an agent, and the architecture behind that loop shapes everything about how your system performs in production.
 

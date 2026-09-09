@@ -14,13 +14,13 @@ hidden: true
 
 *By Redis   · Published 14 December 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/f0674bebcd20ff95e4ce92d70d47853e75d89dc6-772x550.webp)
+![Blog tile image](/images/site-mirror/f0674bebcd20ff95e4ce92d70d47853e75d89dc6-772x550.webp)
 
 **Among the factors contributing to developers’ growing reliance on Kubernetes are its hybrid cloud capabilities, team-friendly portability, and cost-consciousness for cloud deployments.**
 
 [Kubernetes](/enterprise/redis-enterprise-on-kubernetes/) has come a long way since 2014 when Google first introduced it as an open source answer to [Borg](https://kubernetes.io/blog/2015/04/borg-predecessor-to-kubernetes/), Google’s internal container orchestration solution.
 
-![](/images/blog/e5fc1d6fc507ac5ab6a41a94f22b43f6a9352ca0-601x192.webp)
+![](/images/site-mirror/e5fc1d6fc507ac5ab6a41a94f22b43f6a9352ca0-601x192.webp)
 
 Since then, the deployment system and containerized application tool has had many technical upgrades. After releasing Kubernetes v1.0 in 2015, it began supporting [OpenAPI](https://kubernetes.io/blog/2016/12/kubernetes-supports-openapi/) in December 2016, which enabled API providers to define their operations and opened the path for developers to automate their tools. By 2018, Kubernetes had become so mainstream that Google dedicated an entire [podcast](https://cloud.google.com/blog/products/gcp/introducing-kubernetes-podcast-from-google/) to it.
 
@@ -40,7 +40,7 @@ With each passing year, cloud computing has continued to gain traction while on-
 
 Kubernetes’ growth is thanks in part to its continued investment in [software](/enterprise/) development and infrastructure efficiency. Development teams have come to rely on the flexibility that orchestrating from on-prem, single-cloud, hybrid cloud, or [multicloud](/redis-enterprise-cloud/multicloud/) provides. These container-based hybrid cloud and multicloud environments allow teams to handle massive workloads with minimal refactoring or replatforming.
 
-![](/images/blog/e5fc1d6fc507ac5ab6a41a94f22b43f6a9352ca0-601x192.webp)
+![](/images/site-mirror/e5fc1d6fc507ac5ab6a41a94f22b43f6a9352ca0-601x192.webp)
 
 This developer efficiency is particularly true when building [microservice-based applications](/solutions/microservices/). Since they’re comprised of different units, teams can more readily put their resources to the right tasks while working in one platform. That’s a considerably tougher request when working with a monolithic architecture. It’s a useful way of keeping too many proverbial cooks out of the proverbial kitchen, so to speak.
 

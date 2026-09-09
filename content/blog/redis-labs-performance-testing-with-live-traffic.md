@@ -14,7 +14,7 @@ hidden: true
 
 *By Tung Nguyen · Published 16 July 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/1da8c657f4d74067d8a342793a90b4143ac98cd6-800x320.webp)
+![Blog tile image](/images/site-mirror/1da8c657f4d74067d8a342793a90b4143ac98cd6-800x320.webp)
 
 Originally published on [bleacherreport.com](https://bleacherreport.com)
 

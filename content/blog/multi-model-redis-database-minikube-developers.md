@@ -15,7 +15,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 11 June 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Setting up your development environment is rarely straightforward and hassle-free. Whatsmore, given modern applications’ appetite for polyglot persistence and containerized deployment, it becomes quite challenging to bootstrap your laptop with all the infrastructural goodness needed for a simple “Hello, World!”. In this post, I’m going to show you how to quickly get started developing your application with a multi-model Redis database on Kubernetes.
 

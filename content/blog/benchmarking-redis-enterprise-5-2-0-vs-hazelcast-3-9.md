@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 30 August 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 ## Background
 
@@ -73,9 +73,9 @@ We therefore opted for the following approach:
 
 The results of our benchmark are presented below:
 
-![](/images/blog/8bda5e31a0ce8c0e51031b68715e3163ce517043-1231x761.webp)
+![](/images/site-mirror/8bda5e31a0ce8c0e51031b68715e3163ce517043-1231x761.webp)
 
-![](/images/blog/c93a3a5aea22fa3ea8d1e11cc811a18c363acb63-1243x768.webp)
+![](/images/site-mirror/c93a3a5aea22fa3ea8d1e11cc811a18c363acb63-1243x768.webp)
 
 ## Summary
 
@@ -95,13 +95,13 @@ On the other hand, our findings reached a much better throughput (over 3.5X) and
 
 #### Redis Enterprise results
 
-![](/images/blog/564cda307902da49da9fb331d85d9931d3f81c15-1004x783.webp)
+![](/images/site-mirror/564cda307902da49da9fb331d85d9931d3f81c15-1004x783.webp)
 
 #### Hazelcast results
 
-![](/images/blog/761a833edb013941b72b5ef8675d36126996aae9-606x736.webp)
+![](/images/site-mirror/761a833edb013941b72b5ef8675d36126996aae9-606x736.webp)
 
-![](/images/blog/e1972939879c224c2eff972e4be5b3de5f534eca-606x730.webp)
+![](/images/site-mirror/e1972939879c224c2eff972e4be5b3de5f534eca-606x730.webp)
 
 #### 
 

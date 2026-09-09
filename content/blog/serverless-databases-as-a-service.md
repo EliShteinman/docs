@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 24 April 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9ea1ea1f70fbd5e1f78401c2b64a578f49c89045-772x550.webp)
+![Blog tile image](/images/site-mirror/9ea1ea1f70fbd5e1f78401c2b64a578f49c89045-772x550.webp)
 
 **We could lead with the technical advantages: flexible scaling, easier management of clusters and nodes, and offloading complicated resource analysis. But we know we can get your attention by saying *****Serverless Databases as a Service prevents overspending*****.**
 
@@ -66,11 +66,15 @@ This isn’t an academic exercise. We benchmarked *read* and *update* perfor
 
 The *read* performance:
 
-![serverless database read performance graph](/images/blog/c23fad98a4345e79cd8c4b0539eab26d6aaec665-1438x722.webp)
+![serverless database read performance graph](/images/site-mirror/c23fad98a4345e79cd8c4b0539eab26d6aaec665-1438x722.webp)
+
+*Serverless DBaaS Read Performance*
 
 The *update* performance:
 
-![serverless database update performance graph](/images/blog/256fc6474607b9a5fbd5da70a3f1899147532c3a-1438x722.webp)
+![serverless database update performance graph](/images/site-mirror/256fc6474607b9a5fbd5da70a3f1899147532c3a-1438x722.webp)
+
+*Serverless DBaaS Update Performance*
 
 No matter which workload we tested, Redis Enterprise Cloud maintained an end-to-end latency of 0.5-0.6 msec.
 
@@ -84,7 +88,9 @@ Our next step was to create a cost/performance graph comparing the cost of each 
 
 The results speak for themselves:
 
-![serverless database cost and performance comparison graph](/images/blog/614c4932c3c0437cea67e9f906fd6059edbd5060-1598x722.webp)
+![serverless database cost and performance comparison graph](/images/site-mirror/614c4932c3c0437cea67e9f906fd6059edbd5060-1598x722.webp)
+
+*Serverless DBaaS Cost/Performance Comparison*
 
 When it comes to 1,000 requests per second, Redis Enterprise Cloud is already 15% cheaper than DynamoDB (as well as 6.44 faster). At 18,000 requests per second, Redis Enterprise Cloud is less than 2% of DynamoDB’s costs and over an order of magnitude faster.
 

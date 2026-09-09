@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 7 May 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 I’m delighted to announce that, starting today, our Redis Cloud and Memcached Cloud services are generally available from the [Pivotal Web Services Marketplace](https://login.run.pivotal.io/login). Developers who are using Pivotal Web Services to run and scale their applications on top of the open source Cloud Foundry PaaS can immediately boost performance by adding our hosted and fully-managed cloud services. In addition to providing top performance for applications, our cloud services are fault-tolerant and can scale up (or down) without interruption to the service.
 

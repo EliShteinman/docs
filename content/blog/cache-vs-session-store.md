@@ -15,7 +15,7 @@ hidden: true
 
 *By Roshan Kumar, Senior Product Manager · Published 15 November 2017 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/de19b2b93f3135efa47e8262bfebbd03c547c2a8-768x512.webp)
+![Blog tile image](/images/site-mirror/de19b2b93f3135efa47e8262bfebbd03c547c2a8-768x512.webp)
 
 *Scale globally while maintaining low latency and cache more efficiently to lower costs: *[*Click here to talk with the Redis Enterprise team.*](/meeting/)
 
@@ -33,7 +33,7 @@ This lifecycle works well for scenarios where different consumers request the sa
 
 A session-oriented application (a web application, for example) starts a session when a user logs in, and is active until the user logs out or the session times out. During this period, the application stores all session-related data either in the main memory or in a session store—a database that doesn’t lose the data when the application goes down. Session data may include user profile information, messages, personalized data and themes, recommendations, targeted promotions and discounts, etc.
 
-![](/images/blog/2c8c8fd8bf87af9f0bb1bd69d8905bcdfcd39370-1859x857.webp)
+![](/images/site-mirror/2c8c8fd8bf87af9f0bb1bd69d8905bcdfcd39370-1859x857.webp)
 
 *Figure 1. Cache vs Session Store*
 
@@ -48,7 +48,7 @@ The following points contrast session store from a cache:
 
 Redis Enterprise is a popular database ideal for both cache and session store use cases, delivering both the high-availability required for caching and session store scenarios as well as the durability needed for session store with in-memory replication. It’s possible to use Redis Enterprise as both a cache and a session store in a single setup, as shown in the picture below.
 
-![](/images/blog/37db23e01ede6aaccbdd5d467e5f3390cb27703b-1485x889.webp)
+![](/images/site-mirror/37db23e01ede6aaccbdd5d467e5f3390cb27703b-1485x889.webp)
 
 *Figure 2. Designing Cache and Session Store with Redis Enterprise*
 

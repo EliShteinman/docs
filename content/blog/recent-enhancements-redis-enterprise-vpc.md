@@ -15,7 +15,7 @@ hidden: true
 
 *By Aviad Abutbul, Senior Director of Product Management · Published 25 July 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 In this blog post, we’d like to share some of the recent enhancements to [Redis Enterprise VPC](/redis-enterprise/vpc/) (also known as RV), one of Redis’ database-as-a-service solutions. RV provides a fully managed Redis Enterprise on your virtual private cloud within major public clouds. It offers highly available, linearly scalable, high-performance, multi-model Redis, with intelligent tiered access to memory (both RAM and Flash).
 
@@ -29,7 +29,7 @@ Three of our latest major improvements to Redis Enterprise VPC provide:
 
 [Redis modules](/community/redis-modules-hub/) are add-ons to Redis that extend it to cover most of the popular use cases for any industry. They seamlessly plug into Redis, are processed in-memory and benefit from Redis’ simplicity, super high-performance, scalability and high availability. New modules can be created by anyone, and we, at Redis, encourage the Redis ecosystem to extend Redis by developing new modules.
 
-![RediSearch, ReJson, and ReBloom icons](/images/blog/37a6dde6857ae6e90c4dbb74545d1a819e3384e3-1148x534.webp)
+![RediSearch, ReJson, and ReBloom icons](/images/site-mirror/37a6dde6857ae6e90c4dbb74545d1a819e3384e3-1148x534.webp)
 
 To set an example, we’ve developed several interesting modules ourselves, which we share with the community. The modules we now offer in RV are:
 
@@ -56,13 +56,13 @@ Bloom/cuckoo filters are especially useful because they occupy very little space
 
 To use one of these modules, simply select it when you create your subscription/database:
 
-![Module selection in New Database creation tool](/images/blog/c7a14e5f5bf74cfe9cae2e21f686d2cd13021d97-1999x795.webp)
+![Module selection in New Database creation tool](/images/site-mirror/c7a14e5f5bf74cfe9cae2e21f686d2cd13021d97-1999x795.webp)
 
 ## Deployment inside existing VPC
 
 By default, whenever a new subscription is created, we’ve created a dedicated VPC and deployed Redis Enterprise within it. With this new feature, users now get to choose to have their subscription deployed inside an already existing VPC. This removes the need for peering between VPCs, saving you traffic charges from AWS and cutting some latency from your database.
 
-![Redis Enterprise VPC deployment options](/images/blog/5ab023125c8f89889e8ddd0257d00f20af8624eb-1228x1028.webp)
+![Redis Enterprise VPC deployment options](/images/site-mirror/5ab023125c8f89889e8ddd0257d00f20af8624eb-1228x1028.webp)
 
 ## True Linear Scalability
 
@@ -72,7 +72,7 @@ The OSS cluster API allows Redis clients to directly access the shard that holds
 
 Redis Enterprise has set a new industry performance record: delivering over **50 million** ops/second **under 1 millisecond**, in as little as **26 EC2 nodes**. You can read more about this in our [benchmark report](/docs/linear-scaling-benchmark-50m-ops-sec/).
 
-![True Linear Scalability Graph](/images/blog/2f3024a1f58ec2bf1999bd981523a0465d578763-1200x742.webp)
+![True Linear Scalability Graph](/images/site-mirror/2f3024a1f58ec2bf1999bd981523a0465d578763-1200x742.webp)
 
 Try these new features out for free with our 14-day unlimited free trial (no credit card required). [Sign up now](https://app.redis.com/#/sign-up/vpc?direct=true).
 

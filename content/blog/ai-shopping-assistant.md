@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 12 May 2026 · updated 13 May 2026*
 
-![AI shopping assistants: what they are, how they work & what it takes to build one](/images/blog/67b0cd4247fe919bf6739ed8eca2a046bf08a439-2400x1256.webp)
+![AI shopping assistants: what they are, how they work & what it takes to build one](/images/site-mirror/67b0cd4247fe919bf6739ed8eca2a046bf08a439-2400x1256.webp)
 
 You type "cozy winter sweater" into a search bar and get zero results because no product is tagged with that exact phrase. Keyword search can't tell that a "wool pullover" is the same idea. AI shopping assistants can, using LLMs, vector embeddings, and retrieval-augmented generation (RAG) to turn natural language into product discovery, personalized recommendations, and, increasingly, autonomous purchases. This guide covers what AI shopping assistants actually are, the five distinct types you'll encounter, and the engineering challenges that trip up most implementations.
 

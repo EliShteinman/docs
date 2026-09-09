@@ -14,7 +14,7 @@ hidden: true
 
 *By Guy Royse, Developer Advocate · Published 26 March 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a175d9db7cf27152144914a4d7021ab80b3fdf3f-644x437.webp)
+![Blog tile image](/images/site-mirror/a175d9db7cf27152144914a4d7021ab80b3fdf3f-644x437.webp)
 
 I’ve got a problem. I have tens of millions of players in my online game World of EverCraft (Not a real game. But if it was, it would be from Blizzards of the Coast!). This is a great problem to have. So many gamers!
 

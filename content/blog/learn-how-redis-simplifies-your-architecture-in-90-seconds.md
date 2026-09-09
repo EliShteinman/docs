@@ -14,7 +14,7 @@ hidden: true
 
 *By Raja Rao, Head of Growth Marketing · Published 3 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0f6177a85071568cdd0732447445fa4b5c36867e-772x520.webp)
+![Blog tile image](/images/site-mirror/0f6177a85071568cdd0732447445fa4b5c36867e-772x520.webp)
 
 We love to write long, deeply technical articles like [this](/blog/the-impedance-mismatch-test/), [this](/blog/dbless-architecture-and-why-its-the-future/) or [this](https://rajaraodv.medium.com/here-are-examples-of-everything-new-in-ecmascript-2016-2017-and-2018-d52fa3b5a70e). But sometimes you just don’t have the time. And we hear you. So here’s how Redis simplifies your architecture in one short summary and a video that explains it all in less than 90 seconds.
 

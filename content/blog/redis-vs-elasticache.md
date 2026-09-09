@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 16 December 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/04acf41bae9b96ea218b39582290b1c2ff00ff5a-1200x628.webp)
+![Redis](/images/site-mirror/04acf41bae9b96ea218b39582290b1c2ff00ff5a-1200x628.webp)
 
 When choosing how to run Redis in your environment, you’re not just comparing features. You’re deciding how Redis will operate inside your current architecture and how that choice will hold up as you grow across accounts, VPCs, and external services.
 

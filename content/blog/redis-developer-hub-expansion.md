@@ -16,9 +16,9 @@ hidden: true
 
 *By Talon Miller, Ajeet Raina · Published 6 April 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/56871e62057cfe57b336bb7ec1197244597ed75a-772x550.webp)
+![Blog tile image](/images/site-mirror/56871e62057cfe57b336bb7ec1197244597ed75a-772x550.webp)
 
-![redis developer home page](/images/blog/91a0ac8565dffccfdd1382326eef2ad2a8c83ccc-600x244.gif)
+![redis developer home page](/images/site-mirror/91a0ac8565dffccfdd1382326eef2ad2a8c83ccc-600x244.gif)
 
 The [Redis Developer Hub](/learn/) has always been a great resource for developers looking to build with Redis. With more than 200+ free tutorials, which were accessed by millions of developers over the last year, it offers invaluable training and instruction for developers looking to [**Create**](/learn/create/)**, **[**Develop**](/learn/develop/)**,** and [**Explore**](/learn/explore/)**.**
 
@@ -30,11 +30,11 @@ Today, with the addition of [**Operate,**](/learn/operate/) we are announcing an
 
 ### What’s new in “Operate”?
 
-![what's new in operate](/images/blog/96ac9ebc003edd0c44df50056a4344f4f5fc209a-1024x226.webp)
+![what's new in operate](/images/site-mirror/96ac9ebc003edd0c44df50056a4344f4f5fc209a-1024x226.webp)
 
 Redis has become a [popular database choice](https://insights.stackoverflow.com/survey/2021#most-loved-dreaded-and-wanted-database-love-dread/), not only for developers but among DevOps teams, due to its unmatched simplicity and exceptionally high performance. In [Datadog’s 2021 Container Report](https://www.datadoghq.com/container-report/) Redis was the most popular container image running in Kubernetes [StatefulSets.](https://docs.redis.com/latest/platforms/kubernetes/kubernetes-with-operator/) Redis fits very well into the DevOps model due to its ease of deployment, reduced management toil, and low overhead. Redis Enterprise offers uninterrupted high availability, low latency, and automated linear scalability—all crucial features for DevOps teams.
 
-![bar chart of top containers](/images/blog/b4bf273b4d4a2b72bc9f9987c48411e3a5124d43-1024x582.webp)
+![bar chart of top containers](/images/site-mirror/b4bf273b4d4a2b72bc9f9987c48411e3a5124d43-1024x582.webp)
 
 Here at Redis, we know that rapid deployment is key to a successful DevOps approach. Therefore, in [this new section of our Developer Hub](/learn/operate/), we have introduced a collection of rich technical content to help DevOps and development teams operate Redis at a faster pace.
 

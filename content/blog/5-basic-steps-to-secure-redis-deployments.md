@@ -15,7 +15,7 @@ hidden: true
 
 *By Quincy Castro, Contributor · Published 2 February 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/dd803210e9ea43497bf6c58b9d070cd550956aed-772x550.webp)
+![Blog tile image](/images/site-mirror/dd803210e9ea43497bf6c58b9d070cd550956aed-772x550.webp)
 
 **Recent security reports identified the risk of attacks on misconfigured Redis databases. Here are five basic steps to secure your Redis deployments.**
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 3 January 2019 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/b602e9a403965d371cfc68a57199d0b06bddc351-1200x1000.webp)
+![Blog tile image](/images/site-mirror/b602e9a403965d371cfc68a57199d0b06bddc351-1200x1000.webp)
 
 Recently, a colleague of mine had a request: how can I create a content filter in Redis? He wanted to filter incoming messages against a list of bad words. It’s a pretty common use case — any app that accepts user input probably wants to do at least a cursory scan for inappropriate words. My first thought was that he should use a Bloom filter, but I wondered if there were better options, so I wanted to test my assumption. I fetched a list of bad words from [here](https://www.freewebheaders.com/full-list-of-bad-words-banned-by-google/) and did some initial testing with the text of Ulysses by James Joyce (a big book in the public domain with a lot of interesting language!).
 
@@ -153,7 +153,7 @@ Running Lua scripts from the CLI is not fun, since you’re dealing with large a
 
 Let’s look at the results:
 
-![Ulyses Bad Word Detection](/images/blog/fc3a9a51a3574851b5fc07cb507dcf8168a48c72-652x307.webp)
+![Ulyses Bad Word Detection](/images/site-mirror/fc3a9a51a3574851b5fc07cb507dcf8168a48c72-652x307.webp)
 
 | SINTER (4th) | 0.252477065875seconds(252.478ms) | 0.06331450637410971 | 0.026739796333907027 |
 |---|---|---|---|
@@ -161,7 +161,7 @@ Let’s look at the results:
 | BF.MEXISTS (2nd) | 0.19251170375862064 (192.512ms) | 0.05158925843435185 | 0.01961960405252156 |
 | BF.EXISTS (3rd) | 0.21505565530769238 (215.056ms) | 0.041931428091619434 | 0.016940265013395354 |
 
-![1000 words of Lorem Ipsom Bad Word Detection](/images/blog/0f8442251ba1d032a07d3a12e30d353659a0fe93-837x349.webp)
+![1000 words of Lorem Ipsom Bad Word Detection](/images/site-mirror/0f8442251ba1d032a07d3a12e30d353659a0fe93-837x349.webp)
 
 | SINTER (2nd) | 0.0005533430385665705 (0.55ms) | 0.00004782064272951418 | 0.00001047916037135063 |
 |---|---|---|---|
@@ -169,7 +169,7 @@ Let’s look at the results:
 | BF.MEXISTS (3rd) | 0.0005750750453153705 (0.58ms) | 0.00008423403428371551 | 0.000019593611749182812 |
 | BF.EXISTS (4th) | 0.0006705186154166669 (0.67ms) | 0.000035960357334688716 | 0.000008810287546998735 |
 
-![500 words of Lorem Ipsom Bad Word Detection](/images/blog/fdc0f6c7229c7cd5f1f3412e3251203f42f576ea-657x295.webp)
+![500 words of Lorem Ipsom Bad Word Detection](/images/site-mirror/fdc0f6c7229c7cd5f1f3412e3251203f42f576ea-657x295.webp)
 
 | SINTER (4th) | 0.0007199102990995225 (0.72ms) | 0.00026621924403751274 | 0.00006281610037055691 |
 |---|---|---|---|

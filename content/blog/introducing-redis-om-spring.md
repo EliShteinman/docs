@@ -16,7 +16,7 @@ hidden: true
 
 *By Brian Sam-Bodden, Principal Applied AI Engineer · Published 8 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/25899604c3197b0843e26d3b4c8fa453aaf4b882-772x550.webp)
+![Blog tile image](/images/site-mirror/25899604c3197b0843e26d3b4c8fa453aaf4b882-772x550.webp)
 
 ## Object Mapping, and more, for Redis and Spring
 

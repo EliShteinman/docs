@@ -15,7 +15,7 @@ hidden: true
 
 *By Nava Levy, Developer Advocate, Data Science & ML Operations · Published 15 December 2021 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/b73e4626f6815193f0b427cbc85f81df61bdb262-772x550.webp)
+![Blog tile image](/images/site-mirror/b73e4626f6815193f0b427cbc85f81df61bdb262-772x550.webp)
 
 This tutorial provides a step-by-step **Feast for Redis quickstart **that walks you through an end-to-end example of using Feast with Redis as its online [feature store for machine learning](/solutions/feature-store/). It’s based on the [Feast Quickstart tutorial](https://docs.feast.dev/getting-started/quickstart), but instead of using the default online store, it uses the Redis online store for delivering real-time predictions at scale. If you’re not familiar with Feast or Redis, then the fastest way to get started with Feast using Redis is through this tutorial. Please refer to this [Feature Stores and Feast using Redis](/blog/building-feature-stores-with-redis-introduction-to-feast-with-redis/) blog article for a high-level introduction. More detailed information on Redis and Feast, as well as additional resources, are available at the end of this tutorial.
 
@@ -32,7 +32,7 @@ You can run the tutorial on [Google Colab](https://colab.research.google.com/dri
 
 Feast (**Fea**ture **st**ore) is an open source feature store and is part of the [Linux Foundation AI & Data Foundation](https://lfaidata.foundation/blog/2020/11/10/feast-joins-lf-ai-data-as-new-incubation-project/). It can serve feature data to models from a low-latency online store (for real-time serving) or an offline store (for model training or batch serving). It also provides a central registry so **machine learning engineers** and **data scientists** can discover the relevant features for ML use cases. Below is a high-level architecture of Feast:
 
-![](/images/blog/dfd2b2b5996ae7d280b9f69b92590b53ad223007-1024x489.webp)
+![](/images/site-mirror/dfd2b2b5996ae7d280b9f69b92590b53ad223007-1024x489.webp)
 
 Feast is a Python library + optional CLI. You can install Feast using pip, as will be described soon in this tutorial.
 
@@ -189,7 +189,7 @@ driver_hourly_stats_view = FeatureView(
 
 Finally, let’s inspect the raw data. The raw data we have in this demo is stored in a local parquet file. The dataset captures the hourly stats of a driver in a ride-sharing app.
 
-![](/images/blog/d8cefcac22715f7192da47802a94a91ecc45b8ea-836x403.webp)
+![](/images/site-mirror/d8cefcac22715f7192da47802a94a91ecc45b8ea-836x403.webp)
 
 ## Step 4: Register feature definitions and deploy your feature store
 

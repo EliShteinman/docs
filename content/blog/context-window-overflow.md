@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 2 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/7b3ee888795af21014ff0288fadbe87430e3fe84-1200x628.webp)
+![Redis](/images/site-mirror/7b3ee888795af21014ff0288fadbe87430e3fe84-1200x628.webp)
 
 Your LLM might advertise a million tokens or more. So why does your AI agent fall apart after a few tool calls? The math rarely adds up the way you'd expect. System prompts eat thousands of tokens, RAG retrieval consumes thousands more, and conversation history keeps growing, until your model starts deprioritizing the information it needs most.
 

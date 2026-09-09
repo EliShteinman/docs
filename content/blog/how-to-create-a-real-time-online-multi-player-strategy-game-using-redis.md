@@ -16,7 +16,7 @@ hidden: true
 
 *By Growth Team · Published 23 December 2021 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/ded7b5a6b9b2f66bafff3d79fee39b96cfe5b595-772x550.webp)
+![Blog tile image](/images/site-mirror/ded7b5a6b9b2f66bafff3d79fee39b96cfe5b595-772x550.webp)
 
 Multiplayer gaming remains colossal in the gaming industry. And why wouldn’t it be? To settle old scores, solve disputes, or even satisfy that competitive itch , battling it out online against other users is just as cathartic as it is entertaining.
 
@@ -40,7 +40,7 @@ You’ll build a multiplayer browser-based real time strategy game using Redis. 
 
 Ready to get started? Ok, let’s dive straight in.
 
-![](/images/blog/6d7ea4fd82897055f2b883854e63fc17aa4acee0-816x1006.webp)
+![](/images/site-mirror/6d7ea4fd82897055f2b883854e63fc17aa4acee0-816x1006.webp)
 
 ## 2. What will you need?
 
@@ -51,7 +51,7 @@ Ready to get started? Ok, let’s dive straight in.
 
 ## 3. Architecture
 
-![](/images/blog/0f664e8bb26a72d0be79c8ece668ac388a30768f-1468x1396.webp)
+![](/images/site-mirror/0f664e8bb26a72d0be79c8ece668ac388a30768f-1468x1396.webp)
 
 The application has an unconventional approach when it comes to client-server communication. This is because it relies heavily on web sockets to carry out responsibilities that would normally be fulfilled by an HTTP request/response.
 
@@ -134,7 +134,7 @@ ZADD user_updates $timestamp $user_id
 
 ```
 
-![](/images/blog/ce843e0495bded7e27c88bd0179b38c120439e0a-1600x942.webp)
+![](/images/site-mirror/ce843e0495bded7e27c88bd0179b38c120439e0a-1600x942.webp)
 
 ### Client-server protocol
 
@@ -685,7 +685,7 @@ So make sure to check it out!
 
 ## Who built this application?
 
-![](/images/blog/1615f28909e8da34b60a093cb9457f7eff22e911-400x400.webp)
+![](/images/site-mirror/1615f28909e8da34b60a093cb9457f7eff22e911-400x400.webp)
 
 **Matteus Hemström**
 

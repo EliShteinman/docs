@@ -14,7 +14,7 @@ hidden: true
 
 *By Thomas Findelkind, Senior Specialist Solution Architect · Published 5 November 2025 · updated 1 June 2026*
 
-![Redis](/images/blog/426e05eb93e034e6b2992234b30314d91f77d7ac-1200x628.webp)
+![Redis](/images/site-mirror/426e05eb93e034e6b2992234b30314d91f77d7ac-1200x628.webp)
 
 Azure Managed Redis is now generally available – bringing the power of Redis Enterprise directly into the Azure ecosystem.
 

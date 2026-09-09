@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 13 July 2026 · updated 29 July 2026*
 
-![Embedding vectors explained: from theory to real-world use](/images/blog/3e94c0fb68be7fef62873bd94fc905ecd69e6f6f-2400x1256.webp)
+![Embedding vectors explained: from theory to real-world use](/images/site-mirror/3e94c0fb68be7fef62873bd94fc905ecd69e6f6f-2400x1256.webp)
 
 Type "songs for a rainy Sunday morning" into a music app and you'll get results that match the mood, even though none of those words appear in the track titles. That kind of result is often powered by vector embeddings, numerical representations of meaning that let software compare a query and a song by how close their ideas are, not how many words they share. In production, this semantic retrieval usually runs alongside ranking signals and filters.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By John Noonan, Yaron Parasol · Published 11 June 2024 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/afda7f1d9ab7a6b541a4229cb30c1fed6318376c-772x552.webp)
+![Blog tile image](/images/site-mirror/afda7f1d9ab7a6b541a4229cb30c1fed6318376c-772x552.webp)
 
 We don’t just help you build fast apps. We help you do it fast. That’s why we’re excited to announce that Redis Data Integration (RDI) has arrived for Redis Software (with Redis Cloud soon to follow).
 
@@ -37,7 +37,7 @@ RDI creates a data streaming pipeline that mirrors data from an existing databas
 
 It does this by integrating slow databases with Redis to perform data ingestion and transformation to the Redis schema.
 
-![Redis schema](/images/blog/03be31a4521bf909ba6763b1c93fea6cc565823d-1600x439.webp)
+![Redis schema](/images/site-mirror/03be31a4521bf909ba6763b1c93fea6cc565823d-1600x439.webp)
 
 Once your apps are in Redis, they can access the fast data they need. And because your full dataset is in the format your app needs, you can also query your data directly in Redis in real time.
 
@@ -45,7 +45,7 @@ Once your apps are in Redis, they can access the fast data they need. And becaus
 
 RDI makes fast apps possible by keeping data in sync with configuration, not code. You can avoid the resource drain of teams manually building data pipelines to capture, ingest, and transform changed data from databases into Redis. With automated configuration, RDI ensures seamless data synchronization, so Redis and your database are always in sync. And to make your life even easier, you can soon use Redis Insight with RDI to operate and visualize your data pipeline.
 
-![Redis Insight with RDI](/images/blog/b91053059ab6f06ebbb88913cd04de6a47c55507-1600x1481.webp)
+![Redis Insight with RDI](/images/site-mirror/b91053059ab6f06ebbb88913cd04de6a47c55507-1600x1481.webp)
 
 Using RDI and Redis Insight together, you can streamline your pipeline creation process—seamlessly deploying pipelines from within Redis Insight, performing code completion and syntax validation, validating transformation and pipeline output, and monitoring data flow and pipeline performance in an intuitive dashboard.
 
@@ -65,7 +65,7 @@ Axis Bank Limited is a top Indian multinational banking and financial services i
 
 Axis Bank’s mobile app was supposed to let users see all of their latest account info, including the changes in the products they use and people they authorize to access their account. But when customers were making these changes offline at the branch, they weren’t being reflected in the app—which had an infrastructure based on a traditional relational database at the time. As expected, this lack of reliable, real-time data led to customer complaints and dissatisfaction in UX.
 
-![](/images/blog/5a7eca0c7640d91ff638251a1cd6dfd63c2d3a31-1899x871.webp)
+![](/images/site-mirror/5a7eca0c7640d91ff638251a1cd6dfd63c2d3a31-1899x871.webp)
 
 To fix this, they decided to use Redis for their mobile app to read from—but they still needed a simpler way to sync the data from their primary database. With RDI, Axis was able to simply ingest relevant records into Redis without complex code or expensive ETL tools. They can instantly capture and process real-time changes in data from nine large primary database tables. This means they can provide an impressive 4.25x faster response time, compared to retrieving data directly from core banking tables—which is a huge improvement in system performance and overall efficiency.
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Quincy Castro, Contributor · Published 19 July 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a46b2b1515dae7001ad1a1755cb767de29142649-772x550.webp)
+![Blog tile image](/images/site-mirror/a46b2b1515dae7001ad1a1755cb767de29142649-772x550.webp)
 
 We are excited to announce that Redis has achieved the ISO/IEC 27001:2013 cybersecurity certification!
 

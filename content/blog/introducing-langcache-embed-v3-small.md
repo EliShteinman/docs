@@ -14,7 +14,7 @@ hidden: true
 
 *By Rado Ralev, AI Research Engineer · Published 30 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/693a954a403dd7d740affd14d1626aa214daa700-772x552.webp)
+![Redis](/images/site-mirror/693a954a403dd7d740affd14d1626aa214daa700-772x552.webp)
 
 Semantic caching is a powerful idea, but most of the tools we’ve been using for it were never really built for the job.
 
@@ -126,7 +126,7 @@ In practice, that means:
 - Fewer cache misses when the answer is already known
 - Fewer incorrect cache hits where a “similar-looking” but wrong answer is reused.
 
-![Redis](/images/blog/20049d01dc3edbba11496a834f789e8355a11740-1021x465.webp)
+![Redis](/images/site-mirror/20049d01dc3edbba11496a834f789e8355a11740-1021x465.webp)
 
 ## What’s next?
 

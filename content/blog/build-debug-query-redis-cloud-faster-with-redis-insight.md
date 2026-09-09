@@ -15,7 +15,7 @@ hidden: true
 
 *By Olga Lopaci, Pieter Cailliau · Published 9 April 2025 · updated 11 June 2025*
 
-![Blog tile image](/images/blog/165c79895c318b2b7bc9c9e7d11c8ae4cfcf71d6-1544x1104.webp)
+![Blog tile image](/images/site-mirror/165c79895c318b2b7bc9c9e7d11c8ae4cfcf71d6-1544x1104.webp)
 
 [Redis Cloud](https://redis.io/cloud/), the most powerful, scalable managed Redis service, just tripled your productivity, writing fast apps faster. As devs, having the right tools at your fingertips while building, debugging or troubleshooting your app in production saves you time—time you can spend on things you actually enjoy, like reading up on the latest LLMs or, more importantly, choosing your outfit for the next Star Wars convention.
 
@@ -25,7 +25,7 @@ Enter [Redis Insight](https://redis.io/insight/)—the most popular Redis develo
 
 Redis doesn’t organize data hierarchically by default, but Redis Insight offers an intuitive list or tree view that makes browsing, filtering, and visualizing key-value data structures effortless. Plus, full CRUD support is available for lists, hashes, strings, sets, sorted sets, streams, and JSON data. It also has formatters like Pickle, Protobuf, 32-bit vector and many others to make your data human-readable.
 
-![Redis Insight Database](/images/blog/743790d8fd5d18397693e0556a4db8bab82a51d4-1600x905.webp)
+![Redis Insight Database](/images/site-mirror/743790d8fd5d18397693e0556a4db8bab82a51d4-1600x905.webp)
 
 ## Write queries faster
 
@@ -33,7 +33,7 @@ The advanced CLI, available in Workbench, makes building Redis queries simple, e
 
 Plus, Workbench supports visualizing command results for Redis Query Engine and time series data, making it easier to analyze and interact with your data.
 
-![Redis Insight Example](/images/blog/88095ffde425d13ef7edc8a4f29e694cb66ba5db-1600x908.webp)
+![Redis Insight Example](/images/site-mirror/88095ffde425d13ef7edc8a4f29e694cb66ba5db-1600x908.webp)
 
 ## Learn at your own speed
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 6 February 2026 · updated 9 February 2026*
 
-![Redis](/images/blog/09aa93cb68e0bf705845e3862077b53c5b065f63-1200x628.webp)
+![Redis](/images/site-mirror/09aa93cb68e0bf705845e3862077b53c5b065f63-1200x628.webp)
 
 You've probably hit this before: your fraud detection rules work fine for a few months, then fraudsters adapt. You write more rules. The cycle repeats. Your rule set grows to hundreds or thousands of conditions, performance degrades, and legitimate transactions get flagged constantly.
 

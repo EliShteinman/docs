@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 4 July 2026 · updated 14 July 2026*
 
-![Cache layer architecture: a practical guide to speed & scale](/images/blog/76173ebfdcc7fdbcc8e2672d03bcf79cce756e4b-2400x1256.webp)
+![Cache layer architecture: a practical guide to speed & scale](/images/site-mirror/76173ebfdcc7fdbcc8e2672d03bcf79cce756e4b-2400x1256.webp)
 
 Your app works fine with a thousand users. Then traffic spikes, requests hammer the same database systems, and response times crawl. A cache layer sits between your app and your slower data stores to absorb that load. Done well, it turns slow database round trips into fast cache lookups for most workloads. Done poorly, it becomes its own source of outages, stale data, and 3 AM on-call alerts. This guide covers what a cache layer is, where it sits, how caching patterns shape behavior, what breaks as traffic grows, and how it scales across nodes and regions.
 

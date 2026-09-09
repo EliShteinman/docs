@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 30 April 2020 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/e11a23ca2757d57e1a7c0a8ac428b0e8f9b1685c-772x520.webp)
+![Blog tile image](/images/site-mirror/e11a23ca2757d57e1a7c0a8ac428b0e8f9b1685c-772x520.webp)
 
 [*Download the latest version by clicking here*](https://redis.io/download?_ga=2.182771878.1286583108.1662571050-1570724325.1643248711).
 
@@ -29,7 +29,9 @@ Perhaps the biggest, most game-changing feature of Redis 6 are access control li
 
 Redis clients in [Java](https://github.com/xetorthio/jedis), [Node.js](https://github.com/luin/ioredis), [Python](https://github.com/andymccurdy/redis-py) and [.NET](https://github.com/StackExchange/StackExchange.Redis) already support ACLs, and we expect support to rapidly expand to more languages and libraries now that Redis 6 is generally available.
 
-![](/images/blog/3dfaea8b0ea5d321a505354c56c26d4ec936204d-1024x576.webp)
+![](/images/site-mirror/3dfaea8b0ea5d321a505354c56c26d4ec936204d-1024x576.webp)
+
+*ACLs will allow users access to only particular commands, keys, or even patterns of keys based on user-based specified permissions.*
 
 In addition to ACLs, Redis 6 brings the ability to encrypt traffic over SSL. Up until this version, encryption in Redis was deferred outside the process, meaning it required other applications to provide encryption and that many instances were left unencrypted. This is an important step forward for Redis, allowing for use in more environments where encryption is a critical requirement.
 

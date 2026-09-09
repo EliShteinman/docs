@@ -14,9 +14,9 @@ hidden: true
 
 *By Nitin Kanukolanu, Applied AI Engineer · Published 21 April 2026 · updated 15 June 2026*
 
-![Build Google ADK Agents with persistent, real-time memory on Redis](/images/blog/331e05aa1e635bae81d51f9b5a87090504659755-1200x628.webp)
+![Build Google ADK Agents with persistent, real-time memory on Redis](/images/site-mirror/331e05aa1e635bae81d51f9b5a87090504659755-1200x628.webp)
 
-![Build Google ADK Agents with persistent, real-time memory on Redis](/images/blog/8970cb6e9b038ef4a840623f0df69f5f1ef2f04f-1920x1244.webp)
+![Build Google ADK Agents with persistent, real-time memory on Redis](/images/site-mirror/8970cb6e9b038ef4a840623f0df69f5f1ef2f04f-1920x1244.webp)
 
 Google’s Agent Development Kit (ADK) delivers clean abstractions for building AI agents. It defines interfaces for memory, sessions, tools, and callbacks. But the default implementations store everything in process memory, which means the state disappears on restart and there is no path from prototype to production without replacing the storage layer.
 

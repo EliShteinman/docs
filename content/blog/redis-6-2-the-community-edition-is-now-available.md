@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 9 March 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/af94fb5ef8faeb869d3d86aac411e1686c0c276f-773x521.webp)
+![Blog tile image](/images/site-mirror/af94fb5ef8faeb869d3d86aac411e1686c0c276f-773x521.webp)
 
 Not long ago—just four days before the project’s 12th birthday—we published the general availability release of [Redis 6.2](https://github.com/redis/redis/releases/tag/6.2.0). Despite being “just” another minor open source Redis release, version 6.2 represents a major milestone for the Redis open source software project.
 

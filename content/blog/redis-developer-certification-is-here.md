@@ -14,7 +14,7 @@ hidden: true
 
 *By Kyle Banker, Sr. Director, Field Engineering · Published 7 November 2019 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/66b143b50dd2c2ca21c79b07ade1ce7594f29c66-286x275.webp)
+![Blog tile image](/images/site-mirror/66b143b50dd2c2ca21c79b07ade1ce7594f29c66-286x275.webp)
 
 ###### Update January 2026
 

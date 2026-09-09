@@ -14,11 +14,11 @@ hidden: true
 
 *By Redis   · Published 29 May 2019 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/0e0a2e4c6678e6708accb1657b8e0fef9687fc7f-444x444.webp)
+![Blog tile image](/images/site-mirror/0e0a2e4c6678e6708accb1657b8e0fef9687fc7f-444x444.webp)
 
 Instagram recently published a post on their engineering blog about the concept of promisifying cached values. The idea is that, on a cache miss, it takes a while to fetch the missing value, which could cause stampedes on the underlying DBMS that the cache is supposed to protect. A stampede, among other things, consists of multiple parallel requests that, on a cache miss, trigger multiple instances of the same work to populate the cache (see below)
 
-![](/images/blog/a587c6c606ab4a33bcdbdee7c3fa1b207a5f0a74-1570x530.webp)
+![](/images/site-mirror/a587c6c606ab4a33bcdbdee7c3fa1b207a5f0a74-1570x530.webp)
 
 In their post, Instagram’s Nick Cooper showcases the idea of storing a dummy value (i.e. the promise) in the cache to signal to competing requesters that someone else is preparing the data, so they know to wait instead of hitting the DBMS to death. [This is the article](https://instagram-engineering.com/thundering-herds-promises-82191c8af57d) I’m referring to, it also received a [few comments](https://news.ycombinator.com/item?id=19683410) on Hacker News.
 

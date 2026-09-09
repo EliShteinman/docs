@@ -16,7 +16,7 @@ hidden: true
 
 *By Carol Pinchefsky, Contributor · Published 24 October 2022 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/430d9ce146ece4c99b06a1558feb4ddb3c0ef2bf-772x550.webp)
+![Blog tile image](/images/site-mirror/430d9ce146ece4c99b06a1558feb4ddb3c0ef2bf-772x550.webp)
 
 **The job you’re applying for says, “Redis experience required.” Are you ready for the questions a hiring manager is likely to ask? Here’s how to prepare for the job interview.**
 

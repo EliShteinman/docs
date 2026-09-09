@@ -14,7 +14,7 @@ hidden: true
 
 *By Steve Naventi, Senior Director of Communications · Published 23 October 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/75de1ee8f087c4f11b8cba2b96bbd98de1c92acb-270x194.webp)
+![Blog tile image](/images/site-mirror/75de1ee8f087c4f11b8cba2b96bbd98de1c92acb-270x194.webp)
 
 At Redis, we’re constantly working to create the best solutions to modernize your data layer to drive business success. So it’s always nice when folks recognize our efforts with awards. That’s why we want to send out a huge “thank you” to the editors and readers of *Datanami *for honoring Redis and Redis in their [**2020 Datanami Readers’ and Editors’ Choice Awards**](https://www.datanami.com/2020-datanami-readers-choice-awards/)!
 

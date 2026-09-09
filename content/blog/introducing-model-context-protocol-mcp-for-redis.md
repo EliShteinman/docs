@@ -14,7 +14,7 @@ hidden: true
 
 *By Mirko Ortensi, Sr. Product Manager, Products · Published 22 May 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/f2a64afcd972d20eff117808d729658934ce2301-772x552.webp)
+![Blog tile image](/images/site-mirror/f2a64afcd972d20eff117808d729658934ce2301-772x552.webp)
 
 Model Context Protocol (MCP) is a standard [developed by Anthropic](https://www.anthropic.com/news/model-context-protocol) that lets AI agentic apps use external data and tools. Think of it like a universal adapter that helps AI go beyond its training by tapping into real-time info and capabilities, like pulling weather forecasts, live stock prices or checking your calendar.
 
@@ -38,13 +38,13 @@ You can integrate this MCP Server in a few clicks using registries like the popu
 
 MCP works with the tools you already use. IDEs like VS Code with GitHub Copilot, Cursor, and Claude Desktop support it out of the box—so you can talk to your Redis server no matter where it’s running: local, Docker, or Redis Cloud. Just connect the server you want and you’re ready to go.
 
-![The Redis MCP server](/images/blog/1bbaa95c23c006f53f6e85d9e99e88dc321b8900-1404x937.gif)
+![The Redis MCP server](/images/site-mirror/1bbaa95c23c006f53f6e85d9e99e88dc321b8900-1404x937.gif)
 
 Integrating natural language processing into your IDE opens up new possibilities to boost user experience when working with app data. But MCP is much more. You can build powerful agentic apps in SDKs such as the OpenAI Agents SDK. The [SDK supports MCP](https://openai.github.io/openai-agents-python/mcp/) so that you can provide your MCP tools to agents.
 
 Building complex apps is much easier by plugging in the desired functionalities exposed by the many existing MCP servers. You can find an [example](https://github.com/redis/mcp-redis/blob/main/examples/redis_assistant.py) in the mcp-redis repository. Provide as many MCP servers as you’d like, customize the agent’s instructions, and you’re ready to interact with it.
 
-![The Redis MCP server Table](/images/blog/8f60aa4b42d1e3d68a255b7d2441489e1a96e8a7-1600x854.webp)
+![The Redis MCP server Table](/images/site-mirror/8f60aa4b42d1e3d68a255b7d2441489e1a96e8a7-1600x854.webp)
 
 ## Redis Cloud API MCP server
 
@@ -56,7 +56,7 @@ The [mcp-redis-cloud](https://github.com/redis/mcp-redis-cloud) gives your AI ag
 
 This MCP server exposes the [Redis Cloud REST API](https://redis.io/docs/latest/operate/rc/api/) so you can bridge natural language instructions with programmatic Redis Cloud subscription management.
 
-![Redis Cloud API MCP server](/images/blog/a9b3ca8927152e18e7088c5d17b908fbb6e5b426-1600x709.webp)
+![Redis Cloud API MCP server](/images/site-mirror/a9b3ca8927152e18e7088c5d17b908fbb6e5b426-1600x709.webp)
 
 If you want the ability to spin up databases for testing, manage your subscription, learn about the metrics of interest, or overload an existing app with the ability to create databases on demand, take a look at this server.
 

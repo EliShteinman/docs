@@ -14,7 +14,7 @@ hidden: true
 
 *By Nava Levy, Developer Advocate, Data Science & ML Operations · Published 7 April 2022 · updated 26 May 2026*
 
-![Blog tile image](/images/blog/bf06bd62eb0cdad539214994a4674468e34b0d73-772x550.webp)
+![Blog tile image](/images/site-mirror/bf06bd62eb0cdad539214994a4674468e34b0d73-772x550.webp)
 
 Real-time artificial intelligence / machine learning (AI/ML) use cases, such as [fraud prevention](/solutions/fraud-detection/) and recommendation, are on the rise, and [feature stores](/blog/building-feature-stores-with-redis-introduction-to-feast-with-redis/) play a key role in deploying them successfully to production. According to popular open source feature store Feast, one of the most common questions users ask in their community[ Slack](https://slack.feast.dev/) is: howscalable/performantis Feast?This is because the most important characteristic of a feature store for real-time AI/ML is the feature serving speed from the online store to the ML model for online predictions or scoring. Successful feature stores can meet stringent latency requirements ([measured in milliseconds](https://towardsdatascience.com/approaches-for-building-real-time-ml-systems-79ea0e340269)), consistently (think p99) and at scale (up to millions of queries per second, with gigabytes to terabytes-sized datasets) while at the same time maintaining a low total cost of ownership and high accuracy.
 
@@ -60,7 +60,7 @@ So what’s the catch you may ask? If you have only one use case, and it doesn�
 
 Below is another example of a feature store architecture. This one is used by [Lightricks](https://www.lightricks.com/), based on the commercial feature store [Qwak](https://www.qwak.com/). Lightricks is a unicorn company that develops video and image editing mobile apps, known particularly for its selfie-editing app, Facetune. It uses the feature store for its recommendation system.
 
-![lightricks diagram](/images/blog/c5d04b4e216cf08c4e81c76e0e8956c6e954da58-1024x504.webp)
+![lightricks diagram](/images/site-mirror/c5d04b4e216cf08c4e81c76e0e8956c6e954da58-1024x504.webp)
 
 As shown in the diagram above, like Tecton, the Qwak feature store supports three types of features sources – batch, streaming, and real-time features.
 

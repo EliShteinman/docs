@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 21 August 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7da4ffe116706c4539f9c1c20f762ef387abbe5b-772x550.webp)
+![Blog tile image](/images/site-mirror/7da4ffe116706c4539f9c1c20f762ef387abbe5b-772x550.webp)
 
 **Redis is offering a new 14-day free trial on AWS Marketplace.**
 

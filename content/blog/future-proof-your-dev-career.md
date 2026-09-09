@@ -14,7 +14,7 @@ hidden: true
 
 *By David Gaule, Contributor · Published 11 January 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/ef68b7687d2e9ab3c8ae3f55cfe2e201b9288919-772x550.webp)
+![Blog tile image](/images/site-mirror/ef68b7687d2e9ab3c8ae3f55cfe2e201b9288919-772x550.webp)
 
 **You need to keep your tech skills current. But a productive career depends on several additional practices.**
 

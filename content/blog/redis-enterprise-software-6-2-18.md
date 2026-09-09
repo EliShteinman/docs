@@ -17,7 +17,7 @@ hidden: true
 
 *By Brandon Felker, Adi Shtatfeld, Yoav Peled · Published 29 November 2022 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/e57ce5ae765acbdde99a86d6e4f69b7f57e8abef-772x550.webp)
+![Blog tile image](/images/site-mirror/e57ce5ae765acbdde99a86d6e4f69b7f57e8abef-772x550.webp)
 
 **Redis Enterprise Software 6.2.18 is out! We’re delighted with this new release, which has a renewed focus on security, and we think you will be, too**.
 
@@ -39,7 +39,7 @@ Starting with version 6.2.18, Redis Enterprise Software lets you audit database 
 
 For example, one of our customers, a large European [financial](/industries/financial-services/) institution, wants to track failed login attempts to its databases. While occasional login failures are common and acceptable, repeating login failures from the same origin might indicate an attempt to hack the system. Once auditing is enabled, [Redis Enterprise Software](/enterprise/) generates and publishes connection audit records, which the customer can then consume and process for detecting such cases.
 
-![Redis Enterprise software update](/images/blog/ef88ca04416dc4e6f6f7def089905bfb9d0a4cb6-269x312.webp)
+![Redis Enterprise software update](/images/site-mirror/ef88ca04416dc4e6f6f7def089905bfb9d0a4cb6-269x312.webp)
 
 Using audit in Redis Enterprise Software involves a few steps:
 

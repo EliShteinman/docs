@@ -14,7 +14,7 @@ hidden: true
 
 *By Miguel Allende, Customer Advocacy Manager · Published 20 December 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a6db1ade24912daa6cbde4e558985316c524a9db-396x203.webp)
+![Blog tile image](/images/site-mirror/a6db1ade24912daa6cbde4e558985316c524a9db-396x203.webp)
 
 Nadia is looking to take a summer holiday to Switzerland from her home in Bangalore, India. To plan her trip, she heads online to [HolidayMe.com](https://www.holidayme.com/home/en-ww), an online travel agency based in Dubai, Riyadh, and Pune that curates thousands of expert-designed itineraries for customers to personalize. Juggling logistics for airfare, lodging, and attractions in an unfamiliar country can be complicated, and Nadia hopes HolidayMe will make it easier to organize everything in one place.
 

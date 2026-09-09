@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 April 2026 · updated 24 April 2026*
 
-![Redis](/images/blog/9e814270de78b9e1fc261ac23e9ffa19193b1f48-1200x628.webp)
+![Redis](/images/site-mirror/9e814270de78b9e1fc261ac23e9ffa19193b1f48-1200x628.webp)
 
 Your AI agent can make tool calls, chain tools, and execute tasks independently. It can also hallucinate a policy that doesn't exist, execute a destructive SQL query that deletes production data, or confidently generate a wrong answer that costs your company real money. The shift from text generation to autonomous actions often makes runtime human oversight an architectural requirement in higher-risk systems.
 

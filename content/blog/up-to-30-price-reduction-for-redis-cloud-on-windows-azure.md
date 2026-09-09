@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 6 February 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/e511bebb45112048e9901dccdbd236a23dce99e5-635x200.webp)
+![](/images/site-mirror/e511bebb45112048e9901dccdbd236a23dce99e5-635x200.webp)
 
 Today we’re proud to announce a price reduction for Redis Cloud on Windows Azure. In line with Window’s Azure price reduction of up to 22% on memory-intensive compute instances across Windows, Linux and Cloud Services, we’ve aligned pricing for both our Redis Cloud and Memcached Cloud services with reductions by up to 30%.
 

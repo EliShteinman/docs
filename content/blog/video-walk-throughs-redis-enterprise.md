@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 14 August 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/b586a7f76832f413f760195acb5122d7bf1e1228-955x539.webp)
+![Blog tile image](/images/site-mirror/b586a7f76832f413f760195acb5122d7bf1e1228-955x539.webp)
 
 We’ve been busy working on some video walk-throughs of common situations with Redis Enterprise.
 

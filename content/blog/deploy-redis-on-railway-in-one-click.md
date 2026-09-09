@@ -15,9 +15,9 @@ hidden: true
 
 *By Blair Pierson, Sarah Bedell · Published 29 September 2025*
 
-![Redis-Railway](/images/blog/8a1e8ff464ed5c3ccf363e90ab85b41134597b9e-772x552.webp)
+![Redis-Railway](/images/site-mirror/8a1e8ff464ed5c3ccf363e90ab85b41134597b9e-772x552.webp)
 
-![Redis-railway](/images/blog/dc00c6af8327ac4fda7c7c9575db21b35ecc1a1a-715x453.webp)
+![Redis-railway](/images/site-mirror/dc00c6af8327ac4fda7c7c9575db21b35ecc1a1a-715x453.webp)
 
 Devs move faster when they don’t have to think about infrastructure. That’s why we’re excited to share a brand-new way to spin up Redis: a one-click deploy template on Railway.
 
@@ -71,4 +71,4 @@ Ready to launch? Click below to get Redis running on Railway in just one click:
 
 We can’t wait to see what you build. Share your projects with us in the Redis and Railway communities — and let’s keep making infrastructure disappear for devs while giving end users the speed and experience they deserve.
 
-![Redis-railway](/images/blog/cd6d8941405917563c88dc2df10f43aeafd351c3-715x394.webp)
+![Redis-railway](/images/site-mirror/cd6d8941405917563c88dc2df10f43aeafd351c3-715x394.webp)

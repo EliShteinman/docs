@@ -14,7 +14,7 @@ hidden: true
 
 *By Esther Schindler · Published 4 April 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/024e354370a5f7a6b06cd8e4c7f061e3b4b88757-772x550.webp)
+![Blog tile image](/images/site-mirror/024e354370a5f7a6b06cd8e4c7f061e3b4b88757-772x550.webp)
 
 **When you experiment with a new-to-you data science skill, you need some sort of data to work with. Why be boring?**
 
@@ -52,7 +52,9 @@ This may be a good data source for AI or machine learning experimentation, parti
 
 ## Exploding stars
 
-![exploding stars datasets](/images/blog/8604a4346ba94b8c4a9c1827b1bf519a977639e8-300x169.webp)
+![exploding stars datasets](/images/site-mirror/8604a4346ba94b8c4a9c1827b1bf519a977639e8-300x169.webp)
+
+*Observations of the supernova SN2020oi in the grand-design spiral M100 and its evolving light curve. (Credit: Alex Gagliano/Young Supernova Experiment Team)*
 
 The University of Hawai’i released what it claims is [the largest catalog of exploding stars](https://zenodo.org/record/7317476#.ZBZePi-B1ei).” The largest data release of relatively nearby supernovae (colossal explosions of stars), containing three years of data from the University of Hawaii Institute for Astronomy’s (IfA) Pan-STARRS telescope atop Haleakalā on Maui, is publicly available via the Young Supernova Experiment,” [reports the university](https://www.hawaii.edu/news/2023/03/15/largest-catalog-exploding-stars/). The data contains information on nearly 2,000 supernovae and other luminous variable objects with observations in multiple colors, and also extensively uses multi-color imaging to classify the supernovae and estimate their distances.
 

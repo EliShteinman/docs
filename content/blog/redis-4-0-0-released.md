@@ -15,7 +15,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 14 July 2017 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/d75b51f6d811874093f54bfd83f6615b7f728a6b-91x78.webp)
+![Blog tile image](/images/site-mirror/d75b51f6d811874093f54bfd83f6615b7f728a6b-91x78.webp)
 
 > Redis 4.0.0 GA is out! My notes here: [https://t.co/1YAiQM98cn](https://t.co/1YAiQM98cn)
 — Salvatore Sanfilippo (@antirez) [July 14, 2017](https://twitter.com/antirez/status/885858901564018688)

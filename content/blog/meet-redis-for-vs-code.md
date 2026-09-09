@@ -14,7 +14,7 @@ hidden: true
 
 *By Olga Lopaci · Published 10 October 2024 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/6d4d00c16af0a926093da5861b71ffc9be586b83-772x552.webp)
+![Blog tile image](/images/site-mirror/6d4d00c16af0a926093da5861b71ffc9be586b83-772x552.webp)
 
 The first official Redis for VS Code extension is here. It brings Redis right into your IDE, so you can work faster and keep your workflows streamlined.
 
@@ -29,7 +29,7 @@ The extension seamlessly connects to any Redis, whether you’re using Redis Com
 **Fast access to an enhanced Redis Command-Line Interface (CLI)**
 Get fast access to Redis commands right in VS Code using the enhanced Redis CLI. As you type commands, you’ll see a syntax preview, reducing errors, and boosting accuracy. No more switching between your IDE and docs to get the right syntax.
 
-![](/images/blog/fded37d51068077beb03d51fdbbf611f9f361092-2041x1201.webp)
+![](/images/site-mirror/fded37d51068077beb03d51fdbbf611f9f361092-2041x1201.webp)
 
 What’s next?
 

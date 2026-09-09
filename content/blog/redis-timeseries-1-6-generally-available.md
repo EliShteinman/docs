@@ -17,7 +17,7 @@ hidden: true
 
 *By Lior Kogan, Contributor · Published 28 April 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/36ab10c626042cfb779f30530949ceab65280fd5-772x550.webp)
+![Blog tile image](/images/site-mirror/36ab10c626042cfb779f30530949ceab65280fd5-772x550.webp)
 
 Today, we’re happy to announce the General Availability of RedisTimeSeries 1.6. This blog post details the major new features that are now available.
 
@@ -224,10 +224,10 @@ RedisTimeSeries is now part of Redis Stack. You can [download](https://redis.io/
 
 You can execute time series queries and observe the results directly from the graphical user interface. RedisInsight can now visualize RedisTimeSeries query results.
 
-![redistimeseries 1.6 aggregation chart](/images/blog/616cb1baf7402b78571cc601d12d4b6bb66e22c8-1024x547.webp)
+![redistimeseries 1.6 aggregation chart](/images/site-mirror/616cb1baf7402b78571cc601d12d4b6bb66e22c8-1024x547.webp)
 
 In addition, RedisInsight contains quick guides and tutorials for learning RedisTimeSeries interactively.
 
-![redistimeseries 1.6 line graph](/images/blog/cd9116fd53caf20b5fbef11133cbb481290abcf3-1024x679.webp)
+![redistimeseries 1.6 line graph](/images/site-mirror/cd9116fd53caf20b5fbef11133cbb481290abcf3-1024x679.webp)
 
 Learn more on RedisTimeSeries on [redis.io](https://redis.io/docs/stack/timeseries/) and [developer.redis.com](/learn/modules/redistimeseries/).

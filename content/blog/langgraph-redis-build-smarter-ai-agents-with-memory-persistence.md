@@ -14,7 +14,7 @@ hidden: true
 
 *By Brian Sam-Bodden, Principal Applied AI Engineer · Published 28 March 2025 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/411fd9c5d030cee0c49817321dedefaed6346e8a-772x552.webp)
+![Blog tile image](/images/site-mirror/411fd9c5d030cee0c49817321dedefaed6346e8a-772x552.webp)
 
 Today, we’re excited to introduce [langgraph-checkpoint-redis](https://github.com/redis-developer/langgraph-redis), a new integration bringing Redis’ powerful memory capabilities to LangGraph. This collaboration gives developers the tools to build more effective AI agents with persistent memory across conversations and sessions.
 

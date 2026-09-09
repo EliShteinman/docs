@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 23 March 2026 · updated 24 March 2026*
 
-![What is a transaction monitoring system & how does it work?](/images/blog/16c9ec03438df178f1f09500d91fb22f86a53915-2400x1256.webp)
+![What is a transaction monitoring system & how does it work?](/images/site-mirror/16c9ec03438df178f1f09500d91fb22f86a53915-2400x1256.webp)
 
 The Financial Crimes Enforcement Network (FinCEN) issued a $1.3 billion [penalty against TD Bank](https://www.fincen.gov/news/news-releases/fincen-assesses-record-13-billion-penalty-against-td-bank) in 2024 for broad anti-money laundering (AML) program failures, including trillions of dollars in transactions that went unmonitored annually, according to the consent order. The Financial Conduct Authority (FCA) [fined Metro Bank](https://www.fca.org.uk/news/press-releases/fca-fines-metro-bank-16m-financial-crime-failings) £16 million after a data error left over 60 million transactions unchecked for more than four years. This shows how quickly data and systems gaps can turn into regulatory exposure.
 

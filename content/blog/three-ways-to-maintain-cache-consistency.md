@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 20 January 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/973e07ff1acb1fe00d97cdd7c0b515fc35aa8d6a-772x550.webp)
+![Blog tile image](/images/site-mirror/973e07ff1acb1fe00d97cdd7c0b515fc35aa8d6a-772x550.webp)
 
 [*Download Caching at Scale e-book*](/docs/caching-at-scale-with-redis/)*. A primer you need to understand what application caching is, why and when it’s needed, and how to get the best performance from your applications.*
 
@@ -34,7 +34,7 @@ The problem arises during the gap between when the data in the primary database 
 
 The challenge comes in finding the sweet spot, a kind of Goldilocks area that lies between checking for updates too frequently or not enough. Of course, if a user attempts to access obsolete data during this gap, that gamble is lost.
 
-![Cash Consistency diagram](/images/blog/bc488e66a558854e1b67dfca7d1bab4f97727d05-1024x515.webp)
+![Cash Consistency diagram](/images/site-mirror/bc488e66a558854e1b67dfca7d1bab4f97727d05-1024x515.webp)
 
 **2. When there’s a delay in updating cached results**
 
@@ -78,7 +78,7 @@ Another strategy, known as *write-behind*, avoids this problem by initially upda
 
 In addition to cache invalidation, write-through and write-behind caching can address many of the scenarios that help you achieve cache consistency. But finding the answer to a problem is not the same as implementing it.
 
-![image illustrating how active-active replication works](/images/blog/c940d667cb9248ba7a0067922938f9170936d4d0-1024x525.webp)
+![image illustrating how active-active replication works](/images/site-mirror/c940d667cb9248ba7a0067922938f9170936d4d0-1024x525.webp)
 
 Redis Enterprise’s [active-active](/docs/uninterrupted-availability-anywhere/) geo-duplication allows for multiple primaries and enables you to deftly handle increasingly heavier loads. The name active-active refers to the fact that each instance of your database can accept both read and write operations on any key. Each database instance, no matter how far-flung, is a peer on your network. That means when a write occurs to any instance, that node automatically sends a message to all the other instances on your network, indicating what in the cache has been changed and ensuring all of the instances retain a consistent set of cached data.
 

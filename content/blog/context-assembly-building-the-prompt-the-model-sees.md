@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 22 July 2026*
 
-![Context assembly: building the prompt the model actually sees](/images/blog/f8ea8cadbffac61fc60f0158aae879d4eafbafb5-2400x1256.webp)
+![Context assembly: building the prompt the model actually sees](/images/site-mirror/f8ea8cadbffac61fc60f0158aae879d4eafbafb5-2400x1256.webp)
 
 The prompt a production LLM receives is almost never something a person wrote. By the time a request reaches the model, your app has stitched together system instructions, retrieved documents, conversation history, tool schemas, and stored memories into one long token sequence. That stitching step is context assembly, and it can strongly influence answer quality alongside the model you picked or the exact wording of your system prompt. The discipline around it now has a name: [context engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), the practice of curating and maintaining the right set of tokens for the model during inference, including everything that lands in the window beyond the prompt itself.
 

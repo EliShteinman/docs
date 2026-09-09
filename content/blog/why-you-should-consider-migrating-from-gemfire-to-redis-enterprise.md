@@ -15,7 +15,7 @@ hidden: true
 
 *By Virag Tripathi, Alexandre Vasseur · Published 22 January 2024 · updated 12 October 2025*
 
-![Blog tile image](/images/blog/7b58e722e5c9ec83f94bb93298d04c5b0e73ddf1-772x550.webp)
+![Blog tile image](/images/site-mirror/7b58e722e5c9ec83f94bb93298d04c5b0e73ddf1-772x550.webp)
 
 ## Introduction – from In-Memory Distributed Grid to Redis’ real-time data platform
 
@@ -29,7 +29,7 @@ Redis stands as a robust replacement for IMDGs due to its simplicity, versatilit
 
 Once you’ve chosen Redis as the replacement for your IMDG, you’ll need to consider how to make the transition. In the rest of this article, we’ll explore the essentials of migrating from one such popular IMDG, GemFire, to Redis, by helping you understand the terminology differences and the best practices for migration. This will help you avoid common issues and lead to a smooth and effective transition.
 
-![redis-enterprise-screen-shot](/images/blog/90272a06ed15b9838d6ad93174ce51d4156c2069-1493x694.webp)
+![redis-enterprise-screen-shot](/images/site-mirror/90272a06ed15b9838d6ad93174ce51d4156c2069-1493x694.webp)
 
 ### Migrating from GemFire to Redis in Practice
 
@@ -66,7 +66,7 @@ Redis Software is built upon Redis Community Edition but provides an improved ar
 
 Redis is the de facto key/value store for major cloud service providers, including Amazon Web Services, Microsoft Azure, and Google Cloud Platform. Each of these major cloud providers offers Redis Cloud or Azure Cache for Redis Enterprise, powered by Redis, with a service-level agreement backed by financial penalties.
 
-![](/images/blog/81c4c1eb3c495fda5276e3f1bb49543872feeaec-578x288.webp)
+![](/images/site-mirror/81c4c1eb3c495fda5276e3f1bb49543872feeaec-578x288.webp)
 
 ### What to know for your migration: Mapping GemFire concepts to Redis
 
@@ -102,19 +102,19 @@ These factors collectively position Redis as not just a technological upgrade, b
 
 ## Related resources
 
-![uninterrupted-availability-anywhere-ebook-card-](/images/blog/796b4067d96607482e0513f57ad3403660f0428c-772x550.webp)
+![uninterrupted-availability-anywhere-ebook-card-](/images/site-mirror/796b4067d96607482e0513f57ad3403660f0428c-772x550.webp)
 
 Our Redis Connect GemFire Example
 
 Learn More
 
-![](/images/blog/934598b3e2ef1178f179b97861fadb9b4a4a89a1-300x215.webp)
+![](/images/site-mirror/934598b3e2ef1178f179b97861fadb9b4a4a89a1-300x215.webp)
 
 Rapid Data Ingestion with Redis Enterprise
 
 Learn More
 
-![](/images/blog/b8950c5010380c7077fd3462ec46264c5660f555-772x550.webp)
+![](/images/site-mirror/b8950c5010380c7077fd3462ec46264c5660f555-772x550.webp)
 
 Legacy Database Migration: What To Know Before You Start
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Gilbert Lau, Cloud Partner Solution Architect · Published 8 February 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9e755fcc13280b99668203867278dc015a4389b7-772x550.webp)
+![Blog tile image](/images/site-mirror/9e755fcc13280b99668203867278dc015a4389b7-772x550.webp)
 
 Deploying Redis Enterprise, the world’s fastest database, on the performant and secure Google Cloud will give our users the best of both worlds. This post will describe five different Redis Enterprise deployment scenarios on Google Cloud. We will go through these deployment scenarios, characteristics, limitations, and caveats for each.
 

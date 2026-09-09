@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 1 May 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/fea7433de17dd1cd4b72e842d3b413fa4a552073-772x550.webp)
+![Blog tile image](/images/site-mirror/fea7433de17dd1cd4b72e842d3b413fa4a552073-772x550.webp)
 
 **So, you’ve evaluated your application’s state of affairs and have concluded that the adoption of microservices will improve overall performance and scalability. Great. What comes next? In this article, we outline the baseline considerations for microservices design and implementation.**
 

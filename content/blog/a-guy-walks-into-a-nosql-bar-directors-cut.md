@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 29 May 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e3195514364c3b35f578b21723e4af89ba4fa0a0-140x92.webp)
+![Blog tile image](/images/site-mirror/e3195514364c3b35f578b21723e4af89ba4fa0a0-140x92.webp)
 
-![A Guy Walks Into a NoSQL Bar](/images/blog/2bc3d3de7495c7187a726235b99f44841376ba82-635x200.webp)
+![A Guy Walks Into a NoSQL Bar](/images/site-mirror/2bc3d3de7495c7187a726235b99f44841376ba82-635x200.webp)
 
 ## or DataStax, Aerospike, Couchbase and Redis: Serving 1M Writes/Sec From Google Compute Engine
 
@@ -52,7 +52,7 @@ We ran the benchmark three times, first serving only reds reads, then serving on
 1. With the write-only load, the cluster’s measured throughput was at **1.14M operations per second** at 0.36sec average latency per request.
 1. An equal mix of read and write operations gave a throughput of **1.16M operations per second** at an average latency of 0.17msec per operation.
 
-![Redis Enterprise Cluster on Google Cloud Platform - Over 1M ops/sec](/images/blog/b096f15c68d002886c81e2319231e54caac4bb54-635x396.webp)
+![Redis Enterprise Cluster on Google Cloud Platform - Over 1M ops/sec](/images/site-mirror/b096f15c68d002886c81e2319231e54caac4bb54-635x396.webp)
 
 ### Conclusion
 
@@ -64,6 +64,6 @@ Before the man can finish his story, the bartender had finished preparing the or
 
 The barman smiled and said, “You should consider yourself lucky then, sir. I heard of a place further uptown called Dat Stacks where for every glass of white wine they charge for 300 bottles.”
 
-![1M Ops/Sec on Google Cloud Platform: Your bill, sir](/images/blog/737ae62dd4dbb43224f8a78b53a23d8e1adea566-635x677.webp)
+![1M Ops/Sec on Google Cloud Platform: Your bill, sir](/images/site-mirror/737ae62dd4dbb43224f8a78b53a23d8e1adea566-635x677.webp)
 
 Ok, so maybe this joke isn’t really that funny, but neither is paying too much for less-than-top-notch performance 🙂 With Redis, reaching and exceeding the 1 million operations per second mark doesn’t require a truckload of cloud servers – just one or two will do nicely.

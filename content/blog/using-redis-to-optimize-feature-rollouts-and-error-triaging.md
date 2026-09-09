@@ -14,7 +14,7 @@ hidden: true
 
 *By Shabih Syed, Shabih is a Sr. Director of Product Marketing at Redis Labs. He has 13+ years of experience with software development, product management and marketing of cloud-based data management & application integration platforms. Most recently he led product marketing at Liaison Technologies (now OpenText) and has worked for HP and IBM before that. Shabih is based out of NYC. · Published 24 April 2019 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/eabfb3ea2a46b84ad0a382ee404ffc6af26df241-1150x1052.webp)
+![Blog tile image](/images/site-mirror/eabfb3ea2a46b84ad0a382ee404ffc6af26df241-1150x1052.webp)
 
 In an effort to run, run, run… you don’t want to make the $460 million dollar mistake that Knights Capital made back in 2012. This single-day computer system failure of a leading financial market-maker offers several lessons for the broader IT community, including the critical importance of your system components’ design, implementation and DevOps details. In this two-part blog, I’ll share some ideas to help development teams keep their continuous integration and continuous deployment (CI/CD) processes fool-proof. In particular, I’ll show how you can manage continuous updates by using feature toggles and feature context to dictate code routing, store log data for easy access and create an error database with fast lookups — all with the help of Redis.
 
@@ -26,7 +26,9 @@ At the 2019 Game Developers Conference (GDC), I attended a session that describe
 
 ### Example CI/CD Process for New Feature Releases
 
-![Redis - Figure 2: Feature development and promotion](/images/blog/e20738af7521a43ff634e75047e77c26f556172c-1024x595.webp)
+![Redis - Figure 2: Feature development and promotion](/images/site-mirror/e20738af7521a43ff634e75047e77c26f556172c-1024x595.webp)
+
+*Figure 2: Feature development and promotion*
 
 Let’s breakdown Figure 2, which outlines an approach that could be part of your CI/CD and triage process.
 
@@ -49,7 +51,9 @@ But this approach can be taken one step further to help distributed development 
 
 ### CI/CD with Redis Enterprise
 
-![Redis - Figure 3: Managing toggles, context, errors & logs with Redis Enterprise](/images/blog/a032d90a223412a4f321a1c26b115b6dd121cefd-1024x472.webp)
+![Redis - Figure 3: Managing toggles, context, errors & logs with Redis Enterprise](/images/site-mirror/a032d90a223412a4f321a1c26b115b6dd121cefd-1024x472.webp)
+
+*Figure 3: Managing toggles, context, errors & logs with Redis Enterprise*
 
 [Redis Enterprise](/redis-enterprise/) fits the bill when you need a fast, persistent database. Its capabilities include:
 
@@ -57,6 +61,8 @@ But this approach can be taken one step further to help distributed development 
 - CRDBs, or conflict-free replicated databases, created across multiple Redis Enterprise clusters that reside in different data centers across the planet. This provides [high availability](/active-active/) in the form of both active-active and active-passive deployments.
 - Powerful search capabilities (through the RediSearch module) to run search queries across database clusters.
 
-![Redis - Figure 4: CRDB deployment of Redis Enterprise](/images/blog/ecf70b88e7f0d014327296df1c241826d8e566d3-1024x419.webp)
+![Redis - Figure 4: CRDB deployment of Redis Enterprise](/images/site-mirror/ecf70b88e7f0d014327296df1c241826d8e566d3-1024x419.webp)
+
+*Figure 4: CRDB deployment of Redis Enterprise*
 
 In my next installment for this series, I’ll offer more details and code snippets to show specifically how feature toggling, feature context, error databases and log databases built with Redis can make your CI/CD triage process more effective and efficient.

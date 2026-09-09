@@ -14,7 +14,7 @@ hidden: true
 
 *By Tugdual Grall, Technical Marketing Manager · Published 19 August 2020 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/953736d7c55dcbcf9451f6485ce4b21353c2fde1-527x462.webp)
+![Blog tile image](/images/site-mirror/953736d7c55dcbcf9451f6485ce4b21353c2fde1-527x462.webp)
 
 It is very common to get [real-time notifications](/docs/really-know-redis/) when navigating in a web application. Notifications could come from a chat bot, an alerting system, or be triggered by an event that the app pushes to one or more users. Whatever the source of the notifications, developers are increasingly using Redis to create notification services.
 
@@ -155,7 +155,7 @@ The last command starts the Vue development server that will serve the pages and
 
 Open your browser, and go to [http://localhost:8080](http://localhost:8080); where you should see the default Vue welcome page:
 
-![](/images/blog/49637533a10f594c68a4e68e430ceb5b207e0e6e-1016x788.webp)
+![](/images/site-mirror/49637533a10f594c68a4e68e430ceb5b207e0e6e-1016x788.webp)
 
 **Adding WebSocket to the frontend**
 
@@ -260,7 +260,9 @@ Using the Redis CLI or RedisInsight, publish some messages to the app:notificati
 
 You should see the message appear at the bottom of the application in your browser:
 
-![](/images/blog/d83a017f23bb380cbc40295b3f91967dc39adc49-733x1024.webp)
+![](/images/site-mirror/d83a017f23bb380cbc40295b3f91967dc39adc49-733x1024.webp)
+
+*A Redis message displayed in the view application.*
 
 As you can see, it is pretty easy to push content to your web frontend in real time using WebSocket. So now lets improve the design and add a more user-friendly interface using Bootstrap.
 
@@ -352,7 +354,9 @@ Let’s try it!
 
 Go back to redis-cli or Redis Insight and post new messages to the app:notifications channel.
 
-![](/images/blog/953736d7c55dcbcf9451f6485ce4b21353c2fde1-527x462.webp)
+![](/images/site-mirror/953736d7c55dcbcf9451f6485ce4b21353c2fde1-527x462.webp)
+
+*The notification in an alert box visible in the Vue application.*
 
 As you can see, it is easy to use Redis to create a powerful notification service for your application. This sample is pretty basic, using a single channel and server and broadcasting to all the clients.
 

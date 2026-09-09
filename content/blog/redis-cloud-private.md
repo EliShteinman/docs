@@ -15,7 +15,7 @@ hidden: true
 
 *By Aviad Abutbul, Senior Director of Product Management · Published 3 June 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/1e6bc3d31b3e728935a521bbd6ce81d50c157b0d-798x797.webp)
+![Blog tile image](/images/site-mirror/1e6bc3d31b3e728935a521bbd6ce81d50c157b0d-798x797.webp)
 
 We are very excited to announce the **preview release** of the new simplified **Redise Cloud Private** (RCP) managed DBaaS.
 
@@ -24,7 +24,9 @@ We are very excited to announce the **preview release** of the new simplified **
 While Redise Cloud Private (RCP) is a long standing option for customers running production clusters, there were manual aspects to the setup. Today we released the capability to **automatically deploy** dedicated RCP clusters into your cloud account **in just a few clicks**.
 To provision RCP, users provide dataset size and throughput requirements with the credentials for RCP to operate in your own VPC. RCP automatically plans and provisions your cluster and databases in an instant. Users can scale RCP throughput and dataset size up and down at any time with a simple click as well. After your cluster is deployed, our team of Redis experts, monitor and manage your RCP cluster just like any fully managed service for you.
 
-![](/images/blog/0e8c31a375e14d6a3479a2c875062d0c72fd6a02-1239x427.webp)
+![](/images/site-mirror/0e8c31a375e14d6a3479a2c875062d0c72fd6a02-1239x427.webp)
+
+*Redis Cloud Private – Subscription Creation*
 
 ## Redise Cloud Private Benefits
 
@@ -58,7 +60,9 @@ When you enter your database requirements – specifically memory limit and max 
 Redise Cloud Private is pricing is based on the number of **shards** you asked for.
 Every time there will be a change needed to the number of shards you will prompted with the new number and will be asked to approve that change.
 
-![](/images/blog/d667c69a6e148e56130144595eb1f24e4970486f-1239x814.webp)
+![](/images/site-mirror/d667c69a6e148e56130144595eb1f24e4970486f-1239x814.webp)
+
+*Redis Cloud Private*
 
 ## Wrap-up
 

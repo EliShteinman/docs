@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 28 July 2026 · updated 29 July 2026*
 
-![The 4 failure modes of agent context](/images/blog/c84e788c542a288c227c0b4ec5baae360f7173a5-2400x1256.webp)
+![The 4 failure modes of agent context](/images/site-mirror/c84e788c542a288c227c0b4ec5baae360f7173a5-2400x1256.webp)
 
 # 
 

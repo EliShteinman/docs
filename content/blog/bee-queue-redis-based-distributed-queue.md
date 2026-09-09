@@ -14,7 +14,7 @@ hidden: true
 
 *By Eli Skeggs · Published 18 October 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/bd72571fe9fcc64f424173a4a10b098d5cac86d9-623x362.webp)
+![Blog tile image](/images/site-mirror/bd72571fe9fcc64f424173a4a10b098d5cac86d9-623x362.webp)
 
 *Original* post by Eli Skeggs (eli@mixmax.com)
 
@@ -24,7 +24,7 @@ Bee-Queue is meant to power a distributed worker pool and was built with short, 
 
 Here is how Bee-Queue v1.0 compares to other Redis-based job queues in the Node ecosystem (including its own prior v0.x release):
 
-![](/images/blog/bd72571fe9fcc64f424173a4a10b098d5cac86d9-623x362.webp)
+![](/images/site-mirror/bd72571fe9fcc64f424173a4a10b098d5cac86d9-623x362.webp)
 
 ## Why Bee-Queue?
 

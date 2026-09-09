@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 9 April 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9ab2170ad6d5af10a45daeecae3bd74ce16b6e7b-772x520.webp)
+![Blog tile image](/images/site-mirror/9ab2170ad6d5af10a45daeecae3bd74ce16b6e7b-772x520.webp)
 
 Every year we’re proud to bring together an A-list group of Redis Geeks, experts, and contributors to speak at [RedisConf](/redisconf/), the largest gathering of the Redis community. This year [RedisConf is going virtual.](/blog/rediscover-redis-at-redisconf-2020/) The main conference with live keynotes will be on May 12 and online training will be held on May 13. In addition to our own speakers, we’ll be joined by a number of guest speakers from across the Redis community and we’ll be adding more leading up to the big day. You don’t want to miss this event, so be sure to [register for free here](/redisconf/).
 

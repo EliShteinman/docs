@@ -15,7 +15,7 @@ hidden: true
 
 *By Aviad Abutbul, Senior Director of Product Management · Published 20 June 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 We are excited to announce that [Redis](/) completed the SOC 2 Type II compliance audit.
 

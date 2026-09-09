@@ -15,7 +15,7 @@ hidden: true
 
 *By Tal Dagan, Vice President of Product Management · Published 23 July 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 There is hardly anyone on the planet that hasn’t heard the acronym “GDPR” in the last couple of months. But just in case, we’ll explain it briefly, and then outline what Redis has done to support GDPR, and what it means to our customers.
 
@@ -37,7 +37,7 @@ On the other hand, if you use Redis’ on-premises solution (Redis Enterprise So
 
 GDPR Flow Chart:
 
-![](/images/blog/707cd5e0c08f8e78fa73cd26ff99eb6b7b4e8059-801x616.webp)
+![](/images/site-mirror/707cd5e0c08f8e78fa73cd26ff99eb6b7b4e8059-801x616.webp)
 
 Resources for Redis Customers:
 

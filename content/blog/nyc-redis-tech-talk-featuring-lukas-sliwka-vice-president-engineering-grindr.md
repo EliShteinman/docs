@@ -14,7 +14,7 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 17 April 2015 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/c0c2627d50f4d8913f5e4e5f9026fe22c4f32357-140x92.webp)
+![Blog tile image](/images/site-mirror/c0c2627d50f4d8913f5e4e5f9026fe22c4f32357-140x92.webp)
 
 Redis has teamed up with [Database Month](http://www.meetup.com/mysqlnyc/events/221681071/?action=detail&eventId=221681071), the New York City based festival for NoSQL, NewSQL, and big data.
 

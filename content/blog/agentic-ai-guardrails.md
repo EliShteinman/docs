@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 11 April 2026 · updated 15 April 2026*
 
-![Guardrails for agentic systems: why action control matters more than content filtering](/images/blog/a276bd10c47a51a14b7074d958bec764d370e8f7-2400x1256.webp)
+![Guardrails for agentic systems: why action control matters more than content filtering](/images/site-mirror/a276bd10c47a51a14b7074d958bec764d370e8f7-2400x1256.webp)
 
 Most guardrail tooling was built for a specific problem: filter what goes in, filter what comes out. That works for a chatbot. It doesn't cover an agent that can query databases, call external APIs, and execute code between input and response.
 

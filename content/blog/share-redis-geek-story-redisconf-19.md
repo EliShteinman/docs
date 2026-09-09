@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 11 December 2018 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 It’s that time of year! No, I don’t mean the seasons changing. It’s RedisConf CfP time!
 

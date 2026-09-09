@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike Anand, Former Chief Marketing Officer · Published 30 November 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b6fe12cea4d14110c7f091d389af04f36268e06a-772x520.webp)
+![Blog tile image](/images/site-mirror/b6fe12cea4d14110c7f091d389af04f36268e06a-772x520.webp)
 
 This year has been like no other in memory. Among other challenges, COVID-19 has dramatically changed the way the world lives and works. For the database market, 2020 has accelerated shifts that were already transforming the industry: not merely moving to the cloud, but toward fully managed services from providers who can satisfy a wide array of advanced customer needs and use cases.
 
@@ -26,7 +26,9 @@ For this new Magic Quadrant, “Gartner defines the cloud database management sy
 
 **November 2020 Magic Quadrant for Cloud Database Management Systems**
 
-![](/images/blog/19e4da9d64ebecf61f9623a04a68ff2a0a13e7ac-939x1024.webp)
+![](/images/site-mirror/19e4da9d64ebecf61f9623a04a68ff2a0a13e7ac-939x1024.webp)
+
+*This graphic was published by Gartner, Inc. as part of a larger research documentand should be evaluated in the context of the entire document. The Gartner document is available upon request from Redis.*
 
 ## Why Redis is rising
 

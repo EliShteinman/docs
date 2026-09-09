@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 12 February 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/eae541727abfeac27a806d42c7337e2a59122193-635x200.webp)
+![](/images/site-mirror/eae541727abfeac27a806d42c7337e2a59122193-635x200.webp)
 
 **Update:** the beta is over and we’re generally available on Goolge Compute Engine – all the details are at our [pricing page](/pricing).
 

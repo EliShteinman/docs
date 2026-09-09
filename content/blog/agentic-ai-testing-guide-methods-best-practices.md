@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 4 July 2026 · updated 14 July 2026*
 
-![Agentic AI testing guide: methods & best practices](/images/blog/44f044d69d6b87ba7ced3b82fe8fd09625c8d175-2400x1256.webp)
+![Agentic AI testing guide: methods & best practices](/images/site-mirror/44f044d69d6b87ba7ced3b82fe8fd09625c8d175-2400x1256.webp)
 
 It's 3 AM and your agent is confidently booking the wrong flight, calling a deprecated API, and burning through tokens on a retry loop no one wrote. It passed every staging test last week. That gap between "works in staging" and "survives production" is why agentic AI testing has to evaluate decisions, tool calls, state, and trajectories, not just model outputs.
 

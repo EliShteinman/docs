@@ -14,7 +14,7 @@ hidden: true
 
 *By Matan Kehat · Published 30 April 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Job scheduler programs have grown to become very popular in today’s web application world. Most commonly used to automatically run asynchronous and heavy jobs, schedulers have been utilizing Redis as a go-to backend host for some time now. This stands true for popular job management systems, such as [Resque](https://github.com/resque/resque), written in Ruby to create background jobs; [Sidekiq](https://github.com/mperham/sidekiq), which provides efficient background processing for Ruby; and Python users who mainly use[ Celery](https://github.com/celery/celery) with a Redis backend option. Based on requests by the community, we recently implemented Redis to support Quartz, the popular Java job scheduler.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 3 March 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0e92b6777890ef8e280a178f0309e5bc78f0ea1e-772x550.webp)
+![Blog tile image](/images/site-mirror/0e92b6777890ef8e280a178f0309e5bc78f0ea1e-772x550.webp)
 
 ---
 
@@ -30,7 +30,9 @@ RedisDays kicks off its three-part worldwide tour in **London** on Tuesday, **Ma
 ### Keynote:
 The Age of Real-Time is Now. Accelerate or Get Disrupted
 
-![](/images/blog/adb938cb64b70802a1efdbc3223b7ea8d7cb89a6-300x300.webp)
+![](/images/site-mirror/adb938cb64b70802a1efdbc3223b7ea8d7cb89a6-300x300.webp)
+
+*Ofer BengalCo-Founder & CEO, Redis*
 
 Tune in as Redis Co-Founder & CEO Ofer Bengal offers his insider perspective on how Redis’ technology is transforming all aspects of modern enterprise and helping digital leaders worldwide meet pressing demands in markets experiencing exponential growth. How are the keenest Redis users leveraging our technology to create household name applications? Watch and learn.
 
@@ -40,9 +42,13 @@ Accelerate Your Apps with the Real-Time JSON Document Store from Redis
 
 #### Speakers
 
-![](/images/blog/0b10c7f761730f289e896d2f85c5649164936310-300x300.webp)
+![](/images/site-mirror/0b10c7f761730f289e896d2f85c5649164936310-300x300.webp)
 
-![](/images/blog/242e7d0aa1a29ebb8c29381c84db0f39d2162820-300x300.webp)
+*Ash Sahu Sr. Director of Product Marketing, Redis*
+
+![](/images/site-mirror/242e7d0aa1a29ebb8c29381c84db0f39d2162820-300x300.webp)
+
+*Pieter Cailliau Director of Product Management, Redis*
 
 What’s the trick to leaving noticeable latency issues behind and getting your customers, users, and clients to experience your applications with sub-millisecond responses? It’s the new reality thanks to products like RedisJSON document store. Hear from Redis’ product team on how our products are helping teams turn digital pipe-dreams into reality.
 
@@ -51,9 +57,13 @@ Best Practices to Modernize Your Data Architecture
 
 #### Speakers
 
-![](/images/blog/9ca2276d642735d340f533c00b46cff4cf85e7c2-300x300.webp)
+![](/images/site-mirror/9ca2276d642735d340f533c00b46cff4cf85e7c2-300x300.webp)
 
-![](/images/blog/4e043f18e9dd696c145b9b6d8d72117fccb78187-300x300.webp)
+*David Loshin President, Knowledge Integrity Inc.*
+
+![](/images/site-mirror/4e043f18e9dd696c145b9b6d8d72117fccb78187-300x300.webp)
+
+*Henry Tam Sr. Solutions Marketing Manager, Redis*
 
 Is it possible to build a truly modern data architecture on the back of legacy technologies in the financial services industry? Is your data layer keeping you at the forefront of technology, or hindering your full potential? What happens when you overhaul your architecture with a multi-model real-time database like Redis Enterprise? Hear from President of[ Knowledge Integrity Inc](http://knowledge-integrity.com/blog2/)., David Loshin, a well-known thought leader in data management and business intelligence, and Henry Tam, Sr. Solutions Marketing Manager at Redis, on the best practices and use cases for keeping up with the breakneck speed, scale, and demands of customers in modern digital financial services.
 
@@ -62,9 +72,13 @@ Real-Time Data Pipelines: NLP + Redis
 
 #### Speakers
 
-![](/images/blog/bc1b63b2e17d0c0b59651a71e5a6416578298860-300x300.webp)
+![](/images/site-mirror/bc1b63b2e17d0c0b59651a71e5a6416578298860-300x300.webp)
 
-![](/images/blog/e1096b08f7d359f644e66e33ba7063bd23d3ac55-300x300.webp)
+*Allen Terleto Field CTO, Redis*
+
+![](/images/site-mirror/e1096b08f7d359f644e66e33ba7063bd23d3ac55-300x300.webp)
+
+*Alex Mikhalev AI/ML Architect, Nationwide Building Society*
 
 What does it take to design and build real-time Natural Language Processing (NLP) data pipelines? Take part in this fireside chat and listen in as our speakers dive deep into artificial intelligence and machine learning.
 

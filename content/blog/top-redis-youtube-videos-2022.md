@@ -14,7 +14,7 @@ hidden: true
 
 *By Alex Patino · Published 22 December 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b0408a2ff7e7467f0f4db189ba89c7d97af65ca3-772x550.webp)
+![Blog tile image](/images/site-mirror/b0408a2ff7e7467f0f4db189ba89c7d97af65ca3-772x550.webp)
 
 **Here they are – the five most popular Redis videos of 2022. The most viewed videos of the year offer practical advice, and they cover everything from caching and storing on Flash, and how Redis has grown to provide caching and enterprise-grade solutions under one system to make application development smoother and simpler.**
 

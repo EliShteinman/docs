@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 29 May 2025 · updated 27 June 2025*
 
-![Redis](/images/blog/71c3ccdc08dffe4e6b7b95df624c79e7685fdfc7-500x358.webp)
+![Redis](/images/site-mirror/71c3ccdc08dffe4e6b7b95df624c79e7685fdfc7-500x358.webp)
 
 Financial institutions are under ever-increasing pressure to modernize in the face of rising customer expectations, evolving threats, and growing data volumes. In fact, [over 60%](https://www.10xbanking.com/downloads/digital-transformation-in-banking?utm_source=chatgpt.com) of senior banking decision-makers admit that their slow rate of digital transformation has directly resulted in them missing out on winning new customers. Mobile-first users demand real-time app experiences–fraudsters are getting faster and more sophisticated–and AI-driven customer services are becoming table stakes. 
 
@@ -38,7 +38,7 @@ To help, banks widely use Redis as a session store or cache alongside existing s
 
 - **As a cache:** Redis allows apps to provide account details like balances, market data, and transaction history in real-time at incredibly high volumes to millions of simultaneous customers. 
 
-![Redis](/images/blog/420fda4a7a7100cc89dc237701970659a5075d64-796x594.webp)
+![Redis](/images/site-mirror/420fda4a7a7100cc89dc237701970659a5075d64-796x594.webp)
 
 **How cache-aside works:**
 1. Mobile finance apps need data (like account balances, or market information) the app first checks to see if data is cached in Redis. If it’s there, the data is delivered to the app from Redis in real-time.
@@ -64,7 +64,7 @@ To help, financial institutions widely use Redis for fraud detection. Specifical
 - **Transaction risk scoring:** Redis enables transaction risk scoring at massive scale—analyzing over 700,000 transactions per second for some of the world’s top banking and payment companies. Transaction risk scoring in financial services is a process that uses algorithms to assess the likelihood that a financial transaction is fraudulent. Each transaction is assigned a score based on various factors such as amount, location, customer behavior, and device used. Higher scores indicate greater risk, prompting additional verification or blocking the transaction. Redis helps fraud systems make scoring decisions in milliseconds—reducing false positives while stopping fraud before it happens.
 - **Online feature store:** This is often done using Redis as an online feature store. A feature store is a system that helps manage and serve data (called features) used by machine learning models to detect potential fraud or anomalies. Feature stores usually have two parts; an offline feature store, which contains large amounts of historical data used for training models to help identify normal vs anomalous behavior, and online feature stores, which contain the real-time data that is fed to models to make live decisions or transaction scores.
 
-![Redis](/images/blog/44b3bd9eddb6d3c254ec8bb54e9452f93f66a550-800x484.webp)
+![Redis](/images/site-mirror/44b3bd9eddb6d3c254ec8bb54e9452f93f66a550-800x484.webp)
 
 **How an online feature store works:**
 1. Raw data (customer profiles, payment activity, device info, and location) is collected from both batch systems (i.e. databases) and real-time streams (transaction events, login attempts).
@@ -91,7 +91,7 @@ Redis can help businesses overcome these challenges and build fast, accurate, an
 
 **Semantic caching:** To store frequent questions and answer pairs so that chatbots can return answers from memory faster and skip costly LLM calls.
 
-![Redis](/images/blog/500e8ba528dd8dd71ec916172f892c0cecb68495-800x511.webp)
+![Redis](/images/site-mirror/500e8ba528dd8dd71ec916172f892c0cecb68495-800x511.webp)
 
 **How semantic caching works**:
 1. A user asks a question—for example: “How can I increase my credit limit?”

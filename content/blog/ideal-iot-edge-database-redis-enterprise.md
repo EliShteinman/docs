@@ -16,7 +16,7 @@ hidden: true
 
 *By Rob Schauble, Senior Executive · Published 27 June 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Internet of Things (IoT) solutions present a unique challenge for any database. There’s increasingly large and fast data coming from a very broad spectrum of IoT devices, coupled with critical latency requirements. Given this, the data’s processing and analysis must increasingly be handled at the network edge, close to the sensors, actuators and other IoT devices. We no longer have the luxury of being able to crunch IoT data in a cloud environment, where there is seemingly limitless compute and storage resources, because the latency would be unacceptable. Thankfully, there are powerful database and platform solutions tackling this challenge head-on, which we’ll explore below. But first, let’s review some of the data requirements unique to IoT environments.
 
@@ -26,7 +26,7 @@ Edge computing has increasingly become table stakes, given the volume, velocity,
 
 Fortunately, in this case – with the popularization and growing trend of fog computing – the answer is yes. The solution is to bring cloud principals to the edge, where the fog and cloud environments operate in tandem to handle complex IoT use cases. When you have critical latency requirements, for example with smart city IoT use cases like gunshot detection or criminal face recognition, your data must be handled by ruggedized fog nodes close to IP cameras and other sensors. Non-latency critical data can still be synchronized to the core or cloud. In this way, data from all edge devices and fog nodes in your IoT solution can be aggregated at a core level (for example, a city block in the smart city use case), and ultimately to the cloud or data center environment for business intelligence and other analytics.
 
-![](/images/blog/20daa0af1efb926875fc46e02f0e7e3f925dfcee-1513x1072.webp)
+![](/images/site-mirror/20daa0af1efb926875fc46e02f0e7e3f925dfcee-1513x1072.webp)
 
 Image courtesy of the [OpenFog Consortium](https://openfogconsortium.org)
 

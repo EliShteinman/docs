@@ -14,7 +14,7 @@ hidden: true
 
 *By Cassy Speirs, Senior Partner Marketing Manager · Published 11 August 2025*
 
-![Redis Build faster, scale smarter](/images/blog/6edb73d7e45b842203a12e49d073017c70be51d7-772x552.webp)
+![Redis Build faster, scale smarter](/images/site-mirror/6edb73d7e45b842203a12e49d073017c70be51d7-772x552.webp)
 
 AWS Summit NYC took over the Javits Center on July 16, drawing more than 11,500 builders, operators, architects, and tech leaders looking for smarter ways to scale and move faster in the cloud.
 
@@ -46,10 +46,10 @@ Whether you came for the tech, the conversations, the swag, or the drinks—than
 
 You can [learn more here](/blog/amazon-bedrock-integration-with-redis-enterprise/) about Redis on Amazon Bedrock, and how we’re helping businesses build faster, simpler, real-time apps. You can also [find a Redis Released event near you](https://redis.io/released/), or our upcoming “AI agent tech talk” webinar series to get hands-on with building AI-native apps with Redis. [Register here](https://events.redis.io/ai-agent-tech-talk-hub?_gl=1*1ypqvp9*_gcl_au*MTc3NzcyMzQ1Mi4xNzUyNTkzNTUw).
 
-![AWS Summit NYC](/images/blog/eb889679be5fec81ab1b9ed52cacadb1739e745c-2048x1536.webp)
+![AWS Summit NYC](/images/site-mirror/eb889679be5fec81ab1b9ed52cacadb1739e745c-2048x1536.webp)
 
-![AWS Summit NYC](/images/blog/74cbba405aeee56fb49b75c12ee3b575fdb75135-1536x2048.webp)
+![AWS Summit NYC](/images/site-mirror/74cbba405aeee56fb49b75c12ee3b575fdb75135-1536x2048.webp)
 
-![AWS Summit NYC](/images/blog/76e59151060d1ab38c534457492d5cbd3f2400ee-1536x2048.webp)
+![AWS Summit NYC](/images/site-mirror/76e59151060d1ab38c534457492d5cbd3f2400ee-1536x2048.webp)
 
-![AWS Summit NYC](/images/blog/f91ab161057ce05121bf052e56b3e86a956d55e5-720x540.webp)
+![AWS Summit NYC](/images/site-mirror/f91ab161057ce05121bf052e56b3e86a956d55e5-720x540.webp)

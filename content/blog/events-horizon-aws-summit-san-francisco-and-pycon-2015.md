@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 31 March 2015 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/7a74404446b6fc218629baed47f2bb83bdf3ac5b-140x92.webp)
+![Blog tile image](/images/site-mirror/7a74404446b6fc218629baed47f2bb83bdf3ac5b-140x92.webp)
 
 [Watch the video](/wp-content/uploads/2015/03/2015-03-31.png)
 

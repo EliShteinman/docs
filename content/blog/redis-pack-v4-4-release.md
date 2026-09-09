@@ -15,11 +15,11 @@ hidden: true
 
 *By Kirk Kirkconnell · Published 20 January 2017 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/4bd7834c031c2231010bd6da0dbcc601c0296fc2-536x536.webp)
+![Blog tile image](/images/site-mirror/4bd7834c031c2231010bd6da0dbcc601c0296fc2-536x536.webp)
 
 This content was written prior to a change in Redis’ naming convention – Redis Enterprise is now the moniker for all our products.
 
-![](/images/blog/4bd7834c031c2231010bd6da0dbcc601c0296fc2-536x536.webp)
+![](/images/site-mirror/4bd7834c031c2231010bd6da0dbcc601c0296fc2-536x536.webp)
 
 We are very excited to announce the release of Redise Pack (RP) v4.4 (formerly Redis Enterprise Cluster or RLEC), which delivers several new features, improvements and bug fixes. RP 4.4 includes numerous functionality and performance enhancements that customers have been eagerly awaiting!
 
@@ -80,7 +80,7 @@ For those using Redis for larger datasets, [Tunable Consistency and Durability](
 
 With more and more companies making security and separation of duties a priority, RP 4.4 introduces Role-based Administration, allowing you to assign a role for each administrative user.
 
-![Role-based Administration Control](/images/blog/c4a5a46d978dee9fa23ccf1e337d804f09db52b3-1600x540.webp)
+![Role-based Administration Control](/images/site-mirror/c4a5a46d978dee9fa23ccf1e337d804f09db52b3-1600x540.webp)
 
 For example, you can give a user the ability to see and read database logs while prohibiting them from viewing cluster level resources or editing any settings.
 

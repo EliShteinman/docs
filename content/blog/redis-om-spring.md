@@ -14,7 +14,7 @@ hidden: true
 
 *By Brian Sam-Bodden, Principal Applied AI Engineer · Published 12 August 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/25899604c3197b0843e26d3b4c8fa453aaf4b882-772x550.webp)
+![Blog tile image](/images/site-mirror/25899604c3197b0843e26d3b4c8fa453aaf4b882-772x550.webp)
 
 **The Redis OM projects are progressing nicely. After six months of hard work, the team has created a usable and stable set of APIs for Redis Stack. We expect these 10 new features in Redis OM Spring to simplify and optimize Redis-powered Spring applications.**
 

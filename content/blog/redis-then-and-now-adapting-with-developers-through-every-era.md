@@ -14,7 +14,7 @@ hidden: true
 
 *By Ricardo Ferreira, Lead Developer Advocate at Redis · Published 6 May 2025 · updated 21 May 2026*
 
-![Blog tile image](/images/blog/c714cd47b95e03c7a84c7be020d65683c9af90b8-772x552.webp)
+![Blog tile image](/images/site-mirror/c714cd47b95e03c7a84c7be020d65683c9af90b8-772x552.webp)
 
 In my 25 years working in software engineering, I’ve seen several computing paradigms come and go. From client-server to distributed systems, SOA, then cloud, and beyond. What fascinates me isn’t just how architectures evolved, but how developer experiences transformed along with them.
 

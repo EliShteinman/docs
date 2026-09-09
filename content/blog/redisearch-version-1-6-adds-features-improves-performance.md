@@ -14,7 +14,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 12 March 2020 · updated 1 October 2025*
 
-![Blog tile image](/images/blog/46e7a4e823913ad78c8d439125b1610e047aebf7-368x260.webp)
+![Blog tile image](/images/site-mirror/46e7a4e823913ad78c8d439125b1610e047aebf7-368x260.webp)
 
 The popular [RediSearch module](/redis-enterprise/technology/redis-search/) was designed to extend Redis’s capabilities by adding a secondary index with super-fast full-text search capabilities. RediSearch has been extremely well received, collecting more than 150,000 Docker pulls, 2,000 GitHub stars, 230 forks, and 10 drivers in some 10 different languages. And customers are already taking advantage—see this [video on how GAP scaled 100X using Redis](https://www.youtube.com/watch?v=mxWUGaPKjtI).
 
@@ -80,7 +80,9 @@ redis:6379> FT.SEARCH movies "@title:fiction"
 
 2) "*pulp* fiction"
 
-![](/images/blog/121873b64ccf3bc678a81f4a80d917920de100f1-1920x1076.gif)
+![](/images/site-mirror/121873b64ccf3bc678a81f4a80d917920de100f1-1920x1076.gif)
+
+*Visualization of how aliases work.*
 
 Going forward, there is an opportunity to enhance this feature with the ability to alias more than one index, for example, to address querying two indices responsible for a distinct set of documents.
 
@@ -88,7 +90,9 @@ Going forward, there is an opportunity to enhance this feature with the ability 
 
 Since the creation of Redis’ module API, Redis and the Redis community have created a large set of modules. Some add a whole new database model to Redis, some let you execute code with the data, and others add new data structures to Redis. We noticed, however, that several modules started building their own proprietary way of indexing data. In [RedisGraph](https://oss.redis.com/redisgraph/), for example, indices on properties of nodes in the graph are maintained in a ziplist and [RedisTimeSeries](https://oss.redis.com/redistimeseries/) uses sorted sets for querying time series data that has certain label conditions.
 
-![](/images/blog/22fd1ca17b761ef2e58accccfd1f693f9b7bc674-597x357.webp)
+![](/images/site-mirror/22fd1ca17b761ef2e58accccfd1f693f9b7bc674-597x357.webp)
+
+*Some Redis modules currently have their own way of indexing data.*
 
 These implementations provide basic search functionality, but for RediSearch 1.6 we wanted to remove code duplication and enhance search functionality in key use cases with a common query language. In graph databases, for example, it’s common to do a fuzzy search on properties of nodes to enable a graph-aided search. Time-series use cases, meanwhile, often involve all time series where a label matches a certain prefix. Other Redis modules could benefit from secondary indexing support. Imagine what you could do if [RedisJSON](/redis-enterprise/redis-json/) had full-text search capabilities!
 

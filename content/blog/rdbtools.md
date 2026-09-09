@@ -15,7 +15,7 @@ hidden: true
 
 *By Alvin Richards · Published 3 April 2019 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/77285121342071258771c5cd2d550b0dedc2fb66-200x200.webp)
+![Blog tile image](/images/site-mirror/77285121342071258771c5cd2d550b0dedc2fb66-200x200.webp)
 
 **After hearing all your suggestions, concerns and gripes and after looking at our data and understand that this is what the typical Redis user needs… it’s finally here.**
 
@@ -31,11 +31,15 @@ Not familiar with RDBTools? Well here’s a quick dip into what you can do
 
 Rich visualization is a part of gaining insights into your Redis deployments, here’s an example of Memory analysis.
 
-![](/images/blog/b4e2e58b0fe185d25c17fd14af320815da58350b-1024x573.webp)
+![](/images/site-mirror/b4e2e58b0fe185d25c17fd14af320815da58350b-1024x573.webp)
+
+*Memory Analysis Visualization*
 
 You can also understand your Redis deployments and see the relationships between Master and Replica instances and Shards.
 
-![](/images/blog/0887f8f486c0c62e6d57cacee9a466d59d9d727a-1024x573.webp)
+![](/images/site-mirror/0887f8f486c0c62e6d57cacee9a466d59d9d727a-1024x573.webp)
+
+*Cluster Visualization*
 
 You can deploy RDBTools in a number of ways. There are Desktop clients for Windows, Mac and Linux. A Docker image also exists, to ease the deployment – including into Kubernetes clusters. And finally there is an image on the AWS marketplace.
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Gilbert Lau, Cloud Partner Solution Architect · Published 6 December 2021 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/478a155459951857744a83f2fbf3dbc35f98fe21-772x550.webp)
+![Blog tile image](/images/site-mirror/478a155459951857744a83f2fbf3dbc35f98fe21-772x550.webp)
 
 If you’d like to deploy Redis Enterprise in a Kubernetes environment on Google Anthos Bare Metal, then our latest Qwiklabs module is for you. This module, produced in collaboration with Google Cloud, will teach you how to run Redis Enterprise and a Knative serverless application on an Anthos Bare Metal cluster deployment. Anthos unifies the management of infrastructure and applications across on-premises, edge, and in multiple public clouds, with a Google Cloud-backed control plane for consistent operation at scale. This is part of Redis’ effort to run Redis anywhere and on any cloud, whether it’s on-premises or in the cloud.
 

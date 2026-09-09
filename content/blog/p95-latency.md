@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 20 April 2026 · updated 23 April 2026*
 
-![Redis](/images/blog/adf78da87506da26bce2baf0d7bf013adc22cf40-1200x628.webp)
+![Redis](/images/site-mirror/adf78da87506da26bce2baf0d7bf013adc22cf40-1200x628.webp)
 
 Average latency is easy to measure and easy to misread. A healthy-looking mean can coexist with a significant share of requests that are far slower, and those are the ones users actually notice. P95 cuts through that. It's the threshold below which 95% of your requests complete, which means the slowest 5% show up instead of disappearing into the average. At any real traffic volume, that 5% is enough users to care about.
 

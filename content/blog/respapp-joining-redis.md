@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Product Manager · Published 2 November 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
+![Blog tile image](/images/site-mirror/e52cffc4ae0ae4a941d16aec9562a67df2a9536b-772x550.webp)
 
 **I am excited to share that Redis is joining forces with the creator of RESP.app, Igor Malinovskiy. In addition to bringing RESP.app’s popular features into RedisInsight, we share a vision to offer the best possible developer experience that empowers anyone––from individuals to global companies––to unlock the full potential of Redis.**
 

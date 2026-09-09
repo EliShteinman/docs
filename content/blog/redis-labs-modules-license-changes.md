@@ -16,7 +16,7 @@ hidden: true
 
 *By Redis   · Published 21 February 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/00d6e832d2ab431e2b67eba41a6dd5432229b696-1600x840.webp)
+![Blog tile image](/images/site-mirror/00d6e832d2ab431e2b67eba41a6dd5432229b696-1600x840.webp)
 
 For the latest information, please read the [RSALv2 + SSPL license blog](/blog/rsalv2-sspl-announcement/).
 
@@ -46,7 +46,7 @@ For additional information, please see our [detailed FAQs](/legal/licenses/).
 
 With RSAL in place, the Redis licensing model looks like this:
 
-![](/images/blog/339d67369639ccc582aaf97115f3606b79edc776-1961x994.webp)
+![](/images/site-mirror/339d67369639ccc582aaf97115f3606b79edc776-1961x994.webp)
 
 ### This has no impact on the Redis core license
 

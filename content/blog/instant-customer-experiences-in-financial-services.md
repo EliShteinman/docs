@@ -15,7 +15,7 @@ hidden: true
 
 *By Henry Tam · Published 10 March 2022 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/b59c4a9360940a23cc0f80ba862d5b1193efc3b1-772x550.webp)
+![Blog tile image](/images/site-mirror/b59c4a9360940a23cc0f80ba862d5b1193efc3b1-772x550.webp)
 
 ***Accelerate Data Innovation with Real-Time Financial Services****, an essential white paper companion highlighting the challenges of legacy infrastructures and opportunities made available by real-time data, is now available. Download for free below.*
 
@@ -41,7 +41,7 @@ Below we’ll reveal how real-time data can accelerate the modernization of bank
 
 ## Instant Data Provides Seamless User Experience
 
-![man in a suit shaking hands with a woman](/images/blog/baa9e8354aff92be0c2a0ff43ecdc94c054e1bf5-800x500.webp)
+![man in a suit shaking hands with a woman](/images/site-mirror/baa9e8354aff92be0c2a0ff43ecdc94c054e1bf5-800x500.webp)
 
 Customers across all demographics want fast, easy, and simple access to their finances through digital doorways. Being the first digital generation, millennials are more intertwined with digital technology, demanding a firmer grip on their finances with a few taps on their smartphone.
 
@@ -78,7 +78,7 @@ For traditional banks, the returns can be astronomical. The adoption of a real-t
 
 ## Real-time Analytics Reveal Key Customer Insights
 
-![couple looking at laptop, holding a credit card.](/images/blog/1aa46e19b1671d2ec6a61c65ecad7c8aa0108f1a-800x500.webp)
+![couple looking at laptop, holding a credit card.](/images/site-mirror/1aa46e19b1671d2ec6a61c65ecad7c8aa0108f1a-800x500.webp)
 
 Today’s tech environment is moving at such a pace that yesterday’s data is old enough to be stale and inaccurate. Acting on these insights is enough for an opportunity to slip by or for a hidden inhibitor to hamper the user experience. All it takes is a lag to create friction, two to create frustration, and three to kill the experience altogether.
 
@@ -96,7 +96,7 @@ New ideas can quickly be refined, tweaked, and tested in shallow waters before b
 
 ## Real-time Data Maximizes the Client Experience
 
-![man inputting credit card information into cellphone](/images/blog/cb19c707d902b928fc042ae3c4bf676f099b9705-800x500.webp)
+![man inputting credit card information into cellphone](/images/site-mirror/cb19c707d902b928fc042ae3c4bf676f099b9705-800x500.webp)
 
 Financial markets are volatile and always susceptible to unexpected fluctuations. A political event, a pandemic, or even a tweet from Elon Musk is enough to give them a shake.
 

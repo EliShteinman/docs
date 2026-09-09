@@ -14,7 +14,7 @@ hidden: true
 
 *By Yoav Steinberg · Published 2 June 2014 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 ## Or: The Bigger They Are, The Harder They F(etch)all
 

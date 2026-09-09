@@ -14,7 +14,7 @@ hidden: true
 
 *By Pam Baker, Contributor · Published 13 March 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/7836564e111a06c9259fa77b2cadc215a517b0d7-772x550.webp)
+![Blog tile image](/images/site-mirror/7836564e111a06c9259fa77b2cadc215a517b0d7-772x550.webp)
 
 **Developers are expected to level up their baked-in security measures, but that’s easier said than done. Here are some helpful tips.**
 

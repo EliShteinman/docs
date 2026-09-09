@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 30 June 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/a61269c05d76afbc5be928b48ae2fb3ee5269b20-635x200.webp)
+![](/images/site-mirror/a61269c05d76afbc5be928b48ae2fb3ee5269b20-635x200.webp)
 
 There’s 104 days of summer vacation and in our industry there’s no shortage of ways to spend them. Last week we were at [MongoDB World](/blog/7-recommended-mongodb-world-sessions), and next week it’s going to be all about the Amazon Web Services Summit in NYC for the Redis gang. We’ll be there to meet with you and discuss application development, the cloud and, of course, Redis.
 

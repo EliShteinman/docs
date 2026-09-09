@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 14 March 2026 · updated 21 May 2026*
 
-![Blog tile image](/images/blog/772ee1cb99ea3440c615040e902fb03f1fa11160-1200x628.webp)
+![Blog tile image](/images/site-mirror/772ee1cb99ea3440c615040e902fb03f1fa11160-1200x628.webp)
 
 Exact matching breaks the moment a user types "seperate" instead of "separate." Fuzzy matching (also called approximate string matching) finds strings, names, or records that are similar, not identical, so your app can return the best candidates instead of nothing. In search engines, this technique is often called fuzzy search.
 

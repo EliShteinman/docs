@@ -14,7 +14,7 @@ hidden: true
 
 *By Mike  Moss , SVP, Worldwide Channels & Alliances · Published 19 March 2026*
 
-![Redis](/images/blog/4d58ad30dd1a6aff51433ad7a07f122018f896ec-1200x628.webp)
+![Redis](/images/site-mirror/4d58ad30dd1a6aff51433ad7a07f122018f896ec-1200x628.webp)
 
 Real-time data powers the next generation of applications — from AI-driven experiences to mission-critical operational workloads. At Redis, we’ve always believed that delivering real-time performance at scale requires not only a powerful data platform, but also a powerful ecosystem. Partners extend our reach, amplify our impact, and help organizations around the world build, deploy, and innovate faster.
 

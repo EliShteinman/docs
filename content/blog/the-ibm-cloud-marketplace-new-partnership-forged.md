@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 28 April 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/e93cdf2535c87669016de219e1507f53da019c79-635x200.webp)
+![](/images/site-mirror/e93cdf2535c87669016de219e1507f53da019c79-635x200.webp)
 
 Today I’m happy to announce our newly-founded partnership with [IBM’s Cloud Marketplace](https://marketplace.ibmcloud.com). Because Redis is a launch partner of the new marketplace, customers can immediately use our Redis Cloud and Memcached Cloud services to build blazing fast and scalable applications. Our enterprise-class service can be used together with 100+ other SaaS applications and services in the marketplaceand IBM’s SoftLayer Cloud (which we’ve actually been using since earlier this year with terrific results).
 

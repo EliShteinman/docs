@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 24 January 2024 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/85f1c59ca816219c956389fbd6e7018e6c90cf84-772x550.webp)
+![Blog tile image](/images/site-mirror/85f1c59ca816219c956389fbd6e7018e6c90cf84-772x550.webp)
 
 ## A Walkthrough of Redis OM .NET’s Vector Search and Semantic Caching Capabilities
 

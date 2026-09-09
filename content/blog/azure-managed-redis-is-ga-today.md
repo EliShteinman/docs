@@ -17,7 +17,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 19 May 2025 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/aa3d47e544441514a7e3bc591983178c17aa677e-772x552.webp)
+![Blog tile image](/images/site-mirror/aa3d47e544441514a7e3bc591983178c17aa677e-772x552.webp)
 
 Last winter, we announced Azure Managed Redis, a new fully-managed, first-party Redis offering co-engineered in partnership with Microsoft Azure. Today, we’re proud to announce that it’s generally available to all [Azure Customers](https://azure.microsoft.com/en-us/products/managed-redis). Microsoft Azure is the first major cloud service provider to offer its customers a licensed, multi-tiered Redis service, assuring that they always have access to new features and advancements, while ensuring full compatibility with previous versions of Redis. Azure Managed Redis (AMR) is built on Redis 7.4, and users will soon have access to [Redis 8.0](https://redis.io/docs/latest/develop/whats-new/8-0/), the latest version of Redis which [we released earlier this month](/blog/redis-8-ga/).
 

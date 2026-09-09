@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 31 January 2020 · updated 4 March 2025*
 
-![Blog tile image](/images/blog/74720be5b55facbeefc63e8e2fbc88680011d8a9-1600x1032.webp)
+![Blog tile image](/images/site-mirror/74720be5b55facbeefc63e8e2fbc88680011d8a9-1600x1032.webp)
 
 With the arrival of[ Redis 6](http://antirez.com/news/131) come a few new features for better security and compliance. The easiest one to explain is probably support for SSL, which enables secure communication between your application servers and Redis. But the most notable new feature is Access Control Lists (ACLs).
 

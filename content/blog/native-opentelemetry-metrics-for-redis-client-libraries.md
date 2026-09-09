@@ -14,7 +14,7 @@ hidden: true
 
 *By Elena Kolevska, Technical Enablement Manager, EMEA · Published 24 April 2026 · updated 29 April 2026*
 
-![Native OpenTelemetry metrics for Redis client libraries](/images/blog/b25a60497ac978653dcabdda65188554b090516e-1200x628.webp)
+![Native OpenTelemetry metrics for Redis client libraries](/images/site-mirror/b25a60497ac978653dcabdda65188554b090516e-1200x628.webp)
 
 When Redis server metrics look healthy but an application isn’t performing adequately (for instance, service time outs or p99 latency climbing for no obvious reason) the explanation is often not inside Redis at all. These symptoms frequently trace back to the client layer: connection pools can get under strain, requests can start queuing for an available connection, or retries could silently inflate the latency that users experience.
 
@@ -44,7 +44,9 @@ Observability is disabled by default. When it is enabled, the instrumentation co
 
 The client libraries do not instantiate OpenTelemetry providers on their own. Instead, they plug into the process-wide OpenTelemetry SDK model. Apps initialize observability once, and Redis client metrics are emitted through that existing telemetry setup.
 
-![Redis Application Process](/images/blog/46c670f9aa61226a96b453efb4094c2df748a078-730x1306.webp)
+![Redis Application Process](/images/site-mirror/46c670f9aa61226a96b453efb4094c2df748a078-730x1306.webp)
+
+*How Redis client metrics flow through the OpenTelemetry pipeline*
 
 This avoids a common integration problem where libraries try to manage telemetry lifecycle independently and end up conflicting with the application’s own observability stack.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 1 April 2026*
 
-![Redis](/images/blog/bc2c906b8f1c895f340c8d9b112fd3b9fba1deae-1200x628.webp)
+![Redis](/images/site-mirror/bc2c906b8f1c895f340c8d9b112fd3b9fba1deae-1200x628.webp)
 
 Pure vector search is great until someone searches for 'PostgreSQL performance' and you miss the document titled 'Optimizing Postgres queries.' Pure keyword search is great until someone asks 'How do I make my database faster?' and you miss everything that doesn't contain those exact words. Hybrid search helps address both problems.
 
@@ -39,7 +39,7 @@ Hybrid search sits between query processing and LLM generation in your RAG pipel
 
 The complete data flow:
 
-![Redis](/images/blog/78380c998a1d6aeb8a788619502067d503910977-2560x1440.webp)
+![Redis](/images/site-mirror/78380c998a1d6aeb8a788619502067d503910977-2560x1440.webp)
 
 Your framework likely already supports this. Hybrid search combines results from both semantic search (embedding similarity) and keyword search, with most major frameworks offering native support through custom retrievers.
 

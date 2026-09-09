@@ -14,9 +14,9 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 2 May 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/bfa0fac0a8748f4e394de8e637cd0706ce112136-2048x1476.webp)
+![Blog tile image](/images/site-mirror/bfa0fac0a8748f4e394de8e637cd0706ce112136-2048x1476.webp)
 
-![](/images/blog/bfa0fac0a8748f4e394de8e637cd0706ce112136-2048x1476.webp)
+![](/images/site-mirror/bfa0fac0a8748f4e394de8e637cd0706ce112136-2048x1476.webp)
 
 The Redis team is getting ready to head out to this year’s [Open Source Convention](https://conferences.oreilly.com/oscon/oscon-tx) (OSCON) and the [Community Leadership Summit](http://www.communityleadershipsummit.com/) which precedes it. OSCON runs from Monday, May 8th through Thursday the 11th, with the leadership summit on May 6th and 7th.
 

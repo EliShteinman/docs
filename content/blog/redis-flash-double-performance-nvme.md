@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 5 April 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/eb513320eb68e9cda9d3d86406e81fc846ad9901-950x369.webp)
+![Blog tile image](/images/site-mirror/eb513320eb68e9cda9d3d86406e81fc846ad9901-950x369.webp)
 
 Recently, AWS announced the availability of I3 instances across 15 different regions. We were happy to be a part of their [I3 instances](https://aws.amazon.com/blogs/aws/now-available-i3-instances-for-demanding-io-intensive-applications/) beta program and used our own Redis Enterprise Flash (Redise Flash) technology to extensively test and benchmark the new instances before they were formally launched. The I3 SSD storage is based on [NVMe](https://en.wikipedia.org/wiki/NVM_Express) technology, which theoretically should provide significantly higher throughput and much lower latency than the previous generation I2 instances (which are based on SATA SSDs).
 
@@ -82,8 +82,8 @@ As expected, we found that Redise Flash runs **up to 2.6 times faster** on AWS 
 
 **AWS I3 and I2 instances configurations:**
 
-![](/images/blog/81481967a068516032a4da224055d0a7487cec77-296x151.webp)
+![](/images/site-mirror/81481967a068516032a4da224055d0a7487cec77-296x151.webp)
 
-![](/images/blog/39a0ea3f7482b5a9ebbf35397dacd9f7a85fd44b-386x176.webp)
+![](/images/site-mirror/39a0ea3f7482b5a9ebbf35397dacd9f7a85fd44b-386x176.webp)
 
 Detailed pricing can be found on the AWS website.

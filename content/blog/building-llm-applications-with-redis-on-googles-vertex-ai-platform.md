@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 24 August 2023 · updated 21 October 2025*
 
-![Blog tile image](/images/blog/85707aadc2377279dd47414dbe988841b661ce66-772x552.webp)
+![Blog tile image](/images/site-mirror/85707aadc2377279dd47414dbe988841b661ce66-772x552.webp)
 
 **Google’s Vertex AI platform recently integrated generative AI capabilities, including the PaLM 2 chat model and an in-console generative AI studio. Here, you learn about a novel reference architecture and how to get the most from these tools with your existing Redis investment.**
 
@@ -60,7 +60,9 @@ However, to truly tap into these advancements, a complementary high-performing a
 ## A reference architecture for scalable language model applications
 
 ![GCP and Redis Enterprise reference architecture for LLM applications
-](/images/blog/1a46bb2ddf2297594b411f6f0c2765c5402ae775-3840x2160.webp)
+](/images/site-mirror/1a46bb2ddf2297594b411f6f0c2765c5402ae775-3840x2160.webp)
+
+*GCP and Redis Enterprise reference architecture for LLM applications*
 
 The reference architecture illustrated here is for general-purpose LLM use cases. It uses a combination of Vertex AI (PaLM 2 foundation model), BigQuery, and Redis Enterprise.
 
@@ -94,7 +96,9 @@ Agents involve an LLM making decisions about which actions to take, taking the s
 
 Redis, as a vector database and full text search engine, facilitates the smooth functioning of RAG workflows. Owing to its low-latency data retrieval capabilities, Redis is often a go-to tool for the job. It ensures that a language model receives the necessary context swiftly and accurately, promoting efficient AI agent task execution.
 
-![Example of a RAG architecture](/images/blog/68a80ca2c67636958ed1da4d29e10b7de853564c-600x432.webp)
+![Example of a RAG architecture](/images/site-mirror/68a80ca2c67636958ed1da4d29e10b7de853564c-600x432.webp)
+
+*Example of a RAG architecture*
 
 ### Caching for LLMs
 
@@ -106,7 +110,9 @@ Caching serves as a potent technique to enhance LLM responsiveness and computati
 
 For instance, in a customer service scenario, multiple users might ask similar frequently-asked-questions but use different phrasing. Semantic caching allows LLMs to respond swiftly and accurately to such queries without redundant computations.
 
-![Caching for LLMs](/images/blog/e7f90c1a98d9b2186ac5739e3438ce558290f8d3-592x403.webp)
+![Caching for LLMs](/images/site-mirror/e7f90c1a98d9b2186ac5739e3438ce558290f8d3-592x403.webp)
+
+*Caching for LLMs*
 
 Redis is highly suited for facilitating caching in LLMs. Its robust feature set includes support for Time-To-Live (TTL) and eviction policies for managing ephemeral data. Coupled with its vector database capabilities for semantic searches, Redis enables efficient and rapid retrieval of cached responses, resulting in a noticeable boost in LLM response speed and overall system performance, even under heavy loads.
 

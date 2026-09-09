@@ -14,7 +14,7 @@ hidden: true
 
 *By Helene Brulin, Contributor · Published 29 March 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a6acd16e1180ccd686baee33fb0edd5b2f4835c0-772x550.webp)
+![Blog tile image](/images/site-mirror/a6acd16e1180ccd686baee33fb0edd5b2f4835c0-772x550.webp)
 
 Since its creation in 2009, Redis OSS has had a very vibrant open source community. Many tools and utilities have been developed around it and Dynomite, a peer-to-peer geo-distribution layer for non-distributed datastores, is one of them.
 
@@ -34,7 +34,7 @@ A typical Dynomite cluster can be described as follows:
 - A single datacenter is a group of racks
 - A rack is a group of nodes: each rack holds the entire dataset, which is partitioned across multiple nodes in that rack
 
-![dynomite cluster diagram](/images/blog/f9247bea2b94c2f33dc5166ccb5ec12973e00552-975x828.webp)
+![dynomite cluster diagram](/images/site-mirror/f9247bea2b94c2f33dc5166ccb5ec12973e00552-975x828.webp)
 
 Dynomite is a peer-to-peer distribution layer, therefore a client can send write traffic to any node in a Dynomite cluster. If the node is the one responsible for the data, then the data is written to its local Redis OSS server process, then asynchronously replicated to other racks in the cluster across all data centers. If the node does not own the data, it acts as a coordinator and sends the write to the node owning the data in the same rack. It also replicates the writes to the corresponding nodes in other racks and DCs.
 
@@ -49,7 +49,7 @@ Another important part of a Redis Enterprise cluster is what is called the “ma
 
 Here is an illustration of a typical Redis Enterprise Cluster:
 
-![redis enterprise cluster image](/images/blog/a1318c9998b072528a0467af8b184abb26909be0-1012x336.webp)
+![redis enterprise cluster image](/images/site-mirror/a1318c9998b072528a0467af8b184abb26909be0-1012x336.webp)
 
 With Redis Enterprise’s Active-Active feature, you can create a global database that spans multiple clusters. Those clusters typically reside in different data centers around the world. An application that writes to an Active-Active database connects to a local instance endpoint. All writes by the application to a local instance are replicated to all other instances with strong eventual consistency.
 
@@ -75,7 +75,7 @@ Redis OSS is also extensible through dynamic libraries called “modules”. Mod
 
 As discussed in the introduction, some of Redis OSS commands and data types are rendered unavailable or limited by Dynomite. Here is a non-exhaustive comparison:
 
-![redis oss and dynomite](/images/blog/d4026e70e65f49324b97d331cfd3eebfa11d751d-1024x483.webp)
+![redis oss and dynomite](/images/site-mirror/d4026e70e65f49324b97d331cfd3eebfa11d751d-1024x483.webp)
 
 You can find a complete list of supported and unsupported commands with Dynomite [here](https://github.com/Netflix/dynomite/blob/dev/notes/redis.md).
 

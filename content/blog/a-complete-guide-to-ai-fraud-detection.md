@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 17 February 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/9d0542ea0fc9235474b587990294b8a465fd3ec7-1200x628.webp)
+![Redis](/images/site-mirror/9d0542ea0fc9235474b587990294b8a465fd3ec7-1200x628.webp)
 
 AI fraud detection uses artificial intelligence and machine learning models to identify, prevent, and respond to fraudulent activities in real-time. Unlike rigid rule-based systems that rely on fixed "if-then" statements, AI systems analyze vast amounts of data to uncover subtle patterns, anomalies, and correlations that signal potential fraud. This dynamic, adaptive approach represents a fundamental shift in how businesses protect themselves from increasingly sophisticated fraudulent schemes.
 

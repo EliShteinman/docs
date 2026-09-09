@@ -14,7 +14,7 @@ hidden: true
 
 *By Quincy Castro, Contributor · Published 1 November 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/1d8a9d6f35847ef132bf9cc2b1ce81721151020a-772x550.webp)
+![Blog tile image](/images/site-mirror/1d8a9d6f35847ef132bf9cc2b1ce81721151020a-772x550.webp)
 
 Every day, we are working to deliver effective and trustworthy security in our products. But we don’t expect you to just take our word for it.
 

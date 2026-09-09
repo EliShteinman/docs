@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 4 May 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 Redis features two main mechanisms for executing multiple operations atomically: MULTI/EXEC transactions and Lua scripts. One peculiarity of transactions in Redis that often trips up newcomers is the absence of a rollback mechanism. In my tenure as a Developer Advocate at Redis, I’ve talked to a few engineers with traditional SQL backgrounds who found this troubling, so with this blog I want to share my opinion on the subject, and argue that you don’t need rollbacks in Redis.
 

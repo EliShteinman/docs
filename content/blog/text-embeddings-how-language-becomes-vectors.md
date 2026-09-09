@@ -14,7 +14,7 @@ hidden: true
 
 *By Simran Regmi, Product Marketing · Published 10 August 2026 · updated 13 August 2026*
 
-![Vector embeddings & language: how models turn words into geometry](/images/blog/ae3214698b59b1812378cfc2041d9d2c7813de20-2400x1256.webp)
+![Vector embeddings & language: how models turn words into geometry](/images/site-mirror/ae3214698b59b1812378cfc2041d9d2c7813de20-2400x1256.webp)
 
 A user types "refund policy" into your search box, but the doc they need is titled "returns and reimbursements." Keyword matching scores it near zero even though it's exactly what the user asked for. Vector embeddings help address this mismatch by representing meaning as numbers, so "refund" and "reimbursement" land near each other in a mathematical space even though they share almost no characters.
 

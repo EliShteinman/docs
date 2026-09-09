@@ -14,7 +14,7 @@ hidden: true
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 13 May 2026*
 
-![Redis](/images/blog/e1bf631951bab3c4e67592d4e805e5e03f057da1-1200x628.webp)
+![Redis](/images/site-mirror/e1bf631951bab3c4e67592d4e805e5e03f057da1-1200x628.webp)
 
 The thundering herd problem occurs when multiple processes or clients repeatedly request the same resource simultaneously, leading to excessive load and performance degradation.
 

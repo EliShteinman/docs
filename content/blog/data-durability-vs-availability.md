@@ -14,7 +14,7 @@ hidden: true
 
 *By Talon Miller, Principal Technical Marketer · Published 28 December 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a250ef3aa461fdc2b9307bda57e10be3d8551f89-772x550.webp)
+![Blog tile image](/images/site-mirror/a250ef3aa461fdc2b9307bda57e10be3d8551f89-772x550.webp)
 
 **Need to understand the difference between data durability and data availability? Your favorite binge-watch can help illuminate the distinctions.**
 

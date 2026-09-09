@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 27 May 2026*
 
-![How CRDTs power active-active database replication](/images/blog/6f142e344b96307882f7f112eaacabe7cf46ed8e-2400x1256.webp)
+![How CRDTs power active-active database replication](/images/site-mirror/6f142e344b96307882f7f112eaacabe7cf46ed8e-2400x1256.webp)
 
 Your application runs in three regions. A customer in Tokyo buys the last unit of a product at the exact moment a customer in Frankfurt buys the same SKU. Both writes succeed locally. Both replicas decrement inventory. Which region's view is correct, and what happens to the order that "lost"?
 

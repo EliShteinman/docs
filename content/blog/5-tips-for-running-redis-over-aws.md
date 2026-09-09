@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 6 August 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![redis aws 5 tips](/images/blog/90010520753602d9c42095adac1c2aeea0ee7bfa-800x252.webp)
+![redis aws 5 tips](/images/site-mirror/90010520753602d9c42095adac1c2aeea0ee7bfa-800x252.webp)
 
 Cloud computing can help host an application in a way that is both scalable and cost effective. The leading vendor in the infrastructure as a service (IaaS) arena is Amazon Web Services (AWS), which offers scalable, highly available and secure cloud hosting with Redis. If your application uses Redis for caching or data storage, below are a few tips which will help you save time, money, and achieve better performace with redis on aws with AWS Redis.
 

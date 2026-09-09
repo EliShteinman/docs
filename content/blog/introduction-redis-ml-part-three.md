@@ -15,7 +15,7 @@ hidden: true
 
 *By Tague Griffith, Head of Developer Advocacy · Published 18 August 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/39d78fd3fbb66235b3d5c3daf15bb760129f04d5-563x408.webp)
+![Blog tile image](/images/site-mirror/39d78fd3fbb66235b3d5c3daf15bb760129f04d5-563x408.webp)
 
 *This post is part three of a series of posts introducing the Redis-ML module. The first article in the series can be found *[*here*](/blog/introduction-redis-ml/)*. The sample code for this post requires several Python libraries and a Redis instance running Redis-ML. Detailed setup instructions to run the code can be found in either part one or part two of the series.*
 
@@ -23,7 +23,7 @@ hidden: true
 
 Logistic regression is another linear model for building predictive models from observed data. Unlike linear regression, which is used to predict a value, logistic regression is used to predict binary values (pass/fail, win/lose, healthy/sick). This makes logistic regression a form of classification. The basic logistic regression can be augmented to solve multiclass classification problems.
 
-![](/images/blog/39d78fd3fbb66235b3d5c3daf15bb760129f04d5-563x408.webp)
+![](/images/site-mirror/39d78fd3fbb66235b3d5c3daf15bb760129f04d5-563x408.webp)
 
 The example above, taken from the [Wikipedia article on Logistic Regression](https://en.wikipedia.org/wiki/Logistic_regression), shows a plot of the probability of passing an exam relative to the hours spent studying. Logistic regression is a good technique for solving this problem because we are attempting to determine pass/fail, a binary selector. If we wanted to determine a grade or percentage on the test, simple regression would be a better technique.
 
@@ -53,12 +53,12 @@ We can print out the data in a table and see that our data consists of [sepal](h
 
 Our target classification is encoded as integer values 0, 1, and 2. A 0 corresponds to Iris Setosa, a 1 corresponds to Iris Versicolor and a 2 corresponds to an Iris Virginica.
 
-![Graph of Sepal measurements](/images/blog/173d87226518293214521293c0253eed3806ac88-538x405.webp)
+![Graph of Sepal measurements](/images/site-mirror/173d87226518293214521293c0253eed3806ac88-538x405.webp)
 
 To get a better sense of the relationship between various measurements and the flower type, we generated two plots: one of sepal width versus length and another of petal width versus length. Each graph shows the classification boundaries (determined through logistic regression) of the three classes and overlays it with the points from our data set. Blue represents the area classified as Iris setosa, green represents Iris versicolor and grey represents Iris Virginica:
 
 
-![](/images/blog/c3ad5f68479db7bc55be99d433383aaca9f73463-800x600.webp)
+![](/images/site-mirror/c3ad5f68479db7bc55be99d433383aaca9f73463-800x600.webp)
 
 We can see in both plots that there are a few outliers that get misclassified, but most of our Iris types cluster together in distinct groups.
 

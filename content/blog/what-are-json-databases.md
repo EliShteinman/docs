@@ -15,7 +15,7 @@ hidden: true
 
 *By Redis   · Published 20 March 2026 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/da41f66dd0f24a4fbe2003adab7573d5d6efb49d-1200x628.webp)
+![Blog tile image](/images/site-mirror/da41f66dd0f24a4fbe2003adab7573d5d6efb49d-1200x628.webp)
 
 JSON databases store data as flexible documents, which makes them useful for records that don't all look the same or include nested fields. They're often a natural fit for modern apps that already move data through APIs as JSON. This guide covers what JSON databases are, how they compare to relational databases, the advantages they offer, and where they're most useful.
 

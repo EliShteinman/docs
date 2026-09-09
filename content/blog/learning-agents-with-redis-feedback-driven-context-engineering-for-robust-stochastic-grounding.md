@@ -18,7 +18,7 @@ hidden: true
 
 *By Srijith Rajamohan, Iliya Zhechev, Rado Ralev, Aditeya Baral, Yash Mandilwar · Published 31 October 2025 · updated 1 November 2025*
 
-![Learning agents with Redis: Feedback-driven context engineering for robust stochastic grounding](/images/blog/6657096b6512c178e33f4aa73f04786b36c08a36-1200x628.webp)
+![Learning agents with Redis: Feedback-driven context engineering for robust stochastic grounding](/images/site-mirror/6657096b6512c178e33f4aa73f04786b36c08a36-1200x628.webp)
 
 - Abstract
 - Introduction
@@ -110,11 +110,15 @@ In order to reliably query large volumes of data using Large Language Models (LL
   - the guidance agent also takes into account any user feedback that was provided to clarify business logic and incorporates this into the Guidance Cache entry
   - unlike the Execution Cache, the Guidance Cache only stores one entry per user question where new guidances update the existing entry by reconciling and updating the Guidance Cache entry
 
-![Redis Learning Agent](/images/blog/7d8a3d7c2d3c877256c7a9d35ab2a678b1cccb05-1446x1299.webp)
+![Redis Learning Agent](/images/site-mirror/7d8a3d7c2d3c877256c7a9d35ab2a678b1cccb05-1446x1299.webp)
+
+*Learning Agent*
 
 Such a system learns from your feedback but also ***collectively learns from the crowd ***so that future users can leverage the wisdom of those before them. Such a system of caches stores learned population-specific guidances that is rich in business know-how and logic that can potentially even eliminate the need for LLM fine-tuning. Ideally, we want to see the following behavior as shown in the chart below.
 
-![Performance Trends](/images/blog/2d60116755dd6f2a5ee52b94430c479f241d051d-972x896.webp)
+![Performance Trends](/images/site-mirror/2d60116755dd6f2a5ee52b94430c479f241d051d-972x896.webp)
+
+*Token reduction over subsequent runs*
 
 ### Redis as the agentic memory layer {#redis-as-the-agentic-memory-layer}
 
@@ -147,7 +151,9 @@ Serves as a lightweight planner and coordinates all agent interactions and manag
 
 This agent inspects the dataset and provides statistical summaries of columns (e.g., value ranges, distributions) and also textual descriptions of the columns based on the name and the values contained in those columns. The user should ideally aid this summarization by *describing and disambiguating* the columns. If the data schema and/or the data does not change often, consider setting an appropriate TTL so that the results of this step are cached and not frequently re-executed.
 
-![Stats](/images/blog/692715aaccc9979215460219b1fe78e0ab83efc0-2048x437.webp)
+![Stats](/images/site-mirror/692715aaccc9979215460219b1fe78e0ab83efc0-2048x437.webp)
+
+*Data Summarizer Agent*
 
 ### Guidance Agent {#guidance-agent}
 
@@ -155,7 +161,9 @@ This agent inspects the dataset and provides statistical summaries of columns (e
 
 The Guidance Agent observes failed executions and any user feedback if provided and summarizes them into meaningful strings. These strings represent the observations of the failures, its causes, and instructions to avoid them in the future. The guidance strings are written to the Guidance Cache at the end of successful execution of a query. If guidance already exists for a question, the entry is updated by reconciling the new guidances with the existing guidances. They are retrieved for similar questions in future executions from the Guidance Cache. A predefined threshold (hyperparameter) is used here for retrieval which is lower than the threshold used for the Execution Cache. It is possible that irrelevant guidances may be retrieved, as limitation of embedding-based retrieval systems, however the LLMs are instructed to use guidances if they are appropriate and relevant. Some experimentation is needed to balance true helpful guidances matches against false positives that may pollute the context.
 
-![Example of a retrieved guidance ](/images/blog/cb60d86e89a27a643672ec0bee096b90a6141c4f-2024x912.webp)
+![Example of a retrieved guidance ](/images/site-mirror/cb60d86e89a27a643672ec0bee096b90a6141c4f-2024x912.webp)
+
+*Example of a retrieved guidance*
 
 ### Filter Agent {#filter-agent}
 
@@ -172,11 +180,17 @@ The Filter Agent is responsible for generating and executing queries. It takes a
 
 Using this context, prompts are created for the LLM to generate executable queries. If the execution fails, the agent updates the error history, and the orchestrator retries with improved context.
 
-![Example of a generated query](/images/blog/686a7f2259f666fe4b9f16081473cc4a67a69793-2048x551.webp)
+![Example of a generated query](/images/site-mirror/686a7f2259f666fe4b9f16081473cc4a67a69793-2048x551.webp)
 
-![Example of a retrieved execution from the execution cache - this one has only a single execution corresponding to a user question](/images/blog/44da96ffb8506b61a28c4b62094ccf31e09cd673-1608x1552.webp)
+*Example of a generated query*
 
-![When there is not an exact match these executions may have to be modified by the LLM for the current question](/images/blog/05d9e2bb19991725c209969154f929ad6cff4a57-2048x834.webp)
+![Example of a retrieved execution from the execution cache - this one has only a single execution corresponding to a user question](/images/site-mirror/44da96ffb8506b61a28c4b62094ccf31e09cd673-1608x1552.webp)
+
+*Example of a retrieved execution from the execution cache - this one has only a single execution corresponding to a user question*
+
+![When there is not an exact match these executions may have to be modified by the LLM for the current question](/images/site-mirror/05d9e2bb19991725c209969154f929ad6cff4a57-2048x834.webp)
+
+*When there is not an exact match these executions may have to be modified by the LLM for the current question*
 
 ### Interpretation Agent {#interpretation-agent}
 
@@ -184,7 +198,9 @@ Using this context, prompts are created for the LLM to generate executable queri
 
 After a successful query execution, the results may be scalar or a dataframe which in itself may not be particularly useful to the end user since *users of decision making tools are looking for insight as opposed to data*. The Interpretation Agent interprets and translates the result within the context of the original question into a human-readable summary. It returns this to the user and updates the system state with a final confirmation of success.
 
-![Results](/images/blog/622968e209e09e5e88d0fab69ab4726ad0f6d00f-2048x434.webp)
+![Results](/images/site-mirror/622968e209e09e5e88d0fab69ab4726ad0f6d00f-2048x434.webp)
+
+*Interpreted result*
 
 ### Putting it all together {#putting-it-all-together}
 
@@ -286,7 +302,9 @@ It goes through the following chain of events before it successfully answers the
 
 Actual code execution is shown below.
 
-![Original run](/images/blog/6cc7366fa752fe2a4aa8e823e33fa159643767d5-2800x16122.webp)
+![Original run](/images/site-mirror/6cc7366fa752fe2a4aa8e823e33fa159643767d5-2800x16122.webp)
+
+*Original run*
 
 Now once the above has completed, user 'B' might have the following question which is similar but directionally different from the question above.
 
@@ -303,7 +321,9 @@ In this scenario, the prior experiences are useful for answering this question, 
 
 Note the retrieved entries in both execution and guidance caches in the trace shown below.
 
-![Subsequent run with a warmed cache](/images/blog/4c0044e19b4f61d9c9ed6a96548b36e86e7c25b7-2800x5212.webp)
+![Subsequent run with a warmed cache](/images/site-mirror/4c0044e19b4f61d9c9ed6a96548b36e86e7c25b7-2800x5212.webp)
+
+*Subsequent run with a warmed cache*
 
 ### How did Learning Agents help here? {#how-did-learning-agents-help-here}
 
@@ -344,7 +364,9 @@ The total number of tokens consumed and the total number of attempts are shown b
 
 Reminder: as noted before, user feedback isparticularly useful for semantic errors since the agent is designed to self-learn from syntactic errors.
 
-![Token Usage](/images/blog/9bed62983627ec5e144099324d713e21826359c5-463x512.webp)
+![Token Usage](/images/site-mirror/9bed62983627ec5e144099324d713e21826359c5-463x512.webp)
+
+*Token usage comparison for question 1*
 
 ### Similarity and intent: a few more examples {#similarity-and-intent-a-few-more-examples}
 
@@ -362,7 +384,9 @@ We revisit the question ‘Who is my ideal target for a loan campaign?’, but t
 
 Once feedback is provided by the user, subsequent runs (in teal) can use the guidance/grounding generated from the user feedback resulting in predictable and correct results as shown below.
 
-![Token Usage](/images/blog/255c8437437aaa018c5978a3c90aac05f618cd6d-458x512.webp)
+![Token Usage](/images/site-mirror/255c8437437aaa018c5978a3c90aac05f618cd6d-458x512.webp)
+
+*Token usage comparison for question 2*
 
 The following demonstrates queries and execution over the insurance dataset. In the example below, similar behavior is observed with respect to the reduction in token count, run time and retry elimination resulting in more predictable and reliable responses.
 
@@ -373,7 +397,9 @@ The following demonstrates queries and execution over the insurance dataset. In 
 | Subsequent variations | Determine which age ranges prefer automatic transmissions |
 | Subsequent variations | Find out which age groups commonly have automatic transmission variables |
 
-![Token Usage Comparison](/images/blog/c21fee16883ea93c2fb18c9fa0741ed742dde2be-458x512.webp)
+![Token Usage Comparison](/images/site-mirror/c21fee16883ea93c2fb18c9fa0741ed742dde2be-458x512.webp)
+
+*Token usage comparison for question 3*
 
 What happens when the variations have intents that differ from the original question. Here, the original question is “What age groups are likely to have automatic transmissions?” but the questions that follow would like to know about age groups that prefer manual transmissions. Once again, similar savings are observed in the metrics of interest.
 
@@ -383,7 +409,9 @@ What happens when the variations have intents that differ from the original ques
 | Negated variation | Determine which age ranges prefer manual transmissions |
 | Negated variation | Find out which age groups commonly drive manual transmission vehicles |
 
-![Token usage for variations where intent differs from the original](/images/blog/e933e0030bc3e390c34e557327a3440156b04a8a-1818x1778.webp)
+![Token usage for variations where intent differs from the original](/images/site-mirror/e933e0030bc3e390c34e557327a3440156b04a8a-1818x1778.webp)
+
+*Token usage for variations where intent differs from the original*
 
 ### Discussion and conclusion {#discussion-and-conclusion}
 

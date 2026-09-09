@@ -14,7 +14,7 @@ hidden: true
 
 *By Haley Kim, Associate Content Producer · Published 21 September 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/9522ab53c5d2ffa4c63de9c72e1d5aaf41370930-2550x1650.webp)
+![Blog tile image](/images/site-mirror/9522ab53c5d2ffa4c63de9c72e1d5aaf41370930-2550x1650.webp)
 
 We are constantly inspired by the creative and powerful ways the Redis community uses Redis to power innovative applications. In the premiere issue of *Rediscover Magazine*, we showcased a trio of community members who have rediscovered Redis to help them conquer their data challenges.
 
@@ -22,7 +22,7 @@ Now, here’s your chance to get to know Carlos Justiniano, Matthew Goos, and Da
 
 ## Carlos Justiniano
 
-![](/images/blog/c5a78324f56ef34d8a9be90c271a6a38063f9968-846x846.webp)
+![](/images/site-mirror/c5a78324f56ef34d8a9be90c271a6a38063f9968-846x846.webp)
 
 Twitter: [@cjus](https://twitter.com/cjus)
 
@@ -42,7 +42,7 @@ This was Carlos’ third RedisConf appearance, and his presentation focused on m
 
 ## Matthew Goos
 
-![](/images/blog/c8474213e4d510bc471fdbea292aa02c3d49fd65-960x960.webp)
+![](/images/site-mirror/c8474213e4d510bc471fdbea292aa02c3d49fd65-960x960.webp)
 
 Twitter: [@m4g005](https://twitter.com/m4g005)
 
@@ -60,7 +60,7 @@ Catch Matthew in conversation with Howard Ting, formerly CMO at Redis, as he exp
 
 ## Dan Pipe-Mazo
 
-![](/images/blog/e227f30714471983f6ed228aea2a29a18a7ed36b-933x1024.webp)
+![](/images/site-mirror/e227f30714471983f6ed228aea2a29a18a7ed36b-933x1024.webp)
 
 Twitter: [@dpipemazo](https://twitter.com/dpipemazo?lang=en)
 

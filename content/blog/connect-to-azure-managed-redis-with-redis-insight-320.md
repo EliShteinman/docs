@@ -14,7 +14,7 @@ hidden: true
 
 *By Purna  Mehta, Senior Product Manager · Published 27 April 2026*
 
-![Redis](/images/blog/9ad6e30a66471e36398915fbf62560e08c184c86-1200x628.webp)
+![Redis](/images/site-mirror/9ad6e30a66471e36398915fbf62560e08c184c86-1200x628.webp)
 
 We're excited to highlight a key feature in the Redis Insight 3.2.0 release (February 2026): native support for connecting to Azure Managed Redis using Microsoft Entra ID authentication. This is a significant step forward for Azure-based teams who want a seamless, secure, and passwordless experience when working with their Azure Managed Redis resources directly from Redis Insight.
 
@@ -36,19 +36,19 @@ To use Entra ID authentication with Azure Managed Redis in Redis Insight 3.2.0, 
 
 2. Open the **Add Database** flow and select **Azure Managed Redis**
 
-![Redis](/images/blog/038badcf7f429e236d745f89e6e14de94406555e-1085x638.webp)
+![Redis](/images/site-mirror/038badcf7f429e236d745f89e6e14de94406555e-1085x638.webp)
 
-![Redis](/images/blog/760e9568ba04656d03bfb007f011796b49417c14-885x693.webp)
+![Redis](/images/site-mirror/760e9568ba04656d03bfb007f011796b49417c14-885x693.webp)
 
 3. Sign in with your Microsoft Entra ID credentials
 
-![Redis](/images/blog/a359ba8d1cf2cfbfdbe0fa42dd2d122b40186104-839x622.webp)
+![Redis](/images/site-mirror/a359ba8d1cf2cfbfdbe0fa42dd2d122b40186104-839x622.webp)
 
 4. Let Redis Insight auto-discover your databases and connect with one click
 
-![Redis](/images/blog/1460d2c059a269143af102617856bbf204b0fe43-1912x1023.webp)
+![Redis](/images/site-mirror/1460d2c059a269143af102617856bbf204b0fe43-1912x1023.webp)
 
-![Redis](/images/blog/7b138f8a7f98df3e4d316d0e8e985608221e47a1-1912x1025.webp)
+![Redis](/images/site-mirror/7b138f8a7f98df3e4d316d0e8e985608221e47a1-1912x1025.webp)
 
 Note: While not the recommended approach, you have the option to connect Redis Insight to your Azure Managed Redis cache using Access Keys. This requires first enabling Access Keys on the cache, and then configuring the connection using the custom connection settings within Redis Insight.
 

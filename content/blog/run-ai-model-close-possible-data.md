@@ -15,7 +15,7 @@ hidden: true
 
 *By Pieter Cailliau, Luca Antiga · Published 2 April 2019 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/b7bf635e2d2de058f873205a92fa8f6c8b4f4e6f-368x260.webp)
+![Blog tile image](/images/site-mirror/b7bf635e2d2de058f873205a92fa8f6c8b4f4e6f-368x260.webp)
 
 ## Introduction
 
@@ -25,21 +25,21 @@ RedisAI came to light for two core reasons. First, because moving your data to a
 
 ## Data locality matters
 
-![](/images/blog/bfa49ae740b47545a3b23ee1849874f2eb984fe2-300x186.webp)
+![](/images/site-mirror/bfa49ae740b47545a3b23ee1849874f2eb984fe2-300x186.webp)
 
 To illustrate why we believe colocality (running your ML/DL model where your data lives) matters, let’s consider a chatbot application example. Chatbots typically use recurrent neural networks (RNN), often arranged in seq2seq architectures to present an answer to an input sentence. More advanced models preserve the context of the conversation in the form of a numerical intermediate state tensor, using two input tensors and two output tensors. As an input, the model takes the latest message by the user, and an intermediate state representing the history of the conversation. Its output is a response to the message and the new intermediate state.
 
-![](/images/blog/739e465463509166c0c23429efd67e1020517706-1024x333.webp)
+![](/images/site-mirror/739e465463509166c0c23429efd67e1020517706-1024x333.webp)
 
 This intermediate state must be kept in a database to support user-specific interaction, just like a session, so Redis is a great choice here. The chatbot’s model could have been deployed in Spark, wrapped in a Flask application or any other DIY solution. Upon receiving a chat request from a user, the serving application needs to fetch the intermediate state from Redis. Since there is no native data type in Redis for a tensor, the database would have to first do some deserialization, and after the RNN model ran, it would have to make sure the latest intermediate state was serialized and sent back to Redis.
 
-![](/images/blog/c0800f7fd0457b489cb6dc29a7e84fd46c7a1f4d-1024x453.webp)
+![](/images/site-mirror/c0800f7fd0457b489cb6dc29a7e84fd46c7a1f4d-1024x453.webp)
 
 Given the time complexity of a RNN, the wasted CPU cycles on serializing/deserializing and the expensive network overhead, we knew we needed a better solution that could ensure a great user experience.
 
 With RedisAI, we’re introducing a new data type called a Tensor. With a set of simple [commands](https://oss.redis.com/redisai/commands/), you can get and set Tensors from your favorite client. We’re also introducing two more data types, Models and Scripts, for model runtime features.
 
-![](/images/blog/0b01daee699a6dcbd379109fef35468eb4afa91d-1024x272.webp)
+![](/images/site-mirror/0b01daee699a6dcbd379109fef35468eb4afa91d-1024x272.webp)
 
 Models are set with information about which device they should run on (CPU or GPU) and backend-specific parameters. RedisAI has several integrated backends, such as TensorFlow and Pytorch, and we are working to support ONNXRuntime soon. This runtime for ONNX and ONNX-ML adds support for “traditional” machine learning models. What’s nice, however, is that the command for executing a Model is agnostic of its backend:
 
@@ -51,13 +51,15 @@ This allows you to decouple your backend choice (a decision typically made by da
 
 Scripts can run both on CPUs and GPUs, and allow you to manipulate Tensors via TorchScript, a Python-like Domain Specific Language for Tensor operations. This lets you pre-process your input data before you execute your Model, and post-process the results, e.g. for ensembling different Models to improve performance.
 
-![](/images/blog/625930f216c5677d42a609822609cbf5253ea892-1024x611.webp)
+![](/images/site-mirror/625930f216c5677d42a609822609cbf5253ea892-1024x611.webp)
+
+*Overview of RedisAI’s Data Structures and Backends*
 
 One more great feature is the ability to run several commands via a [directed acyclic graph (DAG) command](https://github.com/RedisAI/RedisAI/issues/88), which we’ll be adding to RedisAI in the near future. This will allow you to combine several RedisAI commands in one atomic operation, such as running multiple instances of a Model on different devices and ensembling the results by averaging predictions with a script. Using the DAG engine, computations are executed in parallel and then joined. For a full and more in-depth feature list, visit [redisai.io](https://oss.redis.com/redisai/).
 
 The new architecture could be simplified like this:
 
-![](/images/blog/0f6275212b24e499cdc8f56bdd33ffad19aabbe5-1024x592.webp)
+![](/images/site-mirror/0f6275212b24e499cdc8f56bdd33ffad19aabbe5-1024x592.webp)
 
 ## Model serving a DevOps challenge made easy
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 7 November 2013 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/8ae2049e3edde4ef84f93858efc7e60f3e3be4fa-635x200.webp)
+![Blog tile image](/images/site-mirror/8ae2049e3edde4ef84f93858efc7e60f3e3be4fa-635x200.webp)
 
-![](/images/blog/8ae2049e3edde4ef84f93858efc7e60f3e3be4fa-635x200.webp)
+![](/images/site-mirror/8ae2049e3edde4ef84f93858efc7e60f3e3be4fa-635x200.webp)
 
 We’re already having a [whirlwind November](/blog/we-raised-9m-in-series-a-funding) as we gear up for [AWS re:Invent next week](https://reinvent.awsevents.com/), and we don’t intend to slow down! Today we are delighted to announce some new options and exciting changes for our popular Redis Cloud and Memcached Cloud plans:
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Sheryl Sage, Director of Partner Marketing · Published 9 April 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d6eef0df5f06e768f8412937ddbd4b2b697fd74e-400x400.webp)
+![Blog tile image](/images/site-mirror/d6eef0df5f06e768f8412937ddbd4b2b697fd74e-400x400.webp)
 
 We began our collaboration with Google Cloud in 2014 to make [Redis Enterprise available on Google Cloud Platform (GCP)](/cloud-partners/google/) as a fully managed [Database-as-a-Service](/blog/what-is-dbaas/), either hosted or in virtual private clouds (VPCs), as well as downloadable software. Since then our partnership has strengthened considerably as we worked together with many joint customers across every industry including retail, financial services, media, social, and gaming.
 

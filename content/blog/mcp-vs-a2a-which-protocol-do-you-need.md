@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 22 July 2026*
 
-![Model Context Protocol (MCP) vs. Agent2Agent (A2A): which protocol do you need?](/images/blog/e983f2dd60e0bb66d869efce0b81e6d6e2de2760-2400x1256.webp)
+![Model Context Protocol (MCP) vs. Agent2Agent (A2A): which protocol do you need?](/images/site-mirror/e983f2dd60e0bb66d869efce0b81e6d6e2de2760-2400x1256.webp)
 
 Somewhere around your third agent, someone in a design review asks, "Shouldn't we be using A2A for this?" It's a fair question that most teams can't answer well, because the two big agent protocols keep getting lumped together when they solve different problems at different layers. The Model Context Protocol (MCP) connects an agent to its tools and data. The Agent2Agent (A2A) protocol connects independent agents to each other. Whether you need one, both, or neither depends less on how many agents you have and more on who owns them. This guide covers what MCP and A2A each do, why the two are designed to work together, and a decision rule for telling whether your system needs A2A or just a good orchestration framework.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Carol Pinchefsky, Contributor · Published 10 April 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/c7842109747a624b807c06bb78c3ebbb1665723b-772x550.webp)
+![Blog tile image](/images/site-mirror/c7842109747a624b807c06bb78c3ebbb1665723b-772x550.webp)
 
 **These database-related podcasts offer technology and development career advice based on what job you have…and what kind of supervillain you are.**
 

@@ -15,7 +15,7 @@ hidden: true
 
 *By Philip Laussermair, Anant Pingle · Published 8 September 2026*
 
-![Delivering Real-Time Personalization with Databricks and Redis](/images/blog/2863a881ca62cdf32c98c71f8509fa926cdaa299-1200x628.webp)
+![Delivering Real-Time Personalization with Databricks and Redis](/images/site-mirror/2863a881ca62cdf32c98c71f8509fa926cdaa299-1200x628.webp)
 
 ## Why real-time matters
 
@@ -46,7 +46,7 @@ iFood, Latin America’s leading food delivery platform processing millions of d
 
 *— Willian Moreira, Lead Machine Learning Platform Engineer, iFood*
 
-![Redis](/images/blog/74aea7a48db342e07335eeddd7df9b6313304d6e-90x48.svg)
+![Redis](/images/site-mirror/74aea7a48db342e07335eeddd7df9b6313304d6e-90x48.svg)
 
 ## The use case: recommendations that adapt within the session
 
@@ -58,7 +58,7 @@ The inputs are a clickstream: product views, searches, add-to-cart, and purchase
 
 ### Architecture
 
-![Architecture](/images/blog/1e374de4cf33e3a722deeb33e569b858eed1757f-2054x1870.webp)
+![Architecture](/images/site-mirror/1e374de4cf33e3a722deeb33e569b858eed1757f-2054x1870.webp)
 
 The clickstream lands in Kafka. An RTM pipeline reads it, maintains per-user session state, scores candidate products against that state, and writes the ranked results into Redis. The website reads one Redis key per page render.
 
@@ -198,7 +198,7 @@ We ran the pipeline continuously against Azure Managed Redis, sustaining 100,000
 | p95 | 117 ms | 119 ms |
 | p99 | 139 ms | 157 ms |
 
-![From click to recommendation served: under 160 ms at p99](/images/blog/00caef3436dba4c9bafc1f9c2194905985985427-2018x1817.webp)
+![From click to recommendation served: under 160 ms at p99](/images/site-mirror/00caef3436dba4c9bafc1f9c2194905985985427-2018x1817.webp)
 
 ## The universe of use cases
 

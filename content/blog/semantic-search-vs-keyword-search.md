@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 28 January 2026 · updated 1 June 2026*
 
-![Redis](/images/blog/c323d0b0fb4d64da89aa687655dee16a89b307d4-1200x628.webp)
+![Redis](/images/site-mirror/c323d0b0fb4d64da89aa687655dee16a89b307d4-1200x628.webp)
 
 Building search feels simple: users type what they need, results come back. But anyone building [RAG pipelines](https://redis.io/glossary/retrieval-augmented-generation/) knows better. Your demo works perfectly, showing off relevant results every time. Then production hits, and users start complaining that searches miss obvious matches while surfacing irrelevant documents.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Leena Joshi, VP Product Marketing · Published 24 September 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/e790112197797f0faa621a8cea9cc1dd73c2433e-140x92.webp)
+![](/images/site-mirror/e790112197797f0faa621a8cea9cc1dd73c2433e-140x92.webp)
 
 The annual Oracle OpenWorld event is taking place next week in San Francisco. From past experience and judging by the amount of buzz around it, OpenWorld is a definite must-attend event for anyone who’s interested in data management. Traditionally, NoSQL technologies were regarded as distant cousins of mainstream DBMSes, but Oracle’s recent foray into that domain is solid proof that times have changed. Enterprises are hungry for innovation that helps them tackle their business challenges and are embracing the ease of use, speed and scale that NoSQL brings.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 14 April 2026 · updated 15 April 2026*
 
-![API throttling: Algorithms, patterns & mistakes to avoid](/images/blog/f1e68e751263ded65e5ea02e4a1636cb80596728-2400x1256.webp)
+![API throttling: Algorithms, patterns & mistakes to avoid](/images/site-mirror/f1e68e751263ded65e5ea02e4a1636cb80596728-2400x1256.webp)
 
 Most teams add rate limiting once and never revisit it. They pick a fixed window counter because it's simple, deploy it with local counters, and move on. Then a misbehaving client gets through at 5x the configured threshold and the post-mortem reveals the rate limiter was never actually doing what they thought. This guide covers five rate limiting algorithms and their trade-offs, deployment patterns, and the [common mistakes](https://www.infoq.com/articles/seven-uservices-antipatterns/) that let traffic through anyway.
 

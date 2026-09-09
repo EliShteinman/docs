@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 6 May 2026*
 
-![Why your LLM app feels slow (even when the API "works")](/images/blog/ec6d869dab5785616b1ffa3a8fbb00f078c9dc94-2400x1256.webp)
+![Why your LLM app feels slow (even when the API "works")](/images/site-mirror/ec6d869dab5785616b1ffa3a8fbb00f078c9dc94-2400x1256.webp)
 
 You ship a retrieval-augmented generation (RAG) feature, monitoring is green, and every endpoint returns 200. But users keep complaining the app feels sluggish, and your own dogfooding confirms it: there's a multi-second pause before anything renders, and follow-up turns drag. The status code says success. The user experience says otherwise.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 6 March 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
-![](/images/blog/d31b97ac0d40abb5a1f3fcee8efd0f262e8fd47c-870x300.webp)
+![](/images/site-mirror/d31b97ac0d40abb5a1f3fcee8efd0f262e8fd47c-870x300.webp)
 
 Last month, Redis geeks and geekettes received the perfect Valentine’s gift: a day packed with sessions about everyone’s favorite in-memory database. Sponsored by Redis and hosted at the [Tel Aviv Talkhouse](https://www.talkhouse.co.il/), the event was a huge success, with over 200 attendees showing up and staying all the way until SHUTDOWN.
 

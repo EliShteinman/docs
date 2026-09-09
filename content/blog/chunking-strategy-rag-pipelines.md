@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 13 April 2026 · updated 15 April 2026*
 
-![Chunking for RAG: Strategies, tradeoffs & common mistakes](/images/blog/263569ddbd3335d8e4836c825b40260aa9de81c6-2400x1256.webp)
+![Chunking for RAG: Strategies, tradeoffs & common mistakes](/images/site-mirror/263569ddbd3335d8e4836c825b40260aa9de81c6-2400x1256.webp)
 
 Your retrieval-augmented generation (RAG) pipeline keeps pulling back irrelevant chunks, or worse, chunks that are almost right but missing the one detail that matters. Nine times out of ten, the problem isn't your embedding model or your prompt. It's how you split your documents in the first place.
 

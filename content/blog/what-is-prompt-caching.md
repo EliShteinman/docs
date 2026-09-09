@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 10 March 2026 · updated 11 March 2026*
 
-![Redis](/images/blog/262d84f8e4fc3417b218a56a31cd4bf90e6dcaa5-1200x628.webp)
+![Redis](/images/site-mirror/262d84f8e4fc3417b218a56a31cd4bf90e6dcaa5-1200x628.webp)
 
 If you're building with large language models (LLMs) in production, you've probably noticed two things: latency spikes that make your app feel sluggish, and token costs that climb faster than you expected. Most of these problems come down to redundant computation, and the right caching strategy can cut both latency and spend without changing your models.
 

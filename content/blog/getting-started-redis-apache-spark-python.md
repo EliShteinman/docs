@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 February 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/50cfe8b569c3ff43a96baacca7496b571d4761a9-1200x1000.webp)
+![Blog tile image](/images/site-mirror/50cfe8b569c3ff43a96baacca7496b571d4761a9-1200x1000.webp)
 
 [Apache Spark](https://spark.apache.org/) is one of the most popular frameworks for creating distributed data processing pipelines and, in this blog, we’ll describe how to use Spark with Redis as the data repository for compute. Spark’s main feature is that a pipeline (a Java, Scala, Python or R script) can be run both locally (for development) and on a cluster, without having to change any of the source code.
 

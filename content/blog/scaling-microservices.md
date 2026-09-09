@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 27 July 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/3425e8547501b8dfbf8a14b9b2aabe6ff2ab1333-772x550.webp)
+![Blog tile image](/images/site-mirror/3425e8547501b8dfbf8a14b9b2aabe6ff2ab1333-772x550.webp)
 
 **Microservices offer a lot of technical advantages, but getting the balance requires some experience. You need to dynamically adjust resources based on where they are needed, just as you do when optimizing application performance. Here we delve into the decision-making process behind when and how to scale microservices effectively.**
 

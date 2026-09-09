@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 28 October 2022 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/b8950c5010380c7077fd3462ec46264c5660f555-772x550.webp)
+![Blog tile image](/images/site-mirror/b8950c5010380c7077fd3462ec46264c5660f555-772x550.webp)
 
 **Legacy database migration. Those three little words can strike fear in the hearts of IT professionals — but they don’t have to! Let’s break down the process of migrating legacy data, outline the pros and cons, and highlight considerations that industry professionals wish they knew before moving legacy data to an advanced system.**
 

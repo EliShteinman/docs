@@ -14,7 +14,7 @@ hidden: true
 
 *By Jim Allen Wallace, Sr. Product Marketing Manager · Published 11 May 2026 · updated 13 May 2026*
 
-![Endless aisle retail: the infrastructure behind an unlimited store](/images/blog/8b35fe2dad4319853cea68045957e10a0e62dee5-2400x1256.webp)
+![Endless aisle retail: the infrastructure behind an unlimited store](/images/site-mirror/8b35fe2dad4319853cea68045957e10a0e62dee5-2400x1256.webp)
 
 A customer walks into your store looking for a specific running shoe in size 11. You carry the brand, but not that model. In a traditional setup, that's a lost sale. Endless aisle changes the math: instead of losing the customer to a competitor's app, you let them browse and buy from your full catalog right there in the store, with the order shipped to their door or held at the counter.
 

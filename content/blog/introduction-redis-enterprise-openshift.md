@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 21 August 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0a6fc94b9a9740543293927deb92fc524b3a03ea-386x260.webp)
+![Blog tile image](/images/site-mirror/0a6fc94b9a9740543293927deb92fc524b3a03ea-386x260.webp)
 
 Here’s a brief introduction to Red Hat OpenShift, including questions we often get asked and our thoughts on why it’s a great choice for deploying and running your Redis Enterprise Cluster.
 

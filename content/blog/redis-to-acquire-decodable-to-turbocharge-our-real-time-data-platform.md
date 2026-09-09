@@ -14,7 +14,7 @@ hidden: true
 
 *By Rowan Trollope, CEO · Published 4 September 2025 · updated 5 September 2025*
 
-![Redis to acquire decodable](/images/blog/89680cc219482ae8dcbd7db02d177dccdbd2a6ed-1544x1104.webp)
+![Redis to acquire decodable](/images/site-mirror/89680cc219482ae8dcbd7db02d177dccdbd2a6ed-1544x1104.webp)
 
 Today, Redis announced that we intend to acquire [Decodable](https://www.decodable.co/), a real-time data platform that lets organizations quickly build, process, and manage streaming pipelines. We’re incredibly excited about this addition to Redis, both for the technology we plan on tightly integrating into our platform, but also the talented people joining us from Decodable.
 

@@ -14,7 +14,7 @@ hidden: true
 
 *By Prasanna Rajagopal · Published 9 December 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/814ea837c9b13c872fae8f000dedecf2460af230-1014x685.webp)
+![Blog tile image](/images/site-mirror/814ea837c9b13c872fae8f000dedecf2460af230-1014x685.webp)
 
 Broadly speaking, there are[ two types of investors](https://www.investopedia.com/articles/active-trading/101713/technical-vs-fundamental-investing-friends-or-foes.asp) in the world. *Fundamental investor*s look at the fundamental metrics, such as a company’s business model, revenues, earnings, cashflows, current valuation, risks, and growth prospects, when deciding whether to invest in a company. Warren Buffett became famous and one of the world’s richest men by finding undervalued companies through his fundamental research.
 
@@ -143,7 +143,7 @@ You can create time series for all 30 stocks in the Dow Jones Industrial Average
 
 There are two ways to ingest data into the RedisTimeSeries. The [TS.ADD](https://oss.redis.com/redistimeseries/commands/#tsadd) command allows you to add each stock price or technical indicator to a time series. But because data from the financial market is produced almost continuously and you need to add multiple samples to RedisTimeSeries, it’s better to use the [TS.MADD](https://redis.io/commands/ts.madd/) method. The MADD function takes a list of tuples as an argument. Each tuple takes the name of the time-series key, the timestamp, and the value:
 
-![](/images/blog/30bba6d2912c88e98fd7d9f18d4154ae3921cfa1-763x346.webp)
+![](/images/site-mirror/30bba6d2912c88e98fd7d9f18d4154ae3921cfa1-763x346.webp)
 
 You can use the following Python command to insert data into a time-series key:
 
@@ -171,11 +171,11 @@ As this query result shows, at the start of the trading day at 9:30 a.m. on Octo
 
 This data from RedisTimeSeries can be easily visualized in dashboards and charts. The charts below show Goldman Sachs’ price range in 15-minute intervals:
 
-![](/images/blog/6c46494298516382ca1f2ccfa3c2a998db8b6b15-457x243.webp)
+![](/images/site-mirror/6c46494298516382ca1f2ccfa3c2a998db8b6b15-457x243.webp)
 
 The chart below shows the same data in a line chart format, indicating that the price range in which Goldman Sachs trades becomes much tighter as time progresses through the day (this chart shows integer timestamps on the x-axis):
 
-![](/images/blog/b1b14e9acfad1b3a3243063f0ad26a6d85361a3f-456x242.webp)
+![](/images/site-mirror/b1b14e9acfad1b3a3243063f0ad26a6d85361a3f-456x242.webp)
 
 You can do a similar query with another measure of volatility—standard deviation—as the aggregation function:
 

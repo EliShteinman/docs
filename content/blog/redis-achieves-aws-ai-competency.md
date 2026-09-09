@@ -15,7 +15,7 @@ hidden: true
 
 *By Ramanuj Vashishtha, Antony Prasad Thevaraj · Published 10 February 2026*
 
-![Redis](/images/blog/518f01a4db7b2ef08f7197693bbbbc6df6eebba7-1200x628.webp)
+![Redis](/images/site-mirror/518f01a4db7b2ef08f7197693bbbbc6df6eebba7-1200x628.webp)
 
 AI applications demand more than powerful models. They demand real-time data access, ultra-low latency, and the ability to scale without friction. That is where Redis consistently shows up.
 

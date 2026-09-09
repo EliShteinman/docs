@@ -15,7 +15,7 @@ hidden: true
 
 *By Maria Markova, Contributor · Published 1 February 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/88ee49529108f9cbe85a141bd9fe853ac268dcf0-772x550.webp)
+![Blog tile image](/images/site-mirror/88ee49529108f9cbe85a141bd9fe853ac268dcf0-772x550.webp)
 
 **Redis and Intel teamed up to find out whether applying more aggressive optimization options would improve overall Redis baseline performance. Our conclusion: Yes! By changing the compiler behavior, we measured a 5.13% boost overall and more in some cases.**
 
@@ -83,7 +83,9 @@ To estimate the effectiveness of each build variant, we run all 50 test cases wi
 
 We performed these tests on four Intel Xeon Platinum 8360Y processor-based servers.
 
-![intel xeon scalable chart](/images/blog/20a6367b28bff115b0a5179972b4d6f06e6b3d4a-641x193.webp)
+![intel xeon scalable chart](/images/site-mirror/20a6367b28bff115b0a5179972b4d6f06e6b3d4a-641x193.webp)
+
+*Figure 1: Hardware set*
 
 ## Our findings… and what they mean
 
@@ -91,7 +93,9 @@ Figure 2 provides a summary of [our experimental results](https://ark.intel.com/
 
 Overall, GCC 9.4 O3 + flto provided the best performance of 5.19% (with dependencies included) and 5.13% (without dependencies) geomean speedup versus the baseline.
 
-![](/images/blog/51ed25dbd294bca9eb2d4d421f608546b9df2485-785x452.webp)
+![](/images/site-mirror/51ed25dbd294bca9eb2d4d421f608546b9df2485-785x452.webp)
+
+*Figure 2: Geomean of 50 use cases normalized to baseline (GCC 9.4 with default optimization flags)*
 
 The impact of the compiler and flags was much more pronounced in some use cases (see figure 3). For instance, with GCC 9.4 -O3 -flto, there is no performance degradation versus the baseline, and four tests improved by more than 10%.
 
@@ -99,7 +103,9 @@ The results vary quite a bit, in other words – which shows that changing the R
 
 In other configurations, some tests showed worse performance than the baseline. Yet some were boosted more than 20% over the baseline. This is because the O3 flag enables a number of aggressive optimization techniques to improve efficiency. The result is that the compiler can reorder instructions and make other changes to the code. While these optimizations can often be beneficial, they can also cause the code to run more slowly in some cases, particularly if they introduce additional overhead or they make the code less cache-friendly.
 
-![intel test changes graph](/images/blog/cb9e3a3c384f6ff9821924f079cd8e3cdb73520b-738x1076.webp)
+![intel test changes graph](/images/site-mirror/cb9e3a3c384f6ff9821924f079cd8e3cdb73520b-738x1076.webp)
+
+*Figure 3. Tests’ changes percentage distribution across 50 use cases normalized to baseline (GCC 9.4 with default optimization flags). For each test, we captured the minimum result observed across three test runs.*
 
 In short, changing those flags makes a difference in the execution speed of OSS Redis.
 

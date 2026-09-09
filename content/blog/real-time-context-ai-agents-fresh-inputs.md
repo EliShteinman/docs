@@ -14,7 +14,7 @@ hidden: true
 
 *By Jeff Mills, Director, Product Marketing · Published 15 July 2026 · updated 16 July 2026*
 
-![Real-time context: keeping agent inputs fresh on every step](/images/blog/6ad50b5e966a6873a3183e0eb95c1c4eb94a435c-2400x1256.webp)
+![Real-time context: keeping agent inputs fresh on every step](/images/site-mirror/6ad50b5e966a6873a3183e0eb95c1c4eb94a435c-2400x1256.webp)
 
 Your AI agent issued the refund. It read the customer's tier, checked the return window, confirmed the policy, and processed it in seconds. The problem: the return window had closed four minutes earlier when a batch job updated the order status, and the agent was reading a snapshot from before the change. Now you have a refund you can't reverse, a policy exception you didn't approve, and no error log to point at.
 

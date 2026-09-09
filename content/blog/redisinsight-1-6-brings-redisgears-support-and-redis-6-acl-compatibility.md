@@ -15,9 +15,9 @@ hidden: true
 
 *By Stévan Le Meur, Senior Product Manager · Published 2 July 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0324f2cccf55ae10454911d833ea98f6219e2888-270x190.webp)
+![Blog tile image](/images/site-mirror/0324f2cccf55ae10454911d833ea98f6219e2888-270x190.webp)
 
-![](/images/blog/894ccaeb22b4533384ff12e54959ba4d89d88a96-1024x345.webp)
+![](/images/site-mirror/894ccaeb22b4533384ff12e54959ba4d89d88a96-1024x345.webp)
 
 [RedisInsight](/insight/) is an easy and intuitive GUI for Redis, allowing you to oversee all your databases and manage your data, with built-in support for the most popular Redis modules. It provides tools to analyze your database’s memory usage and profile its performance.
 
@@ -59,7 +59,7 @@ Since Version 1.2.2, RedisInsight notifies you when a new update is available. A
 
 RedisGears is a dynamic framework that enables developers to write and execute [functions](https://oss.redis.com/redisgears/functions.html) that implement data flows in Redis, while abstracting away the data’s distribution and deployment. You can use [RedisGears](/modules/redis-gears/) to improve application performance and process data in real time. RedisGears lets you program in Redis, deploy functions, and run your serverless engine where your data lives. (You can learn more about RedisGears in this blog post: [Announcing RedisGears 1.0: A Serverless Engine for Redis](/blog/redisgears-serverless-engine-for-redis/).)
 
-![](/images/blog/edecbbe371797423bb0d953e8aece55e93765b69-275x274.webp)
+![](/images/site-mirror/edecbbe371797423bb0d953e8aece55e93765b69-275x274.webp)
 
 RedisInsight 1.6 includes a new tool—accessible from the application’s main menu—that lets you interact with the RedisGears serverless engine. With this new tool, you can explore the history of the latest executed functions and analyze the results (and eventually the errors) of those functions. You’ll get a summary of the execution, as well as the result data, depending on what your function is actually doing.
 
@@ -79,7 +79,7 @@ RedisInsight is now fully compatible with Redis 6—they work seamlessly and tra
 
 Each defined user can have its own password. Now, when you connect to Redis from RedisInsight, you can specify the user you want to connect with, as well as the password, as shown here:
 
-![](/images/blog/9eda9af4305c550341600ba5dcd5b3af1c6065d1-1024x769.webp)
+![](/images/site-mirror/9eda9af4305c550341600ba5dcd5b3af1c6065d1-1024x769.webp)
 
 ***Note: ****In order to use RedisInsight, a user must have at least the permissions to run the following commands: INFO and PING. Those commands are used for properly configuring RedisInsight with Redis.*
 
@@ -121,13 +121,13 @@ When TLS is enabled, Redis Enterprise sends its client certificate to the databa
 
 If your database requires client authentication for mutual authentication, just select “Require TLS Client Authentication” in the “Add Redis Database” form—you’ll have the ability to provide the certificate-key pair as shown here:
 
-![](/images/blog/3663d424980f94e348bac19cd9f5fe8844e87ef7-1024x513.webp)
+![](/images/site-mirror/3663d424980f94e348bac19cd9f5fe8844e87ef7-1024x513.webp)
 
 **Auto-discovery of Redis databases**
 
 The latest version of RedisInsight makes it possible to configure connection details of your Redis Enterprise Software or Redis Enterprise Cloud databases with a single-click. Click on the “ADD REDIS DATABASE” button to search for databases from different locations, as shown here:
 
-![](/images/blog/83e4e4a081a7f09236dd6ed37f641138b85923c1-1024x528.webp)
+![](/images/site-mirror/83e4e4a081a7f09236dd6ed37f641138b85923c1-1024x528.webp)
 
 In **Redis Enterprise**, you can explore databases on a particular cluster. Just provide the [connection details](https://docs.redis.com/latest/ri/using-redisinsight/auto-discover-databases/) and your databases will be listed, which lets you select and configure them in RedisInsight:
 
@@ -135,7 +135,7 @@ In **Redis Enterprise**, you can explore databases on a particular cluster. Just
 
 Configuration is even easier in **Redis Cloud Enterprise **(Pro Subscriptions only), as you have to provide only your [account key](https://docs.redis.com/latest/rc/api/concepts/authentication-and-authorization/#account-key) and [secret key](https://docs.redis.com/latest/rc/api/concepts/authentication-and-authorization/#secret-key) to connect your Redis Enterprise Cloud account and get the list of all your databases, as shown here:
 
-![](/images/blog/066d0d54fc2567c64e9285ffa2e9d470d6c87029-1024x524.webp)
+![](/images/site-mirror/066d0d54fc2567c64e9285ffa2e9d470d6c87029-1024x524.webp)
 
 [Watch the video](/wp-content/uploads/2020/06/image5.png)
 

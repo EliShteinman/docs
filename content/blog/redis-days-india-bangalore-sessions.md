@@ -14,7 +14,7 @@ hidden: true
 
 *By Alex Patino · Published 9 February 2023 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/35ccecc80795318e9b1204c2a5188550df47c096-772x550.webp)
+![Blog tile image](/images/site-mirror/35ccecc80795318e9b1204c2a5188550df47c096-772x550.webp)
 
 **Couldn’t make it to RedisDays India in Bangalore last November? Catch up with these tech sessions by watching them online!**
 

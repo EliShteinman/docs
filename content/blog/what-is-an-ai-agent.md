@@ -14,7 +14,7 @@ hidden: true
 
 *By Rini Vasan, AI Product Marketing Manager · Published 11 December 2025 · updated 16 January 2026*
 
-![Blog tile image](/images/blog/353cd156777d2566b471125868a156ae4ccade65-1200x628.webp)
+![Blog tile image](/images/site-mirror/353cd156777d2566b471125868a156ae4ccade65-1200x628.webp)
 
 If you're like me, when you hear "agent," you think of secret agents doing cool stuff. But they mean a whole different thing in the world of AI. AI agents *can* be secret agents, but they can also be your voice assistant, your game opponents, or the system routing your support tickets.
 

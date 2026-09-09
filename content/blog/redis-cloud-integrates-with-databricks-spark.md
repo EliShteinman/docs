@@ -14,7 +14,7 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 6 June 2016 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/d141493dfd444b3b306929f7415cf47bc906f420-220x220.webp)
+![Blog tile image](/images/site-mirror/d141493dfd444b3b306929f7415cf47bc906f420-220x220.webp)
 
 Announcements are usually made about past events, while they are happening or about future ones. Today’s announcement of the integration between Databricks’ Spark service and Redis’ Redis Cloud is sort of a mix of all three types. It should be obvious why it falls into the third category, so I’d like explain what had transpired and is still happening that had led to this. Since you’re reading this blog, I assume that you already have the relevant background in data processing, so I’ll skip the product introductions and jump right into the middle of the matter at hand.
 

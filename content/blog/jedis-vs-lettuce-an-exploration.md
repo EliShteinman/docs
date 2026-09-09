@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 12 September 2022 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/684d4dc128cdc44561956d60cc56be87d61946ee-1000x575.webp)
+![Blog tile image](/images/site-mirror/684d4dc128cdc44561956d60cc56be87d61946ee-1000x575.webp)
 
 I’m an explorer by heart, so when I have to make a technical decision—like, say, choosing a Redis client—I go a-spelunking. Herein is the account of my exploration of the rhyming duo of Java clients: [Jedis](https://github.com/xetorthio/jedis) versus [Lettuce](https://lettuce.io/).
 

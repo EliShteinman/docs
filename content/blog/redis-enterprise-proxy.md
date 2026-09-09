@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 25 May 2023 · updated 1 June 2026*
 
-![Blog tile image](/images/blog/88ab71416f4c05f0ac3b74e4ebaaee75dd76fff1-772x550.webp)
+![Blog tile image](/images/site-mirror/88ab71416f4c05f0ac3b74e4ebaaee75dd76fff1-772x550.webp)
 
 **A lot happens behind the scenes of a Redis Enterprise cluster. The proxy masks all that activity from the database clients.**
 
@@ -32,7 +32,9 @@ Redis Enterprise Proxy is an entity with negligible [latency](/blog/how-to-reduc
 
 The proxy employs a multi-threaded architecture. It can easily scale up by using more available cores. It is designed to cope with high traffic by using multiplexing and [pipelining](/blog/what-is-a-data-pipeline/). When thousands of clients are connected to Redis Enterprise simultaneously, the proxy consolidates all of the incoming requests into a set of inner pipelines and distributes them to the relevant database shard. Net result: Requests are processed much faster, allowing high throughput with low latency.
 
-![multiplexing and pipelining diagram](/images/blog/551788e720f5db06ad7c4fd2f2a6997119aaacc9-1990x854.webp)
+![multiplexing and pipelining diagram](/images/site-mirror/551788e720f5db06ad7c4fd2f2a6997119aaacc9-1990x854.webp)
+
+*Figure 1: Redis Enterprise proxy mediates between applications and the database.*
 
 ## A few common scenarios
 
@@ -55,7 +57,9 @@ Does scaling-up change the way clients connect to the database?No, it doesn’t.
 
 Note that this is different from the Redis OSS cluster, in which the clients connect to each shard separately, and thus must be aware of the cluster topology.
 
-![database endpoint from client to client diagram.](/images/blog/ad74682d8b8b6fee9dde3c7229b7f8e55988af05-383x493.webp)
+![database endpoint from client to client diagram.](/images/site-mirror/ad74682d8b8b6fee9dde3c7229b7f8e55988af05-383x493.webp)
+
+*Figure 2: Scaling up a database in Redis Enterprise. Clients continue to use the same database endpoint.*
 
 #### Scaling out
 
@@ -67,7 +71,9 @@ Figure 3 shows an example of a two-shard database being scaled-outinto a four-sh
 
 However, scaling-out does not change the way clients connect to the database, as these changes are all transparent to the clients. The databases continue to send requests to the same database endpoint as before. The proxy that handles each request forward those requests to the relevant shard.
 
-![database endpoint client a and client b diagram](/images/blog/48820194c9053a5eeb0da9a64ac21605e03b94a6-694x540.webp)
+![database endpoint client a and client b diagram](/images/site-mirror/48820194c9053a5eeb0da9a64ac21605e03b94a6-694x540.webp)
+
+*Figure 3: Scaling out a database while using a multi-proxy policy: Clients continue to use the same database endpoint.*
 
 ### Automatic failover
 
@@ -85,7 +91,9 @@ On the left side of Figure 4 is a master shard in Node 1, and its replica is in 
 
 In case of a master shard failure, the Redis Enterprise cluster manager promotes the replica shard to become the master shard. The proxy now redirects incoming requests to the new master shard, letting the clients continue as usual. The last step is to create a new replica shard (shown on the right side of Figure 4).
 
-![database endpoint diagram with three clients](/images/blog/69e5889d753bf418033a41f40ba8afdb162cfd3e-885x509.webp)
+![database endpoint diagram with three clients](/images/site-mirror/69e5889d753bf418033a41f40ba8afdb162cfd3e-885x509.webp)
+
+*Figure 4: An automatic master-shard failover.*
 
 #### Node failover
 
@@ -95,7 +103,9 @@ However, once the Redis Enterprise cluster manager completes the failover proces
 
 Figure 5 illustrates the process when Node 1 fails. The proxy of Node 2 becomes active and Redis Enterprise promotes the replica to become the master. The database is now available again, so clients can reconnect without being aware of this topology change. The cluster manager also finds a healthy node (Node 3), in which Redis Enterprise creates a new replica shard.
 
-![database proxy endpoint with three clients](/images/blog/7162b47b4d22da31eae2e878481837b320794345-960x540.webp)
+![database proxy endpoint with three clients](/images/site-mirror/7162b47b4d22da31eae2e878481837b320794345-960x540.webp)
+
+*Figure 5: Automatic node failover, in which clients reconnect to the same database endpoint.*
 
 ## Yes, it’s that efficient
 
@@ -115,7 +125,9 @@ The following results demonstrate just how fast Redis Enterprise is. The benchma
 | 400,000 | 2000 | 16 | 0.406 | 2.791 |
 | 800,000 | 2000 | 32 | 0.398 | 2.907 |
 
-![P50 latency analysis per target throughput on Redis Enterprise Cloud](/images/blog/9566e07a2904bdcc14d8aab6df45a663d750606f-1299x670.webp)
+![P50 latency analysis per target throughput on Redis Enterprise Cloud](/images/site-mirror/9566e07a2904bdcc14d8aab6df45a663d750606f-1299x670.webp)
+
+*Figure 6: p50 latency benchmark results.*
 
 ## Next steps
 

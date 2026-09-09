@@ -14,7 +14,7 @@ hidden: true
 
 *By John Noonan, Senior Product Marketing Manager · Published 18 February 2026 · updated 21 May 2026*
 
-![Redis](/images/blog/972d7facef6029f4b2d783bc8e843f1dcd8544c1-1200x628.webp)
+![Redis](/images/site-mirror/972d7facef6029f4b2d783bc8e843f1dcd8544c1-1200x628.webp)
 
 Many financial institutions use AI somewhere: fraud detection, chatbots, document processing. The list goes on, and the investments are growing.
 

@@ -14,9 +14,9 @@ hidden: true
 
 *By Itamar Haber, Technology Evangelist · Published 19 February 2015 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/a0305f5acbb37c0547140485c6003218b9b35ead-140x92.webp)
+![Blog tile image](/images/site-mirror/a0305f5acbb37c0547140485c6003218b9b35ead-140x92.webp)
 
-![](/images/blog/ec34da6549bfbc1f03118bed8557bdcf1623df05-650x332.webp)
+![](/images/site-mirror/ec34da6549bfbc1f03118bed8557bdcf1623df05-650x332.webp)
 
 I like people and I like numbers, so it gives me great pleasure to announce that our customers have carried us across the four thousand mark. Based on the data, in little less than two years we have been experiencing Moore’s Law-like growth as shown by the graph above.
 

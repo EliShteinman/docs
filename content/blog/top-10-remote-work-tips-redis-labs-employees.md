@@ -14,7 +14,7 @@ hidden: true
 
 *By Haley Kim, Associate Content Producer · Published 2 October 2020 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/e83a7401af04c62257ec0818e2fb6a160bdf32a7-5280x3520.webp)
+![Blog tile image](/images/site-mirror/e83a7401af04c62257ec0818e2fb6a160bdf32a7-5280x3520.webp)
 
 While the last few months have been full of excitement here at Redis—including our first fully virtual [RedisConf](/blog/the-experience-you-missed-at-redisconf-2020-takeaway/) in May and the announcement of a new [funding round](/press/redis-labs-raises-100-million-series-f-financing/) in August—needless to say, having the entire team work remotely has been a big adjustment for many staffers.
 

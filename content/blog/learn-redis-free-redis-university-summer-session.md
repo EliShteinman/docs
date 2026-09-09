@@ -15,7 +15,7 @@ hidden: true
 
 *By Kyle Banker, Sr. Director, Field Engineering · Published 29 May 2019 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/63ae20ad75e2e492994fc2987cc51c77aaeb5db7-660x440.webp)
+![Blog tile image](/images/site-mirror/63ae20ad75e2e492994fc2987cc51c77aaeb5db7-660x440.webp)
 
 Summer is a great time for relaxing, unwinding, and picking up a good book. And, personally, I always try to learn something new. But I’ve found it has to be manageable! I admit to failing miserably the summer I tried taking on even the abridged version of [Edward Gibbon’s masterpiece on the Roman Empire](https://en.wikipedia.org/wiki/The_History_of_the_Decline_and_Fall_of_the_Roman_Empire). I had a lot more success several summers later when I read (and did) [The Little Schemer](https://mitpress.mit.edu/books/little-schemer-fourth-edition), a slim volume you might consider the unofficial “gateway drug” to functional programming.
 

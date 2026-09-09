@@ -14,9 +14,9 @@ hidden: true
 
 *By Redis   · Published 1 October 2013 · updated 13 August 2026*
 
-![Blog tile image](/images/blog/1b7a2cc681b5b8abff3db9344d3ad13638b4e89d-635x200.webp)
+![Blog tile image](/images/site-mirror/1b7a2cc681b5b8abff3db9344d3ad13638b4e89d-635x200.webp)
 
-![](/images/blog/1b7a2cc681b5b8abff3db9344d3ad13638b4e89d-635x200.webp)
+![](/images/site-mirror/1b7a2cc681b5b8abff3db9344d3ad13638b4e89d-635x200.webp)
 
 ### Thankfully, no humans are enslaved by Redis.
 

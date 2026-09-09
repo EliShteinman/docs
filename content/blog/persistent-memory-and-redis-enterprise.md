@@ -15,7 +15,7 @@ hidden: true
 
 *By Priya Balakrishnan, Sr. Director of Product and Partner Marketing · Published 25 April 2018 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 ## Redis on Flash with Intel® persistent memory based on 3D Xpoint™ NVDIMM — more data per server and better performance than ever before!
 

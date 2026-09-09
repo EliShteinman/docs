@@ -14,7 +14,7 @@ hidden: true
 
 *By Steve Lorello, Developer Advocate · Published 21 May 2024 · updated 3 July 2025*
 
-![Blog tile image](/images/blog/5d463137a2025e41a24063a3e2cdd3732edbe744-772x552.webp)
+![Blog tile image](/images/site-mirror/5d463137a2025e41a24063a3e2cdd3732edbe744-772x552.webp)
 
 **Redis now integrates with Kernel Memory, allowing any dev to build high-performance AI apps with Semantic Kernel.**
 
@@ -80,7 +80,7 @@ We have a pre-built dataset of beer information that we can add to Kernel Memory
 
 To access the front end, navigate to http://localhost:3000., From there, you can ask the bot for recommendations:
 
-![](/images/blog/c7ec83c94dff21be83a477e030d9bcb15f143b46-1775x1016.webp)
+![](/images/site-mirror/c7ec83c94dff21be83a477e030d9bcb15f143b46-1775x1016.webp)
 
 ## How does this all work?
 

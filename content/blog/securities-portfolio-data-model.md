@@ -16,7 +16,7 @@ hidden: true
 
 *By Prasanna Rajagopal, Abhishek Srivastava · Published 1 March 2023 · updated 21 May 2026*
 
-![Blog tile image](/images/blog/31ab3a1ec07bc65b90d663de9a9599d05570f03a-772x550.webp)
+![Blog tile image](/images/site-mirror/31ab3a1ec07bc65b90d663de9a9599d05570f03a-772x550.webp)
 
 **This tutorial, which shows how to optimize a brokerage application, demonstrates what you can accomplish using Redis with its JSON data structure and enhanced query capabilities.**
 
@@ -42,7 +42,7 @@ We modeled various brokerage entities (Exhibit 1) using JSON. Each investor’s 
 
 **Exhibit 1: Securities Portfolio Data Model**
 
-![sample implementation diagram](/images/blog/f9ccb96f0af76bb47666342c13333845660cee6d-318x349.webp)
+![sample implementation diagram](/images/site-mirror/f9ccb96f0af76bb47666342c13333845660cee6d-318x349.webp)
 
 Each JSON document has a corresponding key, the format of which would be:
 

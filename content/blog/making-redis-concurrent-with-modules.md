@@ -15,7 +15,7 @@ hidden: true
 
 *By Dvir Dukhan · Published 2 August 2017 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/bb8a4a1e5755a408f48749d0168eef5599ad5e92-600x371.webp)
+![Blog tile image](/images/site-mirror/bb8a4a1e5755a408f48749d0168eef5599ad5e92-600x371.webp)
 
 ## 1. Is Redis Single-Threaded?
 
@@ -57,7 +57,9 @@ To allow concurrency, we adopted the following design:
 
 Thus the operating system’s scheduler makes sure all query threads get CPU time to run. While one is running the rest wait idly, but since execution is yielded about 5,000 times a second, it creates the effect of concurrency. Fast queries will finish in one go without yielding execution, slow ones will take many iteration to finish, but will allow other queries to run concurrently.
 
-![Figure 1: Serial vs. Concurrent Search](/images/blog/b24871dd699c52419b8df6e2e20c34ddc2d1614d-704x563.webp)
+![Figure 1: Serial vs. Concurrent Search](/images/site-mirror/b24871dd699c52419b8df6e2e20c34ddc2d1614d-704x563.webp)
+
+*On the left-hand side, all queries are handled one after the other. On the right side, each query is given it time-slice to run. Notice that while the total time for all queries remain the same, queries 3 and 4 finish much sooner.*
 
 The same approach is applied to indexing. If a document is so big that tokenizing and indexing it will block Redis for a long time – we break it into many smaller iterations and allow Redis to do other things instead of blocking for a very long time. In fact, in the case of indexing, there is enough work to be done in parallel using multiple cores, namely tokenizing and normalizing the document. This is especially effective for very big documents.
 
@@ -93,9 +95,13 @@ I’ve benchmarked both versions of the module – simple single threaded, and c
 
 ### The Results:
 
-![](/images/blog/6814509d2eb291b0e31174734593691a55fab8b5-587x363.webp)
+![](/images/site-mirror/6814509d2eb291b0e31174734593691a55fab8b5-587x363.webp)
 
-![](/images/blog/bb8a4a1e5755a408f48749d0168eef5599ad5e92-600x371.webp)
+*On the left-hand side, when running in a single thread, the throughput is bound by the slower query. On the right hand side, the same load in concurrent mode makes the fast query run 60 times faster!*
+
+![](/images/site-mirror/bb8a4a1e5755a408f48749d0168eef5599ad5e92-600x371.webp)
+
+*While we can see that light queries are significantly slower when running in concurrent mode without contention, they are still very fast. But in contention, we see that lightweight queries run much faster in concurrent mode, since they are not blocked by the slow queries, as in single thread mode. In single thread mode, we are only as fast as the slowest queries.*
 
 ## 7. Parting Words
 

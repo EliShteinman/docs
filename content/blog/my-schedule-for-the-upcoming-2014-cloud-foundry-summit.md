@@ -14,7 +14,7 @@ hidden: true
 
 *By Redis   · Published 28 May 2014 · updated 27 March 2025*
 
-![Blog tile image](/images/blog/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
+![Blog tile image](/images/site-mirror/0073e867b4e64f59de9047fdcde04295ba647e5c-772x550.webp)
 
 In less than two weeks, Pivotal is holding its annual [Cloud Foundry summit](https://cfsummit.com/) in San Francisco and our team is gearing up for the event. Cloud Foundry has been and will continue to be a pivotal element in our company’s vision, and we’re already using it extensively with [Pivotal Web Services](/blog/now-generally-available-on-pivotal-web-services).
 

@@ -16,7 +16,7 @@ hidden: true
 
 *By Steve Lorello, Developer Advocate · Published 8 December 2021 · updated 1 September 2026*
 
-![Blog tile image](/images/blog/3317475c449f3066691f0e8f9e1b2b562c195f99-772x550.webp)
+![Blog tile image](/images/site-mirror/3317475c449f3066691f0e8f9e1b2b562c195f99-772x550.webp)
 
 ## A fluent API and object model for .NET and Redis
 
