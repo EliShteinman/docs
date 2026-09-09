@@ -3,6 +3,8 @@
 from pathlib import Path
 
 from build.blog_mirror.hugo import (
+    author_names,
+    byline,
     permalink,
     file_name,
     front_matter,
@@ -48,7 +50,8 @@ def test_source_categories_do_not_land_in_the_docs_taxonomy():
 
 
 def test_authors_are_carried_when_the_source_names_them():
-    assert "- \"Redis\"" in front_matter({"title": "X", "authors": ["Redis"]})
+    post = {"title": "X", "authors": [{"firstName": "Tony", "lastName": "Wu"}]}
+    assert '- "Tony Wu"' in front_matter(post)
 
 
 def test_a_post_with_no_description_omits_the_key_rather_than_emptying_it():
@@ -111,3 +114,55 @@ def test_the_permalink_is_written_into_the_frontmatter():
 
 def test_a_post_with_no_slug_falls_back_to_the_section_root():
     assert permalink("") == "/blog/"
+
+
+AUTHOR = {"firstName": "Tony", "lastName": "Wu", "role": "Sr. Solution Architect"}
+
+
+def test_an_author_name_is_built_from_the_two_fields_that_exist():
+    """The author document has no `name`; asking for one yields no bylines at all."""
+    assert author_names({"authors": [AUTHOR]}) == ["Tony Wu"]
+
+
+def test_an_author_with_only_a_first_name_still_counts():
+    assert author_names({"authors": [{"firstName": "Antirez"}]}) == ["Antirez"]
+
+
+def test_a_post_with_no_authors_yields_no_names():
+    assert author_names({}) == []
+
+
+def test_the_byline_carries_who_wrote_it_and_when():
+    line = byline({"authors": [AUTHOR], "publishDate": "2020-06-29T10:00:00Z"})
+    assert "By Tony Wu" in line and "Published 29 June 2020" in line
+
+
+def test_the_role_is_shown_for_a_single_author():
+    assert "Sr. Solution Architect" in byline({"authors": [AUTHOR]})
+
+
+def test_an_update_later_than_publication_is_shown():
+    line = byline({"publishDate": "2020-06-29T00:00:00Z", "_updatedAt": "2025-03-27T00:00:00Z"})
+    assert "updated 27 March 2025" in line
+
+
+def test_an_update_on_the_publication_day_is_not_repeated():
+    line = byline({"publishDate": "2020-06-29T00:00:00Z", "_updatedAt": "2020-06-29T23:00:00Z"})
+    assert "updated" not in line
+
+
+def test_a_post_with_no_credits_at_all_gets_no_byline():
+    assert byline({}) == ""
+
+
+def test_a_malformed_date_does_not_reach_the_byline():
+    assert byline({"publishDate": "not-a-date"}) == ""
+
+
+def test_the_byline_is_written_into_the_body_so_it_travels_with_the_content():
+    out = render_post({"title": "T", "authors": [AUTHOR]}, "Body.")
+    assert "By Tony Wu" in out.split("---", 2)[2]
+
+
+def test_the_source_update_time_becomes_hugos_lastmod():
+    assert "lastmod: 2025-03-27" in front_matter({"title": "X", "_updatedAt": "2025-03-27T22:15:06Z"})

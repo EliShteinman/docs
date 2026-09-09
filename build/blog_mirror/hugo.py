@@ -54,6 +54,68 @@ def _yaml_value(value: object) -> str:
 
 SUMMARY_LENGTH = 200
 
+MONTHS = (
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+)
+
+
+def author_names(post: dict) -> list[str]:
+    """Return each author's full name.
+
+    Built from `firstName` and `lastName` because an author document has no
+    `name` field -- every post in the source has an author, and asking for the
+    field that does not exist yields a mirror with no bylines at all.
+    """
+    names = []
+    for author in post.get("authors") or []:
+        if not isinstance(author, dict):
+            continue
+        full = " ".join(part for part in (author.get("firstName"), author.get("lastName")) if part)
+        if full:
+            names.append(full)
+    return names
+
+
+def _human_date(stamp: str) -> str:
+    """Return "29 June 2020" for an ISO timestamp, or "" if it is not one."""
+    parts = (stamp or "")[:10].split("-")
+    if len(parts) != 3 or not all(part.isdigit() for part in parts):
+        return ""
+    year, month, day = (int(part) for part in parts)
+    if not 1 <= month <= 12:
+        return ""
+    return f"{day} {MONTHS[month - 1]} {year}"
+
+
+def byline(post: dict) -> str:
+    """Return the credit line placed at the top of a mirrored post.
+
+    Written into the body rather than left to a template. A reader has to be
+    able to tell how old a post is and who wrote it, and putting it in the
+    content means it travels into the markdown and JSON outputs and into search
+    snippets too -- not only into one theme's rendering of the page.
+    """
+    parts = []
+    people = author_names(post)
+    if people:
+        roles = [
+            a.get("role")
+            for a in post.get("authors") or []
+            if isinstance(a, dict) and a.get("role")
+        ]
+        credit = "By " + ", ".join(people)
+        if len(people) == 1 and roles:
+            credit += f", {roles[0]}"
+        parts.append(credit)
+    published = _human_date(post.get("publishDate") or "")
+    if published:
+        parts.append(f"Published {published}")
+    updated = _human_date(post.get("_updatedAt") or "")
+    if updated and updated != published:
+        parts.append(f"updated {updated}")
+    return "*" + " \u00b7 ".join(parts) + "*" if parts else ""
+
 
 def summarize(body: str) -> str:
     """Return a one-line description drawn from the post's first paragraph.
@@ -114,13 +176,16 @@ def front_matter(post: dict, description: str = "") -> str:
         # under /categories/ alongside the documentation's.
         lines.append("blogCategories:")
         lines += [f"- {_yaml_value(c)}" for c in categories]
-    authors = [a for a in (post.get("authors") or []) if a]
-    if authors:
+    names = author_names(post)
+    if names:
         lines.append("authors:")
-        lines += [f"- {_yaml_value(a)}" for a in authors]
-    # Kept so a later sync can tell what changed without re-reading every file.
-    if post.get("_updatedAt"):
-        lines.append(f"sourceUpdated: {_yaml_value(post['_updatedAt'])}")
+        lines += [f"- {_yaml_value(name)}" for name in names]
+    # Hugo's own field for "changed since publication", so the sitemap and any
+    # template that asks for .Lastmod get the source's answer rather than the
+    # date the mirror happened to run.
+    updated = (post.get("_updatedAt") or "")[:10]
+    if updated:
+        lines.append(f"lastmod: {updated}")
     lines.append("hidden: true")
     lines.append("---")
     return "\n".join(lines)
@@ -128,7 +193,13 @@ def front_matter(post: dict, description: str = "") -> str:
 
 def render_post(post: dict, body: str) -> str:
     """Return the full markdown file contents for a post."""
-    return front_matter(post, summarize(body)) + "\n\n" + body.strip() + "\n"
+    described = summarize(body)
+    credit = byline(post)
+    parts = [front_matter(post, described)]
+    if credit:
+        parts.append(credit)
+    parts.append(body.strip())
+    return "\n\n".join(parts) + "\n"
 
 
 def write_post(directory: Path, name: str, contents: str) -> Path:

@@ -4,6 +4,11 @@ The dataset is public, so this needs no credentials. Documents come back whole
 via GROQ; the only shaping done here is dereferencing authors and categories,
 which are stored as references and would otherwise arrive as opaque ids.
 
+An author document has no `name`: it carries `firstName`, `lastName` and
+`role`, so the three are projected and joined on this side. Asking for `name`
+returns null for every post, which is quiet enough to ship a mirror with no
+bylines at all.
+
 Paged rather than fetched in one request: the API caps a response, and 1,100
 posts of Portable Text is more than one response can carry.
 """
@@ -31,7 +36,8 @@ _QUERY = (
     '*[_type=="{doc_type}"]|order(_id)[{start}...{end}]'
     "{{_id,_updatedAt,title,tagline,publishDate,"
     '"slug":slug.current,content,image,'
-    '"authors":author[]->name,"categories":categories[]->title}}'
+    '"authors":author[]->{firstName,lastName,role},'
+    '"categories":categories[]->title}}'
 )
 
 USER_AGENT = "redis-docs-airgap-blog-mirror/1.0"
