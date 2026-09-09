@@ -36,7 +36,7 @@ _QUERY = (
     '*[_type=="{doc_type}"]|order(_id)[{start}...{end}]'
     "{{_id,_updatedAt,title,tagline,publishDate,"
     '"slug":slug.current,content,image,'
-    '"authors":author[]->{firstName,lastName,role},'
+    '"authors":author[]->{{firstName,lastName,role}},'
     '"categories":categories[]->title}}'
 )
 
