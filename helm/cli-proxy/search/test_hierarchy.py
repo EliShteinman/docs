@@ -72,3 +72,16 @@ def test_a_page_with_no_ancestors_is_just_the_root_and_itself():
 def test_a_trailing_slash_resolves_to_the_same_trail():
     index = _redisvl_index()
     assert index.crumbs_for("/develop/ai/") == index.crumbs_for("/develop/ai")
+
+
+def test_a_section_can_head_its_own_group_instead_of_the_docs_root():
+    """What the mirrored blog uses so its posts are not filed under the docs heading."""
+    index = BreadcrumbIndex.from_documents(
+        ROOT, [_document("/blog", "Blog"), _document("/blog/x", "A post")]
+    )
+    assert index.crumbs_for("/blog/x", root="") == ["Blog", "A post"]
+
+
+def test_an_explicit_root_replaces_the_configured_one():
+    index = BreadcrumbIndex.from_documents(ROOT, [_document("/blog", "Blog")])
+    assert index.crumbs_for("/blog", root="Redis Blog")[0] == "Redis Blog"

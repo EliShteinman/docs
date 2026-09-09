@@ -6,9 +6,10 @@ airgap-build.yml). The feed is read rather than the per-page index.json files
 because that script already dropped what must not be indexed -- redirect
 tombstones -- so the filtering does not get reimplemented here.
 
-Adding the blog later means adding a reader in this module and nothing else.
-Document carries `source` from the first day so the index can tell docs pages
-from blog posts without being rebuilt for it.
+The mirrored blog arrives through the same feed rather than a second one: its
+posts are Hugo pages like any other, so the build already writes them into
+docs.ndjson. What tells them apart is where they live on the site, which is
+what `source` records.
 """
 
 import json
@@ -24,6 +25,10 @@ from search.product import product_of
 LOGGER = logging.getLogger("docs_search.sources")
 
 DOCS_SOURCE = "docs"
+BLOG_SOURCE = "blog"
+
+# The section the mirrored blog is published under (build/blog_mirror).
+BLOG_PREFIX = "/blog/"
 
 # The feed keeps its links as markdown, and their targets carry the
 # __DOCS_BASE_URL__ placeholder that nginx substitutes at response time
@@ -59,6 +64,15 @@ def clean_body(content: str) -> str:
     return _WHITESPACE.sub(" ", without_noise).strip()
 
 
+def source_of(path: str) -> str:
+    """Return which body of content a page belongs to, from where it is published.
+
+    The mirrored blog shares the feed with the documentation, so a reader who
+    wants one and not the other needs them distinguishable at query time.
+    """
+    return BLOG_SOURCE if path.startswith(BLOG_PREFIX) else DOCS_SOURCE
+
+
 def read_feed(path: Path | str) -> Iterator[dict]:
     """Yield each parsed record of an NDJSON feed, skipping unreadable lines.
 
@@ -76,8 +90,12 @@ def read_feed(path: Path | str) -> Iterator[dict]:
                 LOGGER.warning("skipping malformed feed record at line %d", number)
 
 
-def to_document(record: dict, source: str = DOCS_SOURCE) -> Document | None:
-    """Build a Document from a feed record, or None when the record cannot be used."""
+def to_document(record: dict, source: str = "") -> Document | None:
+    """Build a Document from a feed record, or None when the record cannot be used.
+
+    `source` is derived from the page's own path unless the caller names one,
+    which a future separate feed would.
+    """
     url = record.get("url") or ""
     title = record.get("title") or ""
     if not url or not title:
@@ -92,11 +110,11 @@ def to_document(record: dict, source: str = DOCS_SOURCE) -> Document | None:
         # before that step simply has none, and the tag is left empty.
         version=record.get("version") or "",
         product=product_of(path),
-        source=source,
+        source=source or source_of(path),
     )
 
 
-def load_documents(path: Path | str, source: str = DOCS_SOURCE) -> list[Document]:
+def load_documents(path: Path | str, source: str = "") -> list[Document]:
     """Read `path` and return every usable Document in it."""
     documents = [
         document
