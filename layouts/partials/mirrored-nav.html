@@ -1,19 +1,22 @@
-{{/* Sidebar box for the content mirrored from redis.io (build/site_mirror).
+{{/* Sidebar entry for the content mirrored from redis.io (build/site_mirror).
 
      docs-nav.html hardcodes its boxes to five sections, matched by
      $navRoot.LinkTitle against the literals "Develop", "Integrate", "Operate"
      and "Commands". A section it does not name gets no box and no tree, so
-     before this partial the mirrored sections were reachable only by typing
-     their URL or finding them in search — which is exactly the wrong way round
-     for material the reader came to the site to browse.
+     before this partial the mirrored sections were reachable only by search or
+     by typing their URL — the wrong way round for material a reader came to
+     browse.
 
-     Kept in a partial of its own, and included from docs-nav.html with a single
-     line, so the fork's edit to that upstream file stays one line wide.
+     It is a <details>, not another box, and that is not cosmetic. The sidebar
+     is a fixed-height flex column in which the active section's box grows to
+     fill what is left. A tall always-open sibling leaves nothing to fill:
+     adding one as a plain box collapsed the Develop tree to two pixels and
+     hid the documentation outright. Closed, this costs one row; it opens by
+     itself when the reader is inside one of the sections it lists, and its
+     panel is capped and scrolls rather than growing without limit.
 
-     Each entry expands into its own tree when the reader is inside it, matching
-     what the boxes above do. The sections whose pages are hidden (the blog,
-     the tutorials, the customer stories) have no tree to expand: their index
-     page is the list.
+     Kept in its own partial so the fork's edit to that upstream file stays a
+     single include line.
 */}}
 {{ $navRoot := cond (eq .Site.Home.Type "docs") .Site.Home .FirstSection -}}
 {{ $sections := slice
@@ -26,24 +29,25 @@
      (dict "path" "customers"             "label" "Customer stories")
      (dict "path" "blog"                  "label" "Blog")
 -}}
+{{/* Open when the reader is already inside one of them. */}}
+{{ $inside := false -}}
+{{ range $sections -}}
+  {{ with site.GetPage .path -}}
+    {{ if eq $navRoot.RelPermalink .RelPermalink }}{{ $inside = true }}{{ end -}}
+  {{ end -}}
+{{ end -}}
 {{/* Every entry is fork-only content, so none of it belongs in a downloadable
      product bundle: data-offline-hide keeps it out (build/make_doc_bundles.py). */}}
-<div data-offline-hide class="min-h-0 border border-opacity-50 border-redis-ink-900 rounded-md flex flex-col shrink-0 mt-4">
-  <div class="px-6 py-3 text-sm opacity-70 border-b border-opacity-50 border-redis-ink-900">Mirrored from redis.io</div>
-  {{ range $index, $entry := $sections }}
-    {{ $section := site.GetPage $entry.path -}}
-    {{ if $section -}}
-      {{ $active := eq $navRoot.RelPermalink $section.RelPermalink -}}
-      <a class='px-6 py-3 hover:bg-redis-pen-200 {{ if gt $index 0 }}border-t border-redis-ink-900 border-opacity-50{{ end }} {{ if $active }}font-bold{{ end }}'
-         href='{{ $section.RelPermalink }}'>{{ $entry.label }}</a>
-      {{ if $active -}}
-        {{ $children := (union $section.Pages $section.Sections).ByWeight -}}
-        {{ if gt (len $children) 0 -}}
-          <ul class="md:block overflow-y-auto grow pr-6 border-t border-opacity-50 border-redis-ink-900">
-            {{ template "li" (dict "page" $ "pages" $children) }}
-          </ul>
-        {{ end -}}
+<details data-offline-hide class="shrink-0 border border-opacity-50 border-redis-ink-900 rounded-md" {{ if $inside }}open{{ end }}>
+  <summary class="px-6 py-3 cursor-pointer select-none hover:bg-redis-pen-200 rounded-md">Mirrored from redis.io</summary>
+  <div class="max-h-40 overflow-y-auto border-t border-opacity-50 border-redis-ink-900">
+    {{ range $sections }}
+      {{ $section := site.GetPage .path -}}
+      {{ if $section -}}
+        {{ $active := eq $navRoot.RelPermalink $section.RelPermalink -}}
+        <a class='block px-6 py-2 hover:bg-redis-pen-200 {{ if $active }}font-bold{{ end }}'
+           href='{{ $section.RelPermalink }}'>{{ .label }}</a>
       {{ end -}}
-    {{ end -}}
-  {{ end }}
-</div>
+    {{ end }}
+  </div>
+</details>

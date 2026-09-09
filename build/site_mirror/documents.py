@@ -126,7 +126,8 @@ def _index(title: str, blurb: str, url: str = "") -> str:
         f"description: {json.dumps(blurb, ensure_ascii=False)}\n"
         + (f"url: {url}\n" if url else "")
         + "---\n\n"
-        f"{blurb}\n\n"
+        # The description is already rendered above the body by the layout;
+        # repeating it here printed it twice on every index page.
         "Mirrored from redis.io by `build/site_mirror` -- edits here are "
         "overwritten by the next sync.\n"
     )
