@@ -16,7 +16,7 @@ import sys
 from resp import RespConnection, RespError
 from search import config
 from search.hierarchy import BreadcrumbIndex
-from search.sources import Document, load_documents
+from search.sources import BLOG_SOURCE, Document, load_documents
 import json
 
 LOGGER = logging.getLogger("docs_search.indexer")
@@ -112,7 +112,11 @@ def index_documents(
     for start in range(0, len(documents), batch_size):
         batch = documents[start : start + batch_size]
         for document in batch:
-            fields = _document_fields(document, breadcrumbs.crumbs_for(document.doc_id))
+            # The blog heads its own group rather than sitting under the docs
+            # root crumb: its trail already starts with the section's own title.
+            root = "" if document.source == BLOG_SOURCE else None
+            crumbs = breadcrumbs.crumbs_for(document.doc_id, root)
+            fields = _document_fields(document, crumbs)
             connection.send_command(["HSET", key_prefix + document.doc_id, *fields])
         for document in batch:
             reply = connection.read_reply()

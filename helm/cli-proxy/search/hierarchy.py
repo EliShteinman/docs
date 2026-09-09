@@ -32,15 +32,21 @@ class BreadcrumbIndex:
     def from_documents(cls, root_crumb: str, documents: Iterable) -> "BreadcrumbIndex":
         return cls(root_crumb, {document.doc_id: document.title for document in documents})
 
-    def crumbs_for(self, url: str) -> list[str]:
+    def crumbs_for(self, url: str, root: str | None = None) -> list[str]:
         """Return the breadcrumb trail for `url`, root first and the page itself last.
+
+        `root` replaces the configured root crumb, or removes it when empty.
+        The mirrored blog uses that: it is not documentation, and heading its
+        own group in the modal is the difference between a reader seeing
+        "Blog -> <post>" and seeing blog posts filed under the docs heading.
 
         A path segment with no page of its own -- a directory that never got an
         _index -- contributes nothing. Its level is skipped rather than filled
         with a placeholder: a gap shifts the row's two labels by one, which is
         wrong, but a placeholder is wrong and also visible.
         """
-        trail = [self._root_crumb]
+        crumb = self._root_crumb if root is None else root
+        trail = [crumb] if crumb else []
         for ancestor in ancestors(to_path(url)):
             title = self._titles.get(ancestor)
             if title:

@@ -25,6 +25,7 @@
 {{- $valFamilies := .Values.externalLinks.families | default dict -}}
 {{- $overrides := .Values.externalLinks.overrides | default dict -}}
 {{- $valMirrors := .Values.externalLinks.gitMirrors | default dict -}}
+{{- $valSites := .Values.externalLinks.siteMirrors | default dict -}}
 
 {{- $effective := dict -}}
 {{- range $famName, $famDef := $catalog.families -}}
@@ -127,6 +128,26 @@
     {{- $_ := set $mirrors $name $resolved -}}
   {{- end -}}
 {{- end -}}
+{{- /*
+  Resolve site-mirrors: whole sites carried inside this image, rather than Git
+  repositories mirrored elsewhere. Each catalog entry lists every URL prefix
+  the upstream site is spelled with (the blog answers to four domains) and one
+  local `to` path. Unlike git-mirrors these default to enabled, because the
+  destination ships in the image rather than being infrastructure a deployment
+  has to stand up first.
+*/ -}}
+{{- $sites := dict -}}
+{{- $catalogSites := index $catalog "site-mirrors" | default dict -}}
+{{- range $name, $entry := $catalogSites -}}
+  {{- $enabled := $entry.enabled | default false -}}
+  {{- $to := $entry.to | default "" -}}
+  {{- $valSite := index $valSites $name | default dict -}}
+  {{- if hasKey $valSite "enabled" }}{{- $enabled = $valSite.enabled -}}{{- end -}}
+  {{- if hasKey $valSite "to" }}{{- $to = $valSite.to -}}{{- end -}}
+  {{- if and $enabled (ne $to "") -}}
+    {{- $_ := set $sites $name (dict "from" $entry.from "to" $to) -}}
+  {{- end -}}
+{{- end -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -159,7 +180,8 @@ data:
         enabled: {{ if include "redis-docs.downloadsActive" . }}true{{ else }}false{{ end }}
       },
       externalLinks: {{ $effective | toJson }},
-      gitMirrors: {{ $mirrors | toJson }}
+      gitMirrors: {{ $mirrors | toJson }},
+      siteMirrors: {{ $sites | toJson }}
     };
 
     // Documentation downloads: the widget's markup ships in every page, but the
@@ -264,6 +286,76 @@ data:
           var a = anchors[i];
           var newHref = translateHref(a.getAttribute('href'));
           if (newHref !== null) a.setAttribute('href', newHref);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { rewriteAll(); });
+      } else {
+        rewriteAll();
+      }
+    })();
+
+    // Site mirroring: rewrite links to a site this image carries a copy of.
+    //
+    // Unlike the git-mirror handler above, nothing about the path is
+    // translated -- the mirror publishes the same slugs the upstream site
+    // does, so the prefix is swapped and the rest is left alone.
+    //
+    // Matching ignores the scheme and the case of the host, because the
+    // documentation links the blog as http and https, and across four domains
+    // (redis.io, redis.com, redislabs.com, and an /en/ locale prefix). Matching
+    // only the canonical spelling would miss more than half of them.
+    (function () {
+      var sites = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.siteMirrors) || {};
+      var names = Object.keys(sites);
+      if (names.length === 0) return;
+
+      var SCHEME = /^https?:\/\//i;
+
+      function prefixesOf(entry) {
+        var from = entry.from || [];
+        return typeof from === 'string' ? [from] : from;
+      }
+
+      // A prefix must end at a path boundary: `redis.io/blog` matches
+      // `/blog/x` and `/blog`, and must not match `/blogging-guidelines`.
+      function endsAtBoundary(rest) {
+        return rest === '' || rest.charAt(0) === '/' || rest.charAt(0) === '#' || rest.charAt(0) === '?';
+      }
+
+      function translateHref(href) {
+        if (!href) return null;
+        var scheme = (href.match(SCHEME) || [''])[0];
+        if (!scheme) return null;
+        var bare = href.slice(scheme.length).toLowerCase();
+        for (var i = 0; i < names.length; i++) {
+          var entry = sites[names[i]];
+          if (!entry || !entry.to) continue;
+          var prefixes = prefixesOf(entry);
+          for (var j = 0; j < prefixes.length; j++) {
+            var prefix = String(prefixes[j]).replace(SCHEME, '').toLowerCase();
+            if (!prefix || bare.indexOf(prefix) !== 0) continue;
+            var rest = href.slice(scheme.length + prefix.length);
+            if (!endsAtBoundary(rest)) continue;
+            // Hugo publishes each page as a directory, so a link without a
+            // trailing slash costs a redirect before the page is served.
+            if (rest && rest.charAt(0) === '/' && rest.indexOf('#') === -1 &&
+                rest.indexOf('?') === -1 && rest.charAt(rest.length - 1) !== '/') {
+              rest += '/';
+            }
+            return entry.to + (rest || '/');
+          }
+        }
+        return null;
+      }
+
+      function rewriteAll(root) {
+        var anchors = (root || document).querySelectorAll('a[href]');
+        for (var i = 0; i < anchors.length; i++) {
+          var anchor = anchors[i];
+          var updated = translateHref(anchor.getAttribute('href'));
+          if (updated !== null) anchor.setAttribute('href', updated);
         }
       }
 

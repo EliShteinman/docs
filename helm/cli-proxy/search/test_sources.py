@@ -89,3 +89,17 @@ def test_a_second_source_is_tagged_so_it_can_be_told_apart(tmp_path):
 def test_the_link_keeps_the_trailing_slash_and_the_key_does_not():
     document = to_document({"url": "https://redis.io/operate/rs/", "title": "X"})
     assert (document.url, document.doc_id) == ("/operate/rs/", "/operate/rs")
+
+
+def test_a_mirrored_blog_post_is_tagged_as_blog():
+    """Blog posts share the feed with the docs; where they live tells them apart."""
+    document = to_document({"url": "/blog/redisgraph-eol/", "title": "X"})
+    assert document.source == "blog"
+
+
+def test_a_documentation_page_is_tagged_as_docs():
+    assert to_document({"url": "/operate/rs/x", "title": "X"}).source == "docs"
+
+
+def test_a_blog_post_carries_no_product_so_it_is_not_hidden_by_the_filter():
+    assert to_document({"url": "/blog/x/", "title": "X"}).product == ""

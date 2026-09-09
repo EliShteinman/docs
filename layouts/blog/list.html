@@ -1,0 +1,38 @@
+{{/* Index for the mirrored blog (build/blog_mirror).
+
+     Hugo picks layouts/<section>/list.html for a section page and falls back to
+     layouts/_default/section.html, which in this theme is a stub — so without
+     this file /blog/ renders blank. The docs sections each have their own
+     list.html for the same reason.
+
+     Posts are listed here and nowhere else: every one of them sets
+     `hidden: true`, which keeps 1,100 entries out of the sidebar in
+     docs-nav.html. This page is what stops them being unreachable by browsing.
+*/}}
+{{ define "main" }}
+  <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
+    {{ partial "docs-nav.html" . }}
+    <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
+      {{ partial "breadcrumbs" . }}
+      <section class="prose w-full py-12 max-w-none">
+        <h1>{{ .Title }}</h1>
+        {{ with .Params.description }}<p class="text-lg -mt-5 mb-10">{{ . | markdownify }}</p>{{ end }}
+        {{ .Content }}
+
+        {{ $posts := .Pages.ByDate.Reverse }}
+        <p class="text-sm">{{ len $posts }} posts.</p>
+        <nav>
+          {{ range $posts }}
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <p>
+              {{ with .Date }}<span class="text-sm">{{ .Format "2 January 2006" }}</span>{{ end }}
+              {{ with .Description }}<br />{{ . }}{{ end }}
+            </p>
+          {{ end }}
+        </nav>
+        {{ partial "feedback.html" . }}
+      </section>
+    </div>
+    {{ partial "scripts.html" . }}
+  </main>
+{{ end }}
