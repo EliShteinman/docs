@@ -1,0 +1,73 @@
+---
+title: "Feature Stores for Real-time AI/ML: Benchmarks, Architectures, and Case Studies"
+linkTitle: "Feature Stores for Real-time AI/ML: Benchmarks, Architectures, and Case Studies"
+url: "/blog/feature-stores-for-real-time-artificial-intelligence-and-machine-learning/"
+description: "Real-time artificial intelligence / machine learning (AI/ML) use cases, such as fraud prevention and recommendation, are on the rise, and feature stores play a key role in deploying them..."
+date: 2022-04-07
+blogCategories:
+- "Tech"
+authors:
+- "Nava Levy"
+lastmod: 2026-05-26
+hidden: true
+---
+
+*By Nava Levy, Developer Advocate, Data Science & ML Operations · Published 7 April 2022 · updated 26 May 2026*
+
+![Blog tile image](/images/blog/bf06bd62eb0cdad539214994a4674468e34b0d73-772x550.webp)
+
+Real-time artificial intelligence / machine learning (AI/ML) use cases, such as [fraud prevention](/solutions/fraud-detection/) and recommendation, are on the rise, and [feature stores](/blog/building-feature-stores-with-redis-introduction-to-feast-with-redis/) play a key role in deploying them successfully to production. According to popular open source feature store Feast, one of the most common questions users ask in their community[ Slack](https://slack.feast.dev/) is: howscalable/performantis Feast?This is because the most important characteristic of a feature store for real-time AI/ML is the feature serving speed from the online store to the ML model for online predictions or scoring. Successful feature stores can meet stringent latency requirements ([measured in milliseconds](https://towardsdatascience.com/approaches-for-building-real-time-ml-systems-79ea0e340269)), consistently (think p99) and at scale (up to millions of queries per second, with gigabytes to terabytes-sized datasets) while at the same time maintaining a low total cost of ownership and high accuracy.
+
+As we will see in this post, the choice of an online feature store, as well as the architecture of the feature store, play important roles in determining how performant and cost-effective it is. It’s no wonder that oftentimes companies, before choosing their online feature store, perform thorough benchmarking to see which choice of architecture or online feature store is the most performant and cost-effective. In this post, we will review architectures and benchmarks from both DIY feature stores built by companies successfully deploying real-time AI/ML use cases and open source and commercial feature stores. Let’s begin.
+
+## 1. Open Source Feast
+
+Let’s first have a look at benchmarking data and then the data architecture of the [Feast](https://feast.dev/) open source feature store. Feast recently did a benchmark to compare its feature serving latency when using different online stores (Redis vs. Google Cloud DataStore vs. AWS DynamoDB). It also compared the speed of using different mechanisms for extracting the features (e.g. Java gRPC server, Python HTTP server, lambda function, etc.). You can find the full benchmark setup and its results in this [blog post](https://feast.dev/blog/feast-benchmarks/). The bottom line: Feast found it was by far the most performant using the Java gRPC server and with Redis as the online store.
+
+[Watch the video](https://www.applyconf.com/agenda/using-feast-in-a-ranking-system/)
+
+In the diagram above you can see an example of how the online mortgage company [Better.com](https://better.com/about-us) implemented its lead scoring ranking system using the open-source Feast feature store. As presented by [Vitaly Sergey](https://www.applyconf.com/agenda/using-feast-in-a-ranking-syst), Senior Software Engineer at Better.com, the features are materialized from the offline stores (S3, Snowflake, and Redshift) to the online store (Redis). In addition to that, features are also ingested into the online store from streaming sources (Kafka topics). Feast recently added support for streaming data sources (in addition to batch data sources) which is currently supported only for Redis. Supporting streaming data sources is very important for real-time AI/ML use cases as these use cases rely on fresh live data.
+
+As an example, in a lead scoring use case for Better.com, new leads are being ingested continuously throughout the day. The features come from many different sources, and both the entities (the leads) and the features used to score them get updated all the time, thus, the leads get ranked and re-ranked. As soon as there is a new lead it is ingested and scored by the model. At the same time that it’s ingested into the online store, we may want to re-rank it soon after. Better.com leads expire after 48 hours, and this is implemented in the Redis online store by simply setting time to live (TTL) to 48 hours, to expire the entity (lead) and associate feature vectors after 48 hours. So the feature store cleans itself automatically and there are no stale entities or features taking up valuable online storage.
+
+Another interesting implementation of Feast is the [Microsoft Azure Feature Store](https://techcommunity.microsoft.com/t5/ai-customer-engineering-team/bringing-feature-store-to-azure-from-microsoft-azure-redis-and/ba-p/2918917). You can have a look at its architecture here. It runs on the Azure cloud optimized for low latency real-time AI/ML use cases, supporting both batch and streaming sources, as well as integration into the Azure Data & AI ecosystem. The features are ingested in the online store from both batch sources (Azure Synapse Serverless SQL, Azure Storage / ADLS) and from streaming sources (Azure Event Hub). If you are already deployed on Azure or familiar with the Azure ecosystem,then this feature store may be the right one for you. For the online store, it uses the Azure Cache for Redis, and with Enterprise Tiers of Azure Redis, it includes Active-Active Geo-Duplication to create globally distributed caches with up to 99.999% availability. In addition, further cost reductions can be achieved by using the Enterprise Flash tier to run Redis on a tiered memory architecture that uses both in-memory (DRAM) and Flash memory (NVMe or SSD) to store data.
+
+## 2. Wix DIY feature store – the cornerstone of the MLOps platform
+
+Below is a different architecture for implementing real-time AI/ML use cases. It is the feature store architecture of the popular website building platform [Wix](https://www.wix.com/). It is used for real-time use cases such as recommendations, churn and premium predictions, ranking, and spam classifiers. Wix serves over 200M registered users of which only a small fraction are ‘active users’ at any given time. This had a big influence on the way the feature store was implemented. Let’s take a look at it.
+
+The information below is based on a [TechTalk presentation](https://youtu.be/E8839ENL-WY?t=2061) that was delivered by Ran Romano when he headed ML Engineering at Wix. Over 90% of the data stored in the Wix feature store are clickstreams and the ML models are triggered per website or per user. Ran explains that for real-time use cases, latency is a big issue. Also, for some of their production use cases, they need to extract the feature vectors within milliseconds.
+
+[Watch the video](https://www.youtube.com/watch?v=E8839ENL-WY&t=2061s)
+
+The raw data is stored in Parquet files on AWS in an S3 bucket, and is partitioned by business units (e.g. ‘editors’, ‘restaurants’, ‘bookings,’ etc.) and then by date. It is part of the Wix data platform used by its data analysts which predated the Wix ML Platform by years. In a **daily build** batch process using Spark, SQL (which takes minutes to hours) all the users’ history features are extracted from S3, pivoted and aggregated by the user, and ingested into the offline store (Apache Hbase). This provides a much faster, by ‘user’, lookup of its users’ history. Once the system detects that a user is currently active, a **‘warmup’** process is triggered and the features of that user are loaded into the online store (Redis) which is much smaller than the offline store since it holds only the user history of the active users. This ‘warmup’ process can take several seconds. And finally, features in the online feature store are continuously updated using fresh live real-time data directly from the streaming sources per each event coming from the user (using Apache Storm).
+
+This type of architecture has a lower ratio of writes to reads compared to the Feast architecture, which is very efficient in terms of materialization and online storage since it only stores features for active users in the online store rather than those for all users. Because active users make up a small fraction of all registered users within Wix, this represents a huge saving. However, this comes at a price. While retrieving features from the online store is very fast, within milliseconds, it’s only if the features already exist within the online store. Due to race conditions, because the warmup process takes several seconds, it won’t be fast enough to load the relevant features as the user becomes active. So, the scoring or prediction for that user will simply fail. This is OK as long as the use case is not part of the critical flow or for mission-critical use cases such as approving transactions or preventing fraud. This type of architecture is also very specific to Wix, in which only a small fraction of users are active users at any given time.
+
+## 3. Commercial Feature Store Tecton
+
+Let’s look now at the architecture of the commercial enterprise feature store [Tecton](https://www.tecton.ai/). As we can see in the diagram below, in addition to batch data sources and streaming data sources, Tecton also supports ‘out-of-the-box’ real-time data sources. These are also called ‘**real-time features**’ or ‘real-time’ transformations. Real-time features can be calculated only at the inference request. For example the difference between the size of the suspected transaction and the last transaction size. So, in the case of Better.com with open source Feast above, Better.com developed on its own the support for real-time features. With the Tecton feature store, this is easier to implement as it’s already natively supported by the feature store. Like with Feast and the Wix feature stores, Tecton also defines the features in the registry so that the logical definition is defined once for both offline and online stores. This significantly reduces training-serving skew to ensure high accuracy of the ML model also in production.
+
+[Watch the video](https://www.tecton.ai/blog/delivering-fast-ml-features-with-tecton-and-redis-enterprise-cloud/)
+
+With respect to the choice of offline store, online store, and benchmarking, for the offline feature store Tecton supports S3, for the online store Tecton now offers its customers [a choice between DynamoDB and Redis Enterprise Cloud](https://www.tecton.ai/blog/delivering-fast-ml-features-with-tecton-and-redis-enterprise-cloud/). In a recent presentation, [Tecton CTO Kevin Stumpf provided tips on how to choose your online feature store](https://youtu.be/osxzKxiznm4), based on benchmarks the company recently performed. In addition to benchmarking latency and throughput, Tecton also benchmarked the cost of the online store. Why is this important? For high throughput or low latency use cases, the cost of the online store can be a large and a significant portion of the total cost of ownership of the whole MLOps platform, so any cost savings can be substantial.
+
+The bottom line of Tecton’s benchmarking is that for high throughput use cases typical for Tecton’s users, [Redis ](/redis-enterprise-cloud/overview/)[Enterprise](/redis-enterprise-cloud/overview/) was 3x faster and at the same time 14x less expensive compared to DynamoDB.
+
+So what’s the catch you may ask? If you have only one use case, and it doesn’t have high or consistent throughput, and it doesn’t have any strict latency requirements, then you could go with DynamoDB. You can find the full details and the [results of Tecton’s benchmarks ](https://www.tecton.ai/blog/announcing-support-for-redis/)here.
+
+## 4. Lightricks using Commercial Feature Store Qwak
+
+Below is another example of a feature store architecture. This one is used by [Lightricks](https://www.lightricks.com/), based on the commercial feature store [Qwak](https://www.qwak.com/). Lightricks is a unicorn company that develops video and image editing mobile apps, known particularly for its selfie-editing app, Facetune. It uses the feature store for its recommendation system.
+
+![lightricks diagram](/images/blog/c5d04b4e216cf08c4e81c76e0e8956c6e954da58-1024x504.webp)
+
+As shown in the diagram above, like Tecton, the Qwak feature store supports three types of features sources – batch, streaming, and real-time features.
+
+It is important to note that with the Qwak feature store, the materialization of features into the feature store is done directly from the raw data sources for both the offline store (using Parquet files on S3) and the online store (using Redis). This is different compared to the feature stores examples from Wix, Feast, or Tecton in which the materialization of the online store is done from the offline store to the online store for the batch sources. This has the advantage that not only the transformation logic of a feature is unified across training and serving flows (as with the feature stores of Feast, Wix, and Tecton above), but also the actual transformation or feature computation is done uniformly, further decreasing training-serving skew. Having a unified data pipeline for offline and online directly from raw data has the potential to ensure even higher accuracy during production. You can find more information on Qwak’s [feature store architecture and components](https://drive.google.com/file/d/1KfOMI9C-aitJNPdGB56L-6tA8BBp9gsl/view) in this presentation.
+
+## Summary
+
+In this post, we reviewed key highlights of benchmarks and architectures of several feature stores for real-time AI/ML. The first one is Open Source Feast, the second DIY Wix feature store, the third from Tecton, and the fourth by Qwak. We also reviewed the highlights of some of the benchmarks these companies performed to see which online store is the most performant and the most cost-effective. We also explored which mechanism or feature server to use for extracting the features from the online store. We saw that there are significant differences in the performance and cost of feature stores, depending on the architecture, supported type of features, and components selected.
+
+*Originally published in *[*KDnuggets*](https://www.kdnuggets.com/2022/03/feature-stores-realtime-ai-machine-learning.html)*.*
