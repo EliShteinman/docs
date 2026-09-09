@@ -94,6 +94,26 @@ echo "airgap: pointing redis.io/redis.com/redislabs.com blog links at /blog/..."
 find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
   -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
 
+# 2c. Point the short-form command links at the local command pages. The docs
+#     link commands both ways: redis.io/docs/latest/commands/<x> (handled by
+#     step 2 above) and the short redis.io/commands/<x>, which step 2 does not
+#     touch -- 435 links to pages that are already in this image.
+#
+#     Lowercased because the source writes some of them in capitals
+#     (redis.io/commands/EVAL) while Hugo publishes commands/eval/. `\L` is a
+#     GNU sed extension; both pipelines run GNU sed (builder is node:24-trixie,
+#     the workflow is ubuntu-24.04).
+#
+#     Four of the 169 commands linked this way have no page here --
+#     debug-object, debug-segfault, graph.explain, graph.profile -- and answer
+#     301 on redis.io too. They are rewritten with the rest: an internal 404 and
+#     an unreachable host are equally dead in an air gap, and one rule beats a
+#     special case.
+echo "airgap: pointing redis.io/commands links at the local command pages..."
+find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+  -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
+  -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
+
 # ---- Snapshot the prepared workspace -----------------------------------------
 # Captures content + layouts + components output. Excludes Hugo's own outputs.
 rm -rf "$SNAPSHOT"
