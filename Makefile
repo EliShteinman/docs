@@ -19,6 +19,13 @@ deps:
 components:
 	@python3 build/make.py
 
+# Refresh the mirrored Redis blog. Not part of `all`: it reaches the public
+# internet and rewrites ~1,100 files, so it is run deliberately and its output
+# is committed, the way the RedisVL docs sync is. Re-running is cheap -- images
+# already on disk are not fetched again.
+blog:
+	@python3 -m build.blog_mirror
+
 components_local:
 	@python3 build/make.py --stack ./data/components_local/index.json
 

@@ -301,6 +301,13 @@ jobs:
           find content -type f -name '*.md' -print0 | xargs -0 sed -i \
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
+          # Point the documentation's blog links at the mirrored blog in this
+          # image (content/blog, written by build/blog_mirror). Mirrors the
+          # same step in airgap-multibuild.sh. Four domains, not one: of the
+          # 184 blog links, 83 use the legacy redis.com and 16 use
+          # redislabs.com.
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+            -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
@@ -471,6 +478,13 @@ jobs:
           find content -type f -name '*.md' -print0 | xargs -0 sed -i \
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
+          # Point the documentation's blog links at the mirrored blog in this
+          # image (content/blog, written by build/blog_mirror). Mirrors the
+          # same step in airgap-multibuild.sh. Four domains, not one: of the
+          # 184 blog links, 83 use the legacy redis.com and 16 use
+          # redislabs.com.
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+            -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g'
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
@@ -486,7 +500,13 @@ jobs:
           {
             find "content/$PRODUCT/$VERSION" -type f -print0 | sort -z | xargs -0 sha256sum
             for d in layouts assets data static i18n; do
-              [ -d "$d" ] && find "$d" -type f -print0 | sort -z | xargs -0 sha256sum
+              # static/images/blog is excluded: it holds ~2,900 mirrored blog
+              # images, and a version build keeps only public/<product>/<version>,
+              # which never contains them. Hashing them would mean every blog
+              # sync invalidated all 29 version caches and rebuilt the whole
+              # matrix for pictures none of those pages can show.
+              [ -d "$d" ] && find "$d" -type f -not -path "static/images/blog/*" -print0 \
+                | sort -z | xargs -0 sha256sum
             done
             for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
               [ -f "$f" ] && sha256sum "$f"
@@ -514,6 +534,11 @@ jobs:
         run: |
           set -euo pipefail
           export PATH="$PWD/venv/bin:$PATH"
+
+          # The mirrored blog belongs to the "latest" tree only. This job keeps
+          # nothing but public/<product>/<version>, so rendering 1,100 posts
+          # here produces output that is thrown away.
+          rm -rf content/blog
 
           # Remove all OTHER versions of this product
           VPARENT="content/$PRODUCT"
