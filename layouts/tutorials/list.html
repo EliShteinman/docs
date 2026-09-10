@@ -1,6 +1,21 @@
-{{/* Index for a mirrored section. The body is shared: see
-     layouts/partials/mirrored-list.html for why each section needs
-     its own layout rather than one _default/list.html. */}}
+{{/* The tutorials index, laid out the way redis.io lays out its own: a category
+     filter, a result count, and one row per tutorial carrying its category. */}}
 {{ define "main" }}
-  {{ partial "mirrored-list.html" (dict "page" . "order" "title" "groupBy" "") }}
+  {{ $items := .Pages.ByTitle }}
+  <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
+    {{ partial "docs-nav.html" . }}
+    <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
+      {{ partial "breadcrumbs" . }}
+      <section class="prose w-full py-12 max-w-none">
+        <h1>{{ .Title }}</h1>
+        {{ with .Params.description }}<p class="text-lg -mt-5">{{ . | markdownify }}</p>{{ end }}
+        {{ .Content }}
+        <p class="text-lg">{{ len $items }} results.</p>
+        {{ partial "mirrored-chips.html" (dict "section" "/tutorial-categories" "home" "/tutorials" "active" "" "allLabel" "All tutorials") }}
+        {{ partial "mirrored-rows.html" (dict "pages" $items "showGroup" true "showDate" false) }}
+        {{ partial "feedback.html" . }}
+      </section>
+    </div>
+    {{ partial "scripts.html" . }}
+  </main>
 {{ end }}
