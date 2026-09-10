@@ -3,40 +3,76 @@
      Every mirrored section needs one. Hugo picks layouts/<section>/list.html
      for a section page and otherwise falls back to layouts/_default/section.html,
      which in this theme is a one-line stub — so a section without a layout
-     builds a page of exactly one byte. That is what /tutorials/, /compare/,
-     /solutions/ and /customers/ did before this existed.
+     builds a page of exactly one byte.
 
-     A layouts/_default/list.html would have covered them all at once, but it
-     would also change every other section that currently falls back to the
-     stub, so each mirrored section gets a thin layout that calls this instead.
+     The listing is a table rather than a paragraph per entry, because these
+     sections are long: 122 tutorials as prose blocks is a wall a reader
+     scrolls past, and as rows it is something they can scan. Sections with a
+     natural grouping say so — the customer stories carry the industry the
+     source files them under — and long alphabetical ones are cut into letter
+     groups. The blog has its own layout: it has 22 real categories.
 
-     For the sections whose pages are hidden from the sidebar — the blog, the
-     tutorials, the customer stories — this listing is the only way to reach
-     them by browsing.
-
-     Called with a dict: "page" is the section, "order" is "date" for newest
-     first (the blog) or anything else for alphabetical.
+     Called with a dict:
+       page    the section
+       order   "date" for newest first, otherwise alphabetical
+       groupBy "param" to group by each page's `group`, "alpha" for A-Z,
+               anything else for one flat list
 */}}
 {{ $page := .page }}
-{{ $pages := cond (eq .order "date") $page.Pages.ByDate.Reverse $page.Pages.ByTitle }}
+{{ $order := .order }}
+{{ $pages := cond (eq $order "date") $page.Pages.ByDate.Reverse $page.Pages.ByTitle }}
+{{ $groupBy := .groupBy | default "" }}
+
+{{ define "mirrored-rows" }}
+  <div class="not-prose overflow-x-auto">
+    <table class="w-full border-collapse text-base">
+      <tbody>
+        {{ range .pages }}
+          <tr class="border-b border-redis-ink-900 border-opacity-20">
+            <td class="py-3 pr-4 align-top">
+              <a class="no-underline hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
+              {{ with .Description }}<div class="text-sm opacity-70 mt-1">{{ . }}</div>{{ end }}
+            </td>
+            <td class="py-3 align-top whitespace-nowrap text-sm opacity-70">
+              {{ with .Date }}{{ if $.showDate }}{{ .Format "2 Jan 2006" }}{{ end }}{{ end }}
+            </td>
+          </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+{{ end }}
+
 <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
   {{ partial "docs-nav.html" $page }}
   <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
     {{ partial "breadcrumbs" $page }}
     <section class="prose w-full py-12 max-w-none">
       <h1>{{ $page.Title }}</h1>
-      {{ with $page.Params.description }}<p class="text-lg -mt-5 mb-10">{{ . | markdownify }}</p>{{ end }}
+      {{ with $page.Params.description }}<p class="text-lg -mt-5 mb-6">{{ . | markdownify }}</p>{{ end }}
       {{ $page.Content }}
       <p class="text-sm">{{ len $pages }} pages.</p>
-      <nav>
-        {{ range $pages }}
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-          <p>
-            {{ if and (eq $.order "date") .Date }}<span class="text-sm">{{ .Date.Format "2 January 2006" }}</span>{{ end }}
-            {{ with .Description }}{{ if and (eq $.order "date") $.page }}<br />{{ end }}{{ . }}{{ end }}
-          </p>
+
+      {{ if eq $groupBy "param" }}
+        {{ range $pages.GroupByParam "group" }}
+          <h2>{{ .Key | default "Other" }}</h2>
+          {{ template "mirrored-rows" (dict "pages" .Pages "showDate" (eq $order "date")) }}
         {{ end }}
-      </nav>
+      {{ else if eq $groupBy "alpha" }}
+        {{ range $pages.GroupBy "Title" }}{{ end }}
+        {{ $letters := slice }}
+        {{ range $pages }}{{ $letters = $letters | append (substr .Title 0 1 | upper) }}{{ end }}
+        {{ range (uniq $letters) }}
+          {{ $letter := . }}
+          <h2>{{ $letter }}</h2>
+          {{ $inLetter := slice }}
+          {{ range $pages }}{{ if eq (substr .Title 0 1 | upper) $letter }}{{ $inLetter = $inLetter | append . }}{{ end }}{{ end }}
+          {{ template "mirrored-rows" (dict "pages" $inLetter "showDate" false) }}
+        {{ end }}
+      {{ else }}
+        {{ template "mirrored-rows" (dict "pages" $pages "showDate" (eq $order "date")) }}
+      {{ end }}
+
       {{ partial "feedback.html" $page }}
     </section>
   </div>
