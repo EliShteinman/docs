@@ -123,3 +123,37 @@ def test_documents_are_written_in_batches():
     connection = FakeConnection()
     documents = [_document(f"/operate/rs/{n}") for n in range(5)]
     assert index_documents(connection, documents, _crumbs(), "doc:", 2) == 5
+
+
+def test_a_current_page_keeps_its_full_relevance():
+    from search.indexer import document_score
+
+    assert document_score("latest") == "1"
+
+
+def test_an_older_version_keeps_only_part_of_it():
+    """45% of a real index is versioned copies, and without this they crowd out
+    the current page -- "rack zone awareness" answered with 7.22 first."""
+    from search.indexer import document_score
+
+    assert float(document_score("7.4")) < 1
+
+
+def test_an_untagged_page_is_treated_as_current():
+    from search.indexer import document_score
+
+    assert document_score("") == "1"
+
+
+def test_the_index_multiplies_relevance_by_that_score():
+    connection = FakeConnection()
+    create_index(connection, "docs", "doc:")
+    create = connection.sent[1]
+    assert create[create.index("SCORE_FIELD") + 1] == "docscore"
+
+
+def test_every_document_carries_its_score():
+    connection = FakeConnection()
+    index_documents(connection, [_document()], _crumbs(), "doc:", 500)
+    fields = dict(zip(connection.sent[0][2::2], connection.sent[0][3::2]))
+    assert fields["docscore"] == "0.3"

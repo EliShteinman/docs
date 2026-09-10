@@ -35,4 +35,19 @@ ROOT_CRUMB = os.environ.get("SEARCH_ROOT_CRUMB", "Welcome to Redis Docs")
 # single write buffer.
 INDEX_BATCH = int(os.environ.get("SEARCH_INDEX_BATCH", "500"))
 
+# How much of its relevance a page from an older documentation version keeps.
+# The docs publish the same page once per version -- 45% of the index is
+# versioned copies -- and without this the copies crowd out the current page:
+# measured on a real build, "rack zone awareness" answered with version 7.22
+# first, and "database*" returned 27 versioned pages in a top 30.
+#
+# A multiplier rather than a filter, because the old pages are still worth
+# finding: a reader on 7.4 searching for something that only exists in 7.4
+# still gets it, just below the current page when both match equally.
+VERSION_WEIGHT = float(os.environ.get("SEARCH_VERSION_WEIGHT", "0.3"))
+
+# The version tag the docs build gives a page that is not in a version tree
+# (build/tag_ndjson_versions.py).
+CURRENT_VERSION = os.environ.get("SEARCH_CURRENT_VERSION", "latest")
+
 LOG_LEVEL = os.environ.get("SEARCH_LOG_LEVEL", "INFO").upper()

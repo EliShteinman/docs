@@ -315,6 +315,14 @@ search:
     # redis.io returns at most 30 hits and reports the full count separately.
     resultLimit: 30
     batch: 500
+    # How much of its relevance a page from an older documentation version
+    # keeps. The docs publish the same page once per version and 45% of a real
+    # index is those copies, so without this they crowd out the current page:
+    # measured on a full build, "rack zone awareness" answered with version
+    # 7.22 first and "database" returned 27 versioned pages in a top 30. At 0.3
+    # both answer with the current page and the old ones stay findable below
+    # it. Raise it toward 1 to treat every version equally.
+    versionWeight: 0.3
     # Index attempts before the pod gives up. The API container and its Redis
     # start together, so the first attempt often lands before Redis is
     # listening.

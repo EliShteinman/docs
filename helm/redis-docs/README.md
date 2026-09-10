@@ -776,6 +776,7 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `search.index.rootCrumb` | `Welcome to Redis Docs` | The heading results are grouped under, and `hierarchy[0]` on every result |
 | `search.index.resultLimit` | `30` | Results returned per query, matching redis.io |
 | `search.index.batch` | `500` | Documents per pipelined write while indexing |
+| `search.index.versionWeight` | `0.3` | Relevance kept by a page from an older docs version. 45% of the index is versioned copies; without this they outrank the current page. |
 | `search.index.attempts` | `30` | Index attempts before the pod gives up; the API and its Redis start together |
 | `search.resources` | requests: 100m/128Mi, limits: 500m/512Mi | Search API resources |
 | `search.redis.image.registry` | `docker.io` | Search Redis image registry |
