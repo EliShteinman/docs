@@ -55,7 +55,12 @@ MIRRORED_PREFIXES = (
 # match every link on the site. Link text is worth indexing; link targets are
 # not, so the target is dropped and the text kept.
 _MARKDOWN_LINK = re.compile(r"!?\[([^\]]*)\]\([^)]*\)")
-_MARKDOWN_NOISE = re.compile(r"[`*_>#|]+")
+_MARKDOWN_NOISE = re.compile(r"[`*>#|]+")
+# An underscore is emphasis only at the edge of a word. Inside one it is part
+# of a name -- `eviction_policy`, `maxmemory_policy` -- which the index keeps as
+# a single term, and splitting it here would leave the page that documents the
+# key unfindable by the key's own name.
+_EMPHASIS_UNDERSCORE = re.compile(r"(?<!\w)_+|_+(?!\w)")
 _WHITESPACE = re.compile(r"\s+")
 
 
@@ -79,7 +84,8 @@ def clean_body(content: str) -> str:
     """Strip markdown scaffolding from `content` so only prose is indexed."""
     without_links = _MARKDOWN_LINK.sub(r"\1", content)
     without_noise = _MARKDOWN_NOISE.sub(" ", without_links)
-    return _WHITESPACE.sub(" ", without_noise).strip()
+    without_emphasis = _EMPHASIS_UNDERSCORE.sub(" ", without_noise)
+    return _WHITESPACE.sub(" ", without_emphasis).strip()
 
 
 def _under(path: str, prefix: str) -> bool:
