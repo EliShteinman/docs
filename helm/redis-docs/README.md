@@ -772,7 +772,7 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `search.image.registry` | `a0533057932` | Search API image registry |
 | `search.image.name` | `redis-docs-cli` | Search API image name — the CLI proxy image, which carries the search service too |
 | `search.image.tag` | `latest` | Search API image tag. Pin only to a tag built after the search service was added — see the image table. |
-| `search.image.pullPolicy` | `IfNotPresent` | Search API image pull policy |
+| `search.image.pullPolicy` | `Always` | Search API image pull policy. `Always` because the default tag is the mutable `latest`, which a node may have cached before the search service existed; `IfNotPresent` is safe once the tag is pinned. |
 | `search.logLevel` | `INFO` | Log level for the search service |
 | `search.threads` | `8` | gunicorn threads; the modal sends one request per keystroke |
 | `search.index.name` | `docs` | Name of the index in Redis |
