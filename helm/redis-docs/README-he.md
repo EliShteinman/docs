@@ -146,7 +146,7 @@ externalLinks.enabled                    ← master kill-switch
 
 עבור `url` הסדר פשוט יותר: ברירת מחדל מהקטלוג, אלא אם `overrides.<key>.url` דורס.
 
-**ברירת המחדל של הצ'ארט היא `enabled: false`** — כל הלינקים החיצוניים מוסתרים מתוך הקופסה. הפעלה מחדש בכל רמה מתאימה ל-deployment:
+**ברירת המחדל של הצ'ארט היא `enabled: false`** — כל הלינקים החיצוניים מוסתרים מתוך הקופסה. כרטיסי Blog ו-Tutorials נשארים גלויים: ה-url שלהם בקטלוג הוא נתיב באתר הזה (העותקים הממוראים בתוך ה-image), וה-master kill-switch חותך רק לינקים שיוצאים מהאתר. הפעלה מחדש בכל רמה מתאימה ל-deployment:
 
 ```yaml
 externalLinks:
@@ -159,7 +159,7 @@ externalLinks:
         main-nav:
           enabled: true      # רצועת ההדר: רק Redis-for-AI / Docs / Pricing
   overrides:
-    tutorials:
+    university:
       enabled: true          # להפעיל לינק ספציפי
     github:
       enabled: true

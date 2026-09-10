@@ -156,7 +156,9 @@ per-deployment customization — that is what `values.yaml` is for.
 `url` resolution is simpler: catalog default unless `overrides.<key>.url` replaces it.
 
 **The chart default is `enabled: false`** — every external link is hidden out of
-the box. Opt back in at whichever level fits the deployment:
+the box. The Blog and Tutorials cards stay visible: their catalog url is a path on
+this site (the mirrored copies in the image), and the master kill-switch cuts only
+links that leave the site. Opt back in at whichever level fits the deployment:
 
 ```yaml
 externalLinks:
@@ -169,7 +171,7 @@ externalLinks:
         main-nav:
           enabled: true      # header strip: only Redis-for-AI / Docs / Pricing
   overrides:
-    tutorials:
+    university:
       enabled: true          # opt one specific link back in
     github:
       enabled: true

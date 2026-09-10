@@ -30,6 +30,9 @@
 #   4. values.externalLinks.enabled                              (master kill-switch)
 #   5. catalog default below                                      (always true)
 #
+# The master kill-switch skips a link whose resolved url is a path on this site
+# (`/blog/`): it cuts links that leave the site, and that one does not.
+#
 # `url` resolution is simpler: catalog default unless overrides.<key>.url
 # replaces it.
 #
@@ -52,8 +55,8 @@ families:
         url: "https://redis.io/try/sandbox/"
         enabled: true
       tutorials:
-        description: "Home page: 'Tutorials' card in Explore additional resources"
-        url: "https://redis.io/tutorials/"
+        description: "Home page: 'Tutorials' card in Explore additional resources. Points at the mirrored tutorials inside this image (build/site_mirror), not at redis.io — override the url to send readers to the public tutorials instead."
+        url: "/tutorials/"
         enabled: true
       university:
         description: "Home page: 'Redis University' card"
