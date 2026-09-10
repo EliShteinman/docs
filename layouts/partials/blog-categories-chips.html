@@ -1,0 +1,16 @@
+{{/* The category chips, the way redis.io presents its blog: every category as
+     a pill, the one being read marked. Rendered on the blog index and on each
+     category page, so a reader can move sideways without going back. */}}
+{{ $active := .active }}
+{{/* Read from the section page rather than filtering site.RegularPages: each
+     category sets its own `url`, so matching them by section name is fragile. */}}
+{{ $section := site.GetPage "/blog-categories" }}
+{{ $categories := cond (ne $section nil) $section.Pages slice }}
+<div class="not-prose flex flex-wrap gap-2 my-8">
+  <a class='px-4 py-2 rounded-md border border-redis-ink-900 border-opacity-40 text-sm no-underline hover:bg-redis-pen-200 {{ if not $active }}font-bold{{ end }}'
+     href='{{ (site.GetPage "/blog").RelPermalink }}'>All posts</a>
+  {{ range $categories.ByTitle }}
+    <a class='px-4 py-2 rounded-md border border-redis-ink-900 border-opacity-40 text-sm no-underline hover:bg-redis-pen-200 {{ if eq .Params.blogCategory $active }}font-bold bg-redis-pen-200{{ end }}'
+       href='{{ .RelPermalink }}'>{{ .Title }}</a>
+  {{ end }}
+</div>

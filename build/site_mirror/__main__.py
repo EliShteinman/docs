@@ -20,7 +20,7 @@ import re
 import sys
 from pathlib import Path
 
-from build.site_mirror import documents, hugo, pages, portable_text, redirects
+from build.site_mirror import categories, documents, hugo, pages, portable_text, redirects
 from build.site_mirror.images import ImageMirror
 from build.site_mirror.sanity import (
     SanityError,
@@ -78,6 +78,7 @@ def mirror_blog(
     expected = count_posts(timeout)
     LOGGER.info("source holds %d posts", expected)
     written: set[str] = set()
+    category_counts: dict[str, int] = {}
 
     for index, post in enumerate(fetch_posts(timeout), start=1):
         if limit and index > limit:
@@ -103,12 +104,16 @@ def mirror_blog(
             ),
         )
         written.add(name)
+        for category in post.get("categories") or []:
+            if category:
+                category_counts[category] = category_counts.get(category, 0) + 1
         if index % 100 == 0:
             LOGGER.info("%d/%d posts written, %d images fetched", index, expected, images.fetched)
 
     hugo.write_section_index(content_dir)
     if not limit:
         hugo.prune_removed(content_dir, written)
+        mirror_blog_categories(category_counts, timeout)
     return len(written)
 
 
@@ -230,6 +235,27 @@ def mirror_pages(
         # loses a block rather than gaining a broken one. Worth saying out loud
         # because it means the source grew a layout this reader does not know.
         LOGGER.warning("unrendered section types in %s: %s", name, ", ".join(sorted(unknown)))
+    return len(written)
+
+
+def mirror_blog_categories(counts: dict[str, int], timeout: float) -> int:
+    """Mirror the blog's category pages, at the URLs the source publishes them at."""
+    written: set[str] = set()
+    for document in fetch_documents(
+        categories.CATEGORY_TYPE, "/blog/category/*", "{title,pathname}", timeout
+    ):
+        category = categories.to_category(document)
+        if not category:
+            continue
+        hugo.write_post(
+            categories.CATEGORY_DIR,
+            category.file_name,
+            categories.render(category, counts.get(category.title, 0)),
+        )
+        written.add(category.file_name)
+    hugo.write_section_index(categories.CATEGORY_DIR, categories.INDEX)
+    hugo.prune_removed(categories.CATEGORY_DIR, written)
+    LOGGER.info("%d blog categories", len(written))
     return len(written)
 
 
