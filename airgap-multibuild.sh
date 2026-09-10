@@ -224,7 +224,11 @@ build_version() {
   # The mirrored blog belongs to the "latest" tree only. A version build keeps
   # nothing but public/<product>/<version>, so rendering 1,100 posts here
   # produces output that is thrown away -- 28 times over, once per version.
-  rm -rf content/blog content/technology
+  # Every mirrored tree, not just two of them: a version build keeps only
+  # public/<product>/<version>/, so rendering ~1,400 mirrored documents here
+  # is work thrown away 28 times over. content/glossary goes with them --
+  # it is an upstream section, but a version subtree never contains it.
+  rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/glossary
 
   # Remove all OTHER versions of this product
   for v in $all_versions; do

@@ -558,7 +558,10 @@ jobs:
           # The mirrored blog belongs to the "latest" tree only. This job keeps
           # nothing but public/<product>/<version>, so rendering 1,100 posts
           # here produces output that is thrown away.
-          rm -rf content/blog content/technology
+          # Every mirrored tree, not just two: this job keeps only
+          # public/<product>/<version>/, so rendering ~1,400 mirrored
+          # documents here is work thrown away.
+          rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/glossary
 
           # Remove all OTHER versions of this product
           VPARENT="content/$PRODUCT"
