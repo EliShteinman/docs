@@ -3,6 +3,7 @@ title: "Redis Open Source to Redis Cloud"
 linkTitle: "Redis Open Source to Redis Cloud"
 url: "/tutorials/migration/redis-open-source-to-redis-cloud/"
 description: "Before migrating to Redis Cloud, you should evaluate the migration and consider the best option. Read this guide to determine which migration strategy is right for you."
+group: "For developers"
 aliases:
 - "/tutorials/migration-redis-open-source-to-redis-cloud/"
 date: 2026-02-25

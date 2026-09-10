@@ -3,6 +3,7 @@ title: "Build a smarter real-time AI agent with Redis Iris"
 linkTitle: "Build a smarter real-time AI agent with Redis Iris"
 url: "/tutorials/redis-iris-call-agent/"
 description: "When a wealth advisor meets with a client every month, they're expected to remember what was discussed last quarter, the client's risk tolerance, their family situation, and every commitment made..."
+group: "For AI"
 date: 2026-05-18
 lastmod: 2026-06-02
 hidden: true

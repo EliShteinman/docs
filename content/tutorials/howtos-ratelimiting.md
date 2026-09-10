@@ -3,6 +3,7 @@ title: "Build 5 Rate Limiters with Redis: Fixed Window, Sliding Window, Token Bu
 linkTitle: "Build 5 Rate Limiters with Redis: Fixed Window, Sliding Window, Token Bucket, and Leaky Bucket"
 url: "/tutorials/howtos/ratelimiting/"
 description: "Rate limiting controls how many requests a client can make in a given time period. It protects APIs from abuse, ensures fair usage across consumers, and prevents a single bad actor from..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-ratelimiting/"
 date: 2026-02-26

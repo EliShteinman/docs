@@ -3,6 +3,7 @@ title: "How to build a fast data ingest pipeline with Redis"
 linkTitle: "How to build a fast data ingest pipeline with Redis"
 url: "/tutorials/fast-data-ingest-pipeline-with-redis/"
 description: "When telemetry, IoT readings, or webhook events arrive faster than your app can process them, you need a buffer that accepts writes quickly and lets workers drain the backlog at their own pace...."
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

@@ -3,6 +3,7 @@ title: "How to build agent memory with Redis Agent Memory and LangGraph"
 linkTitle: "How to build agent memory with Redis Agent Memory and LangGraph"
 url: "/tutorials/redis-agent-memory-with-langgraph/"
 description: "YouTube: https://youtu.be/OWsCEs8Wt4"
+group: "For developers"
 date: 2026-05-18
 lastmod: 2026-05-18
 hidden: true

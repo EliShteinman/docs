@@ -3,6 +3,7 @@ title: "Creating a Real-time Leaderboard with UE5 and Redis"
 linkTitle: "Creating a Real-time Leaderboard with UE5 and Redis"
 url: "/tutorials/howtos/create-a-leaderboard-with-redis-and-ue5/"
 description: "Build a real-time multiplayer leaderboard by combining Redis sorted sets with an Unreal Engine 5 game client. You'll create a Node.js REST API backed by Redis, then call it from UE5 Blueprints..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-create-a-leaderboard-with-redis-and-ue5/"
 date: 2026-02-25

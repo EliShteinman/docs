@@ -3,6 +3,7 @@ title: "Redis Discord Server"
 linkTitle: "Redis Discord Server"
 url: "/tutorials/community/discord/"
 description: "The Redis Discord server is a place where you can learn, share, and collaborate about anything and everything Redis. Whether you need real-time community support, want to share a project, or are..."
+group: "For developers"
 aliases:
 - "/tutorials/community-discord/"
 date: 2026-02-25

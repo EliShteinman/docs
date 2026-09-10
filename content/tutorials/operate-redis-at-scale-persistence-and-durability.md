@@ -3,6 +3,7 @@ title: "Redis Persistence and Durability: RDB Snapshots & AOF"
 linkTitle: "Redis Persistence and Durability: RDB Snapshots & AOF"
 url: "/tutorials/operate/redis-at-scale/persistence-and-durability/"
 description: "This tutorial is part of the Running Redis at Scale course. You can jump to any section:"
+group: "For operators"
 aliases:
 - "/tutorials/operate-redis-at-scale-persistence-and-durability/"
 date: 2026-02-25

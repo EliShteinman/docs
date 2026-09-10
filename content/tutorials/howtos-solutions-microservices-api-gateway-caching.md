@@ -3,6 +3,7 @@ title: "How to use Redis for API Gateway Caching"
 linkTitle: "How to use Redis for API Gateway Caching"
 url: "/tutorials/howtos/solutions/microservices/api-gateway-caching/"
 description: "So you're building a microservices application. But you find yourself struggling with ways to handle authentication that let you reuse code and maximize performance. Typically for authentication..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-microservices-api-gateway-caching/"
 date: 2026-02-25

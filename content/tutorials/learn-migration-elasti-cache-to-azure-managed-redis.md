@@ -3,6 +3,7 @@ title: "ElastiCache to Azure Managed Redis (AMR)"
 linkTitle: "ElastiCache to Azure Managed Redis (AMR)"
 url: "/tutorials/learn/migration/elasti-cache-to-azure-managed-redis/"
 description: "Migrate from AWS ElastiCache to Azure Managed Redis (AMR) using an offline S3 export-and-import workflow. Export your ElastiCache data as an RDB file, transfer it through an S3 bucket to Azure Blob..."
+group: "For developers"
 aliases:
 - "/tutorials/learn-migration-elasti-cache-to-azure-managed-redis/"
 date: 2026-02-24

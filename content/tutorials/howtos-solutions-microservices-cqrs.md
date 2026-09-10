@@ -3,6 +3,7 @@ title: "How to Build an E-Commerce App Using Redis with the CQRS Pattern"
 linkTitle: "How to Build an E-Commerce App Using Redis with the CQRS Pattern"
 url: "/tutorials/howtos/solutions/microservices/cqrs/"
 description: "Command Query Responsibility Segregation (CQRS) is a critical pattern within a microservice architecture. It decouples reads (queries) and writes (commands), which permits read and write workloads..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-microservices-cqrs/"
 date: 2026-02-25

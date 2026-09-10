@@ -113,7 +113,10 @@ def mirror_blog(
     hugo.write_section_index(content_dir)
     if not limit:
         hugo.prune_removed(content_dir, written)
-        mirror_blog_categories(category_counts, timeout)
+        mirror_categories(
+            categories.BLOG, "/blog/category/*", categories.INDEX,
+            "posts from the Redis blog", category_counts, timeout,
+        )
     return len(written)
 
 
@@ -238,24 +241,29 @@ def mirror_pages(
     return len(written)
 
 
-def mirror_blog_categories(counts: dict[str, int], timeout: float) -> int:
-    """Mirror the blog's category pages, at the URLs the source publishes them at."""
+def mirror_categories(
+    catalog: categories.CategorySet,
+    prefix: str,
+    index_text: str,
+    noun: str,
+    counts: dict[str, int],
+    timeout: float,
+) -> int:
+    """Mirror a tree's category pages, at the URLs the source publishes them at."""
     written: set[str] = set()
-    for document in fetch_documents(
-        categories.CATEGORY_TYPE, "/blog/category/*", "{title,pathname}", timeout
-    ):
-        category = categories.to_category(document)
+    for document in fetch_documents(catalog.doc_type, prefix, catalog.projection, timeout):
+        category = categories.to_category(document, catalog.title_field)
         if not category:
             continue
         hugo.write_post(
-            categories.CATEGORY_DIR,
+            catalog.directory,
             category.file_name,
-            categories.render(category, counts.get(category.title, 0)),
+            categories.render(category, counts.get(category.title, 0), noun),
         )
         written.add(category.file_name)
-    hugo.write_section_index(categories.CATEGORY_DIR, categories.INDEX)
-    hugo.prune_removed(categories.CATEGORY_DIR, written)
-    LOGGER.info("%d blog categories", len(written))
+    hugo.write_section_index(catalog.directory, index_text)
+    hugo.prune_removed(catalog.directory, written)
+    LOGGER.info("%d %s categories", len(written), catalog.doc_type)
     return len(written)
 
 
@@ -267,6 +275,7 @@ def mirror_documents(
     expected = count_documents(tree.doc_type, tree.prefix, timeout)
     LOGGER.info("source holds %d %s documents", expected, tree.name)
     written: set[str] = set()
+    group_counts: dict[str, int] = {}
 
     for index, document in enumerate(
         fetch_documents(tree.doc_type, tree.prefix, tree.projection, timeout), start=1
@@ -292,8 +301,10 @@ def mirror_documents(
             continue
         # The tree may name its title something else (`term`), and the rest of
         # the writer reads `title`; the group value is normalised the same way.
-        document = {**document, "title": title,
-                    "group": document.get(tree.group_field) or "" if tree.group_field else ""}
+        group = (document.get(tree.group_field) or "") if tree.group_field else ""
+        if group:
+            group_counts[group] = group_counts.get(group, 0) + 1
+        document = {**document, "title": title, "group": group}
         file = hugo.file_name(under, document.get("_id") or f"doc-{index}")
         alias = hugo.flattened_alias(tree.directory.name, under)
         hugo.write_post(
@@ -306,6 +317,11 @@ def mirror_documents(
         )
         written.add(file)
 
+    if tree.name == "tutorials" and not limit:
+        mirror_categories(
+            categories.TUTORIALS, "/tutorials/category/*", categories.TUTORIAL_INDEX,
+            "tutorials", group_counts, timeout,
+        )
     if tree.index is not None:
         hugo.write_section_index(tree.directory, tree.index)
     if not limit:

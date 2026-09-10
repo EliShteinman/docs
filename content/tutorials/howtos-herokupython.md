@@ -3,6 +3,7 @@ title: "How to build a Python based application on Heroku using Redis"
 linkTitle: "How to build a Python based application on Heroku using Redis"
 url: "/tutorials/howtos/herokupython/"
 description: "Create your Redis Cloud account. Follow this link to create a Redis Cloud subscription and database as shown below:"
+group: "For developers"
 aliases:
 - "/tutorials/howtos-herokupython/"
 date: 2026-02-25

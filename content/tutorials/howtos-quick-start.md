@@ -3,6 +3,7 @@ title: "Redis quick start guide"
 linkTitle: "Redis quick start guide"
 url: "/tutorials/howtos/quick-start/"
 description: "Welcome to the getting started for the official Redis Developer Hub!"
+group: "For developers"
 aliases:
 - "/tutorials/howtos-quick-start/"
 date: 2026-02-25

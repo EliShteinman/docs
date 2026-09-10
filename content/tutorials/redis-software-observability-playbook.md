@@ -3,6 +3,7 @@ title: "Redis Software Developer Observability Playbook"
 linkTitle: "Redis Software Developer Observability Playbook"
 url: "/tutorials/redis-software-observability-playbook/"
 description: "This tutorial provides monitoring guidance for devs running apps that connect to Redis Software. In particular, this guide focuses on the systems and resources that are most likely to impact the..."
+group: "For operators"
 date: 2026-02-26
 lastmod: 2026-03-20
 hidden: true

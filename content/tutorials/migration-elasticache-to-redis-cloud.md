@@ -3,6 +3,7 @@ title: "ElastiCache to Redis Cloud"
 linkTitle: "ElastiCache to Redis Cloud"
 url: "/tutorials/migration/elasticache-to-redis-cloud/"
 description: "Redis Cloud offers several advantages over AWS ElastiCache, including access to the full Redis stack (Search, JSON, Time Series, and more), Active-Active geo-replication, predictable pricing..."
+group: "For operators"
 aliases:
 - "/tutorials/migration-elasticache-to-redis-cloud/"
 date: 2026-02-25

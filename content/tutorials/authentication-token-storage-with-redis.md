@@ -3,6 +3,7 @@ title: "How to store authentication tokens with Redis"
 linkTitle: "How to store authentication tokens with Redis"
 url: "/tutorials/authentication-token-storage-with-redis/"
 description: "You'll build a Bun and Express API with auth routes and a protected todo CRUD. The auth routes are:"
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

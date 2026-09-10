@@ -3,6 +3,7 @@ title: "How to build a Java based application on Heroku using Redis"
 linkTitle: "How to build a Java based application on Heroku using Redis"
 url: "/tutorials/how-to-build-a-java-based-application-on-heroku-using-redis/"
 description: "Deploy a Java application on Heroku with a Redis Cloud database. This tutorial walks through every step from account setup to a live deployment using a sample rate-limiting app built with the Jedis..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

@@ -3,6 +3,7 @@ title: "Using Redis OM Spring to work with JSON and Hashes in Java"
 linkTitle: "Using Redis OM Spring to work with JSON and Hashes in Java"
 url: "/tutorials/redis-om-spring-getting-started/"
 description: "The aim of the Redis OM family of projects is to provide high-level abstractions idiomatically implemented for your language/platform of choice. We currently cater to the Node.js, Python, .NET and..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

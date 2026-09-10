@@ -3,6 +3,7 @@ title: "Mobile Banking Authentication and Session Storage Using Redis"
 linkTitle: "Mobile Banking Authentication and Session Storage Using Redis"
 url: "/tutorials/howtos/solutions/mobile-banking/session-management/"
 description: "After a user has successfully entered their login credentials, mobile banking apps use a token and sessionId created by the server to represent a user's identity. The token is stored in Redis for..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-mobile-banking-session-management/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "Use Azure Managed Redis to store LLM chat history"
 linkTitle: "Use Azure Managed Redis to store LLM chat history"
 url: "/tutorials/howtos/use-amr-store-llm-chat-history/"
 description: "Learn how to deploy a Streamlit-based LLM chatbot whose conversation history is stored in Azure Managed Redis. Setup takes just five minutes, with built-in capabilities like per-user memory, TTL,..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-use-amr-store-llm-chat-history/"
 date: 2026-02-25

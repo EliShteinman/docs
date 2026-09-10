@@ -3,6 +3,7 @@ title: "Using Redis with FastAPI"
 linkTitle: "Using Redis with FastAPI"
 url: "/tutorials/develop/python/fastapi/"
 description: "FastAPI is a Python web framework based on the Starlette microframework. With deep support for asyncio, FastAPI is indeed very fast. FastAPI also distinguishes itself with features like automatic..."
+group: "For developers"
 aliases:
 - "/tutorials/develop-python-fastapi/"
 date: 2026-02-25

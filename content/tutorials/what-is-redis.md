@@ -3,6 +3,7 @@ title: "What is Redis?: An Overview"
 linkTitle: "What is Redis?: An Overview"
 url: "/tutorials/what-is-redis/"
 description: "Redis is an open-source, in-memory data structure store that can be used as a database, cache, message broker, and streaming engine. It belongs to the class of NoSQL databases known as key/value..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-09-01
 hidden: true

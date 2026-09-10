@@ -3,6 +3,7 @@ title: "Getting Started with Redis Iris"
 linkTitle: "Getting Started with Redis Iris"
 url: "/tutorials/getting-started-with-redis-iris/"
 description: "Redis Iris consists of five core tools that work together:"
+group: "For AI"
 date: 2026-06-16
 lastmod: 2026-06-20
 hidden: true

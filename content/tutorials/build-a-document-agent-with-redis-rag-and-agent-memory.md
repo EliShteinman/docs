@@ -3,6 +3,7 @@ title: "How to build a document agent with Redis, RAG, and agent memory"
 linkTitle: "How to build a document agent with Redis, RAG, and agent memory"
 url: "/tutorials/build-a-document-agent-with-redis-rag-and-agent-memory/"
 description: "You'll build a Bun-based document agent with two main workflows:"
+group: "For AI"
 date: 2026-03-18
 lastmod: 2026-03-25
 hidden: true

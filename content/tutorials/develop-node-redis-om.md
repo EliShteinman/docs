@@ -3,6 +3,7 @@ title: "Up and Running with Express and Redis OM for Node.js in 5-minutes"
 linkTitle: "Up and Running with Express and Redis OM for Node.js in 5-minutes"
 url: "/tutorials/develop/node/redis-om/"
 description: "A RESTful API for managing songs that supports:"
+group: "For developers"
 aliases:
 - "/tutorials/develop-node-redis-om/"
 date: 2026-02-25

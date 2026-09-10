@@ -3,6 +3,7 @@ title: "C and Redis"
 linkTitle: "C and Redis"
 url: "/tutorials/develop/c/"
 description: "Version 1.0.0 marks the first stable release of hiredis. Install the build tools you need, then download and compile hiredis from source."
+group: "For developers"
 aliases:
 - "/tutorials/develop-c/"
 date: 2026-02-25

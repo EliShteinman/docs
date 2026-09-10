@@ -3,6 +3,7 @@ title: "How to Build a Social Network Application using Redis and NodeJS"
 linkTitle: "How to Build a Social Network Application using Redis and NodeJS"
 url: "/tutorials/howtos/socialnetwork/"
 description: "In this tutorial you'll build a social network application using Redis and Node.js. This is the idea behind Skillmarket."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-socialnetwork/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "Context Engineering Workshop for Java Developers"
 linkTitle: "Context Engineering Workshop for Java Developers"
 url: "/tutorials/context-engineering-workshop-java/"
 description: "Welcome to this hands-on workshop, where you'll learn to implement sophisticated context-engineering patterns. Context Engineering is the practice of strategically designing, structuring, and..."
+group: "For AI"
 date: 2026-02-25
 lastmod: 2026-05-08
 hidden: true

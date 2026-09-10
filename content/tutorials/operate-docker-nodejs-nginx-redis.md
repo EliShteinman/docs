@@ -3,6 +3,7 @@ title: "How to build and run a Node.js application using Nginx, Docker and Redis
 linkTitle: "How to build and run a Node.js application using Nginx, Docker and Redis"
 url: "/tutorials/operate/docker/nodejs-nginx-redis/"
 description: "This guide walks you through building a multi-container Docker application with Node.js, Nginx as a reverse proxy, and Redis for data storage. You'll use Docker Compose to orchestrate a visitor-..."
+group: "For operators"
 aliases:
 - "/tutorials/operate-docker-nodejs-nginx-redis/"
 date: 2026-02-25

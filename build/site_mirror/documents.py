@@ -149,6 +149,8 @@ TREES: tuple[DocumentTree, ...] = (
         directory=Path("content/tutorials"),
         body_field="markdownBody",
         body_is_markdown=True,
+        group_field="category",
+        group_projection='"category":category->name',
         # 122 entries would crowd the sidebar the way the blog would; they are
         # reached from the index, from search, and from the docs links.
         hidden=True,

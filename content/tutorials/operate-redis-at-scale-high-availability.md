@@ -3,6 +3,7 @@ title: "Redis High Availability: Replication & Sentinel"
 linkTitle: "Redis High Availability: Replication & Sentinel"
 url: "/tutorials/operate/redis-at-scale/high-availability/"
 description: "This tutorial is part of the Running Redis at Scale course. You can jump to any section:"
+group: "For operators"
 aliases:
 - "/tutorials/operate-redis-at-scale-high-availability/"
 date: 2026-02-25

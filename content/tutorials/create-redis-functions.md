@@ -3,6 +3,7 @@ title: "Getting started with Redis Functions"
 linkTitle: "Getting started with Redis Functions"
 url: "/tutorials/create/redis-functions/"
 description: "The most impactful addition to Redis version 7.0 is Redis Functions — a new programmability option, improving on scripts by adding modularity, reusability, and better overall developer experience."
+group: "For developers"
 aliases:
 - "/tutorials/create-redis-functions/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "Import Data into Redis"
 linkTitle: "Import Data into Redis"
 url: "/tutorials/guides/import/"
 description: "Redis offers multiple ways to import data into a database: from a file, a script, or from an existing Redis database. Whether you need to bulk load CSV data, restore an RDB snapshot, or migrate..."
+group: "For developers"
 aliases:
 - "/tutorials/guides-import/"
 date: 2026-02-25

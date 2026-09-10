@@ -3,6 +3,7 @@ title: "Redis Geo Commands Tutorial: Location-Based Queries and Search"
 linkTitle: "Redis Geo Commands Tutorial: Location-Based Queries and Search"
 url: "/tutorials/howtos/solutions/geo/getting-started/"
 description: "Redis GEO commands let you store latitude/longitude coordinates and run proximity queries entirely in memory. Use GEOADD to index locations, GEOSEARCH to find items within a radius, and GEODIST to..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-geo-getting-started/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "Getting Started with Netlify and Redis"
 linkTitle: "Getting Started with Netlify and Redis"
 url: "/tutorials/create/netlify/getting-started-with-netlify/"
 description: "Netlify is a popular static site hosting and serverless platform. It provides a fast way to build, deploy, and scale modern web apps."
+group: "For developers"
 aliases:
 - "/tutorials/create-netlify-getting-started-with-netlify/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "Getting Started with Azure Functions and Redis"
 linkTitle: "Getting Started with Azure Functions and Redis"
 url: "/tutorials/create/azurefunctions/"
 description: "Azure Functions is an event-based, serverless compute platform offered by Microsoft to accelerate and simplify serverless application development. It allows developers to write less code, build and..."
+group: "For developers"
 aliases:
 - "/tutorials/create-azurefunctions/"
 date: 2026-02-25

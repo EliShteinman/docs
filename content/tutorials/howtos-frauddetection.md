@@ -3,6 +3,7 @@ title: "How to build a Fraud Detection System using Redis"
 linkTitle: "How to build a Fraud Detection System using Redis"
 url: "/tutorials/howtos/frauddetection/"
 description: "Imagine that your ads are generating a lot of traffic, but you are not seeing the desired results from your ad spend. This might not be a coincidence—fraudsters often try to steal digital ad..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-frauddetection/"
 date: 2026-02-25

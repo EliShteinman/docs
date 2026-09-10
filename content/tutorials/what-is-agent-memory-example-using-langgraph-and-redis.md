@@ -3,6 +3,7 @@ title: "What is Agent Memory? Example using LangGraph and Redis"
 linkTitle: "What is Agent Memory? Example using LangGraph and Redis"
 url: "/tutorials/what-is-agent-memory-example-using-langgraph-and-redis/"
 description: "This notebook demonstrates how to manage short-term and long-term agent memory using LangGraph and Redis. We'll explore:"
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

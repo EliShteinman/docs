@@ -3,6 +3,7 @@ title: "How to build a Real-Time Leaderboard app Using Redis"
 linkTitle: "How to build a Real-Time Leaderboard app Using Redis"
 url: "/tutorials/howtos/leaderboard/"
 description: "The concept of a leaderboard—a scoreboard showing the ranked names and current scores of the leading competitors—is essential to the world of computer gaming, but leaderboards are now about more..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-leaderboard/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "Redis Time Series"
 linkTitle: "Redis Time Series"
 url: "/tutorials/modules/redistimeseries/"
 description: "Redis Time Series is a Redis module that enhances your experience managing time-series data with Redis. It simplifies the use of Redis for time-series use cases such as internet of things (IoT)..."
+group: "For developers"
 aliases:
 - "/tutorials/modules-redistimeseries/"
 date: 2026-02-25

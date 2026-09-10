@@ -3,6 +3,7 @@ title: "How to speed up BigQuery-backed app reads with Redis"
 linkTitle: "How to speed up BigQuery-backed app reads with Redis"
 url: "/tutorials/how-to-speed-up-bigquery-backed-app-reads-with-redis/"
 description: "BigQuery is excellent at large analytical queries, but it is not where you want to serve every UI read from. If your app repeatedly asks for the same stable dataset, you can move those reads into..."
+group: "For developers"
 date: 2026-03-18
 lastmod: 2026-03-25
 hidden: true

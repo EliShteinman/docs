@@ -3,6 +3,7 @@ title: "Build a Conversational Agent with Redis Using Flowise"
 linkTitle: "Build a Conversational Agent with Redis Using Flowise"
 url: "/tutorials/howtos/solutions/flowise/conversational-agent/"
 description: "In this tutorial, we will learn how to build a conversational agent with Redis using Flowise. Flowise is a powerful, open-source, and user-friendly AI platform that allows you to build and deploy..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-flowise-conversational-agent/"
 date: 2026-02-25

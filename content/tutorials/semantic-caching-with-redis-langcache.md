@@ -3,6 +3,7 @@ title: "How to build semantic caching with Redis LangCache"
 linkTitle: "How to build semantic caching with Redis LangCache"
 url: "/tutorials/semantic-caching-with-redis-langcache/"
 description: "To build a semantic cache with Redis LangCache, check the cache before every LLM call. When LangCache finds a semantically similar question, return the cached answer and skip the model entirely...."
+group: "For AI"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

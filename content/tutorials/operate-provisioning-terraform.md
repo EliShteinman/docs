@@ -3,6 +3,7 @@ title: "How to Deploy and Manage Redis Databases on AWS Using Terraform"
 linkTitle: "How to Deploy and Manage Redis Databases on AWS Using Terraform"
 url: "/tutorials/operate/provisioning/terraform/"
 description: "Development teams today are embracing DevOps principles like continuous integration and continuous delivery (CI/CD). Managing infrastructure-as-code (IaC) has become essential for any cloud..."
+group: "For operators"
 aliases:
 - "/tutorials/operate-provisioning-terraform/"
 date: 2026-02-25

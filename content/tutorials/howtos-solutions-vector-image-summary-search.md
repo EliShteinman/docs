@@ -3,6 +3,7 @@ title: "Vector Semantic Image Based Queries Using LangChain (OpenAI) and Redis"
 linkTitle: "Vector Semantic Image Based Queries Using LangChain (OpenAI) and Redis"
 url: "/tutorials/howtos/solutions/vector/image-summary-search/"
 description: "LangChain is an innovative library for building language model apps. It offers a structured way to combine different components like language models (e.g., OpenAI's models), storage solutions (like..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-vector-image-summary-search/"
 date: 2026-02-25

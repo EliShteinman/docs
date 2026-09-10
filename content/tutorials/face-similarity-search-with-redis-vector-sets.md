@@ -3,6 +3,7 @@ title: "How to build a face similarity search app with Redis vector sets"
 linkTitle: "How to build a face similarity search app with Redis vector sets"
 url: "/tutorials/face-similarity-search-with-redis-vector-sets/"
 description: "You'll run a three-service face similarity search app:"
+group: "For AI"
 date: 2026-03-23
 lastmod: 2026-09-03
 hidden: true

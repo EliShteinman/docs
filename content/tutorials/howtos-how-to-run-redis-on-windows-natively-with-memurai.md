@@ -3,6 +3,7 @@ title: "How to run Redis on Windows Natively"
 linkTitle: "How to run Redis on Windows Natively"
 url: "/tutorials/howtos/how-to-run-redis-on-windows-natively-with-memurai/"
 description: "Memurai for Redis brings the full power and performance of Redis to Windows - natively, seamlessly, and without compromise. Visit memurai.com for installation packages and more information."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-how-to-run-redis-on-windows-natively-with-memurai/"
 date: 2026-02-25

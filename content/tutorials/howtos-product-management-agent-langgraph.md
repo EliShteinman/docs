@@ -3,6 +3,7 @@ title: "Building a product management agent (PM Maestro) with Redis and LangGrap
 linkTitle: "Building a product management agent (PM Maestro) with Redis and LangGraph"
 url: "/tutorials/howtos/product-management-agent-langgraph/"
 description: "PM Maestro is an AI-powered demonstration agent built using LangGraph.js, Redis and Tavily, designed to automate common Product Management tasks. Redis is used for memory management—including..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-product-management-agent-langgraph/"
 date: 2026-02-25

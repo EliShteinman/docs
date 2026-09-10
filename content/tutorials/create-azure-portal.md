@@ -3,6 +3,7 @@ title: "Create Redis database on Azure Cache"
 linkTitle: "Create Redis database on Azure Cache"
 url: "/tutorials/create/azure/portal/"
 description: "Azure Cache for Redis is a fully managed, in-memory data store on Microsoft Azure. It provides secure, dedicated Redis server instances with full Redis API compatibility. The service is operated by..."
+group: "For developers"
 aliases:
 - "/tutorials/create-azure-portal/"
 date: 2026-02-25

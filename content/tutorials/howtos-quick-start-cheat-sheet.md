@@ -3,6 +3,7 @@ title: "Redis Commands Cheat sheet"
 linkTitle: "Redis Commands Cheat sheet"
 url: "/tutorials/howtos/quick-start/cheat-sheet/"
 description: "What are the most common Redis commands? This cheat sheet gives you a quick reference for essential Redis commands across the CLI, node-redis, redis-py, NRedisStack, and Jedis. For full step-by-..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-quick-start-cheat-sheet/"
 date: 2026-02-24

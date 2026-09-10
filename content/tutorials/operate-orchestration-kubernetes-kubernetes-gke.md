@@ -3,6 +3,7 @@ title: "Create a Redis database on Google Kubernetes Engine"
 linkTitle: "Create a Redis database on Google Kubernetes Engine"
 url: "/tutorials/operate/orchestration/kubernetes/kubernetes-gke/"
 description: "Deploy a Redis Enterprise database on Google Kubernetes Engine (GKE) using the Redis Enterprise Operator. This tutorial walks you through GKE cluster creation, operator deployment, and database..."
+group: "For operators"
 aliases:
 - "/tutorials/operate-orchestration-kubernetes-kubernetes-gke/"
 date: 2026-02-25

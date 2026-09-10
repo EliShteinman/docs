@@ -3,6 +3,7 @@ title: "Building an Analytics dashboard app using Redis"
 linkTitle: "Building an Analytics dashboard app using Redis"
 url: "/tutorials/building-an-analytics-dashboard-app-using-redis/"
 description: "Interactive analytics dashboards allow you to share data and provide vital information for making game-changing decisions at a faster pace. Building a real-time dynamic dashboard using a..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

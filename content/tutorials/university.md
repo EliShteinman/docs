@@ -3,6 +3,7 @@ title: "Redis University"
 linkTitle: "Redis University"
 url: "/tutorials/university/"
 description: "Redis University offers free online courses designed to help developers and operations professionals master Redis. Whether you're just getting started or looking to deepen your expertise with Redis..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-05-21
 hidden: true

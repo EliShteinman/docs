@@ -3,6 +3,7 @@ title: "Redis Scalability: Clustering, Sharding, and Hash Slots"
 linkTitle: "Redis Scalability: Clustering, Sharding, and Hash Slots"
 url: "/tutorials/operate/redis-at-scale/scalability/"
 description: "This tutorial is part of the Running Redis at Scale course. You can jump to any section:"
+group: "For operators"
 aliases:
 - "/tutorials/operate-redis-at-scale-scalability/"
 date: 2026-02-25

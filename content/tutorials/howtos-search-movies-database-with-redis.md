@@ -3,6 +3,7 @@ title: "How to Search Movies Database with Redis"
 linkTitle: "How to Search Movies Database with Redis"
 url: "/tutorials/howtos-search-movies-database-with-redis/"
 description: "In this tutorial, you'll learn how to use Redis Search to index and query a movies database. You'll start with basic data modeling, create search indexes, run queries, and work your way up to..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-25
 hidden: true

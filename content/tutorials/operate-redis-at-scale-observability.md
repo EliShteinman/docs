@@ -3,6 +3,7 @@ title: "Redis Observability: Monitoring, Metrics, and Troubleshooting"
 linkTitle: "Redis Observability: Monitoring, Metrics, and Troubleshooting"
 url: "/tutorials/operate/redis-at-scale/observability/"
 description: "This tutorial is part of the Running Redis at Scale course. You can jump to any section:"
+group: "For operators"
 aliases:
 - "/tutorials/operate-redis-at-scale-observability/"
 date: 2026-02-25

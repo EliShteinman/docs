@@ -3,6 +3,7 @@ title: "CircleCI: What it is and why it should be part of your Redis CI-CD"
 linkTitle: "CircleCI: What it is and why it should be part of your Redis CI-CD"
 url: "/tutorials/operate/ci-cd/circle-ci/"
 description: "CircleCI is a continuous integration and continuous delivery (CI/CD) platform designed to automate the build, test, and deployment stages of software development. It integrates with version control..."
+group: "For operators"
 aliases:
 - "/tutorials/operate-ci-cd-circle-ci/"
 date: 2026-02-25

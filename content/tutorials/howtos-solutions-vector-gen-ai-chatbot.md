@@ -3,6 +3,7 @@ title: "How to Build a RAG GenAI Chatbot Using Vector Search with LangChain and 
 linkTitle: "How to Build a RAG GenAI Chatbot Using Vector Search with LangChain and Redis"
 url: "/tutorials/howtos/solutions/vector/gen-ai-chatbot/"
 description: "Retrieval-augmented generation (RAG) combines a large language model with an external knowledge base so the chatbot answers questions using your own data instead of relying solely on its training..."
+group: "For AI"
 aliases:
 - "/tutorials/howtos-solutions-vector-gen-ai-chatbot/"
 date: 2026-02-24

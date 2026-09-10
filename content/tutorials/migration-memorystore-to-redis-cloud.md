@@ -3,6 +3,7 @@ title: "Memorystore to Redis Cloud"
 linkTitle: "Memorystore to Redis Cloud"
 url: "/tutorials/migration/memorystore-to-redis-cloud/"
 description: "Before migrating to Redis Cloud, you should evaluate the migration and consider the best option. Read this guide to determine which migration strategy is right for you."
+group: "For developers"
 aliases:
 - "/tutorials/migration-memorystore-to-redis-cloud/"
 date: 2026-02-25

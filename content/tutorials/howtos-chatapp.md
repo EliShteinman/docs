@@ -3,6 +3,7 @@ title: "How to build a Chat application using Redis"
 linkTitle: "How to build a Chat application using Redis"
 url: "/tutorials/howtos/chatapp/"
 description: "Real-time chat is an online communication channel that allows you to conduct conversations instantly. More and more developers are tapping into the power of Redis as it is extremely fast and..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-chatapp/"
 date: 2026-02-25

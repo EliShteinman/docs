@@ -3,6 +3,7 @@ title: "How to Perform Vector Similarity Search Using Redis in NodeJS"
 linkTitle: "How to Perform Vector Similarity Search Using Redis in NodeJS"
 url: "/tutorials/howtos/solutions/vector/getting-started-vector/"
 description: "In the context of machine learning, a vector is a mathematical representation of data. It is an ordered list of numbers that encode the features or attributes of a piece of data."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-vector-getting-started-vector/"
 date: 2026-02-25

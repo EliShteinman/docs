@@ -3,6 +3,7 @@ title: "Build a Slack bot with Chat SDK and Redis distributed locking"
 linkTitle: "Build a Slack bot with Chat SDK and Redis distributed locking"
 url: "/tutorials/chat-sdk-slackbot-distributed-locking/"
 description: "<img src=\"https://cdn.sanity.io/images/sy1jschh/production/3b159ff35921a1a2264a3343d7a10ed2747d3784-1042x1158.png\" alt=\"Slack UI showing @triage-bot thread with distributed locking using Chat SDK\"..."
+group: "For AI"
 date: 2026-03-13
 lastmod: 2026-03-20
 hidden: true

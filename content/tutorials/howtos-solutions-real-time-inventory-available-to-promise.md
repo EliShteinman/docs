@@ -3,6 +3,7 @@ title: "Available to Promise in Real-time Inventory Using Redis"
 linkTitle: "Available to Promise in Real-time Inventory Using Redis"
 url: "/tutorials/howtos/solutions/real-time-inventory/available-to-promise/"
 description: "The major requirement in a retail inventory system is presenting an accurate, real-time view of inventory to shoppers and store associates enabling buy-online-pickup-in-store (BOPIS). Optimizing..."
+group: "For AI"
 aliases:
 - "/tutorials/howtos-solutions-real-time-inventory-available-to-promise/"
 date: 2026-02-25

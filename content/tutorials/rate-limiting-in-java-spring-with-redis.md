@@ -3,6 +3,7 @@ title: "Rate Limiting in Java Spring with Redis: Fixed Window Implementation"
 linkTitle: "Rate Limiting in Java Spring with Redis: Fixed Window Implementation"
 url: "/tutorials/rate-limiting-in-java-spring-with-redis/"
 description: "In this tutorial we'll explore several approaches to implement rate limiting in Spring apps using Redis. We'll start with the most basic of Redis recipes and we'll slowly increase the complexity of..."
+group: "For developers"
 aliases:
 - "/tutorials/develop/java/spring/rate-limiting/fixed-window/"
 date: 2026-02-25

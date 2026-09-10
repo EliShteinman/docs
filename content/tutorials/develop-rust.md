@@ -3,6 +3,7 @@ title: "Rust and Redis"
 linkTitle: "Rust and Redis"
 url: "/tutorials/develop/rust/"
 description: "The Rust community has built many Redis client libraries. This tutorial uses redis-rs, the most widely used Rust client for Redis. It exposes a general-purpose interface to Redis and also provides..."
+group: "For developers"
 aliases:
 - "/tutorials/develop-rust/"
 date: 2026-02-25

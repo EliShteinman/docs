@@ -3,6 +3,7 @@ title: ".NET and Redis"
 linkTitle: ".NET and Redis"
 url: "/tutorials/develop/dotnet/"
 description: "To use Redis with .NET, install the StackExchange.Redis NuGet package, create a ConnectionMultiplexer, and call commands like StringSet and StringGet on the IDatabase object. StackExchange.Redis is..."
+group: "For developers"
 aliases:
 - "/tutorials/develop-dotnet/"
 date: 2026-02-24

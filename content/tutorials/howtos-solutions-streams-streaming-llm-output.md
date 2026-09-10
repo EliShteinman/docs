@@ -3,6 +3,7 @@ title: "Streaming LLM Output Using Redis Streams"
 linkTitle: "Streaming LLM Output Using Redis Streams"
 url: "/tutorials/howtos/solutions/streams/streaming-llm-output/"
 description: "In this tutorial, we will explore how to stream output (in chunks) from a Large Language Model (LLM) to a browser using Redis Streams."
+group: "For AI"
 aliases:
 - "/tutorials/howtos-solutions-streams-streaming-llm-output/"
 date: 2026-02-25

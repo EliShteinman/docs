@@ -3,6 +3,7 @@ title: "Building an AI-Powered Video Q&A Application with Vector Search, Redis a
 linkTitle: "Building an AI-Powered Video Q&A Application with Vector Search, Redis and LangChain"
 url: "/tutorials/howtos/solutions/vector/ai-qa-videos-langchain-redis-openai-google/"
 description: "In this tutorial you will build an AI-powered Q&A engine that lets users ask natural-language questions about video content. Along the way you will learn how to:"
+group: "For AI"
 aliases:
 - "/tutorials/howtos-solutions-vector-ai-qa-videos-langchain-redis-openai-google/"
 date: 2026-02-25

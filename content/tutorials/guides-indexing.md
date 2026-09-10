@@ -3,6 +3,7 @@ title: "Indexing and Querying"
 linkTitle: "Indexing and Querying"
 url: "/tutorials/guides/indexing/"
 description: "Redis is a key-value store, so retrieving data by anything other than its key requires a secondary index. This guide covers how to build indexing and querying patterns in Redis using core data..."
+group: "For developers"
 aliases:
 - "/tutorials/guides-indexing/"
 date: 2026-02-24

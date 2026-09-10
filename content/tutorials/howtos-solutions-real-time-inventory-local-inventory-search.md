@@ -3,6 +3,7 @@ title: "Real-time Local Inventory Search Using Redis"
 linkTitle: "Real-time Local Inventory Search Using Redis"
 url: "/tutorials/howtos/solutions/real-time-inventory/local-inventory-search/"
 description: "Real-time local inventory search is a method of utilizing advanced product search capabilities across a group of stores or warehouses in a region or geographic area by which a retailer can enhance..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-real-time-inventory-local-inventory-search/"
 date: 2026-02-25

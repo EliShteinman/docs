@@ -3,6 +3,7 @@ title: "How to Build a Real Time Chat application on Amazon Web Services using P
 linkTitle: "How to Build a Real Time Chat application on Amazon Web Services using Python and Redis"
 url: "/tutorials/create/aws/chatapp/"
 description: "Real time chat messaging apps are surging in popularity exponentially. Mobile apps like WhatsApp, Facebook, Telegram, Slack, Discord have become “a part and parcel” of our life. Users are addicted..."
+group: "For developers"
 aliases:
 - "/tutorials/create-aws-chatapp/"
 date: 2026-02-25

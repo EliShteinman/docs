@@ -3,6 +3,7 @@ title: "Ruby and Redis"
 linkTitle: "Ruby and Redis"
 url: "/tutorials/develop/ruby/"
 description: "Use Redis with Ruby via the redis-rb gem. This tutorial walks you through installation, connecting to a Redis server, and performing basic operations so you can integrate Redis into your Ruby..."
+group: "For developers"
 aliases:
 - "/tutorials/develop-ruby/"
 date: 2026-02-25

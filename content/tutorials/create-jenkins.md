@@ -3,6 +3,7 @@ title: "How to Deploy a Redis Database from a Jenkins Pipeline"
 linkTitle: "How to Deploy a Redis Database from a Jenkins Pipeline"
 url: "/tutorials/create/jenkins/"
 description: "Jenkins is currently the most popular CI(Continuous Integration) tool, with ~15M users. It is an open source automation server which enables developers to reliably build, test, and deploy their..."
+group: "For developers"
 aliases:
 - "/tutorials/create-jenkins/"
 date: 2026-02-25

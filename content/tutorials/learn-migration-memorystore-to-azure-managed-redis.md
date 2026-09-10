@@ -3,6 +3,7 @@ title: "Memorystore to Azure Managed Redis (AMR)"
 linkTitle: "Memorystore to Azure Managed Redis (AMR)"
 url: "/tutorials/learn/migration/memorystore-to-azure-managed-redis/"
 description: "Before migrating to Azure Managed Redis, you should evaluate the migration and consider the best option. Read this guide to determine which migration strategy is right for you. If you are..."
+group: "For developers"
 aliases:
 - "/tutorials/learn-migration-memorystore-to-azure-managed-redis/"
 date: 2026-02-25

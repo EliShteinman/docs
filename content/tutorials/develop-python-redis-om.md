@@ -3,6 +3,7 @@ title: "Getting Started With Redis OM for Python"
 linkTitle: "Getting Started With Redis OM for Python"
 url: "/tutorials/develop/python/redis-om/"
 description: "Redis OM for Python makes it easy to model and query data in Redis using declarative models that will feel right at home to users of Peewee, SQLAlchemy, and the Django ORM. If you're familiar with..."
+group: "For developers"
 aliases:
 - "/tutorials/develop-python-redis-om/"
 date: 2026-02-25

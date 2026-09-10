@@ -3,6 +3,7 @@ title: "Using Redis OM .NET to work with JSON and Hashes in Redis"
 linkTitle: "Using Redis OM .NET to work with JSON and Hashes in Redis"
 url: "/tutorials/redis-om-dotnet-getting-started/"
 description: "Redis OM provides high-level abstractions for using Redis in .NET, making it easy to model and query your Redis domain objects."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-25
 hidden: true

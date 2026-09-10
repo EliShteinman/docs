@@ -3,6 +3,7 @@ title: "How to add a basic API Cache to your ASP.NET Core application"
 linkTitle: "How to add a basic API Cache to your ASP.NET Core application"
 url: "/tutorials/develop/dotnet/aspnetcore/caching/basic-api-caching/"
 description: "Redis is synonymous with caching, and for a good reason, Redis is fast and easy to get up and running with and does an excellent job as a cache."
+group: "For developers"
 aliases:
 - "/tutorials/develop-dotnet-aspnetcore-caching-basic-api-caching/"
 date: 2026-02-25

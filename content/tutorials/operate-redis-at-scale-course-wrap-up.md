@@ -3,6 +3,7 @@ title: "Running Redis at Scale: Course Wrap-up & Next Steps"
 linkTitle: "Running Redis at Scale: Course Wrap-up & Next Steps"
 url: "/tutorials/operate/redis-at-scale/course-wrap-up/"
 description: "This tutorial is part of the Running Redis at Scale course. You can jump to any section:"
+group: "For operators"
 aliases:
 - "/tutorials/operate-redis-at-scale-course-wrap-up/"
 date: 2026-02-24

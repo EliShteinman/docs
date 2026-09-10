@@ -3,6 +3,7 @@ title: "How to use Redis for Transaction risk scoring (in Fraud Detection)"
 linkTitle: "How to use Redis for Transaction risk scoring (in Fraud Detection)"
 url: "/tutorials/howtos/solutions/fraud-detection/transaction-risk-scoring/"
 description: "\"Transaction risk scoring\" is a method of leveraging data science, machine learning, and statistical analysis to continuously monitor transactions and assess the relative risk associated with each..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-fraud-detection-transaction-risk-scoring/"
 date: 2026-02-25

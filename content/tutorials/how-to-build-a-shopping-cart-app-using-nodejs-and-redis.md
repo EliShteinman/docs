@@ -3,6 +3,7 @@ title: "How to build a Shopping cart app using NodeJS and Redis"
 linkTitle: "How to build a Shopping cart app using NodeJS and Redis"
 url: "/tutorials/how-to-build-a-shopping-cart-app-using-nodejs-and-redis/"
 description: "It's hard to imagine an online store without a shopping cart. Almost every online store must have the shopping cart functionality to be able to sell products to customers. In order to build a..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

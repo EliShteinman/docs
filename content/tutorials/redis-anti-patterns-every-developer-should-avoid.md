@@ -3,6 +3,7 @@ title: "Redis Anti-Patterns Every Developer Should Avoid"
 linkTitle: "Redis Anti-Patterns Every Developer Should Avoid"
 url: "/tutorials/redis-anti-patterns-every-developer-should-avoid/"
 description: "Devs don't just use Redis, they love it. Stack Overflow's annual Developer Survey 2021 has ranked Redis as the Most Loved Database platform for the fifth years running! But it is equally important..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-05-21
 hidden: true

@@ -3,6 +3,7 @@ title: "How to build feature flags and remote config with Redis"
 linkTitle: "How to build feature flags and remote config with Redis"
 url: "/tutorials/feature-flags-and-remote-config-with-redis/"
 description: "When your app needs to turn a feature on for 10% of users in one region and off everywhere else, you need a store that can answer that question fast. Redis gives you sub-millisecond reads, clean..."
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

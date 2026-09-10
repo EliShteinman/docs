@@ -3,6 +3,7 @@ title: "Building a game backend with Redis"
 linkTitle: "Building a game backend with Redis"
 url: "/tutorials/building-a-game-backend-with-redis/"
 description: "Modern multiplayer games are some of the most demanding real-time applications in the world. Whether it's a battle royale with millions of concurrent players, an MMO with persistent worlds, or a..."
+group: "For AI"
 date: 2026-06-02
 lastmod: 2026-06-11
 hidden: true

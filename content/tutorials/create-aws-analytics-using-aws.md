@@ -3,6 +3,7 @@ title: "How to Build and Deploy Your Own Analytics Dashboard using NodeJS and Re
 linkTitle: "How to Build and Deploy Your Own Analytics Dashboard using NodeJS and Redis on the AWS Platform"
 url: "/tutorials/create/aws/analytics-using-aws/"
 description: "An interactive analytics dashboard serves several purposes. They allow you to share data and provide you with all those vital information to make game-changing decisions at a faster pace. Building..."
+group: "For developers"
 aliases:
 - "/tutorials/create-aws-analytics-using-aws/"
 date: 2026-02-25

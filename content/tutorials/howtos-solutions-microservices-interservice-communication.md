@@ -3,6 +3,7 @@ title: "Microservices Communication with Redis Streams"
 linkTitle: "Microservices Communication with Redis Streams"
 url: "/tutorials/howtos/solutions/microservices/interservice-communication/"
 description: "When building a microservices application, people use a variety of options for communication between services. Among them:"
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-microservices-interservice-communication/"
 date: 2026-02-25

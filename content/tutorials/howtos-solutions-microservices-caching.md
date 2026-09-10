@@ -3,6 +3,7 @@ title: "How to use Redis for Query Caching"
 linkTitle: "How to use Redis for Query Caching"
 url: "/tutorials/howtos/solutions/microservices/caching/"
 description: "Have you ever been in a situation where your database queries are slowing down? Query caching is the technique you need to speed database queries by using different caching methods while keeping..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-microservices-caching/"
 date: 2026-02-25

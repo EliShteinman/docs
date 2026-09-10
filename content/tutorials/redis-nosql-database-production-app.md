@@ -3,6 +3,7 @@ title: "How to use Redis as a NoSQL database for a production app"
 linkTitle: "How to use Redis as a NoSQL database for a production app"
 url: "/tutorials/redis-nosql-database-production-app/"
 description: "You'll work with a TypeScript app that exposes:"
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

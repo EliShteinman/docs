@@ -3,6 +3,7 @@ title: "Building a Two Tower Recommendation System with RedisVL"
 linkTitle: "Building a Two Tower Recommendation System with RedisVL"
 url: "/tutorials/building-a-two-tower-recommendation-system-with-redis-vl/"
 description: "Recommendation systems are a common application of machine learning and are widely used across industries, from e-commerce to music streaming platforms."
+group: "For AI"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

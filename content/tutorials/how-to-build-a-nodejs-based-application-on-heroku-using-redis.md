@@ -3,6 +3,7 @@ title: "How to build a NodeJS based application on Heroku using Redis"
 linkTitle: "How to build a NodeJS based application on Heroku using Redis"
 url: "/tutorials/how-to-build-a-nodejs-based-application-on-heroku-using-redis/"
 description: "Create your Redis Cloud account. Follow this link to create Redis Cloud subscription and database as shown below:"
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-25
 hidden: true

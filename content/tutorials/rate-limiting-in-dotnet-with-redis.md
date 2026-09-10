@@ -3,6 +3,7 @@ title: "Rate Limiting in .NET with Redis"
 linkTitle: "Rate Limiting in .NET with Redis"
 url: "/tutorials/rate-limiting-in-dotnet-with-redis/"
 description: "Rate limiting your .NET APIs with Redis is the fastest way to protect against abuse, prevent resource starvation, and enforce usage quotas. By combining ASP.NET Core middleware with Redis's atomic..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

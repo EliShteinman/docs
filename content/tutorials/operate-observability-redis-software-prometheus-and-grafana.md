@@ -3,6 +3,7 @@ title: "Redis Software Observability with Prometheus and Grafana"
 linkTitle: "Redis Software Observability with Prometheus and Grafana"
 url: "/tutorials/operate/observability/redis-software-prometheus-and-grafana/"
 description: "How do you monitor Redis Software with Prometheus and Grafana? Deploy a turnkey observability stack that scrapes Redis metrics via the v2 Metrics Stream Engine, visualizes them in pre-built Grafana..."
+group: "For operators"
 aliases:
 - "/tutorials/operate-observability-redis-software-prometheus-and-grafana/"
 date: 2026-02-25

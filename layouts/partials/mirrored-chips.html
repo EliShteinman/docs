@@ -1,0 +1,26 @@
+{{/* Category chips, the way redis.io presents them on /blog/ and /tutorials/:
+     every category as a pill, the one being read marked, and an "all" pill back
+     to the section index.
+
+     `section` is where the category pages live, `home` is the section they
+     belong to, `active` is the category name being read (empty on the index).
+
+     A category whose source document has no pathname gets no page and so no
+     chip -- redis.io does not publish one either ("For operators"). Its items
+     still carry their tag in the listing.
+*/}}
+{{ $catalog := site.GetPage .section }}
+{{ $home := site.GetPage .home }}
+{{ $active := .active }}
+{{ with $catalog }}
+  <div class="not-prose flex flex-wrap gap-2 my-8">
+    {{ with $home }}
+      <a class='px-4 py-2 rounded-md border border-redis-ink-900 border-opacity-40 text-sm no-underline hover:bg-redis-pen-200 {{ if not $active }}font-bold bg-redis-pen-200{{ end }}'
+         href='{{ .RelPermalink }}'>{{ $.allLabel | default "All" }}</a>
+    {{ end }}
+    {{ range .Pages.ByTitle }}
+      <a class='px-4 py-2 rounded-md border border-redis-ink-900 border-opacity-40 text-sm no-underline hover:bg-redis-pen-200 {{ if eq .Title $active }}font-bold bg-redis-pen-200{{ end }}'
+         href='{{ .RelPermalink }}'>{{ .Title }}</a>
+    {{ end }}
+  </div>
+{{ end }}

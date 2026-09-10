@@ -3,6 +3,7 @@ title: "Redis on Heroku"
 linkTitle: "Redis on Heroku"
 url: "/tutorials/create/heroku/portal/"
 description: "Heroku is a cloud Platform as a Service (PaaS) that supports multiple programming languages and is used as a web application deployment platform. Heroku lets developers build, run, and scale apps..."
+group: "For developers"
 aliases:
 - "/tutorials/create-heroku-portal/"
 date: 2026-02-25

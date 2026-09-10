@@ -3,6 +3,7 @@ title: "How to build a Redis-backed job queue for background workers"
 linkTitle: "How to build a Redis-backed job queue for background workers"
 url: "/tutorials/redis-backed-job-queue-for-background-workers/"
 description: "To build a Redis-backed job queue, store each job as a JSON document, push the job id onto a Redis Stream, and let a worker claim messages through a consumer group with XREADGROUP. Track job status..."
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

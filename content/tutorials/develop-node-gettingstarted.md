@@ -3,6 +3,7 @@ title: "Getting Started with Node and Redis"
 linkTitle: "Getting Started with Node and Redis"
 url: "/tutorials/develop/node/gettingstarted/"
 description: "Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling..."
+group: "For developers"
 aliases:
 - "/tutorials/develop-node-gettingstarted/"
 date: 2026-02-25

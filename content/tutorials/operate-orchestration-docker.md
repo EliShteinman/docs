@@ -3,6 +3,7 @@ title: "How to Deploy and Run Redis in a Docker Container"
 linkTitle: "How to Deploy and Run Redis in a Docker Container"
 url: "/tutorials/operate/orchestration/docker/"
 description: "Before running a Redis container, pull the latest official Redis image from Docker Hub:"
+group: "For operators"
 aliases:
 - "/tutorials/operate-orchestration-docker/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "How to Handle Digital Identity Validation Using Redis (in Fraud Detectio
 linkTitle: "How to Handle Digital Identity Validation Using Redis (in Fraud Detection)"
 url: "/tutorials/howtos/solutions/fraud-detection/digital-identity-validation/"
 description: "As the digital landscape continues to evolve, the need for robust security measures to protect users and organizations becomes ever more critical. Digital identity validation and fraud detection..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-fraud-detection-digital-identity-validation/"
 date: 2026-02-25

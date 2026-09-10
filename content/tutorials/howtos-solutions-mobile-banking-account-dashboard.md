@@ -3,6 +3,7 @@ title: "Mobile Banking Account Dashboard Using Redis"
 linkTitle: "Mobile Banking Account Dashboard Using Redis"
 url: "/tutorials/howtos/solutions/mobile-banking/account-dashboard/"
 description: "An account dashboard is a page in a mobile banking app that instantly renders account highlights to users. A customer can click on any of the accounts on the dashboard to see the real-time account..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-mobile-banking-account-dashboard/"
 date: 2026-02-25

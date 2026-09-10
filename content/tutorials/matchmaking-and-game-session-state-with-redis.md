@@ -3,6 +3,7 @@ title: "How to build matchmaking and game session state with Redis"
 linkTitle: "How to build matchmaking and game session state with Redis"
 url: "/tutorials/matchmaking-and-game-session-state-with-redis/"
 description: "To build matchmaking with Redis, store queued players in a sorted set keyed by mode and skill bucket, keep player metadata in hashes, and create rooms as JSON strings with a TTL. Use WATCH and..."
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

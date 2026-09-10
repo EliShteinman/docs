@@ -3,6 +3,7 @@ title: "Deno and Redis"
 linkTitle: "Deno and Redis"
 url: "/tutorials/develop/deno/"
 description: "With over 100,000 stars and 1000+ contributors, Deno is a popular modern runtime for JavaScript and TypeScript. It is built on V8, an open-source JavaScript engine developed by the Chromium Project..."
+group: "For developers"
 aliases:
 - "/tutorials/develop-deno/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "Building a Popup Store application using Redis"
 linkTitle: "Building a Popup Store application using Redis"
 url: "/tutorials/building-a-popup-store-application-using-redis/"
 description: "Pop-up stores are becoming a popular channel for retailers to create a new revenue stream, generate buzz with customers, test product concepts, or unload excess inventory. Since the idea is to spin..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

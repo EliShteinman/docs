@@ -3,6 +3,7 @@ title: "How to Build a Real-Time Bidding Platform using NodeJS, AWS Lambda and R
 linkTitle: "How to Build a Real-Time Bidding Platform using NodeJS, AWS Lambda and Redis"
 url: "/tutorials/create/aws/bidding-on-aws/"
 description: "Digital technology has propelled us forward to an exciting new era and has transformed almost every aspect of life. We're more interconnected than ever as communication has become instant. Working..."
+group: "For developers"
 aliases:
 - "/tutorials/create-aws-bidding-on-aws/"
 date: 2026-02-25

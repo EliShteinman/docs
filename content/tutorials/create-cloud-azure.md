@@ -3,6 +3,7 @@ title: "Create a database using Azure Cache for Redis"
 linkTitle: "Create a database using Azure Cache for Redis"
 url: "/tutorials/create/cloud/azure/"
 description: "Azure Cache for Redis is a native fully-managed service on Microsoft Azure. Azure Cache for Redis offers both the Redis open-source (OSS Redis) and a commercial product from Redis (Redis Cloud) as..."
+group: "For developers"
 aliases:
 - "/tutorials/create-cloud-azure/"
 date: 2026-02-25

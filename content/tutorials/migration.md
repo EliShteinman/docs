@@ -3,6 +3,7 @@ title: "Redis Cloud Migration"
 linkTitle: "Redis Cloud Migration"
 url: "/tutorials/migration/"
 description: "Before migrating to Redis Cloud, you should evaluate the migration and consider the best option. This guide covers three strategies so you can pick the one that fits your workload, downtime..."
+group: "For operators"
 date: 2026-02-25
 lastmod: 2026-02-27
 hidden: true

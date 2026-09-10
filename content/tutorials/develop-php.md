@@ -3,6 +3,7 @@ title: "PHP and Redis"
 linkTitle: "PHP and Redis"
 url: "/tutorials/develop/php/"
 description: "Redis is a high-performance, in-memory data store used for caching, session management, and real-time analytics. The PhpRedis extension gives your PHP applications direct access to Redis with..."
+group: "For developers"
 aliases:
 - "/tutorials/develop-php/"
 date: 2026-02-25

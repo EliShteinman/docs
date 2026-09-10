@@ -3,6 +3,7 @@ title: "How to build a HackerNews Clone using Redis"
 linkTitle: "How to build a HackerNews Clone using Redis"
 url: "/tutorials/how-to-build-a-hackernews-clone-using-redis/"
 description: "Hacker News (sometimes abbreviated as HN) is a social news website focusing on computer science and entrepreneurship. It developed as a project of Graham's company Y Combinator, functioning as a..."
+group: "For developers"
 date: 2026-02-25
 lastmod: 2026-02-26
 hidden: true

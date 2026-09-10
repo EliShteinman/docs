@@ -3,6 +3,7 @@ title: "How to do data deduplication with Redis"
 linkTitle: "How to do data deduplication with Redis"
 url: "/tutorials/data-deduplication-with-redis/"
 description: "If your webhook handler, event consumer, or import job sees the same payload twice, you usually pay for it twice. Redis gives you a fast way to claim each event once, remember exact duplicates, and..."
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

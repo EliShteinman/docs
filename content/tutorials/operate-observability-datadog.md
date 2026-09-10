@@ -3,6 +3,7 @@ title: "Redis Observability with Datadog"
 linkTitle: "Redis Observability with Datadog"
 url: "/tutorials/operate/observability/datadog/"
 description: "DevOps and SRE practitioners are already keenly aware of the importance of system reliability, as it's one of the shared goals in every high performing organization. Defining clear reliability..."
+group: "For operators"
 aliases:
 - "/tutorials/operate-observability-datadog/"
 date: 2026-02-25

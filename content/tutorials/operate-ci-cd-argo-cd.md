@@ -3,6 +3,7 @@ title: "Argo CD: What it is and why it should be part of your Redis CI-CD"
 linkTitle: "Argo CD: What it is and why it should be part of your Redis CI-CD"
 url: "/tutorials/operate/ci-cd/argo-cd/"
 description: "Argo CD is an open-source, declarative, GitOps continuous delivery tool built for Kubernetes. The name combines Argo—a CNCF-hosted container-native workflow engine—with CD (continuous delivery),..."
+group: "For operators"
 aliases:
 - "/tutorials/operate-ci-cd-argo-cd/"
 date: 2026-02-25

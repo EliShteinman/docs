@@ -3,6 +3,7 @@ title: "How to use Redis for Cache Prefetching Strategy"
 linkTitle: "How to use Redis for Cache Prefetching Strategy"
 url: "/tutorials/howtos/solutions/caching-architecture/cache-prefetching/"
 description: "Cache prefetching is a proactive caching strategy where you load data into Redis before it's requested, eliminating cache misses for frequently accessed data like master data lookups. Use cache..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-solutions-caching-architecture-cache-prefetching/"
 date: 2026-02-26

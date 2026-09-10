@@ -3,6 +3,7 @@ title: "Getting started with vector sets"
 linkTitle: "Getting started with vector sets"
 url: "/tutorials/howtos/vector-sets-basics/"
 description: "Vector sets are a Redis data type similar to sorted sets. However, instead of associating each element with a numerical score, elements in a vector set are associated with a vector—a list of..."
+group: "For AI"
 aliases:
 - "/tutorials/howtos-vector-sets-basics/"
 date: 2026-02-25

@@ -3,6 +3,7 @@ title: "Build an academic RAG app for arXiv paper Q&A with Redis and LangChain"
 linkTitle: "Build an academic RAG app for arXiv paper Q&A with Redis and LangChain"
 url: "/tutorials/vector-arxiv-paper-qa/"
 description: "In this tutorial you will build a paper Q&A app for intermediate Python devs. Along the way you will learn how to:"
+group: "For AI"
 date: 2026-03-18
 lastmod: 2026-03-18
 hidden: true

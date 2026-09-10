@@ -3,6 +3,7 @@ title: "Use Redis with no setup required with Redis Sandbox"
 linkTitle: "Use Redis with no setup required with Redis Sandbox"
 url: "/tutorials/howtos/redis-sandbox/"
 description: "Redis Sandbox (also known as Redis Playground) is an interactive, online Redis console that lets you experiment with Redis commands in a safe, isolated environment—no setup required. Whether you're..."
+group: "For developers"
 aliases:
 - "/tutorials/howtos-redis-sandbox/"
 date: 2026-02-25

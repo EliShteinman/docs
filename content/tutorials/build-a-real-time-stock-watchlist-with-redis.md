@@ -3,6 +3,7 @@ title: "How to build a real-time stock watchlist with Redis"
 linkTitle: "How to build a real-time stock watchlist with Redis"
 url: "/tutorials/build-a-real-time-stock-watchlist-with-redis/"
 description: "You'll build a four-service stock watchlist app:"
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

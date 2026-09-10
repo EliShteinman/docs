@@ -3,6 +3,7 @@ title: "Java and Redis"
 linkTitle: "Java and Redis"
 url: "/tutorials/develop/java/getting-started/"
 description: "Before you begin, make sure you have:"
+group: "For developers"
 aliases:
 - "/tutorials/develop-java-getting-started/"
 date: 2026-02-25

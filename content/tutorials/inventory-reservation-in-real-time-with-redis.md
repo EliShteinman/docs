@@ -3,6 +3,7 @@ title: "How to reserve inventory in real time with Redis"
 linkTitle: "How to reserve inventory in real time with Redis"
 url: "/tutorials/inventory-reservation-in-real-time-with-redis/"
 description: "When two shoppers click \"buy\" at the same time, your system needs to decide who gets the last item before either write commits. A plain database read-then-write is not fast enough -- both requests..."
+group: "For developers"
 date: 2026-03-19
 lastmod: 2026-03-25
 hidden: true

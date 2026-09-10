@@ -3,6 +3,7 @@ title: "Kubernetes Operator: What It Is and Why You Should Really Care About It"
 linkTitle: "Kubernetes Operator: What It Is and Why You Should Really Care About It"
 url: "/tutorials/operate/orchestration/kubernetes-operator/"
 description: "Kubernetes is popular due to its capability to deploy new apps at a faster pace. Thanks to \"Infrastructure as data\" (specifically, YAML), today you can express all your Kubernetes resources such as..."
+group: "For operators"
 aliases:
 - "/tutorials/operate-orchestration-kubernetes-operator/"
 date: 2026-02-25

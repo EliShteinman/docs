@@ -3,6 +3,7 @@ title: "How to build a car dealership AI agent with Google ADK and Redis Agent M
 linkTitle: "How to build a car dealership AI agent with Google ADK and Redis Agent Memory Server"
 url: "/tutorials/build-a-car-dealership-agent-with-google-adk-and-redis-agent-memory/"
 description: "You'll build a car dealership chatbot called AutoEmporium. A customer logs in, tells the agent what kind of car they want, and the agent walks them through a five-stage purchase journey:"
+group: "For AI"
 date: 2026-03-24
 lastmod: 2026-06-02
 hidden: true
