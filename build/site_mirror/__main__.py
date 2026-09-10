@@ -32,6 +32,10 @@ from build.site_mirror.sanity import (
     fetch_posts,
 )
 
+# Where a grouped section files a document the source left ungrouped. Named
+# rather than left empty: see the group assignment in write_tree.
+UNGROUPED = "Other"
+
 # The page tree mirrored alongside the blog. Kept as a list so adding another
 # tree is a line here rather than a new code path.
 PAGE_TREES = (
@@ -306,6 +310,13 @@ def mirror_documents(
         # the index groups by one, so the first is the one that counts.
         if isinstance(group, list):
             group = next((g for g in group if g), "")
+        # A grouped section's index is built with GroupByParam, which drops a
+        # page that carries no group rather than filing it anywhere -- the page
+        # would be written, published, findable by search, and missing from the
+        # only list that leads to it. Every source document has a group today;
+        # this is what happens the day one does not.
+        if tree.group_field and not group:
+            group = UNGROUPED
         if group:
             group_counts[group] = group_counts.get(group, 0) + 1
         document = {**document, "title": title, "group": group}

@@ -240,3 +240,18 @@ def test_version_builds_remove_exactly_the_mirrored_sections():
             f"{pipeline} removes {sorted(set(removed) - set(expected))} which the mirror "
             f"does not own, and keeps {sorted(set(expected) - set(removed))} which it does"
         )
+
+
+def test_a_grouped_section_files_an_ungrouped_document_somewhere():
+    """GroupByParam drops a page with no group; it must never have none.
+
+    A grouped section's index is the only list that leads to its pages. A page
+    the source left ungrouped would still be written and still be findable by
+    search, and would be missing from that list -- silently, with no warning
+    and no empty heading to notice.
+    """
+    from build.site_mirror.__main__ import UNGROUPED
+
+    assert UNGROUPED, "a group value has to be truthy for GroupByParam to keep the page"
+    grouped = [tree.name for tree in TREES if tree.group_field]
+    assert grouped, "the guard is pointless if no tree groups its documents"
