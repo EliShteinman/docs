@@ -103,3 +103,38 @@ def test_a_documentation_page_is_tagged_as_docs():
 
 def test_a_blog_post_carries_no_product_so_it_is_not_hidden_by_the_filter():
     assert to_document({"url": "/blog/x/", "title": "X"}).product == ""
+
+
+def test_every_mirrored_section_is_told_apart_from_the_documentation():
+    """A mirrored page must not be tagged docs: that tag decides its heading."""
+    for url in (
+        "/tutorials/how-to-build-a-rate-limiter/",
+        "/technology/redis-enterprise-cluster-architecture/",
+        "/compare/redis-vs-mongodb/",
+        "/solutions/fraud-detection/",
+        "/customers/some-company/",
+        "/resources/architecture-diagrams/caching/",
+    ):
+        assert to_document({"url": url, "title": "X"}).source == "site", url
+
+
+def test_a_mirrored_sections_own_index_is_told_apart_too():
+    """to_path drops the trailing slash, so the index arrives without one."""
+    assert to_document({"url": "/technology/", "title": "Technology"}).source == "site"
+    assert to_document({"url": "/blog/", "title": "Blog"}).source == "blog"
+
+
+def test_a_mirrored_glossary_term_stays_with_the_documentation():
+    """Its terms publish inside the documentation's own /glossary/ section.
+
+    Their heading should be the documentation's, not a heading of their own --
+    unlike every other mirrored section, which lives at a path of its own.
+    """
+    document = to_document({"url": "/glossary/acid-transactions/", "title": "ACID"})
+    assert document.source == "docs"
+
+
+def test_a_path_that_merely_starts_with_a_mirrored_name_is_not_mirrored():
+    """/comparefoo is not /compare, and /blogging-guide is not /blog."""
+    assert to_document({"url": "/comparefoo/x", "title": "X"}).source == "docs"
+    assert to_document({"url": "/blogging-guide", "title": "X"}).source == "docs"

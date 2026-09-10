@@ -33,7 +33,7 @@
         <h2>Recent posts</h2>
         {{ partial "mirrored-rows.html" (dict "pages" $recent "showGroup" true "showDate" true) }}
         <p class="text-sm mt-6">
-          Showing {{ len $recent }} of {{ len $all }} posts. The rest are on the category pages above.
+          The {{ len $recent }} most recent of {{ len $all }} posts. Pick a category for the rest.
         </p>
         {{ partial "feedback.html" . }}
       </section>

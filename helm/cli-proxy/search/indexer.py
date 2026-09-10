@@ -16,7 +16,7 @@ import sys
 from resp import RespConnection, RespError
 from search import config
 from search.hierarchy import BreadcrumbIndex
-from search.sources import BLOG_SOURCE, Document, load_documents
+from search.sources import DOCS_SOURCE, Document, load_documents
 import json
 
 LOGGER = logging.getLogger("docs_search.indexer")
@@ -124,9 +124,13 @@ def index_documents(
     for start in range(0, len(documents), batch_size):
         batch = documents[start : start + batch_size]
         for document in batch:
-            # The blog heads its own group rather than sitting under the docs
-            # root crumb: its trail already starts with the section's own title.
-            root = "" if document.source == BLOG_SOURCE else None
+            # Only the documentation sits under the docs root crumb. Every
+            # mirrored section heads its own group instead, because that first
+            # crumb is the heading the modal files the result under: a customer
+            # story listed beneath "Welcome to Redis Docs" reads as
+            # documentation. Their trails already start with the section's own
+            # title, so dropping the root is all it takes.
+            root = None if document.source == DOCS_SOURCE else ""
             crumbs = breadcrumbs.crumbs_for(document.doc_id, root)
             fields = _document_fields(document, crumbs)
             connection.send_command(["HSET", key_prefix + document.doc_id, *fields])

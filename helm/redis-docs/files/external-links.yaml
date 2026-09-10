@@ -60,7 +60,7 @@ families:
         url: "https://university.redis.io/academy"
         enabled: true
       blog:
-        description: "Home page: 'Blog' card. Points at the mirrored blog inside this image (build/blog_mirror), not at redis.io — override the url to send readers to the public blog instead."
+        description: "Home page: 'Blog' card. Points at the mirrored blog inside this image (build/site_mirror), not at redis.io — override the url to send readers to the public blog instead."
         url: "/blog/"
         enabled: true
       support:

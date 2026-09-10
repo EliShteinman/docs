@@ -302,7 +302,7 @@ jobs:
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
           # Point the documentation's blog links at the mirrored blog in this
-          # image (content/blog, written by build/blog_mirror). Mirrors the
+          # image (content/blog, written by build/site_mirror). Mirrors the
           # same step in airgap-multibuild.sh. Four domains, not one: of the
           # 184 blog links, 83 use the legacy redis.com and 16 use
           # redislabs.com.
@@ -489,7 +489,7 @@ jobs:
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
           # Point the documentation's blog links at the mirrored blog in this
-          # image (content/blog, written by build/blog_mirror). Mirrors the
+          # image (content/blog, written by build/site_mirror). Mirrors the
           # same step in airgap-multibuild.sh. Four domains, not one: of the
           # 184 blog links, 83 use the legacy redis.com and 16 use
           # redislabs.com.
@@ -555,13 +555,17 @@ jobs:
           set -euo pipefail
           export PATH="$PWD/venv/bin:$PATH"
 
-          # The mirrored blog belongs to the "latest" tree only. This job keeps
-          # nothing but public/<product>/<version>, so rendering 1,100 posts
-          # here produces output that is thrown away.
-          # Every mirrored tree, not just two: this job keeps only
-          # public/<product>/<version>/, so rendering ~1,400 mirrored
-          # documents here is work thrown away.
-          rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/glossary
+          # The mirrored content belongs to the "latest" tree only. This job
+          # keeps nothing but public/<product>/<version>/, so rendering ~1,400
+          # mirrored documents here is work thrown away. Mirrors the same step
+          # in airgap-multibuild.sh.
+          #
+          # Every mirrored section and nothing else. content/glossary is NOT on
+          # this list: it is the documentation's own glossary, and 28 versioned
+          # pages link to it with relref -- removing it does not fail the build
+          # (refLinksErrorLevel = "WARNING") but every one of those links then
+          # resolves somewhere wrong in the shipped image.
+          rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/redis-glossary
 
           # Remove all OTHER versions of this product
           VPARENT="content/$PRODUCT"
