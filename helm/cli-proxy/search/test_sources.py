@@ -24,6 +24,14 @@ def test_markdown_emphasis_does_not_survive_into_the_index():
     assert clean_body("**bold** and `code`") == "bold and code"
 
 
+def test_underscore_emphasis_does_not_survive_into_the_index():
+    assert clean_body("_italic_ and __bold__") == "italic and bold"
+
+
+def test_an_underscore_inside_a_name_is_kept_so_the_name_stays_one_term():
+    assert clean_body("Set `eviction_policy` to noeviction") == "Set eviction_policy to noeviction"
+
+
 def test_whitespace_is_collapsed():
     assert clean_body("one\n\n   two") == "one two"
 
