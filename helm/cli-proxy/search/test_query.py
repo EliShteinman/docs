@@ -10,7 +10,11 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from search.query import build_query, parse_reply, search_command, to_results
+from search.query import build_query, one_per_row, parse_reply, search_command, to_results
+
+
+def _result(title: str, url: str, first_crumb: str = "Welcome to Redis Docs") -> dict:
+    return {"title": title, "url": url, "hierarchy": [first_crumb, "Operate"]}
 
 
 def test_the_last_token_keeps_the_prefix_marker_the_modal_sent():
@@ -128,6 +132,25 @@ def test_hierarchy_is_decoded_back_into_a_list():
 
 def test_an_unreadable_hierarchy_becomes_an_empty_trail():
     assert to_results([{"hierarchy": "{["}])[0]["hierarchy"] == []
+
+
+def test_a_versioned_copy_below_its_current_page_is_dropped():
+    results = [
+        _result("Rack-zone awareness", "/operate/rs/rack"),
+        _result("Rack-zone awareness", "/operate/rs/7.4/rack"),
+    ]
+    assert [result["url"] for result in one_per_row(results)] == ["/operate/rs/rack"]
+
+
+def test_the_same_title_under_another_heading_is_a_row_of_its_own():
+    results = [_result("Overview", "/operate/rs"), _result("Overview", "/blog/overview", "Blog")]
+    assert len(one_per_row(results)) == 2
+
+
+def test_a_result_without_a_trail_is_kept():
+    assert one_per_row([{"title": "A", "url": "/a", "hierarchy": []}]) == [
+        {"title": "A", "url": "/a", "hierarchy": []}
+    ]
 
 
 def test_the_scorer_is_named_rather_than_left_to_the_redis_default():

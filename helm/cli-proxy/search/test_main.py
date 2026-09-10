@@ -78,6 +78,41 @@ def test_a_hit_is_returned_in_the_shape_the_modal_reads(monkeypatch, client):
     }
 
 
+def test_a_row_links_to_the_best_ranked_copy_of_the_page(monkeypatch, client):
+    """The modal keeps the last result per title; only the first is sent."""
+    crumbs = json.dumps(["Welcome to Redis Docs", "Operate"])
+    _use(
+        monkeypatch,
+        FakeConnection(
+            [
+                [
+                    2,
+                    "doc:/operate/rs/rack",
+                    [
+                        "title",
+                        "Rack-zone awareness",
+                        "url",
+                        "/operate/rs/rack/",
+                        "hierarchy",
+                        crumbs,
+                    ],
+                    "doc:/operate/rs/7.4/rack",
+                    [
+                        "title",
+                        "Rack-zone awareness",
+                        "url",
+                        "/operate/rs/7.4/rack/",
+                        "hierarchy",
+                        crumbs,
+                    ],
+                ]
+            ]
+        ),
+    )
+    body = client.get("/search?q=rack*&p=all").get_json()
+    assert [result["url"] for result in body["results"]] == ["/operate/rs/rack/"]
+
+
 def test_no_matches_answers_the_empty_body_with_a_200(monkeypatch, client):
     _use(monkeypatch, FakeConnection([[0]]))
     response = client.get("/search?q=zzzz*&p=all")

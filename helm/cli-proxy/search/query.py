@@ -144,6 +144,28 @@ def to_results(documents: list[dict[str, str]]) -> list[dict]:
     return results
 
 
+def one_per_row(results: list[dict]) -> list[dict]:
+    """Keep only the best-ranked result for each row the modal would draw.
+
+    The modal files results by their first crumb and keys each row by title,
+    so the last result with a given title sets where the row links. Versioned
+    copies of a page share its title and rank below it, which means the row for
+    "rack zone awareness" would link to the oldest version -- undoing the
+    version weighting. Dropping the later duplicates here leaves the modal only
+    the one that ranked first.
+    """
+    seen: set[tuple[str, str]] = set()
+    kept = []
+    for result in results:
+        hierarchy = result["hierarchy"]
+        row = (hierarchy[0] if hierarchy else "", result["title"])
+        if row in seen:
+            continue
+        seen.add(row)
+        kept.append(result)
+    return kept
+
+
 def _decode_hierarchy(stored: str | None) -> list[str]:
     if not stored:
         return []
