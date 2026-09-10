@@ -3,7 +3,7 @@ title: "Uncategorized"
 linkTitle: "Uncategorized"
 url: "/blog/category/uncategorized/"
 description: "79 posts from the Redis blog."
-blogCategory: "Uncategorized"
+mirroredCategory: "Uncategorized"
 hidden: true
 mirrored: true
 ---

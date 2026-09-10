@@ -3,7 +3,7 @@ title: "Announcements"
 linkTitle: "Announcements"
 url: "/blog/category/announcements/"
 description: "85 posts from the Redis blog."
-blogCategory: "Announcements"
+mirroredCategory: "Announcements"
 hidden: true
 mirrored: true
 ---

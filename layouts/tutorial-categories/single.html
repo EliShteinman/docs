@@ -1,7 +1,7 @@
 {{/* One tutorial category, at the URL redis.io publishes it at. The tutorials
      are filtered here at build time rather than listed in the generated file. */}}
 {{ define "main" }}
-  {{ $category := .Params.blogCategory }}
+  {{ $category := .Params.mirroredCategory }}
   {{ $section := site.GetPage "/tutorials" }}
   {{ $items := where $section.Pages "Params.group" $category }}
   <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">

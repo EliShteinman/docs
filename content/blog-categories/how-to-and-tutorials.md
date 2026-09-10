@@ -3,7 +3,7 @@ title: "How To and Tutorials"
 linkTitle: "How To and Tutorials"
 url: "/blog/category/how-to-and-tutorials/"
 description: "70 posts from the Redis blog."
-blogCategory: "How To and Tutorials"
+mirroredCategory: "How To and Tutorials"
 hidden: true
 mirrored: true
 ---

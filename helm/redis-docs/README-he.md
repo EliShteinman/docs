@@ -263,7 +263,7 @@ downloads:
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא — רק אם `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8091 | API החיפוש בדוקס — אותו image, פקודה אחרת | לא — רק אם `search.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` | 8091 | API החיפוש בדוקס — אותו image, פקודה אחרת. **חייב להיות image שנבנה אחרי הוספת שירות החיפוש**: בתג ישן אין מודול `search` והפוד קורס בעלייה. | לא — רק אם `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא — רק אם `cli.jupyter.enabled=true` |
 
@@ -706,7 +706,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.securityContext.capabilities.drop` | `[ALL]` | הרשאות Linux שמוסרות (חיפוש) |
 | `search.image.registry` | `a0533057932` | registry של image ה-API |
 | `search.image.name` | `redis-docs-cli` | שם ה-image — זה של ה-CLI proxy, שנושא גם את שירות החיפוש |
-| `search.image.tag` | `latest` | תג ה-image |
+| `search.image.tag` | `latest` | תג ה-image. לקבע רק לתג שנבנה אחרי הוספת שירות החיפוש — ראה טבלת ה-images. |
 | `search.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת ה-image |
 | `search.logLevel` | `INFO` | רמת לוג של שירות החיפוש |
 | `search.threads` | `8` | מספר ה-threads של gunicorn; המודאל שולח בקשה לכל תו |

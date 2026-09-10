@@ -38,14 +38,10 @@ TUTORIALS = CategorySet(
     projection="{name,pathname}",
 )
 
-CATEGORY_TYPE = BLOG.doc_type
-CATEGORY_DIR = BLOG.directory
-
 # Every category the source publishes gets a page, including "Uncategorized"
-# and the localized ones: 260 of the 1,109 posts carry only those, and dropping
+# and the localized ones: 260 of the 1,108 posts carry only those, and dropping
 # them would leave a quarter of the blog reachable from no chip at all. redis.io
-# shows them too.
-SKIP: frozenset[str] = frozenset()
+# shows them too -- which is why there is no skip list here.
 
 
 @dataclass(frozen=True)
@@ -62,7 +58,7 @@ def to_category(document: dict, field: str = "title") -> Category | None:
     """Build a Category from a source document, or None when it is not usable."""
     title = (document.get(field) or "").strip()
     url = (document.get("pathname") or "").strip()
-    if not title or not url or title in SKIP:
+    if not title or not url:
         return None
     return Category(title=title, url=url if url.endswith("/") else url + "/")
 
@@ -80,7 +76,10 @@ def render(category: Category, count: int, noun: str = "posts from the Redis blo
         f"linkTitle: {json.dumps(category.title, ensure_ascii=False)}\n"
         f"url: {json.dumps(category.url, ensure_ascii=False)}\n"
         f"description: {json.dumps(f'{count} {noun}.', ensure_ascii=False)}\n"
-        f"blogCategory: {json.dumps(category.title, ensure_ascii=False)}\n"
+        # Not `blogCategory`: the same renderer writes the tutorial categories,
+        # and a tutorial page reading a field named after the blog is a lie the
+        # next reader has to untangle.
+        f"mirroredCategory: {json.dumps(category.title, ensure_ascii=False)}\n"
         "hidden: true\n"
         "mirrored: true\n"
         "---\n\n"

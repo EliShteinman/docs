@@ -49,3 +49,29 @@ def test_the_url_is_built_against_the_cdn_host():
 @pytest.mark.parametrize("character", ["{", "}", '"', " "])
 def test_query_characters_are_encoded_into_the_url(character):
     assert character not in query_url(f'*[a=="{character}"]').split("?", 1)[1]
+
+
+def test_every_query_filters_the_source_to_english():
+    """A translated document publishes at the English document's URL.
+
+    The blog was the one query without this clause, and the source holds
+    exactly one translated blog document: a German test post,
+    "[Dev] Test Blog for DE". It was mirrored, published at
+    /blog/dev-test-blog-for-de/ and indexed for search.
+    """
+    from build.site_mirror import sanity
+
+    assert 'language == "en"' in sanity._QUERY
+    assert 'language == "en"' in sanity._PAGE_QUERY
+
+
+def test_no_mirrored_blog_post_is_a_translation_or_a_test_document():
+    """The corpus on disk must not carry what the filter excludes."""
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2] / "content" / "blog"
+    offenders = [
+        f.name for f in root.glob("*.md")
+        if "[Dev]" in f.read_text(encoding="utf-8", errors="replace")[:400]
+    ]
+    assert not offenders, f"dev/test posts published to readers: {offenders}"

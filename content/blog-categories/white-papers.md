@@ -3,7 +3,7 @@ title: "White Papers"
 linkTitle: "White Papers"
 url: "/blog/category/white-papers/"
 description: "3 posts from the Redis blog."
-blogCategory: "White Papers"
+mirroredCategory: "White Papers"
 hidden: true
 mirrored: true
 ---

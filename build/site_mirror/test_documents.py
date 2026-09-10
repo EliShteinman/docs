@@ -121,14 +121,48 @@ def test_the_tree_root_is_not_one_of_its_own_documents():
     assert _under("/compare/*", "/compare/") == ""
 
 
+def _every_index_the_mirror_can_write() -> dict[str, str]:
+    """Every section index constant, wherever in the package it is defined.
+
+    Covering only TREES left the four in hugo.py and the two in categories.py
+    unchecked -- which is most of them, and the ones most often hand-edited.
+    """
+    from build.site_mirror import categories, hugo
+
+    indexes = {tree.name: tree.index for tree in TREES}
+    indexes["blog"] = hugo._INDEX
+    indexes["compare"] = hugo.COMPARE_INDEX
+    indexes["solutions"] = hugo.SOLUTIONS_INDEX
+    indexes["technology"] = hugo.TECHNOLOGY_INDEX
+    indexes["blog-categories"] = categories.INDEX
+    indexes["tutorial-categories"] = categories.TUTORIAL_INDEX
+    return indexes
+
+
 def test_every_generated_index_is_valid_frontmatter():
     """A blurb that mentions redis.io carries a colon, which unquoted fails the build."""
     import yaml
 
-    for tree in TREES:
-        if tree.index is None:
-            continue
-        yaml.safe_load(tree.index.split("---")[1])
+    for name, text in _every_index_the_mirror_can_write().items():
+        parsed = yaml.safe_load(text.split("---")[1])
+        assert isinstance(parsed, dict), f"{name} has no frontmatter mapping"
+        assert parsed.get("title"), f"{name} has no title"
+
+
+def test_no_generated_index_narrates_the_mirror_to_the_reader():
+    """The layouts render both the description and the body of a section index.
+
+    An index that explains where its content came from, or why this fork
+    carries it, is build detail on a page a reader opened to find Redis
+    documentation.
+    """
+    tells = ("mirror", "site_mirror", "redis.io", "fork", "air gap", "airgap")
+    for name, text in _every_index_the_mirror_can_write().items():
+        visible = "\n".join(
+            line for line in text.splitlines() if not line.strip().startswith("<!--")
+        ).casefold()
+        found = [tell for tell in tells if tell in visible]
+        assert not found, f"{name} index says {found} where a reader can see it"
 
 
 def test_only_frontmatter_declares_a_published_path(tmp_path):

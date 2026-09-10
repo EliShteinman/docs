@@ -37,10 +37,10 @@ class DocumentTree:
     doc_type: str
     prefix: str
     directory: Path
-    # The section index to write, or None when the section already has one --
-    # the glossary is an upstream section with an empty body, and overwriting
-    # its _index.md would mean the fork editing upstream content.
-    index: str | None
+    # The section index to write. Every tree writes one, into a directory of
+    # its own -- never into a section the documentation already owns. See the
+    # glossary tree below for the one place that distinction had to be made.
+    index: str
     title_field: str = "title"
     body_field: str = "body"
     body_is_markdown: bool = False

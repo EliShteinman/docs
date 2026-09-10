@@ -3,7 +3,7 @@ title: "For developers"
 linkTitle: "For developers"
 url: "/tutorials/category/developers/"
 description: "86 tutorials."
-blogCategory: "For developers"
+mirroredCategory: "For developers"
 hidden: true
 mirrored: true
 ---

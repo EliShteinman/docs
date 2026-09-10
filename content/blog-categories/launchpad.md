@@ -3,7 +3,7 @@ title: "Launchpad"
 linkTitle: "Launchpad"
 url: "/blog/category/launchpad/"
 description: "2 posts from the Redis blog."
-blogCategory: "Launchpad"
+mirroredCategory: "Launchpad"
 hidden: true
 mirrored: true
 ---

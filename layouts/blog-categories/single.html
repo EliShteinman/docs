@@ -4,7 +4,7 @@
      at build time, so the page cannot go stale between syncs.
 */}}
 {{ define "main" }}
-  {{ $category := .Params.blogCategory }}
+  {{ $category := .Params.mirroredCategory }}
   {{ $blog := site.GetPage "/blog" }}
   {{ $posts := where $blog.Pages "Params.blogcategories" "intersect" (slice $category) }}
   <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">

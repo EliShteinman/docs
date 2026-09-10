@@ -3,7 +3,7 @@ title: "DBaas"
 linkTitle: "DBaas"
 url: "/blog/category/dbaas/"
 description: "2 posts from the Redis blog."
-blogCategory: "DBaas"
+mirroredCategory: "DBaas"
 hidden: true
 mirrored: true
 ---

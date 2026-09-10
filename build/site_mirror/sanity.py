@@ -30,10 +30,18 @@ API_HOST = f"https://{PROJECT_ID}.apicdn.sanity.io"
 DOCUMENT_TYPE = "blogPost"
 PAGE_SIZE = 40
 
+# Every tree filters to English. Several carry the same pathname once per
+# translation -- /compare/elasticache/ exists in en, es, fr and it -- and
+# without this the last one fetched wins, so a reader gets the Italian page at
+# the English URL. The blog needs it for a different reason: it holds exactly
+# one translated document, "[Dev] Test Blog for DE", and mirroring it published
+# a German test post at /blog/dev-test-blog-for-de/ and indexed it for search.
+_LANGUAGE = '(!defined(language) || language == "en")'
+
 # Ordered by _id rather than by date, so paging cannot skip or repeat a
 # document when two posts share a publish date.
 _QUERY = (
-    '*[_type=="{doc_type}"]|order(_id)[{start}...{end}]'
+    '*[_type=="{doc_type}" && ' + _LANGUAGE + ']|order(_id)[{start}...{end}]'
     "{{_id,_updatedAt,title,tagline,publishDate,"
     '"slug":slug.current,content,image,'
     '"authors":author[]->{{firstName,lastName,role}},'
@@ -48,12 +56,6 @@ PAGE_TYPE = "page"
 # `pathname match "/solutions/*"` is not a prefix test: GROQ's match is
 # token-based, so it also returns /tutorials/howtos/solutions/... . The query
 # stays as the cheap filter and the caller narrows it to an exact prefix.
-#
-# The language clause is not optional either. Several trees carry the same
-# pathname once per translation -- /compare/elasticache/ exists in en, es, fr
-# and it -- and without it the last one fetched wins, so a reader gets the
-# Italian page at the English URL.
-_LANGUAGE = '(!defined(language) || language == "en")'
 
 _PAGE_QUERY = (
     '*[_type=="{doc_type}" && pathname match "{prefix}" && ' + _LANGUAGE + "]"
@@ -84,7 +86,8 @@ def query_url(query: str) -> str:
 
 def count_posts(timeout: float = 60.0) -> int:
     """Return how many posts the dataset holds."""
-    result = _get(query_url(f'count(*[_type=="{DOCUMENT_TYPE}"])'), timeout)
+    query = f'count(*[_type=="{DOCUMENT_TYPE}" && {_LANGUAGE}])'
+    result = _get(query_url(query), timeout)
     return int(result.get("result") or 0)
 
 

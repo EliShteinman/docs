@@ -21,6 +21,7 @@ from __future__ import annotations
 import html
 import re
 
+from build.site_mirror.links import localize
 from build.site_mirror.portable_text import ImageResolver, render
 
 # Section titles arrive as HTML fragments -- "<h2>Benefits</h2>" -- because the
@@ -77,10 +78,18 @@ def _items(section: dict) -> list[dict]:
 
 
 def _item_body(item: dict, resolve_image: ImageResolver) -> str:
+    """Return an entry's prose, from whichever field this section type used.
+
+    A field that is present but empty is passed over rather than returned: a
+    card carrying `content: []` and a real `description` would otherwise render
+    as nothing, because the empty list is still a list.
+    """
     for key in ("content", "description"):
         value = item.get(key)
         if isinstance(value, list):
-            return render(value, resolve_image)
+            rendered = render(value, resolve_image)
+            if rendered.strip():
+                return rendered
         if isinstance(value, str) and value.strip():
             return value.strip()
     return ""
@@ -107,7 +116,11 @@ def _render_section(section: dict, resolve_image: ImageResolver, level: int) -> 
     # so it becomes a link, the same choice the blog renderer makes.
     video = section.get("videoUrl")
     if isinstance(video, str) and video.strip():
-        parts.append(f"[Watch the video]({video.strip()})")
+        # Through localize for the same reason the blog renderer sends its own
+        # video URLs through it: some of them point back at redis.io/blog.
+        target = localize(video.strip())
+        if target:
+            parts.append(f"[Watch the video]({target})")
 
     return _join(parts)
 

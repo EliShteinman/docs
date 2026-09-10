@@ -3,7 +3,7 @@ title: "Redis-Cloud"
 linkTitle: "Redis-Cloud"
 url: "/blog/category/redis-cloud/"
 description: "3 posts from the Redis blog."
-blogCategory: "Redis-Cloud"
+mirroredCategory: "Redis-Cloud"
 hidden: true
 mirrored: true
 ---

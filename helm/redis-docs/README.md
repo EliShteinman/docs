@@ -328,7 +328,7 @@ A limit costs nothing until the container actually runs.
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | Prometheus metrics (including response times) | No — only if `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8091 | Docs search API — the same image, different command | No — only if `search.enabled=true` |
+| `a0533057932/redis-docs-cli` | `latest` | 8091 | Docs search API — the same image, different command. **Must be an image built after the search service was added**: an older tag has no `search` module and the pod crashes on start. | No — only if `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis holding the search index | No — only if `search.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server for interactive code execution | No — only if `cli.jupyter.enabled=true` |
 
@@ -768,7 +768,7 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `search.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (search) |
 | `search.image.registry` | `a0533057932` | Search API image registry |
 | `search.image.name` | `redis-docs-cli` | Search API image name — the CLI proxy image, which carries the search service too |
-| `search.image.tag` | `latest` | Search API image tag |
+| `search.image.tag` | `latest` | Search API image tag. Pin only to a tag built after the search service was added — see the image table. |
 | `search.image.pullPolicy` | `IfNotPresent` | Search API image pull policy |
 | `search.logLevel` | `INFO` | Log level for the search service |
 | `search.threads` | `8` | gunicorn threads; the modal sends one request per keystroke |

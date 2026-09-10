@@ -54,10 +54,6 @@ TARGET_WIDTH = 1600
 WEBP_QUALITY = 80
 
 
-class ImageError(RuntimeError):
-    """An image could not be fetched."""
-
-
 def parse_reference(reference: str) -> tuple[str, str, str] | None:
     """Split an asset reference into (digest, dimensions, extension)."""
     match = _REFERENCE.match(reference or "")

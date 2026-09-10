@@ -337,8 +337,7 @@ def mirror_documents(
             categories.TUTORIALS, "/tutorials/category/*", categories.TUTORIAL_INDEX,
             "tutorials", group_counts, timeout,
         )
-    if tree.index is not None:
-        hugo.write_section_index(tree.directory, tree.index)
+    hugo.write_section_index(tree.directory, tree.index)
     if not limit:
         hugo.prune_removed(tree.directory, written)
     return len(written)

@@ -3,7 +3,7 @@ title: "Tech Redis Modules"
 linkTitle: "Tech Redis Modules"
 url: "/blog/category/tech-redis-modules/"
 description: "13 posts from the Redis blog."
-blogCategory: "Tech Redis Modules"
+mirroredCategory: "Tech Redis Modules"
 hidden: true
 mirrored: true
 ---

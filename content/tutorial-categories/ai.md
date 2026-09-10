@@ -3,7 +3,7 @@ title: "For AI"
 linkTitle: "For AI"
 url: "/tutorials/category/ai/"
 description: "16 tutorials."
-blogCategory: "For AI"
+mirroredCategory: "For AI"
 hidden: true
 mirrored: true
 ---

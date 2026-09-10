@@ -3,7 +3,7 @@ title: "Redis Open Source"
 linkTitle: "Redis Open Source"
 url: "/blog/category/redis-open-source/"
 description: "15 posts from the Redis blog."
-blogCategory: "Redis Open Source"
+mirroredCategory: "Redis Open Source"
 hidden: true
 mirrored: true
 ---
