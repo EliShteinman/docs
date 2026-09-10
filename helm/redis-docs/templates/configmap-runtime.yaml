@@ -18,6 +18,10 @@
   values entry inherits from the next layer down. Per-link override wins
   absolutely, including the ability to re-enable a link inside a disabled
   sub-family or family.
+
+  The master kill-switch cuts links that leave the site. A link whose resolved
+  url is a path on this site (`/blog/`) goes nowhere external, so the switch
+  does not hide it; families and overrides still do.
 */ -}}
 {{- $catalog := .Files.Get "files/external-links.yaml" | fromYaml -}}
 {{- $globalSet := hasKey .Values.externalLinks "enabled" -}}
@@ -37,20 +41,20 @@
   {{- if hasKey $famDef "links" -}}
     {{- range $key, $entry := $famDef.links -}}
       {{- $resolved := dict -}}
+      {{- if hasKey $entry "url" }}{{- $_ := set $resolved "url" $entry.url -}}{{- end -}}
+      {{- if hasKey $overrides $key -}}
+        {{- $ov := index $overrides $key -}}
+        {{- if hasKey $ov "url" }}{{- $_ := set $resolved "url" $ov.url -}}{{- end -}}
+      {{- end -}}
       {{- $enabled := true -}}
       {{- if hasKey $entry "enabled" }}{{- $enabled = $entry.enabled -}}{{- end -}}
-      {{- if and $globalSet (eq $global false) }}{{- $enabled = false -}}{{- end -}}
+      {{- if and $globalSet (eq $global false) (not (include "redis-docs.isSiteLink" $resolved.url)) }}{{- $enabled = false -}}{{- end -}}
       {{- if $famSet }}{{- $enabled = $famVal -}}{{- end -}}
       {{- if hasKey $overrides $key -}}
         {{- $ov := index $overrides $key -}}
         {{- if hasKey $ov "enabled" }}{{- $enabled = $ov.enabled -}}{{- end -}}
       {{- end -}}
       {{- $_ := set $resolved "enabled" $enabled -}}
-      {{- if hasKey $entry "url" }}{{- $_ := set $resolved "url" $entry.url -}}{{- end -}}
-      {{- if hasKey $overrides $key -}}
-        {{- $ov := index $overrides $key -}}
-        {{- if hasKey $ov "url" }}{{- $_ := set $resolved "url" $ov.url -}}{{- end -}}
-      {{- end -}}
       {{- $_ := set $effective $key $resolved -}}
     {{- end -}}
   {{- end -}}
@@ -66,9 +70,14 @@
 
       {{- range $key, $entry := $subDef.links -}}
         {{- $resolved := dict -}}
+        {{- if hasKey $entry "url" }}{{- $_ := set $resolved "url" $entry.url -}}{{- end -}}
+        {{- if hasKey $overrides $key -}}
+          {{- $ov := index $overrides $key -}}
+          {{- if hasKey $ov "url" }}{{- $_ := set $resolved "url" $ov.url -}}{{- end -}}
+        {{- end -}}
         {{- $enabled := true -}}
         {{- if hasKey $entry "enabled" }}{{- $enabled = $entry.enabled -}}{{- end -}}
-        {{- if and $globalSet (eq $global false) }}{{- $enabled = false -}}{{- end -}}
+        {{- if and $globalSet (eq $global false) (not (include "redis-docs.isSiteLink" $resolved.url)) }}{{- $enabled = false -}}{{- end -}}
         {{- if $famSet }}{{- $enabled = $famVal -}}{{- end -}}
         {{- if $subSet }}{{- $enabled = $subVal -}}{{- end -}}
         {{- if hasKey $overrides $key -}}
@@ -76,11 +85,6 @@
           {{- if hasKey $ov "enabled" }}{{- $enabled = $ov.enabled -}}{{- end -}}
         {{- end -}}
         {{- $_ := set $resolved "enabled" $enabled -}}
-        {{- if hasKey $entry "url" }}{{- $_ := set $resolved "url" $entry.url -}}{{- end -}}
-        {{- if hasKey $overrides $key -}}
-          {{- $ov := index $overrides $key -}}
-          {{- if hasKey $ov "url" }}{{- $_ := set $resolved "url" $ov.url -}}{{- end -}}
-        {{- end -}}
         {{- $_ := set $effective $key $resolved -}}
       {{- end -}}
     {{- end -}}

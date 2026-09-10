@@ -152,3 +152,12 @@ bundles cannot be built and the widget is hidden rather than left to 404.
 {{- define "redis-docs.downloadsActive" -}}
 {{- if and .Values.downloads.enabled .Values.canonicalURL -}}true{{- end -}}
 {{- end }}
+
+{{/*
+Whether a catalog link's url is a path on this site rather than another host.
+A protocol-relative `//host/...` starts with a slash too, and is not.
+*/}}
+{{- define "redis-docs.isSiteLink" -}}
+{{- $url := . | default "" | toString -}}
+{{- if and (hasPrefix "/" $url) (not (hasPrefix "//" $url)) -}}true{{- end -}}
+{{- end }}
