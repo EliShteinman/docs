@@ -102,7 +102,8 @@ replacing the search, so the upstream partial and `config.toml` are untouched:
 - **The button** — the search button is itself a catalog link (`nav-search`), so the
   airgap-first `externalLinks.enabled: false` default hides it. Setting `search.enabled`
   turns it back on, since a deployment that answers searches wants the button. An
-  explicit `externalLinks.overrides.nav-search.enabled` still wins in both directions.
+  explicit `enabled` on `externalLinks.overrides.nav-search`, the `header` family, or its
+  `search` sub-family still wins in both directions.
 
 Ranking will not match redis.io exactly — it is a different scoring engine.
 
