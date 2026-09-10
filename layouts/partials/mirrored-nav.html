@@ -31,11 +31,16 @@
 -}}
 {{/* Open when the reader is already inside one of them. */}}
 {{ $inside := false -}}
+{{ $present := false -}}
 {{ range $sections -}}
   {{ with site.GetPage .path -}}
+    {{ $present = true -}}
     {{ if eq $navRoot.RelPermalink .RelPermalink }}{{ $inside = true }}{{ end -}}
   {{ end -}}
 {{ end -}}
+{{/* The version builds delete every mirrored section before rendering, so on a
+     versioned page none of them exist and the entry would open onto nothing. */}}
+{{ if $present -}}
 {{/* Every entry is fork-only content, so none of it belongs in a downloadable
      product bundle: data-offline-hide keeps it out (build/make_doc_bundles.py). */}}
 <details data-offline-hide class="shrink-0 border border-opacity-50 border-redis-ink-900 rounded-md" {{ if $inside }}open{{ end }}>
@@ -51,3 +56,4 @@
     {{ end }}
   </div>
 </details>
+{{ end -}}
