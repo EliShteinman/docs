@@ -3,6 +3,7 @@ title: "Improves messaging system reliability without adding complexity to devel
 linkTitle: "Improves messaging system reliability without adding complexity to developers"
 url: "/customers/mitto/"
 description: "Mitto’s customers rely on instantly delivered messages, so it needs to ensure low latency, high availability, and high throughput even over global deployments, with no outages even for scheduled..."
+group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
 ---

@@ -3,6 +3,7 @@ title: "CP AXTRA boosts e-commerce recommendations with vector search"
 linkTitle: "CP AXTRA boosts e-commerce recommendations with vector search"
 url: "/customers/cp-axtra/"
 description: "Watch the video"
+group: "Retail / E‑commerce"
 lastmod: 2026-03-11
 hidden: true
 ---

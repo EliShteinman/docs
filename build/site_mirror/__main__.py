@@ -291,8 +291,9 @@ def mirror_documents(
             LOGGER.warning("%s rendered empty; skipping", pathname)
             continue
         # The tree may name its title something else (`term`), and the rest of
-        # the writer reads `title`.
-        document = {**document, "title": title}
+        # the writer reads `title`; the group value is normalised the same way.
+        document = {**document, "title": title,
+                    "group": document.get(tree.group_field) or "" if tree.group_field else ""}
         file = hugo.file_name(under, document.get("_id") or f"doc-{index}")
         alias = hugo.flattened_alias(tree.directory.name, under)
         hugo.write_post(

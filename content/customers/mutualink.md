@@ -3,6 +3,7 @@ title: "Data replication and microservices compatibility powers emergency servic
 linkTitle: "Data replication and microservices compatibility powers emergency services"
 url: "/customers/mutualink/"
 description: "Mutualink’s product required a fair amount of installation and configuration. However, to grow by orders of magnitude, Mutualink needed to add efficiencies throughout their stack; not only in how..."
+group: "Technology"
 lastmod: 2025-09-12
 hidden: true
 ---

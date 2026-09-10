@@ -3,6 +3,7 @@ title: "Etermax reduced AWS infrastructure costs by 30%"
 linkTitle: "Etermax reduced AWS infrastructure costs by 30%"
 url: "/customers/etermax/"
 description: "As Etermax watched its customer base rise by two-to-three million new users every week with no end in sight, it knew it was fast approaching the limits of its open source Redis installation. Facing..."
+group: "Gaming"
 lastmod: 2025-09-12
 hidden: true
 ---

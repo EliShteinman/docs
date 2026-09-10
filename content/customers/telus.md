@@ -3,6 +3,7 @@ title: "TELUS’ Optik TV service gains greater reliability with Active-Active R
 linkTitle: "TELUS’ Optik TV service gains greater reliability with Active-Active Redis"
 url: "/customers/telus/"
 description: "TELUS had deployed Redis open source, but ran into challenges managing and maintaining Redis availability for their mission-critical applications on Optik TV. TELUS experienced an outage for their..."
+group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
 ---

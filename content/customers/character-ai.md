@@ -3,6 +3,7 @@ title: "Powering Character.ai’s low-latency, high-availability search with Red
 linkTitle: "Powering Character.ai’s low-latency, high-availability search with Redis"
 url: "/customers/character-ai/"
 description: "As Character.ai’s user base grew, its existing stack built on Lancedb and Tantivy started hitting performance limits. Vector search queries were slow, hybrid queries lacked flexibility, and..."
+group: "AI Consumer"
 lastmod: 2026-02-25
 hidden: true
 ---

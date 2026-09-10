@@ -3,6 +3,7 @@ title: "Scalestack eliminates infrastructure friction with Redis streams"
 linkTitle: "Scalestack eliminates infrastructure friction with Redis streams"
 url: "/customers/scalestack/"
 description: "Before Redis, Scalestack’s data enrichment orchestration hit scalability limits. As execution volume for its AI apps grew with more customers adopting Scalestack’s platform, its prior..."
+group: "Technology"
 lastmod: 2025-09-26
 hidden: true
 ---

@@ -3,6 +3,7 @@ title: "MEO turns to Redis and achieves 71% OTT user growth"
 linkTitle: "MEO turns to Redis and achieves 71% OTT user growth"
 url: "/customers/meo/"
 description: "MEO, Portugal’s largest telecom operator, needed to transition from its established internet protocol television (IPTV) system to an over-the-top (OTT) streaming platform. This shift was driven by..."
+group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
 ---

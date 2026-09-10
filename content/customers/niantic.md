@@ -3,6 +3,7 @@ title: "Optimizing Pokémon GO: How a Redis Cluster on Google Cloud Improved Per
 linkTitle: "Optimizing Pokémon GO: How a Redis Cluster on Google Cloud Improved Performance and Reliability During Raid Events"
 url: "/customers/niantic/"
 description: "As thousands of Pokémon GO players participate in popular Raid Battles, Niantic’s Google Cloud servers had become bogged down during the preparation phase when people form and join teams, impacting..."
+group: "Gaming"
 lastmod: 2025-09-12
 hidden: true
 ---

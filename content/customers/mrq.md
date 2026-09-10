@@ -3,6 +3,7 @@ title: "MrQ scales personalized gaming experiences with Redis Cloud"
 linkTitle: "MrQ scales personalized gaming experiences with Redis Cloud"
 url: "/customers/mrq/"
 description: "For MrQ, a smooth player experience isn’t just about speed—it’s about personalization. Every promotion, game, and feature aims to feel as if it was built for each player. Achieving that level of..."
+group: "Gaming & Entertainment"
 lastmod: 2026-02-12
 hidden: true
 ---

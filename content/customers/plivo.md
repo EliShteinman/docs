@@ -3,6 +3,7 @@ title: "Plivo optimizes infrastructure and performance with Active-Active Redis"
 linkTitle: "Plivo optimizes infrastructure and performance with Active-Active Redis"
 url: "/customers/plivo/"
 description: "Plivo’s streaming microservices architecture supports a large volume of small, high-frequency data writes. If an Amazon ElastiCache region were ever to fail, it could not keep up with the volume..."
+group: "Telecommunications"
 lastmod: 2026-01-29
 hidden: true
 ---

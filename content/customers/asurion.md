@@ -3,6 +3,7 @@ title: "Powering world-class customer service with AI-driven Redis solutions on 
 linkTitle: "Powering world-class customer service with AI-driven Redis solutions on AWS"
 url: "/customers/asurion/"
 description: "Watch the video"
+group: "Insurance"
 lastmod: 2026-03-10
 hidden: true
 ---

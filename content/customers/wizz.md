@@ -3,6 +3,7 @@ title: "Redis Enterprise Powers International Expansion of Wizz, the Friend-Find
 linkTitle: "Redis Enterprise Powers International Expansion of Wizz, the Friend-Finding App"
 url: "/customers/wizz/"
 description: "Voodoo’s popular social app, Wizz, must support 88,000 queries per second (QPS) during peak traffic periods. This necessitates a resilient, high-throughput, low-latency database capable of handling..."
+group: "Software"
 lastmod: 2025-09-12
 hidden: true
 ---

@@ -3,6 +3,7 @@ title: "France Travail boosts efficiency in unemployment services and cuts costs
 linkTitle: "France Travail boosts efficiency in unemployment services and cuts costs on cloud-native databases"
 url: "/customers/france-travail/"
 description: "France Travail was working with a complex IT infrastructure—a multi-layer combination of technologies—that had become expensive, complicated, and difficult to scale. Core services like job..."
+group: "Government"
 lastmod: 2025-09-12
 hidden: true
 ---

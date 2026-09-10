@@ -3,6 +3,7 @@ title: "Loblaw revolutionizes real-time inventory updates with Redis Cloud"
 linkTitle: "Loblaw revolutionizes real-time inventory updates with Redis Cloud"
 url: "/customers/loblaw/"
 description: "Loblaw needed a next-generation, real-time inventory management system to support its multi-billion dollar digital operations. The goal was to find a multi-tenant, database-as-a-service solution..."
+group: "Retail"
 lastmod: 2025-09-12
 hidden: true
 ---

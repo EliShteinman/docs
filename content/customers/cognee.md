@@ -3,6 +3,7 @@ title: "How Cognee preserves AI agent context with persistent memory"
 linkTitle: "How Cognee preserves AI agent context with persistent memory"
 url: "/customers/cognee/"
 description: "Cognee had already solved long-term memory. Their architecture could store and organize knowledge effectively, combining graph structures and semantic search to give agents access to rich,..."
+group: "AI infrastructure / developer tools"
 lastmod: 2026-05-26
 hidden: true
 ---

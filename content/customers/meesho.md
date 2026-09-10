@@ -3,6 +3,7 @@ title: "Meesho drives 10x growth and 90% e-commerce cost savings with RDI"
 linkTitle: "Meesho drives 10x growth and 90% e-commerce cost savings with RDI"
 url: "/customers/meesho/"
 description: "During a crucial high-traffic sales event, Meesho’s existing ElastiCache infrastructure reached its limits, causing system instability and threatening the entire event. This was a turning point...."
+group: "E-Commerce"
 lastmod: 2025-07-16
 hidden: true
 ---

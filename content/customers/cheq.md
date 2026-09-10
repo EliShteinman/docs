@@ -3,6 +3,7 @@ title: "CheQ unlocks seamless credit management with Redis"
 linkTitle: "CheQ unlocks seamless credit management with Redis"
 url: "/customers/cheq/"
 description: "Growth brought immense opportunity, but it also presented a technical conundrum. How could CheQ ensure a frictionless experience while supporting millions of users and handling a burgeoning..."
+group: "Financial services"
 lastmod: 2026-01-29
 hidden: true
 ---

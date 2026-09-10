@@ -3,6 +3,7 @@ title: "Apna Empowers India’s Job Seekers with Redis Cloud’s Resiliency and 
 linkTitle: "Apna Empowers India’s Job Seekers with Redis Cloud’s Resiliency and Low Latency"
 url: "/customers/apna/"
 description: "To manage billions of rows of data and 50,000 read/write operations per second, Apna needed a high-performance database caching solution that could handle an escalating volume of traffic,..."
+group: "Technology"
 lastmod: 2025-09-12
 hidden: true
 ---

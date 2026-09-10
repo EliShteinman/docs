@@ -3,6 +3,7 @@ title: "iFood relies on Redis Cloud as foundation for ML operations"
 linkTitle: "iFood relies on Redis Cloud as foundation for ML operations"
 url: "/customers/ifood/"
 description: "Watch the video"
+group: "E-Commerce"
 lastmod: 2026-09-01
 hidden: true
 ---

@@ -3,6 +3,7 @@ title: "Docugami drives AI accuracy at scale with Redis"
 linkTitle: "Docugami drives AI accuracy at scale with Redis"
 url: "/customers/docugami/"
 description: "Docugami needed a distributed services architecture that could enable its patented AI to process large workloads with exceptional accuracy, extremely fast response times, and at an affordable cost..."
+group: "Technology"
 lastmod: 2026-06-04
 hidden: true
 ---

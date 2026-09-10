@@ -3,6 +3,7 @@ title: "Dramatic improvement in performance reduces costs for database servers b
 linkTitle: "Dramatic improvement in performance reduces costs for database servers by 60%"
 url: "/customers/kicker/"
 description: "Kicker’s website and mobile counterpart have grown increasingly popular and continue to attract new readership, and the team realized its tech stack was reaching its performance limitations."
+group: "Media & Entertainment"
 lastmod: 2025-09-04
 hidden: true
 ---

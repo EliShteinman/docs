@@ -3,6 +3,7 @@ title: "Proximus powers public safety services with a real-time data"
 linkTitle: "Proximus powers public safety services with a real-time data"
 url: "/customers/proximus/"
 description: "Proximus faced challenges handling large volumes of mobile signaling traffic while ensuring they met strict requirements for accurate location data storage. Their existing SQL-based solutions..."
+group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
 ---

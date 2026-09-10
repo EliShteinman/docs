@@ -3,6 +3,7 @@ title: "Starlogik’s ‘Power of Free’ connects millions on a single Redis Cl
 linkTitle: "Starlogik’s ‘Power of Free’ connects millions on a single Redis Cluster"
 url: "/customers/starlogik/"
 description: "Once Starlogik implemented this vision with a handful of African mobile carriers, they faced scalability challenges due to extremely high call volumes processing through their systems and no..."
+group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
 ---

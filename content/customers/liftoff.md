@@ -3,6 +3,7 @@ title: "Liftoff’s Ad Exchange Soars with Redis Cloud’s Low Latency"
 linkTitle: "Liftoff’s Ad Exchange Soars with Redis Cloud’s Low Latency"
 url: "/customers/liftoff/"
 description: "Liftoff needed a high-availability, low-latency database that could meet the demands of thousands of app publishers and advertisers. The database had to be able to support a multi-cloud..."
+group: "Advertising"
 lastmod: 2026-09-01
 hidden: true
 ---

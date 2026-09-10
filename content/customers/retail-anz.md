@@ -3,6 +3,7 @@ title: "How Redis on Google Cloud transformed internal processes for 200k+ emplo
 linkTitle: "How Redis on Google Cloud transformed internal processes for 200k+ employees at ANZ’s largest retailer"
 url: "/customers/retail-anz/"
 description: "The retailer ran into major productivity and efficiency challenges with its SuccessFactors Human Resource Management System (HRMS), which is designed to streamline and automate essential HR tasks..."
+group: "Retail"
 lastmod: 2025-09-12
 hidden: true
 ---

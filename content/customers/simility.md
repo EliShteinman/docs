@@ -3,6 +3,7 @@ title: "Downtime reduced 20% and application performance improved by nearly 90%"
 linkTitle: "Downtime reduced 20% and application performance improved by nearly 90%"
 url: "/customers/simility/"
 description: "Simility processes several hundreds of millions of transactions each day for its cloud customers and billions of transactions every day in its on-premises deployments. Given the extremely high..."
+group: "Financial services"
 lastmod: 2025-09-12
 hidden: true
 ---

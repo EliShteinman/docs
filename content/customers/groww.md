@@ -3,6 +3,7 @@ title: "Groww uses Redis to scale real-time financial transactions and data acce
 linkTitle: "Groww uses Redis to scale real-time financial transactions and data access for millions."
 url: "/customers/groww/"
 description: "Groww uses Redis to scale real-time financial transactions and data access for millions."
+group: "Software"
 lastmod: 2025-09-12
 hidden: true
 ---

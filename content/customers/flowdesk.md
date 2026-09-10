@@ -3,6 +3,7 @@ title: "Active-Active Redis Delivers Resiliency and High-Availability for Flowde
 linkTitle: "Active-Active Redis Delivers Resiliency and High-Availability for Flowdesk’s Global Cryptocurrency Trading Platform"
 url: "/customers/flowdesk/"
 description: "Flowdesk needs to facilitate sub-second access to order books that store financial data across the globe. This requires a high-availability, low-maintenance database service that integrates with..."
+group: "Financial services"
 lastmod: 2026-09-01
 hidden: true
 ---

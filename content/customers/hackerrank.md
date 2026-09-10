@@ -3,6 +3,7 @@ title: "Redis Enterprise on AWS serves as Swiss Army knife for fast-growing plat
 linkTitle: "Redis Enterprise on AWS serves as Swiss Army knife for fast-growing platform’s data layer needs"
 url: "/customers/hackerrank/"
 description: "HackerRank’s mission is to become the single source of truth for every engineer’s technical ability, so it needed a fast, scalable, and reliable data platform that didn’t require a lot of..."
+group: "SaaS"
 lastmod: 2026-09-01
 hidden: true
 ---

@@ -3,6 +3,7 @@ title: "Primary database for high-speed transactions and search/secondary indexi
 linkTitle: "Primary database for high-speed transactions and search/secondary indexing"
 url: "/customers/medeanalytics/"
 description: "MedeAnalytics needed to guarantee a high level of performance for its customer-facing analytics platform. Plus, its platform was gaining new users and the team wanted to expand to new locations. To..."
+group: "Healthcare"
 lastmod: 2025-09-12
 hidden: true
 ---

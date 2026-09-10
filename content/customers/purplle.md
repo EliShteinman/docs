@@ -3,6 +3,7 @@ title: "Purplle scales personalized beauty experiences with Redis"
 linkTitle: "Purplle scales personalized beauty experiences with Redis"
 url: "/customers/purplle/"
 description: "Watch the video"
+group: "Retail"
 lastmod: 2026-03-11
 hidden: true
 ---

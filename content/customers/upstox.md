@@ -3,6 +3,7 @@ title: "Upstox runs at sub-millisecond latency for 10 million traders"
 linkTitle: "Upstox runs at sub-millisecond latency for 10 million traders"
 url: "/customers/upstox/"
 description: "During the pandemic, Upstox moved from its on-prem data center to AWS, adopting Amazon ElastiCache to simplify infrastructure management. While it eased the load initially, it didn’t provide the..."
+group: "Financial services"
 lastmod: 2025-09-12
 hidden: true
 ---

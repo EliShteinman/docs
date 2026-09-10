@@ -3,6 +3,7 @@ title: "Procesio cut latency by 60% with Redis Cloud & unlocked real-time automa
 linkTitle: "Procesio cut latency by 60% with Redis Cloud & unlocked real-time automation"
 url: "/customers/procesio/"
 description: "As Procesio grew, its architecture shifted from a monolith to a more flexible microservices model. This shift created a critical challenge: their MySQL database couldn’t provide the low-latency..."
+group: "Low-Code/No-Code Automation, IPaaS"
 lastmod: 2025-08-01
 hidden: true
 ---

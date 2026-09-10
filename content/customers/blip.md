@@ -3,6 +3,7 @@ title: "Blip powers global messaging platform with Azure Managed Redis"
 linkTitle: "Blip powers global messaging platform with Azure Managed Redis"
 url: "/customers/blip/"
 description: "Blip processes nearly 1.5 billion messages each month across WhatsApp, Instagram, and Messenger. Every conversation depends on fast, consistent coordination behind the scenes."
+group: "Tech (digital natives)"
 lastmod: 2026-04-28
 hidden: true
 ---

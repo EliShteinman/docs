@@ -3,6 +3,7 @@ title: "Ulta Beauty builds “digital store of the future” driving 40% revenue
 linkTitle: "Ulta Beauty builds “digital store of the future” driving 40% revenue growth with Redis Cloud"
 url: "/customers/ulta-beauty/"
 description: "Watch the video"
+group: "Retail"
 lastmod: 2026-04-14
 hidden: true
 ---

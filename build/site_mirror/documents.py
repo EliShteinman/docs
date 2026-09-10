@@ -48,6 +48,11 @@ class DocumentTree:
     # architecture diagram is a caption plus a diagram, and the caption alone
     # is not the content.
     lead_image_field: str = ""
+    # A field to group the section index by, dereferenced from the source. An
+    # index of 56 customer stories is a wall the same way the blog was; by
+    # industry it is eight short lists.
+    group_field: str = ""
+    group_projection: str = ""
     # Hidden documents stay out of the sidebar and are reached from their
     # section index. Worth it past roughly a hundred entries.
     hidden: bool = False
@@ -64,7 +69,10 @@ class DocumentTree:
         }
         if self.lead_image_field:
             fields.add(self.lead_image_field)
-        return "{" + ",".join(sorted(fields)) + "}"
+        projected = sorted(fields)
+        if self.group_projection:
+            projected.append(self.group_projection)
+        return "{" + ",".join(projected) + "}"
 
 
 def localize_markdown_images(body: str, mirror_url: Callable[[str], str]) -> str:
@@ -180,6 +188,8 @@ TREES: tuple[DocumentTree, ...] = (
         prefix="/customers/*",
         directory=Path("content/customers"),
         hidden=True,
+        group_field="industry",
+        group_projection='"industry":industry->title',
         index=_index(
             "Customer stories",
             "How organisations run Redis in production, mirrored from redis.io.",

@@ -3,6 +3,7 @@ title: "Redis Enterprise serves as an intelligent cache for rapid data reporting
 linkTitle: "Redis Enterprise serves as an intelligent cache for rapid data reporting and processing of regulatory data"
 url: "/customers/deutsche-borse/"
 description: "In order to offer its customers a reporting solution, Deutsche Börse relies on rapid data reporting and processing. Deutsche Börse turned to Redis Enterprise as an intelligent cache to rapidly..."
+group: "Technology"
 lastmod: 2025-09-12
 hidden: true
 ---

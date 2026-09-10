@@ -3,6 +3,7 @@ title: "Achieving 99% uptime & sub-millisecond latency with Redis on Google Clou
 linkTitle: "Achieving 99% uptime & sub-millisecond latency with Redis on Google Cloud"
 url: "/customers/jiocinema/"
 description: "Watch the video"
+group: "Entertainment"
 lastmod: 2026-03-11
 hidden: true
 ---

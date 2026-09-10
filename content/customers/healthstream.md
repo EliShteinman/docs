@@ -3,6 +3,7 @@ title: "HealthStream scales its SaaS platform reliably with Redis Enterprise"
 linkTitle: "HealthStream scales its SaaS platform reliably with Redis Enterprise"
 url: "/customers/healthstream/"
 description: "HealthStream’s SaaS model leverages microservices and cloud components as expected from any SaaS-based model. Considering the geographic distance and network challenges for some of their customers,..."
+group: "Healthcare"
 lastmod: 2025-09-12
 hidden: true
 ---

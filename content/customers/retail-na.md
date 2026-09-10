@@ -3,6 +3,7 @@ title: "Rural retailer takes back $800K in revenue with Redis"
 linkTitle: "Rural retailer takes back $800K in revenue with Redis"
 url: "/customers/retail-na/"
 description: "This retailer needed accurate data—fast. So they chose Redis as their event-driven message broker and cache for real-time inventory updates. They used Redis caching and Redis Data Integration (RDI)..."
+group: "Retail"
 lastmod: 2025-09-12
 hidden: true
 ---

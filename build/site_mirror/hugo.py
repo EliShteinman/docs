@@ -236,6 +236,9 @@ def front_matter(
     ]
     if description:
         lines.append(f"description: {_yaml_value(description)}")
+    group = (post.get("group") or "").strip()
+    if group:
+        lines.append(f"group: {_yaml_value(group)}")
     if aliases:
         lines.append("aliases:")
         lines += [f"- {_yaml_value(alias)}" for alias in aliases]

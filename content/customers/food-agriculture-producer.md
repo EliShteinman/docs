@@ -3,6 +3,7 @@ title: "Fresh produce, fresh data: Food producer syncs data in real time with Az
 linkTitle: "Fresh produce, fresh data: Food producer syncs data in real time with Azure Managed Redis"
 url: "/customers/food-agriculture-producer/"
 description: "The customer’s legacy system involved direct queries from on-prem SQL to Azure Synapse views via a linked server. This frequently caused query timeouts exceeding 30 minutes meaning:"
+group: "Food & Agriculture"
 lastmod: 2025-09-11
 hidden: true
 ---

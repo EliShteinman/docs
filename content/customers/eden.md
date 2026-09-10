@@ -3,6 +3,7 @@ title: "How Eden scales secure infrastructure and prepares for AI with Redis"
 linkTitle: "How Eden scales secure infrastructure and prepares for AI with Redis"
 url: "/customers/eden/"
 description: "Eden wanted to simplify infrastructure for teams working in regulated industries without compromising speed, scalability, or developer control. They needed a low-latency backend that could serve..."
+group: "Technology"
 lastmod: 2025-07-21
 hidden: true
 ---

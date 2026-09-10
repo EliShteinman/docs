@@ -3,6 +3,7 @@ title: "Fully managed platform serves an average of 3TB of data and 200 million 
 linkTitle: "Fully managed platform serves an average of 3TB of data and 200 million keys"
 url: "/customers/biocatch/"
 description: "With 70 million users and up to 40,000 operations per second, BioCatch’s database needed to be incredibly responsive, highly available, and easy to scale."
+group: "Technology"
 lastmod: 2025-09-12
 hidden: true
 ---

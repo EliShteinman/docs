@@ -3,6 +3,7 @@ title: "Faster, deterministic answers for healthcare voice assistant with LangCa
 linkTitle: "Faster, deterministic answers for healthcare voice assistant with LangCache"
 url: "/customers/mangoes-ai/"
 description: "Mangoes.ai offers a voice-first assistant that helps caregivers analyze and address symptoms for their patients. Mangoes functions like a stethoscope for behavioral health, detecting symptoms..."
+group: "Healthcare"
 lastmod: 2026-01-03
 hidden: true
 ---

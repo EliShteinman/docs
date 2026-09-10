@@ -3,6 +3,7 @@ title: "With Redis Enterprise’s Vector Database, Superlinked is Revolutionizin
 linkTitle: "With Redis Enterprise’s Vector Database, Superlinked is Revolutionizing Personalization"
 url: "/customers/superlinked/"
 description: "Watch the video"
+group: "Technology"
 lastmod: 2026-09-01
 hidden: true
 ---

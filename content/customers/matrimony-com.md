@@ -3,6 +3,7 @@ title: "Exceeds high availability and response requirements for 3.5 millions use
 linkTitle: "Exceeds high availability and response requirements for 3.5 millions users"
 url: "/customers/matrimony-com/"
 description: "Matrimony.com’s fast growth led them to begin searching for a database capable of handling it’s 3.5 million active users. Already using the Redis data store was already being used to maintain some..."
+group: "Social Media"
 lastmod: 2025-09-12
 hidden: true
 ---

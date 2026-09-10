@@ -3,6 +3,7 @@ title: "Relevance AI gets 99.5% faster with Redis-powered vector search"
 linkTitle: "Relevance AI gets 99.5% faster with Redis-powered vector search"
 url: "/customers/relevance-ai/"
 description: "The challenge"
+group: "Technology"
 lastmod: 2025-09-12
 hidden: true
 ---

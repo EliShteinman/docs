@@ -3,6 +3,7 @@ title: "SonyLIV processes two billion viewer entries in under 30 milliseconds"
 linkTitle: "SonyLIV processes two billion viewer entries in under 30 milliseconds"
 url: "/customers/sonyliv/"
 description: "As SonyLIV expanded its reach across India and 17 other countries, delivering a smooth, high-quality streaming experience to millions of users became increasingly challenging."
+group: "Entertainment"
 lastmod: 2026-06-04
 hidden: true
 ---

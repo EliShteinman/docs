@@ -3,6 +3,7 @@ title: "Redis enables fast, scalable hybrid search for RAG pipelines at top fina
 linkTitle: "Redis enables fast, scalable hybrid search for RAG pipelines at top financial services firm"
 url: "/customers/raymond-james/"
 description: "Watch the video"
+group: "Financial services"
 lastmod: 2026-03-30
 hidden: true
 ---

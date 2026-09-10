@@ -3,6 +3,7 @@ title: "Axis Bank’s mobile app revamp skyrockets UX satisfaction"
 linkTitle: "Axis Bank’s mobile app revamp skyrockets UX satisfaction"
 url: "/customers/axis-bank/"
 description: "Axis Bank’s mobile app was supposed to let users see all of their latest account info, including the changes in the products they use and people they authorize to access their account. But when..."
+group: "Financial services"
 lastmod: 2025-10-21
 hidden: true
 ---

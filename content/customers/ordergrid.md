@@ -3,6 +3,7 @@ title: "Orchestrating speed: OrderGrid builds a real-time fulfillment engine wit
 linkTitle: "Orchestrating speed: OrderGrid builds a real-time fulfillment engine with Redis"
 url: "/customers/ordergrid/"
 description: "OrderGrid’s platform delivers intelligent, end-to-end solutions across store inventory management, AI-powered demand forecasting, replenishment, warehouse management, and order orchestration with..."
+group: "Technology"
 lastmod: 2026-02-02
 hidden: true
 ---
