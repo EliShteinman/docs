@@ -82,13 +82,25 @@ def create_index(connection: RespConnection, index: str, key_prefix: str) -> Non
     _run(connection, ["FT.DROPINDEX", index, "DD"], tolerate_missing_index=True)
     _run(
         connection,
-        ["FT.CREATE", index, "ON", "HASH", "PREFIX", "1", key_prefix, "SCHEMA", *_SCHEMA],
+        [
+            "FT.CREATE", index, "ON", "HASH", "PREFIX", "1", key_prefix,
+            # Multiplies each document's relevance, so a current page outranks
+            # the same page from an older version. See config.VERSION_WEIGHT.
+            "SCORE_FIELD", "docscore",
+            "SCHEMA", *_SCHEMA,
+        ],
     )
     LOGGER.info("created index %s over prefix %s", index, key_prefix)
 
 
+def document_score(version: str) -> str:
+    """Return the relevance multiplier for a page of this documentation version."""
+    return "1" if not version or version == config.CURRENT_VERSION else str(config.VERSION_WEIGHT)
+
+
 def _document_fields(document: Document, crumbs: list[str]) -> list[str]:
     return [
+        "docscore", document_score(document.version),
         "title", document.title,
         "crumbs", " ".join(crumbs),
         "body", document.body,

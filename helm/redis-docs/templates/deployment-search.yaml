@@ -74,6 +74,8 @@ spec:
               value: {{ .Values.search.index.resultLimit | quote }}
             - name: SEARCH_INDEX_BATCH
               value: {{ .Values.search.index.batch | quote }}
+            - name: SEARCH_VERSION_WEIGHT
+              value: {{ .Values.search.index.versionWeight | quote }}
             - name: SEARCH_ROOT_CRUMB
               value: {{ .Values.search.index.rootCrumb | quote }}
             - name: SEARCH_LOG_LEVEL

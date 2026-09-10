@@ -714,6 +714,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.index.rootCrumb` | `Welcome to Redis Docs` | הכותרת שהתוצאות מקובצות תחתיה, ו-`hierarchy[0]` בכל תוצאה |
 | `search.index.resultLimit` | `30` | מספר התוצאות לשאילתה, כמו ב-redis.io |
 | `search.index.batch` | `500` | מסמכים לכל כתיבה מקובצת בזמן אינדוקס |
+| `search.index.versionWeight` | `0.3` | כמה מהרלוונטיות שומר עמוד מגרסת דוקס ישנה. 45% מהאינדקס הם עותקי גרסאות; בלי זה הם גוברים על העמוד העדכני. |
 | `search.index.attempts` | `30` | ניסיונות אינדוקס לפני כישלון; ה-API וה-Redis שלו עולים יחד |
 | `search.resources` | requests: 100m/128Mi, limits: 500m/512Mi | משאבי ה-API |
 | `search.redis.image.registry` | `docker.io` | registry של Redis לחיפוש |
