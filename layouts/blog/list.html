@@ -28,10 +28,10 @@
           </div>
         {{ end }}
 
-        {{ partial "blog-categories-chips.html" (dict "page" . "active" "") }}
+        {{ partial "mirrored-chips.html" (dict "section" "/blog-categories" "home" "/blog" "active" "" "allLabel" "All posts") }}
 
         <h2>Recent posts</h2>
-        {{ partial "blog-post-table.html" (dict "posts" $recent "showCategory" true) }}
+        {{ partial "mirrored-rows.html" (dict "pages" $recent "showGroup" true "showDate" true) }}
         <p class="text-sm mt-6">
           Showing {{ len $recent }} of {{ len $all }} posts. The rest are on the category pages above.
         </p>

@@ -14,8 +14,8 @@
       <section class="prose w-full py-12 max-w-none">
         <h1>{{ .Title }}</h1>
         <p class="text-lg -mt-5 mb-6">{{ len $posts }} posts from the Redis blog.</p>
-        {{ partial "blog-categories-chips.html" (dict "page" . "active" $category) }}
-        {{ partial "blog-post-table.html" (dict "posts" $posts.ByDate.Reverse "showCategory" false) }}
+        {{ partial "mirrored-chips.html" (dict "section" "/blog-categories" "home" "/blog" "active" $category "allLabel" "All posts") }}
+        {{ partial "mirrored-rows.html" (dict "pages" $posts.ByDate.Reverse "showGroup" false "showDate" true) }}
         {{ partial "feedback.html" . }}
       </section>
     </div>

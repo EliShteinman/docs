@@ -12,7 +12,7 @@
           </td>
           {{ if $.showGroup }}
             <td class="py-3 pr-4 align-top whitespace-nowrap">
-              {{ with .Params.group }}
+              {{ with (or .Params.group (index (.Params.blogcategories | default slice) 0)) }}
                 <span class="px-3 py-1 rounded-md border border-redis-ink-900 border-opacity-30 text-sm">{{ . }}</span>
               {{ end }}
             </td>
