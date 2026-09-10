@@ -300,7 +300,12 @@ search:
     registry: a0533057932
     name: redis-docs-cli
     tag: "latest"
-    pullPolicy: IfNotPresent
+    # Always, not IfNotPresent, while the tag is the mutable `latest`: a node
+    # that cached this image for the CLI playground before the search service
+    # was added would keep that copy, and the indexer would fail on the missing
+    # `search` module until the pod crash-loops. Pin a tag and IfNotPresent is
+    # safe again.
+    pullPolicy: Always
   logLevel: INFO
   # gunicorn threads. A search is one round trip to a Redis in the same pod,
   # and the modal fires a request per keystroke, so this is about concurrent

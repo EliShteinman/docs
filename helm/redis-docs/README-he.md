@@ -708,7 +708,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.image.registry` | `a0533057932` | registry של image ה-API |
 | `search.image.name` | `redis-docs-cli` | שם ה-image — זה של ה-CLI proxy, שנושא גם את שירות החיפוש |
 | `search.image.tag` | `latest` | תג ה-image. לקבע רק לתג שנבנה אחרי הוספת שירות החיפוש — ראה טבלת ה-images. |
-| `search.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת ה-image |
+| `search.image.pullPolicy` | `Always` | מדיניות משיכת ה-image. `Always` כי תג ברירת המחדל הוא `latest` המשתנה, ש-node עשוי לשמור מלפני שנוסף שירות החיפוש; `IfNotPresent` בטוח ברגע שהתג מקובע. |
 | `search.logLevel` | `INFO` | רמת לוג של שירות החיפוש |
 | `search.threads` | `8` | מספר ה-threads של gunicorn; המודאל שולח בקשה לכל תו |
 | `search.index.name` | `docs` | שם האינדקס ב-Redis |
