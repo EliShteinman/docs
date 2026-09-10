@@ -3,6 +3,11 @@ title: "Real-time feature store"
 linkTitle: "Real-time feature store"
 url: "/resources/architecture-diagrams/real-time-feature-store/"
 description: "A demonstration on how Redis could be used as a real-time feature store for AI/ML workloads."
+group: "AI"
+blogCategories:
+- "AI"
+- "In-memory DB"
+- "Feature store"
 lastmod: 2025-10-27
 ---
 

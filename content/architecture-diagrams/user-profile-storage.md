@@ -3,6 +3,10 @@ title: "User profile storage"
 linkTitle: "User profile storage"
 url: "/resources/architecture-diagrams/user-profile-storage/"
 description: "User profile storage is when user profiles are stored, managed, and can be made accessible for use by an application."
+group: "User profile store"
+blogCategories:
+- "User profile store"
+- "Session management"
 lastmod: 2025-10-27
 ---
 

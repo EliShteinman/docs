@@ -3,6 +3,10 @@ title: "Full-text search"
 linkTitle: "Full-text search"
 url: "/resources/architecture-diagrams/full-text-search/"
 description: "Full-text search is an information retrieval technique that searches documents based on keywords or phrases within the entire text. Unlike traditional search, it considers context, synonyms, and..."
+group: "Full-text search"
+blogCategories:
+- "Full-text search"
+- "Search"
 lastmod: 2025-10-27
 ---
 

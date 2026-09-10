@@ -3,6 +3,10 @@ title: "Redis with Google's Vertex AI"
 linkTitle: "Redis with Google's Vertex AI"
 url: "/resources/architecture-diagrams/redis-with-googles-vertex-ai/"
 description: "Demonstrates the use of Redis as a vector database for Google's Vertex AI Platform."
+group: "AI"
+blogCategories:
+- "AI"
+- "Semantic caching"
 lastmod: 2025-10-27
 ---
 

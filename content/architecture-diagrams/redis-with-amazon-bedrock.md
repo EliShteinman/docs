@@ -3,6 +3,10 @@ title: "Redis with Amazon Bedrock"
 linkTitle: "Redis with Amazon Bedrock"
 url: "/resources/architecture-diagrams/redis-with-amazon-bedrock/"
 description: "Demonstrates the use of Redis as a vector database for Amazon Bedrock on AWS."
+group: "Vector DB"
+blogCategories:
+- "Vector DB"
+- "AI"
 lastmod: 2025-10-27
 ---
 

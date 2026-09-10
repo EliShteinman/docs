@@ -3,6 +3,10 @@ title: "Redis streams"
 linkTitle: "Redis streams"
 url: "/resources/architecture-diagrams/redis-streams/"
 description: "A Redis stream is a data structure that acts like an append-only log but also implements several advanced operations such as message acknowledgment, consumer groups, and automatic message retention..."
+group: "Streams"
+blogCategories:
+- "Streams"
+- "Messaging & interservice comms"
 lastmod: 2025-10-27
 ---
 

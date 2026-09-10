@@ -3,6 +3,10 @@ title: "Geospatial search"
 linkTitle: "Geospatial search"
 url: "/resources/architecture-diagrams/geospatial-search/"
 description: "Geospatial search allows querying and filtering of data based on geographic locations. It enables finding nearby places or objects using coordinates (latitude and longitude)."
+group: "Geospatial"
+blogCategories:
+- "Geospatial"
+- "Search"
 lastmod: 2025-10-27
 ---
 

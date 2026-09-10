@@ -178,6 +178,8 @@ TREES: tuple[DocumentTree, ...] = (
         directory=Path("content/architecture-diagrams"),
         body_field="content",
         lead_image_field="image",
+        group_field="categories",
+        group_projection='"categories":categories[]->title',
         index=_index(
             "Architecture diagrams",
             "Reference architectures for building on Redis, mirrored from redis.io.",

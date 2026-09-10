@@ -3,6 +3,10 @@ title: "Rate limiting"
 linkTitle: "Rate limiting"
 url: "/resources/architecture-diagrams/rate-limiting/"
 description: "Rate limiting is a technique used to control the number of requests or actions performed by a user or system. It helps protect resources like APIs and backend databases from being overwhelmed and..."
+group: "Rate limiting"
+blogCategories:
+- "Rate limiting"
+- "Session management"
 lastmod: 2026-05-21
 ---
 

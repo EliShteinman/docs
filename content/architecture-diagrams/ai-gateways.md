@@ -3,6 +3,10 @@ title: "AI gateways"
 linkTitle: "AI gateways"
 url: "/resources/architecture-diagrams/ai-gateways/"
 description: "An AI Gateway is a service that simplifies, secures, and governs access to LLMs within an enterprise setting. It acts as a centralized platform for managing AI workflows, giving developers a..."
+group: "AI"
+blogCategories:
+- "AI"
+- "Gateways"
 lastmod: 2025-10-27
 ---
 

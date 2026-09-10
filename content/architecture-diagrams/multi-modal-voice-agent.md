@@ -3,6 +3,12 @@ title: "Multi-modal voice agent"
 linkTitle: "Multi-modal voice agent"
 url: "/resources/architecture-diagrams/multi-modal-voice-agent/"
 description: "Distributed voice AI applications requiring the lowest possible latency and reliable scaling. Redis provides the context to power these agents with the fastest vector search and plugs into any AI..."
+group: "AI"
+blogCategories:
+- "AI"
+- "Agents"
+- "RAG"
+- "Vector DB"
 lastmod: 2026-03-18
 ---
 

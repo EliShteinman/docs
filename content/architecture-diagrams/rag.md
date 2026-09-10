@@ -3,6 +3,10 @@ title: "RAG"
 linkTitle: "RAG"
 url: "/resources/architecture-diagrams/rag/"
 description: "Retrieval-augmented generation (RAG) is a pattern where any and all related content is retrieved from a trusted data source, augmented with a user request, and sent to an LLM to generate a response."
+group: "RAG"
+blogCategories:
+- "RAG"
+- "AI"
 lastmod: 2025-10-27
 ---
 

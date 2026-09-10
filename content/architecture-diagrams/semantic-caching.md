@@ -3,6 +3,10 @@ title: "Semantic caching"
 linkTitle: "Semantic caching"
 url: "/resources/architecture-diagrams/semantic-caching/"
 description: "Semantic caching interprets and stores the semantic meaning of user queries, allowing systems to retrieve information based on intent, not just literal matches."
+group: "AI"
+blogCategories:
+- "AI"
+- "Semantic caching"
 lastmod: 2025-10-27
 ---
 

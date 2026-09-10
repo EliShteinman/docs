@@ -3,6 +3,10 @@ title: "Netflix uses Redis for priority queueing"
 linkTitle: "Netflix uses Redis for priority queueing"
 url: "/resources/architecture-diagrams/netflix-uses-redis-for-priority-queueing/"
 description: "A case study of how Netflix levearages Redis for their in-house built, low latency priority queueing system. Redis is used as a durable system of record."
+group: "Queueing"
+blogCategories:
+- "Queueing"
+- "Messaging & interservice comms"
 lastmod: 2025-10-27
 ---
 

@@ -3,6 +3,9 @@ title: "Axis Bank uses Redis Data Integration (RDI)"
 linkTitle: "Axis Bank uses Redis Data Integration (RDI)"
 url: "/resources/architecture-diagrams/axis-bank-uses-redis-data-integration/"
 description: "A case study on how Axis Bank uses Redis as a real-time database by leveraging RDI."
+group: "Data integration"
+blogCategories:
+- "Data integration"
 lastmod: 2025-10-27
 ---
 

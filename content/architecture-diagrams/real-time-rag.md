@@ -3,6 +3,10 @@ title: "Real-time RAG"
 linkTitle: "Real-time RAG"
 url: "/resources/architecture-diagrams/real-time-rag/"
 description: "A demonstration on how Redis can be used to enable real-time AI applications."
+group: "AI"
+blogCategories:
+- "AI"
+- "RAG"
 lastmod: 2025-10-27
 ---
 

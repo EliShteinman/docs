@@ -3,6 +3,10 @@ title: "LangChain RAG"
 linkTitle: "LangChain RAG"
 url: "/resources/architecture-diagrams/langchain-rag/"
 description: "Redis partnered with LangChain to produce the Redis RAG template, a package optimized for creating factually consistent, LLM-powered chat applications."
+group: "RAG"
+blogCategories:
+- "RAG"
+- "AI"
 lastmod: 2025-10-27
 ---
 

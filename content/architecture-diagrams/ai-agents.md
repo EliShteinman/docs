@@ -3,6 +3,10 @@ title: "AI Agents"
 linkTitle: "AI Agents"
 url: "/resources/architecture-diagrams/ai-agents/"
 description: "AI agents are individual actors that complete a specific task using GenAI. They can decide which steps to take, call other tools, and evaluate intermediary steps before sending back their output."
+group: "AI"
+blogCategories:
+- "AI"
+- "Agents"
 lastmod: 2025-10-27
 ---
 

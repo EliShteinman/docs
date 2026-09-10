@@ -3,6 +3,11 @@ title: "Feature store"
 linkTitle: "Feature store"
 url: "/resources/architecture-diagrams/feature-store/"
 description: "A Feature Store stores and serves features—variables or derived values used in machine learning models. These features make real-time inferencing possible and keep training data and predictions..."
+group: "AI"
+blogCategories:
+- "AI"
+- "In-memory DB"
+- "Feature store"
 lastmod: 2025-10-27
 ---
 

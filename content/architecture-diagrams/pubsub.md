@@ -3,6 +3,9 @@ title: "Pub/sub"
 linkTitle: "Pub/sub"
 url: "/resources/architecture-diagrams/pubsub/"
 description: "Pub/Sub is short for Publish/Subscribe—a communication model through which a broker receives messages from a publisher and distributes them to one or more subscribers who then interpret them..."
+group: "Messaging & interservice comms"
+blogCategories:
+- "Messaging & interservice comms"
 lastmod: 2025-10-27
 ---
 

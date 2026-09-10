@@ -3,6 +3,12 @@ title: "Mutalink uses Redis for microservices"
 linkTitle: "Mutalink uses Redis for microservices"
 url: "/resources/architecture-diagrams/mutalink-uses-redis-for-microservices/"
 description: "A case study on how Redis is used a microservices application that requires real-time responses, high availability, and data resilency."
+group: "Infrastructure"
+blogCategories:
+- "Infrastructure"
+- "Active-active"
+- "Microservices"
+- "High availability"
 lastmod: 2025-10-27
 ---
 

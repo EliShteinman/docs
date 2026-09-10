@@ -3,6 +3,11 @@ title: "Active-active"
 linkTitle: "Active-active"
 url: "/resources/architecture-diagrams/active-active/"
 description: "An Active-Active database is a globally distributed database that spans multiple Redis Enterprise Software clusters. This configuration ensures data resiliency by distributing the database..."
+group: "Active-active"
+blogCategories:
+- "Active-active"
+- "Infrastructure"
+- "High availability"
 lastmod: 2025-10-27
 ---
 

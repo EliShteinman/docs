@@ -3,6 +3,10 @@ title: "Uber uses Redis for query caching"
 linkTitle: "Uber uses Redis for query caching"
 url: "/resources/architecture-diagrams/uber-uses-redis-for-query-caching/"
 description: "A case study on how Uber uses Redis as distributed caching solution for their microservices application."
+group: "Caching"
+blogCategories:
+- "Caching"
+- "Microservices"
 lastmod: 2025-10-27
 ---
 

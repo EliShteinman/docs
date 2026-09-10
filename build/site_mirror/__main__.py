@@ -302,6 +302,10 @@ def mirror_documents(
         # The tree may name its title something else (`term`), and the rest of
         # the writer reads `title`; the group value is normalised the same way.
         group = (document.get(tree.group_field) or "") if tree.group_field else ""
+        # A tree may file a document under several categories (the diagrams do);
+        # the index groups by one, so the first is the one that counts.
+        if isinstance(group, list):
+            group = next((g for g in group if g), "")
         if group:
             group_counts[group] = group_counts.get(group, 0) + 1
         document = {**document, "title": title, "group": group}

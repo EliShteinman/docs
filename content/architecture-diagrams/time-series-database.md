@@ -3,6 +3,10 @@ title: "Time series database"
 linkTitle: "Time series database"
 url: "/resources/architecture-diagrams/time-series-database/"
 description: "A time series database captures, stores, and organizes data points recorded over time, each linked to a specific timestamp."
+group: "Timeseries DB"
+blogCategories:
+- "Timeseries DB"
+- "In-memory DB"
 lastmod: 2025-10-27
 ---
 

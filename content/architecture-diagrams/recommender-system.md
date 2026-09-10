@@ -3,6 +3,9 @@ title: "Recommender system"
 linkTitle: "Recommender system"
 url: "/resources/architecture-diagrams/recommender-system/"
 description: "A demonstration of how Redis can be used as a vector database for a recommender system with collaborative filtering."
+group: "AI"
+blogCategories:
+- "AI"
 lastmod: 2025-10-27
 ---
 
