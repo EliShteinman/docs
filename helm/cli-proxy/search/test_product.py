@@ -1,13 +1,15 @@
 """Tests for mapping a page to the modal's product dropdown."""
 
 import os
+import pathlib
+import re
 import sys
 
 import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from search.product import KNOWN_PRODUCTS, product_of
+from search.product import ALL_PRODUCTS, KNOWN_PRODUCTS, product_of
 
 
 @pytest.mark.parametrize(
@@ -40,4 +42,22 @@ def test_a_top_level_page_carries_no_tag():
 
 
 def test_every_dropdown_value_is_known():
-    assert len(KNOWN_PRODUCTS) == 7
+    """Read from the modal itself, not counted.
+
+    KNOWN_PRODUCTS exists to mirror the <select> in search-modal.html, an
+    upstream partial this fork does not own. Asserting its length only proved
+    there were still seven of something: a renamed value would have kept the
+    count and quietly filtered nothing. Upstream drift going unnoticed is this
+    fork's recurring failure, so the comparison is against the real markup.
+    """
+    modal = (
+        pathlib.Path(__file__).resolve().parents[3]
+        / "layouts" / "partials" / "search-modal.html"
+    )
+    if not modal.is_file():
+        pytest.skip("search-modal.html is not in this checkout")
+    offered = set(re.findall(r'<option value="([^"]*)"', modal.read_text(encoding="utf-8")))
+    assert offered - {ALL_PRODUCTS} == set(KNOWN_PRODUCTS), (
+        "the modal offers products the search service does not tag for, or the "
+        "other way round"
+    )

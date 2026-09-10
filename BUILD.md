@@ -164,14 +164,19 @@ git add content/ static/images/site-mirror
 
 | עץ | כמות | נתיב | בסרגל? |
 |---|---|---|---|
-| בלוג | 1,109 | `/blog/<slug>/` | מוסתר — האינדקס הוא הרשימה |
+| בלוג | 1,108 | `/blog/<slug>/` | מוסתר — האינדקס הוא הרשימה |
 | tutorials | 122 | `/tutorials/<slug>/` | מוסתר |
-| glossary | 56 | `/glossary/<term>/` | גלוי — **נכנס לסקשן upstream שהיה ריק לגמרי** |
+| glossary | 56 | `/glossary/<term>/` | גלוי — הקבצים ב-`content/redis-glossary/`, ראה למטה |
 | technology | 10 | `/technology/<slug>/` | גלוי |
-| compare | 27 | `/compare/<slug>/` | גלוי |
-| solutions | 22 | `/solutions/<slug>/` | גלוי |
+| compare | 14 | `/compare/<slug>/` | גלוי |
+| solutions | 18 | `/solutions/<slug>/` | גלוי |
 | architecture-diagrams | 28 | `/resources/architecture-diagrams/<slug>/` | גלוי |
-| customers | 57 | `/customers/<slug>/` | מוסתר |
+| customers | 56 | `/customers/<slug>/` | מוסתר |
+
+**המילון — למה `content/redis-glossary/`.** `/glossary/` הוא סקשן של התיעוד עם 188 הגדרות
+כתובות ביד בגוף ה-`_index.md` שלו, ותבנית upstream שמרנדרת אותן. המירור מוסיף לאתר הזה ולא
+עורך אותו, ולכן הוא כותב לתיקייה משלו. **המונחים עצמם עדיין מתפרסמים ב-`/glossary/<term>/`**,
+בדיוק כמו ב-redis.io; רק עמוד הרשימה יושב ב-`/redis-glossary/`.
 
 **שלושה מבנים, צינור אחד.** פוסט בלוג הוא שדה Portable Text אחד. עמוד `page`
 (‏`/technology/`, `/compare/`, `/solutions/`) הוא רשימת סקשנים של page-builder שהפרוזה
@@ -219,8 +224,10 @@ python3 -m build.site_mirror --refresh-redirects   # דורש אינטרנט; ל
   הוא **כן** נכלל.
 
 > **החיפוש מקבל את הכל בחינם.** הכל עמודי Hugo, אז `build/generate_ndjson.py` אוסף אותם
-> ל-`docs.ndjson` כמו כל עמוד אחר. פוסטי בלוג מתויגים `source=blog` ומקובצים בנפרד בחלון
-> החיפוש; שאר התוכן הממורר מתויג `docs`.
+> ל-`docs.ndjson` כמו כל עמוד אחר. פוסטי בלוג מתויגים `source=blog`, שאר הסקשנים הממוררים
+> `source=site`, והתיעוד `source=docs`. כל סקשן ממורר מוביל קבוצה משלו בחלון החיפוש במקום
+> להופיע תחת הכותרת של הדוקס. המילון הוא היוצא מן הכלל: המונחים שלו מתפרסמים בתוך
+> `/glossary/` של התיעוד, ולכן הם מקובצים איתו.
 
 #### ה-image של ה-CLI (`redis-docs-cli`) — בנייה ידנית
 
@@ -231,7 +238,7 @@ python3 -m build.site_mirror --refresh-redirects   # דורש אינטרנט; ל
 
 ```bash
 cd helm/cli-proxy
-python3 -m pytest . -q          # 10 מודולי בדיקה, כולל search/
+python3 -m pytest . -q          # 12 מודולי בדיקה, כולל search/
 
 docker buildx build --platform linux/amd64,linux/arm64 \
   -t a0533057932/redis-docs-cli:latest \
