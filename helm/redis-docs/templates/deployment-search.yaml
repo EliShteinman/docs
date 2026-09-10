@@ -105,6 +105,12 @@ spec:
                 echo "FATAL: could not build the search index" >&2
                 exit 1
               fi
+              # --control-socket is not optional here. OpenShift runs the
+              # container under an arbitrary UID from the namespace's range,
+              # not the image's appuser, and gunicorn's default socket path is
+              # under that user's home: measured, it answers
+              # "Control server error: [Errno 13] Permission denied: '/.gunicorn'"
+              # on every start. /tmp is the emptyDir mounted below.
               exec gunicorn --bind 0.0.0.0:8091 --workers 1 \
                 --worker-class gthread --threads {{ .Values.search.threads }} \
                 --control-socket /tmp/gunicorn-search.ctl search.main:app
