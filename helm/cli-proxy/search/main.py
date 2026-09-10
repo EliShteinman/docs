@@ -80,7 +80,7 @@ def run_search(raw_query: str, product: str) -> dict:
         LOGGER.warning("search rejected for %r: %s", built, reply)
         return EMPTY_RESPONSE
     total, documents = query.parse_reply(reply)
-    return {"total": total, "results": query.to_results(documents)}
+    return {"total": total, "results": query.one_per_row(query.to_results(documents))}
 
 
 app = Flask(__name__)
