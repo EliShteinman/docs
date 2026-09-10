@@ -4,6 +4,7 @@ linkTitle: "Redis vs Gemfire"
 url: "/compare/gemfire/"
 description: "Redis, an acronym for Remote Dictionary Server, is an open-source, in-memory data structure store. It can function as a database, cache, and message broker. Originating in 2009 and developed by..."
 lastmod: 2025-08-13
+mirrored: true
 ---
 
 *updated 13 August 2025*

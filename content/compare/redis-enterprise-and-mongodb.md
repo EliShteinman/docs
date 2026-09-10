@@ -4,6 +4,7 @@ linkTitle: "Redis Enterprise and MongoDB"
 url: "/compare/redis-enterprise-and-mongodb/"
 description: "Achieve Sub-millisecond Performance on MongoDB with Redis Enterprise."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

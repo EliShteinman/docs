@@ -6,6 +6,7 @@ description: "Voodoo’s popular social app, Wizz, must support 88,000 queries p
 group: "Software"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

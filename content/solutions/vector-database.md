@@ -6,6 +6,7 @@ description: "Build faster, more accurate chatbots and agents"
 aliases:
 - "/solutions/vector-search/"
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

@@ -4,6 +4,7 @@ linkTitle: "Linear scaling with Redis Enterprise"
 url: "/technology/linear-scaling-redis-enterprise/"
 description: "Exceed customer expectations with fast, scalable, and resilient data platform"
 lastmod: 2026-02-20
+mirrored: true
 ---
 
 *updated 20 February 2026*

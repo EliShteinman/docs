@@ -11,6 +11,7 @@ authors:
 - "Sarah Bedell"
 lastmod: 2025-09-29
 hidden: true
+mirrored: true
 ---
 
 *By Blair Pierson, Sarah Bedell · Published 29 September 2025*

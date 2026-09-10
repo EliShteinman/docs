@@ -4,6 +4,7 @@ linkTitle: "Flex"
 url: "/solutions/flex/"
 description: "Use our intelligent hybrid memory architecture to save money without losing the performance AI/ML and large-scale workloads need."
 lastmod: 2026-06-30
+mirrored: true
 ---
 
 *updated 30 June 2026*

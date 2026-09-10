@@ -10,6 +10,7 @@ authors:
 - "Yusuf Bahadur"
 lastmod: 2026-06-01
 hidden: true
+mirrored: true
 ---
 
 *By Yusuf Bahadur,  Yusuf Bahadur Senior Partner Solution Architect • Customer Org · Published 9 December 2025 · updated 1 June 2026*

@@ -6,6 +6,7 @@ description: "During a crucial high-traffic sales event, Meesho’s existing Ela
 group: "E-Commerce"
 lastmod: 2025-07-16
 hidden: true
+mirrored: true
 ---
 
 *updated 16 July 2025*

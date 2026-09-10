@@ -6,6 +6,7 @@ description: "Mitto’s customers rely on instantly delivered messages, so it ne
 group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

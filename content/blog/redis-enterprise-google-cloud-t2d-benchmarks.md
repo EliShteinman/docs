@@ -11,6 +11,7 @@ authors:
 - "Gilbert Lau"
 lastmod: 2025-03-27
 hidden: true
+mirrored: true
 ---
 
 *By Gilbert Lau, Cloud Partner Solution Architect · Published 30 November 2022 · updated 27 March 2025*

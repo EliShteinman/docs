@@ -6,6 +6,7 @@ description: "MEO, Portugal’s largest telecom operator, needed to transition f
 group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

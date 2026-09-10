@@ -6,6 +6,7 @@ description: "Mangoes.ai offers a voice-first assistant that helps caregivers an
 group: "Healthcare"
 lastmod: 2026-01-03
 hidden: true
+mirrored: true
 ---
 
 *updated 3 January 2026*

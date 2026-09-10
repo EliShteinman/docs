@@ -4,6 +4,7 @@ linkTitle: "Redis vs. Oracle Coherence"
 url: "/compare/oracle-coherence/"
 description: "It’s time to address your technical debt. Coherence holds you back. Redis delivers the speed, flexibility, and simplicity to push forward. Here’s why choosing Redis is the right move now."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

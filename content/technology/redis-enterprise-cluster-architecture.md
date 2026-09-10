@@ -4,6 +4,7 @@ linkTitle: "Cluster Architecture"
 url: "/technology/redis-enterprise-cluster-architecture/"
 description: "Redis Enterprise can be either a single Redis server database or a cluster. This allows a Redis Enterprise database to either scale horizontally across many servers through sharding or to copy..."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

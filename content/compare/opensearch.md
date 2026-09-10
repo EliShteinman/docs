@@ -4,6 +4,7 @@ linkTitle: "Redis vs. Elasticsearch and OpenSearch"
 url: "/compare/opensearch/"
 description: "Learn how Lucene-based Elasticsearch and OpenSearch differ for modern apps, AI, and vector search, and when Redis is the choice for real-time speed, higher accuracy, and instant updates."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

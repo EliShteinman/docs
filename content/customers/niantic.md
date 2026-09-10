@@ -6,6 +6,7 @@ description: "As thousands of Pokémon GO players participate in popular Raid Ba
 group: "Gaming"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

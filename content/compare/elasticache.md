@@ -4,6 +4,7 @@ linkTitle: "Redis vs ElastiCache"
 url: "/compare/elasticache/"
 description: "ElastiCache is not Redis. Following the release of Redis 7.2, ElastiCache is no longer built on Redis—which means you won’t get support or product innovations from the original Redis experts with..."
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

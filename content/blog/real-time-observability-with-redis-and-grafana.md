@@ -11,6 +11,7 @@ authors:
 - "Alexey Smolyanyy"
 lastmod: 2025-07-03
 hidden: true
+mirrored: true
 ---
 
 *By Mikhail Volkov, Alexey Smolyanyy · Published 28 October 2020 · updated 3 July 2025*

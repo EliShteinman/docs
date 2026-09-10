@@ -10,6 +10,7 @@ authors:
 - "Thomas Findelkind"
 lastmod: 2026-06-01
 hidden: true
+mirrored: true
 ---
 
 *By Thomas Findelkind, Senior Specialist Solution Architect · Published 5 November 2025 · updated 1 June 2026*

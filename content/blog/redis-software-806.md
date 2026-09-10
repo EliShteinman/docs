@@ -12,6 +12,7 @@ authors:
 - "Maayan Agranat"
 lastmod: 2026-01-16
 hidden: true
+mirrored: true
 ---
 
 *By Yoav Peled, Alon Magrafta, Maayan Agranat · Published 15 January 2026 · updated 16 January 2026*

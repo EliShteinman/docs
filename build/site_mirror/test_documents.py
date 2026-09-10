@@ -95,9 +95,10 @@ def test_every_registered_tree_has_a_distinct_directory():
     assert len(set(directories)) == len(directories)
 
 
-def test_the_glossary_writes_no_index_because_the_section_already_has_one():
+def test_the_glossary_stays_out_of_the_documentations_own_section():
+    """content/glossary holds the docs' own glossary; the mirror adds, never edits."""
     glossary = next(t for t in TREES if t.name == "glossary")
-    assert glossary.index is None and glossary.directory == Path("content/glossary")
+    assert glossary.directory != Path("content/glossary")
 
 
 def test_a_path_outside_the_tree_is_not_claimed_by_it():
@@ -157,3 +158,51 @@ def test_an_absolute_source_link_is_normalised_before_comparison(tmp_path):
 
     (tmp_path / "a.md").write_text("[x](https://redis.io/blog/a/)\n")
     assert _stale_targets(tmp_path, {"/blog/a/"}) == []
+
+
+def test_no_tree_writes_into_a_section_the_documentation_owns():
+    """The mirror is an addition to this site, never an edit to it.
+
+    content/glossary is the documentation's own glossary -- 188 definitions
+    written by hand in the body of its _index.md -- and an earlier version of
+    this filed 56 mirrored terms into it and overwrote its layout. The sections
+    below belong to the documentation; nothing may be written into them.
+    """
+    from build.site_mirror import categories, hugo
+
+    OWNED = {
+        Path("content/glossary"), Path("content/develop"), Path("content/operate"),
+        Path("content/commands"), Path("content/integrate"), Path("content/apis"),
+        Path("content/embeds"), Path("content/get-started"),
+    }
+    targets = (
+        {t.directory for t in TREES}
+        | {categories.BLOG.directory, categories.TUTORIALS.directory}
+        | {hugo.SECTION_DIR, hugo.TECHNOLOGY_DIR, hugo.COMPARE_DIR, hugo.SOLUTIONS_DIR}
+    )
+    trespassing = targets & OWNED
+    assert not trespassing, f"the mirror would write into {trespassing}"
+
+
+def test_every_mirrored_directory_is_only_mirrored_files():
+    """Whatever the mirror writes into, it must be the only thing in there.
+
+    A directory holding one file the mirror did not write is a directory where
+    pruning could destroy something, and where a sync overwrites someone's work.
+    """
+    from build.site_mirror import categories, hugo
+    from build.site_mirror.hugo import is_generated
+
+    root = Path(__file__).resolve().parents[2]
+    targets = (
+        {t.directory for t in TREES}
+        | {categories.BLOG.directory, categories.TUTORIALS.directory}
+        | {hugo.SECTION_DIR, hugo.TECHNOLOGY_DIR, hugo.COMPARE_DIR, hugo.SOLUTIONS_DIR}
+    )
+    for directory in sorted(targets):
+        full = root / directory
+        if not full.is_dir():
+            continue
+        strangers = [f.name for f in full.glob("*.md")
+                     if f.name != "_index.md" and not is_generated(f)]
+        assert not strangers, f"{directory} holds files the mirror did not write: {strangers[:3]}"

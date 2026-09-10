@@ -6,6 +6,7 @@ description: "Watch the video"
 group: "Technology"
 lastmod: 2026-09-01
 hidden: true
+mirrored: true
 ---
 
 *updated 1 September 2026*

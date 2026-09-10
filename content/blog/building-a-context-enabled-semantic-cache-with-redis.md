@@ -10,6 +10,7 @@ authors:
 - "Philip Laussermair"
 lastmod: 2026-06-01
 hidden: true
+mirrored: true
 ---
 
 *By Philip Laussermair, Senior Solutions Architect on our Azure Managed Redis  · Published 28 August 2025 · updated 1 June 2026*

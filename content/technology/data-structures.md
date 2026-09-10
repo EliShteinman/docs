@@ -4,6 +4,7 @@ linkTitle: "Data structures"
 url: "/technology/data-structures/"
 description: "A data structure is an organized collection of data. It is a unique format for storing data to serve a particular purpose. It is used to access the data and manage it easily. Data structures are a..."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

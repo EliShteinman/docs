@@ -10,6 +10,7 @@ authors:
 - "Prasan Rajpurohit"
 lastmod: 2026-01-15
 hidden: true
+mirrored: true
 ---
 
 *By Prasan Rajpurohit, Technical Solutions Developer at Redis · Published 21 December 2022 · updated 15 January 2026*

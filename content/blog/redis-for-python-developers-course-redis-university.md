@@ -10,6 +10,7 @@ authors:
 - "Andrew Brookins"
 lastmod: 2026-09-01
 hidden: true
+mirrored: true
 ---
 
 *By Andrew Brookins, Former Curriculum Software Engineer at Redis · Published 11 August 2020 · updated 1 September 2026*

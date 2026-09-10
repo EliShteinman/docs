@@ -4,6 +4,7 @@ linkTitle: "Redis vs. Valkey"
 url: "/compare/valkey/"
 description: "We’ve set the standard for in-memory performance. But how does Redis compare to Valkey? Learn why we continue to be the trusted choice for devs and enterprises around the world."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

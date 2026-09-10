@@ -11,6 +11,7 @@ authors:
 - "Vasko Chomakov"
 lastmod: 2025-11-17
 hidden: true
+mirrored: true
 ---
 
 *By Mirko Ortensi, Vasko Chomakov · Published 17 November 2025*

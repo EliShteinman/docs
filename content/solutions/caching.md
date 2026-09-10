@@ -4,6 +4,7 @@ linkTitle: "Caching"
 url: "/solutions/caching/"
 description: "A fast, highly available, resilient, and scalable caching layer that spans across clouds, on prem, and hybrid."
 lastmod: 2026-04-16
+mirrored: true
 ---
 
 *updated 16 April 2026*

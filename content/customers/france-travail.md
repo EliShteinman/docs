@@ -6,6 +6,7 @@ description: "France Travail was working with a complex IT infrastructure—a mu
 group: "Government"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

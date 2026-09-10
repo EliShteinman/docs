@@ -10,6 +10,7 @@ authors:
 - "Maygol Kananizadeh"
 lastmod: 2025-03-04
 hidden: true
+mirrored: true
 ---
 
 *By Maygol Kananizadeh, Technical Product Marketing Manager · Published 12 April 2021 · updated 4 March 2025*

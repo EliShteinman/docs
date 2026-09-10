@@ -4,6 +4,7 @@ linkTitle: "Compare Open Source"
 url: "/compare/open-source/"
 description: "You know Redis for caching, but it’s so much more. When you need real-time speed or the power to handle millions of operations per second, here’s how to pick the Redis version that fits your needs."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

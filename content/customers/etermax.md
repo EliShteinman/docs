@@ -6,6 +6,7 @@ description: "As Etermax watched its customer base rise by two-to-three million 
 group: "Gaming"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

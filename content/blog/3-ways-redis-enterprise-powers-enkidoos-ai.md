@@ -11,6 +11,7 @@ authors:
 - "Alexandre Vincart-Émard"
 lastmod: 2025-03-27
 hidden: true
+mirrored: true
 ---
 
 *By Alexandre Vincart-Émard, CTO · Published 27 September 2018 · updated 27 March 2025*

@@ -4,6 +4,7 @@ linkTitle: "Active-Passive geo-distribution"
 url: "/technology/active-passive-geo-distribution/"
 description: "With Redis Enterprise you can create Active-Passive Geo-Distributed deployments using the “replica-of” capability. This unidirectional replication capability allows you to synchronize data between..."
 lastmod: 2026-02-20
+mirrored: true
 ---
 
 *updated 20 February 2026*

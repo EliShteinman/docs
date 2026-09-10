@@ -10,6 +10,7 @@ authors:
 - "Adi Stern"
 lastmod: 2025-03-27
 hidden: true
+mirrored: true
 ---
 
 *By Adi Stern, VP of Human Resources · Published 6 February 2020 · updated 27 March 2025*

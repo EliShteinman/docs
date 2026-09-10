@@ -11,6 +11,7 @@ authors:
 - "Noam Stern"
 lastmod: 2025-10-01
 hidden: true
+mirrored: true
 ---
 
 *By Bosmat Tuvel, Noam Stern · Published 22 July 2025 · updated 1 October 2025*

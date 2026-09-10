@@ -4,6 +4,7 @@ linkTitle: "Redis vs. Aiven"
 url: "/compare/aiven/"
 description: "Learn how we power real-time data applications with faster, more reliable experiences that Aiven solutions simply can’t match."
 lastmod: 2026-06-04
+mirrored: true
 ---
 
 *updated 4 June 2026*

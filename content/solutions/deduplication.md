@@ -4,6 +4,7 @@ linkTitle: "Deduplication"
 url: "/solutions/deduplication/"
 description: "The fastest apps start with the world’s only feature-rich modern cache"
 lastmod: 2025-09-20
+mirrored: true
 ---
 
 *updated 20 September 2025*

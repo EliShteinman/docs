@@ -13,6 +13,7 @@ authors:
 - "Pieter Cailliau"
 lastmod: 2026-08-13
 hidden: true
+mirrored: true
 ---
 
 *By Mirko Ortensi, Pieter Cailliau · Published 19 September 2024 · updated 13 August 2026*

@@ -10,6 +10,7 @@ authors:
 - "Robert Shelton"
 lastmod: 2025-10-01
 hidden: true
+mirrored: true
 ---
 
 *By Robert Shelton, AI Engineer at Redis · Published 4 February 2025 · updated 1 October 2025*

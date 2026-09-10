@@ -4,6 +4,7 @@ linkTitle: "Real-time decisioning"
 url: "/solutions/real-time-decisioning/"
 description: "Redis Enterprise is the real-time decisioning layer that gives every system, model, and agent the live context it needs to decide and act in milliseconds."
 lastmod: 2026-06-29
+mirrored: true
 ---
 
 *updated 29 June 2026*

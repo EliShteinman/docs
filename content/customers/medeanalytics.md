@@ -6,6 +6,7 @@ description: "MedeAnalytics needed to guarantee a high level of performance for 
 group: "Healthcare"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

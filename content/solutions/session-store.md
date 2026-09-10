@@ -4,6 +4,7 @@ linkTitle: "Session Store"
 url: "/solutions/session-store/"
 description: "Provide responsive, scalable, and consistent user sessions with Redis Enterprise"
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

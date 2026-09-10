@@ -10,6 +10,7 @@ authors:
 - "Julien Ruaux"
 lastmod: 2025-06-11
 hidden: true
+mirrored: true
 ---
 
 *By Julien Ruaux, Principal Field Engineer at Redis · Published 16 April 2024 · updated 11 June 2025*

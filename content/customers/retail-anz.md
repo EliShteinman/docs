@@ -6,6 +6,7 @@ description: "The retailer ran into major productivity and efficiency challenges
 group: "Retail"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

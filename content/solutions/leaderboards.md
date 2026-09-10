@@ -4,6 +4,7 @@ linkTitle: "Leaderboards"
 url: "/solutions/leaderboards/"
 description: "The concept of a leaderboard—a scoreboard showing the ranked names and current scores (or other data points) of the leading competitors—is essential to the world of computer gaming, but..."
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

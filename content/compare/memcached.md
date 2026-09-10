@@ -4,6 +4,7 @@ linkTitle: "Redis vs Memcached"
 url: "/compare/memcached/"
 description: "Redis and Memcached are both in-memory key-value data stores, but we offer more features, flexibility, and speed. Learn how our multi-model database handles caching plus a range of use cases,..."
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

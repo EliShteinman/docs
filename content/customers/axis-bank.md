@@ -6,6 +6,7 @@ description: "Axis Bank’s mobile app was supposed to let users see all of thei
 group: "Financial services"
 lastmod: 2025-10-21
 hidden: true
+mirrored: true
 ---
 
 *updated 21 October 2025*

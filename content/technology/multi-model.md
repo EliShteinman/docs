@@ -4,6 +4,7 @@ linkTitle: "Multi-model"
 url: "/technology/multi-model/"
 description: "Multiple models in one interface with sub-millisecond latency."
 lastmod: 2026-02-20
+mirrored: true
 ---
 
 *updated 20 February 2026*

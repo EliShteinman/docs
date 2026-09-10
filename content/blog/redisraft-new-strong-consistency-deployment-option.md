@@ -10,6 +10,7 @@ authors:
 - "Yossi Gottlieb"
 lastmod: 2025-03-27
 hidden: true
+mirrored: true
 ---
 
 *By Yossi Gottlieb, Chief Architect at Redis Labs · Published 23 June 2020 · updated 27 March 2025*

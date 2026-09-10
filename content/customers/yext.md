@@ -6,6 +6,7 @@ description: "Yext uses Redis for fast, scalable real-time data indexing across 
 group: "Software"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

@@ -9,6 +9,7 @@ blogCategories:
 - "In-memory DB"
 - "Feature store"
 lastmod: 2025-10-27
+mirrored: true
 ---
 
 *updated 27 October 2025*

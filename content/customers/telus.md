@@ -6,6 +6,7 @@ description: "TELUS had deployed Redis open source, but ran into challenges mana
 group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

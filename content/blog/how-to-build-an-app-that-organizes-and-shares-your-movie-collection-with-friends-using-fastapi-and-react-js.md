@@ -10,6 +10,7 @@ authors:
 - "Redis Growth Team"
 lastmod: 2025-10-01
 hidden: true
+mirrored: true
 ---
 
 *By Redis Growth Team · Published 21 February 2022 · updated 1 October 2025*

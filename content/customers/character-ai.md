@@ -6,6 +6,7 @@ description: "As Character.ai’s user base grew, its existing stack built on La
 group: "AI Consumer"
 lastmod: 2026-02-25
 hidden: true
+mirrored: true
 ---
 
 *updated 25 February 2026*

@@ -6,6 +6,7 @@ description: "As SonyLIV expanded its reach across India and 17 other countries,
 group: "Entertainment"
 lastmod: 2026-06-04
 hidden: true
+mirrored: true
 ---
 
 *updated 4 June 2026*

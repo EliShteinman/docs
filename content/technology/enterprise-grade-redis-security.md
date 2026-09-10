@@ -4,6 +4,7 @@ linkTitle: "Enterprise-grade security"
 url: "/technology/enterprise-grade-redis-security/"
 description: "Simplify & scale"
 lastmod: 2026-02-20
+mirrored: true
 ---
 
 *updated 20 February 2026*

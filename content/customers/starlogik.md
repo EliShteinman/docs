@@ -6,6 +6,7 @@ description: "Once Starlogik implemented this vision with a handful of African m
 group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

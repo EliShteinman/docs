@@ -4,6 +4,7 @@ linkTitle: "Redis Enterprise and Kafka"
 url: "/compare/redis-enterprise-and-kafka/"
 description: "Build real-time streaming data pipelines with real-time data access."
 lastmod: 2026-05-26
+mirrored: true
 ---
 
 *updated 26 May 2026*

@@ -10,6 +10,7 @@ authors:
 - "Redis  "
 lastmod: 2026-09-01
 hidden: true
+mirrored: true
 ---
 
 *By Redis   · Published 27 April 2020 · updated 1 September 2026*

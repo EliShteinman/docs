@@ -91,10 +91,17 @@ def test_the_section_index_is_written_so_no_post_is_unlinked(tmp_path: Path):
 
 
 def test_a_post_removed_upstream_is_removed_here(tmp_path: Path):
-    write_post(tmp_path, "gone.md", "x")
-    write_post(tmp_path, "kept.md", "x")
+    write_post(tmp_path, "gone.md", '---\nmirrored: true\n---\n')
+    write_post(tmp_path, "kept.md", '---\nmirrored: true\n---\n')
     assert prune_removed(tmp_path, {"kept.md"}) == 1
     assert not (tmp_path / "gone.md").exists()
+
+
+def test_a_file_the_mirror_did_not_write_is_never_deleted(tmp_path: Path):
+    """The mirror adds to this site and never edits it, whatever the directory."""
+    write_post(tmp_path, "theirs.md", "---\ntitle: Theirs\n---\n\nSite content.\n")
+    assert prune_removed(tmp_path, set()) == 0
+    assert (tmp_path / "theirs.md").exists()
 
 
 def test_pruning_never_deletes_the_section_index(tmp_path: Path):

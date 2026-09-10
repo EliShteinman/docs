@@ -12,6 +12,7 @@ authors:
 - "Paulo Sousa"
 lastmod: 2026-06-02
 hidden: true
+mirrored: true
 ---
 
 *By Lior Kogan, Filipe Oliveira, Paulo Sousa · Published 2 June 2026*

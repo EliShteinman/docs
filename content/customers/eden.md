@@ -6,6 +6,7 @@ description: "Eden wanted to simplify infrastructure for teams working in regula
 group: "Technology"
 lastmod: 2025-07-21
 hidden: true
+mirrored: true
 ---
 
 *updated 21 July 2025*

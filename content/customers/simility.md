@@ -6,6 +6,7 @@ description: "Simility processes several hundreds of millions of transactions ea
 group: "Financial services"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

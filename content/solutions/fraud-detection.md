@@ -4,6 +4,7 @@ linkTitle: "Fraud Detection"
 url: "/solutions/fraud-detection/"
 description: "Build modern fraud detection platforms that protect your business."
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

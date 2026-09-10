@@ -10,6 +10,7 @@ authors:
 - "Blair Pierson"
 lastmod: 2025-09-15
 hidden: true
+mirrored: true
 ---
 
 *By Blair Pierson, Sr. Director- AI/Tech partners AMER · Published 15 September 2025*

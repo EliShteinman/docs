@@ -10,6 +10,7 @@ authors:
 - "Michal Cholewa"
 lastmod: 2025-03-27
 hidden: true
+mirrored: true
 ---
 
 *By Michal Cholewa, Software Developer · Published 30 January 2019 · updated 27 March 2025*

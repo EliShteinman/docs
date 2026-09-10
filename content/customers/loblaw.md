@@ -6,6 +6,7 @@ description: "Loblaw needed a next-generation, real-time inventory management sy
 group: "Retail"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

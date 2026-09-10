@@ -6,6 +6,7 @@ description: "Groww uses Redis to scale real-time financial transactions and dat
 group: "Software"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

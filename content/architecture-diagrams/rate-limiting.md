@@ -8,6 +8,7 @@ blogCategories:
 - "Rate limiting"
 - "Session management"
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

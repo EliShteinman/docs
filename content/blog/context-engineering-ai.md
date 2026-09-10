@@ -10,6 +10,7 @@ authors:
 - "Simba Khadder"
 lastmod: 2026-07-29
 hidden: true
+mirrored: true
 ---
 
 *By Simba Khadder, Head of Context Engine at Redis. · Published 29 July 2026*

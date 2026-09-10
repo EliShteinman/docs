@@ -4,6 +4,7 @@ linkTitle: "Real-time inventory"
 url: "/solutions/real-time-inventory/"
 description: "Supercharge inventory applications and delight omnichannel customers"
 lastmod: 2026-05-26
+mirrored: true
 ---
 
 *updated 26 May 2026*

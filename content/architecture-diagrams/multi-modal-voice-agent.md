@@ -10,6 +10,7 @@ blogCategories:
 - "RAG"
 - "Vector DB"
 lastmod: 2026-03-18
+mirrored: true
 ---
 
 *updated 18 March 2026*

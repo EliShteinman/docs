@@ -6,6 +6,7 @@ description: "OrderGrid’s platform delivers intelligent, end-to-end solutions 
 group: "Technology"
 lastmod: 2026-02-02
 hidden: true
+mirrored: true
 ---
 
 *updated 2 February 2026*

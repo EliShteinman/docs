@@ -10,6 +10,7 @@ authors:
 - "Jon Fritz"
 lastmod: 2025-11-07
 hidden: true
+mirrored: true
 ---
 
 *By Jon Fritz, Chief Product Officer · Published 7 November 2025*

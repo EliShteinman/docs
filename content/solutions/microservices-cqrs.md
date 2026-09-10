@@ -6,6 +6,7 @@ description: "Optimize queries to reduce costs in microservice applications"
 aliases:
 - "/solutions/microservices-cqrs/"
 lastmod: 2025-08-13
+mirrored: true
 ---
 
 *updated 13 August 2025*

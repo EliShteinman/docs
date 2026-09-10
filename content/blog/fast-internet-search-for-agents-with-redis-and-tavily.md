@@ -14,6 +14,7 @@ authors:
 - "Rini Vasan"
 lastmod: 2025-10-08
 hidden: true
+mirrored: true
 ---
 
 *By Tyler Hutcherson, Noah Nefsky, Sofia Guzowski, Jim Allen Wallace, Rini Vasan · Published 12 September 2025 · updated 8 October 2025*

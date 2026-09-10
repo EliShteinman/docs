@@ -4,6 +4,7 @@ linkTitle: "Authentication Token Storage"
 url: "/solutions/authentication-token-storage/"
 description: "Use Redis Enterprise to provide a responsive, scalable, and resilient login process"
 lastmod: 2026-05-26
+mirrored: true
 ---
 
 *updated 26 May 2026*

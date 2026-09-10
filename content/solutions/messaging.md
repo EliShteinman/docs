@@ -4,6 +4,7 @@ linkTitle: "Messaging"
 url: "/solutions/messaging/"
 description: "Build personalized, secure experiences users trust"
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

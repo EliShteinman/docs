@@ -12,6 +12,7 @@ authors:
 - "John Noonan"
 lastmod: 2026-06-01
 hidden: true
+mirrored: true
 ---
 
 *By James Tessier, John Noonan · Published 14 May 2024 · updated 1 June 2026*

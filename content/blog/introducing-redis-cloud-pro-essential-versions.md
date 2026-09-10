@@ -11,6 +11,7 @@ authors:
 - "Allegra Dan"
 lastmod: 2025-03-04
 hidden: true
+mirrored: true
 ---
 
 *By Allegra Dan, Allegra is a Principal Product Manager at Redis Labs, focusing on cloud products. She has over 10 years experience in development, architecture and management of enterprise products. · Published 25 March 2019 · updated 4 March 2025*

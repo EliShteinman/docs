@@ -6,6 +6,7 @@ description: "For MrQ, a smooth player experience isn’t just about speed—it�
 group: "Gaming & Entertainment"
 lastmod: 2026-02-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 February 2026*

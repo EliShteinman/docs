@@ -4,6 +4,7 @@ linkTitle: "Redis vs Memorystore"
 url: "/compare/memorystore/"
 description: "Memorystore is not Redis. Memorystore for Redis and Memorystore for Redis Cluster are frozen on Redis 7.2, and Google has moved development to Memorystore for Valkey. With Memorystore, you won’t..."
 lastmod: 2026-06-04
+mirrored: true
 ---
 
 *updated 4 June 2026*

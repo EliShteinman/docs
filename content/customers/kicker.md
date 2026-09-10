@@ -6,6 +6,7 @@ description: "Kicker’s website and mobile counterpart have grown increasingly 
 group: "Media & Entertainment"
 lastmod: 2025-09-04
 hidden: true
+mirrored: true
 ---
 
 *updated 4 September 2025*

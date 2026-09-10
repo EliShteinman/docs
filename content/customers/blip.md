@@ -6,6 +6,7 @@ description: "Blip processes nearly 1.5 billion messages each month across Whats
 group: "Tech (digital natives)"
 lastmod: 2026-04-28
 hidden: true
+mirrored: true
 ---
 
 *updated 28 April 2026*

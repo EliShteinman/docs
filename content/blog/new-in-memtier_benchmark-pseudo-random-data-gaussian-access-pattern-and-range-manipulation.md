@@ -10,6 +10,7 @@ authors:
 - "Oran Agra"
 lastmod: 2026-09-01
 hidden: true
+mirrored: true
 ---
 
 *By Oran Agra, Senior Software Architect at Redis Labs · Published 8 July 2014 · updated 1 September 2026*

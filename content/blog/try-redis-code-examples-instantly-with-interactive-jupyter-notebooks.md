@@ -11,6 +11,7 @@ authors:
 - "Paolo Lazzari"
 lastmod: 2025-12-01
 hidden: true
+mirrored: true
 ---
 
 *By Michelle Luna, Paolo Lazzari · Published 1 December 2025*

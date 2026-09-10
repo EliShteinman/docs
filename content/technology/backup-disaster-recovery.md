@@ -4,6 +4,7 @@ linkTitle: "Backup & restore"
 url: "/technology/backup-disaster-recovery/"
 description: "In addition to data-persistence functionality, Redis Enterprise provides out-of-the-box support for backup and restore services."
 lastmod: 2026-02-21
+mirrored: true
 ---
 
 *updated 21 February 2026*

@@ -4,6 +4,7 @@ linkTitle: "A NoSQL database for high-availability"
 url: "/technology/highly-available-redis/"
 description: "Architected to provide automated database resilience and mitigate hardware failure and cloud outages risks"
 lastmod: 2026-02-20
+mirrored: true
 ---
 
 *updated 20 February 2026*

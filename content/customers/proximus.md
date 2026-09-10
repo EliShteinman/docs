@@ -6,6 +6,7 @@ description: "Proximus faced challenges handling large volumes of mobile signali
 group: "Telecommunications"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

@@ -6,6 +6,7 @@ description: "KIPP leverages Redis for real-time payment approvals, enhancing e-
 group: "Financial services"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

@@ -6,6 +6,7 @@ description: "As Procesio grew, its architecture shifted from a monolith to a mo
 group: "Low-Code/No-Code Automation, IPaaS"
 lastmod: 2025-08-01
 hidden: true
+mirrored: true
 ---
 
 *updated 1 August 2025*

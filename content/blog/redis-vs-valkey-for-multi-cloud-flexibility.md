@@ -10,6 +10,7 @@ authors:
 - "James Tessier"
 lastmod: 2025-09-26
 hidden: true
+mirrored: true
 ---
 
 *By James Tessier, Senior Technical Product Marketing Manager, Competitive Intelligence · Published 26 September 2025*

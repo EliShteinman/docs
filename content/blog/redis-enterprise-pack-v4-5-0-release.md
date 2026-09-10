@@ -10,6 +10,7 @@ authors:
 - "Kirk Kirkconnell"
 lastmod: 2025-03-27
 hidden: true
+mirrored: true
 ---
 
 *By Kirk Kirkconnell · Published 10 May 2017 · updated 27 March 2025*

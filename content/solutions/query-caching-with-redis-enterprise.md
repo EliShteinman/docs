@@ -4,6 +4,7 @@ linkTitle: "Query caching with Redis Enterprise"
 url: "/solutions/query-caching-with-redis-enterprise/"
 description: "Use Redis Enterprise to decrease app response times with minimal development effort"
 lastmod: 2026-05-05
+mirrored: true
 ---
 
 *updated 5 May 2026*

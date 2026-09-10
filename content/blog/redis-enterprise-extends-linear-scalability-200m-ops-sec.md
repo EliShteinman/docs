@@ -11,6 +11,7 @@ authors:
 - "Nail Sirazitdinov"
 lastmod: 2026-05-26
 hidden: true
+mirrored: true
 ---
 
 *By Nail Sirazitdinov · Published 27 June 2019 · updated 26 May 2026*

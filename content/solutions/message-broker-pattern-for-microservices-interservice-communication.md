@@ -4,6 +4,7 @@ linkTitle: "Message Broker Pattern for Microservices Interservice Communication"
 url: "/solutions/message-broker-pattern-for-microservices-interservice-communication/"
 description: "Simplify messaging between microservices"
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

@@ -4,6 +4,7 @@ linkTitle: "Feature stores"
 url: "/solutions/feature-stores/"
 description: "Real-time AI apps need immediate responses, and we deliver sub-millisecond predictions. That means we can support the most time-sensitive operations, including fraud detection, dynamic pricing, and..."
 lastmod: 2025-09-19
+mirrored: true
 ---
 
 *updated 19 September 2025*

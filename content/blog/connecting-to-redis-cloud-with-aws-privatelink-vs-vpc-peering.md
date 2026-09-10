@@ -11,6 +11,7 @@ authors:
 - "Paulo Sousa"
 lastmod: 2026-06-11
 hidden: true
+mirrored: true
 ---
 
 *By Jonathan Salomon, Paulo Sousa · Published 10 June 2026 · updated 11 June 2026*

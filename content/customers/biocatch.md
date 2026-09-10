@@ -6,6 +6,7 @@ description: "With 70 million users and up to 40,000 operations per second, BioC
 group: "Technology"
 lastmod: 2025-09-12
 hidden: true
+mirrored: true
 ---
 
 *updated 12 September 2025*

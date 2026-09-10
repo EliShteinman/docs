@@ -6,6 +6,7 @@ description: "Build resilient and highly available microservices."
 aliases:
 - "/blog/what-is-a-microservices-architecture/"
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

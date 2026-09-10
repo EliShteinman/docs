@@ -11,6 +11,7 @@ authors:
 - "Adriano Amaral"
 lastmod: 2026-06-01
 hidden: true
+mirrored: true
 ---
 
 *By Lior Kogan, Adriano Amaral · Published 25 November 2025 · updated 1 June 2026*

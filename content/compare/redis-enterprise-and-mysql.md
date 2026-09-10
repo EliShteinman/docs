@@ -4,6 +4,7 @@ linkTitle: "Redis Enterprise and MySQL"
 url: "/compare/redis-enterprise-and-mysql/"
 description: "Redis Enterprise complements MySQL by enabling the real-time responses expected by today’s customers. As an in-memory, real-time data platform, where all the data is stored in DRAM, Redis..."
 lastmod: 2026-05-26
+mirrored: true
 ---
 
 *updated 26 May 2026*

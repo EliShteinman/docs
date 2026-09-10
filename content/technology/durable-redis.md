@@ -4,6 +4,7 @@ linkTitle: "Durable Redis"
 url: "/technology/durable-redis/"
 description: "When something persists, it lasts. In the context of databases, that means you intend for a piece of information that is going to be saved in some way (in memory or on disk) for some period of..."
 lastmod: 2026-05-21
+mirrored: true
 ---
 
 *updated 21 May 2026*

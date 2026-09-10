@@ -6,6 +6,7 @@ description: "Plivo’s streaming microservices architecture supports a large vo
 group: "Telecommunications"
 lastmod: 2026-01-29
 hidden: true
+mirrored: true
 ---
 
 *updated 29 January 2026*

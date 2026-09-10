@@ -4,6 +4,7 @@ linkTitle: "Session Management"
 url: "/solutions/session-management/"
 description: "Session state is data that captures the current status of user interaction with applications such as a website or a game."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

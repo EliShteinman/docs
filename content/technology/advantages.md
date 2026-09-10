@@ -4,6 +4,7 @@ linkTitle: "Advantages"
 url: "/technology/advantages/"
 description: "Redis Enterprise is a robust in-memory NoSQL database built by the devs who built open source Redis. It maintains the simplicity and high performance of Redis, while adding many enterprise-grade..."
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

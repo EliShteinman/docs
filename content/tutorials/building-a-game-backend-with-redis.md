@@ -7,6 +7,7 @@ group: "For AI"
 date: 2026-06-02
 lastmod: 2026-06-11
 hidden: true
+mirrored: true
 ---
 
 *Published 2 June 2026 · updated 11 June 2026*

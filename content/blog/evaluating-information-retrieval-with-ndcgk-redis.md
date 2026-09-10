@@ -10,6 +10,7 @@ authors:
 - "Reza Rahim"
 lastmod: 2025-10-01
 hidden: true
+mirrored: true
 ---
 
 *By Reza Rahim · Published 6 March 2025 · updated 1 October 2025*

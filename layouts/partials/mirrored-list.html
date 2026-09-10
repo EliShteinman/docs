@@ -23,26 +23,6 @@
 {{ $pages := cond (eq $order "date") $page.Pages.ByDate.Reverse $page.Pages.ByTitle }}
 {{ $groupBy := .groupBy | default "" }}
 
-{{ define "mirrored-rows" }}
-  <div class="not-prose overflow-x-auto">
-    <table class="w-full border-collapse text-base">
-      <tbody>
-        {{ range .pages }}
-          <tr class="border-b border-redis-ink-900 border-opacity-20">
-            <td class="py-3 pr-4 align-top">
-              <a class="no-underline hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
-              {{ with .Description }}<div class="text-sm opacity-70 mt-1">{{ . }}</div>{{ end }}
-            </td>
-            <td class="py-3 align-top whitespace-nowrap text-sm opacity-70">
-              {{ with .Date }}{{ if $.showDate }}{{ .Format "2 Jan 2006" }}{{ end }}{{ end }}
-            </td>
-          </tr>
-        {{ end }}
-      </tbody>
-    </table>
-  </div>
-{{ end }}
-
 <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
   {{ partial "docs-nav.html" $page }}
   <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
@@ -56,10 +36,9 @@
       {{ if eq $groupBy "param" }}
         {{ range $pages.GroupByParam "group" }}
           <h2>{{ .Key | default "Other" }}</h2>
-          {{ template "mirrored-rows" (dict "pages" .Pages "showDate" (eq $order "date")) }}
+          {{ partial "mirrored-rows.html" (dict "pages" .Pages "showGroup" false "showDate" (eq $order "date")) }}
         {{ end }}
       {{ else if eq $groupBy "alpha" }}
-        {{ range $pages.GroupBy "Title" }}{{ end }}
         {{ $letters := slice }}
         {{ range $pages }}{{ $letters = $letters | append (substr .Title 0 1 | upper) }}{{ end }}
         {{ range (uniq $letters) }}
@@ -67,10 +46,10 @@
           <h2>{{ $letter }}</h2>
           {{ $inLetter := slice }}
           {{ range $pages }}{{ if eq (substr .Title 0 1 | upper) $letter }}{{ $inLetter = $inLetter | append . }}{{ end }}{{ end }}
-          {{ template "mirrored-rows" (dict "pages" $inLetter "showDate" false) }}
+          {{ partial "mirrored-rows.html" (dict "pages" $inLetter "showGroup" false "showDate" false) }}
         {{ end }}
       {{ else }}
-        {{ template "mirrored-rows" (dict "pages" $pages "showDate" (eq $order "date")) }}
+        {{ partial "mirrored-rows.html" (dict "pages" $pages "showGroup" false "showDate" (eq $order "date")) }}
       {{ end }}
 
       {{ partial "feedback.html" $page }}

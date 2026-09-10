@@ -10,6 +10,7 @@ authors:
 - "Udi Gotlieb"
 lastmod: 2025-03-27
 hidden: true
+mirrored: true
 ---
 
 *By Udi Gotlieb, Head of Redis Enterprise Product Marketing · Published 17 March 2021 · updated 27 March 2025*

@@ -10,6 +10,7 @@ authors:
 - "Lior Kogan"
 lastmod: 2025-08-12
 hidden: true
+mirrored: true
 ---
 
 *By Lior Kogan, Contributor · Published 12 August 2025*

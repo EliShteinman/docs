@@ -4,6 +4,7 @@ linkTitle: "Redis vs Hazelcast"
 url: "/compare/hazelcast/"
 description: "You know Redis for caching, but Redis is so much more than just fast speeds. Redis is the industry leader in innovation. Engineered to be simpler yet faster than the rest, Redis delivers..."
 lastmod: 2026-06-04
+mirrored: true
 ---
 
 *updated 4 June 2026*

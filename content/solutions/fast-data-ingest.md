@@ -4,6 +4,7 @@ linkTitle: "Fast Data Ingestion"
 url: "/solutions/fast-data-ingest/"
 description: "Data ingestion is the collecting, storing, and processing large volumes of high-variety, high-velocity data presents several complex design challenges—especially in fields like Internet of Things..."
 lastmod: 2025-08-06
+mirrored: true
 ---
 
 *updated 6 August 2025*

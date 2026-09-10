@@ -4,6 +4,7 @@ linkTitle: "Redis Enterprise and Oracle"
 url: "/compare/redis-enterprise-and-oracle/"
 description: "Make Oracle applications faster and less expensive with Redis Enterprise"
 lastmod: 2026-09-01
+mirrored: true
 ---
 
 *updated 1 September 2026*

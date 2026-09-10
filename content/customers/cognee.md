@@ -6,6 +6,7 @@ description: "Cognee had already solved long-term memory. Their architecture cou
 group: "AI infrastructure / developer tools"
 lastmod: 2026-05-26
 hidden: true
+mirrored: true
 ---
 
 *updated 26 May 2026*

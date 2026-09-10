@@ -6,6 +6,7 @@ description: "The customer’s legacy system involved direct queries from on-pre
 group: "Food & Agriculture"
 lastmod: 2025-09-11
 hidden: true
+mirrored: true
 ---
 
 *updated 11 September 2025*

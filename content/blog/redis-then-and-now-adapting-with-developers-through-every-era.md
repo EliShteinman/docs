@@ -10,6 +10,7 @@ authors:
 - "Ricardo Ferreira"
 lastmod: 2026-05-21
 hidden: true
+mirrored: true
 ---
 
 *By Ricardo Ferreira, Lead Developer Advocate at Redis · Published 6 May 2025 · updated 21 May 2026*
