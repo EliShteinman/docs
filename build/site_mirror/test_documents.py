@@ -206,3 +206,37 @@ def test_every_mirrored_directory_is_only_mirrored_files():
         strangers = [f.name for f in full.glob("*.md")
                      if f.name != "_index.md" and not is_generated(f)]
         assert not strangers, f"{directory} holds files the mirror did not write: {strangers[:3]}"
+
+
+def test_version_builds_remove_exactly_the_mirrored_sections():
+    """Both pipelines must strip the mirror from a version build, and nothing else.
+
+    A version build keeps only public/<product>/<version>/, so the mirrored
+    sections are rendered and thrown away -- 28 times over. Both pipelines drop
+    them first. The list is written by hand in shell, where no import can keep
+    it honest, and it was wrong: it named content/glossary, the documentation's
+    own glossary, and left content/redis-glossary in place. That deleted 188
+    hand-written definitions out of every version build and left 28 versioned
+    pages relref-ing a section that was no longer there.
+    """
+    from build.site_mirror import categories, hugo
+
+    root = Path(__file__).resolve().parents[2]
+    expected = sorted(
+        str(d) for d in (
+            {t.directory for t in TREES}
+            | {categories.BLOG.directory, categories.TUTORIALS.directory}
+            | {hugo.SECTION_DIR, hugo.TECHNOLOGY_DIR, hugo.COMPARE_DIR, hugo.SOLUTIONS_DIR}
+        )
+    )
+    for pipeline in ("airgap-multibuild.sh", ".github/workflows/airgap-build.yml"):
+        lines = [
+            line.strip() for line in (root / pipeline).read_text().splitlines()
+            if line.strip().startswith("rm -rf content/blog ")
+        ]
+        assert len(lines) == 1, f"{pipeline} has {len(lines)} version-build rm lines"
+        removed = sorted(lines[0].removeprefix("rm -rf").split())
+        assert removed == expected, (
+            f"{pipeline} removes {sorted(set(removed) - set(expected))} which the mirror "
+            f"does not own, and keeps {sorted(set(expected) - set(removed))} which it does"
+        )

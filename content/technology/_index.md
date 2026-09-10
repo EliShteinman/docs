@@ -1,7 +1,7 @@
 ---
 title: Technology
 linkTitle: Technology
-description: Redis architecture and platform guides, mirrored from redis.io.
+description: Redis architecture and platform guides.
 ---
 
 How Redis Enterprise is built: cluster architecture, durability, high

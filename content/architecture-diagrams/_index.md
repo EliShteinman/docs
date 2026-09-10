@@ -1,7 +1,7 @@
 ---
 title: "Architecture diagrams"
 linkTitle: "Architecture diagrams"
-description: "Reference architectures for building on Redis, mirrored from redis.io."
+description: "Reference architectures for building on Redis."
 url: /resources/architecture-diagrams/
 ---
 

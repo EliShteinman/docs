@@ -156,8 +156,8 @@ TREES: tuple[DocumentTree, ...] = (
         hidden=True,
         index=_index(
             "Tutorials",
-            "Step-by-step Redis tutorials published on redis.io: rate limiting, "
-            "token storage, inventory reservation, caching and more.",
+            "Step-by-step Redis tutorials: rate limiting, token storage, "
+            "inventory reservation, caching and more.",
         ),
     ),
     DocumentTree(
@@ -175,8 +175,7 @@ TREES: tuple[DocumentTree, ...] = (
         title_field="term",
         index=_index(
             "Redis glossary",
-            "Definitions Redis publishes on redis.io, mirrored alongside the "
-            "documentation's own glossary.",
+            "Definitions of the terms Redis uses across its products.",
         ),
     ),
     DocumentTree(
@@ -190,7 +189,7 @@ TREES: tuple[DocumentTree, ...] = (
         group_projection='"categories":categories[]->title',
         index=_index(
             "Architecture diagrams",
-            "Reference architectures for building on Redis, mirrored from redis.io.",
+            "Reference architectures for building on Redis.",
             url="/resources/architecture-diagrams/",
         ),
     ),
@@ -204,7 +203,7 @@ TREES: tuple[DocumentTree, ...] = (
         group_projection='"industry":industry->title',
         index=_index(
             "Customer stories",
-            "How organisations run Redis in production, mirrored from redis.io.",
+            "How organisations run Redis in production.",
         ),
     ),
 )

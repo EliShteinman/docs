@@ -80,7 +80,7 @@ find content -type f -name '*.md' -print0 | xargs -0 sed -i \
   -e 's|redis\.io/docs/latest/|/|g'
 
 # 2b. Point the documentation's blog links at the mirrored blog in this image
-#     (content/blog, written by build/blog_mirror). Same reasoning as the
+#     (content/blog, written by build/site_mirror). Same reasoning as the
 #     docs/latest rewrite above, and the same place to do it: a link rewritten
 #     here reaches the .md and .json AI outputs too, which a runtime handler
 #     walking <a href> in the DOM never sees.
@@ -221,14 +221,17 @@ build_version() {
   reset_workspace
   cd "$SITE"
 
-  # The mirrored blog belongs to the "latest" tree only. A version build keeps
-  # nothing but public/<product>/<version>, so rendering 1,100 posts here
-  # produces output that is thrown away -- 28 times over, once per version.
-  # Every mirrored tree, not just two of them: a version build keeps only
-  # public/<product>/<version>/, so rendering ~1,400 mirrored documents here
-  # is work thrown away 28 times over. content/glossary goes with them --
-  # it is an upstream section, but a version subtree never contains it.
-  rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/glossary
+  # The mirrored content belongs to the "latest" tree only. A version build
+  # keeps nothing but public/<product>/<version>/, so rendering ~1,400 mirrored
+  # documents here is work thrown away 28 times over, once per version.
+  #
+  # Every mirrored section and nothing else. content/glossary is NOT on this
+  # list: it is the documentation's own glossary, and 28 versioned pages link
+  # to it with relref -- removing it does not fail the build (config.toml sets
+  # refLinksErrorLevel = "WARNING") but every one of those links then resolves
+  # somewhere wrong in the shipped image. test_version_builds_remove_exactly_
+  # the_mirrored_sections holds this list to the mirror's own directories.
+  rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/redis-glossary
 
   # Remove all OTHER versions of this product
   for v in $all_versions; do

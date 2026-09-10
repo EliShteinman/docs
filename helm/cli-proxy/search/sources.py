@@ -26,9 +26,27 @@ LOGGER = logging.getLogger("docs_search.sources")
 
 DOCS_SOURCE = "docs"
 BLOG_SOURCE = "blog"
+SITE_SOURCE = "site"
 
-# The section the mirrored blog is published under (build/blog_mirror).
+# The section the mirrored blog is published under (build/site_mirror).
 BLOG_PREFIX = "/blog/"
+
+# The other sections build/site_mirror publishes. They are kept apart from the
+# documentation because a result's first crumb is the heading the modal files
+# it under, and filing a customer story or a product comparison under "Welcome
+# to Redis Docs" tells a reader it is documentation.
+#
+# The glossary is deliberately absent. Its terms publish at /glossary/<term>/,
+# inside the documentation's own glossary section, so the documentation's
+# heading is the right one for them.
+MIRRORED_PREFIXES = (
+    "/tutorials/",
+    "/technology/",
+    "/compare/",
+    "/solutions/",
+    "/customers/",
+    "/resources/architecture-diagrams/",
+)
 
 # The feed keeps its links as markdown, and their targets carry the
 # __DOCS_BASE_URL__ placeholder that nginx substitutes at response time
@@ -64,13 +82,28 @@ def clean_body(content: str) -> str:
     return _WHITESPACE.sub(" ", without_noise).strip()
 
 
+def _under(path: str, prefix: str) -> bool:
+    """Whether `path` is `prefix` itself or a page inside it.
+
+    `to_path` drops the trailing slash, so a section's own index arrives as
+    "/blog" and never matches a "/blog/" prefix test on its own.
+    """
+    return path == prefix.rstrip("/") or path.startswith(prefix)
+
+
 def source_of(path: str) -> str:
     """Return which body of content a page belongs to, from where it is published.
 
-    The mirrored blog shares the feed with the documentation, so a reader who
-    wants one and not the other needs them distinguishable at query time.
+    The mirrored sections share the feed with the documentation, so a reader
+    who wants one and not the other needs them distinguishable at query time --
+    and the indexer needs to know which pages are not documentation before it
+    can give them a heading of their own.
     """
-    return BLOG_SOURCE if path.startswith(BLOG_PREFIX) else DOCS_SOURCE
+    if _under(path, BLOG_PREFIX):
+        return BLOG_SOURCE
+    if any(_under(path, prefix) for prefix in MIRRORED_PREFIXES):
+        return SITE_SOURCE
+    return DOCS_SOURCE
 
 
 def read_feed(path: Path | str) -> Iterator[dict]:

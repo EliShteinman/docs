@@ -39,7 +39,7 @@
 {{/* Every entry is fork-only content, so none of it belongs in a downloadable
      product bundle: data-offline-hide keeps it out (build/make_doc_bundles.py). */}}
 <details data-offline-hide class="shrink-0 border border-opacity-50 border-redis-ink-900 rounded-md" {{ if $inside }}open{{ end }}>
-  <summary class="px-6 py-3 cursor-pointer select-none hover:bg-redis-pen-200 rounded-md">Mirrored from redis.io</summary>
+  <summary class="px-6 py-3 cursor-pointer select-none hover:bg-redis-pen-200 rounded-md">More from Redis</summary>
   <div class="max-h-40 overflow-y-auto border-t border-opacity-50 border-redis-ink-900">
     {{ range $sections }}
       {{ $section := site.GetPage .path -}}

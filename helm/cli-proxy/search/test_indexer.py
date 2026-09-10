@@ -157,3 +157,32 @@ def test_every_document_carries_its_score():
     index_documents(connection, [_document()], _crumbs(), "doc:", 500)
     fields = dict(zip(connection.sent[0][2::2], connection.sent[0][3::2]))
     assert fields["docscore"] == "0.3"
+
+
+def _mirrored(url: str, title: str, source: str) -> Document:
+    return Document(
+        doc_id=url, title=title, url=url + "/", body="body text", version="",
+        product="", source=source,
+    )
+
+
+def test_a_mirrored_section_heads_its_own_group_instead_of_the_docs_root():
+    """hierarchy[0] is the heading the modal files a result under.
+
+    A customer story or a product comparison listed beneath "Welcome to Redis
+    Docs" reads to a reader as documentation, which it is not.
+    """
+    section = _mirrored("/customers", "Customer stories", "site")
+    story = _mirrored("/customers/acme", "Acme", "site")
+    crumbs = BreadcrumbIndex.from_documents("Welcome to Redis Docs", [section, story])
+    connection = FakeConnection()
+    index_documents(connection, [story], crumbs, "doc:", 500)
+    fields = dict(zip(connection.sent[0][2::2], connection.sent[0][3::2]))
+    assert json.loads(fields["hierarchy"]) == ["Customer stories", "Acme"]
+
+
+def test_a_documentation_page_still_sits_under_the_docs_root():
+    connection = FakeConnection()
+    index_documents(connection, [_document()], _crumbs(), "doc:", 500)
+    fields = dict(zip(connection.sent[0][2::2], connection.sent[0][3::2]))
+    assert json.loads(fields["hierarchy"])[0] == "Welcome to Redis Docs"

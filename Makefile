@@ -19,8 +19,10 @@ deps:
 components:
 	@python3 build/make.py
 
-# Refresh the mirrored redis.io content: the blog and the /technology/ guides.
-# Not part of `all`: it reaches the public internet and rewrites ~1,100 files,
+# Refresh the content mirrored from redis.io: the blog, tutorials, glossary,
+# technology and solutions guides, comparisons, customer stories and
+# architecture diagrams.
+# Not part of `all`: it reaches the public internet and rewrites ~1,400 files,
 # so it is run deliberately and its output is committed, the way the RedisVL
 # docs sync is. Re-running is cheap -- images already on disk are not fetched
 # again. `--only blog` or `--only technology` narrows it.

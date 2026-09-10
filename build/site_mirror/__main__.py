@@ -385,7 +385,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         written = mirror(args.content, args.images, args.limit, args.timeout, args.only)
     except SanityError as error:
-        LOGGER.critical("blog mirror failed: %s", error)
+        LOGGER.critical("site mirror failed: %s", error)
         return 1
     return 0 if written else 1
 

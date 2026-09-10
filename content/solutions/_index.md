@@ -1,7 +1,7 @@
 ---
 title: Solutions
 linkTitle: Solutions
-description: Redis use-case guides, mirrored from redis.io.
+description: Redis use-case guides.
 ---
 
 Fraud detection, session management, fast data ingest, caching and more.
