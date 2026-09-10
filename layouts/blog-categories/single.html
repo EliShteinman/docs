@@ -1,0 +1,24 @@
+{{/* One category of the mirrored blog, at the URL redis.io publishes it at.
+
+     The posts are not listed in the generated file -- they are filtered here,
+     at build time, so the page cannot go stale between syncs.
+*/}}
+{{ define "main" }}
+  {{ $category := .Params.blogCategory }}
+  {{ $blog := site.GetPage "/blog" }}
+  {{ $posts := where $blog.Pages "Params.blogcategories" "intersect" (slice $category) }}
+  <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
+    {{ partial "docs-nav.html" . }}
+    <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
+      {{ partial "breadcrumbs" . }}
+      <section class="prose w-full py-12 max-w-none">
+        <h1>{{ .Title }}</h1>
+        <p class="text-lg -mt-5 mb-6">{{ len $posts }} posts from the Redis blog.</p>
+        {{ partial "blog-categories-chips.html" (dict "page" . "active" $category) }}
+        {{ partial "blog-post-table.html" (dict "posts" $posts.ByDate.Reverse "showCategory" false) }}
+        {{ partial "feedback.html" . }}
+      </section>
+    </div>
+    {{ partial "scripts.html" . }}
+  </main>
+{{ end }}
