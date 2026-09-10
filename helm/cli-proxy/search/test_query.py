@@ -26,8 +26,30 @@ def test_words_are_anded_by_leaving_them_space_separated():
     assert build_query("vector search", "all") == "vector search"
 
 
-def test_query_syntax_in_the_typed_text_is_escaped():
-    assert build_query("a|b", "all") == "a\\|b"
+def test_query_syntax_in_the_typed_text_never_reaches_the_parser():
+    assert build_query("a|b", "all") == "a b"
+
+
+def test_a_dotted_command_is_split_the_way_the_index_split_it():
+    """`JSON\\.SET*` answered 0 on a real index; `JSON SET*` finds the page."""
+    assert build_query("JSON.SET*", "all") == "JSON SET*"
+
+
+def test_a_hyphen_is_not_left_for_the_parser_to_read_as_exclusion():
+    """`Active-Active*` answered 0 on a real index: the hyphen negates."""
+    assert build_query("Active-Active*", "all") == "Active Active*"
+
+
+def test_an_underscore_stays_inside_the_term_like_it_does_in_the_index():
+    assert build_query("eviction_policy*", "all") == "eviction_policy*"
+
+
+def test_punctuation_after_the_last_term_keeps_the_prefix_marker():
+    assert build_query("redis-*", "all") == "redis*"
+
+
+def test_a_word_of_only_punctuation_is_dropped():
+    assert build_query("vector -- search*", "all") == "vector search*"
 
 
 def test_the_prefix_marker_is_not_escaped_into_a_literal():
