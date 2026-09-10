@@ -97,8 +97,9 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
   לשירות החיפוש. הנתיב קיים רק כאשר `search.enabled=true`.
 - **הכפתור** — כפתור החיפוש הוא בעצמו קישור בקטלוג (`nav-search`), ולכן ברירת המחדל
   `externalLinks.enabled: false` מסתירה אותו. הגדרת `search.enabled` מחזירה אותו, כי
-  פריסה שעונה לחיפושים רוצה את הכפתור. `externalLinks.overrides.nav-search.enabled`
-  מפורש עדיין גובר בשני הכיוונים.
+  פריסה שעונה לחיפושים רוצה את הכפתור. `enabled` מפורש על
+  `externalLinks.overrides.nav-search`, על משפחת `header` או על תת-המשפחה `search` שלה
+  עדיין גובר בשני הכיוונים.
 
 הדירוג לא יהיה זהה ל-redis.io — זה מנוע ניקוד אחר.
 

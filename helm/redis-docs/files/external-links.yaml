@@ -111,7 +111,7 @@ families:
         enabled: true
         links:
           nav-search:
-            description: "Search button (desktop and mobile share the same key). Setting search.enabled turns this on by default, since a deployment that answers searches wants the button; an explicit override here still wins."
+            description: "Search button (desktop and mobile share the same key). Setting search.enabled turns this on by default, since a deployment that answers searches wants the button; an explicit enabled on this override, the header family or the search sub-family still wins."
             enabled: true
 
       mobile:

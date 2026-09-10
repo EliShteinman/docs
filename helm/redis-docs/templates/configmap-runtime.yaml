@@ -95,12 +95,16 @@
   is a feature that silently does not exist.
 
   So a deployment that runs the search service gets the button back, unless it
-  said otherwise. A per-link override still wins in both directions: an
-  operator who sets overrides.nav-search.enabled: false keeps it hidden.
+  said otherwise. This lifts only the master kill-switch: an explicit entry at
+  any layer above it -- overrides.nav-search, the header family, or its search
+  sub-family -- still decides, false included.
 */ -}}
 {{- if .Values.search.enabled -}}
   {{- $searchOverride := index $overrides "nav-search" | default dict -}}
-  {{- if not (hasKey $searchOverride "enabled") -}}
+  {{- $headerValues := index $valFamilies "header" | default dict -}}
+  {{- $searchValues := index (index $headerValues "sub-families" | default dict) "search" | default dict -}}
+  {{- $searchDecided := or (hasKey $searchOverride "enabled") (hasKey $headerValues "enabled") (hasKey $searchValues "enabled") -}}
+  {{- if not $searchDecided -}}
     {{- $navSearch := index $effective "nav-search" | default dict -}}
     {{- $_ := set $navSearch "enabled" true -}}
     {{- $_ := set $effective "nav-search" $navSearch -}}
