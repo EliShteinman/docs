@@ -13,11 +13,20 @@ What the modal sends was measured against the live service, not guessed:
 """
 
 import json
+import re
 
 from search.product import ALL_PRODUCTS
 
 HIGHLIGHT_OPEN = "<b>"
 HIGHLIGHT_CLOSE = "</b>"
+
+# What the index keeps as one term. The query engine splits text on every
+# punctuation mark except `_` when it indexes, so `JSON.SET` is stored as
+# `json` and `set` and `eviction_policy` stays whole. A query has to split the
+# same way: escaping the dot instead asks for the single term `json.set`, which
+# nothing was indexed as, and leaving a hyphen bare makes the parser read
+# `Active-Active` as "Active, excluding Active". Both answered 0 on a real index.
+_TERM = re.compile(r"\w+")
 
 
 def _escape(term: str) -> str:
@@ -26,18 +35,19 @@ def _escape(term: str) -> str:
 
 
 def _tokenize(raw: str) -> list[str]:
-    """Return the escaped query tokens, keeping the prefix marker the modal sent.
+    """Return the query terms, split the way the index split the text.
 
-    A token the modal marked as a prefix keeps its `*`; the escape runs on the
-    bare word so the marker is not escaped into a literal asterisk.
+    The modal marks the whole string as a prefix, so the `*` belongs to the
+    last term of a word: `redis-cli*` searches `redis` and the prefix `cli*`.
     """
     tokens = []
     for word in raw.split():
-        is_prefix = word.endswith("*")
-        escaped = _escape(word.rstrip("*") if is_prefix else word)
-        if not escaped:
+        terms = _TERM.findall(word)
+        if not terms:
             continue
-        tokens.append(escaped + "*" if is_prefix else escaped)
+        if word.endswith("*"):
+            terms[-1] += "*"
+        tokens.extend(terms)
     return tokens
 
 
