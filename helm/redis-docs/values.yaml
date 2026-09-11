@@ -345,10 +345,11 @@ search:
       name: redis
       tag: "8.10.0-alpine"
       pullPolicy: IfNotPresent
-    # Holds the whole index in memory. Measured at 16 MB resident and a
-    # 133 MB peak while indexing the 7,339 pages a full build produces
-    # (5,674 documentation pages plus the mirrored sections); a deployment
-    # that adds more sources should raise it.
+    # Holds the whole index in memory. Measured at 141 MB resident after
+    # indexing the full text of the 7,339 pages a full build produces
+    # (5,674 documentation pages plus the mirrored sections); the indexer
+    # itself peaked at 104 MB of the API container's 512Mi. A deployment that
+    # adds more sources should raise it.
     resources:
       requests:
         cpu: 100m
