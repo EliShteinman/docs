@@ -10,7 +10,14 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from search.query import build_query, one_per_row, parse_reply, search_command, to_results
+from search.query import (
+    build_query,
+    one_per_row,
+    parse_reply,
+    query_terms,
+    search_command,
+    to_results,
+)
 
 
 def _result(title: str, url: str, first_crumb: str = "Welcome to Redis Docs") -> dict:
@@ -18,46 +25,59 @@ def _result(title: str, url: str, first_crumb: str = "Welcome to Redis Docs") ->
 
 
 def test_the_last_token_keeps_the_prefix_marker_the_modal_sent():
-    assert build_query("vector search*", "all") == "vector search*"
+    assert " ".join(query_terms("vector search*")) == "vector search*"
 
 
 def test_earlier_tokens_are_matched_exactly():
     """`vect search*` answers 0 on the live service: "vect" is not a prefix there."""
-    assert build_query("vect search*", "all").startswith("vect ")
+    assert " ".join(query_terms("vect search*")).startswith("vect ")
 
 
 def test_words_are_anded_by_leaving_them_space_separated():
-    assert build_query("vector search", "all") == "vector search"
+    assert " ".join(query_terms("vector search")) == "vector search"
 
 
 def test_query_syntax_in_the_typed_text_never_reaches_the_parser():
-    assert build_query("a|b", "all") == "a b"
+    assert " ".join(query_terms("a|b")) == "a b"
 
 
 def test_a_dotted_command_is_split_the_way_the_index_split_it():
     """`JSON\\.SET*` answered 0 on a real index; `JSON SET*` finds the page."""
-    assert build_query("JSON.SET*", "all") == "JSON SET*"
+    assert " ".join(query_terms("JSON.SET*")) == "JSON SET*"
 
 
 def test_a_hyphen_is_not_left_for_the_parser_to_read_as_exclusion():
     """`Active-Active*` answered 0 on a real index: the hyphen negates."""
-    assert build_query("Active-Active*", "all") == "Active Active*"
+    assert " ".join(query_terms("Active-Active*")) == "Active Active*"
 
 
 def test_an_underscore_stays_inside_the_term_like_it_does_in_the_index():
-    assert build_query("eviction_policy*", "all") == "eviction_policy*"
+    assert " ".join(query_terms("eviction_policy*")) == "eviction_policy*"
 
 
 def test_punctuation_after_the_last_term_keeps_the_prefix_marker():
-    assert build_query("redis-*", "all") == "redis*"
+    assert " ".join(query_terms("redis-*")) == "redis*"
 
 
 def test_a_word_of_only_punctuation_is_dropped():
-    assert build_query("vector -- search*", "all") == "vector search*"
+    assert " ".join(query_terms("vector -- search*")) == "vector search*"
 
 
 def test_the_prefix_marker_is_not_escaped_into_a_literal():
-    assert build_query("vec*", "all").endswith("*")
+    assert query_terms("vec*") == ["vec*"]
+
+
+def test_every_term_is_searched_anywhere_in_the_page():
+    assert "| (JSON SET*))" in build_query("JSON.SET*", "all")
+
+
+def test_the_title_bonus_asks_for_the_whole_words_without_the_prefix():
+    """`SET*` in a title also matches SETEX; the bonus is for SET itself."""
+    assert "(@title:(JSON SET))" in build_query("JSON.SET*", "all")
+
+
+def test_the_title_bonus_carries_its_weight():
+    assert "$weight: 5.0;" in build_query("SET*", "all")
 
 
 def test_an_empty_query_produces_nothing_to_search_for():
@@ -65,7 +85,7 @@ def test_an_empty_query_produces_nothing_to_search_for():
 
 
 def test_a_specific_product_adds_a_tag_filter():
-    assert build_query("vector*", "rs") == "vector* @product:{rs}"
+    assert build_query("vector*", "rs").endswith(") @product:{rs}")
 
 
 def test_all_products_adds_no_filter():
