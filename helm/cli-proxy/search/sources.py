@@ -55,6 +55,9 @@ MIRRORED_PREFIXES = (
 # match every link on the site. Link text is worth indexing; link targets are
 # not, so the target is dropped and the text kept.
 _MARKDOWN_LINK = re.compile(r"!?\[([^\]]*)\]\([^)]*\)")
+# What the feed leaves where a fenced code block was -- 35,351 of them in a real
+# build. Indexed, they would make "code" and "example" match nearly every page.
+_CODE_PLACEHOLDER = re.compile(r"\[code example\]")
 _MARKDOWN_NOISE = re.compile(r"[`*>#|]+")
 # An underscore is emphasis only at the edge of a word. Inside one it is part
 # of a name -- `eviction_policy`, `maxmemory_policy` -- which the index keeps as
@@ -82,10 +85,26 @@ class Document:
 
 def clean_body(content: str) -> str:
     """Strip markdown scaffolding from `content` so only prose is indexed."""
-    without_links = _MARKDOWN_LINK.sub(r"\1", content)
+    without_code = _CODE_PLACEHOLDER.sub(" ", content)
+    without_links = _MARKDOWN_LINK.sub(r"\1", without_code)
     without_noise = _MARKDOWN_NOISE.sub(" ", without_links)
     without_emphasis = _EMPHASIS_UNDERSCORE.sub(" ", without_noise)
     return _WHITESPACE.sub(" ", without_emphasis).strip()
+
+
+def page_text(record: dict) -> str:
+    """Return the prose of a feed record: its summary, then every section.
+
+    The feed has no whole-page text field. A page's prose is `sections`, one
+    entry per heading, so reading anything else indexes the one-line summary
+    and nothing a reader would search the body for.
+    """
+    parts = [record.get("summary") or ""]
+    for section in record.get("sections") or []:
+        if isinstance(section, dict):
+            parts.append(section.get("title") or "")
+            parts.append(section.get("text") or "")
+    return " ".join(part for part in parts if part)
 
 
 def _under(path: str, prefix: str) -> bool:
@@ -144,7 +163,7 @@ def to_document(record: dict, source: str = "") -> Document | None:
         doc_id=path,
         title=title,
         url=to_href(url),
-        body=clean_body(record.get("content") or record.get("summary") or ""),
+        body=clean_body(page_text(record)),
         # tag_ndjson_versions.py adds `version` to every record; a feed built
         # before that step simply has none, and the tag is left empty.
         version=record.get("version") or "",
