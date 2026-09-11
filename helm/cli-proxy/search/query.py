@@ -15,6 +15,7 @@ What the modal sends was measured against the live service, not guessed:
 import json
 import re
 
+from search import config
 from search.product import ALL_PRODUCTS
 
 HIGHLIGHT_OPEN = "<b>"
@@ -34,7 +35,7 @@ def _escape(term: str) -> str:
     return "".join(character if character.isalnum() else "\\" + character for character in term)
 
 
-def _tokenize(raw: str) -> list[str]:
+def query_terms(raw: str) -> list[str]:
     """Return the query terms, split the way the index split the text.
 
     The modal marks the whole string as a prefix, so the `*` belongs to the
@@ -51,12 +52,32 @@ def _tokenize(raw: str) -> list[str]:
     return tokens
 
 
+def _boost_whole_words_in_title(terms: list[str]) -> str:
+    """Match `terms` anywhere, and add a bonus for pages titled with them as whole words.
+
+    The prefix the modal always sends lets a long page outrank the one a reader
+    is looking for: `SET*` also matches setex, setnx and settings, and a
+    commands-reference page that names them all collects a score for each.
+    Measured on the real index, JSON.SET's own page ranked 12th behind four
+    such pages, and SET's 18th. A title bonus on the prefix did not help SET;
+    one on the whole word puts JSON.SET, FT.SEARCH, HSET and SET first. While a
+    word is still being typed the whole-word clause matches almost nothing, so
+    the ranking is what the prefix alone gives.
+    """
+    whole_words = " ".join(term.rstrip("*") for term in terms)
+    return "((@title:(%s)) => { $weight: %s; } | (%s))" % (
+        whole_words,
+        config.TITLE_BOOST,
+        " ".join(terms),
+    )
+
+
 def build_query(raw: str, product: str) -> str:
     """Return the FT.SEARCH query for `raw`, or "" when there is nothing to search for."""
-    tokens = _tokenize(raw)
-    if not tokens:
+    terms = query_terms(raw)
+    if not terms:
         return ""
-    query = " ".join(tokens)
+    query = _boost_whole_words_in_title(terms)
     if product and product != ALL_PRODUCTS:
         query += " @product:{%s}" % _escape(product)
     return query

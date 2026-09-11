@@ -46,6 +46,11 @@ INDEX_BATCH = int(os.environ.get("SEARCH_INDEX_BATCH", "500"))
 # still gets it, just below the current page when both match equally.
 VERSION_WEIGHT = float(os.environ.get("SEARCH_VERSION_WEIGHT", "0.3"))
 
+# The bonus a page gets for carrying the typed words, whole, in its title. See
+# query.py for why a prefix alone ranks a command's own page below the long
+# reference pages that list it. 5 was measured on the real index.
+TITLE_BOOST = float(os.environ.get("SEARCH_TITLE_BOOST", "5"))
+
 # The version tag the docs build gives a page that is not in a version tree
 # (build/tag_ndjson_versions.py).
 CURRENT_VERSION = os.environ.get("SEARCH_CURRENT_VERSION", "latest")
