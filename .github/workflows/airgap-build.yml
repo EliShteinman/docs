@@ -256,6 +256,15 @@ jobs:
           python3 -m venv ./venv
           ./venv/bin/pip install --quiet -r requirements.txt
 
+      # make components builds data/examples.json from the client repos named
+      # in data/components/*.json, from local_examples/, and from the
+      # clients-example blocks in content/, using the tooling in build/. The key
+      # covers all of them but content/. Without local_examples/ in it, a PR
+      # that only changed local examples restored an examples.json without its
+      # new steps, and their tabs silently did not render: a missing example is
+      # a warnf, so the build still passed. The client repos are cloned at their latest
+      # release, which no hash here can see; a new release lands the next time
+      # the key changes.
       - name: Restore examples + data/examples.json
         id: cache-examples
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
@@ -263,7 +272,7 @@ jobs:
           path: |
             examples
             data/examples.json
-          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components/index.json') }}
+          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components/**', 'local_examples/**') }}
 
       - name: make components (cache miss)
         if: steps.cache-examples.outputs.cache-hit != 'true'
@@ -272,6 +281,17 @@ jobs:
         run: |
           export PATH="$PWD/venv/bin:$PATH"
           make components
+
+      # The markdown is the one input left out of the key: nearly every merge
+      # touches content/, so keying on it would turn every run into a miss.
+      # Its step is local and cheap, and it overwrites each example's
+      # steps_commands rather than appending, so it reruns over the restored
+      # file and the commands foldout follows the current pages.
+      - name: Refresh example CLI commands from markdown (cache hit)
+        if: steps.cache-examples.outputs.cache-hit == 'true'
+        run: |
+          export PATH="$PWD/venv/bin:$PATH"
+          python3 build/enrich_examples_from_markdown.py
 
       - name: Write version-files
         env:
@@ -443,6 +463,15 @@ jobs:
           python3 -m venv ./venv
           ./venv/bin/pip install --quiet -r requirements.txt
 
+      # make components builds data/examples.json from the client repos named
+      # in data/components/*.json, from local_examples/, and from the
+      # clients-example blocks in content/, using the tooling in build/. The key
+      # covers all of them but content/. Without local_examples/ in it, a PR
+      # that only changed local examples restored an examples.json without its
+      # new steps, and their tabs silently did not render: a missing example is
+      # a warnf, so the build still passed. The client repos are cloned at their latest
+      # release, which no hash here can see; a new release lands the next time
+      # the key changes.
       - name: Restore examples + data/examples.json
         id: cache-examples
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5.0.5
@@ -450,7 +479,7 @@ jobs:
           path: |
             examples
             data/examples.json
-          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components/index.json') }}
+          key: components-${{ runner.os }}-${{ hashFiles('Makefile', 'build/**', 'data/components/**', 'local_examples/**') }}
 
       - name: make components (cache miss)
         if: steps.cache-examples.outputs.cache-hit != 'true'
@@ -459,6 +488,17 @@ jobs:
         run: |
           export PATH="$PWD/venv/bin:$PATH"
           make components
+
+      # The markdown is the one input left out of the key: nearly every merge
+      # touches content/, so keying on it would turn every run into a miss.
+      # Its step is local and cheap, and it overwrites each example's
+      # steps_commands rather than appending, so it reruns over the restored
+      # file and the commands foldout follows the current pages.
+      - name: Refresh example CLI commands from markdown (cache hit)
+        if: steps.cache-examples.outputs.cache-hit == 'true'
+        run: |
+          export PATH="$PWD/venv/bin:$PATH"
+          python3 build/enrich_examples_from_markdown.py
 
       - name: Write version-files
         env:

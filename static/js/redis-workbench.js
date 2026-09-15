@@ -51,6 +51,10 @@
      every multi-command probe here is chunked to that. */
   var MAX_BATCH = 20;
 
+  /* How many of the reader's commands to keep for copying. A session that has run
+     more than this is past the point where a paste is the useful thing. */
+  var MAX_RAN_COMMANDS = 200;
+
   /* Batch origin label, for the backend's usage metrics. Introspection is not a
      command the reader chose to run, so it is reported separately from
      'interactive' (typed) and 'tryit' (a snippet the reader asked for) and
@@ -214,6 +218,13 @@
   function quote(arg) {
     var value = String(arg);
     if (/^[A-Za-z0-9_:.@\-+*$#\/{}\[\]]+$/.test(value)) return value;
+    /* Single quotes where they will do. redis-cli treats a single-quoted token as
+       literal, so a JSONPath keeps its `$` and its brackets as written — where
+       double quotes made this escape the `$` like a shell, and the command shown
+       under a value read `"\$[?(@.a==1)]"`: correct, and not what anyone would
+       type. Double quotes remain the fallback for a value with a quote of its
+       own, which is the case single quotes cannot carry. */
+    if (value.indexOf("'") === -1) return "'" + value + "'";
     return '"' + value.replace(/([\\"$`])/g, '\\$1') + '"';
   }
 
@@ -279,6 +290,58 @@
       if (typeof value.$status === 'string') return value.$status;
     }
     return cli().formatReply(value);
+  }
+
+  /* Does this sorted set hold places? There is no geo type to ask about: GEOADD
+     writes a member's 52-bit geohash as its score, and TYPE answers `zset` either
+     way. A geohash is a whole number in the top of that range — 1367859900908957
+     for San Francisco — where the scores of a leaderboard, a rate limiter or a
+     priority queue are small, and often fractional. So: every score a whole
+     number above the floor, or no map.
+
+     Getting it wrong is cheap in one direction and not the other. A plain sorted
+     set drawn as a map would be nonsense — GEOPOS decodes score 1 to the corner
+     of the world, (-180, -85.05) — so the test is deliberately strict, and a geo
+     key whose members all sit near longitude -180 simply keeps its table. */
+  var GEO_SCORE_FLOOR = 1e12;
+  var GEO_SCORE_CEILING = 4503599627370496;      /* 2^52, the whole geohash space */
+
+  /* Where a map is on offer at all. A geo key is a sorted set — GEOADD writes
+     the geohash as the score — and nothing in the reply says which it is, so a
+     score alone cannot decide it: a rate limiter written with
+     `ZADD key <now_ms> <request>` has scores of about 1.76e12, inside the
+     geohash range, and those decode to a pile of dots off Antarctica.
+
+     The page is the honest signal. On the pages that teach these commands the
+     reader is looking at coordinates; anywhere else a sorted set is a sorted
+     set. The paths are matched loosely at the end, so /commands/geoadd/ works
+     the same under /docs/latest/ and under a staging prefix. */
+  var GEO_COMMANDS = ['geoadd', 'geodist', 'geohash', 'geopos', 'georadius',
+    'georadius_ro', 'georadiusbymember', 'georadiusbymember_ro', 'geosearch',
+    'geosearchstore'];
+
+  function pageWantsMap() {
+    var path;
+    try {
+      path = window.location.pathname.replace(/\/+$/, '');
+    } catch (err) {
+      return false;
+    }
+    if (/\/develop\/data-types\/geospatial$/.test(path)) return true;
+    for (var i = 0; i < GEO_COMMANDS.length; i += 1) {
+      var tail = '/commands/' + GEO_COMMANDS[i];
+      if (path.length >= tail.length && path.slice(-tail.length) === tail) return true;
+    }
+    return false;
+  }
+
+  function looksGeo(rows) {
+    if (!rows.length) return false;
+    return rows.every(function (row) {
+      var score = Number(cellText(row[1]));
+      return isFinite(score) && score % 1 === 0
+        && score >= GEO_SCORE_FLOOR && score <= GEO_SCORE_CEILING;
+    });
   }
 
   /* [a, b, c, d] -> [[a, b], [c, d]]; the RESP2 shape of HGETALL, ZRANGE
@@ -731,9 +794,15 @@
           }
         };
       case 'zset':
+        /* On a geo page this one reply is also the map's list of places, so it
+           reads as much of the key as the map can draw rather than the preview
+           every other type gets: a map of the first hundred members of a
+           two-hundred-member key is a map with a hole in it, and the hole is
+           wherever geohash order happens to cut. */
+        var zsetWanted = pageWantsMap() ? MAX_MAP_POINTS : PREVIEW_ITEMS;
         return {
           commands: ['ZRANGE ' + key + ' 0 '
-            + (known && size <= PREVIEW_ITEMS ? '-1' : String(PREVIEW_ITEMS - 1))
+            + (known && size <= zsetWanted ? '-1' : String(zsetWanted - 1))
             + ' WITHSCORES'],
           build: function (r) {
             var rows = pairs(ok(r[0]));
@@ -741,7 +810,11 @@
               kind: 'table',
               head: ['Member', 'Score'],
               rows: rows,
-              limited: known && size > PREVIEW_ITEMS
+              /* The map is offered off this same reply, on the pages where a
+                 sorted set of geohashes is what the reader came to read. */
+              geo: pageWantsMap() && looksGeo(rows)
+                ? rows.map(function (row) { return cellText(row[0]); }) : null,
+              limited: known && size > zsetWanted
                 ? { shown: rows.length, of: plural(size, 'member') } : null
             };
           }
@@ -867,6 +940,14 @@
     indexDocs: null,
     /* Page setups already run in this sandbox session, by name. */
     setupRan: {},
+    ranCommands: [],
+    jsonPath: null,
+    /* The key the value column is showing, so a redraw of the same one can keep
+       the reader's scroll position. */
+    valueShown: null,
+    /* Keys a map has been drawn for, by name: their second round trip is
+       expected, so the pane waits for it rather than flashing the table. */
+    geoKeys: {},
     selected: null,
     truncated: false,
     /* command batches seen while closed, discovered at first open */
@@ -995,6 +1076,12 @@
          reports only what a reader or a page started — but the guard says which
          batches this is about. */
       if (batch.source !== SOURCE) self.clearIndexFilter();
+      /* A record of what the reader ran, which is what "Copy commands" hands
+         over. Introspection and the widget's own startup are not that. */
+      if (batch.source !== SOURCE && batch.source !== 'internal') {
+        self.ranCommands = self.ranCommands.concat(batch.commands)
+          .slice(-MAX_RAN_COMMANDS);
+      }
       self.observe(batch.commands);
     });
 
@@ -1020,6 +1107,18 @@
        history. Neither reaches into the other. */
     terminalTools.appendChild(this.button('Clear terminal', 'Clear the terminal transcript',
       function () { cli().clear(self.terminalForm); }));
+    /* The way out of the sandbox: what the reader has run here, as lines they can
+       paste into a redis-cli of their own. The transcript holds replies and
+       prompts as well, so copying that would need editing before it ran.
+
+       What is on screen, no more: a copy that quietly included commands cleared
+       from the transcript surprised the first person to try it, and a button
+       whose result cannot be seen is a button that has to be trusted. Clearing
+       is how the reader says "not that" — see forgetRanCommands. */
+    this.copyButton = this.button(COPY_LABEL,
+      'Copy the commands in the terminal, ready to paste into redis-cli',
+      function () { self.copyCommands(); });
+    terminalTools.appendChild(this.copyButton);
     this.terminalToolbar = terminalTools;
     this.terminalPane.appendChild(terminalTools);
 
@@ -1099,6 +1198,9 @@
     split.appendChild(this.columnDivider('Resize the key list', 1));
 
     var valueColumn = el('div', 'rwb-col rwb-col-value');
+    /* The column scrolls, not the pane inside it — so this is what has to be put
+       back where the reader left it when the pane is redrawn. */
+    this.valueColumn = valueColumn;
     var valueHead = el('div', 'rwb-col-head');
     valueHead.appendChild(el('span', 'rwb-col-title', 'Value'));
     valueColumn.appendChild(valueHead);
@@ -1571,6 +1673,54 @@
      so a command typed at the wrong moment cannot land in front of it. FLUSHDB
      mints a fresh session on this backend and is intercepted before Redis, so the
      ACL's -flushdb never applies. */
+  /* Hand the session's commands to the clipboard, one per line. Said on the
+     button itself rather than in the status line: the reader is looking at what
+     they just clicked.
+
+     The label is the constant, never the button's current text: read live, a
+     second click landing inside the 1.6s window would take "12 commands copied"
+     for the label and restore that, leaving the button stuck on it. */
+  var COPY_LABEL = 'Copy commands';
+
+  /* An emptied transcript empties what "Copy commands" would hand over, so the
+     two always agree.
+
+     Read off the transcript rather than hooked to the toolbar button: `clear`
+     typed at the prompt is handled inside the widget, which never tells anyone,
+     so a button-only rule would leave the copy full and the screen blank — the
+     surprise this is here to remove. Whatever empties it, this follows. */
+  dock.forgetRanCommands = function () {
+    if (!this.terminalForm) return;
+    var transcript = this.terminalForm.querySelector('pre');
+    if (transcript && transcript.childNodes.length === 0) this.ranCommands = [];
+  };
+
+  dock.copyCommands = function () {
+    var button = this.copyButton;
+    var commands = this.ranCommands;
+
+    function say(message) {
+      if (!button) return;
+      button.textContent = message;
+      button.disabled = true;
+      window.setTimeout(function () {
+        button.textContent = COPY_LABEL;
+        button.disabled = false;
+      }, 1600);
+    }
+
+    if (!commands.length) return say('Nothing run yet');
+    var text = commands.join('\n') + '\n';
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+      return say('Cannot copy here');
+    }
+    navigator.clipboard.writeText(text).then(function () {
+      say(plural(commands.length, 'command') + ' copied');
+    }, function () {
+      say('Cannot copy here');
+    });
+  };
+
   /* "Clear keys" is the one control here that destroys something, and what it
      destroys took a snippet to make: a reader who hits it by accident has to go
      back up the page and find the "Try it" that filled the sandbox. So it asks
@@ -1614,6 +1764,10 @@
     this.truncated = false;
     this.expiredName = null;
     this.openElement = null;
+    this.jsonPath = null;
+    /* No key survives a flush, so no map has been drawn for one. */
+    this.geoKeys = {};
+    this.valueShown = null;
     /* Nothing left to filter by. */
     this.indexFilter = null;
     this.indexDocs = null;
@@ -1677,6 +1831,7 @@
     if (this.transcriptWatcher) this.transcriptWatcher.disconnect();
     this.transcriptWatcher = new MutationObserver(function () {
       if (self.following) self.scrollTerminal();
+      self.forgetRanCommands();
     });
     this.transcriptWatcher.observe(form,
       { childList: true, subtree: true, characterData: true });
@@ -1801,6 +1956,7 @@
       self.keys = result.keys;
       self.indexes = result.indexes;
       self.indexDocs = result.docs;
+      self.forgetGonePath();
       /* An index the reader is looking at may hold documents the dock never saw
          a command touch — written before it was open, or by the page's own
          inline terminals. Adopt them, so the filtered list is the index's
@@ -1933,6 +2089,7 @@
     this.keys = this.keys.filter(function (key) {
       return expired.indexOf(key.name) === -1;
     });
+    this.forgetGonePath();
     if (this.selected && expired.indexOf(this.selected) >= 0) {
       /* Recorded rather than written straight into the panel: the sweep that
          follows re-renders, and renderKeys() resets an unselected value column —
@@ -2130,6 +2287,10 @@
   /* Nothing selected, or nothing left to select. Says which, because "no keys
      yet" and "pick one" are different situations for a reader. */
   dock.clearValue = function () {
+    /* No key's value is on screen now — said here as well as in renderValue,
+       because a geo key that is reopened checks this to decide whether its map
+       is still up. Left stale, it would hold the empty pane while GEOPOS ran. */
+    this.valueShown = null;
     this.valuePane.replaceChildren();
     this.valuePane.appendChild(el('p', 'rwb-empty', this.expiredName
       ? this.expiredName + ' has expired.'
@@ -2139,6 +2300,14 @@
 
   /* `quiet` is gone: it used to suppress switching to the Value tab, and there is
      no tab to switch to now that the value has a column of its own. */
+  /* A path belongs to the key it was read from. When that key goes — deleted,
+     expired, flushed — the path goes with it: a key that comes back under the
+     same name is a different document, and openKey would otherwise read it at a
+     path the reader never asked for and show the empty reply that follows. */
+  dock.forgetGonePath = function () {
+    if (this.jsonPath && !this.find(this.jsonPath.name)) this.jsonPath = null;
+  };
+
   dock.openKey = function (name) {
     var self = this;
     var key = this.find(name);
@@ -2147,6 +2316,15 @@
     this.openElement = null;
     this.selected = name;
     this.renderKeys();
+
+    /* A JSON document the reader has queried is re-read at their path, not at the
+       root. This runs on every sweep — any command re-renders whatever is open —
+       and reading the root while the Path box still showed `$.model` left the box,
+       the value and the "Read with" line disagreeing about what was on screen. */
+    var queried = this.jsonPath;
+    if (key.type === 'ReJSON-RL' && queried && queried.name === name && queried.path) {
+      return this.readJsonPath(key, queried.path);
+    }
 
     var probe = valueProbe(name, key.type, key.size);
     /* Neither MEMORY USAGE nor OBJECT ENCODING. Both describe what is actually
@@ -2175,11 +2353,34 @@
       return Promise.resolve();
     }
     return run(commands).then(function (replies) {
-      self.renderValue(key, {
-        view: probe.build(replies),
-        commands: probe.commands
-      });
+      var view = probe.build(replies);
+      /* The table first, the map a moment later. Where the coordinates are can
+         only be asked once the members are known, so it is a second round trip —
+         and one worth not making the reader wait for.
+
+         Except on a key already known to be geo: then what is on screen is a
+         map, and painting the members table over it for the length of a round
+         trip put a frame of table between every click on a map and the map
+         coming back. Nothing is drawn until the coordinates land. */
+      /* Held back only when what is on screen is this key's own map: holding it
+         back while another key's value is up would leave the reader looking at
+         the key they just left for the length of a round trip. */
+      var known = view.geo && self.geoKeys[name] && self.valueShown === name;
+      if (!known) {
+        /* A geo key gets its tabs from this reply, with the map pane saying what
+           it is waiting for: the strip appearing when GEOPOS answered pushed the
+           table down a round trip after the reader began reading it. */
+        self.renderValue(key, {
+          commands: probe.commands,
+          view: view.geo
+            ? self.geoPanes(key, view, function () {
+              return el('p', 'rwb-hint', 'Reading where these places are…');
+            })
+            : view
+        });
+      }
       self.end();
+      if (view.geo) return self.readGeo(key, view, probe.commands);
     }, function () {
       self.end();
     });
@@ -2195,15 +2396,19 @@
        re-renders whatever is selected — which used to mean the element view was
        replaced by the key's own the moment the reader typed anything. */
     this.openElement = { name: key.name, element: element };
+    var search = this.vsimOptions(key.name);
     var commands = [
       'VEMB ' + quote(key.name) + ' ' + quote(element),
-      'VGETATTR ' + quote(key.name) + ' ' + quote(element)
+      'VGETATTR ' + quote(key.name) + ' ' + quote(element),
+      vsimCommand(key.name, element, search)
     ];
     this.begin('reading ' + element + '…');
     return run(commands).then(function (replies) {
       self.renderVectorElement(key, element, {
         vector: ok(replies[0]),
         attributes: ok(replies[1]),
+        neighbours: replies[2],
+        search: search,
         commands: commands
       });
       self.end();
@@ -2213,9 +2418,39 @@
     });
   };
 
+  /* How many neighbours to ask for, and the filter to ask with. Kept on the dock
+     so it survives the re-render a sweep does, and so walking from element to
+     element keeps the search the reader set up. */
+  var VSIM_COUNTS = [5, 10, 25];
+
+  dock.vsimOptions = function (name) {
+    if (!this.vsim) this.vsim = { name: name, count: VSIM_COUNTS[0], filter: '' };
+    /* A filter is written against one set's attributes: `.year > 2000` means
+       nothing to a set whose elements carry `.side`, and carried over it hid
+       every neighbour on a set the reader had only just opened. How many to
+       return is a preference about the list rather than about the data, so that
+       one follows the reader from set to set. */
+    if (this.vsim.name !== name) {
+      this.vsim.name = name;
+      this.vsim.filter = '';
+    }
+    return this.vsim;
+  };
+
+  /* The element itself comes back first with a score of 1, so ask for one more
+     than the reader wanted and the list still holds that many neighbours. */
+  function vsimCommand(name, element, search) {
+    var command = 'VSIM ' + quote(name) + ' ELE ' + quote(element)
+      + ' WITHSCORES COUNT ' + (search.count + 1);
+    if (search.filter) command += ' FILTER ' + quote(search.filter);
+    return command;
+  }
+
   dock.renderVectorElement = function (key, element, detail) {
     var self = this;
     var pane = this.valuePane;
+    /* An element of a vector set, not the value of a key. */
+    this.valueShown = null;
     pane.replaceChildren();
 
     var head = el('div', 'rwb-value-head');
@@ -2250,8 +2485,637 @@
         'None set. VSETATTR attaches JSON metadata to an element.'));
     }
 
+    /* The nearest elements to this one, which is the question a vector set
+       exists to answer. Clicking one walks to it and asks again — the way a
+       reader actually explores an embedding space. */
+    pane.appendChild(el('div', 'rwb-group', 'Nearest'));
+    pane.appendChild(this.vsimControls(key, element, detail.search));
+    pane.appendChild(this.renderNeighbours(key, element, detail.neighbours,
+      detail.search));
+
     pane.appendChild(ranNote(detail.commands));
   };
+
+  /* How many to return, and an attribute filter to return them through. The
+     filter is the one part of a vector set a reader cannot see the effect of
+     from a reply, so it gets a box rather than a paragraph. */
+  dock.vsimControls = function (key, element, search) {
+    var self = this;
+    var row = el('form', 'rwb-vsim-controls');
+
+    /* Built before the chips, which read it: a chip is another way to run this
+       search, so it takes the filter as typed rather than as last submitted. */
+    var filter = el('input', 'rwb-vsim-filter');
+    filter.type = 'text';
+    filter.value = search.filter;
+    filter.setAttribute('spellcheck', 'false');
+    filter.placeholder = 'FILTER, e.g. .year > 2000';
+    filter.title = 'An expression over element attributes; see Filtered search';
+    filter.setAttribute('aria-label', 'Filter expression');
+
+    var counts = el('div', 'rwb-vsim-counts');
+    counts.setAttribute('role', 'group');
+    counts.setAttribute('aria-label', 'How many neighbours');
+    VSIM_COUNTS.forEach(function (count) {
+      var choice = el('button', 'rwb-chip' + (count === search.count ? ' rwb-chip-on' : ''),
+        String(count));
+      choice.type = 'button';
+      choice.title = 'Return the ' + count + ' nearest elements';
+      choice.setAttribute('aria-pressed', count === search.count ? 'true' : 'false');
+      choice.addEventListener('click', function () {
+        /* The reply rebuilds this row from what was searched with, so a filter
+           the reader had typed but not run would be wiped by the new box. */
+        self.vsimOptions(key.name).filter = filter.value.trim();
+        self.vsimOptions(key.name).count = count;
+        self.openVectorElement(key, element);
+      });
+      counts.appendChild(choice);
+    });
+    row.appendChild(counts);
+    row.appendChild(filter);
+
+    /* One click back to the unfiltered neighbours. Only while a filter is in
+       force: clearing an empty box is a control that does nothing. Emptying the
+       box by hand and pressing Enter does the same thing — this saves the two
+       steps. */
+    if (search.filter) {
+      var clear = el('button', 'rwb-btn rwb-vsim-clear', '\u00d7');
+      clear.type = 'button';
+      clear.title = 'Clear the filter and show every neighbour';
+      clear.setAttribute('aria-label', 'Clear the filter');
+      clear.addEventListener('click', function () {
+        self.vsimOptions(key.name).filter = '';
+        self.openVectorElement(key, element).then(function () {
+          self.focusVsimFilter(0);
+        });
+      });
+      row.appendChild(clear);
+    }
+
+    var go = el('button', 'rwb-btn', 'Search');
+    go.type = 'submit';
+    go.title = 'Run VSIM with this filter';
+    row.appendChild(go);
+
+    row.addEventListener('submit', function (event) {
+      event.preventDefault();
+      /* Where the caret was, to put it back in the box that replaces this one:
+         the reply re-renders the whole pane, so the box the reader typed into is
+         gone by the time the neighbours are up. */
+      var caret = filter.selectionStart;
+      self.vsimOptions(key.name).filter = filter.value.trim();
+      self.openVectorElement(key, element).then(function () {
+        self.focusVsimFilter(caret);
+      });
+    });
+    return row;
+  };
+
+  /* "Path: $" over a JSON document, and what it matched underneath. Enter runs
+     it; the root is what openKey already showed, so an untouched box changes
+     nothing. */
+  dock.jsonPathRow = function (key) {
+    var self = this;
+    var row = el('form', 'rwb-path');
+    row.appendChild(el('label', 'rwb-path-label', 'Path'));
+    var input = el('input', 'rwb-path-input');
+    input.type = 'text';
+    input.dataset.rwbKey = key.name;
+    /* Empty, not "$": the root is already on screen, so a prefilled path is a
+       control that does nothing. The placeholder says what to type. */
+    var applied = this.jsonPath && this.jsonPath.name === key.name
+      ? this.jsonPath.path : '';
+    /* A path the reader was still typing when this pane was redrawn outranks the
+       one that was last run: they are mid-word, and the value below already says
+       which path produced it. */
+    var draft = this.pathDraft;
+    this.pathDraft = null;
+    if (draft && draft.name === key.name && draft.text !== applied) {
+      input.value = draft.text;
+    } else {
+      input.value = applied;
+    }
+    /* The caret goes back whenever it was in the box, whether or not the text
+       changed: a sweep that lands while the reader sits in the box with the path
+       they just ran should not put them somewhere else. */
+    if (draft && draft.name === key.name && draft.focused) this.pathCarried = draft;
+    input.setAttribute('spellcheck', 'false');
+    input.setAttribute('aria-label', 'JSONPath to read from ' + key.name);
+    input.placeholder = '$.field, $.list[*], $..name';
+    row.appendChild(input);
+    /* One click back to the whole document. Only while a path is in force:
+       clearing an empty box is a control that does nothing, and this row already
+       leaves out what it cannot act on. Emptying the box by hand and pressing
+       Enter does the same thing — this saves the two steps. */
+    if (applied) {
+      var clear = el('button', 'rwb-btn rwb-path-clear', '\u00d7');
+      clear.type = 'button';
+      clear.title = 'Clear the path and show the whole document';
+      clear.setAttribute('aria-label', 'Clear the path');
+      clear.addEventListener('click', function () {
+        input.value = '';
+        self.readJsonPath(key, '').then(function () { self.focusJsonPath(0); });
+      });
+      row.appendChild(clear);
+    }
+    var go = el('button', 'rwb-btn rwb-path-run', 'Run');
+    go.type = 'submit';
+    go.title = 'Read this path with JSON.GET';
+    row.appendChild(go);
+    row.addEventListener('submit', function (event) {
+      event.preventDefault();
+      /* Where the caret was, to put it back in the box that replaces this one. */
+      var caret = input.selectionStart;
+      self.readJsonPath(key, input.value.trim())
+        .then(function () { self.focusJsonPath(caret); });
+    });
+    return row;
+  };
+
+  dock.focusVsimFilter = function (caret) {
+    if (!this.valuePane) return;
+    var box = this.valuePane.querySelector('.rwb-vsim-filter');
+    if (!box) return;
+    box.focus({ preventScroll: true });
+    var at = typeof caret === 'number' ? Math.min(caret, box.value.length)
+      : box.value.length;
+    box.setSelectionRange(at, at);
+  };
+
+  /* Back in the Path box after a read, caret where the reader left it.
+
+     Reading redraws the whole value pane, so the box they pressed Enter in is
+     gone by the time the answer is on screen and focus has fallen back to the
+     document. Trying a path is usually trying several — `$.a`, then `$.a[0]`,
+     then `$..a` — and each one meant clicking back into the box first.
+
+     Only after a read the reader asked for. The same redraw runs on every sweep,
+     and grabbing focus because a command finished elsewhere would take the
+     keyboard away from whatever they were doing. */
+  dock.focusJsonPath = function (caret) {
+    if (!this.valuePane) return;
+    var box = this.valuePane.querySelector('.rwb-path-input');
+    if (!box) return;
+    box.focus({ preventScroll: true });
+    var at = typeof caret === 'number' ? Math.min(caret, box.value.length)
+      : box.value.length;
+    box.setSelectionRange(at, at);
+  };
+
+  /* One bar per row, in the order given — both callers ask the server to sort, so
+     the bars only have to be read, not sorted. No axis: the numbers are printed
+     beside them and the heading says the unit.
+
+     rows: [{name, share (0..1), label, mark, pick}] — mark names this row as the
+     one the others are measured against, pick makes it the next one. */
+  function renderBars(rows) {
+    var list = el('div', 'rwb-bars');
+    rows.forEach(function (row) {
+      var line = el(row.pick ? 'button' : 'div',
+        'rwb-bar-row' + (row.mark ? ' rwb-bar-marked' : ''));
+      if (row.pick) {
+        line.type = 'button';
+        line.title = row.title || row.name;
+        line.addEventListener('click', row.pick);
+      }
+
+      var name = el('span', 'rwb-bar-name', row.name);
+      if (row.mark) name.appendChild(el('span', 'rwb-bar-tag', row.mark));
+      line.appendChild(name);
+
+      var track = el('span', 'rwb-bar-track');
+      var fill = el('span', 'rwb-bar-fill');
+      fill.style.width = (Math.max(0, Math.min(1, row.share)) * 100).toFixed(1) + '%';
+      track.appendChild(fill);
+      line.appendChild(track);
+
+      line.appendChild(el('span', 'rwb-bar-value', row.label));
+      list.appendChild(line);
+    });
+    return list;
+  }
+
+  /* VSIM's answer. Scores run 1 (identical) to 0 (opposite), so a score is
+     already the share of the bar. */
+  dock.renderNeighbours = function (key, element, reply, search) {
+    var self = this;
+    if (reply && reply.error) {
+      return el('p', 'rwb-text rwb-failed', '(error) ' + cellText(reply.value));
+    }
+    var rows = pairs(ok(reply)).map(function (pair) {
+      return { name: cellText(pair[0]), score: Number(cellText(pair[1])) };
+    });
+    /* One more than the chip was asked for, because the element itself normally
+       comes back first. A filter it fails — no attributes at all is enough —
+       leaves it out, and then that spare row is a neighbour nobody asked for. */
+    var mine = rows.some(function (row) { return row.name === element; });
+    if (!mine && search) rows = rows.slice(0, search.count);
+    if (!rows.length) {
+      return el('p', 'rwb-empty', 'Nothing came back — no element passes this filter.');
+    }
+    return renderBars(rows.map(function (row) {
+      var here = row.name === element;
+      return {
+        name: row.name,
+        share: row.score,
+        label: isNaN(row.score) ? '—' : row.score.toFixed(4),
+        mark: here ? 'this one' : null,
+        title: 'Look at ' + row.name,
+        pick: here ? null : function () { self.openVectorElement(key, row.name); }
+      };
+    }));
+  };
+
+  /* JSON.GET at a path. A path that matches nothing answers with an empty array
+     and a path that does not parse answers with an error, and both are worth
+     seeing: getting them wrong is how the syntax is learned. */
+  dock.readJsonPath = function (key, path) {
+    var self = this;
+    /* An empty box is not a path: the reader asked for the document back, and
+       that is the key's own view. Reading "$" here instead produced the same
+       document with a "1 match" fact the key's view has no reason to show — and
+       so a chip that vanished on the next sweep. */
+    if (!path) {
+      this.jsonPath = null;
+      return Promise.resolve(this.openKey(key.name));
+    }
+    this.jsonPath = { name: key.name, path: path };
+    var command = 'JSON.GET ' + quote(key.name) + ' ' + quote(path);
+    this.begin('reading ' + path + '…');
+    return run([command]).then(function (replies) {
+      var reply = replies[0];
+      var view;
+      if (reply && reply.error) {
+        view = { kind: 'text', mono: true, failed: true,
+          text: '(error) ' + cellText(reply.value) };
+      } else {
+        var raw = ok(reply);
+        var text = typeof raw === 'string' ? raw : cellText(raw);
+        var matches = null;
+        try {
+          var parsed = JSON.parse(text);
+          text = JSON.stringify(parsed, null, 2);
+          /* Only a JSONPath answers with a list of what it matched. A legacy
+             path — no leading $ — answers with the value at that one place, so
+             counting an array value's members as matches would put the wrong
+             number, and the wrong idea, next to the very distinction this box
+             is here to teach. */
+          if (Array.isArray(parsed) && path.charAt(0) === '$') matches = parsed.length;
+        } catch (err) { /* not parseable: show it as returned */ }
+        view = { kind: 'text', text: text, mono: true,
+          facts: matches === null ? [] : [{
+            text: plural(matches, 'match', 'matches'),
+            title: 'JSONPath answers with an array of everything it matched'
+          }] };
+      }
+      self.renderValue(key, { commands: [command], view: view });
+      self.end();
+    }, function () { self.end(); });
+  };
+
+  /* How many places to read, plot and measure. This is the argument budget, not
+     a matter of taste: GEOPOS names every member it asks about, and the backend
+     refuses a command of more than 1024 arguments. Every place that is read is
+     drawn — a map that quietly leaves some out is worse than a crowded one —
+     and a key with more members than this says so under the plot. */
+  var MAX_MAP_POINTS = 1000;
+
+  /* Which pane of a value the reader last had open, by key name. */
+  dock.valueTabs = {};
+
+  dock.chosenPane = function (of, panes) {
+    var wanted = this.valueTabs[of];
+    var found = panes.filter(function (spec) { return spec.id === wanted; })[0];
+    return found || panes[0];
+  };
+
+  /* Distances are asked for in one of these; the second is what a reader in the
+     United States would reach for. GEOSEARCH takes both. */
+  var GEO_UNITS = [
+    { unit: 'km', label: 'km', per: 1 },
+    { unit: 'mi', label: 'mi', per: 0.621371 }
+  ];
+
+  dock.geoOptions = function (name) {
+    if (!this.geo) this.geo = { name: name, from: null, unit: 'km', radius: null };
+    /* Where to measure from and how far to look belong to the key they were
+       chosen on. Carried across, a member name two keys share would start a
+       search the reader never asked for on the second one, and a radius fitted
+       to Sicily is the wrong radius for a key of bike stations — and being set
+       already, it would not be fitted again. km or mi is a preference about
+       reading rather than about the data, so that one follows the reader. */
+    if (this.geo.name !== name) {
+      this.geo.name = name;
+      this.geo.from = null;
+      this.geo.radius = null;
+    }
+    return this.geo;
+  };
+
+  /* Where the members of a geo key are, and — once one of them has been picked —
+     how far the rest are from it.
+
+     GEOPOS rather than decoding the geohash scores here: it is one command, it is
+     the command a reader would run, and it goes in the READ WITH line with the
+     rest. Distances come from GEOSEARCH FROMMEMBER rather than a GEODIST per
+     pair: one command instead of N, sorted by the server, and the same command
+     the docs teach for "what is near this". */
+  /* Members and Map, from whatever is known so far. The strip is drawn from the
+     first reply rather than waiting for the coordinates: appearing a round trip
+     later, it pushed the table down just as the reader started reading it. Until
+     GEOPOS answers, the map pane says what it is waiting for. */
+  dock.geoPanes = function (key, table, drawMap) {
+    return {
+      kind: 'panes',
+      of: key.name,
+      facts: table.facts,
+      panes: [
+        /* The value itself first, and so the default: this column answers "what
+           is in this key", and for a geo key that is a sorted set of members and
+           geohashes. The map is the reading of it, one click away. */
+        { id: 'members', label: 'Members', render: function () {
+          var block = el('div');
+          block.appendChild(renderTable(table.head, table.rows));
+          if (table.limited) {
+            block.appendChild(el('p', 'rwb-limited', 'Showing '
+              + table.limited.shown + ' of ' + table.limited.of));
+          }
+          return block;
+        } },
+        { id: 'map', label: 'Map', render: drawMap }
+      ]
+    };
+  };
+
+  dock.readGeo = function (key, table, ran) {
+    var self = this;
+    /* No coordinates, so no map — said in the map pane rather than left as it
+       was. The pane is already up saying it is reading them, and returning
+       without drawing anything left that sentence on screen for good: `run`
+       resolves even when a command errors, so there is no rejection to fall
+       back from. */
+    function noMap(why) {
+      if (self.selected !== key.name) return;
+      self.renderValue(key, {
+        commands: ran,
+        view: self.geoPanes(key, table, function () {
+          return el('p', 'rwb-hint', why);
+        })
+      });
+    }
+    var members = table.geo.slice(0, MAX_MAP_POINTS);
+    var search = this.geoOptions(key.name);
+    /* Only for a member this key still has: a sweep can have removed the one the
+       reader picked. Looked for in the whole key rather than in the slice being
+       drawn — the distances come from GEOSEARCH, which answers with the nearest
+       members, and the nearest need not be among the first MAX_MAP_POINTS in
+       geohash order. Clicking one of those rows used to set an origin this read
+       then treated as missing, and the measurement disappeared. */
+    var from = search.from && table.geo.indexOf(search.from) !== -1
+      ? search.from : null;
+    /* And it is plotted whether or not it fell in the slice, so the map can mark
+       where the measuring is from. */
+    if (from && members.indexOf(from) === -1) members.push(from);
+    var where = 'GEOPOS ' + quote(key.name) + ' ' + members.map(quote).join(' ');
+    /* Both in one batch when the radius is already known. It is not known on the
+       first pick, or after the unit changed, and fitting one needs the
+       coordinates GEOPOS is being asked for — so that case takes a second round
+       trip rather than searching a radius of nothing. */
+    var commands = from && search.radius
+      ? [where, geoSearchCommand(key.name, from, search)] : [where];
+
+    return run(commands).then(function (replies) {
+      var places = [];
+      (ok(replies[0]) || []).forEach(function (spot, index) {
+        if (!Array.isArray(spot) || spot.length < 2) return;
+        var lon = Number(cellText(spot[0]));
+        var lat = Number(cellText(spot[1]));
+        if (!isFinite(lon) || !isFinite(lat)) return;
+        places.push({ name: members[index], lon: lon, lat: lat });
+      });
+      /* No coordinates came back — every member was removed between the two
+         reads, or none of them decoded. */
+      if (!places.length) {
+        var trouble = replies[0] && replies[0].error
+          ? '(error) ' + cellText(replies[0].value)
+          : 'No coordinates came back for these members.';
+        return noMap(trouble);
+      }
+
+      function show(ranAll, found) {
+        /* The reader may have opened something else while this was in flight.
+           Their choice outranks a reply that was already on its way. */
+        if (self.selected !== key.name) return;
+        /* Only now has this key had a map drawn for it. Set before the
+           coordinates arrived, a key whose GEOPOS failed would have counted as
+           mapped, and the next open of it would have skipped its first paint. */
+        self.geoKeys[key.name] = true;
+        self.renderValue(key, {
+          commands: ran.concat(ranAll),
+          view: self.geoPanes(key, table, function () {
+                var block = el('div');
+                block.appendChild(renderMap(places, {
+                  from: from,
+                  /* Against the key's own length: the list this was read from
+                     is itself capped, so comparing the two said nothing about
+                     the members that were never read. */
+                  of: typeof key.size === 'number' && key.size > places.length
+                    ? key.size : 0,
+                  /* The pane is in the document already, so its width is known
+                     before the map is built. Less the padding either side. */
+                  width: (self.valuePane.clientWidth || 0) - 20,
+                  pick: function (name) { self.pickGeoFrom(key, name); }
+                }));
+                if (from) {
+                  block.appendChild(el('div', 'rwb-group', 'Distance from ' + from));
+                  block.appendChild(self.geoControls(key, search));
+                  block.appendChild(self.renderDistances({
+                    from: from, reply: found, key: key, search: search
+                  }));
+                } else {
+                  block.appendChild(el('p', 'rwb-hint',
+                    'Click a place to measure from it — GEOSEARCH answers with '
+                    + 'what is within a radius of it, nearest first.'));
+                }
+                return block;
+          })
+        });
+      }
+
+      if (!from) return show(commands, null);
+      if (commands.length > 1) return show(commands, replies[1]);
+      /* Far enough to hold the whole key, so the first search answers with
+         everything rather than nothing. */
+      search.radius = fittingRadius(places, search.unit);
+      var query = geoSearchCommand(key.name, from, search);
+      /* The map goes up now; the distances land a moment later. */
+      show(commands, null);
+      return run([query]).then(function (found) {
+        show(commands.concat([query]), found[0]);
+      });
+    }, function () {
+      /* The request itself never got a reply — offline, or the sandbox refused
+         the batch. */
+      noMap('Could not read where these places are.');
+    });
+  };
+
+  /* Measure from here. Re-reads rather than patching the view: the map has to
+     mark the new origin and the distances all change. */
+  dock.pickGeoFrom = function (key, name) {
+    var search = this.geoOptions(key.name);
+    search.from = search.from === name ? null : name;
+    return this.openKey(key.name);
+  };
+
+  function geoSearchCommand(name, from, search) {
+    return 'GEOSEARCH ' + quote(name) + ' FROMMEMBER ' + quote(from)
+      + ' BYRADIUS ' + search.radius + ' ' + search.unit
+      + ' ASC WITHDIST COUNT ' + MAX_MAP_POINTS;
+  }
+
+  /* A radius that reaches every place in the key, rounded up so it reads as a
+     round number in the box. Worked out here rather than asked of the server:
+     the coordinates are already in hand. */
+  function fittingRadius(places, unit) {
+    var far = 0;
+    places.forEach(function (one) {
+      places.forEach(function (other) {
+        far = Math.max(far, haversine(one, other));
+      });
+    });
+    var per = GEO_UNITS.filter(function (each) { return each.unit === unit; })[0].per;
+    var wanted = Math.max(1, far * per) * 1.1;
+    var size = Math.pow(10, Math.floor(Math.log(wanted) / Math.LN10));
+    return Math.ceil(wanted / size) * size;
+  }
+
+  /* Great-circle distance in kilometres. The same formula GEODIST uses, on the
+     same sphere radius Redis assumes (6372.797 km). */
+  function haversine(one, other) {
+    var rad = Math.PI / 180;
+    var dLat = (other.lat - one.lat) * rad;
+    var dLon = (other.lon - one.lon) * rad;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+      + Math.cos(one.lat * rad) * Math.cos(other.lat * rad)
+      * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return 6372.797 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  /* The radius to search, and the unit to say it in — the two arguments of
+     GEOSEARCH BYRADIUS a reader would change by hand. */
+  dock.geoControls = function (key, search) {
+    var self = this;
+    var row = el('form', 'rwb-vsim-controls');
+
+    var units = el('div', 'rwb-vsim-counts');
+    units.setAttribute('role', 'group');
+    units.setAttribute('aria-label', 'Distance unit');
+    GEO_UNITS.forEach(function (choice) {
+      var on = choice.unit === search.unit;
+      var chip = el('button', 'rwb-chip' + (on ? ' rwb-chip-on' : ''), choice.label);
+      chip.type = 'button';
+      chip.title = 'Measure in ' + choice.label;
+      chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+      chip.addEventListener('click', function () {
+        if (on) return;
+        search.unit = choice.unit;
+        /* The radius went with the old unit: 1000 km is not 1000 mi. Dropped, so
+           the next read fits one to the key again. */
+        search.radius = null;
+        self.openKey(key.name);
+      });
+      units.appendChild(chip);
+    });
+    row.appendChild(units);
+
+    var radius = el('input', 'rwb-vsim-filter');
+    radius.type = 'text';
+    radius.inputMode = 'decimal';
+    radius.value = String(search.radius);
+    radius.title = 'How far to search, in ' + search.unit;
+    radius.setAttribute('aria-label', 'Radius in ' + search.unit);
+    row.appendChild(radius);
+
+    var go = el('button', 'rwb-btn', 'Search');
+    go.type = 'submit';
+    go.title = 'Run GEOSEARCH with this radius';
+    row.appendChild(go);
+
+    row.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var wanted = parseFloat(radius.value);
+      if (isFinite(wanted) && wanted > 0) search.radius = wanted;
+      /* Where the caret was, to put it back in the box that replaces this one:
+         the reply redraws the pane, so the box the reader typed into is gone by
+         the time the distances are up. */
+      var caret = radius.selectionStart;
+      var back = function () { self.focusGeoRadius(caret); };
+      var reading = self.openKey(key.name);
+      if (reading && reading.then) reading.then(back); else back();
+    });
+    return row;
+  };
+
+  dock.focusGeoRadius = function (caret) {
+    if (!this.valuePane) return;
+    var box = this.valuePane.querySelector('.rwb-vsim-filter');
+    if (!box) return;
+    /* preventScroll, or focusing the box scrolls the column to it — which is
+       the very thing the reader did not ask for. */
+    box.focus({ preventScroll: true });
+    var at = typeof caret === 'number' ? Math.min(caret, box.value.length)
+      : box.value.length;
+    box.setSelectionRange(at, at);
+  };
+
+  /* GEOSEARCH's answer: the places within the radius, nearest first, each with
+     its distance. The bar is the distance as a share of the farthest one — so
+     the nearest is a stub and the farthest fills the track, which is the way
+     round a reader expects "further" to look. */
+  dock.renderDistances = function (section) {
+    var self = this;
+    var reply = section.reply;
+    /* No reply yet, which is not the same as an empty one. The map goes up
+       before the search that measures from it comes back — on the first pick and
+       after a unit change, where the radius has to be fitted to the coordinates
+       first — and reading that as "nothing in range" told the reader something
+       untrue about their own data for a round trip. */
+    if (reply === null || reply === undefined) {
+      return el('p', 'rwb-hint', 'Measuring from ' + section.from + '…');
+    }
+    if (reply && reply.error) {
+      return el('p', 'rwb-text rwb-failed', '(error) ' + cellText(reply.value));
+    }
+    var rows = (ok(reply) || []).map(function (hit) {
+      return Array.isArray(hit)
+        ? { name: cellText(hit[0]), away: Number(cellText(hit[1])) }
+        : { name: cellText(hit), away: NaN };
+    });
+    if (!rows.length) {
+      return el('p', 'rwb-empty',
+        'Nothing within ' + section.search.radius + ' ' + section.search.unit + '.');
+    }
+    var far = Math.max.apply(null, rows.map(function (row) {
+      return isNaN(row.away) ? 0 : row.away;
+    })) || 1;
+    return renderBars(rows.map(function (row) {
+      var here = row.name === section.from;
+      return {
+        name: row.name,
+        share: isNaN(row.away) ? 0 : row.away / far,
+        label: isNaN(row.away) ? '—' : trimNumber(row.away) + ' ' + section.search.unit,
+        mark: here ? 'from here' : null,
+        title: 'Measure from ' + row.name + ' instead',
+        pick: here ? null : function () { self.pickGeoFrom(section.key, row.name); }
+      };
+    }));
+  };
+
+  /* 8955.05, 12.3, 0.4 — two decimals at most, and none where they say nothing. */
+  function trimNumber(value) {
+    return String(Math.round(value * 100) / 100);
+  }
 
   dock.openIndex = function (name) {
     var self = this;
@@ -2298,6 +3162,8 @@
      Insight puts under it. Everything else FT.INFO returns is left to FT.INFO. */
   dock.renderIndex = function (name, info) {
     var pane = this.valuePane;
+    /* An index's schema, not the value of a key. */
+    this.valueShown = null;
     pane.replaceChildren();
 
     var head = el('div', 'rwb-value-head');
@@ -2413,6 +3279,25 @@
     var self = this;
     var meta = TYPES[key.type] || { label: key.type, tone: 'other' };
     var pane = this.valuePane;
+    /* What is in the Path box, if there is a box: this pane is redrawn on every
+       sweep, and any command on the page starts one — so a half-written path was
+       emptied out from under the reader. A text box keeps what was typed in it
+       until something is done with it, and this one is no different. Whether it
+       had focus is recorded too: the caret only goes back if it was already
+       there, since running a command puts it in the terminal instead. */
+    var typing = pane.querySelector('.rwb-path-input');
+    this.pathDraft = typing
+      ? { name: typing.dataset.rwbKey, text: typing.value,
+          caret: typing.selectionStart, focused: document.activeElement === typing }
+      : null;
+    /* And where the reader had scrolled to, if this is the same key being
+       redrawn. Every command redraws this column, so a reader who had scrolled
+       down to the controls under a map was sent back to the top by their own
+       Enter. A different key starts at the top, which is where its value
+       begins. */
+    var column = this.valueColumn;
+    var keepScroll = column && this.valueShown === key.name ? column.scrollTop : 0;
+    this.valueShown = key.name;
     pane.replaceChildren();
 
     var head = el('div', 'rwb-value-head');
@@ -2439,6 +3324,14 @@
     head.appendChild(facts);
     pane.appendChild(head);
 
+    /* A JSON document is the one value a reader is expected to *query* rather
+       than read: /develop/data-types/json/path is a page of JSONPath syntax with
+       nowhere to try it. So the path that produced what is shown is editable, and
+       running it is what redraws the value below. */
+    if (key.type === 'ReJSON-RL') {
+      pane.appendChild(this.jsonPathRow(key));
+    }
+
     if (!detail.view) {
       pane.appendChild(el('p', 'rwb-empty',
         'This type stores no enumerable value, so there is nothing to preview.'));
@@ -2454,11 +3347,18 @@
       }
     }
     if (detail.commands.length) pane.appendChild(ranNote(detail.commands));
+    if (this.pathCarried) {
+      var caret = this.pathCarried.caret;
+      this.pathCarried = null;
+      this.focusJsonPath(caret);
+    }
+    if (column && keepScroll) column.scrollTop = keepScroll;
   };
 
   function renderView(view, onOpenRow) {
     if (view.kind === 'text') {
-      return el('pre', 'rwb-text' + (view.mono ? ' rwb-json' : ''), view.text);
+      return el('pre', 'rwb-text' + (view.mono ? ' rwb-json' : '')
+        + (view.failed ? ' rwb-failed' : ''), view.text);
     }
     if (view.kind === 'table') {
       return renderTable(view.head, view.rows, onOpenRow);
@@ -2474,6 +3374,43 @@
       });
       return wrap;
     }
+    /* Panes rather than one long column, where a value has two ways of being
+       read that a reader picks between — a geo key's map and its members. The
+       choice is remembered per key: a sweep re-renders the value on every
+       command, and having that snap back to the first pane would make the map
+       unusable while typing. */
+    if (view.kind === 'panes') {
+      var panes = el('div', 'rwb-vpanes');
+      var strip = el('div', 'rwb-vtabs');
+      strip.setAttribute('role', 'tablist');
+      var body = el('div', 'rwb-vbody');
+      var chosen = dock.chosenPane(view.of, view.panes);
+
+      view.panes.forEach(function (spec) {
+        var tab = el('button', 'rwb-tab rwb-vtab', spec.label);
+        tab.type = 'button';
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-selected', spec.id === chosen.id ? 'true' : 'false');
+        tab.addEventListener('click', function () {
+          if (spec.id === chosen.id) return;
+          dock.valueTabs[view.of] = spec.id;
+          chosen = spec;
+          [].forEach.call(strip.children, function (other, index) {
+            other.setAttribute('aria-selected',
+              view.panes[index].id === spec.id ? 'true' : 'false');
+          });
+          /* Both panes are built from replies already in hand, so switching is a
+             redraw and not another round trip. */
+          body.replaceChildren(spec.render());
+        });
+        strip.appendChild(tab);
+      });
+      panes.appendChild(strip);
+      body.appendChild(chosen.render());
+      panes.appendChild(body);
+      return panes;
+    }
+
     if (view.kind === 'sections') {
       var sections = el('div', 'rwb-sections');
       view.sections.forEach(function (section) {
@@ -2484,6 +3421,238 @@
     }
     return el('p', 'rwb-empty', 'Nothing to show.');
   }
+
+  /* A round step that puts two or three lines across the span — the steps a map
+     is drawn with (degrees, then halves, then minutes), not 0.37 of a degree. */
+  var STEPS = [0.01, 0.02, 0.05, 0.1, 0.2, 0.25, 0.5, 1, 2, 5, 10, 15, 20, 30, 45, 60];
+
+  function niceStep(span) {
+    var want = Math.abs(span) / 3;
+    for (var i = 0; i < STEPS.length; i += 1) {
+      if (STEPS[i] >= want) return STEPS[i];
+    }
+    return STEPS[STEPS.length - 1];
+  }
+
+  /* ---- the map ----
+     Places, plotted. Both axes get the same scale — longitude squeezed by the
+     cosine of the latitude they sit at, which is what keeps a city block square
+     rather than stretched — and the drawing is fitted inside the box rather than
+     stretched to fill it (preserveAspectRatio, unlike the time series plot). A
+     map that stretches with the pane is a map that lies about direction. */
+  var MAP = { width: 320, maxWidth: 520, height: 160, pad: 16, dot: '#0284c7',
+    maxLabels: 12 };
+
+  function renderMap(points, section) {
+    var of = section && section.of;
+    var from = section && section.from;
+    var pick = section && section.pick;
+    var wrap = el('div', 'rwb-map');
+    /* Drawn at the size it will be shown at, rather than drawn at 320 wide and
+       scaled to fit: an SVG scaled to a wide column takes its text and its dots
+       up with it, and a map with 18px labels on it is unreadable. The caller
+       measures the column; these bounds keep it a map either way. */
+    var box = {
+      /* Wide enough to read at the narrowest the column gets, and no wider than
+         a map of a handful of places wants to be: past this it is a few dots in
+         an empty field, and the distances below it are pushed off the pane. */
+      width: Math.max(260, Math.min(MAP.maxWidth,
+        Math.round(section && section.width) || MAP.width))
+    };
+    /* Half as tall as it is wide — the aspect a row of places reads best at. */
+    box.height = Math.round(box.width / 2);
+    /* Room for a name at the edge of the plot, in proportion to the plot. A
+       margin narrower than a name means the place at the edge of the key loses
+       its label, so this is wide enough to hold one. */
+    box.pad = Math.max(24, Math.round(box.width * 0.09));
+    var mid = points.reduce(function (sum, place) { return sum + place.lat; }, 0)
+      / points.length;
+    /* Degrees of longitude are shorter than degrees of latitude everywhere but
+       the equator, by this much. */
+    var squeeze = Math.cos(mid * Math.PI / 180) || 1;
+
+    var xs = points.map(function (place) { return place.lon * squeeze; });
+    var ys = points.map(function (place) { return -place.lat; });
+    var lowX = Math.min.apply(null, xs);
+    var highX = Math.max.apply(null, xs);
+    var lowY = Math.min.apply(null, ys);
+    var highY = Math.max.apply(null, ys);
+    var room = { x: box.width - box.pad * 2, y: box.height - box.pad * 2 };
+    /* One scale for both axes, so nothing is distorted; a single place, or a row
+       of places on one line, has no span to fit and simply sits in the middle. */
+    var scale = Math.min(
+      highX - lowX ? room.x / (highX - lowX) : Infinity,
+      highY - lowY ? room.y / (highY - lowY) : Infinity
+    );
+    if (!isFinite(scale)) scale = 1;
+    var centre = { x: (lowX + highX) / 2, y: (lowY + highY) / 2 };
+
+    function at(place, index) {
+      return {
+        x: box.width / 2 + (place.lon * squeeze - centre.x) * scale,
+        y: box.height / 2 + (-place.lat - centre.y) * scale,
+        index: index
+      };
+    }
+
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'rwb-map-plot');
+    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    svg.setAttribute('width', String(box.width));
+    svg.setAttribute('height', String(box.height));
+    /* Fitted, not stretched — and with the box measured from the column, there
+       is nothing left to fit: one unit of the drawing is one pixel on screen. */
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', plural(points.length, 'place') + ' plotted, '
+      + points.map(function (place) { return place.name; }).join(', '));
+
+    /* Whole degrees of latitude and longitude, drawn under the places and
+       labelled at the edges. Without them the dots say how the places sit
+       relative to each other but not where on earth they are, or how far apart:
+       three dots in a triangle look the same across a city and across a
+       continent. Two or three lines per axis — enough to read the position and
+       the scale off, few enough to stay out of the way. */
+    var span = {
+      lon: { low: (centre.x - (box.width / 2) / scale) / squeeze,
+        high: (centre.x + (box.width / 2) / scale) / squeeze },
+      /* y grows downwards, so the top edge is the higher latitude. */
+      lat: { low: -(centre.y + (box.height / 2) / scale),
+        high: -(centre.y - (box.height / 2) / scale) }
+    };
+    [
+      { of: 'lon', at: function (value) {
+        return box.width / 2 + (value * squeeze - centre.x) * scale; } },
+      { of: 'lat', at: function (value) {
+        return box.height / 2 + (-value - centre.y) * scale; } }
+    ].forEach(function (axis) {
+      var range = span[axis.of];
+      var step = niceStep(range.high - range.low);
+      var first = Math.ceil(range.low / step);
+      /* Counted from the first line rather than added up, so a step of 0.1 does
+         not drift into 0.30000000000000004 by the third one. */
+      for (var n = 0; first * step + n * step <= range.high; n += 1) {
+        var value = (first + n) * step;
+        var place = axis.at(value);
+        var down = axis.of === 'lat';
+        var rule = document.createElementNS(svg.namespaceURI, 'line');
+        rule.setAttribute('class', 'rwb-map-rule');
+        rule.setAttribute('x1', String(down ? 0 : place));
+        rule.setAttribute('x2', String(down ? box.width : place));
+        rule.setAttribute('y1', String(down ? place : 0));
+        rule.setAttribute('y2', String(down ? place : box.height));
+        rule.setAttribute('vector-effect', 'non-scaling-stroke');
+        svg.appendChild(rule);
+
+        var tick = document.createElementNS(svg.namespaceURI, 'text');
+        tick.setAttribute('class', 'rwb-map-tick');
+        tick.setAttribute('x', String(down ? 3 : place + 3));
+        tick.setAttribute('y', String(down ? place - 3 : box.height - 4));
+        tick.textContent = degreeLabel(value, axis.of);
+        svg.appendChild(tick);
+      }
+    });
+
+    var named = [];
+    points.forEach(function (place, index) {
+      var spot = at(place, index);
+      var here = place.name === from;
+      var dot = document.createElementNS(svg.namespaceURI, 'circle');
+      dot.setAttribute('class', 'rwb-map-dot' + (here ? ' rwb-map-dot-from' : ''));
+      dot.setAttribute('cx', String(spot.x));
+      dot.setAttribute('cy', String(spot.y));
+      dot.setAttribute('r', here ? '5' : '3');
+      /* Exact coordinates on hover, for every point — the labels are only for
+         the few, and rounding is for reading, not for trusting. */
+      var title = document.createElementNS(svg.namespaceURI, 'title');
+      title.textContent = place.name + ' — ' + place.lat.toFixed(5) + ', '
+        + place.lon.toFixed(5);
+      dot.appendChild(title);
+      /* A dot is the handle for "measure from here". Focusable and answering to
+         Enter as well as a click: it is a control, whatever it is drawn as. */
+      if (pick) {
+        dot.setAttribute('role', 'button');
+        dot.setAttribute('tabindex', '0');
+        dot.setAttribute('aria-pressed', here ? 'true' : 'false');
+        dot.addEventListener('click', function () { pick(place.name); });
+        dot.addEventListener('keydown', function (event) {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          pick(place.name);
+        });
+      }
+      svg.appendChild(dot);
+
+      if (points.length <= MAP.maxLabels) named.push({ name: place.name, spot: spot });
+    });
+
+    /* Names, while there are few enough for them to be read. Each takes the
+       first place that is inside the plot and clear of the names already put
+       down: right of its dot, then left, then a line under either. A name with
+       nowhere to go is left off rather than printed over its neighbour — the dot
+       still says who it is on hover. Naples sat on top of Bari before this, and
+       Catania sat on top of Caltanissetta after the first attempt at it. */
+    var taken = [];
+    named.forEach(function (item) {
+      /* How wide the name will be, near enough: the labels are 10px, so six
+         pixels a character is a safe overestimate. Measuring would mean being in
+         the document, and this drawing is not in it yet. */
+      var wide = item.name.length * 6;
+      var tries = [
+        { x: item.spot.x + 6, y: item.spot.y + 3, end: false },
+        { x: item.spot.x - 6, y: item.spot.y + 3, end: true },
+        { x: item.spot.x + 6, y: item.spot.y + 14, end: false },
+        { x: item.spot.x - 6, y: item.spot.y + 14, end: true },
+        { x: item.spot.x + 6, y: item.spot.y - 8, end: false },
+        { x: item.spot.x - 6, y: item.spot.y - 8, end: true }
+      ];
+      for (var i = 0; i < tries.length; i += 1) {
+        var spot = tries[i];
+        var left = spot.end ? spot.x - wide : spot.x;
+        var right = left + wide;
+        var top = spot.y - 8;
+        if (left < 2 || right > box.width - 2) continue;
+        if (top < 0 || spot.y > box.height - 2) continue;
+        var clash = taken.some(function (other) {
+          return left < other.right + 2 && right + 2 > other.left
+            && top < other.bottom && spot.y > other.top;
+        });
+        if (clash) continue;
+        taken.push({ left: left, right: right, top: top, bottom: spot.y + 2 });
+        var label = document.createElementNS(svg.namespaceURI, 'text');
+        label.setAttribute('class', 'rwb-map-label');
+        label.setAttribute('x', String(spot.x));
+        label.setAttribute('y', String(spot.y));
+        if (spot.end) label.setAttribute('text-anchor', 'end');
+        label.textContent = item.name;
+        svg.appendChild(label);
+        return;
+      }
+    });
+    wrap.appendChild(svg);
+
+    /* The span of the plot is on the axes, and the count is in the key list, so
+       neither needs saying under the map. What does need saying is a map that is
+       not all of the key — in the same words the rest of the dock uses. */
+    if (of) {
+      wrap.appendChild(el('p', 'rwb-limited',
+        'Showing ' + points.length + ' of ' + plural(of, 'place')));
+    }
+    return wrap;
+  }
+
+  /* 45°N, 9°E — a signed number leaves the reader working out which way is which,
+     and a bare 9 could be either axis. */
+  function degreeLabel(value, axis) {
+    /* A step that lands on zero can land on -0.0000001 instead. */
+    var at = Math.abs(value) < 1e-9 ? 0 : value;
+    var text = String(Math.round(Math.abs(at) * 100) / 100) + '°';
+    /* The equator and the prime meridian belong to no hemisphere. */
+    if (!at) return text;
+    if (axis === 'lat') return text + (at > 0 ? 'N' : 'S');
+    return text + (at > 0 ? 'E' : 'W');
+  }
+
 
   function renderTable(head, rows, onOpenRow) {
     if (!rows || !rows.length) return el('p', 'rwb-empty', 'Empty.');
@@ -2577,17 +3746,34 @@
     return window.REDIS_WORKBENCH_ALWAYS === true;
   }
 
+  /* And some pages say no. /develop/ is a landing page whose Redis CLI is a
+     picture of one — a block of commands and their output, there to show what
+     Redis looks like rather than to be run — and the dock's own bar along the
+     bottom of it adds a console the page never asked for. The template says so,
+     for the same reason as above: Hugo knows which page this is and the browser
+     only knows a path that changes per environment. See layouts/develop/list.html.
+
+     Declining outright, not just staying closed: nothing mounts, so there is no
+     bar, no session and no keyspace probing from here. A "Try it" added to such a
+     page later still works — RedisWorkbench.open() reports that it cannot run,
+     and the caller opens redis.io/cli as it did before the dock existed. */
+  function pageBarsCli() {
+    return window.REDIS_WORKBENCH_NEVER === true;
+  }
+
   /* Does this page have anything for a terminal to run? The CLI blocks and their
      "Try it" buttons, and not the notebook's — a client page's Try it carries
      .thebe-tryit and opens a cell in the notebook pane, which has nothing to do
      with the sandbox terminal. */
   function pageHasCli() {
+    if (pageBarsCli()) return false;
     if (pageWantsCli()) return true;
     return !!document.querySelector(
       'form.redis-cli, .redis-cli-static, .tryit-button:not(.thebe-tryit)');
   }
 
   function pageHasRedis() {
+    if (pageBarsCli()) return false;
     if (pageWantsCli()) return true;
     /* `.thebe-container` is in here for the notebook pane: a client page can have
        runnable cells and no CLI terminal at all. */
@@ -2602,6 +3788,118 @@
 
   /* The widget is injected by the js/cli.js shim, so window.RedisCli may not
      exist yet when the DOM is ready; wait for it briefly rather than racing it. */
+  /* ---------------------------------------------------------- pasted blocks --
+
+     A reader with a multi-command example on the clipboard used to get one line
+     of it. The prompt is a single-line input, so the browser flattens the
+     newlines and only the first command survives — which reads as the terminal
+     ignoring what was pasted.
+
+     A paste with a newline in it is a list of commands, so run them in order,
+     the way a "Try it" snippet runs. One listener in the capture phase covers
+     the dock's terminal, a page's own inline terminals, and any terminal added
+     after this ran, without the widget's own paste handling ever seeing it.
+     A single-line paste is left alone: that is text being typed. */
+
+  /* One paste, not a log file. Above this the rest is left unrun and said so. */
+  var MAX_PASTED = 60;
+
+  /* A prompt, and so a line the reader typed rather than one Redis printed:
+     `redis> ` in this site's examples, a bare `> ` in the 64 command pages that
+     use that form, and the host:port prompt a real redis-cli shows. The same
+     two forms the redis-cli shortcode recognises — see
+     layouts/shortcodes/redis-cli.html, which is where the convention lives. */
+  var PASTED_PROMPT = /^[^\s>]*>\s+/;
+
+  /* What one pasted line can carry in front of a command: those prompts, and the
+     `$` of a shell line — the same two a pasted block strips, so one line and
+     three behave alike. */
+  var PASTED_SINGLE = /^(?:[^\s>]*>|\$)\s+/;
+
+  function pastedCommands(text) {
+    var lines = text.split(/\r?\n/).map(function (line) {
+      return line.trim();
+    });
+    /* A block with prompts in it is a whole transcript: prompts, commands and
+       the replies in between. Then only the prompted lines are commands, and
+       running the rest would send Redis its own output — which is what the
+       shortcode learned the hard way ("unknown command '(integer)'"). */
+    var prompted = lines.filter(function (line) { return PASTED_PROMPT.test(line); });
+    if (prompted.length) {
+      return prompted.map(function (line) { return line.replace(PASTED_PROMPT, ''); })
+        .filter(function (line) { return line; });
+    }
+    /* No prompts: a plain list of commands, one per line. */
+    return lines.map(function (line) {
+      /* `$ redis-cli SET k v` and the like: the shell prompt, not the command. */
+      return line.replace(/^\$\s+/, '');
+    }).filter(function (line) {
+      /* Blank lines separate examples; a # line is a comment in every snippet
+         in these docs, and is not a command. */
+      return line && line.charAt(0) !== '#';
+    });
+  }
+
+  /* In batches the backend will accept, one after the other rather than at once,
+     so the transcript reads in the order the reader pasted. */
+  function runPasted(form, commands) {
+    var chunks = [];
+    for (var i = 0; i < commands.length; i += MAX_BATCH) {
+      chunks.push(commands.slice(i, i + MAX_BATCH));
+    }
+    return chunks.reduce(function (chain, chunk) {
+      return chain.then(function () {
+        /* 'interactive': a person pasted these. Labelling them 'preset' would
+           count them among the page's own snippets in the usage metrics. */
+        return cli().run(form, chunk, 'interactive');
+      });
+    }, Promise.resolve());
+  }
+
+  function onPaste(event) {
+    var input = event.target;
+    if (!input || input.tagName !== 'INPUT' || input.disabled) return;
+    var form = input.closest && input.closest('form.redis-cli');
+    if (!form || !cli() || !cli().run) return;
+    var text = event.clipboardData && event.clipboardData.getData('text');
+    if (!text) return;
+    /* One line is one command, and pasting it is usually the start of editing
+       it — so it goes in the box rather than running. Its prompt still comes
+       off: `redis> PING 1` copied off a page is a command with four characters
+       in front of it, and leaving them there means the reader's next keystroke
+       is an error. */
+    if (text.indexOf('\n') === -1) {
+      var single = text.trim();
+      if (!PASTED_SINGLE.test(single)) return;
+      event.preventDefault();
+      var stripped = single.replace(PASTED_SINGLE, '');
+      var before = input.value.slice(0, input.selectionStart);
+      var after = input.value.slice(input.selectionEnd);
+      input.value = before + stripped + after;
+      var caret = before.length + stripped.length;
+      input.setSelectionRange(caret, caret);
+      return;
+    }
+    var commands = pastedCommands(text);
+    if (!commands.length) return;
+    event.preventDefault();
+    var skipped = commands.length - MAX_PASTED;
+    if (skipped > 0) commands = commands.slice(0, MAX_PASTED);
+    runPasted(form, commands).then(function () {
+      if (skipped <= 0) return;
+      /* Said in the transcript rather than a status line: the transcript is
+         where the reader is looking, and an inline terminal has no status line. */
+      var pre = form.querySelector('pre');
+      if (pre) {
+        pre.appendChild(document.createTextNode(
+          '(' + skipped + ' more pasted ' + (skipped === 1 ? 'line' : 'lines')
+          + ' not run: ' + MAX_PASTED + ' at a time)\n'));
+      }
+    });
+  }
+
+  document.addEventListener('paste', onPaste, true);
+
   function mountWhenReady() {
     if (!pageHasRedis()) return;
     var deadline = 15000;
@@ -2633,7 +3931,11 @@
            on is fetched from the /cli backend, so a click in the moment before it
            lands used to be answered by opening redis.io/cli in another tab —
            the reader's first click being the one that leaves the page. Wait for
-           it instead, and only fall back if it never arrives. */
+           it instead, and only fall back if it never arrives.
+
+           A page that bars the dock is the exception: no waiting, because no
+           amount of it will produce one. */
+        if (pageBarsCli()) return false;
         if (window.REDIS_CLI_LOADING) {
           waitForWidget(options);
           return true;
