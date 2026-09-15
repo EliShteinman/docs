@@ -56,7 +56,8 @@
     {{ end }}
     <script src='{{ "js/runtime-config.js" | relURL }}'></script>
   </head>
-  <body class="antialiased tracking-[-0.01em] bg-white w-full">
+  <body class="antialiased tracking-[-0.01em] bg-white w-full relative">
+    <span id="page-top" class="absolute top-0"></span>
     {{ partial "ai-metadata-body.html" . }}
 
     <!-- GTM noscript removed for air-gapped deployment -->
