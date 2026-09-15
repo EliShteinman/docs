@@ -17,6 +17,7 @@ skip unless docker is available. The container is started once per session:
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -91,6 +92,13 @@ def permits(command: str) -> bool:
     return verdict == "OK" or "arguments" in verdict.lower()
 
 
+# A `> [!NOTE]` alert and the `>` lines under it. The render-hook migration
+# (DOC-7047 onward) turned every note into one, and the CLI parser takes any
+# line opening with "> " for a prompt, so a warning that starts "Save this key"
+# read as the command SAVE. Across the corpus these blocks hold prose only.
+_ALERT_BLOCKQUOTE = re.compile(r"^[ \t]*> \[!\w+\][^\n]*\n(?:[ \t]*>[^\n]*(?:\n|$))*", re.MULTILINE)
+
+
 def demonstrated_commands() -> list[str]:
     """Every real Redis command the docs show in a runnable CLI example."""
     from components.cli_parser import extract_cli_commands
@@ -106,7 +114,7 @@ def demonstrated_commands() -> list[str]:
                 text = handle.read()
             if "> " not in text:
                 continue
-            for command in extract_cli_commands(text):
+            for command in extract_cli_commands(_ALERT_BLOCKQUOTE.sub("", text)):
                 if command.split()[0].upper() in real:
                     found.add(command.upper())
     return sorted(found)
