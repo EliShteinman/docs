@@ -10,8 +10,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from resp import RespError
 from search.hierarchy import BreadcrumbIndex
+from search import config
 from search.indexer import (
     IndexingError,
+    VersionLadder,
     allow_single_character_prefixes,
     create_index,
     index_documents,
@@ -125,24 +127,85 @@ def test_documents_are_written_in_batches():
     assert index_documents(connection, documents, _crumbs(), "doc:", 2) == 5
 
 
+def _versioned(tree: str, version: str) -> Document:
+    return Document(
+        doc_id=f"{tree}/{version}/page", title="Page", url=f"{tree}/{version}/page/",
+        body="body text", version=version, product="rs", source="docs",
+    )
+
+
+def _ladder(*documents: Document) -> VersionLadder:
+    return VersionLadder.from_documents(list(documents))
+
+
+def _score(ladder: VersionLadder, document: Document) -> float:
+    return float(ladder.score_for(document))
+
+
 def test_a_current_page_keeps_its_full_relevance():
-    from search.indexer import document_score
+    current = Document(
+        doc_id="/operate/rs/page", title="Page", url="/operate/rs/page/", body="b",
+        version="latest", product="rs", source="docs",
+    )
+    assert _ladder(current).score_for(current) == "1"
 
-    assert document_score("latest") == "1"
 
-
-def test_an_older_version_keeps_only_part_of_it():
+def test_an_archived_version_keeps_only_part_of_it():
     """45% of a real index is versioned copies, and without this they crowd out
     the current page -- "rack zone awareness" answered with 7.22 first."""
-    from search.indexer import document_score
-
-    assert float(document_score("7.4")) < 1
+    archived = _versioned("/operate/rs", "7.4")
+    assert _score(_ladder(archived), archived) < 1
 
 
 def test_an_untagged_page_is_treated_as_current():
-    from search.indexer import document_score
+    untagged = Document(
+        doc_id="/blog/post", title="Post", url="/blog/post/", body="b",
+        version="", product="", source="blog",
+    )
+    assert _ladder(untagged).score_for(untagged) == "1"
 
-    assert document_score("") == "1"
+
+def test_a_newer_archived_version_outranks_an_older_one():
+    """The archive has an order of its own: 8.0 is a better answer than 7.4."""
+    old, middle, new = (_versioned("/operate/rs", v) for v in ("7.4", "7.8", "8.0"))
+    ladder = _ladder(old, middle, new)
+    assert _score(ladder, old) < _score(ladder, middle) < _score(ladder, new)
+
+
+def test_the_newest_archive_still_loses_to_the_current_documentation():
+    """Redis Software's numbered trees stop at 8.0; 8.2 publishes as `latest`."""
+    newest = _versioned("/operate/rs", "8.0")
+    assert _score(_ladder(newest), newest) < 1
+
+
+def test_a_two_part_version_is_ordered_by_number_not_by_text():
+    """7.22 comes after 7.4 -- as text it sorts before it."""
+    later, earlier = _versioned("/operate/rs", "7.22"), _versioned("/operate/rs", "7.4")
+    ladder = _ladder(later, earlier)
+    assert _score(ladder, later) > _score(ladder, earlier)
+
+
+def test_each_product_is_ranked_inside_its_own_tree():
+    """RedisVL 0.3 and Redis Software 8.0 are both the newest of their archive."""
+    redisvl = _versioned("/develop/ai/redisvl", "0.3")
+    software = _versioned("/operate/rs", "8.0")
+    ladder = _ladder(redisvl, software, _versioned("/operate/rs", "7.4"))
+    assert _score(ladder, redisvl) == _score(ladder, software)
+
+
+def test_the_oldest_version_keeps_the_floor():
+    oldest = _versioned("/operate/rs", "7.22")
+    ladder = _ladder(oldest, _versioned("/operate/rs", "8.0"))
+    assert _score(ladder, oldest) == config.VERSION_WEIGHT
+
+
+def test_a_version_the_page_path_does_not_carry_keeps_the_floor():
+    """Nothing to rank it against, so it is not promoted over a real tree."""
+    stray = Document(
+        doc_id="/operate/rs/page", title="Page", url="/operate/rs/page/", body="b",
+        version="7.4", product="rs", source="docs",
+    )
+    assert _score(_ladder(stray), stray) == config.VERSION_WEIGHT
 
 
 def test_the_index_multiplies_relevance_by_that_score():

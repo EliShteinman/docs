@@ -44,6 +44,27 @@ def segments(url: str) -> list[str]:
     return [segment for segment in to_path(url).split("/") if segment]
 
 
+def version_tree(url: str, version: str) -> str:
+    """Return the path a versioned page's tree hangs off, or "" if it has none.
+
+    "/operate/rs/7.4/rack-zone-awareness" with version "7.4" gives "/operate/rs".
+    Versions are only comparable inside one tree: Redis Software's 8.0 and
+    RedisVL's 0.3 are not two points on the same scale, and a page's product tag
+    cannot stand in for the tree -- RedisVL publishes under /develop/ai/, which
+    carries no product tag at all.
+
+    The last occurrence, not the first: a page can carry the number again
+    further down its path, and it is the tree's own segment that bounds it.
+    """
+    if not version:
+        return ""
+    path_segments = segments(url)
+    for index in range(len(path_segments) - 1, -1, -1):
+        if path_segments[index] == version:
+            return "/" + "/".join(path_segments[:index])
+    return ""
+
+
 def ancestors(url: str) -> list[str]:
     """Return every path from the outermost segment down to `url` itself.
 
