@@ -202,10 +202,12 @@ cli:
     capabilities:
       drop:
         - ALL
+  # The airgap-build workflow bumps this tag whenever helm/cli-proxy changes,
+  # and search.image.tag with it: search runs from the same image.
   image:
     registry: a0533057932
     name: redis-docs-cli
-    tag: "latest"
+    tag: "0.6.0"
     pullPolicy: IfNotPresent
   # How long a browser session lives in the proxy. A session holds a Redis
   # connection of its own so transactions survive between typed commands, so
@@ -277,6 +279,163 @@ cli:
         cpu: 500m
         memory: 512Mi
 
+# -- The sections mirrored from redis.io: the blog, tutorials, customer
+#    stories, comparisons, solutions, technology pages and architecture
+#    diagrams. They are built with the documentation but shipped as an image of
+#    their own, so a deployment that does not want 1,400 extra pages and the
+#    238 MB of pictures that come with them does not carry them.
+#
+#    Off by default. With it off the documentation is complete on its own: the
+#    sidebar entry disappears and the links the documentation makes into those
+#    sections are unlinked in the browser, rather than leading to a 404.
+#
+#    The glossary is not here. Its terms publish inside the documentation's own
+#    /glossary/ section, so they ship with it.
+mirror:
+  enabled: false
+  replicas: 1
+  # The port the mirror's own nginx listens on, which follows the image variant:
+  # 8080 for the `-mirror-unprivileged` tags below, 80 for the `-mirror` ones.
+  # A privileged image needs this at 80 AND a securityContext that lets it run
+  # as root -- nginx cannot bind 80 without it. The Service publishes 8080
+  # either way, so nothing outside this block changes.
+  containerPort: 8080
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    readOnlyRootFilesystem: false
+    capabilities:
+      drop:
+        - ALL
+  # The same repository as the site image, under its own tags: one build
+  # produces both. `mirror-unprivileged` is the rolling tag; pin the
+  # `<commit>-mirror-unprivileged` form in an air-gapped registry.
+  image:
+    registry: a0533057932
+    name: redis-docs
+    tag: "mirror-unprivileged"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+# -- Docs search. search-modal.html calls /convai/api/search-service, a service
+#    that runs at redis.io; without something answering it here the search
+#    button opens an empty modal. Turning this on deploys that answer: an index
+#    of the site built from the docs.ndjson feed the image already ships, held
+#    in a Redis of its own, and an nginx route to reach it. The search UI itself
+#    needs no configuration — it is upstream markup and is left untouched.
+#
+#    Off by default, like `cli` above: it is another pod, and a deployment that
+#    does not want it should not pay for it.
+search:
+  enabled: false
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
+  # The CLI proxy image. The search service ships inside it rather than in one
+  # of its own, so there is no third image to build, mirror and carry in.
+  # Always the same tag as cli.image.tag. A tag older than 0.6.0 has no
+  # `search` module and the pod crash-loops.
+  #
+  # IfNotPresent is safe because the tag is pinned. Moving it back to the
+  # mutable `latest` needs pullPolicy: Always with it, or a node that cached
+  # `latest` before the search service existed keeps serving that copy.
+  image:
+    registry: a0533057932
+    name: redis-docs-cli
+    tag: "0.6.0"
+    pullPolicy: IfNotPresent
+  logLevel: INFO
+  # Each replica holds its own copy of the index and builds it at startup, so
+  # this trades memory for readers served and for surviving a restart: with one
+  # replica, search is gone for as long as a new pod takes to index.
+  replicas: 1
+  # gunicorn threads. A search is one round trip to a Redis in the same pod,
+  # and the modal fires a request per keystroke, so this is about concurrent
+  # readers rather than slow work.
+  threads: 8
+  # How many requests one client may make to the search endpoint. Off by
+  # default, and deliberately: the modal sends a request per keystroke with no
+  # debounce, and a whole office reaching the site through one egress address
+  # is one client to nginx — a limit that is too tight takes search away from
+  # everyone at once. Turn it on where the site is reachable more widely, and
+  # read `rate` as "per client address".
+  rateLimit:
+    enabled: false
+    rate: 20r/s
+    burst: 40
+    # Memory for the address table. 1m holds about 16,000 addresses.
+    zoneSize: 1m
+  # Answer cross-origin browser requests. The site's own modal is same-origin
+  # and needs none of this; a page or tool served from another origin cannot
+  # read the response without it. Anything that is not a browser — a script, an
+  # agent, another service — is unaffected either way.
+  cors:
+    enabled: false
+    allowOrigin: "*"
+  index:
+    name: docs
+    # hierarchy[0] on every result, and the heading the modal groups results
+    # under. redis.io sends the docs home page's heading, which is not the Hugo
+    # site title, so it cannot be derived from the feed.
+    rootCrumb: "Welcome to Redis Docs"
+    # redis.io returns at most 30 hits and reports the full count separately.
+    resultLimit: 30
+    batch: 500
+    # How much of its relevance a page from a numbered documentation version
+    # keeps -- numbered, not older: the current page is the one with no version
+    # in its path, so the newest numbered tree is weighted down like the oldest.
+    # The docs publish the same page once per version and 45% of a real
+    # index is those copies, so without this they crowd out the current page:
+    # measured on a full build, "rack zone awareness" answered with version
+    # 7.22 first and "database" returned 27 versioned pages in a top 30. At 0.3
+    # both answer with the current page and the old ones stay findable below
+    # it. Raise it toward 1 to treat every version equally.
+    versionWeight: 0.3
+    # What the newest archived version tree keeps, with the trees in between
+    # spread evenly from versionWeight up to it: 8.0 answers ahead of 7.8,
+    # which answers ahead of 7.4. Below 1 so the current documentation still
+    # wins — for Redis Software that is the unversioned tree, 8.2, which has no
+    # numbered tree of its own.
+    versionNewestWeight: 0.6
+    # Index attempts before the pod gives up. The API container and its Redis
+    # start together, so the first attempt often lands before Redis is
+    # listening.
+    attempts: 30
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  redis:
+    image:
+      registry: docker.io
+      name: redis
+      tag: "8.10.0-alpine"
+      pullPolicy: IfNotPresent
+    # Holds the whole index in memory. Measured at 141 MB resident after
+    # indexing the full text of the 7,339 pages a full build produces
+    # (5,674 documentation pages plus the mirrored sections); the indexer
+    # itself peaked at 104 MB of the API container's 512Mi. A deployment that
+    # adds more sources should raise it.
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
 aiServices:
   litellm:
     enabled: false
@@ -330,7 +489,7 @@ externalLinks:
   overrides: {}
   # Examples:
   #   overrides:
-  #     tutorials:
+  #     university:
   #       enabled: true
   #     github:
   #       enabled: true

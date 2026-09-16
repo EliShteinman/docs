@@ -1,0 +1,22 @@
+{{- if .Values.mirror.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-mirror
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: mirror
+spec:
+  type: ClusterIP
+  ports:
+    # 8080 whatever the container listens on: targetPort is the named port, so a
+    # privileged mirror image on port 80 is reached the same way and the site's
+    # nginx never has to know which variant is deployed.
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "redis-docs.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: mirror
+{{- end }}

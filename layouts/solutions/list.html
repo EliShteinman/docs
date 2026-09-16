@@ -1,0 +1,6 @@
+{{/* Index for a mirrored section. The body is shared: see
+     layouts/partials/mirrored-list.html for why each section needs
+     its own layout rather than one _default/list.html. */}}
+{{ define "main" }}
+  {{ partial "mirrored-list.html" (dict "page" . "order" "title" "groupBy" "") }}
+{{ end }}

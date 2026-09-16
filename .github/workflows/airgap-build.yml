@@ -12,6 +12,13 @@ name: Airgap Build & Push
 #   2b. build_versions matrix of N jobs (one per <product, version>)
 #   3. assemble        merge per-build artifacts, ndjson, gzip
 #   4. docker          minimal nginx image, push to DockerHub
+#   4b. cli_image      CLI proxy image, built and pushed only when
+#                      helm/cli-proxy changed (runs beside phases 1-4)
+#   4c. tests          the fork's own test suites (same)
+#   4d. dockerhub_description  the image pages' text, release branch only
+#   4e. mirror_drift   how far behind redis.io the mirrored sections are
+#   4f. mirror_image   the mirrored sections as an image of their own
+#   5. publish_chart   opt-in: bump and publish the Helm chart
 #
 # Dockerfile and airgap-multibuild.sh are unchanged — local builds still work.
 
@@ -52,6 +59,7 @@ on:
 
 env:
   REPO: a0533057932/redis-docs
+  CLI_REPO: a0533057932/redis-docs-cli
   HUGO_VERSION: 0.143.1
 
 jobs:
@@ -68,6 +76,8 @@ jobs:
       platforms: ${{ steps.meta.outputs.platforms }}
       priv_tags: ${{ steps.meta.outputs.priv_tags }}
       unpriv_tags: ${{ steps.meta.outputs.unpriv_tags }}
+      mirror_priv_tags: ${{ steps.meta.outputs.mirror_priv_tags }}
+      mirror_unpriv_tags: ${{ steps.meta.outputs.mirror_unpriv_tags }}
       matrix: ${{ steps.matrix.outputs.matrix }}
       k8s_versions: ${{ steps.matrix.outputs.k8s }}
       rs_versions: ${{ steps.matrix.outputs.rs }}
@@ -107,6 +117,24 @@ jobs:
             else
               echo "$REPO:$HASH-unprivileged"
               echo "$REPO:unprivileged"
+            fi
+            echo "EOF"
+            # The mirrored sections, in the same repository under their own
+            # tags: same build, same commit, a different half of the tree.
+            echo "mirror_priv_tags<<EOF"
+            if [ -n "$INPUT_OVERRIDE" ]; then
+              echo "$REPO:$INPUT_OVERRIDE-mirror"
+            else
+              echo "$REPO:$HASH-mirror"
+              echo "$REPO:mirror"
+            fi
+            echo "EOF"
+            echo "mirror_unpriv_tags<<EOF"
+            if [ -n "$INPUT_OVERRIDE" ]; then
+              echo "$REPO:$INPUT_OVERRIDE-mirror-unprivileged"
+            else
+              echo "$REPO:$HASH-mirror-unprivileged"
+              echo "$REPO:mirror-unprivileged"
             fi
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
@@ -321,6 +349,31 @@ jobs:
           find content -type f -name '*.md' -print0 | xargs -0 sed -i \
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
+          # Point the documentation's blog links at the mirrored blog in this
+          # image (content/blog, written by build/site_mirror). Mirrors the
+          # same step in airgap-multibuild.sh. Four domains, not one: of the
+          # 184 blog links, 83 use the legacy redis.com and 16 use
+          # redislabs.com.
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+            -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
+            -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g'
+          # Short-form command links: the docs link commands both as
+          # redis.io/docs/latest/commands/<x> (handled above) and as
+          # redis.io/commands/<x>, which that rule does not touch -- 435 links
+          # to pages already in this image. Lowercased because some are written
+          # in capitals while Hugo publishes them lowercase. Mirrors the same
+          # step in airgap-multibuild.sh.
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+            -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
+            -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
+          # The links no rule can straighten out: legacy documentation paths
+          # (/docs/<old structure>/, /topics/<page>) that moved twice, where
+          # only redis.io knows the target. build/site_mirror/doc_links.json
+          # records where each lands, observed once with the internet and
+          # committed, so this needs no network. Inside mirrored pages a
+          # leftover redis.io link becomes the words it was written as.
+          # Mirrors the same step in airgap-multibuild.sh.
+          python3 -m build.site_mirror.doc_links
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
@@ -511,6 +564,31 @@ jobs:
           find content -type f -name '*.md' -print0 | xargs -0 sed -i \
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
+          # Point the documentation's blog links at the mirrored blog in this
+          # image (content/blog, written by build/site_mirror). Mirrors the
+          # same step in airgap-multibuild.sh. Four domains, not one: of the
+          # 184 blog links, 83 use the legacy redis.com and 16 use
+          # redislabs.com.
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+            -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
+            -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g'
+          # Short-form command links: the docs link commands both as
+          # redis.io/docs/latest/commands/<x> (handled above) and as
+          # redis.io/commands/<x>, which that rule does not touch -- 435 links
+          # to pages already in this image. Lowercased because some are written
+          # in capitals while Hugo publishes them lowercase. Mirrors the same
+          # step in airgap-multibuild.sh.
+          find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+            -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
+            -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
+          # The links no rule can straighten out: legacy documentation paths
+          # (/docs/<old structure>/, /topics/<page>) that moved twice, where
+          # only redis.io knows the target. build/site_mirror/doc_links.json
+          # records where each lands, observed once with the internet and
+          # committed, so this needs no network. Inside mirrored pages a
+          # leftover redis.io link becomes the words it was written as.
+          # Mirrors the same step in airgap-multibuild.sh.
+          python3 -m build.site_mirror.doc_links
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
@@ -526,7 +604,13 @@ jobs:
           {
             find "content/$PRODUCT/$VERSION" -type f -print0 | sort -z | xargs -0 sha256sum
             for d in layouts assets data static i18n; do
-              [ -d "$d" ] && find "$d" -type f -print0 | sort -z | xargs -0 sha256sum
+              # static/images/site-mirror is excluded: it holds ~2,700 mirrored
+              # images, and a version build keeps only public/<product>/<version>,
+              # which never contains them. Hashing them would mean every mirror
+              # sync invalidated all 29 version caches and rebuilt the whole
+              # matrix for pictures none of those pages can show.
+              [ -d "$d" ] && find "$d" -type f -not -path "static/images/site-mirror/*" -print0 \
+                | sort -z | xargs -0 sha256sum
             done
             for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
               [ -f "$f" ] && sha256sum "$f"
@@ -554,6 +638,18 @@ jobs:
         run: |
           set -euo pipefail
           export PATH="$PWD/venv/bin:$PATH"
+
+          # The mirrored content belongs to the "latest" tree only. This job
+          # keeps nothing but public/<product>/<version>/, so rendering ~1,400
+          # mirrored documents here is work thrown away. Mirrors the same step
+          # in airgap-multibuild.sh.
+          #
+          # Every mirrored section and nothing else. content/glossary is NOT on
+          # this list: it is the documentation's own glossary, and 28 versioned
+          # pages link to it with relref -- removing it does not fail the build
+          # (refLinksErrorLevel = "WARNING") but every one of those links then
+          # resolves somewhere wrong in the shipped image.
+          rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/redis-glossary
 
           # Remove all OTHER versions of this product
           VPARENT="content/$PRODUCT"
@@ -754,20 +850,40 @@ jobs:
           /tmp/venv/bin/python3 build/generate_ndjson.py
           /tmp/venv/bin/python3 build/tag_ndjson_versions.py
 
+      # The documentation stays in public/, the mirrored sections and their
+      # pictures move to public-mirror/, and phase 4 wraps each in an image of
+      # its own. A deployment that does not want 1,400 mirrored pages and
+      # 238 MB of pictures does not have to carry them. Mirrors the same step
+      # in the local Dockerfile.
+      - name: Split the mirrored sections out of the site tree
+        run: |
+          python3 build/split_mirror.py --site public --mirror public-mirror \
+            --assets public-mirror-assets
+
       - name: Pre-compress static assets (skip .json/.md — sub_filter at runtime)
         run: |
-          find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
+          find public public-mirror public-mirror-assets -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
             -exec gzip -9 -k {} \;
 
       - name: Tar public/
         run: |
           tar -czf /tmp/public.tar.gz public
-          echo "Files: $(find public -type f | wc -l), Size: $(du -sh public | cut -f1)"
+          tar -czf /tmp/public-mirror.tar.gz public-mirror public-mirror-assets
+          echo "Documentation: $(find public -type f | wc -l) files, $(du -sh public | cut -f1)"
+          echo "Mirror pages: $(find public-mirror -type f | wc -l) files, $(du -sh public-mirror | cut -f1)"
+          echo "Mirror pictures: $(find public-mirror-assets -type f | wc -l) files, $(du -sh public-mirror-assets | cut -f1)"
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: public
           path: /tmp/public.tar.gz
+          retention-days: 1
+          compression-level: 0
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: public-mirror
+          path: /tmp/public-mirror.tar.gz
           retention-days: 1
           compression-level: 0
 
@@ -926,14 +1042,450 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================
+  # Phase 4c: tests — the fork's own suites, over the whole checkout.
+  #
+  # cli_image runs a subset of these, and only when it builds. This job is the
+  # one that sees an upstream *content* change breaking a fork test: DOC-7059
+  # turned a note into a blockquote and test_acl.py read "Save this key" as the
+  # command SAVE, which no file-level check could have caught. It does not hold
+  # up either image, so a failure here still leaves something to deploy, but
+  # the chart is not published over it.
+  # =========================================================================
+  tests:
+    name: 4c. Fork tests
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: python -m pip install --quiet -r requirements.txt -r helm/cli-proxy/requirements.txt pytest==9.1.1
+
+      # These need docker for a real Redis with the bundled modules, which the
+      # runner has, and the full content/ tree the checkout above provides.
+      - name: Run the CLI proxy, search and ACL tests
+        run: python -m pytest helm/cli-proxy -q
+
+      # build/jupyterize is left out: it imports nbformat, which no
+      # requirements file in this repo declares. test_every_product_is_offered
+      # is left out because Redis Radar is missing from data/doc_bundles.json
+      # upstream — it fails on redis/docs main too, and is not ours to fix.
+      - name: Run the build tooling tests
+        run: |
+          python -m pytest build -q \
+            --ignore=build/jupyterize \
+            --deselect build/test_make_doc_bundles.py::test_every_product_is_offered
+
+  # =========================================================================
+  # Phase 4f: mirror_image — the sections split out of the site tree.
+  #
+  # The same build as the site image and the same commit, wrapped separately so
+  # a deployment can take the documentation without 1,400 mirrored pages and
+  # 238 MB of pictures. The chart proxies their paths to this pod when
+  # mirror.enabled is on, and serves neither when it is off.
+  # =========================================================================
+  mirror_image:
+    name: 4f. Build & push the mirror image
+    needs: [setup, assemble]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          sparse-checkout: Dockerfile.runtime
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          name: public-mirror
+          path: /tmp/
+
+      # Both trees: the pages and, separately, the pictures they reference. The
+      # image copies them as two layers, so an unchanged 243 MB of pictures is
+      # not pushed again for a stylesheet change.
+      - name: Extract the mirror trees into the build context
+        run: tar -xzf /tmp/public-mirror.tar.gz -C .
+
+      - name: Set up QEMU
+        if: inputs.platforms != 'amd64'
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
+        with:
+          platforms: arm64
+
+      - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd  # v4.0.0
+
+      - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push privileged
+        id: push_priv
+        if: inputs.variant != 'unprivileged'
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
+        with:
+          context: .
+          file: Dockerfile.runtime
+          platforms: ${{ needs.setup.outputs.platforms }}
+          target: mirror-privileged
+          build-args: |
+            GIT_COMMIT=${{ needs.setup.outputs.hash }}
+            BUILD_DATE=${{ github.event.repository.updated_at }}
+          tags: ${{ needs.setup.outputs.mirror_priv_tags }}
+          push: true
+
+      - name: Build & push unprivileged
+        id: push_unpriv
+        if: inputs.variant != 'privileged'
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
+        with:
+          context: .
+          file: Dockerfile.runtime
+          platforms: ${{ needs.setup.outputs.platforms }}
+          target: mirror-unprivileged
+          build-args: |
+            GIT_COMMIT=${{ needs.setup.outputs.hash }}
+            BUILD_DATE=${{ github.event.repository.updated_at }}
+          tags: ${{ needs.setup.outputs.mirror_unpriv_tags }}
+          push: true
+
+      - name: Write mirror summary
+        if: always()
+        env:
+          STATUS: ${{ job.status }}
+          PRIV_TAGS: ${{ needs.setup.outputs.mirror_priv_tags }}
+          UNPRIV_TAGS: ${{ needs.setup.outputs.mirror_unpriv_tags }}
+          PRIV_OUTCOME: ${{ steps.push_priv.outcome }}
+          UNPRIV_OUTCOME: ${{ steps.push_unpriv.outcome }}
+        run: |
+          {
+            echo ""
+            echo "## Mirror image: \`$STATUS\`"
+            echo ""
+            if [ "$PRIV_OUTCOME" = "success" ] || [ "$UNPRIV_OUTCOME" = "success" ]; then
+              echo '```'
+              [ "$PRIV_OUTCOME" = "success" ] && printf '%s\n' "$PRIV_TAGS"
+              [ "$UNPRIV_OUTCOME" = "success" ] && printf '%s\n' "$UNPRIV_TAGS"
+              echo '```'
+            else
+              echo "Nothing pushed — see the step logs."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # =========================================================================
+  # Phase 4b: cli_image — the CLI proxy image, which also carries the docs
+  # search service. Nothing here reads the site, so it runs beside the site
+  # build rather than after it.
+  #
+  # Built only when helm/cli-proxy changed. Every image carries a label with
+  # the hash of its source, so the published images themselves say what code
+  # they hold and no record of past builds is kept anywhere. Starting from the
+  # tag the chart pins, the job walks up the patch numbers: a tag holding this
+  # code is reused, a tag holding other code is skipped, and the first free
+  # tag is built. A published tag is therefore never overwritten, and a run
+  # that pushed an image without publishing the chart leaves nothing to redo:
+  # the next run finds that tag and points the chart at it.
+  # =========================================================================
+  cli_image:
+    name: 4b. CLI image (build if changed)
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      pinned: ${{ steps.resolve.outputs.pinned }}
+      tag: ${{ steps.resolve.outputs.tag }}
+      build: ${{ steps.resolve.outputs.build }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          sparse-checkout: helm/
+
+      - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # The source hash covers every tracked file under helm/cli-proxy except
+      # the tests, which never enter the image: a change to a test alone does
+      # not publish a new image.
+      - name: Resolve the CLI image tag
+        id: resolve
+        env:
+          INPUT_OVERRIDE: ${{ inputs.tag_override }}
+        run: |
+          set -euo pipefail
+          SOURCE_HASH=$(git ls-files -s helm/cli-proxy | grep -vE '/test_[^/]*\.py$' \
+            | sha256sum | cut -c1-16)
+
+          # values.yaml pins the image twice, for the playground and for
+          # search, and both must name the same tag: it is one image.
+          PINNED=$(python3 - <<'PYEOF'
+          import pathlib, re
+          values = pathlib.Path("helm/redis-docs/values.yaml").read_text()
+          tags = set(re.findall(r'^[ \t]+name: redis-docs-cli\n[ \t]+tag: "([^"]*)"', values, re.M))
+          print(" ".join(sorted(tags)))
+          PYEOF
+          )
+          if [[ ! "$PINNED" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::cli.image.tag and search.image.tag must be one plain X.Y.Z, found '$PINNED'."
+            exit 1
+          fi
+
+          exists() {
+            local code
+            code=$(curl -s --retry 3 -o /dev/null -w '%{http_code}' \
+              "https://hub.docker.com/v2/repositories/$CLI_REPO/tags/$1")
+            case "$code" in
+              200) return 0 ;;
+              404) return 1 ;;
+              *) echo "::error::Docker Hub answered $code for $CLI_REPO:$1, so it is unknown whether the tag exists. Nothing was built."
+                 exit 1 ;;
+            esac
+          }
+          source_hash_of() {
+            docker buildx imagetools inspect "$CLI_REPO:$1" --format '{{json .Image}}' \
+              | jq -r '(.["linux/amd64"] // .) | .config.Labels["redis-docs.cli.source-hash"] // ""'
+          }
+
+          TAG=$PINNED
+          BUILD=true
+          while exists "$TAG"; do
+            # Read into a variable, not inside the `if`: there a failed inspect
+            # would compare as a different hash and publish this code under a
+            # new tag instead of failing the job.
+            PUBLISHED_HASH=$(source_hash_of "$TAG")
+            if [ "$PUBLISHED_HASH" = "$SOURCE_HASH" ]; then
+              BUILD=false
+              break
+            fi
+            IFS=. read -r MAJ MIN PATCH <<<"$TAG"
+            TAG="$MAJ.$MIN.$((PATCH + 1))"
+          done
+
+          # A test run pushes under its override tag only, like the site
+          # image, and leaves both the version sequence and :latest alone.
+          if [ -n "$INPUT_OVERRIDE" ]; then
+            PUSHED_TAG=$INPUT_OVERRIDE
+            PUSH_TAGS="$CLI_REPO:$PUSHED_TAG"
+          else
+            PUSHED_TAG=$TAG
+            PUSH_TAGS="$CLI_REPO:$PUSHED_TAG"$'\n'"$CLI_REPO:latest"
+          fi
+
+          {
+            echo "source_hash=$SOURCE_HASH"
+            echo "pinned=$PINNED"
+            echo "tag=$TAG"
+            echo "pushed_tag=$PUSHED_TAG"
+            echo "build=$BUILD"
+            echo "push_tags<<EOF"
+            echo "$PUSH_TAGS"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        if: steps.resolve.outputs.build == 'true'
+        with:
+          python-version: '3.14'
+
+      # test_acl.py is left out: it checks the chart's ACL file against every
+      # command in the docs, which this checkout does not have, and nothing it
+      # covers is in the image.
+      - name: Test the CLI proxy and search service
+        if: steps.resolve.outputs.build == 'true'
+        run: |
+          python -m pip install --quiet -r helm/cli-proxy/requirements.txt pytest==9.1.1
+          python -m pytest helm/cli-proxy -q --ignore=helm/cli-proxy/test_acl.py
+
+      - name: Set up QEMU
+        if: steps.resolve.outputs.build == 'true'
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
+        with:
+          platforms: arm64
+
+      - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd  # v4.0.0
+        if: steps.resolve.outputs.build == 'true'
+
+      # Both platforms whatever the platforms input says: the next run reuses
+      # this tag without rebuilding it, so it has to be complete the first time.
+      - name: Build & push the CLI image
+        if: steps.resolve.outputs.build == 'true'
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
+        with:
+          context: helm/cli-proxy
+          platforms: linux/amd64,linux/arm64
+          labels: |
+            redis-docs.cli.source-hash=${{ steps.resolve.outputs.source_hash }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          tags: ${{ steps.resolve.outputs.push_tags }}
+          push: true
+
+      # The Dockerfile copies a named list of files, so a module added to
+      # helm/cli-proxy but not to that list builds cleanly and fails on import
+      # in the cluster. The tests above run from the checkout rather than from
+      # the image and cannot see it. Both platforms, which also proves the
+      # published manifest carries them.
+      - name: Check the pushed image runs both services
+        if: steps.resolve.outputs.build == 'true'
+        env:
+          PUSHED: ${{ steps.resolve.outputs.pushed_tag }}
+        run: |
+          set -euo pipefail
+          for platform in linux/amd64 linux/arm64; do
+            docker run --rm --platform "$platform" "$CLI_REPO:$PUSHED" \
+              python -c "import main, search.main"
+          done
+
+      - name: Write CLI image summary
+        if: always()
+        env:
+          STATUS: ${{ job.status }}
+          PINNED: ${{ steps.resolve.outputs.pinned }}
+          TAG: ${{ steps.resolve.outputs.tag }}
+          BUILD: ${{ steps.resolve.outputs.build }}
+          PUSH_TAGS: ${{ steps.resolve.outputs.push_tags }}
+        run: |
+          {
+            echo ""
+            echo "## CLI image: \`$STATUS\`"
+            echo ""
+            if [ "$STATUS" != "success" ]; then
+              echo "Nothing was pushed unless the build step shows success — see step logs."
+            elif [ "$BUILD" = "true" ]; then
+              echo "helm/cli-proxy changed since \`$PINNED\`. Built and pushed:"
+              echo '```'
+              echo "$PUSH_TAGS"
+              echo '```'
+            else
+              echo "\`$CLI_REPO:$TAG\` already holds this code — nothing built."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # =========================================================================
+  # Phase 4e: mirror_drift — how far behind redis.io the mirrored sections are.
+  #
+  # The mirror is run by hand and its output is committed, so nothing otherwise
+  # says that redis.io has published since. One count query per tree does.
+  #
+  # It reports and never gates: a post published this morning is news, not a
+  # reason to fail a build that has nothing to do with it. Nothing depends on
+  # this job, and a source that cannot be reached leaves the summary saying so.
+  # =========================================================================
+  mirror_drift:
+    name: 4e. Mirror drift report
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Compare the mirrored sections against their source
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python3 -m build.site_mirror --check 2>&1 | tee /tmp/drift.txt
+          {
+            echo "## Mirror drift"
+            echo ""
+            echo '```'
+            sed -E 's/^[0-9-]+ [0-9:,]+ [A-Z]+ site_mirror //' /tmp/drift.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # =========================================================================
+  # Phase 4d: dockerhub_description — the text on each image's Docker Hub
+  # page, kept in .github/dockerhub/.
+  #
+  # Only from the release branch, feature/docker-support, named in the `if`
+  # below because a job-level condition cannot read env. Both branches push to
+  # the same two repositories
+  # but do not hold the same site, and the description belongs to the
+  # repository rather than to a tag, so it describes the release branch and is
+  # written only from there. It is compared before it is written: an unchanged
+  # description is left alone, and the text only moves when someone edits the
+  # file.
+  #
+  # Nothing depends on this job. A Docker Hub account whose token cannot write
+  # descriptions fails here and nowhere else.
+  # =========================================================================
+  dockerhub_description:
+    name: 4d. Docker Hub descriptions
+    if: github.ref_name == 'feature/docker-support' && inputs.tag_override == ''
+    needs: docker
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          sparse-checkout: .github/dockerhub/
+
+      - name: Sync the descriptions that changed
+        env:
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          API=https://hub.docker.com/v2
+
+          # The API takes a JWT, which the same credentials the image push uses
+          # can obtain. A personal access token needs write scope to set a
+          # description; without it the PATCH below answers 401 or 403.
+          JWT=$(jq -n --arg u "$DOCKERHUB_USERNAME" --arg p "$DOCKERHUB_TOKEN" \
+                  '{username: $u, password: $p}' \
+                | curl -sS --fail-with-body -X POST "$API/users/login/" \
+                    -H 'Content-Type: application/json' -d @- \
+                | jq -r .token)
+
+          for repo in $REPO $CLI_REPO; do
+            file=".github/dockerhub/${repo##*/}.md"
+            if [ ! -f "$file" ]; then
+              echo "::error::$file is missing — every pushed repository needs its description."
+              exit 1
+            fi
+
+            # First line carries the one-line summary Docker Hub shows in
+            # search results; the rest is the page itself.
+            SHORT=$(sed -nE '1s/^<!-- short: (.*) -->$/\1/p' "$file")
+            if [ -z "$SHORT" ]; then
+              echo "::error::$file must open with <!-- short: ... -->."
+              exit 1
+            fi
+            FULL=$(tail -n +2 "$file")
+
+            CURRENT=$(curl -sS --fail-with-body "$API/repositories/$repo/" \
+              -H "Authorization: JWT $JWT")
+            if [ "$(jq -r '.description // ""' <<<"$CURRENT")" = "$SHORT" ] \
+               && [ "$(jq -r '.full_description // ""' <<<"$CURRENT")" = "$FULL" ]; then
+              echo "$repo: description already matches $file."
+              continue
+            fi
+
+            jq -n --arg d "$SHORT" --arg f "$FULL" '{description: $d, full_description: $f}' \
+              | curl -sS --fail-with-body -o /dev/null -X PATCH "$API/repositories/$repo/" \
+                  -H "Authorization: JWT $JWT" -H 'Content-Type: application/json' -d @-
+            echo "$repo: description updated from $file."
+            echo "- updated \`$repo\` from \`$file\`" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+  # =========================================================================
   # Phase 5: publish_chart — opt-in.
   # Order: bump files -> git commit & push -> helm publish to OCI.
   # If helm publish fails the bump is already in git; rerun helm push by hand.
+  # Waits for cli_image as well and takes the CLI tag from it, so the chart
+  # never names a CLI image that was not pushed, and for the fork's tests, so
+  # a published chart is never one whose tests were failing.
   # Skipped on partial builds (variant/platforms != both, or tag_override set).
   # =========================================================================
   publish_chart:
     name: 5. Publish Helm chart (opt-in)
-    needs: [setup, docker]
+    needs: [setup, docker, cli_image, tests]
     if: >-
       inputs.publish_chart &&
       inputs.variant == 'both' &&
@@ -952,6 +1504,8 @@ jobs:
         id: bump
         env:
           NEW_HASH: ${{ needs.setup.outputs.hash }}
+          OLD_CLI_TAG: ${{ needs.cli_image.outputs.pinned }}
+          NEW_CLI_TAG: ${{ needs.cli_image.outputs.tag }}
         run: |
           set -euo pipefail
           CHART=helm/redis-docs/Chart.yaml
@@ -981,15 +1535,47 @@ jobs:
             exit 1
           fi
 
+          # Validated by cli_image, but interpolated below all the same.
+          if [[ ! "$NEW_CLI_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::CLI tag '$NEW_CLI_TAG' from cli_image is not plain X.Y.Z."
+            exit 1
+          fi
+
           {
             echo "old_version=$OLD_VERSION"
             echo "old_hash=$OLD_HASH"
+            echo "old_cli_tag=$OLD_CLI_TAG"
           } >> "$GITHUB_OUTPUT"
 
-          if [ "$OLD_HASH" = "$NEW_HASH" ]; then
-            echo "appVersion already $NEW_HASH — nothing to publish."
+          if [ "$OLD_HASH" = "$NEW_HASH" ] && [ "$OLD_CLI_TAG" = "$NEW_CLI_TAG" ]; then
+            echo "appVersion already $NEW_HASH and CLI image already $NEW_CLI_TAG — nothing to publish."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
+          fi
+
+          # Every place the chart names the CLI image. values.yaml pins it
+          # twice (playground and search: one image), the airgapped example
+          # once; the READMEs name it in their tables and air-gap commands.
+          if [ "$OLD_CLI_TAG" != "$NEW_CLI_TAG" ]; then
+            python3 <<'PYEOF'
+          import os, pathlib, re
+          new_tag = os.environ["NEW_CLI_TAG"]
+          cli_repo = os.environ["CLI_REPO"]
+          def point_at_new_tag(path, pattern, expected=None):
+              p = pathlib.Path(path)
+              text, n = re.subn(pattern, lambda m: m.group(1) + new_tag, p.read_text(), flags=re.M)
+              if expected is not None:
+                  assert n == expected, f"{path}: expected {expected} CLI tag(s), found {n}"
+              assert n, f"{path}: no CLI tag found to update"
+              p.write_text(text)
+          pinned_tag = r'(^[ \t]+name: redis-docs-cli\n[ \t]+tag: ")[^"]*'
+          point_at_new_tag("helm/redis-docs/values.yaml", pinned_tag, expected=2)
+          point_at_new_tag("helm/redis-docs/examples/values-openshift-airgapped.yaml", pinned_tag, expected=1)
+          named_tag = (r"(redis-docs-cli:|cli\.image\.tag=|`" + re.escape(cli_repo) + r"` \| `"
+                       r"|`(?:cli|search)\.image\.tag` \| `)[0-9]+\.[0-9]+\.[0-9]+")
+          point_at_new_tag("helm/redis-docs/README.md", named_tag)
+          point_at_new_tag("helm/redis-docs/README-he.md", named_tag)
+          PYEOF
           fi
 
           IFS=. read -r MAJ MIN PATCH <<<"$OLD_VERSION"
@@ -999,15 +1585,41 @@ jobs:
           # lines BUILD.md step 5 lists, so a stray hex string elsewhere in
           # these files (release notes, examples, etc.) can't be corrupted.
           sed -i -E "s/^appVersion:[[:space:]]*\"[a-f0-9]+\"/appVersion: \"${NEW_HASH}\"/" "$CHART"
+          # The mirror's tag first: `[a-f0-9]+-unprivileged` cannot match
+          # `<hash>-mirror-unprivileged` (the word "mirror" is not hex), so
+          # without its own pattern that tag would quietly go stale.
+          sed -i -E "s/[a-f0-9]+-mirror-unprivileged/${NEW_HASH}-mirror-unprivileged/g" \
+            helm/redis-docs/examples/values-openshift-airgapped.yaml \
+            helm/redis-docs/README.md \
+            helm/redis-docs/README-he.md
           sed -i -E "s/[a-f0-9]+-unprivileged/${NEW_HASH}-unprivileged/g" \
             helm/redis-docs/examples/values-openshift-airgapped.yaml \
             helm/redis-docs/README.md \
             helm/redis-docs/README-he.md
           sed -i "s/^version: .*/version: ${NEW_VERSION}/" "$CHART"
+          # The READMEs install from the packaged chart by file name.
+          sed -i -E "s/redis-docs-[0-9]+\.[0-9]+\.[0-9]+\.tgz/redis-docs-${NEW_VERSION}.tgz/g" \
+            helm/redis-docs/README.md \
+            helm/redis-docs/README-he.md
+          # The Docker Hub pages pull the chart by version. They are published
+          # by dockerhub_description, which runs before this job, so the text
+          # on Docker Hub names the version from the run before — a version
+          # that exists, one patch behind.
+          sed -i -E "s/--version [0-9]+\.[0-9]+\.[0-9]+/--version ${NEW_VERSION}/g" \
+            .github/dockerhub/redis-docs.md \
+            .github/dockerhub/redis-docs-cli.md
+
+          if [ "$OLD_CLI_TAG" != "$NEW_CLI_TAG" ]; then
+            CLI_NOTE=", CLI image $NEW_CLI_TAG"
+          else
+            CLI_NOTE=""
+          fi
 
           {
             echo "new_version=$NEW_VERSION"
             echo "new_hash=$NEW_HASH"
+            echo "new_cli_tag=$NEW_CLI_TAG"
+            echo "cli_note=$CLI_NOTE"
             echo "changed=true"
           } >> "$GITHUB_OUTPUT"
 
@@ -1019,8 +1631,8 @@ jobs:
         if: steps.bump.outputs.changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9  # v7.1.0
         with:
-          commit_message: "chore(helm): bump chart ${{ steps.bump.outputs.new_version }}, appVersion ${{ steps.bump.outputs.new_hash }}"
-          file_pattern: helm/redis-docs/
+          commit_message: "chore(helm): bump chart ${{ steps.bump.outputs.new_version }}, appVersion ${{ steps.bump.outputs.new_hash }}${{ steps.bump.outputs.cli_note }}"
+          file_pattern: helm/redis-docs/ .github/dockerhub/
 
       - name: Publish chart to OCI
         if: steps.bump.outputs.changed == 'true'
@@ -1042,6 +1654,8 @@ jobs:
           OLD_VERSION: ${{ steps.bump.outputs.old_version }}
           NEW_VERSION: ${{ steps.bump.outputs.new_version }}
           NEW_HASH: ${{ steps.bump.outputs.new_hash }}
+          OLD_CLI_TAG: ${{ steps.bump.outputs.old_cli_tag }}
+          NEW_CLI_TAG: ${{ steps.bump.outputs.new_cli_tag }}
           DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
         run: |
           {
@@ -1053,6 +1667,11 @@ jobs:
               echo "|-------|-------|"
               echo "| version | \`$OLD_VERSION\` → \`$NEW_VERSION\` |"
               echo "| appVersion | \`$NEW_HASH\` |"
+              if [ "$OLD_CLI_TAG" != "$NEW_CLI_TAG" ]; then
+                echo "| CLI image | \`$OLD_CLI_TAG\` → \`$NEW_CLI_TAG\` |"
+              else
+                echo "| CLI image | \`$NEW_CLI_TAG\` (unchanged) |"
+              fi
               echo "| OCI ref | \`oci://registry-1.docker.io/$DOCKERHUB_USERNAME/redis-docs:$NEW_VERSION\` |"
             elif [ "$STATUS" = "success" ]; then
               echo "Chart appVersion already up to date — nothing pushed."

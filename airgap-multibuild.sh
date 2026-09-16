@@ -79,6 +79,52 @@ find content -type f -name '*.md' -print0 | xargs -0 sed -i \
   -e 's|https://redis.io/docs/latest/|/|g' \
   -e 's|redis\.io/docs/latest/|/|g'
 
+# 2b. Point the documentation's blog links at the mirrored blog in this image
+#     (content/blog, written by build/site_mirror). Same reasoning as the
+#     docs/latest rewrite above, and the same place to do it: a link rewritten
+#     here reaches the .md and .json AI outputs too, which a runtime handler
+#     walking <a href> in the DOM never sees.
+#
+#     Four domains, not one: of the 184 blog links in the documentation, 83 use
+#     the legacy redis.com and 16 use redislabs.com, so matching only redis.io
+#     would leave more than half of them pointing at the internet. Checked
+#     against the corpus: no URL has /blog as a non-boundary prefix, so
+#     /blogging-guide cannot be caught by this.
+echo "airgap: pointing redis.io/redis.com/redislabs.com blog links at /blog/..."
+find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+  -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
+  -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g'
+
+# 2c. Point the short-form command links at the local command pages. The docs
+#     link commands both ways: redis.io/docs/latest/commands/<x> (handled by
+#     step 2 above) and the short redis.io/commands/<x>, which step 2 does not
+#     touch -- 435 links to pages that are already in this image.
+#
+#     Lowercased because the source writes some of them in capitals
+#     (redis.io/commands/EVAL) while Hugo publishes commands/eval/. `\L` is a
+#     GNU sed extension; both pipelines run GNU sed (builder is node:24-trixie,
+#     the workflow is ubuntu-24.04).
+#
+#     Four of the 169 commands linked this way have no page here --
+#     debug-object, debug-segfault, graph.explain, graph.profile -- and answer
+#     301 on redis.io too. They are rewritten with the rest: an internal 404 and
+#     an unreachable host are equally dead in an air gap, and one rule beats a
+#     special case.
+echo "airgap: pointing redis.io/commands links at the local command pages..."
+find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
+  -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
+  -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
+
+# 2d. Point the links no rule can straighten out at the pages this image serves,
+#     and unlink the ones nothing serves. The legacy documentation paths
+#     (/docs/<old structure>/, /topics/<page>) moved twice and only redis.io
+#     knows where to; build/site_mirror/doc_links.json records where each one
+#     lands, observed once with the internet and committed, so this step needs
+#     no network. Inside mirrored pages a leftover redis.io link -- /downloads,
+#     /try-free, a booking form -- becomes the words it was written as.
+echo "airgap: pointing legacy redis.io links at local pages..."
+python3 -m build.site_mirror.doc_links
+
 # ---- Snapshot the prepared workspace -----------------------------------------
 # Captures content + layouts + components output. Excludes Hugo's own outputs.
 rm -rf "$SNAPSHOT"
@@ -184,6 +230,18 @@ build_version() {
   echo ">>> [CACHE MISS] Building ${product_path} v${version} (key=${cache_key})"
   reset_workspace
   cd "$SITE"
+
+  # The mirrored content belongs to the "latest" tree only. A version build
+  # keeps nothing but public/<product>/<version>/, so rendering ~1,400 mirrored
+  # documents here is work thrown away 28 times over, once per version.
+  #
+  # Every mirrored section and nothing else. content/glossary is NOT on this
+  # list: it is the documentation's own glossary, and 28 versioned pages link
+  # to it with relref -- removing it does not fail the build (config.toml sets
+  # refLinksErrorLevel = "WARNING") but every one of those links then resolves
+  # somewhere wrong in the shipped image. test_version_builds_remove_exactly_
+  # the_mirrored_sections holds this list to the mirror's own directories.
+  rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/redis-glossary
 
   # Remove all OTHER versions of this product
   for v in $all_versions; do

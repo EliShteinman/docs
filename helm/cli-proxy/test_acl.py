@@ -17,6 +17,7 @@ skip unless docker is available. The container is started once per session:
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -91,6 +92,13 @@ def permits(command: str) -> bool:
     return verdict == "OK" or "arguments" in verdict.lower()
 
 
+# A `> [!NOTE]` alert and the `>` lines under it. The render-hook migration
+# (DOC-7047 onward) turned every note into one, and the CLI parser takes any
+# line opening with "> " for a prompt, so a warning that starts "Save this key"
+# read as the command SAVE. Across the corpus these blocks hold prose only.
+_ALERT_BLOCKQUOTE = re.compile(r"^[ \t]*> \[!\w+\][^\n]*\n(?:[ \t]*>[^\n]*(?:\n|$))*", re.MULTILINE)
+
+
 def demonstrated_commands() -> list[str]:
     """Every real Redis command the docs show in a runnable CLI example."""
     from components.cli_parser import extract_cli_commands
@@ -106,15 +114,24 @@ def demonstrated_commands() -> list[str]:
                 text = handle.read()
             if "> " not in text:
                 continue
-            for command in extract_cli_commands(text):
+            for command in extract_cli_commands(_ALERT_BLOCKQUOTE.sub("", text)):
                 if command.split()[0].upper() in real:
                     found.add(command.upper())
     return sorted(found)
 
 
-# Commands the docs demonstrate that the rules block on purpose. Each one edits
-# or reports on the server itself, which is not a reader's to do.
-DELIBERATELY_BLOCKED = {"ACL LIST", "ACL LOAD", "ACL SAVE", "DEBUG OBJECT", "ROLE", "SLOWLOG RESET"}
+# Commands the corpus demonstrates that the rules block on purpose. Each one
+# edits or reports on the server itself, which is not a reader's to do.
+#
+# MONITOR and MODULE LIST arrive from the mirrored blog rather than from the
+# documentation, and they stay blocked: MONITOR is in MUST_DENY below because
+# it streams every other visitor's commands, and MODULE LIST reports on the
+# server the same way ROLE does. A reader who presses "try it" on one of those
+# examples gets a denial, which is the same answer the other five give.
+DELIBERATELY_BLOCKED = {
+    "ACL LIST", "ACL LOAD", "ACL SAVE", "DEBUG OBJECT", "ROLE", "SLOWLOG RESET",
+    "MONITOR", "MODULE LIST",
+}
 
 # What a reader must not be able to reach, and why it matters.
 MUST_DENY = [

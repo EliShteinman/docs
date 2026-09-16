@@ -20,7 +20,8 @@
 
 ## סכמת תגים
 
-כל שחרור מייצר **4 תגים** על **2 פלטפורמות** (linux/amd64 + linux/arm64):
+כל שחרור מייצר **8 תגים** על **2 פלטפורמות** (linux/amd64 + linux/arm64) — ארבעה
+לאתר וארבעה לתמונת המירור:
 
 | תג | Variant | פורט | שימוש |
 |-----|---------|------|-------|
@@ -28,6 +29,10 @@
 | `latest` | privileged (nginx:alpine) | 80 | rolling tag — `docker run` |
 | `<HASH>-unprivileged` | unprivileged (nginx-unprivileged) | 8080 | גרסה מתויגת — Kubernetes / OpenShift |
 | `unprivileged` | unprivileged (nginx-unprivileged) | 8080 | rolling tag — Kubernetes / OpenShift |
+| `<HASH>-mirror` | המירור, privileged | 80 | הסקשנים הממוררים מ-redis.io — פוד נפרד |
+| `mirror` | המירור, privileged | 80 | rolling tag |
+| `<HASH>-mirror-unprivileged` | המירור, unprivileged | 8080 | מה שה-chart פורס כש-`mirror.enabled=true` |
+| `mirror-unprivileged` | המירור, unprivileged | 8080 | rolling tag |
 
 > `<HASH>` = commit hash בן 9 תווים (`git rev-parse --short=9 HEAD`).
 > ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
@@ -82,7 +87,7 @@ git merge origin/main
 > exit 1 = הקובץ הקנוני של רדיס השתנה → לרה-וונדר ולסקור לפני הבנייה. פירוט בסעיף
 > "widget ה-redis-cli האינטראקטיבי" למטה.
 
-שתי דרכים — בענן או מקומית. שתיהן מייצרות את אותם **4 תגים** ב-DockerHub.
+שתי דרכים — בענן או מקומית. שתיהן מייצרות את אותם תגים ב-DockerHub.
 
 #### אופציה A — בנייה בענן (GitHub Actions, מומלץ)
 
@@ -150,6 +155,192 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 
 **המלצה:** אופציה A לעדכונים רגילים. אופציה B אם אין גישה ל-GitHub Actions, או לbuild שכולל שינויי Dockerfile/script שאתה בודק.
 
+### מירור תוכן מ-redis.io
+
+הרבה ממה שרדיס מפרסמת על עצמה קיים מחוץ לדוקס. הכל ממורר פנימה כתוכן Hugo, **מקובע בגיט**
+— כמו סנכרון הדוקס של RedisVL — כדי שהבנייה תישאר דטרמיניסטית ולא תלויה ב-redis.io ברגע
+הבנייה.
+
+```bash
+make mirror                                    # הכל
+python3 -m build.site_mirror --only tutorials  # או עץ בודד
+git add content/ static/images/site-mirror
+```
+
+| עץ | כמות | נתיב | בסרגל? |
+|---|---|---|---|
+| בלוג | 1,108 | `/blog/<slug>/` | מוסתר — האינדקס הוא הרשימה |
+| tutorials | 122 | `/tutorials/<slug>/` | מוסתר |
+| glossary | 56 | `/glossary/<term>/` | גלוי — הקבצים ב-`content/redis-glossary/`, ראה למטה |
+| technology | 10 | `/technology/<slug>/` | גלוי |
+| compare | 14 | `/compare/<slug>/` | גלוי |
+| solutions | 18 | `/solutions/<slug>/` | גלוי |
+| architecture-diagrams | 28 | `/resources/architecture-diagrams/<slug>/` | גלוי |
+| customers | 56 | `/customers/<slug>/` | מוסתר |
+
+**המילון — למה `content/redis-glossary/`.** `/glossary/` הוא סקשן של התיעוד עם 188 הגדרות
+כתובות ביד בגוף ה-`_index.md` שלו, ותבנית upstream שמרנדרת אותן. המירור מוסיף לאתר הזה ולא
+עורך אותו, ולכן הוא כותב לתיקייה משלו. **המונחים עצמם עדיין מתפרסמים ב-`/glossary/<term>/`**,
+בדיוק כמו ב-redis.io; רק עמוד הרשימה יושב ב-`/redis-glossary/`.
+
+**שלושה מבנים, צינור אחד.** פוסט בלוג הוא שדה Portable Text אחד. עמוד `page`
+(‏`/technology/`, `/compare/`, `/solutions/`) הוא רשימת סקשנים של page-builder שהפרוזה
+מפוזרת ביניהם — `pages.py`. שאר הסוגים נושאים גוף אחד בשדה משלהם, ו-`documents.py` מתאר
+אותם כנתונים ולא כקוד: הוספת סוג היא רשומה ב-`TREES`.
+
+המדריכים הם היחידים שהגוף שלהם **כבר markdown** (‏`markdownBody`), עם 545 תמונות שמוטמעות
+כ-URL של ה-CDN ולא כהפניית asset — ולכן הן ממוררות בדרך הפוכה, מ-URL חזרה להפניה.
+
+**תמונות** (‏`static/images/site-mirror/`): רסטר מומר ל-WebP דרך ה-CDN (‏82 KB → 34 KB
+בממוצע). SVG עובר כמו שהוא.
+
+**GIF-ים מומרים מקומית ב-`gif2webp`, לא דרך ה-CDN** — Sanity משטחת אותם לפריים בודד בכל
+המרה שנוסתה, והם הקלטות מסך שההנפשה בהן היא התוכן. מדוד: 156 MB → 58 MB, ההנפשה נשמרת
+ב-38/38. אבל לא בעיוורון: 8 מהם **גדלים** בהמרה (אחד מ-2.1 ל-4.8 MB), אז כל קובץ שומר את
+הקטן מבין השניים. הורדת איכות לא עוזרת — q70, q50 ו-q35 יצאו בהפרש של אחוז. אם `gif2webp`
+לא מותקן, הסקריפט מזהיר וממשיך עם ה-GIF-ים המקוריים.
+
+**הפניות ישנות (`build/site_mirror/redirects.json`):** חלק מהקישורים בדוקס ובתוכן הממורר
+מצביעים לכתובות ש-redis.io עונה עליהן ב-301 — למשל `/blog/connecting-spark-and-redis/`
+שהעמוד האמיתי שלו הוא `/blog/connecting-spark-and-redis-a-detailed-look/`. מפת ההפניות של
+רדיס יושבת בשכבת ה-hosting ולא ב-dataset, ולכן היא **נצפית ולא נשאלת**: הפקודה עוקבת אחרי
+כל קישור שבור, רואה איפה הוא נוחת, ורושמת alias על עמוד היעד.
+
+```bash
+python3 -m build.site_mirror --refresh-redirects   # דורש אינטרנט; להריץ ולקבע את המפה
+```
+
+המפה **מקובעת בגיט** כי המירור מייצר מחדש כל קובץ markdown בכל ריצה — alias שהיה מחושב בזמן
+סנכרון היה נמחק בריצה הבאה. ריצה רגילה רק קוראת אותה.
+
+**קישורים שאף כלל לא מיישר (`build/site_mirror/doc_links.json`):** שתי קבוצות נשארות אחרי
+כל הכתיבות־מחדש של הבנייה. הראשונה היא כתובות תיעוד ישנות — ‏`/docs/<מבנה ישן>/` ו-`/topics/<עמוד>`
+— שעברו שתי רה-ארגונים; רק רדיס יודעת לאן, ולכן כל כתובת **נצפית** פעם אחת ונרשמת במפה. השנייה
+היא כל שאר הקישורים ל-redis.io (‏`/downloads`, `/try-free`, טופס פגישה): **בתוך עמודי המירור**
+הקישור מוסר והטקסט נשאר, כי קישור שלא נפתח גרוע מקישור שאינו. עמודי התיעוד של רדיס לא נוגעים —
+הטקסט שלהם שלהם.
+
+```bash
+python3 -m build.site_mirror.doc_links --refresh   # דורש אינטרנט; לרענן ולקבע את המפה
+python3 -m build.site_mirror.doc_links             # מה שהבנייה מריצה, בלי רשת
+```
+
+כתובת נשמרת במפה רק אם העמוד שרדיס מפנה אליו באמת מתפרסם אצלנו, אחרת היינו מחליפים קישור שבור
+בקישור שבור אחר. במדידה האחרונה: 145 כתובות שונות, 90 נפתרו, 315 קישורים בפועל הופנו פנימה
+ו-1,499 קישורים מתים הפכו לטקסט.
+
+**פער מול המקור:**
+
+```bash
+python3 -m build.site_mirror --check   # כמה פורסם מאז הסנכרון האחרון
+```
+
+מדפיס טבלה של מקור מול דיסק לכל עץ. ה-job ‏`4e. Mirror drift report` מריץ את זה בכל בנייה
+ומדווח ב-summary, בלי להכשיל כלום.
+
+**ניווט:** `layouts/partials/mirrored-nav.html` מוסיף תיבה בסרגל הצדדי עם כל הסקשנים
+הממוררים. `docs-nav.html` מקודד קשיח לחמישה סקשנים (‏`Develop`, `Integrate`, `Operate`,
+`Commands`), כך שבלי התיבה הזו התוכן הממורר היה נגיש רק דרך חיפוש או הקלדת כתובת. ה-partial
+נפרד וההוספה ל-`docs-nav.html` היא **שורה אחת**, כדי לצמצם התנגשות במיזוג upstream.
+
+**מה קורה בבנייה, בשני הפייפליינים:**
+
+- קישורים לסקשנים הממוררים, לבלוג ולפקודות מנותבים פנימה ע"י `sed` על `content/**/*.md`,
+  באותו מקום שבו כבר משוכתבים קישורי `redis.io/docs/latest/`. כל הסקשנים שומרים על הנתיב
+  המקורי, אז זו הסרת התחילית בלבד. הבלוג הוא היוצא מן הכלל ודורש ארבעה דומיינים.
+- בניות הגרסאות מוחקות את הסקשנים הממוררים לפני Hugo — כל ריצת גרסה שומרת רק את
+  `public/<product>/<version>/`.
+- `static/images/site-mirror` מוחרג ממפתח ה-cache של בניות הגרסאות בלבד; במפתח של `latest`
+  הוא **כן** נכלל.
+
+> **החיפוש מקבל את הכל בחינם.** הכל עמודי Hugo, אז `build/generate_ndjson.py` אוסף אותם
+> ל-`docs.ndjson` כמו כל עמוד אחר. פוסטי בלוג מתויגים `source=blog`, שאר הסקשנים הממוררים
+> `source=site`, והתיעוד `source=docs`. כל סקשן ממורר מוביל קבוצה משלו בחלון החיפוש במקום
+> להופיע תחת הכותרת של הדוקס. המילון הוא היוצא מן הכלל: המונחים שלו מתפרסמים בתוך
+> `/glossary/` של התיעוד, ולכן הם מקובצים איתו.
+
+#### התיאורים ב-Docker Hub
+
+הטקסט שמופיע בעמוד של כל image ב-Docker Hub נשמר ברפו, ב-`.github/dockerhub/<repo>.md`.
+השורה הראשונה בכל קובץ היא `<!-- short: ... -->` והיא התקציר שמופיע בחיפוש; כל השאר הוא
+גוף העמוד.
+
+ה-job ‏`4d. Docker Hub descriptions` משווה כל קובץ לתיאור החי ומעדכן **רק אם יש הבדל** —
+כלומר הטקסט זז רק כשעורכים את הקובץ. הוא רץ **רק מהבראנץ `feature/docker-support`**:
+שני הבראנצ'ים דוחפים לאותם repositories, והתיאור שייך ל-repository ולא לתג.
+
+> **ה-token של Docker Hub צריך הרשאת כתיבה** כדי לשנות תיאור. אם אין לו, רק ה-job הזה
+> ייכשל — שום דבר אחר לא תלוי בו.
+
+#### ה-image של המירור — נבנה מאותה בנייה, ונפרד ממנה
+
+‏Hugo רץ פעם אחת ובונה הכל יחד; מיד אחרי זה `build/split_mirror.py` מחלק את התוצאה לשניים.
+התיעוד נשאר ב-`public/`, והסקשנים הממוררים עוברים ל-`public-mirror/` יחד עם
+`static/images/site-mirror` ועם הרשומות שלהם בפיד. כל חצי נארז ב-image משלו.
+
+הנתיבים מוגדרים לפי **איפה הם מתפרסמים** ולא לפי שם התיקייה, וזה לא אותו דבר:
+‏`content/architecture-diagrams` מתפרסם ב-`/resources/architecture-diagrams/`,
+וקטגוריות הבלוג והמדריכים מתפרסמות **בתוך** `/blog/` ו-`/tutorials/`. המילון נשאר עם
+התיעוד כי הוא מתפרסם בתוך `/glossary/` שלו.
+
+ה-image נבנה **בשתי שכבות**: התמונות (‏255MB) בשכבה נפרדת מתחת, והעמודים (‏204MB) מעליה.
+התמונות משתנות רק כשממררים תוכן חדש, בעוד שכל שינוי ב-layout או ב-CSS משכתב את ה-HTML של
+כל 1,391 העמודים — בשכבה אחת משותפת, פסיק שזז ב-CSS היה דוחף מחדש גם את התמונות.
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivileged \
+  -t redis-docs-mirror:local .
+```
+
+ב-CI זה ה-job ‏`4f. Build & push the mirror image`, שדוחף לאותו repository בתגים
+`<hash>-mirror` ו-`<hash>-mirror-unprivileged` (וגם `mirror` / `mirror-unprivileged`).
+ב-chart: `mirror.enabled`.
+
+#### ה-image של ה-CLI (`redis-docs-cli`) — נבנה אוטומטית ב-`airgap-build.yml`
+
+המקור ב-`helm/cli-proxy/`. ה-image נושא **שני** שירותים: ה-proxy של ה-CLI playground
+(`main:app`, פורט 8090) ושירות החיפוש בדוקס (`search.main:app`, פורט 8091). הצ'ארט מריץ כל
+אחד מ-deployment משלו עם `command` משלו, כך שהפעלת אחד לא מפעילה את השני.
+
+ה-job ‏`4b. CLI image` רץ בכל הרצה של `airgap-build.yml`, במקביל לבניית האתר:
+
+1. מחשב hash של כל הקבצים ב-`helm/cli-proxy/` חוץ מקבצי הבדיקות (`test_*.py`), שלא נכנסים
+   ל-image.
+2. מתחיל מהתג שב-`values.yaml` (‏`cli.image.tag`, שחייב להיות זהה ל-`search.image.tag`)
+   ובודק ב-Docker Hub: תג שקיים ומכיל את אותו hash (label ‏`redis-docs.cli.source-hash`)
+   — נשאר, לא בונים. תג שקיים עם קוד אחר — עולים ב-patch (‏`0.6.0 → 0.6.1`) ובודקים שוב.
+   תג פנוי — מריצים את הבדיקות, בונים amd64+arm64 ודוחפים אותו ואת `latest`.
+3. עם `publish_chart`, שלב 5 מעדכן את התג ב-`values.yaml` (בשני המקומות), בדוגמה
+   `values-openshift-airgapped.yaml` וב-README-ים, ומפרסם את הצ'ארט.
+
+אחרי הדחיפה הוא מוודא שה-image באמת עולה: מריץ בתוכו ייבוא של שני השירותים, בשתי
+הארכיטקטורות. זה תופס מודול שנוסף ל-`helm/cli-proxy/` ולא נוסף לרשימת ה-`COPY`
+שב-`Dockerfile` — הבדיקות רצות על הקוד שברפו ולא רואות את זה.
+
+ה-job ‏`4c. Fork tests` רץ במקביל ומריץ את כל בדיקות הפורק (‏`helm/cli-proxy` כולל
+`test_acl.py`, ו-`build/`). הוא לא עוצר את בניית ה-image-ים, אבל בלעדיו שלב 5 לא מפרסם
+chart. שני חריגים: `build/jupyterize` (דורש `nbformat` שאף קובץ requirements ברפו לא מכריז
+עליו) ו-`test_every_product_is_offered` (‏Radar חסר ב-`data/doc_bundles.json` של רדיס
+עצמה, נכשל גם על main שלהם).
+
+תג שפורסם אף פעם לא נדרס. הרצה שבנתה image בלי `publish_chart` לא משאירה עבודה: ההרצה
+הבאה מוצאת את התג עם אותו hash ומפנה אליו את הצ'ארט. הרצת בדיקה עם `tag_override` דוחפת
+את ה-CLI רק תחת תג ה-override, בלי `latest` ובלי לגעת ברצף הגרסאות.
+
+> **בנייה ידנית — לבדיקה מקומית בלבד.** לא לדחוף ידנית תג גרסה (`X.Y.Z`) או `latest`:
+> image בלי ה-label ייראה ל-CI כקוד אחר, והוא יעלה גרסה סביבו.
+>
+> ```bash
+> cd helm/cli-proxy
+> python3 -m pytest . -q
+> docker buildx build --platform linux/amd64,linux/arm64 -t redis-docs-cli:local .
+> ```
+>
+> `airgap-multibuild.sh` בונה רק את האתר ולא דוחף כלום, אז אין מה לשקף בו.
+
+> **ה-image של Redis** (`redis:8.10.0-alpine`) משרת גם את ה-playground וגם את החיפוש —
+> אותו image, שני פודים. אין מה לבנות; רק לוודא שהוא ממורר.
+
 ### שלב 4 — אימות deployment
 
 ```bash
@@ -182,7 +373,7 @@ oc get pods,route -n redis-docs
 
 קבצים לעדכן (4 בכל מקרה):
 - `helm/redis-docs/Chart.yaml` — `version` (לפי הטבלה) ו-`appVersion` (להחליף ל-HASH החדש)
-- `helm/redis-docs/README.md` — דוגמת `tag:`
+- `helm/redis-docs/README.md` — דוגמת `tag:` ושם הקובץ `redis-docs-X.Y.Z.tgz` בפקודות ההתקנה
 - `helm/redis-docs/README-he.md` — אותו דבר
 - `helm/redis-docs/examples/values-openshift-airgapped.yaml` — `tag:` + ההערה למעלה
 

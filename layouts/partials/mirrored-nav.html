@@ -1,0 +1,59 @@
+{{/* Sidebar entry for the content mirrored from redis.io (build/site_mirror).
+
+     docs-nav.html hardcodes its boxes to five sections, matched by
+     $navRoot.LinkTitle against the literals "Develop", "Integrate", "Operate"
+     and "Commands". A section it does not name gets no box and no tree, so
+     before this partial the mirrored sections were reachable only by search or
+     by typing their URL — the wrong way round for material a reader came to
+     browse.
+
+     It is a <details>, not another box, and that is not cosmetic. The sidebar
+     is a fixed-height flex column in which the active section's box grows to
+     fill what is left. A tall always-open sibling leaves nothing to fill:
+     adding one as a plain box collapsed the Develop tree to two pixels and
+     hid the documentation outright. Closed, this costs one row; it opens by
+     itself when the reader is inside one of the sections it lists, and its
+     panel is capped and scrolls rather than growing without limit.
+
+     Kept in its own partial so the fork's edit to that upstream file stays a
+     single include line.
+*/}}
+{{ $navRoot := cond (eq .Site.Home.Type "docs") .Site.Home .FirstSection -}}
+{{ $sections := slice
+     (dict "path" "technology"            "label" "Technology")
+     (dict "path" "compare"               "label" "Redis compared")
+     (dict "path" "solutions"             "label" "Solutions")
+     (dict "path" "architecture-diagrams" "label" "Architecture diagrams")
+     (dict "path" "tutorials"             "label" "Tutorials")
+     (dict "path" "redis-glossary"        "label" "Redis glossary")
+     (dict "path" "customers"             "label" "Customer stories")
+     (dict "path" "blog"                  "label" "Blog")
+-}}
+{{/* Open when the reader is already inside one of them. */}}
+{{ $inside := false -}}
+{{ $present := false -}}
+{{ range $sections -}}
+  {{ with site.GetPage .path -}}
+    {{ $present = true -}}
+    {{ if eq $navRoot.RelPermalink .RelPermalink }}{{ $inside = true }}{{ end -}}
+  {{ end -}}
+{{ end -}}
+{{/* The version builds delete every mirrored section before rendering, so on a
+     versioned page none of them exist and the entry would open onto nothing. */}}
+{{ if $present -}}
+{{/* Every entry is fork-only content, so none of it belongs in a downloadable
+     product bundle: data-offline-hide keeps it out (build/make_doc_bundles.py). */}}
+<details data-offline-hide data-mirrored-sections class="shrink-0 border border-opacity-50 border-redis-ink-900 rounded-md" {{ if $inside }}open{{ end }}>
+  <summary class="px-6 py-3 cursor-pointer select-none hover:bg-redis-pen-200 rounded-md">More from Redis</summary>
+  <div class="max-h-40 overflow-y-auto border-t border-opacity-50 border-redis-ink-900">
+    {{ range $sections }}
+      {{ $section := site.GetPage .path -}}
+      {{ if $section -}}
+        {{ $active := eq $navRoot.RelPermalink $section.RelPermalink -}}
+        <a class='block px-6 py-2 hover:bg-redis-pen-200 {{ if $active }}font-bold{{ end }}'
+           href='{{ $section.RelPermalink }}'>{{ .label }}</a>
+      {{ end -}}
+    {{ end }}
+  </div>
+</details>
+{{ end -}}

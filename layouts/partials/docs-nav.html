@@ -204,6 +204,7 @@
           </ul>
         {{ end }}
       </div>
+    {{ partial "mirrored-nav.html" . }}
     <div class="mt-4 shrink-0 md:mt-auto md:pb-4">
       {{ partialCached "download-docs-trigger.html" (dict
            "title" "Download documentation"

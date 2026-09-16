@@ -1,0 +1,59 @@
+{{/* The index page for a mirrored section (build/site_mirror).
+
+     Every mirrored section needs one. Hugo picks layouts/<section>/list.html
+     for a section page and otherwise falls back to layouts/_default/section.html,
+     which in this theme is a one-line stub — so a section without a layout
+     builds a page of exactly one byte.
+
+     The listing is a table rather than a paragraph per entry, because these
+     sections are long: 122 tutorials as prose blocks is a wall a reader
+     scrolls past, and as rows it is something they can scan. Sections with a
+     natural grouping say so — the customer stories carry the industry the
+     source files them under — and long alphabetical ones are cut into letter
+     groups. The blog has its own layout: it has 22 real categories.
+
+     Called with a dict:
+       page    the section
+       order   "date" for newest first, otherwise alphabetical
+       groupBy "param" to group by each page's `group`, "alpha" for A-Z,
+               anything else for one flat list
+*/}}
+{{ $page := .page }}
+{{ $order := .order }}
+{{ $pages := cond (eq $order "date") $page.Pages.ByDate.Reverse $page.Pages.ByTitle }}
+{{ $groupBy := .groupBy | default "" }}
+
+<main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
+  {{ partial "docs-nav.html" $page }}
+  <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
+    {{ partial "breadcrumbs" $page }}
+    <section class="prose w-full py-12 max-w-none">
+      <h1>{{ $page.Title }}</h1>
+      {{ with $page.Params.description }}<p class="text-lg -mt-5 mb-6">{{ . | markdownify }}</p>{{ end }}
+      {{ $page.Content }}
+      <p class="text-sm">{{ len $pages }} pages.</p>
+
+      {{ if eq $groupBy "param" }}
+        {{ range $pages.GroupByParam "group" }}
+          <h2>{{ .Key | default "Other" }}</h2>
+          {{ partial "mirrored-rows.html" (dict "pages" .Pages "showGroup" false "showDate" (eq $order "date")) }}
+        {{ end }}
+      {{ else if eq $groupBy "alpha" }}
+        {{ $letters := slice }}
+        {{ range $pages }}{{ $letters = $letters | append (substr .Title 0 1 | upper) }}{{ end }}
+        {{ range (uniq $letters) }}
+          {{ $letter := . }}
+          <h2>{{ $letter }}</h2>
+          {{ $inLetter := slice }}
+          {{ range $pages }}{{ if eq (substr .Title 0 1 | upper) $letter }}{{ $inLetter = $inLetter | append . }}{{ end }}{{ end }}
+          {{ partial "mirrored-rows.html" (dict "pages" $inLetter "showGroup" false "showDate" false) }}
+        {{ end }}
+      {{ else }}
+        {{ partial "mirrored-rows.html" (dict "pages" $pages "showGroup" false "showDate" (eq $order "date")) }}
+      {{ end }}
+
+      {{ partial "feedback.html" $page }}
+    </section>
+  </div>
+  {{ partial "scripts.html" $page }}
+</main>

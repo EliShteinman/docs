@@ -1,0 +1,21 @@
+{{/* One tutorial category, at the URL redis.io publishes it at. The tutorials
+     are filtered here at build time rather than listed in the generated file. */}}
+{{ define "main" }}
+  {{ $category := .Params.mirroredCategory }}
+  {{ $section := site.GetPage "/tutorials" }}
+  {{ $items := where $section.Pages "Params.group" $category }}
+  <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
+    {{ partial "docs-nav.html" . }}
+    <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
+      {{ partial "breadcrumbs" . }}
+      <section class="prose w-full py-12 max-w-none">
+        <h1>{{ .Title }}</h1>
+        <p class="text-lg -mt-5 mb-6">{{ len $items }} results.</p>
+        {{ partial "mirrored-chips.html" (dict "section" "/tutorial-categories" "home" "/tutorials" "active" $category "allLabel" "All tutorials") }}
+        {{ partial "mirrored-rows.html" (dict "pages" $items.ByTitle "showGroup" false "showDate" false) }}
+        {{ partial "feedback.html" . }}
+      </section>
+    </div>
+    {{ partial "scripts.html" . }}
+  </main>
+{{ end }}

@@ -1,0 +1,241 @@
+"""Turning the modal's query string into FT.SEARCH, and the reply back into JSON.
+
+What the modal sends was measured against the live service, not guessed:
+
+  * one request per keystroke, no debounce, with `*` appended to the whole
+    string -- so the last token is a prefix and the rest are exact;
+  * multiple words are ANDed (vector 382, search 728, "vector search" 316),
+    which is the query engine's default for space-separated terms;
+  * `p` filters server-side, and an unknown value answers total 0 rather than
+    an error -- a TAG filter on a value nothing carries does the same;
+  * `site` is accepted and ignored: the live service returns identical results
+    with and without it.
+"""
+
+import json
+import re
+
+from search import config
+from search.product import ALL_PRODUCTS
+
+HIGHLIGHT_OPEN = "<b>"
+HIGHLIGHT_CLOSE = "</b>"
+
+# Where parse_reply keeps each document's score. Not a field name the index
+# returns, so it cannot collide with one.
+SCORE_KEY = "__score__"
+
+# What the index keeps as one term. The query engine splits text on every
+# punctuation mark except `_` when it indexes, so `JSON.SET` is stored as
+# `json` and `set` and `eviction_policy` stays whole. A query has to split the
+# same way: escaping the dot instead asks for the single term `json.set`, which
+# nothing was indexed as, and leaving a hyphen bare makes the parser read
+# `Active-Active` as "Active, excluding Active". Both answered 0 on a real index.
+_TERM = re.compile(r"\w+")
+
+
+def _escape(term: str) -> str:
+    """Backslash-escape everything the query parser would otherwise read as syntax."""
+    return "".join(character if character.isalnum() else "\\" + character for character in term)
+
+
+def query_terms(raw: str) -> list[str]:
+    """Return the query terms, split the way the index split the text.
+
+    The modal marks the whole string as a prefix, so the `*` belongs to the
+    last term of a word: `redis-cli*` searches `redis` and the prefix `cli*`.
+    """
+    tokens = []
+    for word in raw.split():
+        terms = _TERM.findall(word)
+        if not terms:
+            continue
+        if word.endswith("*"):
+            terms[-1] += "*"
+        tokens.extend(terms)
+    return tokens
+
+
+def _boost_whole_words_in_title(terms: list[str]) -> str:
+    """Match `terms` anywhere, and add a bonus for pages titled with them as whole words.
+
+    The prefix the modal always sends lets a long page outrank the one a reader
+    is looking for: `SET*` also matches setex, setnx and settings, and a
+    commands-reference page that names them all collects a score for each.
+    Measured on the real index, JSON.SET's own page ranked 12th behind four
+    such pages, and SET's 18th. A title bonus on the prefix did not help SET;
+    one on the whole word puts JSON.SET, FT.SEARCH, HSET and SET first. While a
+    word is still being typed the whole-word clause matches almost nothing, so
+    the ranking is what the prefix alone gives.
+    """
+    whole_words = " ".join(term.rstrip("*") for term in terms)
+    return "((@title:(%s)) => { $weight: %s; } | (%s))" % (
+        whole_words,
+        config.TITLE_BOOST,
+        " ".join(terms),
+    )
+
+
+def build_query(raw: str, product: str) -> str:
+    """Return the FT.SEARCH query for `raw`, or "" when there is nothing to search for."""
+    terms = query_terms(raw)
+    if not terms:
+        return ""
+    query = _boost_whole_words_in_title(terms)
+    if product and product != ALL_PRODUCTS:
+        query += " @product:{%s}" % _escape(product)
+    return query
+
+
+def search_command(index: str, query: str, limit: int, offset: int = 0) -> list[str]:
+    """Return the FT.SEARCH argument vector for `query`.
+
+    Seven fields are returned rather than the four the modal reads. The three
+    extra ones -- source, version, product -- are what a caller that is not the
+    modal has to have: without them a script cannot tell a current documentation
+    page from the same page in an old version or from a blog post, which the
+    index knows and used to keep to itself. The modal ignores fields it was not
+    written for, so carrying them costs it nothing.
+    """
+    return [
+        "FT.SEARCH",
+        index,
+        query,
+        "LIMIT",
+        str(offset),
+        str(limit),
+        "RETURN",
+        "7",
+        "title",
+        "body",
+        "url",
+        "hierarchy",
+        "source",
+        "version",
+        "product",
+        # The score the ranking decisions in this file are about. A caller
+        # comparing two results, or deciding whether the best hit is good
+        # enough to act on, otherwise has nothing to compare.
+        "WITHSCORES",
+        "HIGHLIGHT",
+        "FIELDS",
+        "2",
+        "title",
+        "body",
+        "TAGS",
+        HIGHLIGHT_OPEN,
+        HIGHLIGHT_CLOSE,
+        "SUMMARIZE",
+        "FIELDS",
+        "1",
+        "body",
+        "FRAGS",
+        "1",
+        "LEN",
+        "30",
+        "SEPARATOR",
+        " ... ",
+        # Named rather than left to the default, which in Redis 8 is BM25STD and
+        # ranks this corpus badly: `vector*` puts the TYPE command page and four
+        # "Build and run Redis Open Source on <distro>" pages above every page
+        # about vectors. BM25 on the same index and query answers "Vector search
+        # concepts", "Vectorizers", "Vector search"; `cluster*` answers "Redis
+        # cluster specification" and "Scale with Redis Cluster"; `persistence*`
+        # answers "Configure database persistence". Compared against TFIDF,
+        # TFIDF.DOCNORM and DISMAX on the real 5,674-page feed.
+        "SCORER",
+        "BM25",
+        "DIALECT",
+        "2",
+    ]
+
+
+def parse_reply(reply: object) -> tuple[int, list[dict[str, str]]]:
+    """Split an FT.SEARCH reply into its total and its documents' field maps.
+
+    With WITHSCORES the reply reads key, score, field-list per document. The
+    key is not needed -- `url` is stored on the document -- and the score
+    arrives as the scalar before the field list, so it is carried on the map
+    under a name no returned field can collide with.
+    """
+    if not isinstance(reply, list) or not reply:
+        return 0, []
+    total = reply[0] if isinstance(reply[0], int) else 0
+    documents = []
+    preceding = None
+    for item in reply[1:]:
+        if isinstance(item, list):
+            fields = dict(zip(item[::2], item[1::2]))
+            fields[SCORE_KEY] = preceding
+            documents.append(fields)
+        else:
+            preceding = item
+    return total, documents
+
+
+def to_results(documents: list[dict[str, str]]) -> list[dict]:
+    """Map indexed documents onto the response records.
+
+    The first five keys are what search-modal.html reads and are not ours to
+    rename. The last four describe the result itself -- which body of content
+    it came from, which documentation version, which product, and how well it
+    scored -- for callers that have to decide something about a result rather
+    than draw it.
+    """
+    results = []
+    for document in documents:
+        results.append(
+            {
+                "title": document.get("title", ""),
+                # Always empty, matching the live service: every one of the 30
+                # results sampled from redis.io carried an empty section_title.
+                "section_title": "",
+                "hierarchy": _decode_hierarchy(document.get("hierarchy")),
+                "body": document.get("body", ""),
+                "url": document.get("url", ""),
+                "source": document.get("source", ""),
+                "version": document.get("version", ""),
+                "product": document.get("product", ""),
+                "score": _to_score(document.get(SCORE_KEY)),
+            }
+        )
+    return results
+
+
+def _to_score(stored: object) -> float:
+    try:
+        return float(stored)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def one_per_row(results: list[dict]) -> list[dict]:
+    """Keep only the best-ranked result for each row the modal would draw.
+
+    The modal files results by their first crumb and keys each row by title,
+    so the last result with a given title sets where the row links. Versioned
+    copies of a page share its title and rank below it, which means the row for
+    "rack zone awareness" would link to the oldest version -- undoing the
+    version weighting. Dropping the later duplicates here leaves the modal only
+    the one that ranked first.
+    """
+    seen: set[tuple[str, str]] = set()
+    kept = []
+    for result in results:
+        hierarchy = result["hierarchy"]
+        row = (hierarchy[0] if hierarchy else "", result["title"])
+        if row in seen:
+            continue
+        seen.add(row)
+        kept.append(result)
+    return kept
+
+
+def _decode_hierarchy(stored: str | None) -> list[str]:
+    if not stored:
+        return []
+    try:
+        crumbs = json.loads(stored)
+    except json.JSONDecodeError:
+        return []
+    return crumbs if isinstance(crumbs, list) else []
