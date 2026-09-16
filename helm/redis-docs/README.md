@@ -107,6 +107,36 @@ replacing the search, so the upstream partial and `config.toml` are untouched:
 
 Ranking will not match redis.io exactly — it is a different scoring engine.
 
+#### Searching from something that is not the modal
+
+The same endpoint answers any HTTP client that can reach the site, which is how a
+script, an agent or another service searches the corpus without a browser:
+
+```bash
+curl "https://docs.internal.example.com/convai/api/search-service?q=rack+zone*&p=all&limit=5"
+```
+
+| Parameter | Default | Meaning |
+|---|---|---|
+| `q` | — | The query. **Append `*` to match a prefix** — the modal does this itself, so a caller that omits it gets whole-word matches only. Words are ANDed. |
+| `p` | all | Product filter: `rs`, `rc`, `oss_and_stack`, `redisinsight`, `kubernetes`, `redis-data-integration`, `clients`, or `all`. An unknown value matches nothing. |
+| `limit` | `search.index.resultLimit` | Results in this page, up to 100. |
+| `offset` | `0` | Where the page starts, up to 1000. |
+| `site` | — | Accepted and ignored, for parity with redis.io. |
+
+The reply carries `total` — every match, not just this page — and `results`. Each result
+carries `title`, `body` (a fragment with the matched words in `<b>` tags),
+`url`, `hierarchy`, `section_title` (always empty, matching redis.io), and four fields
+the modal does not read but a caller usually needs: `source` (`docs`, `blog` or `site`),
+`version` (`latest`, or the number of an archived version tree), `product`, and `score`.
+**`latest` is the current release, not the highest number**: Redis Software's numbered
+trees stop at 8.0 while 8.2 publishes only as `latest`.
+
+Statuses separate an answer from a failure: `200` with results, `200` with an empty list
+and no `error` for a query that matched nothing, `200` with `error: "query rejected"`
+when the query engine refused the query, `503` with `error: "search unavailable"` when
+the service cannot reach its index. `/healthz` on the pod reports whether the index exists.
+
 ### Runtime Configuration
 
 Four ConfigMaps carry runtime configuration; two are always rendered, two follow their feature flag:
