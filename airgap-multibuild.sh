@@ -115,6 +115,16 @@ find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
   -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
   -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
 
+# 2d. Point the links no rule can straighten out at the pages this image serves,
+#     and unlink the ones nothing serves. The legacy documentation paths
+#     (/docs/<old structure>/, /topics/<page>) moved twice and only redis.io
+#     knows where to; build/site_mirror/doc_links.json records where each one
+#     lands, observed once with the internet and committed, so this step needs
+#     no network. Inside mirrored pages a leftover redis.io link -- /downloads,
+#     /try-free, a booking form -- becomes the words it was written as.
+echo "airgap: pointing legacy redis.io links at local pages..."
+python3 -m build.site_mirror.doc_links
+
 # ---- Snapshot the prepared workspace -----------------------------------------
 # Captures content + layouts + components output. Excludes Hugo's own outputs.
 rm -rf "$SNAPSHOT"

@@ -344,6 +344,14 @@ jobs:
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
             -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
             -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
+          # The links no rule can straighten out: legacy documentation paths
+          # (/docs/<old structure>/, /topics/<page>) that moved twice, where
+          # only redis.io knows the target. build/site_mirror/doc_links.json
+          # records where each lands, observed once with the internet and
+          # committed, so this needs no network. Inside mirrored pages a
+          # leftover redis.io link becomes the words it was written as.
+          # Mirrors the same step in airgap-multibuild.sh.
+          python3 -m build.site_mirror.doc_links
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
@@ -551,6 +559,14 @@ jobs:
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
             -e 's#https?://(www\.)?redis\.io/commands/([A-Za-z0-9_.-]+)/?#/commands/\L\2/#g' \
             -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
+          # The links no rule can straighten out: legacy documentation paths
+          # (/docs/<old structure>/, /topics/<page>) that moved twice, where
+          # only redis.io knows the target. build/site_mirror/doc_links.json
+          # records where each lands, observed once with the internet and
+          # committed, so this needs no network. Inside mirrored pages a
+          # leftover redis.io link becomes the words it was written as.
+          # Mirrors the same step in airgap-multibuild.sh.
+          python3 -m build.site_mirror.doc_links
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
