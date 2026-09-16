@@ -11,6 +11,50 @@ Designed for air-gapped networks - no external dependencies.
 - Helm 3.x
 - Private Docker registry (in air-gapped networks)
 
+## Upgrading from 1.x to 2.0.0
+
+Nothing was removed and nothing changed meaning: every value from 1.x is still read,
+and the two new features are off by default. What the major version marks is the
+image — **the documentation image no longer contains the mirrored redis.io sections**.
+They are an image of their own now.
+
+**The short version:** upgrade the chart and the images together, and decide whether
+you want the mirror.
+
+```bash
+# 1. Mirror the images this release needs (skip the mirror image if you do not want it)
+skopeo copy docker://a0533057932/redis-docs:<hash>-unprivileged \
+            docker://registry.internal.company.com/redis-docs:<hash>-unprivileged
+skopeo copy docker://a0533057932/redis-docs:<hash>-mirror-unprivileged \
+            docker://registry.internal.company.com/redis-docs:<hash>-mirror-unprivileged
+skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
+            docker://registry.internal.company.com/redis-docs-cli:0.6.0
+
+# 2. Upgrade
+helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
+  --version 2.0.0 -f my-values.yaml \
+  --set image.tag=<hash>-unprivileged \
+  --set mirror.enabled=true --set mirror.image.tag=<hash>-mirror-unprivileged
+```
+
+Three things to know before you run it:
+
+- **Leaving `mirror.enabled` off is a supported choice, not a broken one.** The
+  documentation is complete without it: the sidebar entry disappears and the links into
+  those sections are unlinked in the browser rather than leading to a 404. What you lose
+  is the blog, the tutorials, the customer stories, the comparisons, the solutions, the
+  technology pages and the architecture diagrams — and about 300 MB per pull.
+- **Do not take the new chart with an old image.** An image built before this release
+  still carries the mirrored pages inside it, and the chart will unlink the links to
+  them while the pages sit there unreachable. Upgrade both together.
+- **`cli` and `search` need the CLI image at 0.6.0 or newer.** The chart's default moved
+  from the rolling `latest` to a pinned `0.6.0`; an older tag has no `search` module and
+  the search pod crash-loops. `search` also needs its own Redis 8 image mirrored
+  (`redis:8.10.0-alpine`) — it is the query engine the index lives in.
+
+Rolling back to 1.x is a `helm rollback` and the image tag you were on before; no data
+lives in either pod.
+
 ## Architecture
 
 The chart deploys the documentation, and three optional pods beside it — the CLI
