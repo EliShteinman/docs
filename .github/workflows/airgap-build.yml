@@ -1056,6 +1056,10 @@ jobs:
             helm/redis-docs/README.md \
             helm/redis-docs/README-he.md
           sed -i "s/^version: .*/version: ${NEW_VERSION}/" "$CHART"
+          # The READMEs install from the packaged chart by file name.
+          sed -i -E "s/redis-docs-[0-9]+\.[0-9]+\.[0-9]+\.tgz/redis-docs-${NEW_VERSION}.tgz/g" \
+            helm/redis-docs/README.md \
+            helm/redis-docs/README-he.md
 
           {
             echo "new_version=$NEW_VERSION"

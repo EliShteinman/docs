@@ -284,7 +284,7 @@ oc get pods,route -n redis-docs
 
 קבצים לעדכן (4 בכל מקרה):
 - `helm/redis-docs/Chart.yaml` — `version` (לפי הטבלה) ו-`appVersion` (להחליף ל-HASH החדש)
-- `helm/redis-docs/README.md` — דוגמת `tag:`
+- `helm/redis-docs/README.md` — דוגמת `tag:` ושם הקובץ `redis-docs-X.Y.Z.tgz` בפקודות ההתקנה
 - `helm/redis-docs/README-he.md` — אותו דבר
 - `helm/redis-docs/examples/values-openshift-airgapped.yaml` — `tag:` + ההערה למעלה
 
