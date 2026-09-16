@@ -1579,6 +1579,13 @@ jobs:
           # lines BUILD.md step 5 lists, so a stray hex string elsewhere in
           # these files (release notes, examples, etc.) can't be corrupted.
           sed -i -E "s/^appVersion:[[:space:]]*\"[a-f0-9]+\"/appVersion: \"${NEW_HASH}\"/" "$CHART"
+          # The mirror's tag first: `[a-f0-9]+-unprivileged` cannot match
+          # `<hash>-mirror-unprivileged` (the word "mirror" is not hex), so
+          # without its own pattern that tag would quietly go stale.
+          sed -i -E "s/[a-f0-9]+-mirror-unprivileged/${NEW_HASH}-mirror-unprivileged/g" \
+            helm/redis-docs/examples/values-openshift-airgapped.yaml \
+            helm/redis-docs/README.md \
+            helm/redis-docs/README-he.md
           sed -i -E "s/[a-f0-9]+-unprivileged/${NEW_HASH}-unprivileged/g" \
             helm/redis-docs/examples/values-openshift-airgapped.yaml \
             helm/redis-docs/README.md \
