@@ -193,6 +193,13 @@ data:
             proxy_pass http://{{ include "redis-docs.fullname" $ }}-mirror:8080;
         }
         {{- end }}
+
+        # The mirrored pages' own sitemap. The site's /sitemap.xml lists the
+        # documentation alone, because it is built whether or not this pod is
+        # deployed and must not advertise addresses nothing answers.
+        location = /sitemap-mirror.xml {
+            proxy_pass http://{{ include "redis-docs.fullname" . }}-mirror:8080/sitemap.xml;
+        }
         {{- end }}
 
         {{- if .Values.cli.enabled }}

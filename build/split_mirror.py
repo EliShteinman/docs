@@ -20,8 +20,9 @@ Two things travel with the pages:
     Left in place, the search service would index and return a blog post the
     site is no longer serving.
 
-The sitemap is filtered the same way, so the documentation does not advertise
-addresses it cannot answer.
+The sitemap is divided the same way: the documentation stops advertising
+addresses it no longer answers, and the pages that moved get a sitemap of their
+own, which the chart publishes at /sitemap-mirror.xml.
 
     python3 build/split_mirror.py [--site public] [--mirror public-mirror]
 """
@@ -136,25 +137,40 @@ def split_feed(site: Path, mirror: Path) -> tuple[int, int]:
     return len(kept), len(moved)
 
 
+_URLSET = (
+    '<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n'
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{entries}\n</urlset>\n'
+)
+
+
 def split_sitemap(site: Path, mirror: Path) -> int:
-    """Drop the moved pages from the site's sitemap. Returns how many went."""
+    """Move the mirrored pages out of the site's sitemap and into one of their own.
+
+    Moved rather than dropped. The documentation must not advertise addresses it
+    no longer answers, and the pages are still served -- by the other pod -- so
+    they still deserve a sitemap. The chart publishes it at /sitemap-mirror.xml
+    when the mirror is deployed.
+    """
     sitemap = site / SITEMAP_NAME
     if not sitemap.is_file():
         return 0
     text = sitemap.read_text(encoding="utf-8")
-    dropped = 0
+    moved: list[str] = []
 
     def keep(match: re.Match) -> str:
-        nonlocal dropped
         location = re.search(r"<loc>(.*?)</loc>", match.group(0), re.S)
         if location and belongs_to_mirror(location.group(1)):
-            dropped += 1
+            moved.append(match.group(0).strip())
             return ""
         return match.group(0)
 
     text = re.sub(r"<url>.*?</url>", keep, text, flags=re.S)
     sitemap.write_text(text, encoding="utf-8")
-    return dropped
+    mirror.mkdir(parents=True, exist_ok=True)
+    (mirror / SITEMAP_NAME).write_text(
+        _URLSET.format(entries="\n".join(moved)), encoding="utf-8"
+    )
+    return len(moved)
 
 
 def split(site: Path, mirror: Path, assets: Path | None = None) -> dict[str, int]:

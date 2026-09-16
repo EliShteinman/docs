@@ -294,6 +294,12 @@ cli:
 mirror:
   enabled: false
   replicas: 1
+  # The port the mirror's own nginx listens on, which follows the image variant:
+  # 8080 for the `-mirror-unprivileged` tags below, 80 for the `-mirror` ones.
+  # A privileged image needs this at 80 AND a securityContext that lets it run
+  # as root -- nginx cannot bind 80 without it. The Service publishes 8080
+  # either way, so nothing outside this block changes.
+  containerPort: 8080
   securityContext:
     allowPrivilegeEscalation: false
     runAsNonRoot: true

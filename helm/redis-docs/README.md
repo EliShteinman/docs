@@ -142,6 +142,10 @@ those sections are unlinked, rather than leading to a 404.
 The glossary is the exception and ships with the documentation: its terms publish
 inside `/glossary/`, the documentation's own section.
 
+The mirrored pages have a sitemap of their own, published at `/sitemap-mirror.xml`. The
+site's own `/sitemap.xml` lists the documentation alone: it is built whether or not this
+pod is deployed, so it must not advertise addresses nothing answers.
+
 Search follows the same switch. The mirrored pages left the documentation's feed when
 they left its tree, and the search pod indexes them from the mirror image only when it
 is deployed, so a search never answers with a page nothing serves.
@@ -896,6 +900,7 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | Jupyter resources |
 | `mirror.enabled` | `false` | Deploy the mirrored redis.io sections (separate pod and image). Off leaves the documentation complete on its own |
 | `mirror.replicas` | `1` | Mirror pods |
+| `mirror.containerPort` | `8080` | The port the mirror's nginx listens on, which follows the image variant: 8080 for `-mirror-unprivileged`, 80 for `-mirror` (which also needs a securityContext that allows root) |
 | `mirror.image.registry` | `a0533057932` | Mirror image registry |
 | `mirror.image.name` | `redis-docs` | Mirror image name — the same repository as the site image, under its own tags |
 | `mirror.image.tag` | `mirror-unprivileged` | Mirror image tag. Pin the `<commit>-mirror-unprivileged` form in an air-gapped registry |

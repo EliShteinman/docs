@@ -147,3 +147,21 @@ def test_a_category_page_travels_inside_its_section(tmp_path):
     """The category trees publish under /blog/ and /tutorials/, not beside them."""
     assert belongs_to_mirror("/blog/category/benchmarks/")
     assert belongs_to_mirror("/tutorials/category/developers/")
+
+
+def test_the_moved_addresses_get_a_sitemap_of_their_own(tmp_path):
+    """Dropped from one and written to the other: those pages are still served."""
+    site = tmp_path / "public"
+    site.mkdir(parents=True)
+    (site / "sitemap.xml").write_text(
+        "<urlset>"
+        "<url><loc>https://x/develop/</loc></url>"
+        "<url><loc>https://x/blog/a-post/</loc></url>"
+        "</urlset>",
+        encoding="utf-8",
+    )
+    mirror = tmp_path / "public-mirror"
+    assert split_sitemap(site, mirror) == 1
+    written = (mirror / "sitemap.xml").read_text()
+    assert "/blog/a-post/" in written and "/develop/" not in written
+    assert written.startswith("<?xml") and "</urlset>" in written
