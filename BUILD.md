@@ -283,6 +283,10 @@ python3 -m build.site_mirror --check   # כמה פורסם מאז הסנכרון
 וקטגוריות הבלוג והמדריכים מתפרסמות **בתוך** `/blog/` ו-`/tutorials/`. המילון נשאר עם
 התיעוד כי הוא מתפרסם בתוך `/glossary/` שלו.
 
+ה-image נבנה **בשתי שכבות**: התמונות (‏255MB) בשכבה נפרדת מתחת, והעמודים (‏204MB) מעליה.
+התמונות משתנות רק כשממררים תוכן חדש, בעוד שכל שינוי ב-layout או ב-CSS משכתב את ה-HTML של
+כל 1,391 העמודים — בשכבה אחת משותפת, פסיק שזז ב-CSS היה דוחף מחדש גם את התמונות.
+
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivileged \
   -t redis-docs-mirror:local .

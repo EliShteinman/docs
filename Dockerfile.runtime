@@ -81,6 +81,10 @@ LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
 LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL org.opencontainers.image.variant="mirror-privileged"
 
+# Two layers, pictures first. They are 243 MB and change only when content is
+# mirrored; the pages change whenever a layout or a stylesheet does. In one
+# layer together, every build re-pushes the pictures with them.
+COPY public-mirror-assets /usr/share/nginx/html
 COPY public-mirror /usr/share/nginx/html
 
 EXPOSE 80
@@ -97,6 +101,8 @@ LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
 LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL org.opencontainers.image.variant="mirror-unprivileged"
 
+# See the note on the privileged variant: pictures in a layer of their own.
+COPY --chown=nginx:nginx public-mirror-assets /usr/share/nginx/html
 COPY --chown=nginx:nginx public-mirror /usr/share/nginx/html
 
 EXPOSE 8080
