@@ -20,7 +20,8 @@
 
 ## סכמת תגים
 
-כל שחרור מייצר **4 תגים** על **2 פלטפורמות** (linux/amd64 + linux/arm64):
+כל שחרור מייצר **8 תגים** על **2 פלטפורמות** (linux/amd64 + linux/arm64) — ארבעה
+לאתר וארבעה לתמונת המירור:
 
 | תג | Variant | פורט | שימוש |
 |-----|---------|------|-------|
@@ -28,6 +29,10 @@
 | `latest` | privileged (nginx:alpine) | 80 | rolling tag — `docker run` |
 | `<HASH>-unprivileged` | unprivileged (nginx-unprivileged) | 8080 | גרסה מתויגת — Kubernetes / OpenShift |
 | `unprivileged` | unprivileged (nginx-unprivileged) | 8080 | rolling tag — Kubernetes / OpenShift |
+| `<HASH>-mirror` | המירור, privileged | 80 | הסקשנים הממוררים מ-redis.io — פוד נפרד |
+| `mirror` | המירור, privileged | 80 | rolling tag |
+| `<HASH>-mirror-unprivileged` | המירור, unprivileged | 8080 | מה שה-chart פורס כש-`mirror.enabled=true` |
+| `mirror-unprivileged` | המירור, unprivileged | 8080 | rolling tag |
 
 > `<HASH>` = commit hash בן 9 תווים (`git rev-parse --short=9 HEAD`).
 > ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
@@ -82,7 +87,7 @@ git merge origin/main
 > exit 1 = הקובץ הקנוני של רדיס השתנה → לרה-וונדר ולסקור לפני הבנייה. פירוט בסעיף
 > "widget ה-redis-cli האינטראקטיבי" למטה.
 
-שתי דרכים — בענן או מקומית. שתיהן מייצרות את אותם **4 תגים** ב-DockerHub.
+שתי דרכים — בענן או מקומית. שתיהן מייצרות את אותם תגים ב-DockerHub.
 
 #### אופציה A — בנייה בענן (GitHub Actions, מומלץ)
 

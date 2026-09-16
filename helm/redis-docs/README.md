@@ -13,7 +13,9 @@ Designed for air-gapped networks - no external dependencies.
 
 ## Architecture
 
-The chart deploys two main pods:
+The chart deploys the documentation, and three optional pods beside it — the CLI
+playground, the search service, and the sections mirrored from redis.io. Each is off
+by default and each is its own image, so a deployment carries only what it turns on.
 
 ### Pod 1 — `redis-docs` (documentation site)
 
@@ -407,7 +409,7 @@ A limit costs nothing until the container actually runs.
 ### Basic usage
 
 ```bash
-helm install redis-docs redis-docs-1.10.0.tgz
+helm install redis-docs redis-docs-2.0.0.tgz
 ```
 
 ### Installation with a values file
@@ -415,7 +417,7 @@ helm install redis-docs redis-docs-1.10.0.tgz
 The recommended approach - a custom `values.yaml` file:
 
 ```bash
-helm install redis-docs redis-docs-1.10.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-2.0.0.tgz -f my-values.yaml
 ```
 
 Below is an example of a typical deployment scenario.
@@ -624,13 +626,13 @@ docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# Produces: redis-docs-1.10.0.tgz
+# Produces: redis-docs-2.0.0.tgz
 ```
 
 ### Step 3: Transfer files to the air-gapped network
 
 Transfer the following files:
-- `redis-docs-1.10.0.tgz`
+- `redis-docs-2.0.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (optional - metrics)
 - `redis-docs-cli.tar` (optional - CLI)
@@ -670,13 +672,13 @@ docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ## Version Upgrade
 
 ```bash
-helm upgrade redis-docs redis-docs-1.10.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-2.0.0.tgz -f my-values.yaml
 ```
 
 Or with a single value override:
 
 ```bash
-helm upgrade redis-docs redis-docs-1.10.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-2.0.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
