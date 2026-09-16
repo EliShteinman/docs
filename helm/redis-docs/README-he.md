@@ -11,6 +11,47 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 - Helm 3.x
 - Private Docker registry (ברשת סגורה)
 
+## שדרוג מ-1.x ל-2.0.0
+
+שום מפתח לא הוסר ושום ערך לא שינה משמעות: כל מה שהגדרת ב-1.x עדיין נקרא, ושתי היכולות
+החדשות כבויות כברירת מחדל. מה שה-major מסמן הוא ה-image — **ה-image של התיעוד כבר לא
+מכיל את הסקשנים הממוררים מ-redis.io**. הם image נפרד מהיום.
+
+**בקצרה:** משדרגים את ה-chart ואת ה-image-ים יחד, ומחליטים אם רוצים את המירור.
+
+```bash
+# 1. למרר את ה-image-ים של הגרסה (לדלג על המירור אם לא רוצים אותו)
+skopeo copy docker://a0533057932/redis-docs:<hash>-unprivileged \
+            docker://registry.internal.company.com/redis-docs:<hash>-unprivileged
+skopeo copy docker://a0533057932/redis-docs:<hash>-mirror-unprivileged \
+            docker://registry.internal.company.com/redis-docs:<hash>-mirror-unprivileged
+skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
+            docker://registry.internal.company.com/redis-docs-cli:0.6.0
+
+# 2. שדרוג
+helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
+  --version 2.0.0 -f my-values.yaml \
+  --set image.tag=<hash>-unprivileged \
+  --set mirror.enabled=true --set mirror.image.tag=<hash>-mirror-unprivileged
+```
+
+שלושה דברים שחשוב לדעת לפני שמריצים:
+
+- **להשאיר את `mirror.enabled` כבוי זו בחירה נתמכת, לא תקלה.** התיעוד שלם בלעדיו: תיבת
+  הניווט נעלמת והקישורים לסקשנים האלה מנותקים בדפדפן במקום להוביל ל-404. מה שמפסידים זה
+  הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה ודיאגרמות
+  הארכיטקטורה — ובערך 300MB בכל משיכה.
+- **לא לקחת את ה-chart החדש עם image ישן.** ‏image שנבנה לפני הגרסה הזו עדיין נושא בתוכו
+  את העמודים הממוררים, וה-chart ינתק את הקישורים אליהם בזמן שהם יושבים שם ולא נגישים.
+  לשדרג את שניהם יחד.
+- **‏`cli` ו-`search` דורשים image של CLI בגרסה 0.6.0 ומעלה.** ברירת המחדל של ה-chart
+  עברה מ-`latest` המתגלגל ל-`0.6.0` מקובע; בתג ישן אין מודול `search` ופוד החיפוש קורס
+  בלולאה. ‏`search` דורש גם שתמרר את ה-Redis שלו (`redis:8.10.0-alpine`) — זה מנוע
+  החיפוש שהאינדקס יושב בו.
+
+חזרה אחורה ל-1.x היא `helm rollback` ותג ה-image שהיית עליו; אין מידע שנשמר באף אחד
+מהפודים.
+
 ## ארכיטקטורה
 
 הצ'ארט פורס את התיעוד, ולצידו שלושה פודים אופציונליים — ה-CLI playground, שירות
