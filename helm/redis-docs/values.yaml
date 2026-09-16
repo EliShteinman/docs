@@ -279,6 +279,44 @@ cli:
         cpu: 500m
         memory: 512Mi
 
+# -- The sections mirrored from redis.io: the blog, tutorials, customer
+#    stories, comparisons, solutions, technology pages and architecture
+#    diagrams. They are built with the documentation but shipped as an image of
+#    their own, so a deployment that does not want 1,400 extra pages and the
+#    238 MB of pictures that come with them does not carry them.
+#
+#    Off by default. With it off the documentation is complete on its own: the
+#    sidebar entry disappears and the links the documentation makes into those
+#    sections are unlinked in the browser, rather than leading to a 404.
+#
+#    The glossary is not here. Its terms publish inside the documentation's own
+#    /glossary/ section, so they ship with it.
+mirror:
+  enabled: false
+  replicas: 1
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    readOnlyRootFilesystem: false
+    capabilities:
+      drop:
+        - ALL
+  # The same repository as the site image, under its own tags: one build
+  # produces both. `mirror-unprivileged` is the rolling tag; pin the
+  # `<commit>-mirror-unprivileged` form in an air-gapped registry.
+  image:
+    registry: a0533057932
+    name: redis-docs
+    tag: "mirror-unprivileged"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
 # -- Docs search. search-modal.html calls /convai/api/search-service, a service
 #    that runs at redis.io; without something answering it here the search
 #    button opens an empty modal. Turning this on deploys that answer: an index

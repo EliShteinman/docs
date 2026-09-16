@@ -67,6 +67,30 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
 ל-keyspace שטוח אחד, ו-`acl.enabled=false` מחזיר את הפרוקסי למשתמש ברירת המחדל של Redis, בלי
 שום דבר בין `FLUSHALL` מוקלד לבין המידע של כל האחרים.
 
+### פוד 4 — `redis-docs-mirror` (הסקשנים הממוררים מ-redis.io)
+
+נוצר רק כאשר `mirror.enabled=true`.
+
+| קונטיינר | תיאור | פורט |
+|---|---|---|
+| `mirror` | nginx שמגיש את העמודים הממוררים ואת התמונות שלהם | 8080 |
+
+הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה ודיאגרמות
+הארכיטקטורה נבנים באותה ריצת Hugo של התיעוד, ומופרדים מהעץ שלו אחריה
+(`build/split_mirror.py`) ל-image משלהם. זה 1,400 עמודים ו-238MB של תמונות שפריסה לא
+חייבת לשאת: ה-image של התיעוד כבר לא מכיל אותם.
+
+ה-nginx של האתר מנתב אליהם כל אחד מהנתיבים שלהם, כך שהקורא רואה אתר אחד. עם
+`mirror.enabled=false` אין פוד, אין ניתוב, והעמודים פשוט לא שם — תיבת הניווט מוסרת
+בדפדפן והקישורים מהתיעוד אליהם מנותקים, במקום להוביל ל-404.
+
+המילון הוא היוצא מן הכלל ונשאר עם התיעוד: המונחים שלו מתפרסמים בתוך `/glossary/`,
+הסקשן של התיעוד עצמו.
+
+החיפוש הולך לפי אותו מתג. העמודים הממוררים יצאו מהפיד של התיעוד כשיצאו מהעץ שלו, ופוד
+החיפוש מאנדקס אותם מה-image של המירור רק כשהוא פרוס — כך שחיפוש לעולם לא מחזיר עמוד
+שאף אחד לא מגיש.
+
 ### פוד 3 — `redis-docs-search` (חיפוש בדוקס)
 
 נוצר רק כאשר `search.enabled=true`.
@@ -735,6 +759,12 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.jupyter.image.tag` | `2026-04-02` | תג תמונת Jupyter |
 | `cli.jupyter.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Jupyter |
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | משאבי Jupyter |
+| `mirror.enabled` | `false` | פריסת הסקשנים הממוררים (פוד ו-image נפרדים). כבוי משאיר את התיעוד שלם בפני עצמו |
+| `mirror.replicas` | `1` | כמה פודים של מירור |
+| `mirror.image.registry` | `a0533057932` | registry של image המירור |
+| `mirror.image.name` | `redis-docs` | שם ה-image — אותו repository של האתר, בתגים משלו |
+| `mirror.image.tag` | `mirror-unprivileged` | תג image המירור. ברשת סגורה לקבע את הצורה `<commit>-mirror-unprivileged` |
+| `mirror.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת image המירור |
 | `search.enabled` | `false` | פריסת שירות החיפוש (פוד נפרד: API + Redis משלו). בלעדיו כפתור החיפוש פותח חלון ריק. גם מחזיר את הכפתור לתצוגה — ראה למטה. |
 | `search.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (חיפוש) |
 | `search.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (חיפוש) |

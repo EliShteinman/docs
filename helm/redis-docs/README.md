@@ -68,6 +68,32 @@ Turning any of these off is a deliberate downgrade: `namespace.enabled=false` pu
 back in one flat keyspace, and `acl.enabled=false` puts the proxy back on Redis's default user
 with nothing between a typed `FLUSHALL` and everyone else's data.
 
+### Pod 4 — `redis-docs-mirror` (the sections mirrored from redis.io)
+
+Created only when `mirror.enabled=true`.
+
+| Container | Description | Port |
+|---|---|---|
+| `mirror` | nginx serving the mirrored pages and their pictures | 8080 |
+
+The blog, tutorials, customer stories, comparisons, solutions, technology pages and
+architecture diagrams are built by the same Hugo run as the documentation and split out
+of its tree afterwards (`build/split_mirror.py`), into an image of their own. That is
+1,400 pages and 238 MB of pictures a deployment does not have to carry: the
+documentation image no longer contains them.
+
+The site's nginx proxies each of their paths here, so a reader sees one site. With
+`mirror.enabled=false` there is no pod, no proxy rule, and the pages simply are not
+there — the sidebar entry is removed in the browser and the documentation's links into
+those sections are unlinked, rather than leading to a 404.
+
+The glossary is the exception and ships with the documentation: its terms publish
+inside `/glossary/`, the documentation's own section.
+
+Search follows the same switch. The mirrored pages left the documentation's feed when
+they left its tree, and the search pod indexes them from the mirror image only when it
+is deployed, so a search never answers with a page nothing serves.
+
 ### Pod 3 — `redis-docs-search` (docs search)
 
 Created only when `search.enabled=true`.
@@ -801,6 +827,12 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.jupyter.image.tag` | `2026-04-02` | Jupyter image tag |
 | `cli.jupyter.image.pullPolicy` | `IfNotPresent` | Jupyter image pull policy |
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | Jupyter resources |
+| `mirror.enabled` | `false` | Deploy the mirrored redis.io sections (separate pod and image). Off leaves the documentation complete on its own |
+| `mirror.replicas` | `1` | Mirror pods |
+| `mirror.image.registry` | `a0533057932` | Mirror image registry |
+| `mirror.image.name` | `redis-docs` | Mirror image name — the same repository as the site image, under its own tags |
+| `mirror.image.tag` | `mirror-unprivileged` | Mirror image tag. Pin the `<commit>-mirror-unprivileged` form in an air-gapped registry |
+| `mirror.image.pullPolicy` | `IfNotPresent` | Mirror image pull policy |
 | `search.enabled` | `false` | Deploy the docs search service (separate pod: search API + its own Redis). Without it the search button opens an empty modal. Also turns the button back on — see below. |
 | `search.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (search) |
 | `search.securityContext.runAsNonRoot` | `true` | Block running as root (search) |
