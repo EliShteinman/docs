@@ -229,25 +229,41 @@ python3 -m build.site_mirror --refresh-redirects   # דורש אינטרנט; ל
 > להופיע תחת הכותרת של הדוקס. המילון הוא היוצא מן הכלל: המונחים שלו מתפרסמים בתוך
 > `/glossary/` של התיעוד, ולכן הם מקובצים איתו.
 
-#### ה-image של ה-CLI (`redis-docs-cli`) — בנייה ידנית
+#### ה-image של ה-CLI (`redis-docs-cli`) — נבנה אוטומטית ב-`airgap-build.yml`
 
-נבנה בנפרד משני הפייפליינים לעיל, ידנית, כי הוא כמעט לא משתנה. המקור ב-`helm/cli-proxy/`.
-הוא נושא **שני** שירותים: ה-proxy של ה-CLI playground (`main:app`, פורט 8090) ושירות
-החיפוש בדוקס (`search.main:app`, פורט 8091). הצ'ארט מריץ כל אחד מ-deployment משלו עם
-`command` משלו, כך שהפעלת אחד לא מפעילה את השני.
+המקור ב-`helm/cli-proxy/`. ה-image נושא **שני** שירותים: ה-proxy של ה-CLI playground
+(`main:app`, פורט 8090) ושירות החיפוש בדוקס (`search.main:app`, פורט 8091). הצ'ארט מריץ כל
+אחד מ-deployment משלו עם `command` משלו, כך שהפעלת אחד לא מפעילה את השני.
 
-```bash
-cd helm/cli-proxy
-python3 -m pytest . -q          # 12 מודולי בדיקה, כולל search/
+ה-job ‏`4b. CLI image` רץ בכל הרצה של `airgap-build.yml`, במקביל לבניית האתר:
 
-docker buildx build --platform linux/amd64,linux/arm64 \
-  -t a0533057932/redis-docs-cli:latest \
-  --push .
-```
+1. מחשב hash של כל הקבצים ב-`helm/cli-proxy/` חוץ מקבצי הבדיקות (`test_*.py`), שלא נכנסים
+   ל-image.
+2. מתחיל מהתג שב-`values.yaml` (‏`cli.image.tag`, שחייב להיות זהה ל-`search.image.tag`)
+   ובודק ב-Docker Hub: תג שקיים ומכיל את אותו hash (label ‏`redis-docs.cli.source-hash`)
+   — נשאר, לא בונים. תג שקיים עם קוד אחר — עולים ב-patch (‏`0.6.0 → 0.6.1`) ובודקים שוב.
+   תג פנוי — מריצים את הבדיקות, בונים amd64+arm64 ודוחפים אותו ואת `latest`.
+3. עם `publish_chart`, שלב 5 מעדכן את התג ב-`values.yaml` (בשני המקומות), בדוגמה
+   `values-openshift-airgapped.yaml` וב-README-ים, ומפרסם את הצ'ארט.
 
-> **לבנות מחדש אחרי כל שינוי ב-`helm/cli-proxy/`** — כולל `search/`. ה-image הזה לא נבנה
-> ע"י `airgap-build.yml` ולא ע"י `airgap-multibuild.sh`, אז שינוי בו לא ייכנס לפריסה
-> מבניית הדוקס לבדה.
+אחרי הדחיפה הוא מוודא שה-image באמת עולה: מריץ בתוכו ייבוא של שני השירותים, בשתי
+הארכיטקטורות. זה תופס מודול שנוסף ל-`helm/cli-proxy/` ולא נוסף לרשימת ה-`COPY`
+שב-`Dockerfile` — הבדיקות רצות על הקוד שברפו ולא רואות את זה.
+
+תג שפורסם אף פעם לא נדרס. הרצה שבנתה image בלי `publish_chart` לא משאירה עבודה: ההרצה
+הבאה מוצאת את התג עם אותו hash ומפנה אליו את הצ'ארט. הרצת בדיקה עם `tag_override` דוחפת
+את ה-CLI רק תחת תג ה-override, בלי `latest` ובלי לגעת ברצף הגרסאות.
+
+> **בנייה ידנית — לבדיקה מקומית בלבד.** לא לדחוף ידנית תג גרסה (`X.Y.Z`) או `latest`:
+> image בלי ה-label ייראה ל-CI כקוד אחר, והוא יעלה גרסה סביבו.
+>
+> ```bash
+> cd helm/cli-proxy
+> python3 -m pytest . -q
+> docker buildx build --platform linux/amd64,linux/arm64 -t redis-docs-cli:local .
+> ```
+>
+> `airgap-multibuild.sh` בונה רק את האתר ולא דוחף כלום, אז אין מה לשקף בו.
 
 > **ה-image של Redis** (`redis:8.10.0-alpine`) משרת גם את ה-playground וגם את החיפוש —
 > אותו image, שני פודים. אין מה לבנות; רק לוודא שהוא ממורר.
