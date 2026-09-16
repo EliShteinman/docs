@@ -1,0 +1,33 @@
+<svg xml:space="preserve" viewBox="0 0 273.491 93.262" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<g id="Art">
+</g>
+<g id="Layer_2">
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 33.291)">1336376410</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 45.6797)">1336376405</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 58.0683)">1336376395</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 70.4336)">1336376400</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 82.8222)">...</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 72.4995 33.291)">45</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 72.4995 45.6797)">28</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 72.4995 58.0683)">17</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 72.4995 70.4336)">29</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 72.898 82.8222)">...</text>
+	<path d="M149.233,85.562c0,4.113-3.336,7.449-7.449,7.449H7.7
+		c-4.114,0-7.45-3.336-7.45-7.449V14.065c0-4.114,3.336-7.45,7.45-7.45h134.083c4.113,0,7.449,3.335,7.449,7.45V85.562z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<rect height="13.231" width="48.249" fill="#FFFFFF" y="0" x="11.072"></rect>
+	<rect height="13.231" width="24.403" fill="#FFFFFF" y="0" x="114.396"></rect>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.7398 8.6289)">count:5:hits</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 117.9241 8.6289)">hash</text>
+	<line y2="16.065" x2="149.233" y1="16.065" x1="0.25" stroke-width="0.5" stroke="#000000" fill="none"></line>
+	<line y2="92.749" x2="65.334" y1="16.322" x1="65.334" stroke-dasharray="3" stroke-width="0.5" stroke="#949494" fill="none"></line>
+	<text transform="matrix(1 0 0 1 169.4238 45.5459)"><tspan font-size="8" font-family="'ArialMT'" fill="#808080" y="0" x="0">This counter shows that </tspan><tspan font-size="8" font-family="'ArialMT'" fill="#808080" y="10" x="0">the site has received 17 </tspan><tspan font-size="8" font-family="'ArialMT'" fill="#808080" y="20" x="0">hits between 7:39:55 and </tspan><tspan font-size="8" font-family="'ArialMT'" fill="#808080" y="30" x="0">7:40:00 a.m. on May 7, 2012.</tspan></text>
+	<g>
+		<g>
+			<path d="M164.427,43.546
+				c-19.751-0.29-32.626,11.917-56.316,11.69" stroke-linejoin="round" stroke-width="0.5" stroke="#949494" fill="none"></path>
+			<path d="M106.925,55.737c0.824,0.258,1.359,0.493,2.02,0.765l0.024-2.522c-0.238,0.111-1.205,0.485-2.034,0.727
+				c-0.887,0.259-1.691,0.434-2.212,0.494C105.243,55.271,106.043,55.462,106.925,55.737z" fill="#949494"></path>
+		</g>
+	</g>
+</g>
+</svg>

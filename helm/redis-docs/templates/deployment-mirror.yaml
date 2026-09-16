@@ -1,0 +1,53 @@
+{{- if .Values.mirror.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "redis-docs.fullname" . }}-mirror
+  labels:
+    {{- include "redis-docs.labels" . | nindent 4 }}
+    app.kubernetes.io/component: mirror
+spec:
+  replicas: {{ .Values.mirror.replicas }}
+  selector:
+    matchLabels:
+      {{- include "redis-docs.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: mirror
+  template:
+    metadata:
+      labels:
+        {{- include "redis-docs.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: mirror
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        # Static files and nothing else: the pages were rendered by the same
+        # Hugo run as the documentation, and split out of its tree afterwards
+        # (build/split_mirror.py). No sub_filter, no download packing, no
+        # proxying — the site's own nginx does all of that and routes here.
+        - name: mirror
+          image: {{ include "redis-docs.mirrorImage" . }}
+          imagePullPolicy: {{ .Values.mirror.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.mirror.containerPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /blog/
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /blog/
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.mirror.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.mirror.securityContext | nindent 12 }}
+{{- end }}

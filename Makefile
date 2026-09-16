@@ -19,6 +19,16 @@ deps:
 components:
 	@python3 build/make.py
 
+# Refresh the content mirrored from redis.io: the blog, tutorials, glossary,
+# technology and solutions guides, comparisons, customer stories and
+# architecture diagrams.
+# Not part of `all`: it reaches the public internet and rewrites ~1,400 files,
+# so it is run deliberately and its output is committed, the way the RedisVL
+# docs sync is. Re-running is cheap -- images already on disk are not fetched
+# again. `--only blog` or `--only technology` narrows it.
+mirror:
+	@python3 -m build.site_mirror
+
 components_local:
 	@python3 build/make.py --stack ./data/components_local/index.json
 

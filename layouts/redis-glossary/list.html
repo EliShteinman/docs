@@ -1,0 +1,43 @@
+{{/* The mirrored Redis glossary, laid out the way redis.io lays out its own: a
+     letter bar, then a heading per letter with the number of terms in it.
+
+     Not layouts/glossary/. That section is the documentation's own glossary --
+     188 definitions written by hand in the body of its _index.md, rendered by
+     an upstream layout this fork does not touch. The mirror adds to this site
+     and never edits it, so it gets a section of its own; the terms themselves
+     still publish at /glossary/<term>/, where redis.io publishes them.
+*/}}
+{{ define "main" }}
+  {{ $terms := .Pages.ByTitle }}
+  {{ $letters := slice }}
+  {{ range $terms }}{{ $letters = $letters | append (substr .Title 0 1 | upper) }}{{ end }}
+  {{ $letters = uniq $letters }}
+  <main class="docs w-full max-w-[1920px] mx-auto px-5 flex flex-col md:flex-row overflow-hidden">
+    {{ partial "docs-nav.html" . }}
+    <div class="w-full py-12 md:pl-4 xl:px-16 overflow-hidden">
+      {{ partial "breadcrumbs" . }}
+      <section class="prose w-full py-12 max-w-none">
+        <h1>{{ .Title }}</h1>
+        {{ with .Params.description }}<p class="text-lg -mt-5">{{ . | markdownify }}</p>{{ end }}
+        {{ .Content }}
+        {{ if gt (len $terms) 0 }}
+          <div class="not-prose flex flex-wrap gap-2 my-8">
+            {{ range $letters }}
+              <a class="px-3 py-2 rounded-md border border-redis-ink-900 border-opacity-40 text-sm no-underline hover:bg-redis-pen-200"
+                 href="#letter-{{ . | urlize }}">{{ . }}</a>
+            {{ end }}
+          </div>
+          {{ range $letters }}
+            {{ $letter := . }}
+            {{ $inLetter := slice }}
+            {{ range $terms }}{{ if eq (substr .Title 0 1 | upper) $letter }}{{ $inLetter = $inLetter | append . }}{{ end }}{{ end }}
+            <h2 id="letter-{{ $letter | urlize }}">{{ $letter }} <span class="text-base opacity-60">{{ len $inLetter }}</span></h2>
+            {{ partial "mirrored-rows.html" (dict "pages" $inLetter "showGroup" false "showDate" false) }}
+          {{ end }}
+        {{ end }}
+        {{ partial "feedback.html" . }}
+      </section>
+    </div>
+    {{ partial "scripts.html" . }}
+  </main>
+{{ end }}

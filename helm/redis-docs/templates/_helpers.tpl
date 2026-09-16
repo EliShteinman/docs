@@ -107,6 +107,25 @@ Priority: global.registry > cli.redis.image.registry
 {{- end }}
 
 {{/*
+Return the image reference for the search API container. It is the CLI proxy
+image: the search service ships inside it rather than in one of its own.
+Priority: global.registry > search.image.registry
+*/}}
+{{- define "redis-docs.searchImage" -}}
+{{- $registry := .Values.global.registry | default .Values.search.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.search.image.name .Values.search.image.tag -}}
+{{- end }}
+
+{{/*
+Return the image reference for the search index's Redis.
+Priority: global.registry > search.redis.image.registry
+*/}}
+{{- define "redis-docs.searchRedisImage" -}}
+{{- $registry := .Values.global.registry | default .Values.search.redis.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.search.redis.image.name .Values.search.redis.image.tag -}}
+{{- end }}
+
+{{/*
 Return the image reference for the Jupyter sidecar.
 Priority: global.registry > cli.jupyter.image.registry
 */}}
@@ -132,4 +151,31 @@ bundles cannot be built and the widget is hidden rather than left to 404.
 */}}
 {{- define "redis-docs.downloadsActive" -}}
 {{- if and .Values.downloads.enabled .Values.canonicalURL -}}true{{- end -}}
+{{- end }}
+
+{{/*
+Whether a catalog link's url is a path on this site rather than another host.
+A protocol-relative `//host/...` starts with a slash too, and is not.
+*/}}
+{{- define "redis-docs.isSiteLink" -}}
+{{- $url := . | default "" | toString -}}
+{{- if and (hasPrefix "/" $url) (not (hasPrefix "//" $url)) -}}true{{- end -}}
+{{- end }}
+
+{{/*
+Return the image reference for the mirrored sections.
+Priority: global.registry > mirror.image.registry
+*/}}
+{{- define "redis-docs.mirrorImage" -}}
+{{- $registry := .Values.global.registry | default .Values.mirror.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.mirror.image.name .Values.mirror.image.tag -}}
+{{- end }}
+
+{{/*
+The paths the mirror serves, as nginx location prefixes. Named once here
+because three templates need the same list: the proxy rules, the runtime
+config that unlinks them when the mirror is not deployed, and the README.
+*/}}
+{{- define "redis-docs.mirrorPaths" -}}
+blog tutorials compare solutions customers technology resources/architecture-diagrams images/site-mirror
 {{- end }}

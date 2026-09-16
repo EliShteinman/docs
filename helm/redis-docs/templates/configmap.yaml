@@ -32,6 +32,14 @@ data:
 
         access_log /var/log/nginx/access.log main buffer=16k flush=5s;
 
+        {{- if and .Values.search.enabled .Values.search.rateLimit.enabled }}
+        # The search endpoint is the one path here that costs more than reading
+        # a file off disk, and the only one a caller that is not a browser is
+        # likely to drive in a loop. Keyed on the client address; see
+        # search.rateLimit in values.yaml for why it is off by default.
+        limit_req_zone $binary_remote_addr zone=search:{{ .Values.search.rateLimit.zoneSize }} rate={{ .Values.search.rateLimit.rate }};
+        {{- end }}
+
         sendfile on;
         tcp_nopush on;
         tcp_nodelay on;
@@ -138,6 +146,61 @@ data:
             deny all;
             access_log off;
         }
+
+        {{- if .Values.search.enabled }}
+        # The path search-modal.html already calls, spelled exactly as
+        # config.toml's `searchService` builds it. An exact-match location
+        # outranks every regex location above it, so this is reached before the
+        # static-asset rules ever see the request. Without this block the
+        # request falls through to `location /`, 404s, and the modal opens
+        # empty — which is the behaviour when search is disabled.
+        location = /convai/api/search-service {
+            {{- if .Values.search.rateLimit.enabled }}
+            # 429 rather than nginx's default 503: a client that is being asked
+            # to slow down has not hit a broken service, and the service says
+            # 503 itself when it cannot reach its index.
+            limit_req zone=search burst={{ .Values.search.rateLimit.burst }} nodelay;
+            limit_req_status 429;
+            {{- end }}
+            {{- if .Values.search.cors.enabled }}
+            add_header Access-Control-Allow-Origin {{ .Values.search.cors.allowOrigin | quote }} always;
+            add_header Vary Origin always;
+            # A plain GET needs no preflight, but a caller that sends a header
+            # of its own turns the same request into one. Answered here rather
+            # than in the service, which would otherwise see an OPTIONS it has
+            # no route for.
+            add_header Access-Control-Allow-Methods "GET, OPTIONS" always;
+            add_header Access-Control-Allow-Headers "Content-Type" always;
+            if ($request_method = OPTIONS) {
+                return 204;
+            }
+            {{- end }}
+            proxy_pass http://{{ include "redis-docs.fullname" . }}-search:8091/search;
+        }
+        {{- end }}
+
+        {{- if .Values.mirror.enabled }}
+        # The mirrored sections live in an image of their own and are served by
+        # their own pod.
+        #
+        # `^~`, not a plain prefix: a regex location beats a prefix one in
+        # nginx, so the asset and .html rules above would otherwise catch
+        # /images/site-mirror/x.webp and /blog/a-post/index.html and answer
+        # them from this image, which no longer has either. `^~` stops the
+        # regex round from happening at all.
+        {{- range splitList " " (include "redis-docs.mirrorPaths" .) }}
+        location ^~ /{{ . }}/ {
+            proxy_pass http://{{ include "redis-docs.fullname" $ }}-mirror:8080;
+        }
+        {{- end }}
+
+        # The mirrored pages' own sitemap. The site's /sitemap.xml lists the
+        # documentation alone, because it is built whether or not this pod is
+        # deployed and must not advertise addresses nothing answers.
+        location = /sitemap-mirror.xml {
+            proxy_pass http://{{ include "redis-docs.fullname" . }}-mirror:8080/sitemap.xml;
+        }
+        {{- end }}
 
         {{- if .Values.cli.enabled }}
         location = /cli {

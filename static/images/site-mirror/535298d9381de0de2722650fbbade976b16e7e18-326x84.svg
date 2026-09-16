@@ -1,0 +1,105 @@
+<svg xml:space="preserve" viewBox="0 0 326.4 84.4" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.0">
+<g id="Layer_2">
+	<g>
+		<g>
+			<polyline points="153.2,55.3 193.2,55.3 193.1,67 237.3,67" stroke-width="0.5" stroke="#202020" fill="none"></polyline>
+			<path d="M238.4,66.5c-0.8-0.3-1.4-0.5-2-0.7v2.5c0.2-0.1,1.2-0.5,2-0.7c0.9-0.3,1.7-0.5,2.2-0.5
+				C240.1,66.9,239.3,66.7,238.4,66.5z" fill="#202020"></path>
+		</g>
+	</g>
+	<g>
+		<g>
+			<polyline points="153.2,42.8 200.7,42.8 200.6,55.2 237.3,55.2" stroke-width="0.5" stroke="#202020" fill="none"></polyline>
+			<path d="M238.4,54.6c-0.8-0.2-1.4-0.5-2-0.7v2.5c0.2-0.1,1.2-0.5,2-0.7c0.9-0.3,1.7-0.5,2.2-0.5
+				C240.1,55.1,239.3,54.9,238.4,54.6z" fill="#202020"></path>
+		</g>
+	</g>
+	<path d="M96,64.6c0,4.1-3.3,7.4-7.4,7.4H7.7c-4.1,0-7.5-3.3-7.5-7.4V14.1
+		c0-4.1,3.3-7.4,7.5-7.4h80.8c4.1,0,7.4,3.3,7.4,7.4V64.6z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<rect height="13.2" width="28.2" fill="#FFFFFF" y="0" x="11.1"></rect>
+	<rect height="13.2" width="21.4" fill="#FFFFFF" y="0" x="64.1"></rect>
+	<line y2="16.1" x2="96" y1="16.1" x1="0.3" stroke-width="0.5" stroke="#000000" fill="none"></line>
+	<line y2="71.8" x2="23.6" y1="16.3" x1="23.6" stroke-dasharray="3" stroke-width="0.5" stroke="#949494" fill="none"></line>
+	<path d="M211.1,64.6c0,4.1-3.3,7.4-7.4,7.4h-80.8c-4.1,0-7.5-3.3-7.5-7.4V14.1
+		c0-4.1,3.3-7.4,7.5-7.4h80.8c4.1,0,7.4,3.3,7.4,7.4V64.6z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<rect height="13.2" width="28.2" fill="#FFFFFF" y="0" x="126.2"></rect>
+	<rect height="13.2" width="21.4" fill="#FFFFFF" y="0" x="179.2"></rect>
+	<line y2="16.1" x2="211.1" y1="16.1" x1="115.3" stroke-width="0.5" stroke="#000000" fill="none"></line>
+	<line y2="71.8" x2="138.7" y1="16.3" x1="138.7" stroke-dasharray="3" stroke-width="0.5" stroke="#949494" fill="none"></line>
+	<path d="M326.2,76.7c0,4.1-3.3,7.4-7.4,7.4h-80.8c-4.1,0-7.5-3.3-7.5-7.4V14.1
+		c0-4.1,3.3-7.4,7.5-7.4h80.8c4.1,0,7.4,3.3,7.4,7.4V76.7z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<rect height="13.2" width="28.3" fill="#FFFFFF" y="0" x="241.2"></rect>
+	<rect height="13.2" width="21.4" fill="#FFFFFF" y="0" x="294.3"></rect>
+	<line y2="16.1" x2="326.2" y1="16.1" x1="230.4" stroke-width="0.5" stroke="#000000" fill="none"></line>
+	<line y2="83.9" x2="253.8" y1="16.3" x1="253.8" stroke-dasharray="3" stroke-width="0.5" stroke="#949494" fill="none"></line>
+	<path d="M37.9,42.8c0,2.6-1.8,4.8-4.1,4.8H12.9c-2.2,0-4.1-2.1-4.1-4.8l0,0
+		c0-2.6,1.8-4.8,4.1-4.8h20.9C36.1,38,37.9,40.2,37.9,42.8L37.9,42.8z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<path d="M37.9,30.3c0,2.6-1.8,4.8-4.1,4.8H12.9c-2.2,0-4.1-2.1-4.1-4.8l0,0
+		c0-2.6,1.8-4.8,4.1-4.8h20.9C36.1,25.6,37.9,27.7,37.9,30.3L37.9,30.3z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<path d="M153.2,30.3c0,2.6-1.8,4.8-4.1,4.8h-20.9c-2.2,0-4.1-2.1-4.1-4.8l0,0
+		c0-2.6,1.8-4.8,4.1-4.8h20.9C151.4,25.6,153.2,27.7,153.2,30.3L153.2,30.3z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<path d="M37.9,55.2c0,2.6-1.8,4.8-4.1,4.8H12.9c-2.2,0-4.1-2.1-4.1-4.8l0,0
+		c0-2.6,1.8-4.8,4.1-4.8h20.9C36.1,50.4,37.9,52.5,37.9,55.2L37.9,55.2z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<path d="M153.2,42.8c0,2.6-1.8,4.8-4.1,4.8h-20.9c-2.2,0-4.1-2.1-4.1-4.8l0,0
+		c0-2.6,1.8-4.8,4.1-4.8h20.9C151.4,38,153.2,40.2,153.2,42.8L153.2,42.8z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<path d="M153.2,55.2c0,2.6-1.8,4.8-4.1,4.8h-20.9c-2.2,0-4.1-2.1-4.1-4.8l0,0
+		c0-2.6,1.8-4.8,4.1-4.8h20.9C151.4,50.4,153.2,52.5,153.2,55.2L153.2,55.2z" stroke-width="0.5" stroke="#000000" fill="none"></path>
+	<g>
+		<g>
+			<line y2="42.8" x2="124.1" y1="55.5" x1="37.9" stroke-width="0.5" stroke="#202020" fill="none"></line>
+		</g>
+	</g>
+	<g>
+		<g>
+			<polyline points="37.9,30.8 68.9,30.8 68.9,36.4 207.1,36.4 207,43.5 
+				237.3,43.5" stroke-width="0.5" stroke="#202020" fill="none"></polyline>
+			<path d="M238.4,43c-0.8-0.3-1.4-0.5-2-0.7v2.5c0.2-0.1,1.2-0.5,2-0.7c0.9-0.3,1.7-0.5,2.2-0.5
+				C240.1,43.5,239.3,43.3,238.4,43z" fill="#202020"></path>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line y2="55.2" x2="124.1" y1="42.8" x1="37.9" stroke-width="0.5" stroke="#202020" fill="none"></line>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line y2="30.3" x2="237.3" y1="30.3" x1="153.2" stroke-width="0.5" stroke="#202020" fill="none"></line>
+			<path d="M238.4,29.8c-0.8-0.2-1.4-0.5-2-0.7v2.5c0.2-0.1,1.2-0.5,2-0.7c0.9-0.3,1.7-0.5,2.2-0.5
+				C240.1,30.3,239.3,30.1,238.4,29.8z" fill="#202020"></path>
+		</g>
+	</g>
+</g>
+<g id="Layer_3">
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 33.2915)">a</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 45.6802)">b</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 58.0688)">c</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 129.7573 33.2915)">d</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 129.7573 45.6802)">c</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 129.7573 58.0688)">b</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 244.8433 33.2915)">d</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 244.8433 45.6802)">a</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 244.8433 57.3979)">c</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 244.8433 69.1157)">b</text>
+</g>
+<g id="Layer_3_copy_2">
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 27.9594 33.2915)">1</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 27.9594 45.6802)">2</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 27.9594 58.0688)">3</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 143.0453 33.2915)">0</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 143.0453 45.6802)">1</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 143.0453 58.0688)">4</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 258.1313 33.2915)">0</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 258.1313 45.6802)">1</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 258.1313 57.3979)">1</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 258.1313 69.1157)">2</text>
+</g>
+<g id="Layer_3_copy">
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 14.6714 8.6284)">zset-1</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 67.583 8.6284)">zset</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 129.7573 8.6284)">zset-2</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 182.6687 8.6284)">zset</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 244.8433 8.6284)">zset-u</text>
+	<text font-size="8" font-family="'ArialMT'" transform="matrix(1 0 0 1 297.7549 8.6284)">zset</text>
+</g>
+</svg>

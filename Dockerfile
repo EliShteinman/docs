@@ -72,10 +72,18 @@ FROM components AS builder
 RUN --mount=type=cache,target=/var/cache/airgap-versions \
     bash airgap-multibuild.sh
 
+# Divide the built tree: the documentation stays in public/, the mirrored
+# sections and their pictures move to public-mirror/, and each is wrapped in an
+# image of its own below. A deployment that does not want 1,400 mirrored pages
+# and 238 MB of pictures does not have to carry them. Mirrors the same step in
+# .github/workflows/airgap-build.yml.
+RUN python3 build/split_mirror.py --site /site/public --mirror /site/public-mirror \
+      --assets /site/public-mirror-assets
+
 # Pre-compress static assets that nginx serves via gzip_static. Skips .md and
 # .json because nginx runs sub_filter on those at request time (gzip_static is
 # OFF for those locations — pre-compressing them would be wasted CPU).
-RUN find /site/public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
+RUN find /site/public /site/public-mirror /site/public-mirror-assets -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
     -exec gzip -9 -k {} \;
 
 # ============================================================
@@ -126,6 +134,48 @@ RUN apk add --no-cache python3
 COPY --from=builder /site/build/make_doc_bundles.py /opt/redis-docs/build/make_doc_bundles.py
 COPY --from=builder /site/data/doc_bundles.json /opt/redis-docs/data/doc_bundles.json
 USER 101
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
+
+# ============================================================
+# The mirror: the sections split out of the site tree
+# ============================================================
+# Built with `--target mirror-unprivileged`. No download tooling: the bundles
+# are documentation, and they stay with it. Kept in step with
+# Dockerfile.runtime, which the airgap workflow uses.
+FROM nginx:alpine AS mirror-privileged
+
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+
+LABEL org.opencontainers.image.source="https://github.com/redis/docs"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.variant="mirror-privileged"
+
+# Two layers, pictures first: they are 243 MB and change only when content is
+# mirrored, while the pages change with any layout or stylesheet.
+COPY --from=builder /site/public-mirror-assets /usr/share/nginx/html
+COPY --from=builder /site/public-mirror /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+FROM nginxinc/nginx-unprivileged:alpine AS mirror-unprivileged
+
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+
+LABEL org.opencontainers.image.source="https://github.com/redis/docs"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.variant="mirror-unprivileged"
+
+COPY --from=builder --chown=nginx:nginx /site/public-mirror-assets /usr/share/nginx/html
+COPY --from=builder --chown=nginx:nginx /site/public-mirror /usr/share/nginx/html
 
 EXPOSE 8080
 

@@ -11,9 +11,61 @@ Designed for air-gapped networks - no external dependencies.
 - Helm 3.x
 - Private Docker registry (in air-gapped networks)
 
+## Upgrading from 1.x to 2.0.0
+
+Nothing was removed and nothing changed meaning: every value from 1.x is still read,
+and the two new features are off by default. What the major version marks is the
+image — **the documentation image no longer contains the mirrored redis.io sections**.
+They are an image of their own now.
+
+**The short version:** upgrade the chart and the images together, and decide whether
+you want the mirror.
+
+```bash
+# 1. Mirror the images this release needs (skip the mirror image if you do not want it)
+skopeo copy docker://a0533057932/redis-docs:<hash>-unprivileged \
+            docker://registry.internal.company.com/redis-docs:<hash>-unprivileged
+skopeo copy docker://a0533057932/redis-docs:<hash>-mirror-unprivileged \
+            docker://registry.internal.company.com/redis-docs:<hash>-mirror-unprivileged
+skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
+            docker://registry.internal.company.com/redis-docs-cli:0.6.0
+
+# 2. Upgrade
+helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
+  --version 2.0.0 -f my-values.yaml \
+  --set image.tag=<hash>-unprivileged \
+  --set mirror.enabled=true --set mirror.image.tag=<hash>-mirror-unprivileged
+```
+
+Four things to know before you run it:
+
+- **These tags do not exist until this release is built.** `redis-docs-cli:0.6.0` and
+  the `redis-docs:*-mirror-unprivileged` tags are produced by the first run of the
+  build workflow for this version — check the run summary, or Docker Hub, before you
+  mirror them. Deploying against a tag that was never pushed is an ImagePullBackOff and
+  nothing more informative.
+
+- **Leaving `mirror.enabled` off is a supported choice, not a broken one.** The
+  documentation is complete without it: the sidebar entry disappears and the links into
+  those sections are unlinked in the browser rather than leading to a 404. What you lose
+  is the blog, the tutorials, the customer stories, the comparisons, the solutions, the
+  technology pages and the architecture diagrams — and about 300 MB per pull.
+- **Do not take the new chart with an old image.** An image built before this release
+  still carries the mirrored pages inside it, and the chart will unlink the links to
+  them while the pages sit there unreachable. Upgrade both together.
+- **`cli` and `search` need the CLI image at 0.6.0 or newer.** The chart's default moved
+  from the rolling `latest` to a pinned `0.6.0`; an older tag has no `search` module and
+  the search pod crash-loops. `search` also needs its own Redis 8 image mirrored
+  (`redis:8.10.0-alpine`) — it is the query engine the index lives in.
+
+Rolling back to 1.x is a `helm rollback` and the image tag you were on before; no data
+lives in either pod.
+
 ## Architecture
 
-The chart deploys two main pods:
+The chart deploys the documentation, and three optional pods beside it — the CLI
+playground, the search service, and the sections mirrored from redis.io. Each is off
+by default and each is its own image, so a deployment carries only what it turns on.
 
 ### Pod 1 — `redis-docs` (documentation site)
 
@@ -68,6 +120,111 @@ Turning any of these off is a deliberate downgrade: `namespace.enabled=false` pu
 back in one flat keyspace, and `acl.enabled=false` puts the proxy back on Redis's default user
 with nothing between a typed `FLUSHALL` and everyone else's data.
 
+### Pod 4 — `redis-docs-mirror` (the sections mirrored from redis.io)
+
+Created only when `mirror.enabled=true`.
+
+| Container | Description | Port |
+|---|---|---|
+| `mirror` | nginx serving the mirrored pages and their pictures | 8080 |
+
+The blog, tutorials, customer stories, comparisons, solutions, technology pages and
+architecture diagrams are built by the same Hugo run as the documentation and split out
+of its tree afterwards (`build/split_mirror.py`), into an image of their own. That is
+1,400 pages and 238 MB of pictures a deployment does not have to carry: the
+documentation image no longer contains them.
+
+The site's nginx proxies each of their paths here, so a reader sees one site. With
+`mirror.enabled=false` there is no pod, no proxy rule, and the pages simply are not
+there — the sidebar entry is removed in the browser and the documentation's links into
+those sections are unlinked, rather than leading to a 404.
+
+The glossary is the exception and ships with the documentation: its terms publish
+inside `/glossary/`, the documentation's own section.
+
+The mirrored pages have a sitemap of their own, published at `/sitemap-mirror.xml`. The
+site's own `/sitemap.xml` lists the documentation alone: it is built whether or not this
+pod is deployed, so it must not advertise addresses nothing answers.
+
+Search follows the same switch. The mirrored pages left the documentation's feed when
+they left its tree, and the search pod indexes them from the mirror image only when it
+is deployed, so a search never answers with a page nothing serves.
+
+### Pod 3 — `redis-docs-search` (docs search)
+
+Created only when `search.enabled=true`.
+
+| Container | Description | Port |
+|---|---|---|
+| `fetch-corpus` (init) | Copies `docs.ndjson` out of the docs image into a shared volume | — |
+| `search-api` | Builds the index, then serves the search endpoint | 8091 |
+| `redis` | Holds the index — local to pod (localhost) | 6379 |
+
+`search-api` runs from the `redis-docs-cli` image: the search service ships inside it
+rather than in an image of its own, so an air-gapped deployment has no third image to
+build, mirror and carry in.
+
+This Redis is separate from the CLI playground's on purpose. `files/sandbox.acl`
+deliberately grants the reader `+ft.dropindex`, so a tutorial that creates an index can
+undo it — which would also let any visitor drop the search index if the two shared a
+Redis.
+
+#### How the search works
+
+`layouts/partials/search-modal.html` calls `/convai/api/search-service`, a service that
+runs at redis.io. Nothing serves that path in an air-gapped cluster, so the request 404s
+and the modal opens empty. Enabling `search` implements the same contract instead of
+replacing the search, so the upstream partial and `config.toml` are untouched:
+
+- **Corpus** — `docs.ndjson`, the RAG feed the build already produces. The index is
+  rebuilt on every pod start, so the pages indexed are always the pages this release
+  serves.
+- **Route** — nginx gains an exact-match `location = /convai/api/search-service` that
+  proxies to the search Service. The route only exists when `search.enabled=true`.
+- **The button** — the search button is itself a catalog link (`nav-search`), so the
+  airgap-first `externalLinks.enabled: false` default hides it. Setting `search.enabled`
+  turns it back on, since a deployment that answers searches wants the button. An
+  explicit `enabled` on `externalLinks.overrides.nav-search`, the `header` family, or its
+  `search` sub-family still wins in both directions.
+
+Ranking will not match redis.io exactly — it is a different scoring engine.
+
+#### Searching from something that is not the modal
+
+The same endpoint answers any HTTP client that can reach the site, which is how a
+script, an agent or another service searches the corpus without a browser:
+
+```bash
+curl "https://docs.internal.example.com/convai/api/search-service?q=rack+zone*&p=all&limit=5"
+```
+
+| Parameter | Default | Meaning |
+|---|---|---|
+| `q` | — | The query. **Append `*` to match a prefix** — the modal does this itself, so a caller that omits it gets whole-word matches only. Words are ANDed. |
+| `p` | all | Product filter: `rs`, `rc`, `oss_and_stack`, `redisinsight`, `kubernetes`, `redis-data-integration`, `clients`, or `all`. An unknown value matches nothing. |
+| `limit` | `search.index.resultLimit` | Results in this page, up to 100. |
+| `offset` | `0` | Where the page starts, up to 1000. |
+| `site` | — | Accepted and ignored, for parity with redis.io. |
+
+The reply carries `total` — every match, not just this page — and `results`. Each result
+carries `title`, `body` (a fragment with the matched words in `<b>` tags),
+`url`, `hierarchy`, `section_title` (always empty, matching redis.io), and four fields
+the modal does not read but a caller usually needs: `source` (`docs`, `blog` or `site`),
+`version` (`latest`, or the number of an archived version tree), `product`, and `score`.
+**`latest` is the current release, not the highest number**: Redis Software's numbered
+trees stop at 8.0 while 8.2 publishes only as `latest`.
+
+Statuses separate an answer from a failure: `200` with results, `200` with an empty list
+and no `error` for a query that matched nothing, `200` with `error: "query rejected"`
+when the query engine refused the query, `503` with `error: "search unavailable"` when
+the service cannot reach its index, and `429` when `search.rateLimit` is on and the
+caller is going too fast. `/healthz` on the pod reports whether the index exists.
+
+Two options matter for callers outside the site: `search.cors.enabled`, without which a
+page served from another origin cannot read the reply, and `search.rateLimit.enabled`,
+which is off by default because the modal sends a request per keystroke and a whole
+office can share one address.
+
 ### Runtime Configuration
 
 Four ConfigMaps carry runtime configuration; two are always rendered, two follow their feature flag:
@@ -79,7 +236,7 @@ Four ConfigMaps carry runtime configuration; two are always rendered, two follow
   - `downloads` — whether the documentation download widget has archives to offer
   - `externalLinks` — the resolved enabled/url for every catalogued external link
   - `gitMirrors` — the resolved mirror host for every catalogued Git URL
-- **`configmap.yaml`** — the nginx `default.conf`. It uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time, and proxies `/cli` to the CLI playground service.
+- **`configmap.yaml`** — the nginx `default.conf`. It uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time, and proxies `/cli` to the CLI playground service and, when `search.enabled=true`, `/convai/api/search-service` to the search service.
 - **`configmap-metrics.yaml`** — the nginxlog-exporter configuration. Only with `metrics.enabled=true`.
 - **`configmap-cli-acl.yaml`** — the Redis ACL file from `files/sandbox.acl`, mounted into the Redis sidecar. Only with `cli.redis.acl.enabled=true`; see [CLI playground isolation](#cli-playground-isolation).
 
@@ -117,7 +274,9 @@ per-deployment customization — that is what `values.yaml` is for.
 `url` resolution is simpler: catalog default unless `overrides.<key>.url` replaces it.
 
 **The chart default is `enabled: false`** — every external link is hidden out of
-the box. Opt back in at whichever level fits the deployment:
+the box. The Blog and Tutorials cards stay visible: their catalog url is a path on
+this site (the mirrored copies in the image), and the master kill-switch cuts only
+links that leave the site. Opt back in at whichever level fits the deployment:
 
 ```yaml
 externalLinks:
@@ -130,7 +289,7 @@ externalLinks:
         main-nav:
           enabled: true      # header strip: only Redis-for-AI / Docs / Pricing
   overrides:
-    tutorials:
+    university:
       enabled: true          # opt one specific link back in
     github:
       enabled: true
@@ -288,8 +447,10 @@ A limit costs nothing until the container actually runs.
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | Standard run with `docker run` (privileged) | Yes — one of the two |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | Yes — one of the two |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | Prometheus metrics (including response times) | No — only if `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | Docs search API — the same image and tag, different command. A tag older than `0.6.0` has no `search` module and the pod crashes on start. | No — only if `search.enabled=true` |
+| `redis` | `8.10.0-alpine` | 6379 | Redis holding the search index | No — only if `search.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server for interactive code execution | No — only if `cli.jupyter.enabled=true` |
 
 > For Kubernetes/OpenShift use the `unprivileged` or `<HASH>-unprivileged` tag.
@@ -302,7 +463,7 @@ A limit costs nothing until the container actually runs.
 ### Basic usage
 
 ```bash
-helm install redis-docs redis-docs-1.9.0.tgz
+helm install redis-docs redis-docs-2.0.0.tgz
 ```
 
 ### Installation with a values file
@@ -310,7 +471,7 @@ helm install redis-docs redis-docs-1.9.0.tgz
 The recommended approach - a custom `values.yaml` file:
 
 ```bash
-helm install redis-docs redis-docs-1.9.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-2.0.0.tgz -f my-values.yaml
 ```
 
 Below is an example of a typical deployment scenario.
@@ -505,10 +666,20 @@ docker pull quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
 docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-exporter.tar
 
 # CLI playground (optional)
-docker pull a0533057932/redis-docs-cli:latest
-docker save a0533057932/redis-docs-cli:latest -o redis-docs-cli.tar
+docker pull a0533057932/redis-docs-cli:0.6.0
+docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
+
+# The mirrored redis.io sections (optional)
+# Only if you want the blog, tutorials, customer stories, comparisons, solutions,
+# technology pages and architecture diagrams. Same build as the main image above.
+docker pull a0533057932/redis-docs:mirror-unprivileged
+docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
+
+# Docs search (optional)
+# Runs from the CLI image above, and needs its own Redis 8 — the query engine the
+# index lives in. Pull both from the CLI playground block if you have not already.
 
 # Jupyter kernel server (optional)
 docker pull quay.io/jupyter/minimal-notebook:2026-04-02
@@ -519,16 +690,17 @@ docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# Produces: redis-docs-1.9.0.tgz
+# Produces: redis-docs-2.0.0.tgz
 ```
 
 ### Step 3: Transfer files to the air-gapped network
 
 Transfer the following files:
-- `redis-docs-1.9.0.tgz`
+- `redis-docs-2.0.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (optional - metrics)
-- `redis-docs-cli.tar` (optional - CLI)
+- `redis-docs-cli.tar` (optional - CLI and search)
+- `redis-docs-mirror.tar` (optional - the mirrored redis.io sections)
 - `redis.tar` (optional - CLI)
 - `jupyter.tar` (optional - Jupyter)
 
@@ -546,9 +718,13 @@ docker tag quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 REGISTRY/p
 docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # Load CLI (optional)
+docker load -i redis-docs-mirror.tar
+docker tag a0533057932/redis-docs:mirror-unprivileged REGISTRY/redis-docs:mirror-unprivileged
+docker push REGISTRY/redis-docs:mirror-unprivileged
+
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.4.0
-docker push REGISTRY/redis-docs-cli:0.4.0
+docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
+docker push REGISTRY/redis-docs-cli:0.6.0
 
 docker load -i redis.tar
 docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
@@ -565,20 +741,20 @@ docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ## Version Upgrade
 
 ```bash
-helm upgrade redis-docs redis-docs-1.9.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-2.0.0.tgz -f my-values.yaml
 ```
 
 Or with a single value override:
 
 ```bash
-helm upgrade redis-docs redis-docs-1.9.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-2.0.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
 > **A rebuilt image under the same tag will not be pulled.** Both images default to
 > `pullPolicy: IfNotPresent`, so a node that already holds `latest` keeps serving the old
 > layers and the upgrade appears to succeed while changing nothing. Push under a new tag and
-> set it (`--set cli.image.tag=0.4.0`), or set `pullPolicy: Always`. This applies to
+> set it (`--set cli.image.tag=0.6.0`), or set `pullPolicy: Always`. This applies to
 > `image.tag` and `cli.image.tag` alike.
 
 ## Accessing the Site
@@ -696,8 +872,8 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (CLI) |
 | `cli.image.registry` | `a0533057932` | CLI proxy image registry |
 | `cli.image.name` | `redis-docs-cli` | CLI proxy image name |
-| `cli.image.tag` | `latest` | CLI proxy image tag (in air-gapped networks: `0.4.0`) |
-| `cli.image.pullPolicy` | `IfNotPresent` | CLI image pull policy |
+| `cli.image.tag` | `0.6.0` | CLI proxy image tag. The airgap-build workflow bumps it whenever `helm/cli-proxy` changes |
+| `cli.image.pullPolicy` | `IfNotPresent` | CLI image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | CLI proxy resources |
 | `cli.session.idleTtlSeconds` | `1800` | Close a browser session after this long without a command |
 | `cli.session.max` | `500` | Cap on live sessions; the least recently used is closed first |
@@ -722,6 +898,43 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.jupyter.image.tag` | `2026-04-02` | Jupyter image tag |
 | `cli.jupyter.image.pullPolicy` | `IfNotPresent` | Jupyter image pull policy |
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | Jupyter resources |
+| `mirror.enabled` | `false` | Deploy the mirrored redis.io sections (separate pod and image). Off leaves the documentation complete on its own |
+| `mirror.replicas` | `1` | Mirror pods |
+| `mirror.containerPort` | `8080` | The port the mirror's nginx listens on, which follows the image variant: 8080 for `-mirror-unprivileged`, 80 for `-mirror` (which also needs a securityContext that allows root) |
+| `mirror.image.registry` | `a0533057932` | Mirror image registry |
+| `mirror.image.name` | `redis-docs` | Mirror image name — the same repository as the site image, under its own tags |
+| `mirror.image.tag` | `mirror-unprivileged` | Mirror image tag. Pin the `<commit>-mirror-unprivileged` form in an air-gapped registry |
+| `mirror.image.pullPolicy` | `IfNotPresent` | Mirror image pull policy |
+| `search.enabled` | `false` | Deploy the docs search service (separate pod: search API + its own Redis). Without it the search button opens an empty modal. Also turns the button back on — see below. |
+| `search.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (search) |
+| `search.securityContext.runAsNonRoot` | `true` | Block running as root (search) |
+| `search.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (search) |
+| `search.image.registry` | `a0533057932` | Search API image registry |
+| `search.image.name` | `redis-docs-cli` | Search API image name — the CLI proxy image, which carries the search service too |
+| `search.image.tag` | `0.6.0` | Search API image tag. Always the same as `cli.image.tag`: it is the same image |
+| `search.image.pullPolicy` | `IfNotPresent` | Search API image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
+| `search.logLevel` | `INFO` | Log level for the search service |
+| `search.replicas` | `1` | Search pods. Each builds and holds its own copy of the index |
+| `search.rateLimit.enabled` | `false` | Limit how fast one client address may query the search endpoint. Off by default: the modal sends a request per keystroke, and an office behind one egress address is one client |
+| `search.rateLimit.rate` | `20r/s` | Requests per second per client address, once enabled |
+| `search.rateLimit.burst` | `40` | Requests allowed to arrive ahead of that rate before a `429` |
+| `search.rateLimit.zoneSize` | `1m` | Memory for the address table; `1m` holds about 16,000 addresses |
+| `search.cors.enabled` | `false` | Answer cross-origin browser requests. The site's own modal is same-origin and needs none of it |
+| `search.cors.allowOrigin` | `*` | The origin sent back in `Access-Control-Allow-Origin` |
+| `search.threads` | `8` | gunicorn threads; the modal sends one request per keystroke |
+| `search.index.name` | `docs` | Name of the index in Redis |
+| `search.index.rootCrumb` | `Welcome to Redis Docs` | The heading results are grouped under, and `hierarchy[0]` on every result |
+| `search.index.resultLimit` | `30` | Results returned per query, matching redis.io |
+| `search.index.batch` | `500` | Documents per pipelined write while indexing |
+| `search.index.versionWeight` | `0.3` | Relevance kept by the **oldest** numbered docs version. The current documentation is the tree with no version in its path, so the newest numbered tree is weighted down like the oldest. 45% of the index is versioned copies; without this they outrank the current page. |
+| `search.index.versionNewestWeight` | `0.6` | Relevance kept by the newest numbered version, with the trees between spread evenly up to it, so 8.0 answers ahead of 7.4. Below 1 so the current tree still wins |
+| `search.index.attempts` | `30` | Index attempts before the pod gives up; the API and its Redis start together |
+| `search.resources` | requests: 100m/128Mi, limits: 500m/512Mi | Search API resources |
+| `search.redis.image.registry` | `docker.io` | Search Redis image registry |
+| `search.redis.image.name` | `redis` | Search Redis image name |
+| `search.redis.image.tag` | `8.10.0-alpine` | Search Redis image tag — Redis 8 carries the query engine |
+| `search.redis.image.pullPolicy` | `IfNotPresent` | Search Redis pull policy |
+| `search.redis.resources` | requests: 100m/512Mi, limits: 500m/1Gi | Search Redis resources; the index is held in memory |
 | `aiServices.litellm.enabled` | `false` | Enable LiteLLM endpoint (instead of external CloudFront) |
 | `aiServices.litellm.url` | `""` | LiteLLM URL (OpenAI-compatible) |
 | `aiServices.litellm.model` | `gpt-3.5-turbo` | Model name to send |

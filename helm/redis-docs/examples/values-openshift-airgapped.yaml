@@ -144,6 +144,20 @@ externalLinks:
       enabled: true
       to: "https://gitlab.internal.company.com/redis/k8s/redis-enterprise-k8s-docs"
 
+# --- The sections mirrored from redis.io (optional) ---
+# The blog, tutorials, customer stories, comparisons, solutions, technology
+# pages and architecture diagrams. Built with the documentation and shipped as
+# an image of their own, so leaving this off keeps 300 MB out of the mirror
+# registry and out of every pull. With it off the documentation is complete on
+# its own: the sidebar entry and the links into these sections disappear in the
+# browser rather than leading to a 404.
+mirror:
+  enabled: true
+  image:
+    registry: registry.intranet.company.com
+    name: redis-docs
+    tag: "4dfba535c-mirror-unprivileged"   # same build as image.tag above
+
 # --- CLI playground (optional) ---
 # An in-page Redis terminal and workbench, served by a second pod holding the
 # proxy and a Redis sidecar. Off by default; everything below is the default
@@ -153,7 +167,7 @@ cli:
   image:
     registry: registry.intranet.company.com
     name: redis-docs-cli
-    tag: "0.4.0"          # not `latest`: IfNotPresent will not re-pull a moved tag
+    tag: "0.6.0"          # not `latest`: IfNotPresent will not re-pull a moved tag
   redis:
     image:
       registry: registry.intranet.company.com

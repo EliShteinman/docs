@@ -11,9 +11,57 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 - Helm 3.x
 - Private Docker registry (ברשת סגורה)
 
+## שדרוג מ-1.x ל-2.0.0
+
+שום מפתח לא הוסר ושום ערך לא שינה משמעות: כל מה שהגדרת ב-1.x עדיין נקרא, ושתי היכולות
+החדשות כבויות כברירת מחדל. מה שה-major מסמן הוא ה-image — **ה-image של התיעוד כבר לא
+מכיל את הסקשנים הממוררים מ-redis.io**. הם image נפרד מהיום.
+
+**בקצרה:** משדרגים את ה-chart ואת ה-image-ים יחד, ומחליטים אם רוצים את המירור.
+
+```bash
+# 1. למרר את ה-image-ים של הגרסה (לדלג על המירור אם לא רוצים אותו)
+skopeo copy docker://a0533057932/redis-docs:<hash>-unprivileged \
+            docker://registry.internal.company.com/redis-docs:<hash>-unprivileged
+skopeo copy docker://a0533057932/redis-docs:<hash>-mirror-unprivileged \
+            docker://registry.internal.company.com/redis-docs:<hash>-mirror-unprivileged
+skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
+            docker://registry.internal.company.com/redis-docs-cli:0.6.0
+
+# 2. שדרוג
+helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
+  --version 2.0.0 -f my-values.yaml \
+  --set image.tag=<hash>-unprivileged \
+  --set mirror.enabled=true --set mirror.image.tag=<hash>-mirror-unprivileged
+```
+
+ארבעה דברים שחשוב לדעת לפני שמריצים:
+
+- **התגים האלה לא קיימים עד שהגרסה הזו נבנית.** ‏`redis-docs-cli:0.6.0` והתגים
+  `redis-docs:*-mirror-unprivileged` נוצרים בהרצה הראשונה של ה-workflow לגרסה הזו — כדאי
+  לבדוק בסיכום ההרצה, או ב-Docker Hub, לפני שממררים אותם. פריסה מול תג שלא נדחף מסתיימת
+  ב-ImagePullBackOff ולא במשהו יותר מסביר.
+
+- **להשאיר את `mirror.enabled` כבוי זו בחירה נתמכת, לא תקלה.** התיעוד שלם בלעדיו: תיבת
+  הניווט נעלמת והקישורים לסקשנים האלה מנותקים בדפדפן במקום להוביל ל-404. מה שמפסידים זה
+  הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה ודיאגרמות
+  הארכיטקטורה — ובערך 300MB בכל משיכה.
+- **לא לקחת את ה-chart החדש עם image ישן.** ‏image שנבנה לפני הגרסה הזו עדיין נושא בתוכו
+  את העמודים הממוררים, וה-chart ינתק את הקישורים אליהם בזמן שהם יושבים שם ולא נגישים.
+  לשדרג את שניהם יחד.
+- **‏`cli` ו-`search` דורשים image של CLI בגרסה 0.6.0 ומעלה.** ברירת המחדל של ה-chart
+  עברה מ-`latest` המתגלגל ל-`0.6.0` מקובע; בתג ישן אין מודול `search` ופוד החיפוש קורס
+  בלולאה. ‏`search` דורש גם שתמרר את ה-Redis שלו (`redis:8.10.0-alpine`) — זה מנוע
+  החיפוש שהאינדקס יושב בו.
+
+חזרה אחורה ל-1.x היא `helm rollback` ותג ה-image שהיית עליו; אין מידע שנשמר באף אחד
+מהפודים.
+
 ## ארכיטקטורה
 
-הצ'ארט פורס שני פודים עיקריים:
+הצ'ארט פורס את התיעוד, ולצידו שלושה פודים אופציונליים — ה-CLI playground, שירות
+החיפוש, והסקשנים הממוררים מ-redis.io. כל אחד מהם כבוי כברירת מחדל וכל אחד הוא image
+נפרד, כך שפריסה נושאת רק את מה שהיא מדליקה.
 
 ### פוד 1 — `redis-docs` (אתר הדוקומנטציה)
 
@@ -67,6 +115,104 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
 ל-keyspace שטוח אחד, ו-`acl.enabled=false` מחזיר את הפרוקסי למשתמש ברירת המחדל של Redis, בלי
 שום דבר בין `FLUSHALL` מוקלד לבין המידע של כל האחרים.
 
+### פוד 4 — `redis-docs-mirror` (הסקשנים הממוררים מ-redis.io)
+
+נוצר רק כאשר `mirror.enabled=true`.
+
+| קונטיינר | תיאור | פורט |
+|---|---|---|
+| `mirror` | nginx שמגיש את העמודים הממוררים ואת התמונות שלהם | 8080 |
+
+הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה ודיאגרמות
+הארכיטקטורה נבנים באותה ריצת Hugo של התיעוד, ומופרדים מהעץ שלו אחריה
+(`build/split_mirror.py`) ל-image משלהם. זה 1,400 עמודים ו-238MB של תמונות שפריסה לא
+חייבת לשאת: ה-image של התיעוד כבר לא מכיל אותם.
+
+ה-nginx של האתר מנתב אליהם כל אחד מהנתיבים שלהם, כך שהקורא רואה אתר אחד. עם
+`mirror.enabled=false` אין פוד, אין ניתוב, והעמודים פשוט לא שם — תיבת הניווט מוסרת
+בדפדפן והקישורים מהתיעוד אליהם מנותקים, במקום להוביל ל-404.
+
+המילון הוא היוצא מן הכלל ונשאר עם התיעוד: המונחים שלו מתפרסמים בתוך `/glossary/`,
+הסקשן של התיעוד עצמו.
+
+לעמודים הממוררים יש sitemap משלהם, שמתפרסם ב-`/sitemap-mirror.xml`. ה-`/sitemap.xml` של
+האתר מפרט את התיעוד בלבד: הוא נבנה בין אם הפוד הזה פרוס ובין אם לא, ולכן אסור לו לפרסם
+כתובות שאף אחד לא עונה עליהן.
+
+החיפוש הולך לפי אותו מתג. העמודים הממוררים יצאו מהפיד של התיעוד כשיצאו מהעץ שלו, ופוד
+החיפוש מאנדקס אותם מה-image של המירור רק כשהוא פרוס — כך שחיפוש לעולם לא מחזיר עמוד
+שאף אחד לא מגיש.
+
+### פוד 3 — `redis-docs-search` (חיפוש בדוקס)
+
+נוצר רק כאשר `search.enabled=true`.
+
+| קונטיינר | תיאור | פורט |
+|---|---|---|
+| `fetch-corpus` (init) | מעתיק את `docs.ndjson` מה-image של הדוקס לווליום משותף | — |
+| `search-api` | בונה את האינדקס, ואז מגיש את נקודת הקצה של החיפוש | 8091 |
+| `redis` | מחזיק את האינדקס — מקומי לפוד (localhost) | 6379 |
+
+`search-api` רץ מה-image של `redis-docs-cli`: שירות החיפוש נוסע בתוכו ולא ב-image משלו,
+כך שלפריסת איירגאפ אין image שלישי לבנות, למרר ולהעביר פנימה.
+
+ה-Redis הזה נפרד מזה של ה-CLI playground בכוונה. `files/sandbox.acl` מעניק לקורא את
+`+ft.dropindex` במפורש, כדי שמדריך שיוצר אינדקס יוכל לבטלו — מה שהיה מאפשר לכל מבקר
+למחוק את אינדקס החיפוש אילו השניים חלקו Redis.
+
+#### איך החיפוש עובד
+
+`layouts/partials/search-modal.html` קורא ל-`/convai/api/search-service`, שירות שרץ
+ב-redis.io. בקלאסטר מנותק אף אחד לא מגיש את הנתיב, הבקשה חוזרת 404, והמודאל נפתח ריק.
+הפעלת `search` מממשת את אותו חוזה במקום להחליף את החיפוש, כך ש-partial של upstream
+ו-`config.toml` נשארים ללא שינוי:
+
+- **הקורפוס** — `docs.ndjson`, פיד ה-RAG שהבנייה כבר מייצרת. האינדקס נבנה מחדש בכל עליית
+  פוד, כך שהעמודים שמאונדקסים הם תמיד העמודים שהגרסה הזו מגישה.
+- **הנתיב** — nginx מקבל `location = /convai/api/search-service` בהתאמה מדויקת שמפנה
+  לשירות החיפוש. הנתיב קיים רק כאשר `search.enabled=true`.
+- **הכפתור** — כפתור החיפוש הוא בעצמו קישור בקטלוג (`nav-search`), ולכן ברירת המחדל
+  `externalLinks.enabled: false` מסתירה אותו. הגדרת `search.enabled` מחזירה אותו, כי
+  פריסה שעונה לחיפושים רוצה את הכפתור. `enabled` מפורש על
+  `externalLinks.overrides.nav-search`, על משפחת `header` או על תת-המשפחה `search` שלה
+  עדיין גובר בשני הכיוונים.
+
+הדירוג לא יהיה זהה ל-redis.io — זה מנוע ניקוד אחר.
+
+#### חיפוש ממשהו שאינו המודאל
+
+אותה נקודת קצה עונה לכל לקוח HTTP שמגיע לאתר, וכך סקריפט, סוכן או שירות אחר מחפשים
+בקורפוס בלי דפדפן:
+
+```bash
+curl "https://docs.internal.example.com/convai/api/search-service?q=rack+zone*&p=all&limit=5"
+```
+
+| פרמטר | ברירת מחדל | משמעות |
+|---|---|---|
+| `q` | — | השאילתה. **צריך להוסיף `*` כדי להתאים תחילית** — המודאל עושה זאת בעצמו, ולכן מי שמשמיט אותה מקבל התאמת מילים שלמות בלבד. מילים מחוברות ב-AND. |
+| `p` | all | סינון לפי מוצר: `rs`, `rc`, `oss_and_stack`, `redisinsight`, `kubernetes`, `redis-data-integration`, `clients` או `all`. ערך לא מוכר לא מתאים לכלום. |
+| `limit` | `search.index.resultLimit` | כמה תוצאות בעמוד הזה, עד 100. |
+| `offset` | `0` | מאיפה העמוד מתחיל, עד 1000. |
+| `site` | — | מתקבל ומתעלמים ממנו, לשם תאימות ל-redis.io. |
+
+התשובה נושאת את `total` — כל ההתאמות, לא רק העמוד הזה — ואת `results`. כל תוצאה נושאת
+`title`, ‏`body` (קטע שבו המילים שהותאמו מסומנות ב-`<b>`), ‏`url`, ‏`hierarchy`,
+‏`section_title` (תמיד ריק, כמו ב-redis.io), וארבעה שדות שהמודאל לא קורא אבל קורא חיצוני
+בדרך כלל צריך: `source` (‏`docs`, `blog` או `site`), ‏`version` (‏`latest`, או מספרו של עץ גרסה מארכיון),
+‏`product` ו-`score`.
+**‏`latest` הוא הגרסה הנוכחית ולא המספר הגבוה ביותר**: עצי הגרסאות הממוספרים של Redis
+Software נעצרים ב-8.0, בעוד 8.2 מתפרסמת רק כ-`latest`.
+
+הסטטוסים מפרידים בין תשובה לבין תקלה: `200` עם תוצאות, `200` עם רשימה ריקה ובלי `error`
+כששום דבר לא התאים, `200` עם `error: "query rejected"` כשמנוע החיפוש דחה את השאילתה,
+`503` עם `error: "search unavailable"` כשהשירות לא מצליח להגיע לאינדקס שלו, ו-`429`
+כש-`search.rateLimit` דולק והקורא מהיר מדי. ‏`/healthz` בפוד מדווח אם האינדקס קיים.
+
+שתי אפשרויות חשובות לקוראים מחוץ לאתר: `search.cors.enabled`, שבלעדיה עמוד שמוגש
+מדומיין אחר לא יכול לקרוא את התשובה, ו-`search.rateLimit.enabled`, שכבויה כברירת מחדל
+כי המודאל שולח בקשה לכל הקשה ומשרד שלם יכול לחלוק כתובת אחת.
+
 ### הגדרות Runtime
 
 ארבעה ConfigMaps נושאים תצורת זמן-ריצה; שניים תמיד נוצרים, ושניים תלויים בדגל הפיצ'ר שלהם:
@@ -78,7 +224,7 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
   - `downloads` — האם לווידג'ט הורדת הדוקומנטציה יש ארכיונים להציע
   - `externalLinks` — `enabled`/`url` יעיל לכל לינק חיצוני בקטלוג
   - `gitMirrors` — המראה היעילה לכל כתובת Git בקטלוג
-- **`configmap.yaml`** — קובץ ה-`default.conf` של nginx. משתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה, ומנתב `/cli` לשירות ה-CLI playground.
+- **`configmap.yaml`** — קובץ ה-`default.conf` של nginx. משתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה, ומנתב `/cli` לשירות ה-CLI playground, וכאשר `search.enabled=true` גם `/convai/api/search-service` לשירות החיפוש.
 - **`configmap-metrics.yaml`** — תצורת nginxlog-exporter. רק עם `metrics.enabled=true`.
 - **`configmap-cli-acl.yaml`** — קובץ ה-ACL של Redis מתוך `files/sandbox.acl`, מותקן ל-sidecar. רק עם `cli.redis.acl.enabled=true`; ראו [בידוד ה-CLI playground](#בידוד-ה-cli-playground).
 
@@ -110,7 +256,7 @@ externalLinks.enabled                    ← master kill-switch
 
 עבור `url` הסדר פשוט יותר: ברירת מחדל מהקטלוג, אלא אם `overrides.<key>.url` דורס.
 
-**ברירת המחדל של הצ'ארט היא `enabled: false`** — כל הלינקים החיצוניים מוסתרים מתוך הקופסה. הפעלה מחדש בכל רמה מתאימה ל-deployment:
+**ברירת המחדל של הצ'ארט היא `enabled: false`** — כל הלינקים החיצוניים מוסתרים מתוך הקופסה. כרטיסי Blog ו-Tutorials נשארים גלויים: ה-url שלהם בקטלוג הוא נתיב באתר הזה (העותקים הממוראים בתוך ה-image), וה-master kill-switch חותך רק לינקים שיוצאים מהאתר. הפעלה מחדש בכל רמה מתאימה ל-deployment:
 
 ```yaml
 externalLinks:
@@ -123,7 +269,7 @@ externalLinks:
         main-nav:
           enabled: true      # רצועת ההדר: רק Redis-for-AI / Docs / Pricing
   overrides:
-    tutorials:
+    university:
       enabled: true          # להפעיל לינק ספציפי
     github:
       enabled: true
@@ -226,8 +372,10 @@ downloads:
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן — אחד מהשניים |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן — אחד מהשניים |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא — רק אם `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | API החיפוש בדוקס — אותו image ואותו תג, פקודה אחרת. בתג ישן מ-`0.6.0` אין מודול `search` והפוד קורס בעלייה. | לא — רק אם `search.enabled=true` |
+| `redis` | `8.10.0-alpine` | 6379 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא — רק אם `cli.jupyter.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
@@ -240,7 +388,7 @@ downloads:
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-1.9.0.tgz
+helm install redis-docs redis-docs-2.0.0.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -248,7 +396,7 @@ helm install redis-docs redis-docs-1.9.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-1.9.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-2.0.0.tgz -f my-values.yaml
 ```
 
 להלן דוגמה לתרחיש פריסה טיפוסי.
@@ -446,12 +594,18 @@ docker pull quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
 docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-exporter.tar
 
 # CLI playground (אופציונלי)
-docker pull a0533057932/redis-docs-cli:latest
-docker save a0533057932/redis-docs-cli:latest -o redis-docs-cli.tar
+docker pull a0533057932/redis-docs-cli:0.6.0
+docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
 # Jupyter kernel server (אופציונלי)
+# הסקשנים הממוררים מ-redis.io (אופציונלי)
+# רק אם רוצים את הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה
+# ודיאגרמות הארכיטקטורה. אותה בנייה של ה-image הראשי למעלה.
+docker pull a0533057932/redis-docs:mirror-unprivileged
+docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
+
 docker pull quay.io/jupyter/minimal-notebook:2026-04-02
 docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 ```
@@ -460,16 +614,17 @@ docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-1.9.0.tgz
+# ייצור: redis-docs-2.0.0.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-1.9.0.tgz`
+- `redis-docs-2.0.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
-- `redis-docs-cli.tar` (אופציונלי - CLI)
+- `redis-docs-cli.tar` (אופציונלי - CLI וחיפוש)
+- `redis-docs-mirror.tar` (אופציונלי - הסקשנים הממוררים)
 - `redis.tar` (אופציונלי - CLI)
 - `jupyter.tar` (אופציונלי - Jupyter)
 
@@ -487,9 +642,13 @@ docker tag quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 REGISTRY/p
 docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # טעינת CLI (אופציונלי)
+docker load -i redis-docs-mirror.tar
+docker tag a0533057932/redis-docs:mirror-unprivileged REGISTRY/redis-docs:mirror-unprivileged
+docker push REGISTRY/redis-docs:mirror-unprivileged
+
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.4.0
-docker push REGISTRY/redis-docs-cli:0.4.0
+docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
+docker push REGISTRY/redis-docs-cli:0.6.0
 
 docker load -i redis.tar
 docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
@@ -506,20 +665,20 @@ docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-1.9.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-2.0.0.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-1.9.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-2.0.0.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
 > **תמונה שנבנתה מחדש תחת אותו תג לא תימשך.** ברירת המחדל של שתי התמונות היא
 > `pullPolicy: IfNotPresent`, כך שצומת שכבר מחזיק את `latest` ימשיך להגיש את השכבות הישנות
 > וה-upgrade ייראה מוצלח בלי לשנות דבר. דחפו תחת תג חדש והגדירו אותו
-> (`--set cli.image.tag=0.4.0`), או קבעו `pullPolicy: Always`. נכון גם ל-`image.tag`
+> (`--set cli.image.tag=0.6.0`), או קבעו `pullPolicy: Always`. נכון גם ל-`image.tag`
 > וגם ל-`cli.image.tag`.
 
 ## גישה לאתר
@@ -637,8 +796,8 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.securityContext.capabilities.drop` | `[ALL]` | יכולות Linux שמוסרות (CLI) |
 | `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
-| `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.4.0`) |
-| `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI |
+| `cli.image.tag` | `0.6.0` | תג תמונת CLI proxy. ה-workflow של airgap-build מעלה אותו בכל שינוי ב-`helm/cli-proxy` |
+| `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי CLI proxy |
 | `cli.session.idleTtlSeconds` | `1800` | סגירת סשן דפדפן לאחר פרק זמן זה ללא פקודה |
 | `cli.session.max` | `500` | תקרת סשנים חיים; הישן ביותר נסגר ראשון |
@@ -663,6 +822,43 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.jupyter.image.tag` | `2026-04-02` | תג תמונת Jupyter |
 | `cli.jupyter.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Jupyter |
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | משאבי Jupyter |
+| `mirror.enabled` | `false` | פריסת הסקשנים הממוררים (פוד ו-image נפרדים). כבוי משאיר את התיעוד שלם בפני עצמו |
+| `mirror.replicas` | `1` | כמה פודים של מירור |
+| `mirror.containerPort` | `8080` | הפורט שעליו מאזין ה-nginx של המירור, לפי וריאנט ה-image: ‏8080 ל-`-mirror-unprivileged`, ו-80 ל-`-mirror` (שדורש גם securityContext שמתיר root) |
+| `mirror.image.registry` | `a0533057932` | registry של image המירור |
+| `mirror.image.name` | `redis-docs` | שם ה-image — אותו repository של האתר, בתגים משלו |
+| `mirror.image.tag` | `mirror-unprivileged` | תג image המירור. ברשת סגורה לקבע את הצורה `<commit>-mirror-unprivileged` |
+| `mirror.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת image המירור |
+| `search.enabled` | `false` | פריסת שירות החיפוש (פוד נפרד: API + Redis משלו). בלעדיו כפתור החיפוש פותח חלון ריק. גם מחזיר את הכפתור לתצוגה — ראה למטה. |
+| `search.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (חיפוש) |
+| `search.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (חיפוש) |
+| `search.securityContext.capabilities.drop` | `[ALL]` | הרשאות Linux שמוסרות (חיפוש) |
+| `search.image.registry` | `a0533057932` | registry של image ה-API |
+| `search.image.name` | `redis-docs-cli` | שם ה-image — זה של ה-CLI proxy, שנושא גם את שירות החיפוש |
+| `search.image.tag` | `0.6.0` | תג ה-image. תמיד זהה ל-`cli.image.tag`: זה אותו image |
+| `search.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת ה-image. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
+| `search.logLevel` | `INFO` | רמת לוג של שירות החיפוש |
+| `search.replicas` | `1` | כמה פודים של חיפוש. כל אחד בונה ומחזיק עותק משלו של האינדקס |
+| `search.rateLimit.enabled` | `false` | הגבלת קצב לכתובת לקוח בודדת. כבוי כברירת מחדל: המודאל שולח בקשה בכל הקשה, ומשרד מאחורי כתובת יציאה אחת נראה כלקוח אחד |
+| `search.rateLimit.rate` | `20r/s` | בקשות לשנייה לכתובת לקוח, כשההגבלה דולקת |
+| `search.rateLimit.burst` | `40` | כמה בקשות מותר שיגיעו מעל הקצב לפני `429` |
+| `search.rateLimit.zoneSize` | `1m` | זיכרון לטבלת הכתובות; ‏`1m` מספיק לכ-16,000 כתובות |
+| `search.cors.enabled` | `false` | מענה לבקשות דפדפן מדומיין אחר. המודאל של האתר עצמו לא צריך את זה |
+| `search.cors.allowOrigin` | `*` | הדומיין שמוחזר ב-`Access-Control-Allow-Origin` |
+| `search.threads` | `8` | מספר ה-threads של gunicorn; המודאל שולח בקשה לכל תו |
+| `search.index.name` | `docs` | שם האינדקס ב-Redis |
+| `search.index.rootCrumb` | `Welcome to Redis Docs` | הכותרת שהתוצאות מקובצות תחתיה, ו-`hierarchy[0]` בכל תוצאה |
+| `search.index.resultLimit` | `30` | מספר התוצאות לשאילתה, כמו ב-redis.io |
+| `search.index.batch` | `500` | מסמכים לכל כתיבה מקובצת בזמן אינדוקס |
+| `search.index.versionWeight` | `0.3` | כמה מהרלוונטיות שומר עמוד מעץ הגרסה הממוספר **הישן ביותר**. התיעוד הנוכחי הוא העץ שאין בכתובתו מספר גרסה, ולכן גם העץ הממוספר החדש ביותר מונמך כמו הישן ביותר. 45% מהאינדקס הם עותקי גרסאות; בלי זה הם גוברים על העמוד העדכני. |
+| `search.index.versionNewestWeight` | `0.6` | כמה שומר עץ הגרסה הממוספר החדש ביותר, כשהעצים שבאמצע פרוסים במרווחים שווים עד אליו, כך ש-8.0 עונה לפני 7.4. מתחת ל-1 כדי שהעץ הנוכחי עדיין ינצח |
+| `search.index.attempts` | `30` | ניסיונות אינדוקס לפני כישלון; ה-API וה-Redis שלו עולים יחד |
+| `search.resources` | requests: 100m/128Mi, limits: 500m/512Mi | משאבי ה-API |
+| `search.redis.image.registry` | `docker.io` | registry של Redis לחיפוש |
+| `search.redis.image.name` | `redis` | שם ה-image של Redis לחיפוש |
+| `search.redis.image.tag` | `8.10.0-alpine` | תג — Redis 8 נושא את מנוע השאילתות |
+| `search.redis.image.pullPolicy` | `IfNotPresent` | מדיניות משיכה |
+| `search.redis.resources` | requests: 100m/512Mi, limits: 500m/1Gi | משאבי Redis לחיפוש; האינדקס יושב בזיכרון |
 | `aiServices.litellm.enabled` | `false` | הפעלת LiteLLM endpoint (במקום CloudFront חיצוני) |
 | `aiServices.litellm.url` | `""` | URL ל-LiteLLM (OpenAI-compatible) |
 | `aiServices.litellm.model` | `gpt-3.5-turbo` | שם המודל לשליחה |

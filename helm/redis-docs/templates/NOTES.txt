@@ -33,3 +33,30 @@ Access the documentation by running:
 Then open http://localhost:8080 in your browser.
 
 {{- end }}
+
+{{- if .Values.search.enabled }}
+
+Search is deployed. It indexes the site's own feed at startup, so the pod is not ready
+until the index is built — a minute or two on a full corpus:
+  kubectl --namespace {{ .Release.Namespace }} rollout status deploy/{{ include "redis-docs.fullname" . }}-search
+{{- if not .Values.mirror.enabled }}
+It indexes the documentation only. The mirrored sections are not deployed, so their
+pages are deliberately absent from the results.
+{{- end }}
+{{- end }}
+
+{{- if .Values.mirror.enabled }}
+
+The mirrored redis.io sections are deployed as their own pod, and the site proxies
+/blog/, /tutorials/, /customers/, /compare/, /solutions/, /technology/ and
+/resources/architecture-diagrams/ to it.
+{{- end }}
+
+{{- if not .Values.mirror.enabled }}
+
+The mirrored redis.io sections (blog, tutorials, customer stories, comparisons,
+solutions, technology pages, architecture diagrams) are NOT deployed. The documentation
+is complete without them: their sidebar entry and the links into them are removed in the
+browser rather than leading to a 404. Set mirror.enabled=true to deploy them, and mirror
+the redis-docs:*-mirror-unprivileged image alongside the main one.
+{{- end }}
