@@ -21,6 +21,10 @@ from search.product import ALL_PRODUCTS
 HIGHLIGHT_OPEN = "<b>"
 HIGHLIGHT_CLOSE = "</b>"
 
+# Where parse_reply keeps each document's score. Not a field name the index
+# returns, so it cannot collide with one.
+SCORE_KEY = "__score__"
+
 # What the index keeps as one term. The query engine splits text on every
 # punctuation mark except `_` when it indexes, so `JSON.SET` is stored as
 # `json` and `set` and `eviction_policy` stays whole. A query has to split the
@@ -83,21 +87,36 @@ def build_query(raw: str, product: str) -> str:
     return query
 
 
-def search_command(index: str, query: str, limit: int) -> list[str]:
-    """Return the FT.SEARCH argument vector for `query`."""
+def search_command(index: str, query: str, limit: int, offset: int = 0) -> list[str]:
+    """Return the FT.SEARCH argument vector for `query`.
+
+    Seven fields are returned rather than the four the modal reads. The three
+    extra ones -- source, version, product -- are what a caller that is not the
+    modal has to have: without them a script cannot tell a current documentation
+    page from the same page in an old version or from a blog post, which the
+    index knows and used to keep to itself. The modal ignores fields it was not
+    written for, so carrying them costs it nothing.
+    """
     return [
         "FT.SEARCH",
         index,
         query,
         "LIMIT",
-        "0",
+        str(offset),
         str(limit),
         "RETURN",
-        "4",
+        "7",
         "title",
         "body",
         "url",
         "hierarchy",
+        "source",
+        "version",
+        "product",
+        # The score the ranking decisions in this file are about. A caller
+        # comparing two results, or deciding whether the best hit is good
+        # enough to act on, otherwise has nothing to compare.
+        "WITHSCORES",
         "HIGHLIGHT",
         "FIELDS",
         "2",
@@ -132,23 +151,37 @@ def search_command(index: str, query: str, limit: int) -> list[str]:
 
 
 def parse_reply(reply: object) -> tuple[int, list[dict[str, str]]]:
-    """Split an FT.SEARCH reply into its total and its documents' field maps."""
+    """Split an FT.SEARCH reply into its total and its documents' field maps.
+
+    With WITHSCORES the reply reads key, score, field-list per document. The
+    key is not needed -- `url` is stored on the document -- and the score
+    arrives as the scalar before the field list, so it is carried on the map
+    under a name no returned field can collide with.
+    """
     if not isinstance(reply, list) or not reply:
         return 0, []
     total = reply[0] if isinstance(reply[0], int) else 0
     documents = []
-    # The reply alternates key, field-list, key, field-list. The key itself is
-    # not needed -- `url` is stored on the document -- so only the field lists
-    # are read.
+    preceding = None
     for item in reply[1:]:
-        if not isinstance(item, list):
-            continue
-        documents.append(dict(zip(item[::2], item[1::2])))
+        if isinstance(item, list):
+            fields = dict(zip(item[::2], item[1::2]))
+            fields[SCORE_KEY] = preceding
+            documents.append(fields)
+        else:
+            preceding = item
     return total, documents
 
 
 def to_results(documents: list[dict[str, str]]) -> list[dict]:
-    """Map indexed documents onto the response records the modal expects."""
+    """Map indexed documents onto the response records.
+
+    The first five keys are what search-modal.html reads and are not ours to
+    rename. The last four describe the result itself -- which body of content
+    it came from, which documentation version, which product, and how well it
+    scored -- for callers that have to decide something about a result rather
+    than draw it.
+    """
     results = []
     for document in documents:
         results.append(
@@ -160,9 +193,20 @@ def to_results(documents: list[dict[str, str]]) -> list[dict]:
                 "hierarchy": _decode_hierarchy(document.get("hierarchy")),
                 "body": document.get("body", ""),
                 "url": document.get("url", ""),
+                "source": document.get("source", ""),
+                "version": document.get("version", ""),
+                "product": document.get("product", ""),
+                "score": _to_score(document.get(SCORE_KEY)),
             }
         )
     return results
+
+
+def _to_score(stored: object) -> float:
+    try:
+        return float(stored)
+    except (TypeError, ValueError):
+        return 0.0
 
 
 def one_per_row(results: list[dict]) -> list[dict]:

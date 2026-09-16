@@ -11,6 +11,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from search.query import (
+    SCORE_KEY,
     build_query,
     one_per_row,
     parse_reply,
@@ -121,8 +122,15 @@ def test_parse_reply_reads_the_total_from_the_first_element():
 
 
 def test_parse_reply_pairs_the_returned_fields():
-    _, documents = parse_reply([1, "doc:/a", ["title", "A", "url", "/a"]])
-    assert documents == [{"title": "A", "url": "/a"}]
+    _, documents = parse_reply([1, "doc:/a", "2.5", ["title", "A", "url", "/a"]])
+    assert documents == [{"title": "A", "url": "/a", SCORE_KEY: "2.5"}]
+
+
+def test_parse_reply_keeps_each_score_with_its_own_document():
+    _, documents = parse_reply(
+        [2, "doc:/a", "9", ["title", "A"], "doc:/b", "1.5", ["title", "B"]]
+    )
+    assert [document[SCORE_KEY] for document in documents] == ["9", "1.5"]
 
 
 def test_parse_reply_of_an_empty_index_is_empty():
@@ -135,7 +143,37 @@ def test_parse_reply_survives_an_unexpected_shape():
 
 def test_a_result_carries_the_five_fields_the_modal_reads():
     results = to_results([{"title": "A", "url": "/a", "body": "b", "hierarchy": '["Root","A"]'}])
-    assert set(results[0]) == {"title", "section_title", "hierarchy", "body", "url"}
+    assert {"title", "section_title", "hierarchy", "body", "url"} <= set(results[0])
+
+
+def test_a_result_also_says_what_it_is():
+    """Without these a caller cannot tell a current page from an old version."""
+    results = to_results(
+        [{"title": "A", "source": "blog", "version": "7.4", "product": "rs", SCORE_KEY: "3"}]
+    )
+    assert (results[0]["source"], results[0]["version"], results[0]["product"]) == (
+        "blog",
+        "7.4",
+        "rs",
+    )
+    assert results[0]["score"] == 3.0
+
+
+def test_a_missing_or_unreadable_score_is_zero_rather_than_a_failure():
+    assert to_results([{"title": "A"}])[0]["score"] == 0.0
+    assert to_results([{"title": "A", SCORE_KEY: "doc:/a"}])[0]["score"] == 0.0
+
+
+def test_the_extra_fields_are_asked_for_in_the_command():
+    command = search_command("docs", "x*", 30)
+    for field in ("source", "version", "product"):
+        assert field in command
+    assert "WITHSCORES" in command
+
+
+def test_paging_reaches_the_command():
+    command = search_command("docs", "x*", 5, 10)
+    assert command[command.index("LIMIT") : command.index("LIMIT") + 3] == ["LIMIT", "10", "5"]
 
 
 def test_section_title_is_always_empty_like_the_live_service():

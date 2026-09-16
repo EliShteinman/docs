@@ -25,6 +25,15 @@ DOCS_FEED_PATH = os.environ.get("SEARCH_DOCS_FEED", "/corpus/docs.ndjson")
 # from painting thousands of rows.
 RESULT_LIMIT = int(os.environ.get("SEARCH_RESULT_LIMIT", "30"))
 
+# A caller that is not the modal -- a script or an agent -- may ask for another
+# page size with `limit`, up to this. Capped because the whole reply is built in
+# memory and this endpoint is reachable by anyone who can reach the site.
+MAX_RESULT_LIMIT = int(os.environ.get("SEARCH_MAX_RESULT_LIMIT", "100"))
+
+# How far `offset` may page. The query engine walks the whole result set up to
+# the offset on every request, so deep paging costs more the further it goes.
+MAX_OFFSET = int(os.environ.get("SEARCH_MAX_OFFSET", "1000"))
+
 # hierarchy[0] on every result. redis.io sends the docs home page's heading,
 # which is not the Hugo site title ("Docs" in config.toml) and so cannot be
 # derived from the feed -- it is carried here instead.
