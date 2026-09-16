@@ -329,9 +329,9 @@ A limit costs nothing until the container actually runs.
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | Standard run with `docker run` (privileged) | Yes — one of the two |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | Yes — one of the two |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | Prometheus metrics (including response times) | No — only if `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` | 8091 | Docs search API — the same image, different command. **Must be an image built after the search service was added**: an older tag has no `search` module and the pod crashes on start. | No — only if `search.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | Docs search API — the same image and tag, different command. A tag older than `0.6.0` has no `search` module and the pod crashes on start. | No — only if `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis holding the search index | No — only if `search.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server for interactive code execution | No — only if `cli.jupyter.enabled=true` |
 
@@ -548,8 +548,8 @@ docker pull quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
 docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-exporter.tar
 
 # CLI playground (optional)
-docker pull a0533057932/redis-docs-cli:latest
-docker save a0533057932/redis-docs-cli:latest -o redis-docs-cli.tar
+docker pull a0533057932/redis-docs-cli:0.6.0
+docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
@@ -590,8 +590,8 @@ docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # Load CLI (optional)
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.4.0
-docker push REGISTRY/redis-docs-cli:0.4.0
+docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
+docker push REGISTRY/redis-docs-cli:0.6.0
 
 docker load -i redis.tar
 docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
@@ -621,7 +621,7 @@ helm upgrade redis-docs redis-docs-1.10.0.tgz -f my-values.yaml \
 > **A rebuilt image under the same tag will not be pulled.** Both images default to
 > `pullPolicy: IfNotPresent`, so a node that already holds `latest` keeps serving the old
 > layers and the upgrade appears to succeed while changing nothing. Push under a new tag and
-> set it (`--set cli.image.tag=0.4.0`), or set `pullPolicy: Always`. This applies to
+> set it (`--set cli.image.tag=0.6.0`), or set `pullPolicy: Always`. This applies to
 > `image.tag` and `cli.image.tag` alike.
 
 ## Accessing the Site
@@ -739,8 +739,8 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (CLI) |
 | `cli.image.registry` | `a0533057932` | CLI proxy image registry |
 | `cli.image.name` | `redis-docs-cli` | CLI proxy image name |
-| `cli.image.tag` | `latest` | CLI proxy image tag (in air-gapped networks: `0.4.0`) |
-| `cli.image.pullPolicy` | `IfNotPresent` | CLI image pull policy |
+| `cli.image.tag` | `0.6.0` | CLI proxy image tag. The airgap-build workflow bumps it whenever `helm/cli-proxy` changes |
+| `cli.image.pullPolicy` | `IfNotPresent` | CLI image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | CLI proxy resources |
 | `cli.session.idleTtlSeconds` | `1800` | Close a browser session after this long without a command |
 | `cli.session.max` | `500` | Cap on live sessions; the least recently used is closed first |
@@ -771,8 +771,8 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `search.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (search) |
 | `search.image.registry` | `a0533057932` | Search API image registry |
 | `search.image.name` | `redis-docs-cli` | Search API image name — the CLI proxy image, which carries the search service too |
-| `search.image.tag` | `latest` | Search API image tag. Pin only to a tag built after the search service was added — see the image table. |
-| `search.image.pullPolicy` | `Always` | Search API image pull policy. `Always` because the default tag is the mutable `latest`, which a node may have cached before the search service existed; `IfNotPresent` is safe once the tag is pinned. |
+| `search.image.tag` | `0.6.0` | Search API image tag. Always the same as `cli.image.tag`: it is the same image |
+| `search.image.pullPolicy` | `IfNotPresent` | Search API image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
 | `search.logLevel` | `INFO` | Log level for the search service |
 | `search.threads` | `8` | gunicorn threads; the modal sends one request per keystroke |
 | `search.index.name` | `docs` | Name of the index in Redis |

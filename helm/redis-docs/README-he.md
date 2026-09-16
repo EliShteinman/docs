@@ -262,9 +262,9 @@ downloads:
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן — אחד מהשניים |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן — אחד מהשניים |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא — רק אם `metrics.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` / `0.4.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
-| `a0533057932/redis-docs-cli` | `latest` | 8091 | API החיפוש בדוקס — אותו image, פקודה אחרת. **חייב להיות image שנבנה אחרי הוספת שירות החיפוש**: בתג ישן אין מודול `search` והפוד קורס בעלייה. | לא — רק אם `search.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | API החיפוש בדוקס — אותו image ואותו תג, פקודה אחרת. בתג ישן מ-`0.6.0` אין מודול `search` והפוד קורס בעלייה. | לא — רק אם `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
 | `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא — רק אם `cli.jupyter.enabled=true` |
 
@@ -484,8 +484,8 @@ docker pull quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
 docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-exporter.tar
 
 # CLI playground (אופציונלי)
-docker pull a0533057932/redis-docs-cli:latest
-docker save a0533057932/redis-docs-cli:latest -o redis-docs-cli.tar
+docker pull a0533057932/redis-docs-cli:0.6.0
+docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
@@ -526,8 +526,8 @@ docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # טעינת CLI (אופציונלי)
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:latest REGISTRY/redis-docs-cli:0.4.0
-docker push REGISTRY/redis-docs-cli:0.4.0
+docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
+docker push REGISTRY/redis-docs-cli:0.6.0
 
 docker load -i redis.tar
 docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
@@ -557,7 +557,7 @@ helm upgrade redis-docs redis-docs-1.10.0.tgz -f my-values.yaml \
 > **תמונה שנבנתה מחדש תחת אותו תג לא תימשך.** ברירת המחדל של שתי התמונות היא
 > `pullPolicy: IfNotPresent`, כך שצומת שכבר מחזיק את `latest` ימשיך להגיש את השכבות הישנות
 > וה-upgrade ייראה מוצלח בלי לשנות דבר. דחפו תחת תג חדש והגדירו אותו
-> (`--set cli.image.tag=0.4.0`), או קבעו `pullPolicy: Always`. נכון גם ל-`image.tag`
+> (`--set cli.image.tag=0.6.0`), או קבעו `pullPolicy: Always`. נכון גם ל-`image.tag`
 > וגם ל-`cli.image.tag`.
 
 ## גישה לאתר
@@ -675,8 +675,8 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.securityContext.capabilities.drop` | `[ALL]` | יכולות Linux שמוסרות (CLI) |
 | `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
-| `cli.image.tag` | `latest` | תג תמונת CLI proxy (ברשת סגורה: `0.4.0`) |
-| `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI |
+| `cli.image.tag` | `0.6.0` | תג תמונת CLI proxy. ה-workflow של airgap-build מעלה אותו בכל שינוי ב-`helm/cli-proxy` |
+| `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי CLI proxy |
 | `cli.session.idleTtlSeconds` | `1800` | סגירת סשן דפדפן לאחר פרק זמן זה ללא פקודה |
 | `cli.session.max` | `500` | תקרת סשנים חיים; הישן ביותר נסגר ראשון |
@@ -707,8 +707,8 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.securityContext.capabilities.drop` | `[ALL]` | הרשאות Linux שמוסרות (חיפוש) |
 | `search.image.registry` | `a0533057932` | registry של image ה-API |
 | `search.image.name` | `redis-docs-cli` | שם ה-image — זה של ה-CLI proxy, שנושא גם את שירות החיפוש |
-| `search.image.tag` | `latest` | תג ה-image. לקבע רק לתג שנבנה אחרי הוספת שירות החיפוש — ראה טבלת ה-images. |
-| `search.image.pullPolicy` | `Always` | מדיניות משיכת ה-image. `Always` כי תג ברירת המחדל הוא `latest` המשתנה, ש-node עשוי לשמור מלפני שנוסף שירות החיפוש; `IfNotPresent` בטוח ברגע שהתג מקובע. |
+| `search.image.tag` | `0.6.0` | תג ה-image. תמיד זהה ל-`cli.image.tag`: זה אותו image |
+| `search.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת ה-image. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
 | `search.logLevel` | `INFO` | רמת לוג של שירות החיפוש |
 | `search.threads` | `8` | מספר ה-threads של gunicorn; המודאל שולח בקשה לכל תו |
 | `search.index.name` | `docs` | שם האינדקס ב-Redis |

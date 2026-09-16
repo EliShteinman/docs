@@ -202,10 +202,12 @@ cli:
     capabilities:
       drop:
         - ALL
+  # The airgap-build workflow bumps this tag whenever helm/cli-proxy changes,
+  # and search.image.tag with it: search runs from the same image.
   image:
     registry: a0533057932
     name: redis-docs-cli
-    tag: "latest"
+    tag: "0.6.0"
     pullPolicy: IfNotPresent
   # How long a browser session lives in the proxy. A session holds a Redis
   # connection of its own so transactions survive between typed commands, so
@@ -296,16 +298,17 @@ search:
         - ALL
   # The CLI proxy image. The search service ships inside it rather than in one
   # of its own, so there is no third image to build, mirror and carry in.
+  # Always the same tag as cli.image.tag. A tag older than 0.6.0 has no
+  # `search` module and the pod crash-loops.
+  #
+  # IfNotPresent is safe because the tag is pinned. Moving it back to the
+  # mutable `latest` needs pullPolicy: Always with it, or a node that cached
+  # `latest` before the search service existed keeps serving that copy.
   image:
     registry: a0533057932
     name: redis-docs-cli
-    tag: "latest"
-    # Always, not IfNotPresent, while the tag is the mutable `latest`: a node
-    # that cached this image for the CLI playground before the search service
-    # was added would keep that copy, and the indexer would fail on the missing
-    # `search` module until the pod crash-loops. Pin a tag and IfNotPresent is
-    # safe again.
-    pullPolicy: Always
+    tag: "0.6.0"
+    pullPolicy: IfNotPresent
   logLevel: INFO
   # gunicorn threads. A search is one round trip to a Redis in the same pod,
   # and the modal fires a request per keystroke, so this is about concurrent
