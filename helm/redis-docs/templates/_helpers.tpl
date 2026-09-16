@@ -161,3 +161,21 @@ A protocol-relative `//host/...` starts with a slash too, and is not.
 {{- $url := . | default "" | toString -}}
 {{- if and (hasPrefix "/" $url) (not (hasPrefix "//" $url)) -}}true{{- end -}}
 {{- end }}
+
+{{/*
+Return the image reference for the mirrored sections.
+Priority: global.registry > mirror.image.registry
+*/}}
+{{- define "redis-docs.mirrorImage" -}}
+{{- $registry := .Values.global.registry | default .Values.mirror.image.registry -}}
+{{- printf "%s/%s:%s" $registry .Values.mirror.image.name .Values.mirror.image.tag -}}
+{{- end }}
+
+{{/*
+The paths the mirror serves, as nginx location prefixes. Named once here
+because three templates need the same list: the proxy rules, the runtime
+config that unlinks them when the mirror is not deployed, and the README.
+*/}}
+{{- define "redis-docs.mirrorPaths" -}}
+blog tutorials compare solutions customers technology resources/architecture-diagrams images/site-mirror
+{{- end }}

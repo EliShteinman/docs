@@ -179,6 +179,22 @@ data:
         }
         {{- end }}
 
+        {{- if .Values.mirror.enabled }}
+        # The mirrored sections live in an image of their own and are served by
+        # their own pod.
+        #
+        # `^~`, not a plain prefix: a regex location beats a prefix one in
+        # nginx, so the asset and .html rules above would otherwise catch
+        # /images/site-mirror/x.webp and /blog/a-post/index.html and answer
+        # them from this image, which no longer has either. `^~` stops the
+        # regex round from happening at all.
+        {{- range splitList " " (include "redis-docs.mirrorPaths" .) }}
+        location ^~ /{{ . }}/ {
+            proxy_pass http://{{ include "redis-docs.fullname" $ }}-mirror:8080;
+        }
+        {{- end }}
+        {{- end }}
+
         {{- if .Values.cli.enabled }}
         location = /cli {
             proxy_pass http://{{ include "redis-docs.fullname" . }}-cli:8090/cli;

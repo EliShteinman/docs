@@ -208,10 +208,21 @@ def index_documents(
 
 
 def build_index() -> int:
-    """Load the feed and rebuild the whole index. Returns the document count."""
+    """Load the feeds and rebuild the whole index. Returns the document count.
+
+    The mirror's feed is indexed only when the pod was given one, because only
+    then is there a pod serving those pages. A result for a page nothing serves
+    is worse than no result: it looks like the search found something.
+    """
     documents = load_documents(config.DOCS_FEED_PATH)
     if not documents:
         raise IndexingError(f"no documents found in {config.DOCS_FEED_PATH}")
+    if config.MIRROR_FEED_PATH:
+        mirrored = load_documents(config.MIRROR_FEED_PATH)
+        if not mirrored:
+            raise IndexingError(f"no documents found in {config.MIRROR_FEED_PATH}")
+        documents += mirrored
+        LOGGER.info("indexing %d mirrored pages alongside the documentation", len(mirrored))
     breadcrumbs = BreadcrumbIndex.from_documents(config.ROOT_CRUMB, documents)
     connection = RespConnection(config.REDIS_HOST, config.REDIS_PORT, config.SOCKET_TIMEOUT)
     try:

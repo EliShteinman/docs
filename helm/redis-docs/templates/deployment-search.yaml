@@ -53,6 +53,34 @@ spec:
           volumeMounts:
             - name: corpus
               mountPath: /corpus
+        {{- if .Values.mirror.enabled }}
+        # The mirrored pages left the documentation's feed when they left its
+        # tree, so they arrive here from their own image. Only when that image
+        # is deployed: indexing pages nothing serves would answer a search with
+        # a link to a 404.
+        - name: fetch-mirror-corpus
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ include "redis-docs.mirrorImage" . }}
+          imagePullPolicy: {{ .Values.mirror.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+              src=/usr/share/nginx/html/mirror.ndjson
+              if [ ! -s "$src" ]; then
+                echo "FATAL: $src missing or empty; the mirror image carries no feed" >&2
+                exit 1
+              fi
+              cp "$src" /corpus/mirror.ndjson
+              echo "copied mirror corpus ($(wc -c < /corpus/mirror.ndjson) bytes)"
+          resources:
+            {{- toYaml .Values.search.resources | nindent 12 }}
+          volumeMounts:
+            - name: corpus
+              mountPath: /corpus
+        {{- end }}
       containers:
         - name: search-api
           image: {{ include "redis-docs.searchImage" . }}
@@ -68,6 +96,10 @@ spec:
               value: "6379"
             - name: SEARCH_DOCS_FEED
               value: "/corpus/docs.ndjson"
+            {{- if .Values.mirror.enabled }}
+            - name: SEARCH_MIRROR_FEED
+              value: "/corpus/mirror.ndjson"
+            {{- end }}
             - name: SEARCH_INDEX_NAME
               value: {{ .Values.search.index.name | quote }}
             - name: SEARCH_RESULT_LIMIT
