@@ -4,8 +4,10 @@ description: |
   Air-gapped deployment of the Redis documentation site. Provides
   hierarchical control over external links via a catalog + master
   kill-switch + per-family / per-link overrides, runtime URL
-  substitution for AI/RAG outputs, and optional Prometheus metrics
-  and CLI / Jupyter playground sidecars.
+  substitution for AI/RAG outputs, an optional search service that
+  answers the site's own search box from an index of the shipped
+  feed, and optional Prometheus metrics and CLI / Jupyter playground
+  sidecars.
 type: application
 version: 1.10.0
 appVersion: "4dfba535c"
