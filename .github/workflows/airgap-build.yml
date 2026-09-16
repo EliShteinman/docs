@@ -17,6 +17,7 @@ name: Airgap Build & Push
 #   4c. tests          the fork's own test suites (same)
 #   4d. dockerhub_description  the image pages' text, release branch only
 #   4e. mirror_drift   how far behind redis.io the mirrored sections are
+#   4f. mirror_image   the mirrored sections as an image of their own
 #   5. publish_chart   opt-in: bump and publish the Helm chart
 #
 # Dockerfile and airgap-multibuild.sh are unchanged — local builds still work.
@@ -75,6 +76,8 @@ jobs:
       platforms: ${{ steps.meta.outputs.platforms }}
       priv_tags: ${{ steps.meta.outputs.priv_tags }}
       unpriv_tags: ${{ steps.meta.outputs.unpriv_tags }}
+      mirror_priv_tags: ${{ steps.meta.outputs.mirror_priv_tags }}
+      mirror_unpriv_tags: ${{ steps.meta.outputs.mirror_unpriv_tags }}
       matrix: ${{ steps.matrix.outputs.matrix }}
       k8s_versions: ${{ steps.matrix.outputs.k8s }}
       rs_versions: ${{ steps.matrix.outputs.rs }}
@@ -114,6 +117,24 @@ jobs:
             else
               echo "$REPO:$HASH-unprivileged"
               echo "$REPO:unprivileged"
+            fi
+            echo "EOF"
+            # The mirrored sections, in the same repository under their own
+            # tags: same build, same commit, a different half of the tree.
+            echo "mirror_priv_tags<<EOF"
+            if [ -n "$INPUT_OVERRIDE" ]; then
+              echo "$REPO:$INPUT_OVERRIDE-mirror"
+            else
+              echo "$REPO:$HASH-mirror"
+              echo "$REPO:mirror"
+            fi
+            echo "EOF"
+            echo "mirror_unpriv_tags<<EOF"
+            if [ -n "$INPUT_OVERRIDE" ]; then
+              echo "$REPO:$INPUT_OVERRIDE-mirror-unprivileged"
+            else
+              echo "$REPO:$HASH-mirror-unprivileged"
+              echo "$REPO:mirror-unprivileged"
             fi
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
@@ -1056,6 +1077,100 @@ jobs:
           python -m pytest build -q \
             --ignore=build/jupyterize \
             --deselect build/test_make_doc_bundles.py::test_every_product_is_offered
+
+  # =========================================================================
+  # Phase 4f: mirror_image — the sections split out of the site tree.
+  #
+  # The same build as the site image and the same commit, wrapped separately so
+  # a deployment can take the documentation without 1,400 mirrored pages and
+  # 238 MB of pictures. The chart proxies their paths to this pod when
+  # mirror.enabled is on, and serves neither when it is off.
+  # =========================================================================
+  mirror_image:
+    name: 4f. Build & push the mirror image
+    needs: [setup, assemble]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          sparse-checkout: Dockerfile.runtime
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        with:
+          name: public-mirror
+          path: /tmp/
+
+      - name: Extract the mirror tree into the build context
+        run: tar -xzf /tmp/public-mirror.tar.gz -C .
+
+      - name: Set up QEMU
+        if: inputs.platforms != 'amd64'
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
+        with:
+          platforms: arm64
+
+      - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd  # v4.0.0
+
+      - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push privileged
+        id: push_priv
+        if: inputs.variant != 'unprivileged'
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
+        with:
+          context: .
+          file: Dockerfile.runtime
+          platforms: ${{ needs.setup.outputs.platforms }}
+          target: mirror-privileged
+          build-args: |
+            GIT_COMMIT=${{ needs.setup.outputs.hash }}
+            BUILD_DATE=${{ github.event.repository.updated_at }}
+          tags: ${{ needs.setup.outputs.mirror_priv_tags }}
+          push: true
+
+      - name: Build & push unprivileged
+        id: push_unpriv
+        if: inputs.variant != 'privileged'
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
+        with:
+          context: .
+          file: Dockerfile.runtime
+          platforms: ${{ needs.setup.outputs.platforms }}
+          target: mirror-unprivileged
+          build-args: |
+            GIT_COMMIT=${{ needs.setup.outputs.hash }}
+            BUILD_DATE=${{ github.event.repository.updated_at }}
+          tags: ${{ needs.setup.outputs.mirror_unpriv_tags }}
+          push: true
+
+      - name: Write mirror summary
+        if: always()
+        env:
+          STATUS: ${{ job.status }}
+          PRIV_TAGS: ${{ needs.setup.outputs.mirror_priv_tags }}
+          UNPRIV_TAGS: ${{ needs.setup.outputs.mirror_unpriv_tags }}
+          PRIV_OUTCOME: ${{ steps.push_priv.outcome }}
+          UNPRIV_OUTCOME: ${{ steps.push_unpriv.outcome }}
+        run: |
+          {
+            echo ""
+            echo "## Mirror image: \`$STATUS\`"
+            echo ""
+            if [ "$PRIV_OUTCOME" = "success" ] || [ "$UNPRIV_OUTCOME" = "success" ]; then
+              echo '```'
+              [ "$PRIV_OUTCOME" = "success" ] && printf '%s\n' "$PRIV_TAGS"
+              [ "$UNPRIV_OUTCOME" = "success" ] && printf '%s\n' "$UNPRIV_TAGS"
+              echo '```'
+            else
+              echo "Nothing pushed — see the step logs."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================
   # Phase 4b: cli_image — the CLI proxy image, which also carries the docs
