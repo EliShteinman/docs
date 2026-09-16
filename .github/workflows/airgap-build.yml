@@ -16,6 +16,7 @@ name: Airgap Build & Push
 #                      helm/cli-proxy changed (runs beside phases 1-4)
 #   4c. tests          the fork's own test suites (same)
 #   4d. dockerhub_description  the image pages' text, release branch only
+#   4e. mirror_drift   how far behind redis.io the mirrored sections are
 #   5. publish_chart   opt-in: bump and publish the Helm chart
 #
 # Dockerfile and airgap-multibuild.sh are unchanged — local builds still work.
@@ -1226,6 +1227,37 @@ jobs:
             else
               echo "\`$CLI_REPO:$TAG\` already holds this code — nothing built."
             fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # =========================================================================
+  # Phase 4e: mirror_drift — how far behind redis.io the mirrored sections are.
+  #
+  # The mirror is run by hand and its output is committed, so nothing otherwise
+  # says that redis.io has published since. One count query per tree does.
+  #
+  # It reports and never gates: a post published this morning is news, not a
+  # reason to fail a build that has nothing to do with it. Nothing depends on
+  # this job, and a source that cannot be reached leaves the summary saying so.
+  # =========================================================================
+  mirror_drift:
+    name: 4e. Mirror drift report
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Compare the mirrored sections against their source
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python3 -m build.site_mirror --check 2>&1 | tee /tmp/drift.txt
+          {
+            echo "## Mirror drift"
+            echo ""
+            echo '```'
+            sed -E 's/^[0-9-]+ [0-9:,]+ [A-Z]+ site_mirror //' /tmp/drift.txt
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================

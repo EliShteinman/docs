@@ -23,6 +23,7 @@ from pathlib import Path
 from build.site_mirror import categories, documents, hugo, pages, portable_text, redirects
 from build.site_mirror.images import ImageMirror
 from build.site_mirror.sanity import (
+    PAGE_TYPE,
     SanityError,
     count_documents,
     count_pages,
@@ -68,6 +69,11 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         action="store_true",
         help="Follow the stale links on redis.io and record where they land. "
              "Needs the public internet; run it deliberately, then commit the map.",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Report how far behind the source the mirror is, and write nothing.",
     )
     parser.add_argument("--timeout", type=float, default=60.0)
     parser.add_argument("--log-level", default="INFO")
@@ -369,6 +375,63 @@ def mirror(content_dir: Path, image_dir: Path, limit: int, timeout: float, only:
     return written
 
 
+def _mirrored_on_disk(directory: Path) -> int:
+    """How many pages the mirror has written into `directory`, index aside."""
+    return sum(
+        1
+        for markdown in directory.glob("*.md")
+        if markdown.name != "_index.md" and hugo.is_generated(markdown)
+    )
+
+
+def _source_count(doc_type: str, prefix: str, timeout: float) -> int:
+    """How many documents the source holds that this mirror would write.
+
+    Counted from the pathnames rather than with count(), because neither of the
+    two things the mirror skips can be expressed in the query: a tree's own root
+    page, which becomes the section index instead of a child, and the pages
+    GROQ's token-based `match` drags in from other trees. Counting those makes
+    an up-to-date mirror look permanently behind, which is the one thing a
+    drift report must not do.
+    """
+    return sum(
+        1
+        for document in fetch_documents(doc_type, prefix, "{pathname}", timeout)
+        if _under(prefix, (document.get("pathname") or "").strip())
+    )
+
+
+def check_drift(timeout: float) -> int:
+    """Report what the source holds against what is on disk. Returns what is missing.
+
+    The mirror is run by hand and its output is committed, so nothing tells
+    anyone that redis.io has published since. One query per tree does, and it is
+    cheap enough to run on every build.
+    """
+    behind = 0
+    rows: list[tuple[str, int, int]] = [
+        ("blog", count_posts(timeout), _mirrored_on_disk(hugo.SECTION_DIR))
+    ]
+    for name, prefix, directory, _ in PAGE_TREES:
+        rows.append((name, _source_count(PAGE_TYPE, prefix, timeout), _mirrored_on_disk(directory)))
+    for tree in documents.TREES:
+        rows.append(
+            (tree.name, _source_count(tree.doc_type, tree.prefix, timeout),
+             _mirrored_on_disk(tree.directory))
+        )
+
+    LOGGER.info("%-22s %8s %8s %8s", "tree", "source", "mirror", "drift")
+    for name, source, mirrored in rows:
+        drift = source - mirrored
+        behind += max(drift, 0)
+        LOGGER.info("%-22s %8d %8d %+8d", name, source, mirrored, drift)
+    if behind:
+        LOGGER.warning("%d documents published since the last sync; run `make mirror`", behind)
+    else:
+        LOGGER.info("the mirror is level with the source")
+    return behind
+
+
 def refresh_redirects(content_root: Path, timeout: float) -> int:
     """Follow every stale internal link on redis.io and record where it lands."""
     known = _known_urls(content_root)
@@ -389,6 +452,15 @@ def main(argv: list[str] | None = None) -> int:
         level=args.log_level.upper(),
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
+    if args.check:
+        try:
+            # Reporting, not gating: a post published this morning is news, not
+            # a reason to fail a build that has nothing to do with it.
+            check_drift(args.timeout)
+        except SanityError as error:
+            LOGGER.error("could not read the source: %s", error)
+            return 1
+        return 0
     if args.refresh_redirects:
         refresh_redirects(Path("content"), args.timeout)
         return 0
