@@ -32,6 +32,14 @@ data:
 
         access_log /var/log/nginx/access.log main buffer=16k flush=5s;
 
+        {{- if and .Values.search.enabled .Values.search.rateLimit.enabled }}
+        # The search endpoint is the one path here that costs more than reading
+        # a file off disk, and the only one a caller that is not a browser is
+        # likely to drive in a loop. Keyed on the client address; see
+        # search.rateLimit in values.yaml for why it is off by default.
+        limit_req_zone $binary_remote_addr zone=search:{{ .Values.search.rateLimit.zoneSize }} rate={{ .Values.search.rateLimit.rate }};
+        {{- end }}
+
         sendfile on;
         tcp_nopush on;
         tcp_nodelay on;
@@ -147,6 +155,26 @@ data:
         # request falls through to `location /`, 404s, and the modal opens
         # empty — which is the behaviour when search is disabled.
         location = /convai/api/search-service {
+            {{- if .Values.search.rateLimit.enabled }}
+            # 429 rather than nginx's default 503: a client that is being asked
+            # to slow down has not hit a broken service, and the service says
+            # 503 itself when it cannot reach its index.
+            limit_req zone=search burst={{ .Values.search.rateLimit.burst }} nodelay;
+            limit_req_status 429;
+            {{- end }}
+            {{- if .Values.search.cors.enabled }}
+            add_header Access-Control-Allow-Origin {{ .Values.search.cors.allowOrigin | quote }} always;
+            add_header Vary Origin always;
+            # A plain GET needs no preflight, but a caller that sends a header
+            # of its own turns the same request into one. Answered here rather
+            # than in the service, which would otherwise see an OPTIONS it has
+            # no route for.
+            add_header Access-Control-Allow-Methods "GET, OPTIONS" always;
+            add_header Access-Control-Allow-Headers "Content-Type" always;
+            if ($request_method = OPTIONS) {
+                return 204;
+            }
+            {{- end }}
             proxy_pass http://{{ include "redis-docs.fullname" . }}-search:8091/search;
         }
         {{- end }}

@@ -130,7 +130,12 @@ Software נעצרים ב-8.0, בעוד 8.2 מתפרסמת רק כ-`latest`.
 
 הסטטוסים מפרידים בין תשובה לבין תקלה: `200` עם תוצאות, `200` עם רשימה ריקה ובלי `error`
 כששום דבר לא התאים, `200` עם `error: "query rejected"` כשמנוע החיפוש דחה את השאילתה,
-`503` עם `error: "search unavailable"` כשהשירות לא מצליח להגיע לאינדקס שלו. ‏`/healthz` בפוד מדווח אם האינדקס קיים.
+`503` עם `error: "search unavailable"` כשהשירות לא מצליח להגיע לאינדקס שלו, ו-`429`
+כש-`search.rateLimit` דולק והקורא מהיר מדי. ‏`/healthz` בפוד מדווח אם האינדקס קיים.
+
+שתי אפשרויות חשובות לקוראים מחוץ לאתר: `search.cors.enabled`, שבלעדיה עמוד שמוגש
+מדומיין אחר לא יכול לקרוא את התשובה, ו-`search.rateLimit.enabled`, שכבויה כברירת מחדל
+כי המודאל שולח בקשה לכל הקשה ומשרד שלם יכול לחלוק כתובת אחת.
 
 ### הגדרות Runtime
 
@@ -739,6 +744,13 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.image.tag` | `0.6.0` | תג ה-image. תמיד זהה ל-`cli.image.tag`: זה אותו image |
 | `search.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת ה-image. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
 | `search.logLevel` | `INFO` | רמת לוג של שירות החיפוש |
+| `search.replicas` | `1` | כמה פודים של חיפוש. כל אחד בונה ומחזיק עותק משלו של האינדקס |
+| `search.rateLimit.enabled` | `false` | הגבלת קצב לכתובת לקוח בודדת. כבוי כברירת מחדל: המודאל שולח בקשה בכל הקשה, ומשרד מאחורי כתובת יציאה אחת נראה כלקוח אחד |
+| `search.rateLimit.rate` | `20r/s` | בקשות לשנייה לכתובת לקוח, כשההגבלה דולקת |
+| `search.rateLimit.burst` | `40` | כמה בקשות מותר שיגיעו מעל הקצב לפני `429` |
+| `search.rateLimit.zoneSize` | `1m` | זיכרון לטבלת הכתובות; ‏`1m` מספיק לכ-16,000 כתובות |
+| `search.cors.enabled` | `false` | מענה לבקשות דפדפן מדומיין אחר. המודאל של האתר עצמו לא צריך את זה |
+| `search.cors.allowOrigin` | `*` | הדומיין שמוחזר ב-`Access-Control-Allow-Origin` |
 | `search.threads` | `8` | מספר ה-threads של gunicorn; המודאל שולח בקשה לכל תו |
 | `search.index.name` | `docs` | שם האינדקס ב-Redis |
 | `search.index.rootCrumb` | `Welcome to Redis Docs` | הכותרת שהתוצאות מקובצות תחתיה, ו-`hierarchy[0]` בכל תוצאה |

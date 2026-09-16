@@ -135,7 +135,13 @@ trees stop at 8.0 while 8.2 publishes only as `latest`.
 Statuses separate an answer from a failure: `200` with results, `200` with an empty list
 and no `error` for a query that matched nothing, `200` with `error: "query rejected"`
 when the query engine refused the query, `503` with `error: "search unavailable"` when
-the service cannot reach its index. `/healthz` on the pod reports whether the index exists.
+the service cannot reach its index, and `429` when `search.rateLimit` is on and the
+caller is going too fast. `/healthz` on the pod reports whether the index exists.
+
+Two options matter for callers outside the site: `search.cors.enabled`, without which a
+page served from another origin cannot read the reply, and `search.rateLimit.enabled`,
+which is off by default because the modal sends a request per keystroke and a whole
+office can share one address.
 
 ### Runtime Configuration
 
@@ -804,6 +810,13 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `search.image.tag` | `0.6.0` | Search API image tag. Always the same as `cli.image.tag`: it is the same image |
 | `search.image.pullPolicy` | `IfNotPresent` | Search API image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
 | `search.logLevel` | `INFO` | Log level for the search service |
+| `search.replicas` | `1` | Search pods. Each builds and holds its own copy of the index |
+| `search.rateLimit.enabled` | `false` | Limit how fast one client address may query the search endpoint. Off by default: the modal sends a request per keystroke, and an office behind one egress address is one client |
+| `search.rateLimit.rate` | `20r/s` | Requests per second per client address, once enabled |
+| `search.rateLimit.burst` | `40` | Requests allowed to arrive ahead of that rate before a `429` |
+| `search.rateLimit.zoneSize` | `1m` | Memory for the address table; `1m` holds about 16,000 addresses |
+| `search.cors.enabled` | `false` | Answer cross-origin browser requests. The site's own modal is same-origin and needs none of it |
+| `search.cors.allowOrigin` | `*` | The origin sent back in `Access-Control-Allow-Origin` |
 | `search.threads` | `8` | gunicorn threads; the modal sends one request per keystroke |
 | `search.index.name` | `docs` | Name of the index in Redis |
 | `search.index.rootCrumb` | `Welcome to Redis Docs` | The heading results are grouped under, and `hierarchy[0]` on every result |

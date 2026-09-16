@@ -7,7 +7,7 @@ metadata:
     {{- include "redis-docs.labels" . | nindent 4 }}
     app.kubernetes.io/component: search
 spec:
-  replicas: 1
+  replicas: {{ .Values.search.replicas }}
   selector:
     matchLabels:
       {{- include "redis-docs.selectorLabels" . | nindent 6 }}
