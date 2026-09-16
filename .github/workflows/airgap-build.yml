@@ -14,6 +14,7 @@ name: Airgap Build & Push
 #   4. docker          minimal nginx image, push to DockerHub
 #   4b. cli_image      CLI proxy image, built and pushed only when
 #                      helm/cli-proxy changed (runs beside phases 1-4)
+#   4c. tests          the fork's own test suites (same)
 #   5. publish_chart   opt-in: bump and publish the Helm chart
 #
 # Dockerfile and airgap-multibuild.sh are unchanged — local builds still work.
@@ -982,6 +983,46 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================
+  # Phase 4c: tests — the fork's own suites, over the whole checkout.
+  #
+  # cli_image runs a subset of these, and only when it builds. This job is the
+  # one that sees an upstream *content* change breaking a fork test: DOC-7059
+  # turned a note into a blockquote and test_acl.py read "Save this key" as the
+  # command SAVE, which no file-level check could have caught. It does not hold
+  # up either image, so a failure here still leaves something to deploy, but
+  # the chart is not published over it.
+  # =========================================================================
+  tests:
+    name: 4c. Fork tests
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: python -m pip install --quiet -r requirements.txt -r helm/cli-proxy/requirements.txt pytest==9.1.1
+
+      # These need docker for a real Redis with the bundled modules, which the
+      # runner has, and the full content/ tree the checkout above provides.
+      - name: Run the CLI proxy, search and ACL tests
+        run: python -m pytest helm/cli-proxy -q
+
+      # build/jupyterize is left out: it imports nbformat, which no
+      # requirements file in this repo declares. test_every_product_is_offered
+      # is left out because Redis Radar is missing from data/doc_bundles.json
+      # upstream — it fails on redis/docs main too, and is not ours to fix.
+      - name: Run the build tooling tests
+        run: |
+          python -m pytest build -q \
+            --ignore=build/jupyterize \
+            --deselect build/test_make_doc_bundles.py::test_every_product_is_offered
+
+  # =========================================================================
   # Phase 4b: cli_image — the CLI proxy image, which also carries the docs
   # search service. Nothing here reads the site, so it runs beside the site
   # build rather than after it.
@@ -1175,12 +1216,13 @@ jobs:
   # Order: bump files -> git commit & push -> helm publish to OCI.
   # If helm publish fails the bump is already in git; rerun helm push by hand.
   # Waits for cli_image as well and takes the CLI tag from it, so the chart
-  # never names a CLI image that was not pushed.
+  # never names a CLI image that was not pushed, and for the fork's tests, so
+  # a published chart is never one whose tests were failing.
   # Skipped on partial builds (variant/platforms != both, or tag_override set).
   # =========================================================================
   publish_chart:
     name: 5. Publish Helm chart (opt-in)
-    needs: [setup, docker, cli_image]
+    needs: [setup, docker, cli_image, tests]
     if: >-
       inputs.publish_chart &&
       inputs.variant == 'both' &&
