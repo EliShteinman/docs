@@ -32,7 +32,7 @@ spec:
           imagePullPolicy: {{ .Values.mirror.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.mirror.containerPort }}
               protocol: TCP
           livenessProbe:
             httpGet:

@@ -135,6 +135,10 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
 המילון הוא היוצא מן הכלל ונשאר עם התיעוד: המונחים שלו מתפרסמים בתוך `/glossary/`,
 הסקשן של התיעוד עצמו.
 
+לעמודים הממוררים יש sitemap משלהם, שמתפרסם ב-`/sitemap-mirror.xml`. ה-`/sitemap.xml` של
+האתר מפרט את התיעוד בלבד: הוא נבנה בין אם הפוד הזה פרוס ובין אם לא, ולכן אסור לו לפרסם
+כתובות שאף אחד לא עונה עליהן.
+
 החיפוש הולך לפי אותו מתג. העמודים הממוררים יצאו מהפיד של התיעוד כשיצאו מהעץ שלו, ופוד
 החיפוש מאנדקס אותם מה-image של המירור רק כשהוא פרוס — כך שחיפוש לעולם לא מחזיר עמוד
 שאף אחד לא מגיש.
@@ -820,6 +824,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | משאבי Jupyter |
 | `mirror.enabled` | `false` | פריסת הסקשנים הממוררים (פוד ו-image נפרדים). כבוי משאיר את התיעוד שלם בפני עצמו |
 | `mirror.replicas` | `1` | כמה פודים של מירור |
+| `mirror.containerPort` | `8080` | הפורט שעליו מאזין ה-nginx של המירור, לפי וריאנט ה-image: ‏8080 ל-`-mirror-unprivileged`, ו-80 ל-`-mirror` (שדורש גם securityContext שמתיר root) |
 | `mirror.image.registry` | `a0533057932` | registry של image המירור |
 | `mirror.image.name` | `redis-docs` | שם ה-image — אותו repository של האתר, בתגים משלו |
 | `mirror.image.tag` | `mirror-unprivileged` | תג image המירור. ברשת סגורה לקבע את הצורה `<commit>-mirror-unprivileged` |
