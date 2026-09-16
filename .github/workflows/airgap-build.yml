@@ -829,20 +829,37 @@ jobs:
           /tmp/venv/bin/python3 build/generate_ndjson.py
           /tmp/venv/bin/python3 build/tag_ndjson_versions.py
 
+      # The documentation stays in public/, the mirrored sections and their
+      # pictures move to public-mirror/, and phase 4 wraps each in an image of
+      # its own. A deployment that does not want 1,400 mirrored pages and
+      # 238 MB of pictures does not have to carry them. Mirrors the same step
+      # in the local Dockerfile.
+      - name: Split the mirrored sections out of the site tree
+        run: python3 build/split_mirror.py --site public --mirror public-mirror
+
       - name: Pre-compress static assets (skip .json/.md — sub_filter at runtime)
         run: |
-          find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
+          find public public-mirror -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
             -exec gzip -9 -k {} \;
 
       - name: Tar public/
         run: |
           tar -czf /tmp/public.tar.gz public
-          echo "Files: $(find public -type f | wc -l), Size: $(du -sh public | cut -f1)"
+          tar -czf /tmp/public-mirror.tar.gz public-mirror
+          echo "Documentation: $(find public -type f | wc -l) files, $(du -sh public | cut -f1)"
+          echo "Mirror: $(find public-mirror -type f | wc -l) files, $(du -sh public-mirror | cut -f1)"
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: public
           path: /tmp/public.tar.gz
+          retention-days: 1
+          compression-level: 0
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: public-mirror
+          path: /tmp/public-mirror.tar.gz
           retention-days: 1
           compression-level: 0
 

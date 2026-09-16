@@ -254,6 +254,24 @@ python3 -m build.site_mirror --check   # כמה פורסם מאז הסנכרון
 > להופיע תחת הכותרת של הדוקס. המילון הוא היוצא מן הכלל: המונחים שלו מתפרסמים בתוך
 > `/glossary/` של התיעוד, ולכן הם מקובצים איתו.
 
+#### ה-image של המירור — נבנה מאותה בנייה, ונפרד ממנה
+
+‏Hugo רץ פעם אחת ובונה הכל יחד; מיד אחרי זה `build/split_mirror.py` מחלק את התוצאה לשניים.
+התיעוד נשאר ב-`public/`, והסקשנים הממוררים עוברים ל-`public-mirror/` יחד עם
+`static/images/site-mirror` ועם הרשומות שלהם בפיד. כל חצי נארז ב-image משלו.
+
+הנתיבים מוגדרים לפי **איפה הם מתפרסמים** ולא לפי שם התיקייה, וזה לא אותו דבר:
+‏`content/architecture-diagrams` מתפרסם ב-`/resources/architecture-diagrams/`,
+וקטגוריות הבלוג והמדריכים מתפרסמות **בתוך** `/blog/` ו-`/tutorials/`. המילון נשאר עם
+התיעוד כי הוא מתפרסם בתוך `/glossary/` שלו.
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivileged \
+  -t redis-docs-mirror:local .
+```
+
+ב-chart: `mirror.enabled`.
+
 #### ה-image של ה-CLI (`redis-docs-cli`) — נבנה אוטומטית ב-`airgap-build.yml`
 
 המקור ב-`helm/cli-proxy/`. ה-image נושא **שני** שירותים: ה-proxy של ה-CLI playground

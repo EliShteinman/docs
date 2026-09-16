@@ -66,6 +66,44 @@ EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
 
 # ============================================================
+# The mirror: the sections split out of the site tree
+# ============================================================
+# Same nginx, a different half of the same build (build/split_mirror.py). It
+# carries no download tooling: the bundles are documentation, and they stay
+# with it.
+FROM nginx:alpine AS mirror-privileged
+
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+
+LABEL org.opencontainers.image.source="https://github.com/redis/docs"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.variant="mirror-privileged"
+
+COPY public-mirror /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+FROM nginxinc/nginx-unprivileged:alpine AS mirror-unprivileged
+
+ARG GIT_COMMIT=unknown
+ARG BUILD_DATE=unknown
+
+LABEL org.opencontainers.image.source="https://github.com/redis/docs"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.variant="mirror-unprivileged"
+
+COPY --chown=nginx:nginx public-mirror /usr/share/nginx/html
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
+
+# ============================================================
 # Final stage: select variant via build arg
 # ============================================================
 FROM runtime-${VARIANT} AS final
