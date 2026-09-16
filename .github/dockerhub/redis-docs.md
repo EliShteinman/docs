@@ -11,6 +11,8 @@ every asset they need is inside the image.
 |-----|------------|------|-----|
 | `latest`, `<commit-sha>` | image, privileged (`nginx:alpine`) | 80 | `docker run`, Docker Compose |
 | `unprivileged`, `<commit-sha>-unprivileged` | image, unprivileged | 8080 | Kubernetes / OpenShift (non-root, read-only root filesystem) |
+| `<commit-sha>-mirror`, `mirror` | image, the mirrored redis.io sections | 80 | Optional second pod (`mirror.enabled`) |
+| `<commit-sha>-mirror-unprivileged`, `mirror-unprivileged` | the same, non-root | 8080 | Kubernetes / OpenShift |
 | `X.Y.Z` | **the Helm chart**, as an OCI artifact | — | `helm pull` (see below) |
 
 Every image tag is built for `linux/amd64` and `linux/arm64`. A plain `X.Y.Z` tag is
@@ -20,9 +22,11 @@ repository.
 ## What is inside
 
 - The documentation in full, including each versioned product tree.
-- The redis.io sections the documentation links out to — blog, tutorials, glossary,
-  customers, solutions, comparisons — mirrored as local pages, so those links stay
-  inside the image instead of reaching for the internet.
+- The glossary, and the documentation's own assets.
+- The other redis.io sections the documentation links out to — blog, tutorials,
+  customer stories, comparisons, solutions — are mirrored too, but ship in the
+  `mirror` tags above rather than here, so a deployment that does not want 1,400
+  extra pages and 238 MB of pictures does not carry them.
 - `docs.ndjson`, the feed that the search service and RAG consumers read.
 
 ## Quick start
@@ -67,6 +71,7 @@ for the version you took:
 |-------|------------|
 | `a0533057932/redis-docs` | the site itself |
 | `a0533057932/redis-docs-cli` | search (`search.enabled`) and the CLI playground (`cli.enabled`) |
+| `a0533057932/redis-docs` (`mirror-unprivileged`) | the mirrored redis.io sections (`mirror.enabled`) |
 | `redis:8.10.0-alpine` | the Redis behind each of those two — the query engine search indexes into |
 | `quay.io/martinhelmich/prometheus-nginxlog-exporter` | metrics (`metrics.enabled`) |
 | `quay.io/jupyter/minimal-notebook` | the notebook sidecar (`cli.jupyter.enabled`) |

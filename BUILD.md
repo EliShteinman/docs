@@ -270,6 +270,8 @@ docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivile
   -t redis-docs-mirror:local .
 ```
 
+ב-CI זה ה-job ‏`4f. Build & push the mirror image`, שדוחף לאותו repository בתגים
+`<hash>-mirror` ו-`<hash>-mirror-unprivileged` (וגם `mirror` / `mirror-unprivileged`).
 ב-chart: `mirror.enabled`.
 
 #### ה-image של ה-CLI (`redis-docs-cli`) — נבנה אוטומטית ב-`airgap-build.yml`
