@@ -64,6 +64,12 @@ IMAGE_DIR = "images/site-mirror"
 
 MOVED = MIRRORED_SECTIONS + (IMAGE_DIR,)
 
+# The pictures go to a tree of their own so the image can put them in a layer of
+# their own. They are 243 MB and change only when new content is mirrored, while
+# the pages beside them are rewritten by any change to a layout or a stylesheet.
+# In one layer together, a comma moved in a stylesheet re-pushes the pictures.
+ASSET_SUFFIX = "-assets"
+
 FEED_NAME = "docs.ndjson"
 # The mirror's own feed. Never served -- nginx routes only the section paths to
 # the mirror pod -- but read out of the image by the search pod's init
@@ -88,14 +94,14 @@ def belongs_to_mirror(url: str) -> bool:
     return any(path == section or path.startswith(section + "/") for section in MOVED)
 
 
-def move_sections(site: Path, mirror: Path) -> list[str]:
-    """Move each mirrored section out of `site` and into `mirror`."""
+def move_sections(site: Path, mirror: Path, assets: Path) -> list[str]:
+    """Move each mirrored section out of `site`: pages to `mirror`, pictures to `assets`."""
     moved = []
     for section in MOVED:
         source = site / section
         if not source.is_dir():
             continue
-        destination = mirror / section
+        destination = (assets if section == IMAGE_DIR else mirror) / section
         destination.parent.mkdir(parents=True, exist_ok=True)
         if destination.exists():
             shutil.rmtree(destination)
@@ -151,9 +157,10 @@ def split_sitemap(site: Path, mirror: Path) -> int:
     return dropped
 
 
-def split(site: Path, mirror: Path) -> dict[str, int]:
-    """Divide a built site tree in two. Returns what was done, for the log."""
-    moved = move_sections(site, mirror)
+def split(site: Path, mirror: Path, assets: Path | None = None) -> dict[str, int]:
+    """Divide a built site tree. Returns what was done, for the log."""
+    assets = assets if assets is not None else Path(str(mirror) + ASSET_SUFFIX)
+    moved = move_sections(site, mirror, assets)
     kept_records, moved_records = split_feed(site, mirror)
     dropped = split_sitemap(site, mirror)
     return {
@@ -168,6 +175,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site", type=Path, default=Path("public"))
     parser.add_argument("--mirror", type=Path, default=Path("public-mirror"))
+    parser.add_argument(
+        "--assets",
+        type=Path,
+        default=None,
+        help="Where the pictures go. Defaults to <mirror>-assets, and they are kept "
+             "apart so the image can hold them in a layer of their own.",
+    )
     parser.add_argument("--log-level", default="INFO")
     args = parser.parse_args(argv)
     logging.basicConfig(level=args.log_level.upper(), format="%(levelname)s %(name)s %(message)s")
@@ -175,11 +189,12 @@ def main(argv: list[str] | None = None) -> int:
     if not args.site.is_dir():
         LOGGER.error("%s is not a built site tree", args.site)
         return 1
-    result = split(args.site, args.mirror)
+    assets = args.assets if args.assets is not None else Path(str(args.mirror) + ASSET_SUFFIX)
+    result = split(args.site, args.mirror, assets)
     LOGGER.info(
-        "moved %d sections and %d feed records into %s; %d records and the rest of the "
-        "sitemap stay with the documentation (%d addresses dropped from it)",
-        result["sections"], result["feed_moved"], args.mirror,
+        "moved %d sections and %d feed records into %s, pictures into %s; %d records and "
+        "the rest of the sitemap stay with the documentation (%d addresses dropped from it)",
+        result["sections"], result["feed_moved"], args.mirror, assets,
         result["feed_kept"], result["sitemap_dropped"],
     )
     return 0

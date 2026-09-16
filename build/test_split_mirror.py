@@ -41,12 +41,22 @@ def test_the_glossary_stays_with_the_documentation(tmp_path):
     assert not (mirror / "glossary").exists()
 
 
-def test_the_pictures_travel_with_the_pages(tmp_path):
-    """They are nearly all of the weight the split exists to move."""
+def test_the_pictures_leave_the_site_in_a_tree_of_their_own(tmp_path):
+    """Their own tree so the image can hold them in their own layer: they are
+    243 MB that change only when content is mirrored, while the pages beside
+    them are rewritten by any change to a layout."""
+    site, mirror = _site(tmp_path)
+    assets = tmp_path / "public-mirror-assets"
+    split(site, mirror, assets)
+    assert (assets / "images" / "site-mirror" / "a.webp").is_file()
+    assert not (mirror / "images").exists()
+    assert (site / "images" / "logo.svg").is_file(), "the site keeps its own pictures"
+
+
+def test_the_assets_tree_is_named_after_the_mirror_when_it_is_not_given(tmp_path):
     site, mirror = _site(tmp_path)
     split(site, mirror)
-    assert (mirror / "images" / "site-mirror" / "a.webp").is_file()
-    assert (site / "images" / "logo.svg").is_file()
+    assert (tmp_path / "public-mirror-assets" / "images" / "site-mirror" / "a.webp").is_file()
 
 
 def test_splitting_twice_does_not_fail(tmp_path):
