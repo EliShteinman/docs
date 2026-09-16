@@ -310,10 +310,33 @@ search:
     tag: "0.6.0"
     pullPolicy: IfNotPresent
   logLevel: INFO
+  # Each replica holds its own copy of the index and builds it at startup, so
+  # this trades memory for readers served and for surviving a restart: with one
+  # replica, search is gone for as long as a new pod takes to index.
+  replicas: 1
   # gunicorn threads. A search is one round trip to a Redis in the same pod,
   # and the modal fires a request per keystroke, so this is about concurrent
   # readers rather than slow work.
   threads: 8
+  # How many requests one client may make to the search endpoint. Off by
+  # default, and deliberately: the modal sends a request per keystroke with no
+  # debounce, and a whole office reaching the site through one egress address
+  # is one client to nginx — a limit that is too tight takes search away from
+  # everyone at once. Turn it on where the site is reachable more widely, and
+  # read `rate` as "per client address".
+  rateLimit:
+    enabled: false
+    rate: 20r/s
+    burst: 40
+    # Memory for the address table. 1m holds about 16,000 addresses.
+    zoneSize: 1m
+  # Answer cross-origin browser requests. The site's own modal is same-origin
+  # and needs none of this; a page or tool served from another origin cannot
+  # read the response without it. Anything that is not a browser — a script, an
+  # agent, another service — is unaffected either way.
+  cors:
+    enabled: false
+    allowOrigin: "*"
   index:
     name: docs
     # hierarchy[0] on every result, and the heading the modal groups results
