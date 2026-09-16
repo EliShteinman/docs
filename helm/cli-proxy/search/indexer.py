@@ -16,6 +16,7 @@ import sys
 from resp import RespConnection, RespError
 from search import config
 from search.hierarchy import BreadcrumbIndex
+from search.paths import version_tree
 from search.sources import DOCS_SOURCE, Document, load_documents
 import json
 
@@ -93,14 +94,75 @@ def create_index(connection: RespConnection, index: str, key_prefix: str) -> Non
     LOGGER.info("created index %s over prefix %s", index, key_prefix)
 
 
-def document_score(version: str) -> str:
-    """Return the relevance multiplier for a page of this documentation version."""
-    return "1" if not version or version == config.CURRENT_VERSION else str(config.VERSION_WEIGHT)
+def _version_order(version: str) -> tuple[int, ...]:
+    """Sort key for a version tree's name: 7.22 is newer than 7.4, not older."""
+    return tuple(int(part) if part.isdigit() else 0 for part in version.split("."))
 
 
-def _document_fields(document: Document, crumbs: list[str]) -> list[str]:
+class VersionLadder:
+    """The relevance multiplier each documentation version keeps.
+
+    The current documentation -- the tree with no version in its path, which the
+    feed tags `latest` -- keeps all of it. The archived trees are spread evenly
+    between config.VERSION_WEIGHT and config.VERSION_NEWEST_WEIGHT in their own
+    order, so 8.0 answers ahead of 7.4 and both answer behind the current page.
+
+    Built from the documents themselves rather than from a list someone
+    maintains: the versions that exist are the versions in the feed, and a new
+    one appears in the index the first time it is built after the merge that
+    added it.
+
+    Each tree is ranked on its own. Redis Software's 8.0 and RedisVL's 0.3 are
+    both "the newest archive" of their own documentation.
+    """
+
+    def __init__(self, weights: dict[tuple[str, str], float]) -> None:
+        self._weights = weights
+
+    @classmethod
+    def from_documents(cls, documents: list[Document]) -> "VersionLadder":
+        trees: dict[str, set[str]] = {}
+        for document in documents:
+            if not cls._is_archived(document.version):
+                continue
+            tree = version_tree(document.doc_id, document.version)
+            # No tree, no ladder: a page tagged with a version that its own path
+            # does not carry cannot be placed against the others, and grouping
+            # every such page together would make one of them "the newest" of a
+            # set that is not a version tree at all.
+            if tree:
+                trees.setdefault(tree, set()).add(document.version)
+
+        weights: dict[tuple[str, str], float] = {}
+        span = config.VERSION_NEWEST_WEIGHT - config.VERSION_WEIGHT
+        for tree, versions in trees.items():
+            ordered = sorted(versions, key=_version_order)
+            last = len(ordered) - 1
+            for rank, version in enumerate(ordered):
+                # A tree with one archived version is that archive's newest.
+                share = 1.0 if last == 0 else rank / last
+                weights[(tree, version)] = config.VERSION_WEIGHT + span * share
+        return cls(weights)
+
+    @staticmethod
+    def _is_archived(version: str) -> bool:
+        return bool(version) and version != config.CURRENT_VERSION
+
+    def score_for(self, document: Document) -> str:
+        """Return the multiplier to store on `document`, as Redis wants it: a string."""
+        if not self._is_archived(document.version):
+            return "1"
+        tree = version_tree(document.doc_id, document.version)
+        # A page tagged with a version that is not a segment of its own path has
+        # no tree to be ranked in. It keeps the floor: still archived, but never
+        # promoted above a tree it was never part of.
+        weight = self._weights.get((tree, document.version), config.VERSION_WEIGHT)
+        return str(round(weight, 4))
+
+
+def _document_fields(document: Document, crumbs: list[str], ladder: "VersionLadder") -> list[str]:
     return [
-        "docscore", document_score(document.version),
+        "docscore", ladder.score_for(document),
         "title", document.title,
         "crumbs", " ".join(crumbs),
         "body", document.body,
@@ -118,8 +180,10 @@ def index_documents(
     breadcrumbs: BreadcrumbIndex,
     key_prefix: str,
     batch_size: int,
+    ladder: "VersionLadder | None" = None,
 ) -> int:
     """Write every document into Redis, pipelining `batch_size` at a time."""
+    ladder = ladder if ladder is not None else VersionLadder.from_documents(documents)
     written = 0
     for start in range(0, len(documents), batch_size):
         batch = documents[start : start + batch_size]
@@ -132,7 +196,7 @@ def index_documents(
             # title, so dropping the root is all it takes.
             root = None if document.source == DOCS_SOURCE else ""
             crumbs = breadcrumbs.crumbs_for(document.doc_id, root)
-            fields = _document_fields(document, crumbs)
+            fields = _document_fields(document, crumbs, ladder)
             connection.send_command(["HSET", key_prefix + document.doc_id, *fields])
         for document in batch:
             reply = connection.read_reply()
@@ -154,7 +218,12 @@ def build_index() -> int:
         allow_single_character_prefixes(connection)
         create_index(connection, config.INDEX_NAME, config.KEY_PREFIX)
         written = index_documents(
-            connection, documents, breadcrumbs, config.KEY_PREFIX, config.INDEX_BATCH
+            connection,
+            documents,
+            breadcrumbs,
+            config.KEY_PREFIX,
+            config.INDEX_BATCH,
+            VersionLadder.from_documents(documents),
         )
     finally:
         connection.close()

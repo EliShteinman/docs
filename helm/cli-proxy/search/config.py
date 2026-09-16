@@ -44,7 +44,14 @@ ROOT_CRUMB = os.environ.get("SEARCH_ROOT_CRUMB", "Welcome to Redis Docs")
 # single write buffer.
 INDEX_BATCH = int(os.environ.get("SEARCH_INDEX_BATCH", "500"))
 
-# How much of its relevance a page from an older documentation version keeps.
+# How much of its relevance a page from a numbered documentation version keeps.
+# Numbered, not older: the current documentation is the tree with no version in
+# its path, tagged `latest` by build/tag_ndjson_versions.py, and every numbered
+# tree is an archive of it -- so 8.0 is weighted down exactly like 7.4. `latest`
+# is a real release and not a synonym for the newest number: Redis Software's
+# numbered trees stop at 8.0, while 8.2 publishes only in the unversioned tree.
+# Which release it is is nowhere in machine-readable form, so a result says
+# `latest` rather than the number.
 # The docs publish the same page once per version -- 45% of the index is
 # versioned copies -- and without this the copies crowd out the current page:
 # measured on a real build, "rack zone awareness" answered with version 7.22
@@ -53,7 +60,18 @@ INDEX_BATCH = int(os.environ.get("SEARCH_INDEX_BATCH", "500"))
 # A multiplier rather than a filter, because the old pages are still worth
 # finding: a reader on 7.4 searching for something that only exists in 7.4
 # still gets it, just below the current page when both match equally.
+#
+# This is the floor: what the OLDEST version tree of a product keeps.
 VERSION_WEIGHT = float(os.environ.get("SEARCH_VERSION_WEIGHT", "0.3"))
+
+# What the newest version tree keeps, with the trees in between spread evenly
+# from the floor up to it. The archive has an order of its own -- 8.0 is a
+# better answer than 7.4, which is a better answer than 7.22 -- and one weight
+# for all of them threw that away.
+#
+# Below 1 on purpose, so the current documentation still outranks the newest
+# archived copy of the same page.
+VERSION_NEWEST_WEIGHT = float(os.environ.get("SEARCH_VERSION_NEWEST_WEIGHT", "0.6"))
 
 # The bonus a page gets for carrying the typed words, whole, in its title. See
 # query.py for why a prefix alone ranks a command's own page below the long
