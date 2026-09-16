@@ -35,7 +35,12 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
   --set mirror.enabled=true --set mirror.image.tag=<hash>-mirror-unprivileged
 ```
 
-שלושה דברים שחשוב לדעת לפני שמריצים:
+ארבעה דברים שחשוב לדעת לפני שמריצים:
+
+- **התגים האלה לא קיימים עד שהגרסה הזו נבנית.** ‏`redis-docs-cli:0.6.0` והתגים
+  `redis-docs:*-mirror-unprivileged` נוצרים בהרצה הראשונה של ה-workflow לגרסה הזו — כדאי
+  לבדוק בסיכום ההרצה, או ב-Docker Hub, לפני שממררים אותם. פריסה מול תג שלא נדחף מסתיימת
+  ב-ImagePullBackOff ולא במשהו יותר מסביר.
 
 - **להשאיר את `mirror.enabled` כבוי זו בחירה נתמכת, לא תקלה.** התיעוד שלם בלעדיו: תיבת
   הניווט נעלמת והקישורים לסקשנים האלה מנותקים בדפדפן במקום להוביל ל-404. מה שמפסידים זה
@@ -591,6 +596,12 @@ docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
 # Jupyter kernel server (אופציונלי)
+# הסקשנים הממוררים מ-redis.io (אופציונלי)
+# רק אם רוצים את הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה
+# ודיאגרמות הארכיטקטורה. אותה בנייה של ה-image הראשי למעלה.
+docker pull a0533057932/redis-docs:mirror-unprivileged
+docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
+
 docker pull quay.io/jupyter/minimal-notebook:2026-04-02
 docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 ```
@@ -608,7 +619,8 @@ helm package helm/redis-docs/
 - `redis-docs-2.0.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
-- `redis-docs-cli.tar` (אופציונלי - CLI)
+- `redis-docs-cli.tar` (אופציונלי - CLI וחיפוש)
+- `redis-docs-mirror.tar` (אופציונלי - הסקשנים הממוררים)
 - `redis.tar` (אופציונלי - CLI)
 - `jupyter.tar` (אופציונלי - Jupyter)
 
@@ -626,6 +638,10 @@ docker tag quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 REGISTRY/p
 docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # טעינת CLI (אופציונלי)
+docker load -i redis-docs-mirror.tar
+docker tag a0533057932/redis-docs:mirror-unprivileged REGISTRY/redis-docs:mirror-unprivileged
+docker push REGISTRY/redis-docs:mirror-unprivileged
+
 docker load -i redis-docs-cli.tar
 docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
 docker push REGISTRY/redis-docs-cli:0.6.0

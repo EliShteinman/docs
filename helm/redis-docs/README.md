@@ -37,7 +37,13 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
   --set mirror.enabled=true --set mirror.image.tag=<hash>-mirror-unprivileged
 ```
 
-Three things to know before you run it:
+Four things to know before you run it:
+
+- **These tags do not exist until this release is built.** `redis-docs-cli:0.6.0` and
+  the `redis-docs:*-mirror-unprivileged` tags are produced by the first run of the
+  build workflow for this version — check the run summary, or Docker Hub, before you
+  mirror them. Deploying against a tag that was never pushed is an ImagePullBackOff and
+  nothing more informative.
 
 - **Leaving `mirror.enabled` off is a supported choice, not a broken one.** The
   documentation is complete without it: the sidebar entry disappears and the links into
@@ -661,6 +667,16 @@ docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
+# The mirrored redis.io sections (optional)
+# Only if you want the blog, tutorials, customer stories, comparisons, solutions,
+# technology pages and architecture diagrams. Same build as the main image above.
+docker pull a0533057932/redis-docs:mirror-unprivileged
+docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
+
+# Docs search (optional)
+# Runs from the CLI image above, and needs its own Redis 8 — the query engine the
+# index lives in. Pull both from the CLI playground block if you have not already.
+
 # Jupyter kernel server (optional)
 docker pull quay.io/jupyter/minimal-notebook:2026-04-02
 docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
@@ -679,7 +695,8 @@ Transfer the following files:
 - `redis-docs-2.0.0.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (optional - metrics)
-- `redis-docs-cli.tar` (optional - CLI)
+- `redis-docs-cli.tar` (optional - CLI and search)
+- `redis-docs-mirror.tar` (optional - the mirrored redis.io sections)
 - `redis.tar` (optional - CLI)
 - `jupyter.tar` (optional - Jupyter)
 
@@ -697,6 +714,10 @@ docker tag quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 REGISTRY/p
 docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # Load CLI (optional)
+docker load -i redis-docs-mirror.tar
+docker tag a0533057932/redis-docs:mirror-unprivileged REGISTRY/redis-docs:mirror-unprivileged
+docker push REGISTRY/redis-docs:mirror-unprivileged
+
 docker load -i redis-docs-cli.tar
 docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
 docker push REGISTRY/redis-docs-cli:0.6.0
