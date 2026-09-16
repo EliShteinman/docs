@@ -3,6 +3,7 @@ title: "Talking to Redis: Clients, Configuration, and Performance Tuning"
 linkTitle: "Talking to Redis: Clients, Configuration, and Performance Tuning"
 url: "/tutorials/operate/redis-at-scale/talking-to-redis/"
 description: "This tutorial is part of the Running Redis at Scale course. You can jump to any section:"
+group: "Other"
 aliases:
 - "/tutorials/operate-redis-at-scale-talking-to-redis/"
 date: 2026-02-25

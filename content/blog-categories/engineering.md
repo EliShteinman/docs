@@ -2,7 +2,7 @@
 title: "Engineering"
 linkTitle: "Engineering"
 url: "/blog/category/engineering/"
-description: "7 posts from the Redis blog."
+description: "6 posts from the Redis blog."
 mirroredCategory: "Engineering"
 hidden: true
 mirrored: true
