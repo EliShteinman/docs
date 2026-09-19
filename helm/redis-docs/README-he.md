@@ -388,7 +388,7 @@ downloads:
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-2.0.1.tgz
+helm install redis-docs redis-docs-2.0.2.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -396,7 +396,7 @@ helm install redis-docs redis-docs-2.0.1.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-2.0.1.tgz -f my-values.yaml
+helm install redis-docs redis-docs-2.0.2.tgz -f my-values.yaml
 ```
 
 להלן דוגמה לתרחיש פריסה טיפוסי.
@@ -426,7 +426,7 @@ imagePullSecrets:
 # --- תמונה ראשית (דריסת תג ספציפי) ---
 image:
   name: redis-docs
-  tag: "b017fc3f4-unprivileged"
+  tag: "15614689d-unprivileged"
 
 # --- מטריקות (דריסת תמונה ותג) ---
 metrics:
@@ -614,13 +614,13 @@ docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-2.0.1.tgz
+# ייצור: redis-docs-2.0.2.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-2.0.1.tgz`
+- `redis-docs-2.0.2.tgz`
 - `redis-docs.tar`
 - `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI וחיפוש)
@@ -665,13 +665,13 @@ docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-2.0.1.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-2.0.2.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-2.0.1.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-2.0.2.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 

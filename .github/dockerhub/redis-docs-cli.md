@@ -35,7 +35,7 @@ service also expects the site's feed. The Helm chart wires all of that up, and i
 published alongside the site image as an OCI artifact:
 
 ```bash
-helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 2.0.1
+helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 2.0.2
 ```
 
 Its values are documented in the
