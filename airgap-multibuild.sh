@@ -255,11 +255,16 @@ build_version() {
     fi
   done
 
-  # Strip the version prefix from relrefs in the version's own content
-  # (because after rsync the content moves up one level).
+  # Strip the version prefix from the version's own links, in both forms: relref
+  # shortcodes and plain Markdown links to /content/<product>/<version>/ (the
+  # render-link hook form). After rsync the content moves up one level and the
+  # version directory is gone, so a link that keeps the prefix renders as a
+  # literal href="/content/..." that 404s. The Markdown form first appeared in
+  # RDI 1.19.1 with upstream DOC-7086; upstream's main.yml has the same gap.
   find "content/$product_path/$version" -type f -name '*.md' | while read -r f; do
     awk -v pp="$product_path" -v ver="$version" '
-      { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp); print }
+      { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp)
+        gsub("\\]\\(/content/" pp "/" ver "/", "](/content/" pp "/"); print }
     ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
   done
 
@@ -296,6 +301,16 @@ build_version() {
 
   if [ ! -d "$SITE/public/$product_path/$version" ]; then
     echo "!!! ERROR: hugo did not produce public/$product_path/$version/" >&2
+    exit 1
+  fi
+
+  # render-link.html leaves a link it cannot resolve as its literal source path,
+  # and only warns, so a broken internal link never fails Hugo. No published
+  # page lives under /content/, so an href there is always a 404. Scoped to this
+  # version's subtree: the other pages of this build are thrown away, and they
+  # do warn, about links into the versions this build deleted.
+  if grep -rl 'href="/content/' "$SITE/public/$product_path/$version"; then
+    echo "!!! ERROR: unresolved internal links (href=\"/content/...\") in the pages above" >&2
     exit 1
   fi
 

@@ -677,10 +677,14 @@ jobs:
                 fi
               done
 
-          # Strip the version prefix from relrefs in this version's content
+          # Strip the version prefix from this version's own links, in both
+          # forms: relref shortcodes and plain Markdown links to
+          # /content/<product>/<version>/. Mirrors the same step in
+          # airgap-multibuild.sh, which explains why.
           find "$VPARENT/$VERSION" -type f -name '*.md' | while read -r f; do
             awk -v pp="$PRODUCT" -v ver="$VERSION" '
-              { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp); print }
+              { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp)
+                gsub("\\]\\(/content/" pp "/" ver "/", "](/content/" pp "/"); print }
             ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
           done
 
@@ -708,6 +712,14 @@ jobs:
 
           if [ ! -d "output/$PRODUCT/$VERSION" ]; then
             echo "!!! ERROR: hugo did not produce output/$PRODUCT/$VERSION" >&2
+            exit 1
+          fi
+
+          # An unresolved internal link renders as a literal href="/content/..."
+          # (a 404) and only warns. Mirrors the same check in
+          # airgap-multibuild.sh, which explains the scope.
+          if grep -rl 'href="/content/' "output/$PRODUCT/$VERSION"; then
+            echo "!!! ERROR: unresolved internal links (href=\"/content/...\") in the pages above" >&2
             exit 1
           fi
 
