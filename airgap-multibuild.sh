@@ -65,9 +65,11 @@ text, n_op  = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/operate/(\
                       r"new RegExp('/operate/\1/')", text)
 text, n_dev = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
                       r"new RegExp('/develop/ai/\1/')", text)
+text, n_int = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/integrate/([\w-]+)/\.\*'\)",
+                      r"new RegExp('/integrate/\1/')", text)
 p.write_text(text)
-assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
-print(f"airgap: relaxed {n_op + n_dev} version-selector regex(es) in scripts.html")
+assert n_op + n_dev + n_int == 4, f"expected 4 regex relaxations, got {n_op + n_dev + n_int}"
+print(f"airgap: relaxed {n_op + n_dev + n_int} version-selector regex(es) in scripts.html")
 PYEOF
 
 # 2. Strip hardcoded https://redis.io/docs/latest/ from all content .md files,
@@ -146,18 +148,20 @@ discover() {
 K8S_VERSIONS=$(discover content/operate/kubernetes)
 RS_VERSIONS=$(discover content/operate/rs)
 REDISVL_VERSIONS=$(discover content/develop/ai/redisvl)
+RDI_VERSIONS=$(discover content/integrate/redis-data-integration)
 
 echo ">>> Discovered versions:"
 echo "    Kubernetes: $(echo "$K8S_VERSIONS" | tr '\n' ' ')"
 echo "    RS:         $(echo "$RS_VERSIONS" | tr '\n' ' ')"
 echo "    RedisVL:    $(echo "$REDISVL_VERSIONS" | tr '\n' ' ')"
+echo "    RDI:        $(echo "$RDI_VERSIONS" | tr '\n' ' ')"
 
 # ---- Helpers -----------------------------------------------------------------
 write_version_files() {
   echo "$K8S_VERSIONS"     > "$SITE/kubernetes-versions"
   echo "$RS_VERSIONS"      > "$SITE/rs-versions"
   echo "$REDISVL_VERSIONS" > "$SITE/redisvl-versions"
-  : > "$SITE/rdi-versions"
+  echo "$RDI_VERSIONS"     > "$SITE/rdi-versions"
 }
 
 reset_workspace() {
@@ -175,6 +179,7 @@ cd "$SITE"
 for v in $K8S_VERSIONS;     do rm -rf "content/operate/kubernetes/$v"; done
 for v in $RS_VERSIONS;      do rm -rf "content/operate/rs/$v"; done
 for v in $REDISVL_VERSIONS; do rm -rf "content/develop/ai/redisvl/$v"; done
+for v in $RDI_VERSIONS;     do rm -rf "content/integrate/redis-data-integration/$v"; done
 
 write_version_files
 
@@ -355,6 +360,9 @@ done
 for v in $REDISVL_VERSIONS; do
   build_version develop/ai/redisvl "RedisVL" Redisvl "$v" "$REDISVL_VERSIONS"
 done
+for v in $RDI_VERSIONS; do
+  build_version integrate/redis-data-integration "Redis Data Integration" Redis-Data-Integration "$v" "$RDI_VERSIONS"
+done
 
 # ---- 3. Replace site public with the merged final tree -----------------------
 rm -rf "$SITE/public"
@@ -364,13 +372,14 @@ cd "$SITE"
 # ---- 3b. Merge latest + per-version sitemaps into the published sitemap.xml --
 # Without this, public/sitemap.xml stays whatever `rsync` copied straight from
 # the latest build in step 1 -- listing only unversioned pages, with every
-# versioned page (operate/rs, operate/kubernetes, develop/ai/redisvl) absent.
+# versioned page (operate/rs, operate/kubernetes, develop/ai/redisvl,
+# integrate/redis-data-integration) absent.
 # Ports upstream's merge_sitemaps.py (DOC-6979 / #3818): union every filtered
 # per-version sitemap staged above (by build_version, cache hit or miss) with
 # latest's own sitemap.xml. --expect guards against silently shipping a
 # partial sitemap if a version's build/cache entry never staged its file.
 EXPECT=1  # latest
-for v in $K8S_VERSIONS $RS_VERSIONS $REDISVL_VERSIONS; do
+for v in $K8S_VERSIONS $RS_VERSIONS $REDISVL_VERSIONS $RDI_VERSIONS; do
   EXPECT=$((EXPECT + 1))
 done
 python3 build/merge_sitemaps.py /tmp/sitemaps --output "$SITE/public/sitemap.xml" --expect "$EXPECT"

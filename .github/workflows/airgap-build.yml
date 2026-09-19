@@ -82,6 +82,7 @@ jobs:
       k8s_versions: ${{ steps.matrix.outputs.k8s }}
       rs_versions: ${{ steps.matrix.outputs.rs }}
       redisvl_versions: ${{ steps.matrix.outputs.redisvl }}
+      rdi_versions: ${{ steps.matrix.outputs.rdi }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
@@ -155,6 +156,7 @@ jobs:
           K8S=$(discover content/operate/kubernetes)
           RS=$(discover content/operate/rs)
           REDISVL=$(discover content/develop/ai/redisvl)
+          RDI=$(discover content/integrate/redis-data-integration)
 
           # Output version lists as newline-separated for each runner to write locally
           {
@@ -166,6 +168,9 @@ jobs:
             echo "EOF"
             echo "redisvl<<EOF"
             echo "$REDISVL"
+            echo "EOF"
+            echo "rdi<<EOF"
+            echo "$RDI"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
@@ -183,6 +188,10 @@ jobs:
             done
             for v in $REDISVL; do
               echo "$sep{\"name\":\"redisvl-$v\",\"product\":\"develop/ai/redisvl\",\"version\":\"$v\",\"product_label\":\"RedisVL\",\"product_pascal\":\"Redisvl\"}"
+              sep=','
+            done
+            for v in $RDI; do
+              echo "$sep{\"name\":\"rdi-$v\",\"product\":\"integrate/redis-data-integration\",\"version\":\"$v\",\"product_label\":\"Redis Data Integration\",\"product_pascal\":\"Redis-Data-Integration\"}"
               sep=','
             done
             echo ']'
@@ -326,11 +335,12 @@ jobs:
           K8S: ${{ needs.setup.outputs.k8s_versions }}
           RS: ${{ needs.setup.outputs.rs_versions }}
           REDISVL: ${{ needs.setup.outputs.redisvl_versions }}
+          RDI: ${{ needs.setup.outputs.rdi_versions }}
         run: |
           printf '%s\n' "$K8S"     > kubernetes-versions
           printf '%s\n' "$RS"      > rs-versions
           printf '%s\n' "$REDISVL" > redisvl-versions
-          : > rdi-versions
+          printf '%s\n' "$RDI"     > rdi-versions
 
       - name: Apply airgap pre-snapshot patches
         run: |
@@ -343,8 +353,10 @@ jobs:
                                 r"new RegExp('/operate/\1/')", text)
           text, n_dev = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
                                 r"new RegExp('/develop/ai/\1/')", text)
+          text, n_int = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/integrate/([\w-]+)/\.\*'\)",
+                                r"new RegExp('/integrate/\1/')", text)
           p.write_text(text)
-          assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
+          assert n_op + n_dev + n_int == 4, f"expected 4 regex relaxations, got {n_op + n_dev + n_int}"
           PYEOF
           find content -type f -name '*.md' -print0 | xargs -0 sed -i \
             -e 's|https://redis.io/docs/latest/|/|g' \
@@ -389,6 +401,7 @@ jobs:
               ! -regex '.*/content/operate/kubernetes/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
               ! -regex '.*/content/operate/rs/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
               ! -regex '.*/content/develop/ai/redisvl/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
+              ! -regex '.*/content/integrate/redis-data-integration/[0-9]+\.[0-9]+\(\.[0-9]+\)?/.*' \
               -print0 | sort -z | xargs -0 sha256sum
             for d in layouts assets data static i18n; do
               [ -d "$d" ] && find "$d" -type f -print0 | sort -z | xargs -0 sha256sum
@@ -414,7 +427,7 @@ jobs:
           set -euo pipefail
           export PATH="$PWD/venv/bin:$PATH"
           # Latest = site with ALL version dirs removed
-          for parent in content/operate/kubernetes content/operate/rs content/develop/ai/redisvl; do
+          for parent in content/operate/kubernetes content/operate/rs content/develop/ai/redisvl content/integrate/redis-data-integration; do
             [ -d "$parent" ] || continue
             find "$parent" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended \
               -regex ".*/[0-9]+\.[0-9]+(\.[0-9]+)?$" -exec rm -rf {} +
@@ -541,11 +554,12 @@ jobs:
           K8S: ${{ needs.setup.outputs.k8s_versions }}
           RS: ${{ needs.setup.outputs.rs_versions }}
           REDISVL: ${{ needs.setup.outputs.redisvl_versions }}
+          RDI: ${{ needs.setup.outputs.rdi_versions }}
         run: |
           printf '%s\n' "$K8S"     > kubernetes-versions
           printf '%s\n' "$RS"      > rs-versions
           printf '%s\n' "$REDISVL" > redisvl-versions
-          : > rdi-versions
+          printf '%s\n' "$RDI"     > rdi-versions
 
       - name: Apply airgap pre-snapshot patches
         run: |
@@ -558,8 +572,10 @@ jobs:
                                 r"new RegExp('/operate/\1/')", text)
           text, n_dev = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/develop/ai/(\w+)/\.\*'\)",
                                 r"new RegExp('/develop/ai/\1/')", text)
+          text, n_int = re.subn(r"new RegExp\('/docs/\(latest\|staging\\/\.\+\)/integrate/([\w-]+)/\.\*'\)",
+                                r"new RegExp('/integrate/\1/')", text)
           p.write_text(text)
-          assert n_op + n_dev == 3, f"expected 3 regex relaxations, got {n_op + n_dev}"
+          assert n_op + n_dev + n_int == 4, f"expected 4 regex relaxations, got {n_op + n_dev + n_int}"
           PYEOF
           find content -type f -name '*.md' -print0 | xargs -0 sed -i \
             -e 's|https://redis.io/docs/latest/|/|g' \
