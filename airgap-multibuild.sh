@@ -260,7 +260,7 @@ build_version() {
   # render-link hook form). After rsync the content moves up one level and the
   # version directory is gone, so a link that keeps the prefix renders as a
   # literal href="/content/..." that 404s. The Markdown form first appeared in
-  # RDI 1.19.1 with upstream DOC-7086; upstream's main.yml has the same gap.
+  # RDI 1.19.1 with upstream DOC-7086. Upstream's main.yml does the same since #4061.
   find "content/$product_path/$version" -type f -name '*.md' | while read -r f; do
     awk -v pp="$product_path" -v ver="$version" '
       { gsub("\\(\\{\\{< ?relref \"/" pp "/" ver, "({{< relref \"/" pp)
