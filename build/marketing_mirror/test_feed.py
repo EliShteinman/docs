@@ -70,3 +70,42 @@ def test_write_feed_writes_valid_ndjson(site):
     feed.write_feed(site)
     lines = (site / "mirror.ndjson").read_text().splitlines()
     assert json.loads(lines[0])["id"] == "blog/fastapi"
+
+
+SECTIONED = (
+    "# Title\n\nIntro prose.\n\n"
+    "## Using the SDK\n\nFirst part.\n\n```python\n## not a heading\nx = 1\n```\n\n"
+    "### Caching data\n\nSecond part.\n"
+)
+
+
+@pytest.fixture
+def split() -> list[dict[str, str]]:
+    return feed.sections(SECTIONED)
+
+
+def test_sections_start_with_the_prose_before_the_first_heading(split):
+    assert split[0]["text"] == "# Title\n\nIntro prose."
+
+
+def test_sections_split_at_second_and_third_level_headings(split):
+    assert [section["title"] for section in split[1:]] == [
+        "Using the SDK",
+        "Caching data",
+    ]
+
+
+def test_sections_ignore_a_heading_inside_a_code_block(split):
+    assert "not a heading" not in [section["title"] for section in split]
+
+
+def test_sections_replace_code_with_the_feed_placeholder(split):
+    assert split[1]["text"] == "First part.\n\n[code example]"
+
+
+def test_sections_carry_an_anchor_style_id(split):
+    assert split[1]["id"] == "using-the-sdk"
+
+
+def test_record_carries_the_sections_the_search_service_indexes(entry):
+    assert entry["sections"][0]["text"].endswith("Body text.")
