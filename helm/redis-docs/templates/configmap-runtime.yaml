@@ -223,9 +223,9 @@ data:
       }
 
       function unlink() {
-        // The sidebar entry leads nowhere at all without the mirror, so it
+        // The header menu leads nowhere at all without the mirror, so it
         // goes rather than being unlinked into a stray heading.
-        var box = document.querySelector('details[data-mirrored-sections]');
+        var box = document.querySelector('[data-mirrored-sections-menu]');
         if (box && box.parentNode) box.parentNode.removeChild(box);
 
         var links = document.querySelectorAll('a[href^="/"]');

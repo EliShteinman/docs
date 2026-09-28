@@ -238,10 +238,10 @@ python3 -m build.site_mirror --check   # כמה פורסם מאז הסנכרון
 מדפיס טבלה של מקור מול דיסק לכל עץ. ה-job ‏`4e. Mirror drift report` מריץ את זה בכל בנייה
 ומדווח ב-summary, בלי להכשיל כלום.
 
-**ניווט:** `layouts/partials/mirrored-nav.html` מוסיף תיבה בסרגל הצדדי עם כל הסקשנים
-הממוררים. `docs-nav.html` מקודד קשיח לחמישה סקשנים (‏`Develop`, `Integrate`, `Operate`,
-`Commands`), כך שבלי התיבה הזו התוכן הממורר היה נגיש רק דרך חיפוש או הקלדת כתובת. ה-partial
-נפרד וההוספה ל-`docs-nav.html` היא **שורה אחת**, כדי לצמצם התנגשות במיזוג upstream.
+**ניווט:** `layouts/partials/more-from-redis-menu.html` מוסיף ל-header העליון תפריט נפתח
+"More from Redis" עם כל הסקשנים הממוררים. הסרגל הצדדי (`docs-nav.html`) נשאר זהה ל-upstream.
+ה-partial נפרד וההוספה ל-`header.html` היא **שורה אחת**, כדי לצמצם התנגשות במיזוג upstream.
+בלי ה-pod של ה-mirror, ה-runtime config מסיר את התפריט.
 
 **מה קורה בבנייה, בשני הפייפליינים:**
 
