@@ -1,0 +1,4 @@
+# redis.io's marketing site as captured by build.marketing_mirror: generated,
+# minified and replaced wholesale by every `make mirror`. Kept out of diffs and
+# out of GitHub's language stats; `git diff --stat` still shows what changed.
+mirror/site/** linguist-generated=true -diff
