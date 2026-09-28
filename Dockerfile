@@ -137,6 +137,17 @@ CMD ["nginx", "-g", "daemon off;"]
 # Built with `--target mirror-unprivileged`. The pages are committed under
 # mirror/site and copied as they are: nothing here renders them. Kept in step
 # with Dockerfile.runtime, which the airgap workflow uses.
+
+# The mirror's pages, compressed once. Each is 1.5 MB of HTML and 2.7 GB all
+# together; nginx serves them gzipped anyway, so the image carries only the .gz
+# (gzip_static) and an empty file where each page was, which is what lets
+# try_files find it. Clients that do not accept gzip get it unpacked (gunzip).
+# A stage of its own, on the build platform: compressing after the COPY into
+# the runtime image would leave the uncompressed layer underneath.
+FROM --platform=$BUILDPLATFORM alpine:3 AS mirror-pages
+COPY --exclude=sanity --exclude=_next mirror/site /pages
+RUN find /pages -name '*.html' -exec sh -c 'gzip -9 -k "$1" && : > "$1"' _ {} \;
+
 FROM nginx:alpine AS mirror-privileged
 
 ARG GIT_COMMIT=unknown
@@ -153,7 +164,7 @@ RUN sed -i 's/listen 8080;/listen 80;/' /etc/nginx/conf.d/default.conf
 # less often than the pages that name them.
 COPY mirror/site/sanity /usr/share/nginx/html/sanity
 COPY mirror/site/_next /usr/share/nginx/html/_next
-COPY --exclude=sanity --exclude=_next mirror/site /usr/share/nginx/html
+COPY --from=mirror-pages /pages /usr/share/nginx/html
 COPY build/marketing_mirror/runtime/marketing-links.js /usr/share/nginx/html/_mirror/marketing-links.js
 
 EXPOSE 80
@@ -173,7 +184,7 @@ LABEL org.opencontainers.image.variant="mirror-unprivileged"
 COPY build/marketing_mirror/runtime/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx mirror/site/sanity /usr/share/nginx/html/sanity
 COPY --chown=nginx:nginx mirror/site/_next /usr/share/nginx/html/_next
-COPY --chown=nginx:nginx --exclude=sanity --exclude=_next mirror/site /usr/share/nginx/html
+COPY --from=mirror-pages --chown=nginx:nginx /pages /usr/share/nginx/html
 COPY --chown=nginx:nginx build/marketing_mirror/runtime/marketing-links.js /usr/share/nginx/html/_mirror/marketing-links.js
 
 EXPOSE 8080
