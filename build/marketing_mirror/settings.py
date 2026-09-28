@@ -44,7 +44,7 @@ SANITY_PROJECT_PATH = "/images/sy1jschh/production"
 USER_AGENT = "redis-docs-airgap-marketing-mirror/1.0"
 TIMEOUT_SECONDS = 60.0
 RETRIES = 3
-WORKERS = 8
+WORKERS = 16
 
 # A run that loses more than this share of its pages keeps the previous mirror.
 MAX_FAILED_SHARE = 0.02

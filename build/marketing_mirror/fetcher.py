@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import gzip
 import logging
 import time
 import urllib.error
 import urllib.request
+from email.message import Message
 from typing import Protocol
 
 from build.marketing_mirror import settings
@@ -24,6 +26,14 @@ class Fetcher(Protocol):
     def get(self, url: str) -> bytes: ...
 
 
+def decode(body: bytes, headers: Message) -> bytes:
+    """The body as the origin meant it. Pages are 1.5 MB and redis.io is slow
+    to send them; asked for gzip, it sends a seventh of that."""
+    if headers.get("Content-Encoding", "").lower() == "gzip":
+        return gzip.decompress(body)
+    return body
+
+
 class HttpFetcher:
     def __init__(
         self,
@@ -37,12 +47,13 @@ class HttpFetcher:
 
     def get(self, url: str) -> bytes:
         request = urllib.request.Request(
-            url, headers={"User-Agent": settings.USER_AGENT}
+            url,
+            headers={"User-Agent": settings.USER_AGENT, "Accept-Encoding": "gzip"},
         )
         for attempt in range(1, self._retries + 1):
             try:
                 with urllib.request.urlopen(request, timeout=self._timeout) as response:
-                    return response.read()
+                    return decode(response.read(), response.headers)
             except urllib.error.HTTPError as error:
                 if error.code not in _RETRYABLE_STATUS or attempt == self._retries:
                     raise FetchError(f"{url}: HTTP {error.code}") from error
