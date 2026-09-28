@@ -618,12 +618,7 @@ jobs:
           {
             find "content/$PRODUCT/$VERSION" -type f -print0 | sort -z | xargs -0 sha256sum
             for d in layouts assets data static i18n; do
-              # static/images/site-mirror is excluded: it holds ~2,700 mirrored
-              # images, and a version build keeps only public/<product>/<version>,
-              # which never contains them. Hashing them would mean every mirror
-              # sync invalidated all 29 version caches and rebuilt the whole
-              # matrix for pictures none of those pages can show.
-              [ -d "$d" ] && find "$d" -type f -not -path "static/images/site-mirror/*" -print0 \
+              [ -d "$d" ] && find "$d" -type f -print0 \
                 | sort -z | xargs -0 sha256sum
             done
             for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
