@@ -6,10 +6,10 @@ airgap-build.yml). The feed is read rather than the per-page index.json files
 because that script already dropped what must not be indexed -- redirect
 tombstones -- so the filtering does not get reimplemented here.
 
-The mirrored blog arrives through the same feed rather than a second one: its
-posts are Hugo pages like any other, so the build already writes them into
-docs.ndjson. What tells them apart is where they live on the site, which is
-what `source` records.
+The mirrored marketing pages arrive in a feed of their own, mirror.ndjson,
+written in the same shape (build/marketing_mirror/feed.py). What tells them
+apart from the documentation is where they live on the site, which is what
+`source` records.
 """
 
 import json
@@ -28,10 +28,10 @@ DOCS_SOURCE = "docs"
 BLOG_SOURCE = "blog"
 SITE_SOURCE = "site"
 
-# The section the mirrored blog is published under (build/site_mirror).
+# The section the mirrored blog is published under (build/marketing_mirror).
 BLOG_PREFIX = "/blog/"
 
-# The other sections build/site_mirror publishes. They are kept apart from the
+# The other sections build/marketing_mirror publishes. They are kept apart from the
 # documentation because a result's first crumb is the heading the modal files
 # it under, and filing a customer story or a product comparison under "Welcome
 # to Redis Docs" tells a reader it is documentation.

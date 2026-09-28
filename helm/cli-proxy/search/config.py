@@ -20,8 +20,8 @@ KEY_PREFIX = os.environ.get("SEARCH_KEY_PREFIX", "doc:")
 # the volume this points at.
 DOCS_FEED_PATH = os.environ.get("SEARCH_DOCS_FEED", "/corpus/docs.ndjson")
 
-# The mirrored sections ship as an image of their own, and the pages they carry
-# left the documentation's feed with them (build/split_mirror.py). Empty when
+# The mirrored sections ship as an image of their own, with a feed of their own
+# built from their Markdown (build/marketing_mirror/feed.py). Empty when
 # the mirror is not deployed, which is what keeps search from answering with a
 # blog post this site does not serve.
 MIRROR_FEED_PATH = os.environ.get("SEARCH_MIRROR_FEED", "")

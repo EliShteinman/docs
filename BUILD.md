@@ -155,109 +155,65 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 
 **המלצה:** אופציה A לעדכונים רגילים. אופציה B אם אין גישה ל-GitHub Actions, או לbuild שכולל שינויי Dockerfile/script שאתה בודק.
 
-### מירור תוכן מ-redis.io
+### מירור אתר השיווק של redis.io
 
-הרבה ממה שרדיס מפרסמת על עצמה קיים מחוץ לדוקס. הכל ממורר פנימה כתוכן Hugo, **מקובע בגיט**
-— כמו סנכרון הדוקס של RedisVL — כדי שהבנייה תישאר דטרמיניסטית ולא תלויה ב-redis.io ברגע
-הבנייה.
-
-```bash
-make mirror                                    # הכל
-python3 -m build.site_mirror --only tutorials  # או עץ בודד
-git add content/ static/images/site-mirror
-```
-
-| עץ | כמות | נתיב | בסרגל? |
-|---|---|---|---|
-| בלוג | 1,108 | `/blog/<slug>/` | מוסתר — האינדקס הוא הרשימה |
-| tutorials | 122 | `/tutorials/<slug>/` | מוסתר |
-| glossary | 56 | `/glossary/<term>/` | גלוי — הקבצים ב-`content/redis-glossary/`, ראה למטה |
-| technology | 10 | `/technology/<slug>/` | גלוי |
-| compare | 14 | `/compare/<slug>/` | גלוי |
-| solutions | 18 | `/solutions/<slug>/` | גלוי |
-| architecture-diagrams | 28 | `/resources/architecture-diagrams/<slug>/` | גלוי |
-| customers | 56 | `/customers/<slug>/` | מוסתר |
-
-**המילון — למה `content/redis-glossary/`.** `/glossary/` הוא סקשן של התיעוד עם 188 הגדרות
-כתובות ביד בגוף ה-`_index.md` שלו, ותבנית upstream שמרנדרת אותן. המירור מוסיף לאתר הזה ולא
-עורך אותו, ולכן הוא כותב לתיקייה משלו. **המונחים עצמם עדיין מתפרסמים ב-`/glossary/<term>/`**,
-בדיוק כמו ב-redis.io; רק עמוד הרשימה יושב ב-`/redis-glossary/`.
-
-**שלושה מבנים, צינור אחד.** פוסט בלוג הוא שדה Portable Text אחד. עמוד `page`
-(‏`/technology/`, `/compare/`, `/solutions/`) הוא רשימת סקשנים של page-builder שהפרוזה
-מפוזרת ביניהם — `pages.py`. שאר הסוגים נושאים גוף אחד בשדה משלהם, ו-`documents.py` מתאר
-אותם כנתונים ולא כקוד: הוספת סוג היא רשומה ב-`TREES`.
-
-המדריכים הם היחידים שהגוף שלהם **כבר markdown** (‏`markdownBody`), עם 545 תמונות שמוטמעות
-כ-URL של ה-CDN ולא כהפניית asset — ולכן הן ממוררות בדרך הפוכה, מ-URL חזרה להפניה.
-
-**תמונות** (‏`static/images/site-mirror/`): רסטר מומר ל-WebP דרך ה-CDN (‏82 KB → 34 KB
-בממוצע). SVG עובר כמו שהוא.
-
-**GIF-ים מומרים מקומית ב-`gif2webp`, לא דרך ה-CDN** — Sanity משטחת אותם לפריים בודד בכל
-המרה שנוסתה, והם הקלטות מסך שההנפשה בהן היא התוכן. מדוד: 156 MB → 58 MB, ההנפשה נשמרת
-ב-38/38. אבל לא בעיוורון: 8 מהם **גדלים** בהמרה (אחד מ-2.1 ל-4.8 MB), אז כל קובץ שומר את
-הקטן מבין השניים. הורדת איכות לא עוזרת — q70, q50 ו-q35 יצאו בהפרש של אחוז. אם `gif2webp`
-לא מותקן, הסקריפט מזהיר וממשיך עם ה-GIF-ים המקוריים.
-
-**הפניות ישנות (`build/site_mirror/redirects.json`):** חלק מהקישורים בדוקס ובתוכן הממורר
-מצביעים לכתובות ש-redis.io עונה עליהן ב-301 — למשל `/blog/connecting-spark-and-redis/`
-שהעמוד האמיתי שלו הוא `/blog/connecting-spark-and-redis-a-detailed-look/`. מפת ההפניות של
-רדיס יושבת בשכבת ה-hosting ולא ב-dataset, ולכן היא **נצפית ולא נשאלת**: הפקודה עוקבת אחרי
-כל קישור שבור, רואה איפה הוא נוחת, ורושמת alias על עמוד היעד.
+הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה, מונחי המילון ודיאגרמות
+הארכיטקטורה הם **אתר נפרד** מהתיעוד — גם ב-redis.io (‏Next.js + Sanity, מול Hugo של `/docs/`).
+הם ממוררים **כפי ש-redis.io מרנדר אותם**, כדי שייראו בדיוק כמו שם, ו**מקובעים בגיט** תחת
+`mirror/site`, כדי שהבנייה לא תהיה תלויה ב-redis.io.
 
 ```bash
-python3 -m build.site_mirror --refresh-redirects   # דורש אינטרנט; להריץ ולקבע את המפה
+make mirror          # סנכרון מלא: ~1,700 עמודים, כ-35 דקות
+make mirror-check    # מה redis.io מפרסם ועוד לא אצלנו, בלי לכתוב כלום
+git add mirror/site
 ```
 
-המפה **מקובעת בגיט** כי המירור מייצר מחדש כל קובץ markdown בכל ריצה — alias שהיה מחושב בזמן
-סנכרון היה נמחק בריצה הבאה. ריצה רגילה רק קוראת אותה.
+**כל ריצה היא רענון מלא.** ה-header, התפריטים וה-footer הם חלק מה-HTML של כל עמוד, ולכן
+עדכון חלקי היה משאיר עמודים מתקופות שונות עם תפריטים שונים. הריצה כותבת לתיקייה זמנית ומחליפה
+את `mirror/site` רק אם הצליחה (עד 2% עמודים שנכשלו).
 
-**קישורים שאף כלל לא מיישר (`build/site_mirror/doc_links.json`):** שתי קבוצות נשארות אחרי
-כל הכתיבות־מחדש של הבנייה. הראשונה היא כתובות תיעוד ישנות — ‏`/docs/<מבנה ישן>/` ו-`/topics/<עמוד>`
-— שעברו שתי רה-ארגונים; רק רדיס יודעת לאן, ולכן כל כתובת **נצפית** פעם אחת ונרשמת במפה. השנייה
-היא כל שאר הקישורים ל-redis.io (‏`/downloads`, `/try-free`, טופס פגישה): **בתוך עמודי המירור**
-הקישור מוסר והטקסט נשאר, כי קישור שלא נפתח גרוע מקישור שאינו. עמודי התיעוד של רדיס לא נוגעים —
-הטקסט שלהם שלהם.
+**מה נכלל:** רשימת העמודים היא ה-sitemap של redis.io, מסונן לסקשנים ב-`settings.SECTIONS`.
+לכל עמוד: ה-HTML, ה-Markdown שלו (`<path>.md` — הכפתור "View as Markdown" והחיפוש), כל
+ה-chunks של Next.js שהוא טוען (כולל כאלה שנטענים בזמן ריצה), ה-CSS, הפונטים והתמונות מ-Sanity.
 
-```bash
-python3 -m build.site_mirror.doc_links --refresh   # דורש אינטרנט; לרענן ולקבע את המפה
-python3 -m build.site_mirror.doc_links             # מה שהבנייה מריצה, בלי רשת
-```
+**מה משתנה בדרך** (`build/marketing_mirror/rewrite.py`, `settings.py`):
+- תמונות מ-`cdn.sanity.io` עוברות ל-`/sanity/...` מקומי.
+- תגיות GTM, trustarc ו-Segment מוסרות, ונוספים שני סקריפטים: `/runtime-config.js` (המתג של
+  Helm) ו-`/_mirror/marketing-links.js`.
+- שלושה תיקונים ב-JS: next/image טוען תמונות ישירות (אין כאן שרת אופטימיזציה), ובונה ה-URL של
+  Sanity פונה ל-`/sanity`. **אם redis.io ישנו את ה-JS כך שתיקון לא מתאים לכלום, הריצה נכשלת**
+  ולא שומרת עמודים שבורים — וזה המקום לעדכן.
 
-כתובת נשמרת במפה רק אם העמוד שרדיס מפנה אליו באמת מתפרסם אצלנו, אחרת היינו מחליפים קישור שבור
-בקישור שבור אחר. במדידה האחרונה: 145 כתובות שונות, 90 נפתרו, 315 קישורים בפועל הופנו פנימה
-ו-1,499 קישורים מתים הפכו לטקסט.
+**מה נשאר בחוץ בזמן ריצה:** ה-JS של redis.io טוען בעצמו analytics, באנר עוגיות וצ'אט. ה-pod
+מגיש את העמודים עם Content-Security-Policy שמתיר רק את אותו דומיין, כך ששום דבר מזה לא נטען.
 
-**פער מול המקור:**
+**קישורים** (`build/marketing_mirror/runtime/marketing-links.js`): `/docs/latest/...` הופך
+לנתיב המקומי של התיעוד, סקשן ממורר נשאר, וכל השאר יוצא מהאתר. המתג `marketing-offsite` בקטלוג
+הקישורים החיצוניים קובע מה קורה ליוצאים: כבוי — מוסתרים בתפריטים, ב-footer ובכפתורים, והופכים
+לטקסט רגיל בתוך פסקאות.
 
-```bash
-python3 -m build.site_mirror --check   # כמה פורסם מאז הסנכרון האחרון
-```
+**`/glossary/`** הוא המילון של התיעוד; המונחים שמתחתיו (`/glossary/<term>/`) מגיעים מהמירור.
 
-מדפיס טבלה של מקור מול דיסק לכל עץ. ה-job ‏`4e. Mirror drift report` מריץ את זה בכל בנייה
-ומדווח ב-summary, בלי להכשיל כלום.
+**חיפוש:** `mirror/site/mirror.ndjson` נבנה מה-Markdown, באותו מבנה של הפיד של התיעוד
+(כולל `sections`, שממנו שירות החיפוש מאנדקס). פוסטי בלוג מתויגים `source=blog`, שאר הסקשנים
+`source=site`.
 
 **ניווט:** `layouts/partials/more-from-redis-menu.html` מוסיף ל-header העליון תפריט נפתח
 "More from Redis" עם כל הסקשנים הממוררים. הסרגל הצדדי (`docs-nav.html`) נשאר זהה ל-upstream.
 ה-partial נפרד וההוספה ל-`header.html` היא **שורה אחת**, כדי לצמצם התנגשות במיזוג upstream.
 בלי ה-pod של ה-mirror, ה-runtime config מסיר את התפריט.
 
-**מה קורה בבנייה, בשני הפייפליינים:**
+**קישורים ישנים בתיעוד (`build/doc_links.json`):** כתובות תיעוד ישנות — ‏`/docs/<מבנה ישן>/`
+ו-`/topics/<עמוד>` — שעברו שתי רה-ארגונים; רק רדיס יודעת לאן, ולכן כל כתובת **נצפית** פעם אחת
+ונרשמת במפה, והבנייה מפנה אותן לעמוד המקומי בלי רשת.
 
-- קישורים לסקשנים הממוררים, לבלוג ולפקודות מנותבים פנימה ע"י `sed` על `content/**/*.md`,
-  באותו מקום שבו כבר משוכתבים קישורי `redis.io/docs/latest/`. כל הסקשנים שומרים על הנתיב
-  המקורי, אז זו הסרת התחילית בלבד. הבלוג הוא היוצא מן הכלל ודורש ארבעה דומיינים.
-- בניות הגרסאות מוחקות את הסקשנים הממוררים לפני Hugo — כל ריצת גרסה שומרת רק את
-  `public/<product>/<version>/`.
-- `static/images/site-mirror` מוחרג ממפתח ה-cache של בניות הגרסאות בלבד; במפתח של `latest`
-  הוא **כן** נכלל.
+```bash
+python3 -m build.doc_links --refresh   # דורש אינטרנט; לרענן ולקבע את המפה
+python3 -m build.doc_links             # מה שהבנייה מריצה, בלי רשת
+```
 
-> **החיפוש מקבל את הכל בחינם.** הכל עמודי Hugo, אז `build/generate_ndjson.py` אוסף אותם
-> ל-`docs.ndjson` כמו כל עמוד אחר. פוסטי בלוג מתויגים `source=blog`, שאר הסקשנים הממוררים
-> `source=site`, והתיעוד `source=docs`. כל סקשן ממורר מוביל קבוצה משלו בחלון החיפוש במקום
-> להופיע תחת הכותרת של הדוקס. המילון הוא היוצא מן הכלל: המונחים שלו מתפרסמים בתוך
-> `/glossary/` של התיעוד, ולכן הם מקובצים איתו.
+**פער מול המקור:** ה-job ‏`4e. Mirror drift report` מריץ `make mirror-check` בכל בנייה ומדווח
+ב-summary, בלי להכשיל כלום.
 
 #### התיאורים ב-Docker Hub
 
@@ -272,29 +228,20 @@ python3 -m build.site_mirror --check   # כמה פורסם מאז הסנכרון
 > **ה-token של Docker Hub צריך הרשאת כתיבה** כדי לשנות תיאור. אם אין לו, רק ה-job הזה
 > ייכשל — שום דבר אחר לא תלוי בו.
 
-#### ה-image של המירור — נבנה מאותה בנייה, ונפרד ממנה
+#### ה-image של המירור
 
-‏Hugo רץ פעם אחת ובונה הכל יחד; מיד אחרי זה `build/split_mirror.py` מחלק את התוצאה לשניים.
-התיעוד נשאר ב-`public/`, והסקשנים הממוררים עוברים ל-`public-mirror/` יחד עם
-`static/images/site-mirror` ועם הרשומות שלהם בפיד. כל חצי נארז ב-image משלו.
-
-הנתיבים מוגדרים לפי **איפה הם מתפרסמים** ולא לפי שם התיקייה, וזה לא אותו דבר:
-‏`content/architecture-diagrams` מתפרסם ב-`/resources/architecture-diagrams/`,
-וקטגוריות הבלוג והמדריכים מתפרסמות **בתוך** `/blog/` ו-`/tutorials/`. המילון נשאר עם
-התיעוד כי הוא מתפרסם בתוך `/glossary/` שלו.
-
-ה-image נבנה **בשתי שכבות**: התמונות (‏255MB) בשכבה נפרדת מתחת, והעמודים (‏204MB) מעליה.
-התמונות משתנות רק כשממררים תוכן חדש, בעוד שכל שינוי ב-layout או ב-CSS משכתב את ה-HTML של
-כל 1,391 העמודים — בשכבה אחת משותפת, פסיק שזז ב-CSS היה דוחף מחדש גם את התמונות.
+‏`mirror/site` נארז כמו שהוא — אין כאן Hugo. ה-Dockerfile מעתיק את התמונות (`sanity/`) ואת
+ה-chunks (`_next/`) בשכבות נפרדות מתחת לעמודים, כי הם משתנים לאט יותר. ה-nginx של ה-pod
+(`build/marketing_mirror/runtime/nginx.conf`) מוסיף את ה-CSP ודוחס בזמן אמת.
 
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivileged \
   -t redis-docs-mirror:local .
 ```
 
-ב-CI זה ה-job ‏`4f. Build & push the mirror image`, שדוחף לאותו repository בתגים
-`<hash>-mirror` ו-`<hash>-mirror-unprivileged` (וגם `mirror` / `mirror-unprivileged`).
-ב-chart: `mirror.enabled`.
+ב-CI זה ה-job ‏`4f. Build & push the mirror image`. הוא לא מחכה לבניית האתר — רק ל-checkout של
+`mirror/site` — ודוחף לאותו repository בתגים `<hash>-mirror` ו-`<hash>-mirror-unprivileged`
+(וגם `mirror` / `mirror-unprivileged`). ב-chart: `mirror.enabled`.
 
 #### ה-image של ה-CLI (`redis-docs-cli`) — נבנה אוטומטית ב-`airgap-build.yml`
 

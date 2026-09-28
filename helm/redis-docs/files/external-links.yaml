@@ -55,7 +55,7 @@ families:
         url: "https://redis.io/try/sandbox/"
         enabled: true
       tutorials:
-        description: "Home page: 'Tutorials' card in Explore additional resources. Points at the mirrored tutorials inside this image (build/site_mirror), not at redis.io — override the url to send readers to the public tutorials instead."
+        description: "Home page: 'Tutorials' card in Explore additional resources. Points at the mirrored tutorials inside this image (build/marketing_mirror), not at redis.io — override the url to send readers to the public tutorials instead."
         url: "/tutorials/"
         enabled: true
       university:
@@ -63,7 +63,7 @@ families:
         url: "https://university.redis.io/academy"
         enabled: true
       blog:
-        description: "Home page: 'Blog' card. Points at the mirrored blog inside this image (build/site_mirror), not at redis.io — override the url to send readers to the public blog instead."
+        description: "Home page: 'Blog' card. Points at the mirrored blog inside this image (build/marketing_mirror), not at redis.io — override the url to send readers to the public blog instead."
         url: "/blog/"
         enabled: true
       support:
