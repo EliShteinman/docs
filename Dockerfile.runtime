@@ -66,11 +66,11 @@ EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
 
 # ============================================================
-# The mirror: the sections split out of the site tree
+# The mirror: redis.io's marketing site, as captured by build.marketing_mirror
 # ============================================================
-# Same nginx, a different half of the same build (build/split_mirror.py). It
-# carries no download tooling: the bundles are documentation, and they stay
-# with it.
+# Built with `--target mirror-unprivileged`. The pages are committed under
+# mirror/site and copied as they are: nothing here renders them. Kept in step
+# with Dockerfile, which builds everything in one docker build.
 FROM nginx:alpine AS mirror-privileged
 
 ARG GIT_COMMIT=unknown
@@ -81,11 +81,14 @@ LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
 LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL org.opencontainers.image.variant="mirror-privileged"
 
-# Two layers, pictures first. They are 243 MB and change only when content is
-# mirrored; the pages change whenever a layout or a stylesheet does. In one
-# layer together, every build re-pushes the pictures with them.
-COPY public-mirror-assets /usr/share/nginx/html
-COPY public-mirror /usr/share/nginx/html
+COPY build/marketing_mirror/runtime/nginx.conf /etc/nginx/conf.d/default.conf
+RUN sed -i 's/listen 8080;/listen 80;/' /etc/nginx/conf.d/default.conf
+# Assets first, in layers of their own: images and Next.js chunks change far
+# less often than the pages that name them.
+COPY mirror/site/sanity /usr/share/nginx/html/sanity
+COPY mirror/site/_next /usr/share/nginx/html/_next
+COPY --exclude=sanity --exclude=_next mirror/site /usr/share/nginx/html
+COPY build/marketing_mirror/runtime/marketing-links.js /usr/share/nginx/html/_mirror/marketing-links.js
 
 EXPOSE 80
 
@@ -101,9 +104,11 @@ LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
 LABEL org.opencontainers.image.created="${BUILD_DATE}"
 LABEL org.opencontainers.image.variant="mirror-unprivileged"
 
-# See the note on the privileged variant: pictures in a layer of their own.
-COPY --chown=nginx:nginx public-mirror-assets /usr/share/nginx/html
-COPY --chown=nginx:nginx public-mirror /usr/share/nginx/html
+COPY build/marketing_mirror/runtime/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --chown=nginx:nginx mirror/site/sanity /usr/share/nginx/html/sanity
+COPY --chown=nginx:nginx mirror/site/_next /usr/share/nginx/html/_next
+COPY --chown=nginx:nginx --exclude=sanity --exclude=_next mirror/site /usr/share/nginx/html
+COPY --chown=nginx:nginx build/marketing_mirror/runtime/marketing-links.js /usr/share/nginx/html/_mirror/marketing-links.js
 
 EXPOSE 8080
 

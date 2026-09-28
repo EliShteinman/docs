@@ -97,6 +97,18 @@ data:
             try_files $uri $uri/ $uri/index.html =404;
         }
 
+        {{- if .Values.mirror.enabled }}
+        # /glossary/ is shared. The page itself -- and its index.* outputs -- is
+        # the documentation's glossary, which has always lived there; the terms
+        # under it (/glossary/acid-transactions/ and 55 more, with their .md)
+        # are the marketing site's, served by the mirror pod. A regex, and ahead
+        # of the asset and .md rules below, because nginx takes the first regex
+        # that matches.
+        location ~ ^/glossary/(?!index\.)[^/]+(/.*|\.md)?$ {
+            proxy_pass http://{{ include "redis-docs.fullname" . }}-mirror:8080;
+        }
+        {{- end }}
+
         location ~* \.(css|js|woff2?|ttf|eot|svg|png|jpg|jpeg|gif|webp|ico|mp4)$ {
             expires 7d;
             add_header Cache-Control "public, immutable";
@@ -180,19 +192,25 @@ data:
         {{- end }}
 
         {{- if .Values.mirror.enabled }}
-        # The mirrored sections live in an image of their own and are served by
-        # their own pod.
+        # The mirrored sections -- redis.io's marketing site, as redis.io renders
+        # it -- live in an image of their own and are served by their own pod,
+        # along with the Next.js chunks and images those pages load.
         #
         # `^~`, not a plain prefix: a regex location beats a prefix one in
         # nginx, so the asset and .html rules above would otherwise catch
-        # /images/site-mirror/x.webp and /blog/a-post/index.html and answer
-        # them from this image, which no longer has either. `^~` stops the
-        # regex round from happening at all.
+        # /_next/static/x.js and /blog/a-post/index.html and answer them from
+        # this image, which has neither. `^~` stops the regex round.
         {{- range splitList " " (include "redis-docs.mirrorPaths" .) }}
         location ^~ /{{ . }}/ {
             proxy_pass http://{{ include "redis-docs.fullname" $ }}-mirror:8080;
         }
         {{- end }}
+
+        # The mirrored pages link to the documentation where redis.io keeps it.
+        # Here the documentation is the site itself.
+        location ^~ /docs/latest/ {
+            rewrite ^/docs/latest/(.*)$ /$1 permanent;
+        }
 
         # The mirrored pages' own sitemap. The site's /sitemap.xml lists the
         # documentation alone, because it is built whether or not this pod is

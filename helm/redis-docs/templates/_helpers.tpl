@@ -177,5 +177,5 @@ because three templates need the same list: the proxy rules, the runtime
 config that unlinks them when the mirror is not deployed, and the README.
 */}}
 {{- define "redis-docs.mirrorPaths" -}}
-blog tutorials compare solutions customers technology resources/architecture-diagrams images/site-mirror
+blog tutorials compare solutions customers technology resources/architecture-diagrams _next sanity _mirror
 {{- end }}

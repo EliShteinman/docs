@@ -263,6 +263,25 @@ families:
             url: "https://redis.io/support/"
             enabled: true
 
+  # ───────────────────────────────────────────────────────────────────────
+  # marketing — the pages mirrored from redis.io's marketing site (the blog,
+  # tutorials, customer stories and the rest; build/marketing_mirror)
+  #
+  # Those pages are redis.io's own build, so they carry no data-external-link
+  # attributes. The mirror pod's handler (build/marketing_mirror/runtime/
+  # marketing-links.js) classifies each of their links by where it leads, and
+  # this one key decides what happens to the ones that leave the site: shown,
+  # or hidden in menus and footers and reduced to plain text in prose.
+  # ───────────────────────────────────────────────────────────────────────
+  marketing:
+    description: "Links on the mirrored redis.io pages that lead off this site"
+    enabled: true
+    links:
+      marketing-offsite:
+        description: "Mirrored pages: every link to redis.io outside the mirrored sections or to another host — menus, footer, share buttons, 'Try Redis', inline links"
+        url: "https://redis.io/"
+        enabled: true
+
 # ───────────────────────────────────────────────────────────────────────────
 # git-mirrors — runtime-rewriting of inline `<a href>` URLs in markdown content
 #
