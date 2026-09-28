@@ -1,6 +1,6 @@
 // Applies the external-links switch to a page mirrored from redis.io.
 //
-// Loaded by every mirrored page after /runtime-config.js (the chart's
+// Loaded by every mirrored page after /js/runtime-config.js (the chart's
 // runtime config). The pages are redis.io's own Next.js build, so they carry
 // no data-external-link attributes the way the documentation's templates do;
 // links are classified here by where they lead instead:

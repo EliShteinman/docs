@@ -178,7 +178,7 @@ git add mirror/site
 
 **מה משתנה בדרך** (`build/marketing_mirror/rewrite.py`, `settings.py`):
 - תמונות מ-`cdn.sanity.io` עוברות ל-`/sanity/...` מקומי.
-- תגיות GTM, trustarc ו-Segment מוסרות, ונוספים שני סקריפטים: `/runtime-config.js` (המתג של
+- תגיות GTM, trustarc ו-Segment מוסרות, ונוספים שני סקריפטים: `/js/runtime-config.js` (המתג של
   Helm) ו-`/_mirror/marketing-links.js`.
 - שלושה תיקונים ב-JS: next/image טוען תמונות ישירות (אין כאן שרת אופטימיזציה), ובונה ה-URL של
   Sanity פונה ל-`/sanity`. **אם redis.io ישנו את ה-JS כך שתיקון לא מתאים לכלום, הריצה נכשלת**

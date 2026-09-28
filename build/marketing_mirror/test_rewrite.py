@@ -65,7 +65,7 @@ def test_rewrite_page_keeps_the_stylesheet():
 
 def test_rewrite_page_loads_the_runtime_config_first():
     assert rewrite.rewrite_page(PAGE).startswith(
-        '<html><head><script src="/runtime-config.js"></script>'
+        '<html><head><script src="/js/runtime-config.js"></script>'
     )
 
 

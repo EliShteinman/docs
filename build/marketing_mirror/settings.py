@@ -63,7 +63,7 @@ TRACKING_HOSTS: tuple[str, ...] = (
 # The scripts every mirrored page loads first: the site's runtime config (the
 # external-links switch) and the handler that applies it to the page.
 INJECTED_SCRIPTS: tuple[str, ...] = (
-    "/runtime-config.js",
+    "/js/runtime-config.js",
     "/_mirror/marketing-links.js",
 )
 
