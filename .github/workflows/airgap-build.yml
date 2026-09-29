@@ -1148,6 +1148,9 @@ jobs:
           # Only the two mirror jobs fetch it; every other job leaves it empty.
           # PRIVATE_ACCESS_TOKEN is a classic PAT with `repo`, so it reads the
           # mirror repository.
+          # Keep checkout credentials ephemeral so submodule auth does not send
+          # duplicate Authorization headers.
+          persist-credentials: false
           submodules: true
           token: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
 
