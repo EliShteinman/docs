@@ -11,6 +11,12 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 - Helm 3.x
 - Private Docker registry (ברשת סגורה)
 
+## שדרוג ל-3.0.0
+
+הצ'ארט מריץ עכשיו לכל היותר שני פודים, לחיפוש ולמירור יש images משלהם, ו-sidecars של
+Jupyter ו-metrics הוסרו. שלבים מדויקים, המפתחות שהוסרו ומשאבים מומלצים לכל פוד:
+**[UPGRADE-3.0-he.md](UPGRADE-3.0-he.md)**.
+
 ## שדרוג מ-1.x ל-2.0.0
 
 שום מפתח לא הוסר ושום ערך לא שינה משמעות: כל מה שהגדרת ב-1.x עדיין נקרא, ושתי היכולות
@@ -61,31 +67,52 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
 
 ## ארכיטקטורה
 
-הצ'ארט פורס את התיעוד, ולצידו שלושה פודים אופציונליים — ה-CLI playground, שירות
-החיפוש, והסקשנים הממוררים מ-redis.io. כל אחד מהם כבוי כברירת מחדל וכל אחד הוא image
-נפרד, כך שפריסה נושאת רק את מה שהיא מדליקה.
+הצ'ארט מריץ לכל היותר **שני פודים**. כל חלק אופציונלי הוא קונטיינר עם דגל משלו ו-image משלו,
+כך שפריסה נושאת רק את מה שהיא מדליקה:
 
-### פוד 1 — `redis-docs` (אתר הדוקומנטציה)
-
-| Container | תיאור | פורט |
+| Image | מה הוא מריץ | דגל |
 |---|---|---|
-| `nginx` | שרת האתר הראשי (unprivileged) | 8080 |
+| `redis-docs` | אתר התיעוד (nginx) | תמיד |
+| `redis-docs-mirror` | הסקשנים הממוררים מ-redis.io (nginx) | `mirror.enabled` |
+| `redis-docs-cli` | ה-proxy של ה-CLI playground | `cli.enabled` |
+| `redis-docs-search` | ה-API של החיפוש בדוקס | `search.enabled` |
 
-nginx משמש גם כ-reverse proxy:
-- `/cli` → מופנה ל-CLI proxy בפוד השני (פורט 8090)
+### פוד 1 — `redis-docs` (האתר)
 
-### פוד 2 — `redis-docs-cli` (CLI playground)
+תמיד פרוס. גדל לפי `replicaCount` או `autoscaling`.
 
-נוצר רק כאשר `cli.enabled=true`.
+| קונטיינר | תיאור | פורט | מתי |
+|---|---|---|---|
+| `redis-docs` | nginx: התיעוד, וה-reverse proxy לכל מה שבהמשך | 8080 | תמיד |
+| `mirror` | nginx: הסקשנים הממוררים מ-redis.io | 8081 | `mirror.enabled` |
 
-| Container | תיאור | פורט |
-|---|---|---|
-| `cli-proxy` | Flask proxy להרצת פקודות Redis | 8090 |
-| `redis` | Redis sidecar — מקומי ל-pod (localhost) | 6379 |
+ה-nginx של האתר מגיע למירור דרך `localhost:8081`, כך שהמירור גדל יחד עם האתר ולא צריך Service
+משלו. ‏`/cli` ו-`/convai/api/search-service` הולכים לפוד השירותים דרך ה-Services
+‏`redis-docs-cli` ו-`redis-docs-search`.
 
-כל הקונטיינרים בפוד זה מתקשרים על `localhost`. פורט 6379 הוא containerPort בלבד — אין Service
-שחושף אותו — אבל כל pod שמגיע ל-IP של הפוד עדיין מגיע ל-Redis ישירות, וזו שאלה של NetworkPolicy
-ולא משהו שהצ'ארט מכריע.
+### פוד 2 — `redis-docs-services` (CLI playground וחיפוש)
+
+פרוס כש-`cli.enabled` או `search.enabled` דלוקים, ורק עם הקונטיינרים של מה שדלוק. תמיד replica
+אחת, כי ה-playground מחזיק את הסשנים של הקוראים בזיכרון התהליך, ובאסטרטגיית `Recreate`, כך
+ששדרוג אף פעם לא צריך פוד שני לצידו.
+
+| קונטיינר | תיאור | פורט | מתי |
+|---|---|---|---|
+| `cli-proxy` | Flask proxy להרצת פקודות Redis | 8090 | `cli.enabled` |
+| `cli-redis` | ה-Redis של ה-playground — מקומי לפוד | 6379 | `cli.enabled` |
+| `fetch-corpus` (init) | מעתיק את `docs.ndjson` מה-image של האתר לווליום משותף | — | `search.enabled` |
+| `fetch-mirror-corpus` (init) | מעתיק את `mirror.ndjson` מה-image של המירור | — | `search.enabled` ו-`mirror.enabled` |
+| `search-api` | בונה את האינדקס, ואז מגיש את נקודת הקצה של החיפוש | 8091 | `search.enabled` |
+| `search-redis` | מחזיק את האינדקס — מקומי לפוד | 6380 | `search.enabled` |
+
+שני ה-Redis נפרדים בכוונה. ‏`files/sandbox.acl` מעניק לקורא במפורש `+ft.dropindex` וגישה לכל
+המפתחות, כדי שמדריך שיוצר אינדקס יוכל לבטל אותו. ב-Redis משותף רק הקידומת שה-proxy מוסיף הייתה
+עומדת בין קורא לבין אינדקס החיפוש, וקורא שממלא את הזיכרון של ה-sandbox היה מפיל איתו גם את
+האינדקס. גם מתוך ה-sandbox הקורא לא מגיע ל-6380: ‏`MIGRATE` ו-`REPLICAOF` הם `@dangerous`
+ו-`@admin`, שלמשתמש ה-ACL של הקורא אין.
+
+הפורטים של ה-Redis הם containerPort בלבד — אין Service שחושף אותם — אבל כל פוד שמגיע ל-IP של
+הפוד עדיין מגיע אליהם ישירות, וזו שאלה של NetworkPolicy ולא משהו שהצ'ארט מכריע.
 
 #### בידוד ה-CLI playground
 
@@ -106,7 +133,7 @@ nginx משמש גם כ-reverse proxy:
 ו-`FT.TAGVALS` אחרי שהמודולים עלו. לאימות שהוא רץ:
 
 ```bash
-kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox FT._LIST
+kubectl exec deploy/redis-docs-services -c cli-redis -- redis-cli ACL DRYRUN docsandbox FT._LIST
 # OK
 ```
 
@@ -114,24 +141,18 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
 ל-keyspace שטוח אחד, ו-`acl.enabled=false` מחזיר את הפרוקסי למשתמש ברירת המחדל של Redis, בלי
 שום דבר בין `FLUSHALL` מוקלד לבין המידע של כל האחרים.
 
-### פוד 4 — `redis-docs-mirror` (הסקשנים הממוררים מ-redis.io)
-
-נוצר רק כאשר `mirror.enabled=true`.
-
-| קונטיינר | תיאור | פורט |
-|---|---|---|
-| `mirror` | nginx שמגיש את העמודים הממוררים ואת התמונות שלהם | 8080 |
+### הסקשנים הממוררים
 
 הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה, מונחי המילון
 ודיאגרמות הארכיטקטורה הם העמודים של redis.io עצמו, כפי ש-redis.io מרנדר אותם
 (`build/marketing_mirror`), שמורים במאגר תחת `mirror/site` יחד עם קבצי ה-Next.js והתמונות
-שהם טוענים. הם נראים בדיוק כמו ב-redis.io. הפוד מגיש אותם מאחורי Content-Security-Policy
+שהם טוענים. הם נראים בדיוק כמו ב-redis.io. הקונטיינר מגיש אותם מאחורי Content-Security-Policy
 שמתיר רק את אותו דומיין, כך שה-analytics, באנר העוגיות והצ'אט שה-JS שלהם מנסה לטעון לא
 נטענים לעולם. ה-image של התיעוד לא מכיל אותם.
 
 ה-nginx של האתר מנתב אליהם כל אחד מהנתיבים שלהם, כך שהקורא רואה אתר אחד: ב-header של
 התיעוד יש תפריט "More from Redis" אליהם, והלוגו של Redis בעמודים שלהם מחזיר לתיעוד. עם
-`mirror.enabled=false` אין פוד, אין ניתוב, והעמודים פשוט לא שם — התפריט מוסר בדפדפן
+`mirror.enabled=false` אין קונטיינר, אין ניתוב, והעמודים פשוט לא שם — התפריט מוסר בדפדפן
 והקישורים מהתיעוד אליהם מנותקים, במקום להוביל ל-404.
 
 `/glossary/` עצמו הוא המילון של התיעוד; המונחים שמתחתיו מגיעים מהמירור.
@@ -141,30 +162,14 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
 ובכפתורים, והופכים לטקסט רגיל בתוך פסקאות.
 
 לעמודים הממוררים יש sitemap משלהם, שמתפרסם ב-`/sitemap-mirror.xml`. ה-`/sitemap.xml` של
-האתר מפרט את התיעוד בלבד: הוא נבנה בין אם הפוד הזה פרוס ובין אם לא, ולכן אסור לו לפרסם
+האתר מפרט את התיעוד בלבד: הוא נבנה בין אם המירור פרוס ובין אם לא, ולכן אסור לו לפרסם
 כתובות שאף אחד לא עונה עליהן.
 
 החיפוש הולך לפי אותו מתג. לעמודים הממוררים יש פיד משלהם, שנבנה מה-Markdown ש-redis.io
-מפרסם לכל עמוד, ופוד החיפוש מאנדקס אותו מה-image של המירור רק כשהוא פרוס — כך שחיפוש
+מפרסם לכל עמוד, והחיפוש מאנדקס אותו מה-image של המירור רק כשהוא פרוס — כך שחיפוש
 לעולם לא מחזיר עמוד שאף אחד לא מגיש.
 
-### פוד 3 — `redis-docs-search` (חיפוש בדוקס)
-
-נוצר רק כאשר `search.enabled=true`.
-
-| קונטיינר | תיאור | פורט |
-|---|---|---|
-| `fetch-corpus` (init) | מעתיק את `docs.ndjson` מה-image של הדוקס לווליום משותף | — |
-| `search-api` | בונה את האינדקס, ואז מגיש את נקודת הקצה של החיפוש | 8091 |
-| `redis` | מחזיק את האינדקס — מקומי לפוד (localhost) | 6379 |
-
-`search-api` רץ מה-image שלו, `redis-docs-search`, שנבנה מ-`helm/search`.
-
-ה-Redis הזה נפרד מזה של ה-CLI playground בכוונה. `files/sandbox.acl` מעניק לקורא את
-`+ft.dropindex` במפורש, כדי שמדריך שיוצר אינדקס יוכל לבטלו — מה שהיה מאפשר לכל מבקר
-למחוק את אינדקס החיפוש אילו השניים חלקו Redis.
-
-#### איך החיפוש עובד
+### איך החיפוש עובד
 
 `layouts/partials/search-modal.html` קורא ל-`/convai/api/search-service`, שירות שרץ
 ב-redis.io. בקלאסטר מנותק אף אחד לא מגיש את הנתיב, הבקשה חוזרת 404, והמודאל נפתח ריק.
@@ -377,7 +382,8 @@ downloads:
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
 | `a0533057932/redis-docs-search` | `0.1.0` | 8091 | API החיפוש בדוקס | לא — רק אם `search.enabled=true` |
-| `redis` | `8.10.0-alpine` | 6379 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
+| `redis` | `8.10.0-alpine` | 6380 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
+| `a0533057932/redis-docs-mirror` | `<HASH>-unprivileged` / `unprivileged` | 8081 | הסקשנים הממוררים מ-redis.io | לא — רק אם `mirror.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
 > ל-`docker run` רגיל השתמשו בתג `latest` או `<HASH>`.
@@ -761,8 +767,6 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.redis.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Redis |
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי Redis sidecar |
 | `mirror.enabled` | `false` | פריסת הסקשנים הממוררים (פוד ו-image נפרדים). כבוי משאיר את התיעוד שלם בפני עצמו |
-| `mirror.replicas` | `1` | כמה פודים של מירור |
-| `mirror.containerPort` | `8080` | הפורט שעליו מאזין ה-nginx של המירור, לפי וריאנט ה-image: ‏8080 לתגי ה-`-unprivileged`, ו-80 לתגים ה-privileged (שדורשים גם securityContext שמתיר root) |
 | `mirror.image.registry` | `a0533057932` | registry של image המירור |
 | `mirror.image.name` | `redis-docs-mirror` | שם ה-image — repository משלו, מתויג כמו האתר |
 | `mirror.image.tag` | `unprivileged` | תג image המירור. ברשת סגורה לקבע את הצורה `<commit>-unprivileged` |
@@ -776,7 +780,6 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.image.tag` | `0.1.0` | תג ה-image. ה-workflow של airgap-build מעלה אותו בכל שינוי ב-`helm/search` או ב-`helm/common` |
 | `search.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת ה-image. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
 | `search.logLevel` | `INFO` | רמת לוג של שירות החיפוש |
-| `search.replicas` | `1` | כמה פודים של חיפוש. כל אחד בונה ומחזיק עותק משלו של האינדקס |
 | `search.rateLimit.enabled` | `false` | הגבלת קצב לכתובת לקוח בודדת. כבוי כברירת מחדל: המודאל שולח בקשה בכל הקשה, ומשרד מאחורי כתובת יציאה אחת נראה כלקוח אחד |
 | `search.rateLimit.rate` | `20r/s` | בקשות לשנייה לכתובת לקוח, כשההגבלה דולקת |
 | `search.rateLimit.burst` | `40` | כמה בקשות מותר שיגיעו מעל הקצב לפני `429` |

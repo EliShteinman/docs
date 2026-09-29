@@ -236,7 +236,7 @@ git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
 **ניווט:** `layouts/partials/more-from-redis-menu.html` מוסיף ל-header העליון תפריט נפתח
 "More from Redis" עם כל הסקשנים הממוררים. הסרגל הצדדי (`docs-nav.html`) נשאר זהה ל-upstream.
 ה-partial נפרד וההוספה ל-`header.html` היא **שורה אחת**, כדי לצמצם התנגשות במיזוג upstream.
-בלי ה-pod של ה-mirror, ה-runtime config מסיר את התפריט.
+בלי קונטיינר ה-mirror, ה-runtime config מסיר את התפריט.
 
 **קישורים ישנים בתיעוד (`build/doc_links.json`):** כתובות תיעוד ישנות — ‏`/docs/<מבנה ישן>/`
 ו-`/topics/<עמוד>` — שעברו שתי רה-ארגונים; רק רדיס יודעת לאן, ולכן כל כתובת **נצפית** פעם אחת

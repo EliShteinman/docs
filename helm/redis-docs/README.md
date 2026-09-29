@@ -11,6 +11,12 @@ Designed for air-gapped networks - no external dependencies.
 - Helm 3.x
 - Private Docker registry (in air-gapped networks)
 
+## Upgrading to 3.0.0
+
+The chart now runs at most two pods, search and the mirror have images of their own, and
+the Jupyter and metrics sidecars are gone. Exact steps, the removed keys and recommended
+resources per pod: **[UPGRADE-3.0.md](UPGRADE-3.0.md)**.
+
 ## Upgrading from 1.x to 2.0.0
 
 Nothing was removed and nothing changed meaning: every value from 1.x is still read,
@@ -65,31 +71,55 @@ lives in either pod.
 
 ## Architecture
 
-The chart deploys the documentation, and three optional pods beside it — the CLI
-playground, the search service, and the sections mirrored from redis.io. Each is off
-by default and each is its own image, so a deployment carries only what it turns on.
+The chart runs at most **two pods**. Each optional part is a container with its own
+flag and its own image, so a deployment carries only what it turns on:
 
-### Pod 1 — `redis-docs` (documentation site)
-
-| Container | Description | Port |
+| Image | What it runs | Flag |
 |---|---|---|
-| `nginx` | Main web server (unprivileged) | 8080 |
+| `redis-docs` | The documentation site (nginx) | always |
+| `redis-docs-mirror` | The sections mirrored from redis.io (nginx) | `mirror.enabled` |
+| `redis-docs-cli` | The CLI playground proxy | `cli.enabled` |
+| `redis-docs-search` | The docs search API | `search.enabled` |
 
-nginx also serves as a reverse proxy:
-- `/cli` → routed to CLI proxy in the second pod (port 8090)
+### Pod 1 — `redis-docs` (the site)
 
-### Pod 2 — `redis-docs-cli` (CLI playground)
+Always deployed. Scales with `replicaCount` or `autoscaling`.
 
-Created only when `cli.enabled=true`.
+| Container | Description | Port | When |
+|---|---|---|---|
+| `redis-docs` | nginx: the documentation, and the reverse proxy for everything below | 8080 | always |
+| `mirror` | nginx: the mirrored redis.io sections | 8081 | `mirror.enabled` |
 
-| Container | Description | Port |
-|---|---|---|
-| `cli-proxy` | Flask proxy for executing Redis commands | 8090 |
-| `redis` | Redis sidecar — local to pod (localhost) | 6379 |
+The site's nginx reaches the mirror over `localhost:8081`, so the mirror scales with the
+site and needs no Service of its own. `/cli` and `/convai/api/search-service` go to the
+services pod through the `redis-docs-cli` and `redis-docs-search` Services.
 
-All containers in this pod communicate over `localhost`. Port 6379 is a container port
-only — no Service exposes it — but any pod that can reach the pod IP can still reach Redis
-directly, which is a NetworkPolicy question rather than something the chart settles.
+### Pod 2 — `redis-docs-services` (CLI playground and search)
+
+Deployed when `cli.enabled` or `search.enabled` is on, with only the containers of the
+parts that are. Always one replica, because the playground holds reader sessions in
+process memory, and the `Recreate` strategy, so an upgrade never needs a second pod
+beside it.
+
+| Container | Description | Port | When |
+|---|---|---|---|
+| `cli-proxy` | Flask proxy for executing Redis commands | 8090 | `cli.enabled` |
+| `cli-redis` | The playground's Redis — local to the pod | 6379 | `cli.enabled` |
+| `fetch-corpus` (init) | Copies `docs.ndjson` out of the site image into a shared volume | — | `search.enabled` |
+| `fetch-mirror-corpus` (init) | Copies `mirror.ndjson` out of the mirror image | — | `search.enabled` and `mirror.enabled` |
+| `search-api` | Builds the index, then serves the search endpoint | 8091 | `search.enabled` |
+| `search-redis` | Holds the index — local to the pod | 6380 | `search.enabled` |
+
+The two Redis instances are separate on purpose. `files/sandbox.acl` deliberately grants
+the reader `+ft.dropindex` and every key, so a tutorial that creates an index can undo
+it; in a shared Redis only the proxy's key prefix would stand between a reader and the
+search index, and a reader filling the sandbox's memory would take the index down with
+it. From the sandbox the reader cannot reach 6380 either: `MIGRATE` and `REPLICAOF` are
+`@dangerous` and `@admin`, which the reader's ACL user does not have.
+
+The Redis ports are container ports only — no Service exposes them — but any pod that can
+reach the pod IP can still reach them, which is a NetworkPolicy question rather than
+something the chart settles.
 
 #### CLI playground isolation
 
@@ -111,7 +141,7 @@ modules and aborts startup on an unknown command — so a `postStart` hook grant
 `FT.DROPINDEX` and `FT.TAGVALS` once the modules are up. To confirm it ran:
 
 ```bash
-kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox FT._LIST
+kubectl exec deploy/redis-docs-services -c cli-redis -- redis-cli ACL DRYRUN docsandbox FT._LIST
 # OK
 ```
 
@@ -119,25 +149,19 @@ Turning any of these off is a deliberate downgrade: `namespace.enabled=false` pu
 back in one flat keyspace, and `acl.enabled=false` puts the proxy back on Redis's default user
 with nothing between a typed `FLUSHALL` and everyone else's data.
 
-### Pod 4 — `redis-docs-mirror` (the sections mirrored from redis.io)
-
-Created only when `mirror.enabled=true`.
-
-| Container | Description | Port |
-|---|---|---|
-| `mirror` | nginx serving the mirrored pages and their pictures | 8080 |
+### The mirrored sections
 
 The blog, tutorials, customer stories, comparisons, solutions, technology pages, glossary
 terms and architecture diagrams are redis.io's own pages, captured as redis.io renders them
 (`build/marketing_mirror`) and committed under `mirror/site`, with the Next.js chunks and
-images they load. They look exactly as they do on redis.io. The pod serves them behind a
+images they load. They look exactly as they do on redis.io. The container serves them behind a
 same-origin Content-Security-Policy, so the analytics, consent banner and chat widget their
 JS reaches for are never fetched. The documentation image does not contain them.
 
 The site's nginx proxies each of their paths here, so a reader sees one site: the
 documentation's header has a "More from Redis" menu into them, and their own Redis logo
-leads back to the documentation. With `mirror.enabled=false` there is no pod, no proxy
-rule, and the pages simply are not there — the menu is removed in the browser and the
+leads back to the documentation. With `mirror.enabled=false` there is no container, no
+proxy rule, and the pages simply are not there — the menu is removed in the browser and the
 documentation's links into those sections are unlinked, rather than leading to a 404.
 
 `/glossary/` itself is the documentation's glossary; the terms under it are the mirror's.
@@ -147,32 +171,15 @@ Links on those pages that leave the site follow `externalLinks`, through the cat
 buttons, and reduced to plain text inside prose.
 
 The mirrored pages have a sitemap of their own, published at `/sitemap-mirror.xml`. The
-site's own `/sitemap.xml` lists the documentation alone: it is built whether or not this
-pod is deployed, so it must not advertise addresses nothing answers.
+site's own `/sitemap.xml` lists the documentation alone: it is built whether or not the
+mirror is deployed, so it must not advertise addresses nothing answers.
 
 Search follows the same switch. The mirrored pages have a feed of their own, built from
-the Markdown redis.io publishes for each page, and the search pod indexes it from the
-mirror image only when it is deployed, so a search never answers with a page nothing
+the Markdown redis.io publishes for each page, and search indexes it from the mirror
+image only when it is deployed, so a search never answers with a page nothing
 serves.
 
-### Pod 3 — `redis-docs-search` (docs search)
-
-Created only when `search.enabled=true`.
-
-| Container | Description | Port |
-|---|---|---|
-| `fetch-corpus` (init) | Copies `docs.ndjson` out of the docs image into a shared volume | — |
-| `search-api` | Builds the index, then serves the search endpoint | 8091 |
-| `redis` | Holds the index — local to pod (localhost) | 6379 |
-
-`search-api` runs from its own image, `redis-docs-search`, built from `helm/search`.
-
-This Redis is separate from the CLI playground's on purpose. `files/sandbox.acl`
-deliberately grants the reader `+ft.dropindex`, so a tutorial that creates an index can
-undo it — which would also let any visitor drop the search index if the two shared a
-Redis.
-
-#### How the search works
+### How the search works
 
 `layouts/partials/search-modal.html` calls `/convai/api/search-service`, a service that
 runs at redis.io. Nothing serves that path in an air-gapped cluster, so the request 404s
@@ -451,7 +458,8 @@ A limit costs nothing until the container actually runs.
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
 | `a0533057932/redis-docs-search` | `0.1.0` | 8091 | Docs search API | No — only if `search.enabled=true` |
-| `redis` | `8.10.0-alpine` | 6379 | Redis holding the search index | No — only if `search.enabled=true` |
+| `redis` | `8.10.0-alpine` | 6380 | Redis holding the search index | No — only if `search.enabled=true` |
+| `a0533057932/redis-docs-mirror` | `<HASH>-unprivileged` / `unprivileged` | 8081 | The mirrored redis.io sections | No — only if `mirror.enabled=true` |
 
 > For Kubernetes/OpenShift use the `unprivileged` or `<HASH>-unprivileged` tag.
 > For standard `docker run` use the `latest` or `<HASH>` tag.
@@ -832,8 +840,6 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.redis.image.pullPolicy` | `IfNotPresent` | Redis image pull policy |
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | Redis sidecar resources |
 | `mirror.enabled` | `false` | Deploy the mirrored redis.io sections (separate pod and image). Off leaves the documentation complete on its own |
-| `mirror.replicas` | `1` | Mirror pods |
-| `mirror.containerPort` | `8080` | The port the mirror's nginx listens on, which follows the image variant: 8080 for the `-unprivileged` tags, 80 for the privileged ones (which also needs a securityContext that allows root) |
 | `mirror.image.registry` | `a0533057932` | Mirror image registry |
 | `mirror.image.name` | `redis-docs-mirror` | Mirror image name — its own repository, tagged like the site image |
 | `mirror.image.tag` | `unprivileged` | Mirror image tag. Pin the `<commit>-unprivileged` form in an air-gapped registry |
@@ -847,7 +853,6 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.image.tag` | `0.1.0` | Search API image tag. The airgap-build workflow bumps it whenever `helm/search` or `helm/common` changes |
 | `search.image.pullPolicy` | `IfNotPresent` | Search API image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
 | `search.logLevel` | `INFO` | Log level for the search service |
-| `search.replicas` | `1` | Search pods. Each builds and holds its own copy of the index |
 | `search.rateLimit.enabled` | `false` | Limit how fast one client address may query the search endpoint. Off by default: the modal sends a request per keystroke, and an office behind one egress address is one client |
 | `search.rateLimit.rate` | `20r/s` | Requests per second per client address, once enabled |
 | `search.rateLimit.burst` | `40` | Requests allowed to arrive ahead of that rate before a `429` |
