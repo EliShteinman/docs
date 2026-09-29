@@ -139,8 +139,8 @@ mirror:
   enabled: true
   image:
     registry: registry.intranet.company.com
-    name: redis-docs
-    tag: "b00e22ad3-mirror-unprivileged"   # same build as image.tag above
+    name: redis-docs-mirror
+    tag: "b00e22ad3-unprivileged"   # same build as image.tag above
 
 # --- CLI playground (optional) ---
 # An in-page Redis terminal and workbench, served by a second pod holding the

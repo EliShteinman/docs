@@ -25,8 +25,8 @@ you want the mirror.
 # 1. Mirror the images this release needs (skip the mirror image if you do not want it)
 skopeo copy docker://a0533057932/redis-docs:<hash>-unprivileged \
             docker://registry.internal.company.com/redis-docs:<hash>-unprivileged
-skopeo copy docker://a0533057932/redis-docs:<hash>-mirror-unprivileged \
-            docker://registry.internal.company.com/redis-docs:<hash>-mirror-unprivileged
+skopeo copy docker://a0533057932/redis-docs-mirror:<hash>-unprivileged \
+            docker://registry.internal.company.com/redis-docs-mirror:<hash>-unprivileged
 skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
             docker://registry.internal.company.com/redis-docs-cli:0.6.0
 skopeo copy docker://a0533057932/redis-docs-search:0.1.0 \
@@ -36,15 +36,15 @@ skopeo copy docker://a0533057932/redis-docs-search:0.1.0 \
 helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
   --version 2.0.0 -f my-values.yaml \
   --set image.tag=<hash>-unprivileged \
-  --set mirror.enabled=true --set mirror.image.tag=<hash>-mirror-unprivileged
+  --set mirror.enabled=true --set mirror.image.tag=<hash>-unprivileged
 ```
 
 Four things to know before you run it:
 
 - **These tags do not exist until this release is built.** `redis-docs-cli:0.6.0`,
-  `redis-docs-search:0.1.0` and the `redis-docs:*-mirror-unprivileged` tags are produced by the first run of the
-  build workflow for this version — check the run summary, or Docker Hub, before you
-  mirror them. Deploying against a tag that was never pushed is an ImagePullBackOff and
+  `redis-docs-search:0.1.0` and the `redis-docs-mirror:*-unprivileged` tags are
+  produced by the first run of the build workflow for this version — check the run
+  summary, or Docker Hub, before you mirror them. Deploying against a tag that was never pushed is an ImagePullBackOff and
   nothing more informative.
 
 - **Leaving `mirror.enabled` off is a supported choice, not a broken one.** The
@@ -658,8 +658,8 @@ docker save redis:8.10.0-alpine -o redis.tar
 # The mirrored redis.io sections (optional)
 # Only if you want the blog, tutorials, customer stories, comparisons, solutions,
 # technology pages and architecture diagrams. Same build as the main image above.
-docker pull a0533057932/redis-docs:mirror-unprivileged
-docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
+docker pull a0533057932/redis-docs-mirror:unprivileged
+docker save a0533057932/redis-docs-mirror:unprivileged -o redis-docs-mirror.tar
 
 # Docs search (optional)
 # Needs its own Redis 8 — the query engine the index lives in. Pull redis from the
@@ -695,8 +695,8 @@ docker push REGISTRY/redis-docs:unprivileged
 
 # Load CLI (optional)
 docker load -i redis-docs-mirror.tar
-docker tag a0533057932/redis-docs:mirror-unprivileged REGISTRY/redis-docs:mirror-unprivileged
-docker push REGISTRY/redis-docs:mirror-unprivileged
+docker tag a0533057932/redis-docs-mirror:unprivileged REGISTRY/redis-docs-mirror:unprivileged
+docker push REGISTRY/redis-docs-mirror:unprivileged
 
 docker load -i redis-docs-cli.tar
 docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
@@ -833,10 +833,10 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | Redis sidecar resources |
 | `mirror.enabled` | `false` | Deploy the mirrored redis.io sections (separate pod and image). Off leaves the documentation complete on its own |
 | `mirror.replicas` | `1` | Mirror pods |
-| `mirror.containerPort` | `8080` | The port the mirror's nginx listens on, which follows the image variant: 8080 for `-mirror-unprivileged`, 80 for `-mirror` (which also needs a securityContext that allows root) |
+| `mirror.containerPort` | `8080` | The port the mirror's nginx listens on, which follows the image variant: 8080 for the `-unprivileged` tags, 80 for the privileged ones (which also needs a securityContext that allows root) |
 | `mirror.image.registry` | `a0533057932` | Mirror image registry |
-| `mirror.image.name` | `redis-docs` | Mirror image name — the same repository as the site image, under its own tags |
-| `mirror.image.tag` | `mirror-unprivileged` | Mirror image tag. Pin the `<commit>-mirror-unprivileged` form in an air-gapped registry |
+| `mirror.image.name` | `redis-docs-mirror` | Mirror image name — its own repository, tagged like the site image |
+| `mirror.image.tag` | `unprivileged` | Mirror image tag. Pin the `<commit>-unprivileged` form in an air-gapped registry |
 | `mirror.image.pullPolicy` | `IfNotPresent` | Mirror image pull policy |
 | `search.enabled` | `false` | Deploy the docs search service (separate pod: search API + its own Redis). Without it the search button opens an empty modal. Also turns the button back on — see below. |
 | `search.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (search) |

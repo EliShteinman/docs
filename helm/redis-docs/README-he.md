@@ -23,8 +23,8 @@ Helm chart להתקנת אתר הדוקומנטציה של Redis על Kubernetes
 # 1. למרר את ה-image-ים של הגרסה (לדלג על המירור אם לא רוצים אותו)
 skopeo copy docker://a0533057932/redis-docs:<hash>-unprivileged \
             docker://registry.internal.company.com/redis-docs:<hash>-unprivileged
-skopeo copy docker://a0533057932/redis-docs:<hash>-mirror-unprivileged \
-            docker://registry.internal.company.com/redis-docs:<hash>-mirror-unprivileged
+skopeo copy docker://a0533057932/redis-docs-mirror:<hash>-unprivileged \
+            docker://registry.internal.company.com/redis-docs-mirror:<hash>-unprivileged
 skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
             docker://registry.internal.company.com/redis-docs-cli:0.6.0
 skopeo copy docker://a0533057932/redis-docs-search:0.1.0 \
@@ -34,13 +34,13 @@ skopeo copy docker://a0533057932/redis-docs-search:0.1.0 \
 helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
   --version 2.0.0 -f my-values.yaml \
   --set image.tag=<hash>-unprivileged \
-  --set mirror.enabled=true --set mirror.image.tag=<hash>-mirror-unprivileged
+  --set mirror.enabled=true --set mirror.image.tag=<hash>-unprivileged
 ```
 
 ארבעה דברים שחשוב לדעת לפני שמריצים:
 
 - **התגים האלה לא קיימים עד שהגרסה הזו נבנית.** ‏`redis-docs-cli:0.6.0`, ‏`redis-docs-search:0.1.0` והתגים
-  `redis-docs:*-mirror-unprivileged` נוצרים בהרצה הראשונה של ה-workflow לגרסה הזו — כדאי
+  `redis-docs-mirror:*-unprivileged` נוצרים בהרצה הראשונה של ה-workflow לגרסה הזו — כדאי
   לבדוק בסיכום ההרצה, או ב-Docker Hub, לפני שממררים אותם. פריסה מול תג שלא נדחף מסתיימת
   ב-ImagePullBackOff ולא במשהו יותר מסביר.
 
@@ -593,8 +593,8 @@ docker save a0533057932/redis-docs-search:0.1.0 -o redis-docs-search.tar
 # הסקשנים הממוררים מ-redis.io (אופציונלי)
 # רק אם רוצים את הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה
 # ודיאגרמות הארכיטקטורה. אותה בנייה של ה-image הראשי למעלה.
-docker pull a0533057932/redis-docs:mirror-unprivileged
-docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
+docker pull a0533057932/redis-docs-mirror:unprivileged
+docker save a0533057932/redis-docs-mirror:unprivileged -o redis-docs-mirror.tar
 ```
 
 ### שלב 2: אריזת Helm chart
@@ -624,8 +624,8 @@ docker push REGISTRY/redis-docs:unprivileged
 
 # טעינת CLI (אופציונלי)
 docker load -i redis-docs-mirror.tar
-docker tag a0533057932/redis-docs:mirror-unprivileged REGISTRY/redis-docs:mirror-unprivileged
-docker push REGISTRY/redis-docs:mirror-unprivileged
+docker tag a0533057932/redis-docs-mirror:unprivileged REGISTRY/redis-docs-mirror:unprivileged
+docker push REGISTRY/redis-docs-mirror:unprivileged
 
 docker load -i redis-docs-cli.tar
 docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
@@ -762,10 +762,10 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי Redis sidecar |
 | `mirror.enabled` | `false` | פריסת הסקשנים הממוררים (פוד ו-image נפרדים). כבוי משאיר את התיעוד שלם בפני עצמו |
 | `mirror.replicas` | `1` | כמה פודים של מירור |
-| `mirror.containerPort` | `8080` | הפורט שעליו מאזין ה-nginx של המירור, לפי וריאנט ה-image: ‏8080 ל-`-mirror-unprivileged`, ו-80 ל-`-mirror` (שדורש גם securityContext שמתיר root) |
+| `mirror.containerPort` | `8080` | הפורט שעליו מאזין ה-nginx של המירור, לפי וריאנט ה-image: ‏8080 לתגי ה-`-unprivileged`, ו-80 לתגים ה-privileged (שדורשים גם securityContext שמתיר root) |
 | `mirror.image.registry` | `a0533057932` | registry של image המירור |
-| `mirror.image.name` | `redis-docs` | שם ה-image — אותו repository של האתר, בתגים משלו |
-| `mirror.image.tag` | `mirror-unprivileged` | תג image המירור. ברשת סגורה לקבע את הצורה `<commit>-mirror-unprivileged` |
+| `mirror.image.name` | `redis-docs-mirror` | שם ה-image — repository משלו, מתויג כמו האתר |
+| `mirror.image.tag` | `unprivileged` | תג image המירור. ברשת סגורה לקבע את הצורה `<commit>-unprivileged` |
 | `mirror.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת image המירור |
 | `search.enabled` | `false` | פריסת שירות החיפוש (פוד נפרד: API + Redis משלו). בלעדיו כפתור החיפוש פותח חלון ריק. גם מחזיר את הכפתור לתצוגה — ראה למטה. |
 | `search.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (חיפוש) |

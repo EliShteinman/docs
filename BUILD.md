@@ -29,10 +29,9 @@
 | `latest` | privileged (nginx:alpine) | 80 | rolling tag — `docker run` |
 | `<HASH>-unprivileged` | unprivileged (nginx-unprivileged) | 8080 | גרסה מתויגת — Kubernetes / OpenShift |
 | `unprivileged` | unprivileged (nginx-unprivileged) | 8080 | rolling tag — Kubernetes / OpenShift |
-| `<HASH>-mirror` | המירור, privileged | 80 | הסקשנים הממוררים מ-redis.io — פוד נפרד |
-| `mirror` | המירור, privileged | 80 | rolling tag |
-| `<HASH>-mirror-unprivileged` | המירור, unprivileged | 8080 | מה שה-chart פורס כש-`mirror.enabled=true` |
-| `mirror-unprivileged` | המירור, unprivileged | 8080 | rolling tag |
+
+המירור (`a0533057932/redis-docs-mirror`) נבנה מאותו commit ומקבל את אותם ארבעה תגים באותה
+משמעות. ה-chart פורס את `<HASH>-unprivileged` שלו כש-`mirror.enabled=true`.
 
 > `<HASH>` = commit hash בן 9 תווים (`git rev-parse --short=9 HEAD`).
 > ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
@@ -279,8 +278,8 @@ docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivile
 ```
 
 ב-CI זה ה-job ‏`4f. Build & push the mirror image`. הוא לא מחכה לבניית האתר — רק ל-checkout של
-`mirror/site` — ודוחף לאותו repository בתגים `<hash>-mirror` ו-`<hash>-mirror-unprivileged`
-(וגם `mirror` / `mirror-unprivileged`). ב-chart: `mirror.enabled`.
+`mirror/site` — ודוחף ל-repository משלו, `a0533057932/redis-docs-mirror`, בתגים `<hash>` ו-`<hash>-unprivileged`
+(וגם `latest` / `unprivileged`), כמו האתר. ב-chart: `mirror.enabled`.
 
 #### ה-images של ה-CLI ושל החיפוש (`redis-docs-cli`, `redis-docs-search`) — נבנים אוטומטית ב-`airgap-build.yml`
 

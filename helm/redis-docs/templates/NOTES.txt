@@ -58,5 +58,5 @@ The mirrored redis.io sections (blog, tutorials, customer stories, comparisons,
 solutions, technology pages, architecture diagrams) are NOT deployed. The documentation
 is complete without them: their sidebar entry and the links into them are removed in the
 browser rather than leading to a 404. Set mirror.enabled=true to deploy them, and mirror
-the redis-docs:*-mirror-unprivileged image alongside the main one.
+the redis-docs-mirror image alongside the main one.
 {{- end }}
