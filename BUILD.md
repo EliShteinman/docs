@@ -166,7 +166,8 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 [`EliShteinman/redis-docs-mirror`](https://github.com/EliShteinman/redis-docs-mirror). המאגר הזה
 שומר רק מצביע לגרסה שלו, כך ש-3.4GB של עמודים לא נכנסים להיסטוריה שלו ולא מגיעים לאף job
 ב-CI — `actions/checkout` לא מוריד submodules כברירת מחדל. רק `4e` ו-`4f` מבקשים אותו, עם
-ה-secret ‏`MIRROR_REPO_TOKEN` (token עם הרשאת קריאה למאגר המירור).
+ה-secret ‏`PRIVATE_ACCESS_TOKEN` — אותו PAT קלאסי (הרשאת `repo`) שמשמש את `make components`, ולכן
+קורא גם את מאגר המירור. `persist-credentials: false` מוציא אותו מהגדרות ה-git של ה-job אחרי ה-checkout.
 
 ```bash
 git submodule update --init mirror/site   # פעם אחת, לפני make mirror או בנייה מקומית של ה-image
