@@ -16,8 +16,10 @@ name: Airgap Build & Push
 #                      helm/cli-proxy changed (runs beside phases 1-4)
 #   4c. tests          the fork's own test suites (same)
 #   4d. dockerhub_description  the image pages' text, release branch only
-#   4e. mirror_drift   how far behind redis.io the mirrored sections are
-#   4f. mirror_image   the mirrored sections as an image of their own
+#   4e. mirror_drift   opt-in: how far behind redis.io the mirror is (reaches
+#                      the internet, so off unless the input is checked)
+#   4f. mirror_image   the mirrored sections as an image of their own (input,
+#                      on by default; fetches nothing from redis.io)
 #   5. publish_chart   opt-in: bump and publish the Helm chart
 #
 # Dockerfile and airgap-multibuild.sh are unchanged — local builds still work.
@@ -48,12 +50,25 @@ on:
           normal builds.
         type: string
         default: ''
+      mirror_image:
+        description: >-
+          Build and push the mirror image -- redis.io's marketing site, from the
+          pages committed under mirror/site. Nothing is fetched from redis.io.
+        type: boolean
+        default: true
+      mirror_drift:
+        description: >-
+          Report how far behind redis.io the committed mirror is. Reads
+          redis.io's sitemap over the internet; downloads and changes nothing.
+        type: boolean
+        default: false
       publish_chart:
         description: >-
           After the image push, also auto-bump the Helm chart patch version,
           commit the update back to this branch, and publish the chart as an
-          OCI artifact. Skipped automatically on partial builds and override
-          tags. For non-patch bumps build the chart manually per BUILD.md.
+          OCI artifact. Skipped automatically on partial builds -- one variant,
+          one platform, or no mirror image, since the chart's examples name the
+          mirror tag of this build -- and on override tags. For non-patch bumps build the chart manually per BUILD.md.
         type: boolean
         default: false
 
@@ -1083,6 +1098,7 @@ jobs:
   mirror_image:
     name: 4f. Build & push the mirror image
     needs: [setup]
+    if: inputs.mirror_image
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -1359,9 +1375,13 @@ jobs:
   # It reports and never gates: a post published this morning is news, not a
   # reason to fail a build that has nothing to do with it. Nothing depends on
   # this job, and a source that cannot be reached leaves the summary saying so.
+  #
+  # Off unless the mirror_drift input is checked: it reaches redis.io, and
+  # nothing in a build should go to the internet unless asked to.
   # =========================================================================
   mirror_drift:
     name: 4e. Mirror drift report
+    if: inputs.mirror_drift
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -1471,6 +1491,7 @@ jobs:
     needs: [setup, docker, cli_image, tests]
     if: >-
       inputs.publish_chart &&
+      inputs.mirror_image &&
       inputs.variant == 'both' &&
       inputs.platforms == 'both' &&
       inputs.tag_override == ''
