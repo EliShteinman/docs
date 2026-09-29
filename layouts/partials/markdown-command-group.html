@@ -83,7 +83,7 @@
       {{- $replacement = printf "%s**%d commands in this group:**\n\n" $replacement $totalCommands -}}
 
       {{- if $showLink -}}
-        {{- $replacement = printf "%s[View all %s commands](https://redis.io/commands/?group=%s)\n\n" $replacement $groupLower $urlGroup -}}
+        {{- $replacement = printf "%s[View all %s commands](__DOCS_BASE_URL__/commands/?group=%s)\n\n" $replacement $groupLower $urlGroup -}}
       {{- end -}}
 
       {{- /* Process commands in chunks */ -}}
@@ -118,7 +118,7 @@
           {{- $complexity = printf "%s..." (substr $complexity 0 47) -}}
         {{- end -}}
 
-        {{- $replacement = printf "%s| [%s](https://redis.io/commands/%s/) | %s | %s | %s |\n" $replacement $cmdName $cmdSlug $summary $complexity $since -}}
+        {{- $replacement = printf "%s| [%s](__DOCS_BASE_URL__/commands/%s/) | %s | %s | %s |\n" $replacement $cmdName $cmdSlug $summary $complexity $since -}}
       {{- end -}}
 
       {{- $replacement = printf "%s\n" $replacement -}}
