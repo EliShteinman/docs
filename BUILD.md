@@ -170,9 +170,10 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 
 ```bash
 git submodule update --init mirror/site   # פעם אחת, לפני make mirror או בנייה מקומית של ה-image
-make mirror          # רק מה שהשתנה
-make mirror-full     # כל העמודים מחדש (~1,700, כ-15–35 דקות); תמונות ו-chunks עדיין מהדיסק
+make mirror          # רק מה שהשתנה, ואחריו llms.txt
+make mirror-full     # כל העמודים מחדש (~1,700, כ-15–35 דקות); תמונות ו-chunks עדיין מהדיסק. גם הוא כותב llms.txt מחדש
 make mirror-check    # מה redis.io מפרסם ועוד לא אצלנו, בלי לכתוב כלום
+make llms            # רק llms.txt, בלי לרענן את המירור
 
 # שני commits: התוכן במאגר המירור, והמצביע אליו כאן
 git -C mirror/site add -A && git -C mirror/site commit -m "chore: sync with redis.io" && git -C mirror/site push
@@ -252,8 +253,12 @@ redis.io, באותה שיטה: `make llms` (דורש אינטרנט) מוריד 
 עונה עליהם, ושומר שני קבצים שנכנסים ל-commit. קישור לעמוד תיעוד שזז נבדק ב-redis.io לאן הוא מפנה,
 ו-alias מוחלף בעמוד שהוא מפנה אליו. `llms.txt` כולל גם את הקטעים הממוררים ואת `/mirror.ndjson`;
 ‏`llms-docs.txt` בלעדיהם, ו-nginx מגיש אותו ב-`/llms.txt` כשהמירור כבוי. הקישורים כתובים עם
-‏`__DOCS_BASE_URL__`, ש-nginx ממלא בזמן הבקשה. להריץ אחרי `make mirror`, כי הוא בודק מה יש בדיסק
-של המירור.
+‏`__DOCS_BASE_URL__`, ש-nginx ממלא בזמן הבקשה. `make mirror` ו-`make mirror-full` מריצים אותו בסוף,
+כי הוא בודק מה יש בדיסק של המירור; את `static/llms.txt` ו-`static/llms-docs.txt` מכניסים ל-commit
+יחד עם המצביע של המירור.
+
+**‏`/mirror.ndjson`:** העמודים הממוררים כפיד אחד, באותו מבנה כמו `/docs.ndjson`. הקובץ נמצא ב-image
+של המירור, ו-nginx של האתר מעביר אליו את הבקשה (רק כש-`mirror.enabled`).
 
 **פער מול המקור:** ה-job ‏`4e. Mirror drift report` מריץ `make mirror-check` ומדווח ב-summary,
 בלי להכשיל כלום. הוא **כבוי כברירת מחדל** — הוא פונה ל-redis.io — ורץ רק כשמסמנים את
@@ -516,12 +521,16 @@ HTML או JSON. upstream בונה את הארכיונים ב-CI ומגיש או�
 6. **בילד לכל (מוצר, גרסה)**:
    - `reset_workspace` (שחזור משלב 3)
    - מוחקים את שאר הגרסאות של אותו מוצר
-   - awk מסיר את ה-prefix של הגרסה מ-`relref`-ים בתוך תוכן הגרסה
+   - awk מסיר את ה-prefix של הגרסה מ-`relref`-ים ומקישורי `](/content/<product>/<version>/` בתוך תוכן הגרסה
    - `rsync -a --delete-after content/<product>/<version>/ content/<product>/` — דורסים את התוכן הראשי של המוצר בתוכן של הגרסה
    - `sed` מחזיר `linkTitle` ב-`_index.md` של ההורה לתווית המוצר ("Redis for Kubernetes" וכו')
    - `sed` משנה את תווית כפתור הדרופ-דאון מ-"latest" ל-"v<version>"
    - inject ל-`meta-links.html` שמתקן את "Edit on GitHub" כך שיצביע לתיקיית הגרסה
    - hugo
+   - **בדיקת קישורים:** קישור ש-Hugo לא מצא יוצא כ-`href="/content/..."`, שהוא 404. הבנייה נכשלת רק על
+     קישור לגרסה עצמה (`/content/<product>/<version>/`), כי זה הסימן שהסרת ה-prefix לא עבדה. שאר
+     הקישורים כאלה הם באגים בתוכן של Redis, שבורים גם ב-redis.io (issue ‏redis/docs#4155), ומודפסים
+     כאזהרה בלבד
    - `rm -rf` היעד ב-`$FINAL/<product>/<version>` (חיוני — ראו "מלכודת aliases" למטה) ואז `cp -a` של תת-העץ לשם
 7. **`mv $FINAL /site/public`** — מאחדים.
 8. **`python3 build/generate_ndjson.py`** + gzip על התוצאה הסופית.
@@ -804,5 +813,8 @@ nginx מחליף ושולח:
 ### גבולות
 - ה-`sub_filter` פעיל **רק על `.md` ו-`.json`** — לא על HTML/CSS/JS. אין סיכון להחלפה לא צפויה ב-content אחר.
 - `gzip_static` כבוי בלוקיישן הזה (כי `sub_filter` לא יכול לפעול על תוכן מכווץ); דחיסה דינמית פעילה במקום זאת.
-- ה-`__DOCS_BASE_URL__` מוטמע **רק על ידי 7 השורות** ב-`process-markdown-content.html`: שתיים ל-`relref`, שתיים ל-`image`, ושלוש לקישורי Markdown בצורה `](/content/....md)` שנוספה ב-DOC-6909. כל אחת מהן מטפלת בהפניה פנימית שמצביעה על תוכן באתר. כתובות חיצוניות שמשתמש כתב ידנית ב-MD לא נוגעים בהן.
+- ה-`__DOCS_BASE_URL__` מוטמע **רק במקומות האלה**, וכל אחד מהם מטפל בהפניה פנימית שמצביעה על תוכן באתר. כתובות חיצוניות שמשתמש כתב ידנית ב-MD לא נוגעים בהן.
+  - ‏`process-markdown-content.html`: שתיים ל-`relref`, שלוש ל-`image` (כולל תמונות Markdown מ-DOC-7128), ושלוש לקישורי Markdown בצורה `](/content/....md)` שנוספה ב-DOC-6909.
+  - ‏`markdown-command-group.html`: שתיים לטבלאות הפקודות, שנכתבו אצל Redis עם `https://redis.io/commands/`.
+  - ‏`static/llms.txt` ו-`static/llms-docs.txt`, שנכתבים עם ה-placeholder (ראו `make llms`). ל-`/llms.txt` יש location משלו עם אותו `sub_filter`.
 - לוגו ה-header וה-footer מצביעים תמיד ל-`/` — לא תלויים ב-`canonicalURL`.

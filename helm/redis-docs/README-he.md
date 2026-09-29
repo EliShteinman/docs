@@ -336,7 +336,7 @@ canonicalURL: "https://docs.intranet.example.com"
 
 כש-`canonicalURL` ריק (ברירת מחדל), nginx משתמש ב-`$scheme://$http_host` של הבקשה — אותה image שנפרסת ב-hostnames פנימיים מרובים מקבלת URLs לכל host בנפרד.
 
-ה-`sub_filter` מוגבל ל-`.md` / `.json` בלבד. תגובות HTML / CSS / JS לעולם לא נכתבות מחדש, וה-placeholder מוטמע רק בארבע נקודות מוגדרות היטב בתוך `process-markdown-content.html` (shortcodes של relref + image), כך שכתובות חיצוניות שמחבר כתב ידנית ב-Markdown נשארות ללא שינוי.
+ה-`sub_filter` מוגבל ל-`.md` / `.json` בלבד. תגובות HTML / CSS / JS לעולם לא נכתבות מחדש, וה-placeholder מוטמע רק איפה שקישור מצביע על תוכן של האתר עצמו: ב-`process-markdown-content.html` (relref, תמונות וקישורי Markdown מסוג `/content/`), בטבלאות הפקודות של `markdown-command-group.html`, וב-`/llms.txt`, שיש לו location משלו עם אותו `sub_filter`. כתובות חיצוניות שמחבר כתב ידנית ב-Markdown נשארות ללא שינוי.
 
 ### הורדת דוקומנטציה (`downloads`)
 

@@ -389,9 +389,11 @@ When `canonicalURL` is empty (default), nginx falls back to
 multiple internal hostnames yields per-host URLs.
 
 The `sub_filter` is scoped to `.md` / `.json` only. HTML / CSS / JS responses
-are never rewritten, and the placeholder is only emitted at four well-defined
-points inside `process-markdown-content.html` (relref + image shortcodes),
-so external URLs an author wrote by hand in markdown remain untouched.
+are never rewritten, and the placeholder is only emitted where a link points at
+the site's own content: `process-markdown-content.html` (relref, image and
+`/content/` Markdown links), the command tables of `markdown-command-group.html`,
+and `/llms.txt`, which has a location of its own with the same `sub_filter`.
+External URLs an author wrote by hand in markdown remain untouched.
 
 ### Documentation downloads (`downloads`)
 
