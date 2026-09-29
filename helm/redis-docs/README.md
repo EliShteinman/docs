@@ -46,7 +46,7 @@ Four things to know before you run it:
   nothing more informative.
 
 - **Leaving `mirror.enabled` off is a supported choice, not a broken one.** The
-  documentation is complete without it: the sidebar entry disappears and the links into
+  documentation is complete without it: the "More from Redis" menu disappears and the links into
   those sections are unlinked in the browser rather than leading to a 404. What you lose
   is the blog, the tutorials, the customer stories, the comparisons, the solutions, the
   technology pages and the architecture diagrams — and about 300 MB per pull.
@@ -128,27 +128,33 @@ Created only when `mirror.enabled=true`.
 |---|---|---|
 | `mirror` | nginx serving the mirrored pages and their pictures | 8080 |
 
-The blog, tutorials, customer stories, comparisons, solutions, technology pages and
-architecture diagrams are built by the same Hugo run as the documentation and split out
-of its tree afterwards (`build/split_mirror.py`), into an image of their own. That is
-1,400 pages and 238 MB of pictures a deployment does not have to carry: the
-documentation image no longer contains them.
+The blog, tutorials, customer stories, comparisons, solutions, technology pages, glossary
+terms and architecture diagrams are redis.io's own pages, captured as redis.io renders them
+(`build/marketing_mirror`) and committed under `mirror/site`, with the Next.js chunks and
+images they load. They look exactly as they do on redis.io. The pod serves them behind a
+same-origin Content-Security-Policy, so the analytics, consent banner and chat widget their
+JS reaches for are never fetched. The documentation image does not contain them.
 
-The site's nginx proxies each of their paths here, so a reader sees one site. With
-`mirror.enabled=false` there is no pod, no proxy rule, and the pages simply are not
-there — the sidebar entry is removed in the browser and the documentation's links into
-those sections are unlinked, rather than leading to a 404.
+The site's nginx proxies each of their paths here, so a reader sees one site: the
+documentation's header has a "More from Redis" menu into them, and their own Redis logo
+leads back to the documentation. With `mirror.enabled=false` there is no pod, no proxy
+rule, and the pages simply are not there — the menu is removed in the browser and the
+documentation's links into those sections are unlinked, rather than leading to a 404.
 
-The glossary is the exception and ships with the documentation: its terms publish
-inside `/glossary/`, the documentation's own section.
+`/glossary/` itself is the documentation's glossary; the terms under it are the mirror's.
+
+Links on those pages that leave the site follow `externalLinks`, through the catalog key
+`marketing-offsite`: off (the airgap default), they are hidden in menus, footers and
+buttons, and reduced to plain text inside prose.
 
 The mirrored pages have a sitemap of their own, published at `/sitemap-mirror.xml`. The
 site's own `/sitemap.xml` lists the documentation alone: it is built whether or not this
 pod is deployed, so it must not advertise addresses nothing answers.
 
-Search follows the same switch. The mirrored pages left the documentation's feed when
-they left its tree, and the search pod indexes them from the mirror image only when it
-is deployed, so a search never answers with a page nothing serves.
+Search follows the same switch. The mirrored pages have a feed of their own, built from
+the Markdown redis.io publishes for each page, and the search pod indexes it from the
+mirror image only when it is deployed, so a search never answers with a page nothing
+serves.
 
 ### Pod 3 — `redis-docs-search` (docs search)
 

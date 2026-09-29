@@ -406,6 +406,11 @@ search:
     # wins — for Redis Software that is the unversioned tree, 8.2, which has no
     # numbered tree of its own.
     versionNewestWeight: 0.6
+    # How much of its relevance a page mirrored from redis.io's marketing site
+    # (blog, tutorials, customer stories...) keeps against the documentation.
+    # Below 1 puts the documentation first, as redis.io's own search does;
+    # a post that matches far better still comes up. Needs mirror.enabled.
+    mirrorWeight: 0.5
     # Index attempts before the pod gives up. The API container and its Redis
     # start together, so the first attempt often lands before Redis is
     # listening.

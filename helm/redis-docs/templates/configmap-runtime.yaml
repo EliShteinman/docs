@@ -201,14 +201,12 @@ data:
 
     // The mirrored sections — the blog, the tutorials, the customer stories —
     // are an image of their own, and a deployment may not have deployed it.
-    // Their pages were rendered by the same Hugo run as the documentation, so
-    // the sidebar entry and the links the documentation makes into them are
-    // baked into every page either way.
+    // The header menu into them and the links the documentation makes into
+    // them are baked into every page either way.
     //
     // With the mirror deployed there is nothing to do. Without it, those links
     // lead to a 404, so they are unlinked here: the words stay and the link
-    // goes, which is the same answer the build gives a mirrored page's links
-    // to redis.io (build/site_mirror/doc_links.py).
+    // goes.
     (function () {
       var cfg = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.mirror) || {};
       if (cfg.enabled) return;
@@ -223,9 +221,9 @@ data:
       }
 
       function unlink() {
-        // The sidebar entry leads nowhere at all without the mirror, so it
+        // The header menu leads nowhere at all without the mirror, so it
         // goes rather than being unlinked into a stray heading.
-        var box = document.querySelector('details[data-mirrored-sections]');
+        var box = document.querySelector('[data-mirrored-sections-menu]');
         if (box && box.parentNode) box.parentNode.removeChild(box);
 
         var links = document.querySelectorAll('a[href^="/"]');

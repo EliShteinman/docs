@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from search.query import (
     SCORE_KEY,
     build_query,
+    documentation_first,
     one_per_row,
     parse_reply,
     query_terms,
@@ -215,3 +216,25 @@ def test_the_scorer_is_named_rather_than_left_to_the_redis_default():
     """Redis 8 defaults to BM25STD, which ranks this corpus badly -- see query.py."""
     command = search_command("docs", "vector*", 30)
     assert command[command.index("SCORER") + 1] == "BM25"
+
+
+def _sourced(title: str, source: str) -> dict:
+    return {"title": title, "source": source, "hierarchy": [source]}
+
+
+def test_documentation_results_come_before_mirrored_ones():
+    ranked = [_sourced("post", "blog"), _sourced("page", "docs"), _sourced("story", "site")]
+    assert [r["title"] for r in documentation_first(ranked)] == ["page", "post", "story"]
+
+
+def test_each_source_keeps_its_rank_order():
+    ranked = [_sourced("b1", "blog"), _sourced("d1", "docs"), _sourced("b2", "blog"), _sourced("d2", "docs")]
+    assert [r["title"] for r in documentation_first(ranked)] == ["d1", "d2", "b1", "b2"]
+
+
+def test_a_source_narrows_the_query_to_it():
+    assert build_query("vector*", "all", "blog").endswith(" @source:{blog}")
+
+
+def test_no_source_searches_every_source():
+    assert "@source" not in build_query("vector*", "all")

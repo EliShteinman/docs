@@ -23,10 +23,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        # Static files and nothing else: the pages were rendered by the same
-        # Hugo run as the documentation, and split out of its tree afterwards
-        # (build/split_mirror.py). No sub_filter, no download packing, no
-        # proxying — the site's own nginx does all of that and routes here.
+        # Static files and nothing else: redis.io's marketing pages as redis.io
+        # renders them, captured and committed (build/marketing_mirror), served
+        # behind a same-origin Content-Security-Policy. No sub_filter, no
+        # download packing, no proxying — the site's own nginx routes here.
         - name: mirror
           image: {{ include "redis-docs.mirrorImage" . }}
           imagePullPolicy: {{ .Values.mirror.image.pullPolicy }}

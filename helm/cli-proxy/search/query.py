@@ -17,6 +17,7 @@ import re
 
 from search import config
 from search.product import ALL_PRODUCTS
+from search.sources import DOCS_SOURCE
 
 HIGHLIGHT_OPEN = "<b>"
 HIGHLIGHT_CLOSE = "</b>"
@@ -76,14 +77,21 @@ def _boost_whole_words_in_title(terms: list[str]) -> str:
     )
 
 
-def build_query(raw: str, product: str) -> str:
-    """Return the FT.SEARCH query for `raw`, or "" when there is nothing to search for."""
+def build_query(raw: str, product: str, source: str = "") -> str:
+    """Return the FT.SEARCH query for `raw`, or "" when there is nothing to search for.
+
+    `source` narrows to one body of content -- docs, blog, site -- which is
+    what the mirrored blog's own search page asks for. The modal never sends
+    it, and gets every source as it always has.
+    """
     terms = query_terms(raw)
     if not terms:
         return ""
     query = _boost_whole_words_in_title(terms)
     if product and product != ALL_PRODUCTS:
         query += " @product:{%s}" % _escape(product)
+    if source:
+        query += " @source:{%s}" % _escape(source)
     return query
 
 
@@ -239,3 +247,15 @@ def _decode_hierarchy(stored: str | None) -> list[str]:
     except json.JSONDecodeError:
         return []
     return crumbs if isinstance(crumbs, list) else []
+
+
+def documentation_first(results: list[dict]) -> list[dict]:
+    """Put the documentation's results ahead of the mirror's, keeping each in rank order.
+
+    The modal draws its groups in the order their first result arrives, so one
+    blog post that outscores every page of docs puts "Blog" at the top. On
+    redis.io the documentation always heads the list, and the reader of a docs
+    site is looking for docs first. The mirror weight (config.MIRROR_WEIGHT)
+    decides how many mirrored pages make the page; this decides where they go.
+    """
+    return sorted(results, key=lambda result: result.get("source") != DOCS_SOURCE)

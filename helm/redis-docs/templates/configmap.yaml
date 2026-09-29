@@ -97,6 +97,29 @@ data:
             try_files $uri $uri/ $uri/index.html =404;
         }
 
+        {{- if .Values.mirror.enabled }}
+        # /glossary/ is shared. The page itself -- and its index.* outputs -- is
+        # the documentation's glossary, which has always lived there; the terms
+        # under it (/glossary/acid-transactions/ and 55 more, with their .md)
+        # are the marketing site's, served by the mirror pod. A regex, and ahead
+        # of the asset and .md rules below, because nginx takes the first regex
+        # that matches.
+        location ~ ^/glossary/(?!index\.)[^/]+(/.*|\.md)?$ {
+            proxy_pass http://{{ include "redis-docs.fullname" . }}-mirror:8080;
+        }
+        {{- end }}
+
+        # The runtime config is this chart's values rendered into a ConfigMap, and
+        # it changes with every `helm upgrade` that touches them -- a switch in
+        # externalLinks, search.enabled, mirror.enabled. Under the asset rule
+        # below it would be cached as immutable for a week, and a reader would
+        # keep the old settings until then. no-cache keeps it cached but asks
+        # every time: an unchanged file costs a 304. An exact match, so it wins
+        # over the asset regex.
+        location = /js/runtime-config.js {
+            add_header Cache-Control "no-cache";
+        }
+
         location ~* \.(css|js|woff2?|ttf|eot|svg|png|jpg|jpeg|gif|webp|ico|mp4)$ {
             expires 7d;
             add_header Cache-Control "public, immutable";
@@ -180,19 +203,32 @@ data:
         {{- end }}
 
         {{- if .Values.mirror.enabled }}
-        # The mirrored sections live in an image of their own and are served by
-        # their own pod.
+        # The mirrored sections -- redis.io's marketing site, as redis.io renders
+        # it -- live in an image of their own and are served by their own pod,
+        # along with the Next.js chunks and images those pages load.
         #
         # `^~`, not a plain prefix: a regex location beats a prefix one in
         # nginx, so the asset and .html rules above would otherwise catch
-        # /images/site-mirror/x.webp and /blog/a-post/index.html and answer
-        # them from this image, which no longer has either. `^~` stops the
-        # regex round from happening at all.
+        # /_next/static/x.js and /blog/a-post/index.html and answer them from
+        # this image, which has neither. `^~` stops the regex round.
         {{- range splitList " " (include "redis-docs.mirrorPaths" .) }}
         location ^~ /{{ . }}/ {
             proxy_pass http://{{ include "redis-docs.fullname" $ }}-mirror:8080;
         }
         {{- end }}
+
+        # The mirrored pages' own navigation adds redis.io's language prefix --
+        # the blog's search box goes to /en/blog/search/. Only English is
+        # mirrored, and it lives at the unprefixed paths.
+        location ^~ /en/ {
+            rewrite ^/en(/.*)$ $1 permanent;
+        }
+
+        # The mirrored pages link to the documentation where redis.io keeps it.
+        # Here the documentation is the site itself.
+        location ^~ /docs/latest/ {
+            rewrite ^/docs/latest/(.*)$ /$1 permanent;
+        }
 
         # The mirrored pages' own sitemap. The site's /sitemap.xml lists the
         # documentation alone, because it is built whether or not this pod is

@@ -16,8 +16,10 @@ name: Airgap Build & Push
 #                      helm/cli-proxy changed (runs beside phases 1-4)
 #   4c. tests          the fork's own test suites (same)
 #   4d. dockerhub_description  the image pages' text, release branch only
-#   4e. mirror_drift   how far behind redis.io the mirrored sections are
-#   4f. mirror_image   the mirrored sections as an image of their own
+#   4e. mirror_drift   opt-in: how far behind redis.io the mirror is (reaches
+#                      the internet, so off unless the input is checked)
+#   4f. mirror_image   the mirrored sections as an image of their own (input,
+#                      on by default; fetches nothing from redis.io)
 #   5. publish_chart   opt-in: bump and publish the Helm chart
 #
 # Dockerfile and airgap-multibuild.sh are unchanged — local builds still work.
@@ -48,12 +50,25 @@ on:
           normal builds.
         type: string
         default: ''
+      mirror_image:
+        description: >-
+          Build and push the mirror image -- redis.io's marketing site, from the
+          pages committed under mirror/site. Nothing is fetched from redis.io.
+        type: boolean
+        default: true
+      mirror_drift:
+        description: >-
+          Report how far behind redis.io the committed mirror is. Reads
+          redis.io's sitemap over the internet; downloads and changes nothing.
+        type: boolean
+        default: false
       publish_chart:
         description: >-
           After the image push, also auto-bump the Helm chart patch version,
           commit the update back to this branch, and publish the chart as an
-          OCI artifact. Skipped automatically on partial builds and override
-          tags. For non-patch bumps build the chart manually per BUILD.md.
+          OCI artifact. Skipped automatically on partial builds -- one variant,
+          one platform, or no mirror image, since the chart's examples name the
+          mirror tag of this build -- and on override tags. For non-patch bumps build the chart manually per BUILD.md.
         type: boolean
         default: false
 
@@ -362,7 +377,7 @@ jobs:
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
           # Point the documentation's blog links at the mirrored blog in this
-          # image (content/blog, written by build/site_mirror). Mirrors the
+          # image (served by the mirror pod, build/marketing_mirror). Mirrors the
           # same step in airgap-multibuild.sh. Four domains, not one: of the
           # 184 blog links, 83 use the legacy redis.com and 16 use
           # redislabs.com.
@@ -380,12 +395,11 @@ jobs:
             -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
           # The links no rule can straighten out: legacy documentation paths
           # (/docs/<old structure>/, /topics/<page>) that moved twice, where
-          # only redis.io knows the target. build/site_mirror/doc_links.json
+          # only redis.io knows the target. build/doc_links.json
           # records where each lands, observed once with the internet and
-          # committed, so this needs no network. Inside mirrored pages a
-          # leftover redis.io link becomes the words it was written as.
+          # committed, so this needs no network.
           # Mirrors the same step in airgap-multibuild.sh.
-          python3 -m build.site_mirror.doc_links
+          python3 -m build.doc_links
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
@@ -581,7 +595,7 @@ jobs:
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
           # Point the documentation's blog links at the mirrored blog in this
-          # image (content/blog, written by build/site_mirror). Mirrors the
+          # image (served by the mirror pod, build/marketing_mirror). Mirrors the
           # same step in airgap-multibuild.sh. Four domains, not one: of the
           # 184 blog links, 83 use the legacy redis.com and 16 use
           # redislabs.com.
@@ -599,12 +613,11 @@ jobs:
             -e 's#https?://(www\.)?redis\.io/commands/?#/commands/#g'
           # The links no rule can straighten out: legacy documentation paths
           # (/docs/<old structure>/, /topics/<page>) that moved twice, where
-          # only redis.io knows the target. build/site_mirror/doc_links.json
+          # only redis.io knows the target. build/doc_links.json
           # records where each lands, observed once with the internet and
-          # committed, so this needs no network. Inside mirrored pages a
-          # leftover redis.io link becomes the words it was written as.
+          # committed, so this needs no network.
           # Mirrors the same step in airgap-multibuild.sh.
-          python3 -m build.site_mirror.doc_links
+          python3 -m build.doc_links
           sed -i 's#baseURL = "https://redis.io"#baseURL = "/"#g' config.toml
           sed -i 's/timeout="75"/timeout="600"/' config.toml
 
@@ -620,12 +633,7 @@ jobs:
           {
             find "content/$PRODUCT/$VERSION" -type f -print0 | sort -z | xargs -0 sha256sum
             for d in layouts assets data static i18n; do
-              # static/images/site-mirror is excluded: it holds ~2,700 mirrored
-              # images, and a version build keeps only public/<product>/<version>,
-              # which never contains them. Hashing them would mean every mirror
-              # sync invalidated all 29 version caches and rebuilt the whole
-              # matrix for pictures none of those pages can show.
-              [ -d "$d" ] && find "$d" -type f -not -path "static/images/site-mirror/*" -print0 \
+              [ -d "$d" ] && find "$d" -type f -print0 \
                 | sort -z | xargs -0 sha256sum
             done
             for f in config.toml postcss.config.js tailwind.config.js package-lock.json; do
@@ -654,18 +662,6 @@ jobs:
         run: |
           set -euo pipefail
           export PATH="$PWD/venv/bin:$PATH"
-
-          # The mirrored content belongs to the "latest" tree only. This job
-          # keeps nothing but public/<product>/<version>/, so rendering ~1,400
-          # mirrored documents here is work thrown away. Mirrors the same step
-          # in airgap-multibuild.sh.
-          #
-          # Every mirrored section and nothing else. content/glossary is NOT on
-          # this list: it is the documentation's own glossary, and 28 versioned
-          # pages link to it with relref -- removing it does not fail the build
-          # (refLinksErrorLevel = "WARNING") but every one of those links then
-          # resolves somewhere wrong in the shipped image.
-          rm -rf content/blog content/blog-categories content/technology content/tutorials content/tutorial-categories content/compare content/solutions content/customers content/architecture-diagrams content/redis-glossary
 
           # Remove all OTHER versions of this product
           VPARENT="content/$PRODUCT"
@@ -878,28 +874,15 @@ jobs:
           /tmp/venv/bin/python3 build/generate_ndjson.py
           /tmp/venv/bin/python3 build/tag_ndjson_versions.py
 
-      # The documentation stays in public/, the mirrored sections and their
-      # pictures move to public-mirror/, and phase 4 wraps each in an image of
-      # its own. A deployment that does not want 1,400 mirrored pages and
-      # 238 MB of pictures does not have to carry them. Mirrors the same step
-      # in the local Dockerfile.
-      - name: Split the mirrored sections out of the site tree
-        run: |
-          python3 build/split_mirror.py --site public --mirror public-mirror \
-            --assets public-mirror-assets
-
       - name: Pre-compress static assets (skip .json/.md — sub_filter at runtime)
         run: |
-          find public public-mirror public-mirror-assets -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
+          find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.svg" -o -name "*.txt" \) \
             -exec gzip -9 -k {} \;
 
       - name: Tar public/
         run: |
           tar -czf /tmp/public.tar.gz public
-          tar -czf /tmp/public-mirror.tar.gz public-mirror public-mirror-assets
           echo "Documentation: $(find public -type f | wc -l) files, $(du -sh public | cut -f1)"
-          echo "Mirror pages: $(find public-mirror -type f | wc -l) files, $(du -sh public-mirror | cut -f1)"
-          echo "Mirror pictures: $(find public-mirror-assets -type f | wc -l) files, $(du -sh public-mirror-assets | cut -f1)"
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
@@ -908,12 +891,6 @@ jobs:
           retention-days: 1
           compression-level: 0
 
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
-        with:
-          name: public-mirror
-          path: /tmp/public-mirror.tar.gz
-          retention-days: 1
-          compression-level: 0
 
       - name: Append progress
         run: |
@@ -1110,35 +1087,37 @@ jobs:
             --deselect build/test_make_doc_bundles.py::test_every_product_is_offered
 
   # =========================================================================
-  # Phase 4f: mirror_image — the sections split out of the site tree.
+  # Phase 4f: mirror_image — redis.io's marketing site, as captured.
   #
-  # The same build as the site image and the same commit, wrapped separately so
-  # a deployment can take the documentation without 1,400 mirrored pages and
-  # 238 MB of pictures. The chart proxies their paths to this pod when
-  # mirror.enabled is on, and serves neither when it is off.
+  # The pages are committed under mirror/site (build/marketing_mirror), so this
+  # job needs no Hugo build and waits on nothing but setup: it checks out the
+  # capture and wraps it. Its own image, so a deployment can take the
+  # documentation without 1,700 mirrored pages; the chart proxies their paths
+  # to this pod when mirror.enabled is on, and serves neither when it is off.
   # =========================================================================
   mirror_image:
     name: 4f. Build & push the mirror image
-    needs: [setup, assemble]
+    needs: [setup]
+    if: inputs.mirror_image
     runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
-          sparse-checkout: Dockerfile.runtime
+          sparse-checkout: |
+            Dockerfile.runtime
+            mirror/site
+            build/marketing_mirror/runtime
           sparse-checkout-cone-mode: false
-
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
-        with:
-          name: public-mirror
-          path: /tmp/
-
-      # Both trees: the pages and, separately, the pictures they reference. The
-      # image copies them as two layers, so an unchanged 243 MB of pictures is
-      # not pushed again for a stylesheet change.
-      - name: Extract the mirror trees into the build context
-        run: tar -xzf /tmp/public-mirror.tar.gz -C .
+          # mirror/site is a submodule of the private EliShteinman/redis-docs-mirror.
+          # Only the two mirror jobs fetch it; every other job leaves it empty.
+          # PRIVATE_ACCESS_TOKEN is a classic PAT with `repo`, so it reads the
+          # mirror repository; persist-credentials: false keeps that broad token
+          # out of the job's git config once the checkout is done.
+          submodules: true
+          token: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+          persist-credentials: false
 
       - name: Set up QEMU
         if: inputs.platforms != 'amd64'
@@ -1399,30 +1378,38 @@ jobs:
   # Phase 4e: mirror_drift — how far behind redis.io the mirrored sections are.
   #
   # The mirror is run by hand and its output is committed, so nothing otherwise
-  # says that redis.io has published since. One count query per tree does.
+  # says that redis.io has published since. Its sitemap does.
   #
   # It reports and never gates: a post published this morning is news, not a
   # reason to fail a build that has nothing to do with it. Nothing depends on
   # this job, and a source that cannot be reached leaves the summary saying so.
+  #
+  # Off unless the mirror_drift input is checked: it reaches redis.io, and
+  # nothing in a build should go to the internet unless asked to.
   # =========================================================================
   mirror_drift:
     name: 4e. Mirror drift report
+    if: inputs.mirror_drift
     runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          submodules: true
+          token: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+          persist-credentials: false
 
       - name: Compare the mirrored sections against their source
         continue-on-error: true
         run: |
           set -o pipefail
-          python3 -m build.site_mirror --check 2>&1 | tee /tmp/drift.txt
+          python3 -m build.marketing_mirror --check 2>&1 | tee /tmp/drift.txt
           {
             echo "## Mirror drift"
             echo ""
             echo '```'
-            sed -E 's/^[0-9-]+ [0-9:,]+ [A-Z]+ site_mirror //' /tmp/drift.txt
+            sed -E 's/^[0-9-]+ [0-9:,]+ [A-Z]+ marketing_mirror //' /tmp/drift.txt
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -1516,6 +1503,7 @@ jobs:
     needs: [setup, docker, cli_image, tests]
     if: >-
       inputs.publish_chart &&
+      inputs.mirror_image &&
       inputs.variant == 'both' &&
       inputs.platforms == 'both' &&
       inputs.tag_override == ''

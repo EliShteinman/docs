@@ -20,8 +20,8 @@ KEY_PREFIX = os.environ.get("SEARCH_KEY_PREFIX", "doc:")
 # the volume this points at.
 DOCS_FEED_PATH = os.environ.get("SEARCH_DOCS_FEED", "/corpus/docs.ndjson")
 
-# The mirrored sections ship as an image of their own, and the pages they carry
-# left the documentation's feed with them (build/split_mirror.py). Empty when
+# The mirrored sections ship as an image of their own, with a feed of their own
+# built from their Markdown (build/marketing_mirror/feed.py). Empty when
 # the mirror is not deployed, which is what keeps search from answering with a
 # blog post this site does not serve.
 MIRROR_FEED_PATH = os.environ.get("SEARCH_MIRROR_FEED", "")
@@ -78,6 +78,13 @@ VERSION_WEIGHT = float(os.environ.get("SEARCH_VERSION_WEIGHT", "0.3"))
 # Below 1 on purpose, so the current documentation still outranks the newest
 # archived copy of the same page.
 VERSION_NEWEST_WEIGHT = float(os.environ.get("SEARCH_VERSION_NEWEST_WEIGHT", "0.6"))
+
+# How much of its relevance a page mirrored from redis.io's marketing site --
+# a blog post, a tutorial, a customer story -- keeps against the documentation.
+# redis.io's own search puts its documentation first and its blog after it; a
+# multiplier below 1 does the same here without hiding the mirror: a post that
+# matches far better than any page of docs still comes up.
+MIRROR_WEIGHT = float(os.environ.get("SEARCH_MIRROR_WEIGHT", "0.5"))
 
 # The bonus a page gets for carrying the typed words, whole, in its title. See
 # query.py for why a prefix alone ranks a command's own page below the long
