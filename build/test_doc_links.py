@@ -7,6 +7,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from build.doc_links import (
     LEGACY,
+    alias_targets,
     apply_to_tree,
     legacy_urls,
     local_path,
@@ -73,7 +74,10 @@ def test_a_landing_outside_the_documentation_maps_to_nothing():
 
 
 def test_a_documentation_landing_becomes_the_path_this_image_serves():
-    assert local_path("https://redis.io/docs/latest/develop/clients/") == "/develop/clients/"
+    assert (
+        local_path("https://redis.io/docs/latest/develop/clients/")
+        == "/develop/clients/"
+    )
 
 
 def _tree(tmp_path: Path) -> Path:
@@ -86,7 +90,9 @@ def _tree(tmp_path: Path) -> Path:
 
 def test_every_page_gets_its_legacy_links_pointed_inward(tmp_path):
     content = _tree(tmp_path)
-    apply_to_tree(content, {"https://redis.io/docs/interact/search/": "/develop/search/"})
+    apply_to_tree(
+        content, {"https://redis.io/docs/interact/search/": "/develop/search/"}
+    )
     assert "(/develop/search/)" in (content / "blog" / "post.md").read_text()
     assert "(/develop/search/)" in (content / "page.md").read_text()
 
@@ -112,14 +118,18 @@ def test_collecting_urls_ignores_the_fragment_so_one_page_is_one_entry(tmp_path)
 def test_a_page_publishes_at_its_path(tmp_path):
     content = tmp_path / "content"
     (content / "develop").mkdir(parents=True)
-    (content / "develop" / "clients.md").write_text("---\ntitle: X\n---\n", encoding="utf-8")
+    (content / "develop" / "clients.md").write_text(
+        "---\ntitle: X\n---\n", encoding="utf-8"
+    )
     assert "/develop/clients/" in published_paths(content)
 
 
 def test_a_section_index_publishes_at_its_directory(tmp_path):
     content = tmp_path / "content"
     (content / "develop").mkdir(parents=True)
-    (content / "develop" / "_index.md").write_text("---\ntitle: X\n---\n", encoding="utf-8")
+    (content / "develop" / "_index.md").write_text(
+        "---\ntitle: X\n---\n", encoding="utf-8"
+    )
     assert "/develop/" in published_paths(content)
 
 
@@ -142,3 +152,19 @@ def test_a_declared_url_counts_as_published(tmp_path):
     assert "/blog/a-post/" in published_paths(content)
 
 
+def test_a_leaf_bundle_publishes_at_its_directory(tmp_path):
+    content = tmp_path / "content"
+    (content / "develop" / "eviction").mkdir(parents=True)
+    (content / "develop" / "eviction" / "index.md").write_text(
+        "---\ntitle: X\n---\n", encoding="utf-8"
+    )
+    assert "/develop/eviction/" in published_paths(content)
+
+
+def test_an_alias_maps_to_the_page_that_declares_it(tmp_path):
+    content = tmp_path / "content"
+    (content / "develop").mkdir(parents=True)
+    (content / "develop" / "pubsub.md").write_text(
+        "---\ntitle: X\naliases:\n- /develop/interact/pubsub\n---\n", encoding="utf-8"
+    )
+    assert alias_targets(content) == {"/develop/interact/pubsub/": "/develop/pubsub/"}

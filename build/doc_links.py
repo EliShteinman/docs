@@ -27,6 +27,7 @@ import re
 import sys
 import urllib.error
 import urllib.request
+from collections.abc import Iterator
 from pathlib import Path
 
 
@@ -76,41 +77,63 @@ def observe(url: str, timeout: float) -> str:
         return ""
 
 
+def _cleaned(path: str) -> str:
+    """A frontmatter path as the URL Hugo serves it at, or "" if it is not absolute."""
+    cleaned = path.strip().strip('"').strip("'").split("#")[0].split("?")[0]
+    return cleaned.rstrip("/") + "/" if cleaned.startswith("/") else ""
+
+
+def pages(content_root: Path) -> Iterator[tuple[str, list[str]]]:
+    """Yield each page's own URL and its aliases.
+
+    A page's URL is its `url:` when it declares one and its path in the tree
+    otherwise, which is what Hugo does with these sections. A leaf bundle's
+    `index.md` is the page of its directory, like a branch's `_index.md`.
+    """
+    for markdown in content_root.rglob("*.md"):
+        relative = markdown.relative_to(content_root)
+        bundle = relative.name in ("_index.md", "index.md")
+        stem = relative.parent if bundle else relative.with_suffix("")
+        own = _cleaned("/" + str(stem).strip(".").strip("/"))
+        aliases: list[str] = []
+        text = markdown.read_text(encoding="utf-8", errors="replace")
+        if text.startswith("---"):
+            frontmatter = text.partition("---")[2].partition("\n---")[0]
+            in_aliases = False
+            for line in frontmatter.splitlines():
+                if line.startswith("url:"):
+                    own = _cleaned(line.split(":", 1)[1]) or own
+                elif line.startswith("aliases:"):
+                    in_aliases = True
+                elif in_aliases and line.lstrip().startswith("- "):
+                    aliases.append(_cleaned(line.lstrip()[2:]))
+                elif in_aliases and line and not line[0].isspace():
+                    in_aliases = False
+        yield own, [alias for alias in aliases if alias]
+
+
 def published_paths(content_root: Path) -> set[str]:
     """Every path this site publishes: each page's own URL, and its aliases.
 
     Read from the content rather than from a build, so the map can be checked
-    without one. A page's URL is its `url:` when it declares one and its path in
-    the tree otherwise, which is what Hugo does with these sections.
+    without one.
     """
     # The home page has no content file of its own (config.toml builds it from
     # layouts), so it is named here rather than discovered.
     published: set[str] = {"/"}
-
-    def add(path: str) -> None:
-        cleaned = path.strip().strip('"').strip("'").split("#")[0].split("?")[0]
-        if cleaned.startswith("/"):
-            published.add(cleaned.rstrip("/") + "/")
-
-    for markdown in content_root.rglob("*.md"):
-        relative = markdown.relative_to(content_root)
-        stem = relative.parent if relative.name == "_index.md" else relative.with_suffix("")
-        add("/" + str(stem).strip(".").strip("/"))
-        text = markdown.read_text(encoding="utf-8", errors="replace")
-        if not text.startswith("---"):
-            continue
-        frontmatter = text.partition("---")[2].partition("\n---")[0]
-        in_aliases = False
-        for line in frontmatter.splitlines():
-            if line.startswith("url:"):
-                add(line.split(":", 1)[1])
-            elif line.startswith("aliases:"):
-                in_aliases = True
-            elif in_aliases and line.lstrip().startswith("- "):
-                add(line.lstrip()[2:])
-            elif in_aliases and line and not line[0].isspace():
-                in_aliases = False
+    for own, aliases in pages(content_root):
+        published.add(own)
+        published.update(aliases)
     return published
+
+
+def alias_targets(content_root: Path) -> dict[str, str]:
+    """Map each alias to the page it redirects to.
+
+    An alias is published as a redirect and nothing else: a link to its
+    Markdown or JSON form (`index.html.md`) finds no file.
+    """
+    return {alias: own for own, aliases in pages(content_root) for alias in aliases}
 
 
 def refresh(content_root: Path, timeout: float = 30.0) -> dict[str, str]:
