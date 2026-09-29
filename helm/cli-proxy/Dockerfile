@@ -2,24 +2,18 @@ FROM python:3.14-alpine
 
 WORKDIR /app
 
-COPY requirements.txt .
+# Built from helm/ (docker build -f cli-proxy/Dockerfile helm), so resp.py,
+# which the search image uses as well, lives once in helm/common/.
+COPY cli-proxy/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY config.py resp.py namespace.py sessions.py main.py ./
-
-# The docs search service. It shares this image rather than getting one of its
-# own: it needs the same flask, the same gunicorn and resp.py itself, and a
-# third image would be a third thing to build, mirror and carry through the
-# air gap. The chart runs it from a separate deployment with its own command,
-# so enabling search does not enable the playground or the other way round.
-COPY search/__init__.py search/config.py search/paths.py search/product.py \
-     search/sources.py search/hierarchy.py search/indexer.py search/query.py \
-     search/main.py ./search/
+COPY common/resp.py ./
+COPY cli-proxy/config.py cli-proxy/namespace.py cli-proxy/sessions.py cli-proxy/main.py ./
 
 RUN adduser -D appuser
 USER appuser
 
-EXPOSE 8090 8091
+EXPOSE 8090
 
 # One worker, not two: sessions are held in process memory, so a second worker
 # gets its own registry and a reader's next command can land on the process that
