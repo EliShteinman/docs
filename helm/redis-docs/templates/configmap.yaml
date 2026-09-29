@@ -109,6 +109,17 @@ data:
         }
         {{- end }}
 
+        # The runtime config is this chart's values rendered into a ConfigMap, and
+        # it changes with every `helm upgrade` that touches them -- a switch in
+        # externalLinks, search.enabled, mirror.enabled. Under the asset rule
+        # below it would be cached as immutable for a week, and a reader would
+        # keep the old settings until then. no-cache keeps it cached but asks
+        # every time: an unchanged file costs a 304. An exact match, so it wins
+        # over the asset regex.
+        location = /js/runtime-config.js {
+            add_header Cache-Control "no-cache";
+        }
+
         location ~* \.(css|js|woff2?|ttf|eot|svg|png|jpg|jpeg|gif|webp|ico|mp4)$ {
             expires 7d;
             add_header Cache-Control "public, immutable";
