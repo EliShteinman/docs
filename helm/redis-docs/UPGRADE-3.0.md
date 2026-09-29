@@ -78,6 +78,8 @@ in step 2 with `--set`.
   ServiceMonitor.
 - `redis-docs-services` is created and starts building the search index.
 - The site updates with a rolling update, without downtime.
+- The PodDisruptionBudget now covers the site's pods only. Before, it covered every pod
+  in the release.
 - The CLI and search are unavailable for a minute or two, until the services pod finishes
   indexing. With `Recreate` this happens on every upgrade, not only this one.
 

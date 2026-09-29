@@ -68,6 +68,7 @@ helm upgrade redis-docs oci://$REG/redis-docs --version 3.0.0 -f my-values.yaml
 - נמחקים גם ה-Service ‏`redis-docs-mirror`, ה-ConfigMap של metrics, ה-Route של metrics וה-ServiceMonitor.
 - ‏`redis-docs-services` נוצר, ומתחיל לבנות את אינדקס החיפוש.
 - האתר מתעדכן ב-rolling update, בלי השבתה.
+- ה-PodDisruptionBudget חל עכשיו רק על ה-pods של האתר. קודם הוא תפס את כל ה-pods של ה-release.
 - ה-CLI והחיפוש לא זמינים לדקה-שתיים, עד שה-pod של השירותים מסיים לבנות את האינדקס. בפריסה עם `Recreate` זה קורה בכל שדרוג, לא רק בזה.
 
 ## שלב 4: לוודא
