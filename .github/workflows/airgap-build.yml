@@ -953,6 +953,11 @@ jobs:
             echo "::error::$PAGE must open with <!-- short: ... -->."
             exit 1
           fi
+          # build-push-action may split a labels line on commas.
+          if [[ "$DESCRIPTION" == *,* ]]; then
+            echo "::error::The short description in $PAGE must not contain a comma."
+            exit 1
+          fi
           echo "description=$DESCRIPTION" >> "$GITHUB_OUTPUT"
 
       - name: Build & push privileged
@@ -1168,6 +1173,11 @@ jobs:
           DESCRIPTION=$(sed -nE '1s/^<!-- short: (.*) -->$/\1/p' "$PAGE")
           if [ -z "$DESCRIPTION" ]; then
             echo "::error::$PAGE must open with <!-- short: ... -->."
+            exit 1
+          fi
+          # build-push-action may split a labels line on commas.
+          if [[ "$DESCRIPTION" == *,* ]]; then
+            echo "::error::The short description in $PAGE must not contain a comma."
             exit 1
           fi
           echo "description=$DESCRIPTION" >> "$GITHUB_OUTPUT"

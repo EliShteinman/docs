@@ -1,4 +1,4 @@
-<!-- short: The redis.io blog, tutorials and other marketing sections, mirrored for the air-gapped Redis docs -->
+<!-- short: The redis.io blog and tutorials and the other marketing sections mirrored for the air-gapped Redis docs -->
 # redis.io sections, mirrored
 
 The parts of redis.io the air-gapped

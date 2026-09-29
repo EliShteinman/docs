@@ -130,6 +130,11 @@ runs:
           echo "::error::.github/dockerhub/$NAME.md must open with <!-- short: ... -->."
           exit 1
         fi
+        # build-push-action may split a labels line on commas.
+        if [[ "$DESCRIPTION" == *,* ]]; then
+          echo "::error::The short description in .github/dockerhub/$NAME.md must not contain a comma."
+          exit 1
+        fi
 
         {
           echo "source_hash=$SOURCE_HASH"
