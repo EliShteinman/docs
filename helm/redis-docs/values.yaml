@@ -180,7 +180,7 @@ cli:
   image:
     registry: a0533057932
     name: redis-docs-cli
-    tag: "0.6.0"
+    tag: "0.6.1"
     pullPolicy: IfNotPresent
   # How long a browser session lives in the proxy. A session holds a Redis
   # connection of its own so transactions survive between typed commands, so

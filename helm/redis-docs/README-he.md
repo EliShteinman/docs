@@ -31,8 +31,8 @@ skopeo copy docker://a0533057932/redis-docs:<hash>-unprivileged \
             docker://registry.internal.company.com/redis-docs:<hash>-unprivileged
 skopeo copy docker://a0533057932/redis-docs-mirror:<hash>-unprivileged \
             docker://registry.internal.company.com/redis-docs-mirror:<hash>-unprivileged
-skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
-            docker://registry.internal.company.com/redis-docs-cli:0.6.0
+skopeo copy docker://a0533057932/redis-docs-cli:0.6.1 \
+            docker://registry.internal.company.com/redis-docs-cli:0.6.1
 skopeo copy docker://a0533057932/redis-docs-search:0.1.0 \
             docker://registry.internal.company.com/redis-docs-search:0.1.0
 
@@ -45,7 +45,7 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
 
 ארבעה דברים שחשוב לדעת לפני שמריצים:
 
-- **התגים האלה לא קיימים עד שהגרסה הזו נבנית.** ‏`redis-docs-cli:0.6.0`, ‏`redis-docs-search:0.1.0` והתגים
+- **התגים האלה לא קיימים עד שהגרסה הזו נבנית.** ‏`redis-docs-cli:0.6.1`, ‏`redis-docs-search:0.1.0` והתגים
   `redis-docs-mirror:*-unprivileged` נוצרים בהרצה הראשונה של ה-workflow לגרסה הזו — כדאי
   לבדוק בסיכום ההרצה, או ב-Docker Hub, לפני שממררים אותם. פריסה מול תג שלא נדחף מסתיימת
   ב-ImagePullBackOff ולא במשהו יותר מסביר.
@@ -379,7 +379,7 @@ downloads:
 |---|---|---|---|---|
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן — אחד מהשניים |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן — אחד מהשניים |
-| `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.1` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
 | `a0533057932/redis-docs-search` | `0.1.0` | 8091 | API החיפוש בדוקס | לא — רק אם `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6380 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
@@ -395,7 +395,7 @@ downloads:
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-2.0.5.tgz
+helm install redis-docs redis-docs-3.0.1.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -403,7 +403,7 @@ helm install redis-docs redis-docs-2.0.5.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-2.0.5.tgz -f my-values.yaml
+helm install redis-docs redis-docs-3.0.1.tgz -f my-values.yaml
 ```
 
 להלן דוגמה לתרחיש פריסה טיפוסי.
@@ -433,7 +433,7 @@ imagePullSecrets:
 # --- תמונה ראשית (דריסת תג ספציפי) ---
 image:
   name: redis-docs
-  tag: "b00e22ad3-unprivileged"
+  tag: "c02617b4f-unprivileged"
 
 # --- Route (בחרו אחת מ-3 האפשרויות) ---
 
@@ -585,8 +585,8 @@ docker pull a0533057932/redis-docs:unprivileged
 docker save a0533057932/redis-docs:unprivileged -o redis-docs.tar
 
 # CLI playground (אופציונלי)
-docker pull a0533057932/redis-docs-cli:0.6.0
-docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
+docker pull a0533057932/redis-docs-cli:0.6.1
+docker save a0533057932/redis-docs-cli:0.6.1 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
@@ -607,13 +607,13 @@ docker save a0533057932/redis-docs-mirror:unprivileged -o redis-docs-mirror.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-2.0.5.tgz
+# ייצור: redis-docs-3.0.1.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-2.0.5.tgz`
+- `redis-docs-3.0.1.tgz`
 - `redis-docs.tar`
 - `redis-docs-cli.tar` (אופציונלי - CLI)
 - `redis-docs-search.tar` (אופציונלי - חיפוש)
@@ -634,8 +634,8 @@ docker tag a0533057932/redis-docs-mirror:unprivileged REGISTRY/redis-docs-mirror
 docker push REGISTRY/redis-docs-mirror:unprivileged
 
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
-docker push REGISTRY/redis-docs-cli:0.6.0
+docker tag a0533057932/redis-docs-cli:0.6.1 REGISTRY/redis-docs-cli:0.6.1
+docker push REGISTRY/redis-docs-cli:0.6.1
 
 docker load -i redis-docs-search.tar
 docker tag a0533057932/redis-docs-search:0.1.0 REGISTRY/redis-docs-search:0.1.0
@@ -651,20 +651,20 @@ docker push REGISTRY/redis:8.10.0-alpine
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-2.0.5.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-3.0.1.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-2.0.5.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-3.0.1.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
 > **תמונה שנבנתה מחדש תחת אותו תג לא תימשך.** ברירת המחדל של שתי התמונות היא
 > `pullPolicy: IfNotPresent`, כך שצומת שכבר מחזיק את `latest` ימשיך להגיש את השכבות הישנות
 > וה-upgrade ייראה מוצלח בלי לשנות דבר. דחפו תחת תג חדש והגדירו אותו
-> (`--set cli.image.tag=0.6.0`), או קבעו `pullPolicy: Always`. נכון גם ל-`image.tag`
+> (`--set cli.image.tag=0.6.1`), או קבעו `pullPolicy: Always`. נכון גם ל-`image.tag`
 > וגם ל-`cli.image.tag`.
 
 ## גישה לאתר
@@ -749,7 +749,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.securityContext.capabilities.drop` | `[ALL]` | יכולות Linux שמוסרות (CLI) |
 | `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
-| `cli.image.tag` | `0.6.0` | תג תמונת CLI proxy. ה-workflow של airgap-build מעלה אותו בכל שינוי ב-`helm/cli-proxy` או ב-`helm/common` |
+| `cli.image.tag` | `0.6.1` | תג תמונת CLI proxy. ה-workflow של airgap-build מעלה אותו בכל שינוי ב-`helm/cli-proxy` או ב-`helm/common` |
 | `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי CLI proxy |
 | `cli.session.idleTtlSeconds` | `1800` | סגירת סשן דפדפן לאחר פרק זמן זה ללא פקודה |

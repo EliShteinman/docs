@@ -33,8 +33,8 @@ skopeo copy docker://a0533057932/redis-docs:<hash>-unprivileged \
             docker://registry.internal.company.com/redis-docs:<hash>-unprivileged
 skopeo copy docker://a0533057932/redis-docs-mirror:<hash>-unprivileged \
             docker://registry.internal.company.com/redis-docs-mirror:<hash>-unprivileged
-skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
-            docker://registry.internal.company.com/redis-docs-cli:0.6.0
+skopeo copy docker://a0533057932/redis-docs-cli:0.6.1 \
+            docker://registry.internal.company.com/redis-docs-cli:0.6.1
 skopeo copy docker://a0533057932/redis-docs-search:0.1.0 \
             docker://registry.internal.company.com/redis-docs-search:0.1.0
 
@@ -47,7 +47,7 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
 
 Four things to know before you run it:
 
-- **These tags do not exist until this release is built.** `redis-docs-cli:0.6.0`,
+- **These tags do not exist until this release is built.** `redis-docs-cli:0.6.1`,
   `redis-docs-search:0.1.0` and the `redis-docs-mirror:*-unprivileged` tags are
   produced by the first run of the build workflow for this version — check the run
   summary, or Docker Hub, before you mirror them. Deploying against a tag that was never pushed is an ImagePullBackOff and
@@ -455,7 +455,7 @@ A limit costs nothing until the container actually runs.
 |---|---|---|---|---|
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | Standard run with `docker run` (privileged) | Yes — one of the two |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | Yes — one of the two |
-| `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
+| `a0533057932/redis-docs-cli` | `0.6.1` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
 | `a0533057932/redis-docs-search` | `0.1.0` | 8091 | Docs search API | No — only if `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6380 | Redis holding the search index | No — only if `search.enabled=true` |
@@ -471,7 +471,7 @@ A limit costs nothing until the container actually runs.
 ### Basic usage
 
 ```bash
-helm install redis-docs redis-docs-2.0.5.tgz
+helm install redis-docs redis-docs-3.0.1.tgz
 ```
 
 ### Installation with a values file
@@ -479,7 +479,7 @@ helm install redis-docs redis-docs-2.0.5.tgz
 The recommended approach - a custom `values.yaml` file:
 
 ```bash
-helm install redis-docs redis-docs-2.0.5.tgz -f my-values.yaml
+helm install redis-docs redis-docs-3.0.1.tgz -f my-values.yaml
 ```
 
 Below is an example of a typical deployment scenario.
@@ -509,7 +509,7 @@ imagePullSecrets:
 # --- Main image (specific tag override) ---
 image:
   name: redis-docs
-  tag: "b00e22ad3-unprivileged"
+  tag: "c02617b4f-unprivileged"
 
 # --- Route (choose one of the 3 options) ---
 
@@ -658,8 +658,8 @@ docker pull a0533057932/redis-docs:unprivileged
 docker save a0533057932/redis-docs:unprivileged -o redis-docs.tar
 
 # CLI playground (optional)
-docker pull a0533057932/redis-docs-cli:0.6.0
-docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
+docker pull a0533057932/redis-docs-cli:0.6.1
+docker save a0533057932/redis-docs-cli:0.6.1 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
@@ -680,13 +680,13 @@ docker save a0533057932/redis-docs-search:0.1.0 -o redis-docs-search.tar
 
 ```bash
 helm package helm/redis-docs/
-# Produces: redis-docs-2.0.5.tgz
+# Produces: redis-docs-3.0.1.tgz
 ```
 
 ### Step 3: Transfer files to the air-gapped network
 
 Transfer the following files:
-- `redis-docs-2.0.5.tgz`
+- `redis-docs-3.0.1.tgz`
 - `redis-docs.tar`
 - `redis-docs-cli.tar` (optional - CLI)
 - `redis-docs-search.tar` (optional - search)
@@ -707,8 +707,8 @@ docker tag a0533057932/redis-docs-mirror:unprivileged REGISTRY/redis-docs-mirror
 docker push REGISTRY/redis-docs-mirror:unprivileged
 
 docker load -i redis-docs-cli.tar
-docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
-docker push REGISTRY/redis-docs-cli:0.6.0
+docker tag a0533057932/redis-docs-cli:0.6.1 REGISTRY/redis-docs-cli:0.6.1
+docker push REGISTRY/redis-docs-cli:0.6.1
 
 docker load -i redis-docs-search.tar
 docker tag a0533057932/redis-docs-search:0.1.0 REGISTRY/redis-docs-search:0.1.0
@@ -724,20 +724,20 @@ docker push REGISTRY/redis:8.10.0-alpine
 ## Version Upgrade
 
 ```bash
-helm upgrade redis-docs redis-docs-2.0.5.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-3.0.1.tgz -f my-values.yaml
 ```
 
 Or with a single value override:
 
 ```bash
-helm upgrade redis-docs redis-docs-2.0.5.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-3.0.1.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
 > **A rebuilt image under the same tag will not be pulled.** Both images default to
 > `pullPolicy: IfNotPresent`, so a node that already holds `latest` keeps serving the old
 > layers and the upgrade appears to succeed while changing nothing. Push under a new tag and
-> set it (`--set cli.image.tag=0.6.0`), or set `pullPolicy: Always`. This applies to
+> set it (`--set cli.image.tag=0.6.1`), or set `pullPolicy: Always`. This applies to
 > `image.tag` and `cli.image.tag` alike.
 
 ## Accessing the Site
@@ -822,7 +822,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (CLI) |
 | `cli.image.registry` | `a0533057932` | CLI proxy image registry |
 | `cli.image.name` | `redis-docs-cli` | CLI proxy image name |
-| `cli.image.tag` | `0.6.0` | CLI proxy image tag. The airgap-build workflow bumps it whenever `helm/cli-proxy` or `helm/common` changes |
+| `cli.image.tag` | `0.6.1` | CLI proxy image tag. The airgap-build workflow bumps it whenever `helm/cli-proxy` or `helm/common` changes |
 | `cli.image.pullPolicy` | `IfNotPresent` | CLI image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | CLI proxy resources |
 | `cli.session.idleTtlSeconds` | `1800` | Close a browser session after this long without a command |
