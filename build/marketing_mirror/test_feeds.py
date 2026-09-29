@@ -48,51 +48,73 @@ def mirror(fetcher, assets, tmp_path) -> feeds.FeedMirror:
     return feeds.FeedMirror(fetcher, assets, tmp_path)
 
 
-def test_listings_include_the_blog_index():
-    assert feeds.listings([])["blog"] == {}
+def _named(found: list[feeds.Listing]) -> dict[str, feeds.Listing]:
+    return {listing.name: listing for listing in found}
+
+
+def test_listings_include_the_blog_index_from_its_first_post():
+    assert _named(feeds.listings([]))["blog"].first_start == 0
 
 
 def test_listings_include_each_category_with_its_query():
-    found = feeds.listings(["/blog/category/tech/"])
-    assert found["category/tech"] == {
-        "pathname": "/blog/category/tech/",
-        "slug": "tech",
-    }
+    tech = _named(feeds.listings(["/blog/category/tech/"]))["category/tech"]
+    assert (tech.endpoint, tech.query["slug"]) == ("category", "tech")
+
+
+def test_listings_send_an_author_slug_wrapped_in_slashes():
+    author = _named(feeds.listings(["/blog/author/itamarhaber/"]))["author/itamarhaber"]
+    assert (author.endpoint, author.query) == ("author", {"slug": "/itamarhaber/"})
 
 
 def test_listings_skip_a_post():
-    assert list(feeds.listings(["/blog/a-post/"])) == ["blog"]
+    assert list(_named(feeds.listings(["/blog/a-post/"]))) == ["blog"]
 
 
-def test_capture_starts_after_the_posts_the_page_renders(mirror, fetcher):
-    mirror.capture("blog", {})
+@pytest.fixture
+def category() -> feeds.Listing:
+    return _named(feeds.listings(["/blog/category/tech/"]))["category/tech"]
+
+
+def test_capture_starts_after_the_posts_the_page_renders(mirror, fetcher, category):
+    mirror.capture(category)
     assert fetcher.queries[0]["start"] == ["21"]
 
 
-def test_capture_walks_until_the_reported_total(mirror):
-    assert mirror.capture("blog", {}) == 2
+def test_capture_walks_until_the_reported_total(mirror, category):
+    assert mirror.capture(category) == 2
 
 
-def test_capture_names_each_batch_by_its_start(mirror, tmp_path):
-    mirror.capture("blog", {})
-    assert feeds.batch_file(tmp_path, "blog", 42).is_file()
+def test_capture_names_each_batch_by_its_start(mirror, tmp_path, category):
+    mirror.capture(category)
+    assert feeds.batch_file(tmp_path, "category/tech", 42).is_file()
 
 
-def test_capture_sends_a_category_its_pathname_and_slug(mirror, fetcher):
-    mirror.capture(
-        "category/tech", {"pathname": "/blog/category/tech/", "slug": "tech"}
-    )
+def test_capture_sends_a_category_its_slug(mirror, fetcher, category):
+    mirror.capture(category)
     assert fetcher.queries[0]["slug"] == ["tech"]
 
 
-def test_capture_points_images_at_this_site(mirror, tmp_path):
-    mirror.capture("blog", {})
-    assert "/sanity/images/" in feeds.batch_file(tmp_path, "blog", 21).read_text()
+def test_capture_points_images_at_this_site(mirror, tmp_path, category):
+    mirror.capture(category)
+    assert (
+        "/sanity/images/" in feeds.batch_file(tmp_path, "category/tech", 21).read_text()
+    )
 
 
-def test_capture_mirrors_the_images_a_batch_names(mirror, assets):
-    mirror.capture("blog", {})
+def test_capture_mirrors_the_images_a_batch_names(mirror, assets, category):
+    mirror.capture(category)
     assert "/images/p/d/x-1x1.png" in assets.sanity
+
+
+def test_capture_walks_to_an_empty_batch_when_no_total_is_given(tmp_path, assets):
+    class NoTotal(FakeFetcher):
+        def get(self, url: str) -> bytes:
+            body = json.loads(super().get(url))
+            body.pop("totalPosts")
+            return json.dumps(body).encode()
+
+    author = _named(feeds.listings(["/blog/author/a/"]))["author/a"]
+    assert feeds.FeedMirror(NoTotal(), assets, tmp_path).capture(author) == 2
 
 
 def test_reuse_takes_every_previous_batch(tmp_path):
@@ -119,3 +141,15 @@ def test_reuse_keeps_the_images_a_batch_names(tmp_path):
     )
     feeds.reuse(previous, site, assets)
     assert assets.sanity == {"/images/p/d/x-1x1.png"}
+
+
+def test_a_tree_without_the_blog_index_from_0_is_not_complete(tmp_path):
+    feeds.batch_file(tmp_path, "blog", 21).parent.mkdir(parents=True)
+    feeds.batch_file(tmp_path, "blog", 21).write_text("{}")
+    assert not feeds.complete(tmp_path)
+
+
+def test_a_tree_with_the_blog_index_from_0_is_complete(tmp_path):
+    feeds.batch_file(tmp_path, "blog", 0).parent.mkdir(parents=True)
+    feeds.batch_file(tmp_path, "blog", 0).write_text("{}")
+    assert feeds.complete(tmp_path)
