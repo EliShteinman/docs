@@ -1,4 +1,4 @@
-<!-- short: Docs search API for the air-gapped Redis docs — indexes the site's feed into the Redis query engine -->
+<!-- short: Search API for the air-gapped Redis docs — indexes the site's feed into the Redis query engine -->
 # Docs search API
 
 The search service behind the search box of the air-gapped

@@ -1415,13 +1415,16 @@ jobs:
                     -H 'Content-Type: application/json' -d @- \
                 | jq -r .token)
 
-          for repo in $REPO $MIRROR_REPO $CLI_REPO $SEARCH_REPO; do
+          REPOS="$REPO $MIRROR_REPO $CLI_REPO $SEARCH_REPO"
+
+          # Check every file before touching Docker Hub, so a bad one does not
+          # leave the pages half updated.
+          for repo in $REPOS; do
             file=".github/dockerhub/${repo##*/}.md"
             if [ ! -f "$file" ]; then
               echo "::error::$file is missing — every pushed repository needs its description."
               exit 1
             fi
-
             # First line carries the one-line summary Docker Hub shows in
             # search results; the rest is the page itself.
             SHORT=$(sed -nE '1s/^<!-- short: (.*) -->$/\1/p' "$file")
@@ -1429,6 +1432,17 @@ jobs:
               echo "::error::$file must open with <!-- short: ... -->."
               exit 1
             fi
+            # Docker Hub answers a longer one with a bare 400. Counted in bytes,
+            # never fewer than the characters Docker Hub counts.
+            if [ "$(printf '%s' "$SHORT" | wc -c)" -gt 100 ]; then
+              echo "::error::The short description in $file is over Docker Hub's 100 characters."
+              exit 1
+            fi
+          done
+
+          for repo in $REPOS; do
+            file=".github/dockerhub/${repo##*/}.md"
+            SHORT=$(sed -nE '1s/^<!-- short: (.*) -->$/\1/p' "$file")
             FULL=$(tail -n +2 "$file")
 
             # A repository is created by its first push. One this run did not
@@ -1451,9 +1465,13 @@ jobs:
               continue
             fi
 
-            jq -n --arg d "$SHORT" --arg f "$FULL" '{description: $d, full_description: $f}' \
-              | curl -sS --fail-with-body -o /dev/null -X PATCH "$API/repositories/$repo/" \
-                  -H "Authorization: JWT $JWT" -H 'Content-Type: application/json' -d @-
+            RESULT=$(jq -n --arg d "$SHORT" --arg f "$FULL" '{description: $d, full_description: $f}' \
+              | curl -sS -w '\n%{http_code}' -X PATCH "$API/repositories/$repo/" \
+                  -H "Authorization: JWT $JWT" -H 'Content-Type: application/json' -d @-)
+            if [ "${RESULT##*$'\n'}" != "200" ]; then
+              echo "::error::Docker Hub rejected the description of $repo (${RESULT##*$'\n'}): ${RESULT%$'\n'*}"
+              exit 1
+            fi
             echo "$repo: description updated from $file."
             echo "- updated \`$repo\` from \`$file\`" >> "$GITHUB_STEP_SUMMARY"
           done
