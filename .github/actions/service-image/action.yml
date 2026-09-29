@@ -207,6 +207,27 @@ runs:
           docker run --rm --platform "$platform" "$IMAGE" python -c "$SMOKE"
         done
 
+    # A run that finds the tag already holding this code builds nothing, so
+    # nothing would move `latest` either -- and a run cancelled between pushing
+    # the version tag and `latest` leaves `latest` behind for good. Point it at
+    # the tag the chart will name, whichever run built it.
+    - name: Point latest at the ${{ inputs.id }} tag
+      if: steps.resolve.outputs.build == 'false' && inputs.tag-override == ''
+      shell: bash
+      env:
+        REPO: ${{ inputs.repo }}
+        TAG: ${{ steps.resolve.outputs.tag }}
+      run: |
+        set -euo pipefail
+        tag_digest=$(docker buildx imagetools inspect "$REPO:$TAG" --format '{{json .Manifest}}' | jq -r .digest)
+        latest_digest=$(docker buildx imagetools inspect "$REPO:latest" --format '{{json .Manifest}}' 2>/dev/null | jq -r .digest || true)
+        if [ "$tag_digest" = "$latest_digest" ]; then
+          echo "$REPO:latest already is $TAG."
+        else
+          docker buildx imagetools create -t "$REPO:latest" "$REPO:$TAG"
+          echo "$REPO:latest now points at $TAG."
+        fi
+
     - name: Write the ${{ inputs.id }} image summary
       if: always()
       shell: bash
