@@ -1109,10 +1109,14 @@ jobs:
       # requirements file in this repo declares. test_every_product_is_offered
       # is left out because Redis Radar is missing from data/doc_bundles.json
       # upstream — it fails on redis/docs main too, and is not ours to fix.
+      # test_cmd_tools.py is left out because upstream #4107 removed
+      # FILTER_PREFIXES from build/cmd_tools.py but not from the test, which
+      # now fails on import — on redis/docs main as well.
       - name: Run the build tooling tests
         run: |
           python -m pytest build -q \
             --ignore=build/jupyterize \
+            --ignore=build/test_cmd_tools.py \
             --deselect build/test_make_doc_bundles.py::test_every_product_is_offered
 
   # =========================================================================

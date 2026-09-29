@@ -321,9 +321,10 @@ docker buildx imagetools inspect a0533057932/redis-docs-search:0.1.0 \
 
 ה-job ‏`4c. Fork tests` רץ במקביל ומריץ את כל בדיקות הפורק (‏`helm/cli-proxy` כולל
 `test_acl.py`, `helm/search` ו-`build/`). הוא לא עוצר את בניית ה-image-ים, אבל בלעדיו שלב 5
-לא מפרסם chart. שני חריגים: `build/jupyterize` (דורש `nbformat` שאף קובץ requirements ברפו לא
-מכריז עליו) ו-`test_every_product_is_offered` (‏Radar חסר ב-`data/doc_bundles.json` של רדיס
-עצמה, נכשל גם על main שלהם).
+לא מפרסם chart. שלושה חריגים: `build/jupyterize` (דורש `nbformat` שאף קובץ requirements ברפו
+לא מכריז עליו), `test_every_product_is_offered` (‏Radar חסר ב-`data/doc_bundles.json` של רדיס
+עצמה, נכשל גם על main שלהם) ו-`build/test_cmd_tools.py` (‏#4107 של רדיס הסיר את
+`FILTER_PREFIXES` מ-`cmd_tools.py` ולא מהבדיקה, שנכשלת בייבוא גם על main שלהם).
 
 תג שפורסם אף פעם לא נדרס. הרצה שבנתה image בלי `publish_chart` לא משאירה עבודה: ההרצה
 הבאה מוצאת את התג עם אותו hash ומפנה אליו את הצ'ארט. הרצת בדיקה עם `tag_override` דוחפת
