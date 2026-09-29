@@ -1,15 +1,20 @@
 """Mirror redis.io's marketing site into mirror/site.
 
-    python -m build.marketing_mirror [--limit N] [--check]
+    python -m build.marketing_mirror [--full] [--limit N] [--check]
 
-Every run is a full refresh. The header, the menus and the footer are part of
-every page, so refreshing only the pages that changed would leave pages
-captured months apart wearing different menus. A run downloads every page with
-the chunks that build of redis.io serves, writes them to a fresh directory,
-and replaces mirror/site only when the run is complete.
+A run fetches only what changed. redis.io's sitemap dates every page; a page
+whose date has not moved since the last run (manifest.py) is taken from disk,
+and so is every Next.js chunk and image already there, since they are named by
+their content. What is taken from disk is hard-linked, not copied.
 
-Run by hand, then commit the result. The image build reads mirror/site and
-never reaches redis.io.
+The header, menus and footer are part of every page, and a date does not move
+when only they change. Each run compares the chunks one probe page loads with
+the last run's and says when they differ; --full then refetches every page, so
+none keeps the old frame.
+
+The run writes a fresh directory and replaces mirror/site only when it is
+complete. Run by hand, then commit the result: the image build reads
+mirror/site and never reaches redis.io.
 """
 
 from __future__ import annotations
@@ -21,7 +26,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from build.marketing_mirror import feed, pages, settings, sitemap
+from build.marketing_mirror import feed, manifest, pages, rewrite, settings, sitemap
 from build.marketing_mirror.assets import AssetStore
 from build.marketing_mirror.fetcher import FetchError, HttpFetcher
 
@@ -44,6 +49,11 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         help="Mirror only the first N pages, for trying a change.",
     )
     parser.add_argument(
+        "--full",
+        action="store_true",
+        help="Refetch every page, reusing nothing from the previous run's pages.",
+    )
+    parser.add_argument(
         "--check",
         action="store_true",
         help="Report pages redis.io lists that are not on disk.",
@@ -53,30 +63,61 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def capture(paths: list[str], staging: Path, workers: int) -> None:
+def probe_frame(fetcher: HttpFetcher) -> list[str]:
+    """The chunks redis.io's frame loads today, read off one freshly fetched page."""
+    html = fetcher.get(settings.ORIGIN + manifest.FRAME_PROBE).decode("utf-8")
+    return sorted(rewrite.next_assets(html))
+
+
+def capture(
+    dated: dict[str, str],
+    staging: Path,
+    workers: int,
+    previous_dir: Path | None,
+    previous: manifest.Manifest,
+) -> manifest.Manifest:
     fetcher = HttpFetcher()
-    assets = AssetStore(fetcher, staging)
-    mirror = pages.PageMirror(fetcher, assets, staging)
+    frame = probe_frame(fetcher)
+    if manifest.frame_changed(previous, frame):
+        LOGGER.warning(
+            "redis.io changed its header, menus or footer since the last run; "
+            "pages taken from disk keep the old ones until `make mirror-full`"
+        )
+    assets = AssetStore(fetcher, staging, previous_dir)
+    mirror = pages.PageMirror(fetcher, assets, staging, previous_dir, previous)
+    paths = list(dated)
     failed: list[str] = []
+    fetched = 0
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        futures = {pool.submit(mirror.capture, path): path for path in paths}
+        futures = {
+            pool.submit(mirror.capture, path, dated[path]): path for path in paths
+        }
         for done, future in enumerate(as_completed(futures), start=1):
             try:
-                future.result()
+                fetched += future.result()
             except (FetchError, ValueError) as error:
                 failed.append(futures[future])
                 LOGGER.error("page not mirrored: %s", error)
             if done % 100 == 0:
                 LOGGER.info("%d/%d pages", done, len(paths))
     _verify(paths, failed, assets)
-    sitemap.write_sitemap(staging, sorted(set(paths) - set(failed)))
+    kept = sorted(set(paths) - set(failed))
+    sitemap.write_sitemap(staging, kept)
     records = feed.write_feed(staging)
+    captured = manifest.Manifest(
+        pages={path: dated[path] for path in kept}, frame=frame
+    )
+    manifest.save(staging, captured)
     LOGGER.info(
-        "%d pages, %d assets, %d search records",
-        len(paths) - len(failed),
+        "%d pages (%d fetched, %d from disk), %d assets (%d from disk), %d search records",
+        len(kept),
+        fetched,
+        len(kept) - fetched,
         assets.count,
+        assets.reused,
         records,
     )
+    return captured
 
 
 def _verify(paths: list[str], failed: list[str], assets: AssetStore) -> None:
@@ -103,7 +144,7 @@ def replace(site_dir: Path, staging: Path) -> None:
 
 
 def check(site_dir: Path) -> int:
-    listed = sitemap.page_paths(HttpFetcher())
+    listed = sitemap.page_dates(HttpFetcher())
     missing = [path for path in listed if not pages.html_file(site_dir, path).is_file()]
     LOGGER.info(
         "redis.io lists %d pages; %d are not mirrored", len(listed), len(missing)
@@ -123,13 +164,16 @@ def main(argv: list[str] | None = None) -> int:
         if args.check:
             check(args.output)
             return 0
-        paths = sitemap.page_paths(HttpFetcher())
+        dated = sitemap.page_dates(HttpFetcher())
         if args.limit:
-            paths = paths[: args.limit]
-        LOGGER.info("mirroring %d pages", len(paths))
+            dated = dict(list(dated.items())[: args.limit])
+        reuse = not args.full and args.output.is_dir()
+        previous_dir = args.output if reuse else None
+        previous = manifest.load(args.output) if reuse else manifest.Manifest()
+        LOGGER.info("mirroring %d pages", len(dated))
         staging = args.output.with_name(args.output.name + ".staging")
         shutil.rmtree(staging, ignore_errors=True)
-        capture(paths, staging, args.workers)
+        capture(dated, staging, args.workers, previous_dir, previous)
         replace(args.output, staging)
     except (FetchError, CaptureFailed) as error:
         LOGGER.critical("mirror not updated: %s", error)

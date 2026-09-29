@@ -32,17 +32,31 @@ def is_mirrored(path: str) -> bool:
     return any(path.startswith(section) for section in settings.SECTIONS)
 
 
-def page_paths(fetcher: Fetcher, index_url: str = settings.SITEMAP_INDEX) -> list[str]:
-    """The site-relative path of every page to mirror, sorted."""
-    paths: set[str] = set()
+def dated_locations(document: bytes) -> list[tuple[str, str]]:
+    """Every (<loc>, <lastmod>) in a sitemap; the date is "" where there is none."""
+    root = ElementTree.fromstring(document)
+    found: list[tuple[str, str]] = []
+    for url in root.iterfind("sm:url", _NAMESPACE):
+        loc = url.findtext("sm:loc", default="", namespaces=_NAMESPACE).strip()
+        lastmod = url.findtext("sm:lastmod", default="", namespaces=_NAMESPACE).strip()
+        if loc:
+            found.append((loc, lastmod))
+    return found
+
+
+def page_dates(
+    fetcher: Fetcher, index_url: str = settings.SITEMAP_INDEX
+) -> dict[str, str]:
+    """Every page to mirror, by site-relative path, with the date redis.io gives it."""
+    pages: dict[str, str] = {}
     for sitemap_url in locations(fetcher.get(index_url)):
-        for page_url in locations(fetcher.get(sitemap_url)):
+        for page_url, lastmod in dated_locations(fetcher.get(sitemap_url)):
             path = urlsplit(page_url).path
             if not path.endswith("/"):
                 path += "/"
             if is_mirrored(path):
-                paths.add(path)
-    return sorted(paths)
+                pages[path] = max(lastmod, pages.get(path, ""))
+    return dict(sorted(pages.items()))
 
 
 def write_sitemap(site_dir: Path, paths: list[str]) -> None:

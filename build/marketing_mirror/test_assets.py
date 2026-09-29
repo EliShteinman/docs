@@ -80,3 +80,38 @@ def test_add_next_records_an_asset_it_could_not_fetch(store):
 def test_add_sanity_writes_under_the_local_prefix(store, tmp_path):
     store.add_sanity({"/images/p/d/x-1x1.png"})
     assert (tmp_path / "sanity/images/p/d/x-1x1.png").read_bytes() == b"png"
+
+
+@pytest.fixture
+def previous_dir(tmp_path):
+    previous = tmp_path / "previous"
+    (previous / "_next/static/immutable/chunks").mkdir(parents=True)
+    (previous / "_next/static/immutable/chunks/a.css").write_bytes(STYLESHEET)
+    (previous / "sanity/images/p/d").mkdir(parents=True)
+    (previous / "sanity/images/p/d/x-1x1.png").write_bytes(b"old png")
+    return previous
+
+
+@pytest.fixture
+def reusing_store(fetcher, tmp_path, previous_dir) -> AssetStore:
+    return AssetStore(fetcher, tmp_path / "site", previous_dir)
+
+
+def test_an_asset_already_on_disk_is_not_fetched(reusing_store, fetcher):
+    reusing_store.add_sanity({"/images/p/d/x-1x1.png"})
+    assert fetcher.requested == []
+
+
+def test_an_asset_already_on_disk_is_placed_in_the_new_tree(reusing_store, tmp_path):
+    reusing_store.add_sanity({"/images/p/d/x-1x1.png"})
+    assert (tmp_path / "site/sanity/images/p/d/x-1x1.png").read_bytes() == b"old png"
+
+
+def test_a_reused_stylesheet_still_brings_its_fonts(reusing_store, tmp_path):
+    reusing_store.add_next({"/_next/static/immutable/chunks/a.css"})
+    assert (tmp_path / "site/_next/static/immutable/media/f.woff2").is_file()
+
+
+def test_reuse_is_counted(reusing_store):
+    reusing_store.add_sanity({"/images/p/d/x-1x1.png"})
+    assert reusing_store.reused == 1

@@ -22,11 +22,16 @@ components:
 # Refresh redis.io's marketing site -- the blog, tutorials, customer stories,
 # comparisons, solutions, technology guides, glossary terms and architecture
 # diagrams -- as redis.io renders it, into mirror/site.
-# Not part of `all`: it reaches the public internet and replaces every page, so
-# it is run deliberately and its output is committed. `mirror-check` reports
-# what redis.io lists that is not on disk, and writes nothing.
+# Not part of `all`: it reaches the public internet, so it is run deliberately
+# and its output is committed. `mirror` fetches only pages whose date changed
+# and never fetches an asset twice; `mirror-full` refetches every page, for
+# when redis.io changed its header, menus or footer (the run says so).
+# `mirror-check` reports what redis.io lists that is not on disk.
 mirror:
 	@python3 -m build.marketing_mirror
+
+mirror-full:
+	@python3 -m build.marketing_mirror --full
 
 mirror-check:
 	@python3 -m build.marketing_mirror --check

@@ -82,3 +82,18 @@ def test_patch_chunk_applies_each_patch(description, pattern, replacement):
 
 def test_patch_chunk_reports_nothing_for_an_unrelated_chunk():
     assert rewrite.patch_chunk(b"console.log(1)") == (b"console.log(1)", set())
+
+
+def test_sanity_assets_finds_an_image_in_a_page_already_rewritten():
+    page = '<img src="/sanity/images/sy1jschh/production/abc-10x10.png?w=64"/>'
+    assert rewrite.sanity_assets(page) == {"/images/sy1jschh/production/abc-10x10.png"}
+
+
+@pytest.mark.parametrize("description, pattern, replacement", settings.JS_PATCHES)
+def test_patch_chunk_counts_a_chunk_already_patched(description, pattern, replacement):
+    assert description in rewrite.patch_chunk(replacement)[1]
+
+
+def test_patch_chunk_leaves_a_chunk_already_patched_unchanged():
+    patched = b"".join(replacement for _, _, replacement in settings.JS_PATCHES)
+    assert rewrite.patch_chunk(patched)[0] == patched

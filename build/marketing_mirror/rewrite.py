@@ -15,8 +15,14 @@ _NEXT_ASSET = re.compile(r'/_next/static/[^"\'\s)\\,]+')
 # slash, e.g. "static/immutable/chunks/0k2cvcta4v29l.js".
 _LAZY_CHUNK = re.compile(r'"(static/immutable/(?:chunks|media)/[^"\\]+)"')
 _CSS_URL = re.compile(r'url\(["\']?(/_next/static/[^"\')]+)')
+# Either host prefix: redis.io's own, or this site's once a page is rewritten.
+# A page taken from the previous run is read in the second form.
 _SANITY_URL = re.compile(
-    re.escape(settings.SANITY_CDN) + r'(/(?:images|files)/[^"\'\s)\\?,]+)'
+    "(?:"
+    + re.escape(settings.SANITY_CDN)
+    + "|"
+    + re.escape(settings.LOCAL_SANITY_PREFIX)
+    + r')(/(?:images|files)/[^"\'\s)\\?,]+)'
 )
 # An image the page names only by asset id; its URL is built in the browser.
 _SANITY_ASSET_ID = re.compile(
@@ -75,10 +81,17 @@ def rewrite_page(html: str) -> str:
 
 
 def patch_chunk(data: bytes) -> tuple[bytes, set[str]]:
-    """A JS chunk with the patches in settings applied, and which ones matched."""
+    """A JS chunk with the patches in settings applied, and which ones it carries.
+
+    A chunk taken from the previous run is already patched; finding the
+    replacement counts as the patch applying, so a run that fetches no new
+    chunk does not read as redis.io having changed its JS.
+    """
     applied: set[str] = set()
     for description, pattern, replacement in settings.JS_PATCHES:
         if pattern in data:
             data = data.replace(pattern, replacement)
+            applied.add(description)
+        elif replacement in data:
             applied.add(description)
     return data, applied
