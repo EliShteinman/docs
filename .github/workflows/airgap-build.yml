@@ -1138,7 +1138,13 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
+          # .gitmodules must be in the sparse set. The checkout is a partial
+          # clone (blob:none), so a .gitmodules left out is fetched lazily by
+          # `git submodule sync` -- and that fetch carries the checkout's auth
+          # header twice (repo config and the submodule step's global include),
+          # which GitHub answers with 400 "Duplicate header: Authorization".
           sparse-checkout: |
+            .gitmodules
             Dockerfile.runtime
             mirror/site
             build/marketing_mirror/runtime
@@ -1343,6 +1349,7 @@ jobs:
         with:
           submodules: true
           token: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
+          persist-credentials: false
 
       - name: Compare the mirrored sections against their source
         continue-on-error: true
