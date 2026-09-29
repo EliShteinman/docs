@@ -162,9 +162,17 @@ def _verify(paths: list[str], failed: list[str], assets: AssetStore) -> None:
         LOGGER.warning("%d assets could not be mirrored", len(assets.failed))
 
 
+# What belongs to the repository mirror/site is checked out as, not to a run:
+# the submodule's gitlink and its attributes. They move into the new tree.
+KEPT_ACROSS_RUNS = (".git", ".gitattributes")
+
+
 def replace(site_dir: Path, staging: Path) -> None:
     previous = site_dir.with_name(site_dir.name + ".previous")
     shutil.rmtree(previous, ignore_errors=True)
+    for name in KEPT_ACROSS_RUNS:
+        if (site_dir / name).exists():
+            (site_dir / name).rename(staging / name)
     if site_dir.exists():
         site_dir.rename(previous)
     staging.rename(site_dir)

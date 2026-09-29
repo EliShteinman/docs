@@ -47,3 +47,21 @@ def test_replace_leaves_no_staging_directory_behind(tmp_path):
     staging.mkdir()
     replace(site, staging)
     assert not staging.exists()
+
+
+def test_replace_keeps_the_submodule_gitlink(tmp_path):
+    site, staging = tmp_path / "site", tmp_path / "site.staging"
+    site.mkdir()
+    (site / ".git").write_text("gitdir: ../../.git/modules/mirror/site")
+    staging.mkdir()
+    replace(site, staging)
+    assert (site / ".git").read_text() == "gitdir: ../../.git/modules/mirror/site"
+
+
+def test_replace_keeps_the_repository_attributes(tmp_path):
+    site, staging = tmp_path / "site", tmp_path / "site.staging"
+    site.mkdir()
+    (site / ".gitattributes").write_text("* -diff")
+    staging.mkdir()
+    replace(site, staging)
+    assert (site / ".gitattributes").read_text() == "* -diff"

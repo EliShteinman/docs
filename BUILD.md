@@ -159,14 +159,24 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 
 הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה, מונחי המילון ודיאגרמות
 הארכיטקטורה הם **אתר נפרד** מהתיעוד — גם ב-redis.io (‏Next.js + Sanity, מול Hugo של `/docs/`).
-הם ממוררים **כפי ש-redis.io מרנדר אותם**, כדי שייראו בדיוק כמו שם, ו**מקובעים בגיט** תחת
-`mirror/site`, כדי שהבנייה לא תהיה תלויה ב-redis.io.
+הם ממוררים **כפי ש-redis.io מרנדר אותם**, כדי שייראו בדיוק כמו שם, ו**מקובעים בגיט** כדי
+שהבנייה לא תהיה תלויה ב-redis.io.
+
+**איפה הם יושבים:** `mirror/site` הוא **submodule** של המאגר הפרטי
+[`EliShteinman/redis-docs-mirror`](https://github.com/EliShteinman/redis-docs-mirror). המאגר הזה
+שומר רק מצביע לגרסה שלו, כך ש-3.4GB של עמודים לא נכנסים להיסטוריה שלו ולא מגיעים לאף job
+ב-CI — `actions/checkout` לא מוריד submodules כברירת מחדל. רק `4e` ו-`4f` מבקשים אותו, עם
+ה-secret ‏`MIRROR_REPO_TOKEN` (token עם הרשאת קריאה למאגר המירור).
 
 ```bash
+git submodule update --init mirror/site   # פעם אחת, לפני make mirror או בנייה מקומית של ה-image
 make mirror          # רק מה שהשתנה
 make mirror-full     # כל העמודים מחדש (~1,700, כ-15–35 דקות); תמונות ו-chunks עדיין מהדיסק
 make mirror-check    # מה redis.io מפרסם ועוד לא אצלנו, בלי לכתוב כלום
-git add mirror/site
+
+# שני commits: התוכן במאגר המירור, והמצביע אליו כאן
+git -C mirror/site add -A && git -C mirror/site commit -m "chore: sync with redis.io" && git -C mirror/site push
+git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
 ```
 
 **ריצה רגילה מורידה רק מה שהשתנה.** ה-sitemap של redis.io נותן לכל עמוד `lastmod`;

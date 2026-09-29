@@ -1,0 +1,3 @@
+[submodule "mirror/site"]
+	path = mirror/site
+	url = https://github.com/EliShteinman/redis-docs-mirror.git

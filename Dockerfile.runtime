@@ -79,7 +79,7 @@ CMD ["nginx", "-g", "daemon off;"]
 # A stage of its own, on the build platform: compressing after the COPY into
 # the runtime image would leave the uncompressed layer underneath.
 FROM --platform=$BUILDPLATFORM alpine:3 AS mirror-pages
-COPY --exclude=sanity --exclude=_next mirror/site /pages
+COPY --exclude=sanity --exclude=_next --exclude=.git --exclude=.gitattributes mirror/site /pages
 RUN find /pages -name '*.html' -exec sh -c 'gzip -9 -k "$1" && : > "$1"' _ {} \;
 
 FROM nginx:alpine AS mirror-privileged
