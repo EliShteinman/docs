@@ -1,12 +1,12 @@
-# מעבר לגרסה 3.0.0: שני pods וארבעה images
+# מעבר לגרסה 3.0: שני pods וארבעה images
 
 > **[English version](UPGRADE-3.0.md)**
 
-המסמך עוסק רק במעבר מ-2.x ל-3.0.0. את השאר מתאר [README-he.md](README-he.md).
+המסמך עוסק רק במעבר מ-2.x ל-3.0. את השאר מתאר [README-he.md](README-he.md).
 
 ## מה השתנה
 
-| | 2.x | 3.0.0 |
+| | 2.x | 3.0 |
 |---|---|---|
 | **pods** | עד 4: האתר, CLI, חיפוש, מירור | עד 2: האתר (עם המירור), ושירותים (CLI וחיפוש) |
 | **image של החיפוש** | בתוך `redis-docs-cli` | `redis-docs-search` נפרד |
@@ -32,7 +32,7 @@ skopeo copy docker://a0533057932/redis-docs-search:<search-tag>       docker://$
 
 את התגים `<cli-tag>` ו-`<search-tag>` לוקחים מ-`values.yaml` של ה-chart החדש (`helm show values`). ה-image ‏`redis:8.10.0-alpine` לא השתנה.
 
-**חובה להשתמש ב-image המירור החדש.** ה-image הישן מאזין על 8080, אותו פורט כמו האתר. ב-3.0.0 שניהם באותו pod, ולכן הקונטיינר נופל עם `nginx: [emerg] still could not bind()`. בבדיקה ה-rolling update השאיר את ה-pod הקודם רץ, כך שהאתר לא נפל, אבל השדרוג לא הושלם.
+**חובה להשתמש ב-image המירור החדש.** ה-image הישן מאזין על 8080, אותו פורט כמו האתר. ב-3.0 שניהם באותו pod, ולכן הקונטיינר נופל עם `nginx: [emerg] still could not bind()`. בבדיקה ה-rolling update השאיר את ה-pod הקודם רץ, כך שהאתר לא נפל, אבל השדרוג לא הושלם.
 
 ## שלב 2: לעדכן את קובץ ה-values
 
@@ -58,7 +58,7 @@ skopeo copy docker://a0533057932/redis-docs-search:<search-tag>       docker://$
 ## שלב 3: לשדרג
 
 ```bash
-helm upgrade redis-docs oci://$REG/redis-docs --version 3.0.0 -f my-values.yaml
+helm upgrade redis-docs oci://$REG/redis-docs --version 3.0.1 -f my-values.yaml  # גרסת ה-3.0 הראשונה שפורסמה; כל 3.0.x מאוחרת יותר עובדת אותו דבר
 ```
 
 **לא להשתמש ב-`--reuse-values` לבד.** הוא שומר את `mirror.image.name: redis-docs` ואת `search.image.name: redis-docs-cli` הישנים. אם בכל זאת משתמשים בו, צריך להוסיף את ארבעת המפתחות מהטבלה של שלב 2 עם `--set`.
@@ -89,7 +89,7 @@ kubectl exec deploy/redis-docs-services -c search-redis -- redis-cli -p 6380 FT.
 
 ```bash
 helm history redis-docs
-helm rollback redis-docs <revision-before-3.0.0>
+helm rollback redis-docs <revision-before-3.0>
 ```
 
 בבדיקה ה-rollback החזיר את ארבעת ה-deployments הישנים. אין נתונים לשמור: האינדקס נבנה מחדש בכל עלייה, וה-Redis של ה-CLI זמני.

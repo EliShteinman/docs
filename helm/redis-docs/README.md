@@ -11,7 +11,7 @@ Designed for air-gapped networks - no external dependencies.
 - Helm 3.x
 - Private Docker registry (in air-gapped networks)
 
-## Upgrading to 3.0.0
+## Upgrading to 3.0
 
 The chart now runs at most two pods, search and the mirror have images of their own, and
 the Jupyter and metrics sidecars are gone. Exact steps, the removed keys and recommended

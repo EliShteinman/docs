@@ -1,12 +1,12 @@
-# Upgrading to 3.0.0: two pods, four images
+# Upgrading to 3.0: two pods, four images
 
 > **[גרסה בעברית](UPGRADE-3.0-he.md)**
 
-This covers the move from 2.x to 3.0.0 only. Everything else is in [README.md](README.md).
+This covers the move from 2.x to 3.0 only. Everything else is in [README.md](README.md).
 
 ## What changed
 
-| | 2.x | 3.0.0 |
+| | 2.x | 3.0 |
 |---|---|---|
 | **Pods** | up to 4: site, CLI, search, mirror | up to 2: the site (with the mirror), and services (CLI and search) |
 | **Search image** | inside `redis-docs-cli` | its own `redis-docs-search` |
@@ -35,7 +35,7 @@ Take `<cli-tag>` and `<search-tag>` from the new chart's `values.yaml`
 (`helm show values`). `redis:8.10.0-alpine` did not change.
 
 **The new mirror image is required.** The old one listens on 8080, the same port as the
-site. In 3.0.0 both are in one pod, so the container fails with
+site. In 3.0 both are in one pod, so the container fails with
 `nginx: [emerg] still could not bind()`. In testing, the rolling update kept the previous
 site pod serving, so the site stayed up, but the upgrade does not complete.
 
@@ -65,7 +65,7 @@ file describes what actually runs.
 ## Step 3: Upgrade
 
 ```bash
-helm upgrade redis-docs oci://$REG/redis-docs --version 3.0.0 -f my-values.yaml
+helm upgrade redis-docs oci://$REG/redis-docs --version 3.0.1 -f my-values.yaml  # the first 3.0 release published; a later 3.0.x works the same
 ```
 
 **Do not rely on `--reuse-values` alone.** It keeps the old `mirror.image.name: redis-docs`
@@ -101,7 +101,7 @@ In a browser: a documentation page, `/blog/` (if the mirror is on), a search, an
 
 ```bash
 helm history redis-docs
-helm rollback redis-docs <revision-before-3.0.0>
+helm rollback redis-docs <revision-before-3.0>
 ```
 
 In testing, the rollback brought back the four old deployments. There is no data to keep:
