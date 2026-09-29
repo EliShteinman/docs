@@ -114,7 +114,10 @@ def capture(
                 LOGGER.error("page not mirrored: %s", error)
             if done % 100 == 0:
                 LOGGER.info("%d/%d pages", done, len(paths))
-    unchanged = fetched == 0 and not failed and previous.pages == dated
+    # Moved pages are in the sitemap but never in a manifest, so the comparison
+    # is over the pages this run keeps.
+    kept_dates = {path: dated[path] for path in paths if path not in moved}
+    unchanged = fetched == 0 and not failed and previous.pages == kept_dates
     if unchanged and previous_dir is not None and feeds.complete(previous_dir):
         batches = feeds.reuse(previous_dir, staging, assets)
         LOGGER.info("%d blog listing batches, from disk", batches)
