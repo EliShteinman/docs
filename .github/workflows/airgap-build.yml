@@ -717,10 +717,14 @@ jobs:
 
           # An unresolved internal link renders as a literal href="/content/..."
           # (a 404) and only warns. Mirrors the same check in
-          # airgap-multibuild.sh, which explains the scope.
-          if grep -rl 'href="/content/' "output/$PRODUCT/$VERSION"; then
-            echo "!!! ERROR: unresolved internal links (href=\"/content/...\") in the pages above" >&2
+          # airgap-multibuild.sh, which explains the scope and why only a link
+          # into this version fails the build.
+          if grep -rlF "href=\"/content/$PRODUCT/$VERSION/" "output/$PRODUCT/$VERSION"; then
+            echo "!!! ERROR: links into $PRODUCT/$VERSION kept their version prefix (href=\"/content/$PRODUCT/$VERSION/...\") in the pages above" >&2
             exit 1
+          fi
+          if grep -rl 'href="/content/' "output/$PRODUCT/$VERSION"; then
+            echo "::warning::Unresolved links (href=\"/content/...\") in the $PRODUCT $VERSION pages above, also broken on redis.io"
           fi
 
       # Runs unconditionally (not gated on cache-miss): output/sitemap.xml is

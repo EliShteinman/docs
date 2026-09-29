@@ -296,9 +296,16 @@ build_version() {
   # page lives under /content/, so an href there is always a 404. Scoped to this
   # version's subtree: the other pages of this build are thrown away, and they
   # do warn, about links into the versions this build deleted.
-  if grep -rl 'href="/content/' "$SITE/public/$product_path/$version"; then
-    echo "!!! ERROR: unresolved internal links (href=\"/content/...\") in the pages above" >&2
+  # Only a link into this version fails the build: that is the prefix strip
+  # above not matching. The rest are upstream content bugs, published the same
+  # way on redis.io -- links from a version page to release-notes or to another
+  # version, which the version build deletes (since DOC-7104 converted them).
+  if grep -rlF "href=\"/content/$product_path/$version/" "$SITE/public/$product_path/$version"; then
+    echo "!!! ERROR: links into $product_path/$version kept their version prefix (href=\"/content/$product_path/$version/...\") in the pages above" >&2
     exit 1
+  fi
+  if grep -rl 'href="/content/' "$SITE/public/$product_path/$version"; then
+    echo "WARNING: unresolved links (href=\"/content/...\") in the $product_path $version pages above, also broken on redis.io" >&2
   fi
 
   # Filtered per-version sitemap, staged for the merge in step 3b. Mirrors
