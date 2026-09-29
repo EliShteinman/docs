@@ -43,13 +43,15 @@ docker run -p 8080:8080 a0533057932/redis-docs:unprivileged
 
 ## Search and the CLI playground
 
-Both are optional and neither lives in this image: they run as their own pods from
-[`a0533057932/redis-docs-cli`](https://hub.docker.com/r/a0533057932/redis-docs-cli),
-and the Helm chart turns them on with `search.enabled` and `cli.enabled`.
+Both are optional and neither lives in this image: search runs from
+[`a0533057932/redis-docs-search`](https://hub.docker.com/r/a0533057932/redis-docs-search)
+and the CLI playground from
+[`a0533057932/redis-docs-cli`](https://hub.docker.com/r/a0533057932/redis-docs-cli).
+The Helm chart turns them on with `search.enabled` and `cli.enabled`.
 
 ## Helm chart
 
-The chart deploys the site, and optionally the search and CLI pods, with metrics,
+The chart deploys the site, and optionally search and the CLI playground, with
 autoscaling, OpenShift Route support and hierarchical control over which external
 links the pages keep. It is published here as an OCI artifact:
 
@@ -70,7 +72,8 @@ for the version you took:
 | Image | Needed for |
 |-------|------------|
 | `a0533057932/redis-docs` | the site itself |
-| `a0533057932/redis-docs-cli` | search (`search.enabled`) and the CLI playground (`cli.enabled`) |
+| `a0533057932/redis-docs-search` | search (`search.enabled`) |
+| `a0533057932/redis-docs-cli` | the CLI playground (`cli.enabled`) |
 | `a0533057932/redis-docs` (`mirror-unprivileged`) | the mirrored redis.io sections (`mirror.enabled`) |
 | `redis:8.10.0-alpine` | the Redis behind each of those two — the query engine search indexes into |
 

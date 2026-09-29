@@ -13,7 +13,9 @@ name: Airgap Build & Push
 #   3. assemble        merge per-build artifacts, ndjson, gzip
 #   4. docker          minimal nginx image, push to DockerHub
 #   4b. cli_image      CLI proxy image, built and pushed only when
-#                      helm/cli-proxy changed (runs beside phases 1-4)
+#                      helm/cli-proxy or helm/common changed (beside 1-4)
+#   4b. search_image   docs search image, built and pushed only when
+#                      helm/search or helm/common changed (same)
 #   4c. tests          the fork's own test suites (same)
 #   4d. dockerhub_description  the image pages' text, release branch only
 #   4e. mirror_drift   opt-in: how far behind redis.io the mirror is (reaches
@@ -75,6 +77,7 @@ on:
 env:
   REPO: a0533057932/redis-docs
   CLI_REPO: a0533057932/redis-docs-cli
+  SEARCH_REPO: a0533057932/redis-docs-search
   HUGO_VERSION: 0.143.1
 
 jobs:
@@ -1049,12 +1052,12 @@ jobs:
   # =========================================================================
   # Phase 4c: tests — the fork's own suites, over the whole checkout.
   #
-  # cli_image runs a subset of these, and only when it builds. This job is the
-  # one that sees an upstream *content* change breaking a fork test: DOC-7059
-  # turned a note into a blockquote and test_acl.py read "Save this key" as the
-  # command SAVE, which no file-level check could have caught. It does not hold
-  # up either image, so a failure here still leaves something to deploy, but
-  # the chart is not published over it.
+  # cli_image and search_image run subsets of these, and only when they
+  # build. This job is the one that sees an upstream *content* change
+  # breaking a fork test: DOC-7059 turned a note into a blockquote and
+  # test_acl.py read "Save this key" as the command SAVE, which no file-level
+  # check could have caught. It does not hold up any image, so a failure here
+  # still leaves something to deploy, but the chart is not published over it.
   # =========================================================================
   tests:
     name: 4c. Fork tests
@@ -1069,12 +1072,12 @@ jobs:
           python-version: '3.14'
 
       - name: Install dependencies
-        run: python -m pip install --quiet -r requirements.txt -r helm/cli-proxy/requirements.txt pytest==9.1.1
+        run: python -m pip install --quiet -r requirements.txt -r helm/cli-proxy/requirements.txt -r helm/search/requirements.txt pytest==9.1.1
 
       # These need docker for a real Redis with the bundled modules, which the
       # runner has, and the full content/ tree the checkout above provides.
       - name: Run the CLI proxy, search and ACL tests
-        run: python -m pytest helm/cli-proxy -q
+        run: python -m pytest helm/cli-proxy helm/search -q
 
       # build/jupyterize is left out: it imports nbformat, which no
       # requirements file in this repo declares. test_every_product_is_offered
@@ -1186,18 +1189,10 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================
-  # Phase 4b: cli_image — the CLI proxy image, which also carries the docs
-  # search service. Nothing here reads the site, so it runs beside the site
-  # build rather than after it.
-  #
-  # Built only when helm/cli-proxy changed. Every image carries a label with
-  # the hash of its source, so the published images themselves say what code
-  # they hold and no record of past builds is kept anywhere. Starting from the
-  # tag the chart pins, the job walks up the patch numbers: a tag holding this
-  # code is reused, a tag holding other code is skipped, and the first free
-  # tag is built. A published tag is therefore never overwritten, and a run
-  # that pushed an image without publishing the chart leaves nothing to redo:
-  # the next run finds that tag and points the chart at it.
+  # Phase 4b: the chart's two Python service images — the CLI playground proxy
+  # and the docs search service. Nothing here reads the site, so they run
+  # beside the site build rather than after it. Each is built only when its
+  # own source changed; .github/actions/service-image holds how.
   # =========================================================================
   cli_image:
     name: 4b. CLI image (build if changed)
@@ -1205,174 +1200,68 @@ jobs:
     permissions:
       contents: read
     outputs:
-      pinned: ${{ steps.resolve.outputs.pinned }}
-      tag: ${{ steps.resolve.outputs.tag }}
-      build: ${{ steps.resolve.outputs.build }}
+      pinned: ${{ steps.image.outputs.pinned }}
+      tag: ${{ steps.image.outputs.tag }}
+      build: ${{ steps.image.outputs.build }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
-          sparse-checkout: helm/
+          sparse-checkout: |
+            helm/
+            .github/
 
       - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # The source hash covers every tracked file under helm/cli-proxy except
-      # the tests, which never enter the image: a change to a test alone does
-      # not publish a new image.
-      - name: Resolve the CLI image tag
-        id: resolve
-        env:
-          INPUT_OVERRIDE: ${{ inputs.tag_override }}
-        run: |
-          set -euo pipefail
-          SOURCE_HASH=$(git ls-files -s helm/cli-proxy | grep -vE '/test_[^/]*\.py$' \
-            | sha256sum | cut -c1-16)
-
-          # values.yaml pins the image twice, for the playground and for
-          # search, and both must name the same tag: it is one image.
-          PINNED=$(python3 - <<'PYEOF'
-          import pathlib, re
-          values = pathlib.Path("helm/redis-docs/values.yaml").read_text()
-          tags = set(re.findall(r'^[ \t]+name: redis-docs-cli\n[ \t]+tag: "([^"]*)"', values, re.M))
-          print(" ".join(sorted(tags)))
-          PYEOF
-          )
-          if [[ ! "$PINNED" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "::error::cli.image.tag and search.image.tag must be one plain X.Y.Z, found '$PINNED'."
-            exit 1
-          fi
-
-          exists() {
-            local code
-            code=$(curl -s --retry 3 -o /dev/null -w '%{http_code}' \
-              "https://hub.docker.com/v2/repositories/$CLI_REPO/tags/$1")
-            case "$code" in
-              200) return 0 ;;
-              404) return 1 ;;
-              *) echo "::error::Docker Hub answered $code for $CLI_REPO:$1, so it is unknown whether the tag exists. Nothing was built."
-                 exit 1 ;;
-            esac
-          }
-          source_hash_of() {
-            docker buildx imagetools inspect "$CLI_REPO:$1" --format '{{json .Image}}' \
-              | jq -r '(.["linux/amd64"] // .) | .config.Labels["redis-docs.cli.source-hash"] // ""'
-          }
-
-          TAG=$PINNED
-          BUILD=true
-          while exists "$TAG"; do
-            # Read into a variable, not inside the `if`: there a failed inspect
-            # would compare as a different hash and publish this code under a
-            # new tag instead of failing the job.
-            PUBLISHED_HASH=$(source_hash_of "$TAG")
-            if [ "$PUBLISHED_HASH" = "$SOURCE_HASH" ]; then
-              BUILD=false
-              break
-            fi
-            IFS=. read -r MAJ MIN PATCH <<<"$TAG"
-            TAG="$MAJ.$MIN.$((PATCH + 1))"
-          done
-
-          # A test run pushes under its override tag only, like the site
-          # image, and leaves both the version sequence and :latest alone.
-          if [ -n "$INPUT_OVERRIDE" ]; then
-            PUSHED_TAG=$INPUT_OVERRIDE
-            PUSH_TAGS="$CLI_REPO:$PUSHED_TAG"
-          else
-            PUSHED_TAG=$TAG
-            PUSH_TAGS="$CLI_REPO:$PUSHED_TAG"$'\n'"$CLI_REPO:latest"
-          fi
-
-          {
-            echo "source_hash=$SOURCE_HASH"
-            echo "pinned=$PINNED"
-            echo "tag=$TAG"
-            echo "pushed_tag=$PUSHED_TAG"
-            echo "build=$BUILD"
-            echo "push_tags<<EOF"
-            echo "$PUSH_TAGS"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
-        if: steps.resolve.outputs.build == 'true'
-        with:
-          python-version: '3.14'
-
       # test_acl.py is left out: it checks the chart's ACL file against every
       # command in the docs, which this checkout does not have, and nothing it
       # covers is in the image.
-      - name: Test the CLI proxy and search service
-        if: steps.resolve.outputs.build == 'true'
-        run: |
-          python -m pip install --quiet -r helm/cli-proxy/requirements.txt pytest==9.1.1
-          python -m pytest helm/cli-proxy -q --ignore=helm/cli-proxy/test_acl.py
-
-      - name: Set up QEMU
-        if: steps.resolve.outputs.build == 'true'
-        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
+      - id: image
+        uses: ./.github/actions/service-image
         with:
-          platforms: arm64
+          id: cli
+          repo: ${{ env.CLI_REPO }}
+          sources: helm/cli-proxy helm/common
+          dockerfile: helm/cli-proxy/Dockerfile
+          requirements: helm/cli-proxy/requirements.txt
+          tests: helm/cli-proxy --ignore=helm/cli-proxy/test_acl.py
+          smoke: import main
+          tag-override: ${{ inputs.tag_override }}
 
-      - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd  # v4.0.0
-        if: steps.resolve.outputs.build == 'true'
-
-      # Both platforms whatever the platforms input says: the next run reuses
-      # this tag without rebuilding it, so it has to be complete the first time.
-      - name: Build & push the CLI image
-        if: steps.resolve.outputs.build == 'true'
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
+  search_image:
+    name: 4b. Search image (build if changed)
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      pinned: ${{ steps.image.outputs.pinned }}
+      tag: ${{ steps.image.outputs.tag }}
+      build: ${{ steps.image.outputs.build }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
-          context: helm/cli-proxy
-          platforms: linux/amd64,linux/arm64
-          labels: |
-            redis-docs.cli.source-hash=${{ steps.resolve.outputs.source_hash }}
-            org.opencontainers.image.revision=${{ github.sha }}
-          tags: ${{ steps.resolve.outputs.push_tags }}
-          push: true
+          sparse-checkout: |
+            helm/
+            .github/
 
-      # The Dockerfile copies a named list of files, so a module added to
-      # helm/cli-proxy but not to that list builds cleanly and fails on import
-      # in the cluster. The tests above run from the checkout rather than from
-      # the image and cannot see it. Both platforms, which also proves the
-      # published manifest carries them.
-      - name: Check the pushed image runs both services
-        if: steps.resolve.outputs.build == 'true'
-        env:
-          PUSHED: ${{ steps.resolve.outputs.pushed_tag }}
-        run: |
-          set -euo pipefail
-          for platform in linux/amd64 linux/arm64; do
-            docker run --rm --platform "$platform" "$CLI_REPO:$PUSHED" \
-              python -c "import main, search.main"
-          done
+      - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Write CLI image summary
-        if: always()
-        env:
-          STATUS: ${{ job.status }}
-          PINNED: ${{ steps.resolve.outputs.pinned }}
-          TAG: ${{ steps.resolve.outputs.tag }}
-          BUILD: ${{ steps.resolve.outputs.build }}
-          PUSH_TAGS: ${{ steps.resolve.outputs.push_tags }}
-        run: |
-          {
-            echo ""
-            echo "## CLI image: \`$STATUS\`"
-            echo ""
-            if [ "$STATUS" != "success" ]; then
-              echo "Nothing was pushed unless the build step shows success — see step logs."
-            elif [ "$BUILD" = "true" ]; then
-              echo "helm/cli-proxy changed since \`$PINNED\`. Built and pushed:"
-              echo '```'
-              echo "$PUSH_TAGS"
-              echo '```'
-            else
-              echo "\`$CLI_REPO:$TAG\` already holds this code — nothing built."
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
+      - id: image
+        uses: ./.github/actions/service-image
+        with:
+          id: search
+          repo: ${{ env.SEARCH_REPO }}
+          sources: helm/search helm/common
+          dockerfile: helm/search/Dockerfile
+          requirements: helm/search/requirements.txt
+          tests: helm/search
+          smoke: import search.main, search.indexer
+          tag-override: ${{ inputs.tag_override }}
 
   # =========================================================================
   # Phase 4e: mirror_drift — how far behind redis.io the mirrored sections are.
@@ -1431,8 +1320,10 @@ jobs:
   # =========================================================================
   dockerhub_description:
     name: 4d. Docker Hub descriptions
-    if: github.ref_name == 'feature/docker-support' && inputs.tag_override == ''
-    needs: docker
+    if: >-
+      always() && github.ref_name == 'feature/docker-support' && inputs.tag_override == '' &&
+      needs.docker.result == 'success'
+    needs: [docker, cli_image, search_image]
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -1458,7 +1349,7 @@ jobs:
                     -H 'Content-Type: application/json' -d @- \
                 | jq -r .token)
 
-          for repo in $REPO $CLI_REPO; do
+          for repo in $REPO $CLI_REPO $SEARCH_REPO; do
             file=".github/dockerhub/${repo##*/}.md"
             if [ ! -f "$file" ]; then
               echo "::error::$file is missing — every pushed repository needs its description."
@@ -1474,8 +1365,20 @@ jobs:
             fi
             FULL=$(tail -n +2 "$file")
 
-            CURRENT=$(curl -sS --fail-with-body "$API/repositories/$repo/" \
+            # A repository is created by its first push. One this run did not
+            # push to, and no run before it either, has no page to describe yet.
+            CURRENT=$(curl -sS -w '\n%{http_code}' "$API/repositories/$repo/" \
               -H "Authorization: JWT $JWT")
+            CODE=${CURRENT##*$'\n'}
+            CURRENT=${CURRENT%$'\n'*}
+            if [ "$CODE" = "404" ]; then
+              echo "::warning::$repo does not exist on Docker Hub yet — its description waits for its first push."
+              continue
+            fi
+            if [ "$CODE" != "200" ]; then
+              echo "::error::Docker Hub answered $CODE for $repo."
+              exit 1
+            fi
             if [ "$(jq -r '.description // ""' <<<"$CURRENT")" = "$SHORT" ] \
                && [ "$(jq -r '.full_description // ""' <<<"$CURRENT")" = "$FULL" ]; then
               echo "$repo: description already matches $file."
@@ -1493,14 +1396,15 @@ jobs:
   # Phase 5: publish_chart — opt-in.
   # Order: bump files -> git commit & push -> helm publish to OCI.
   # If helm publish fails the bump is already in git; rerun helm push by hand.
-  # Waits for cli_image as well and takes the CLI tag from it, so the chart
-  # never names a CLI image that was not pushed, and for the fork's tests, so
-  # a published chart is never one whose tests were failing.
+  # Waits for cli_image and search_image as well and takes their tags from
+  # them, so the chart never names a service image that was not pushed, and
+  # for the fork's tests, so a published chart is never one whose tests were
+  # failing.
   # Skipped on partial builds (variant/platforms != both, or tag_override set).
   # =========================================================================
   publish_chart:
     name: 5. Publish Helm chart (opt-in)
-    needs: [setup, docker, cli_image, tests]
+    needs: [setup, docker, cli_image, search_image, tests]
     if: >-
       inputs.publish_chart &&
       inputs.mirror_image &&
@@ -1522,6 +1426,8 @@ jobs:
           NEW_HASH: ${{ needs.setup.outputs.hash }}
           OLD_CLI_TAG: ${{ needs.cli_image.outputs.pinned }}
           NEW_CLI_TAG: ${{ needs.cli_image.outputs.tag }}
+          OLD_SEARCH_TAG: ${{ needs.search_image.outputs.pinned }}
+          NEW_SEARCH_TAG: ${{ needs.search_image.outputs.tag }}
         run: |
           set -euo pipefail
           CHART=helm/redis-docs/Chart.yaml
@@ -1551,48 +1457,57 @@ jobs:
             exit 1
           fi
 
-          # Validated by cli_image, but interpolated below all the same.
-          if [[ ! "$NEW_CLI_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "::error::CLI tag '$NEW_CLI_TAG' from cli_image is not plain X.Y.Z."
-            exit 1
-          fi
+          # Validated by the image jobs, but interpolated below all the same.
+          for tag in "$NEW_CLI_TAG" "$NEW_SEARCH_TAG"; do
+            if [[ ! "$tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "::error::Service image tag '$tag' is not plain X.Y.Z."
+              exit 1
+            fi
+          done
 
           {
             echo "old_version=$OLD_VERSION"
             echo "old_hash=$OLD_HASH"
             echo "old_cli_tag=$OLD_CLI_TAG"
+            echo "old_search_tag=$OLD_SEARCH_TAG"
           } >> "$GITHUB_OUTPUT"
 
-          if [ "$OLD_HASH" = "$NEW_HASH" ] && [ "$OLD_CLI_TAG" = "$NEW_CLI_TAG" ]; then
-            echo "appVersion already $NEW_HASH and CLI image already $NEW_CLI_TAG — nothing to publish."
+          if [ "$OLD_HASH" = "$NEW_HASH" ] && [ "$OLD_CLI_TAG" = "$NEW_CLI_TAG" ] \
+             && [ "$OLD_SEARCH_TAG" = "$NEW_SEARCH_TAG" ]; then
+            echo "appVersion already $NEW_HASH, CLI image already $NEW_CLI_TAG and search image already $NEW_SEARCH_TAG — nothing to publish."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # Every place the chart names the CLI image. values.yaml pins it
-          # twice (playground and search: one image), the airgapped example
-          # once; the READMEs name it in their tables and air-gap commands.
-          if [ "$OLD_CLI_TAG" != "$NEW_CLI_TAG" ]; then
-            python3 <<'PYEOF'
+          # Every place the chart names a service image: values.yaml pins each
+          # once, the airgapped example pins the CLI; the READMEs name both in
+          # their tables and air-gap commands.
+          python3 <<'PYEOF'
           import os, pathlib, re
-          new_tag = os.environ["NEW_CLI_TAG"]
-          cli_repo = os.environ["CLI_REPO"]
-          def point_at_new_tag(path, pattern, expected=None):
+          images = [
+              ("cli", os.environ["CLI_REPO"], os.environ["OLD_CLI_TAG"], os.environ["NEW_CLI_TAG"], 1),
+              ("search", os.environ["SEARCH_REPO"], os.environ["OLD_SEARCH_TAG"], os.environ["NEW_SEARCH_TAG"], 0),
+          ]
+          def point_at_new_tag(path, pattern, new_tag, expected=None):
               p = pathlib.Path(path)
               text, n = re.subn(pattern, lambda m: m.group(1) + new_tag, p.read_text(), flags=re.M)
               if expected is not None:
-                  assert n == expected, f"{path}: expected {expected} CLI tag(s), found {n}"
-              assert n, f"{path}: no CLI tag found to update"
+                  assert n == expected, f"{path}: expected {expected} tag(s) for {pattern}, found {n}"
+              else:
+                  assert n, f"{path}: no tag found for {pattern}"
               p.write_text(text)
-          pinned_tag = r'(^[ \t]+name: redis-docs-cli\n[ \t]+tag: ")[^"]*'
-          point_at_new_tag("helm/redis-docs/values.yaml", pinned_tag, expected=2)
-          point_at_new_tag("helm/redis-docs/examples/values-openshift-airgapped.yaml", pinned_tag, expected=1)
-          named_tag = (r"(redis-docs-cli:|cli\.image\.tag=|`" + re.escape(cli_repo) + r"` \| `"
-                       r"|`(?:cli|search)\.image\.tag` \| `)[0-9]+\.[0-9]+\.[0-9]+")
-          point_at_new_tag("helm/redis-docs/README.md", named_tag)
-          point_at_new_tag("helm/redis-docs/README-he.md", named_tag)
+          for key, repo, old_tag, new_tag, in_example in images:
+              if old_tag == new_tag:
+                  continue
+              name = re.escape(repo.split("/")[-1])
+              pinned_tag = r'(^[ \t]+name: ' + name + r'\n[ \t]+tag: ")[^"]*'
+              point_at_new_tag("helm/redis-docs/values.yaml", pinned_tag, new_tag, expected=1)
+              point_at_new_tag("helm/redis-docs/examples/values-openshift-airgapped.yaml", pinned_tag, new_tag, expected=in_example)
+              named_tag = (r"(" + name + r":|" + key + r"\.image\.tag=|`" + re.escape(repo) + r"` \| `"
+                           r"|`" + key + r"\.image\.tag` \| `)[0-9]+\.[0-9]+\.[0-9]+")
+              point_at_new_tag("helm/redis-docs/README.md", named_tag, new_tag)
+              point_at_new_tag("helm/redis-docs/README-he.md", named_tag, new_tag)
           PYEOF
-          fi
 
           IFS=. read -r MAJ MIN PATCH <<<"$OLD_VERSION"
           NEW_VERSION="$MAJ.$MIN.$((PATCH + 1))"
@@ -1622,13 +1537,14 @@ jobs:
           # on Docker Hub names the version from the run before — a version
           # that exists, one patch behind.
           sed -i -E "s/--version [0-9]+\.[0-9]+\.[0-9]+/--version ${NEW_VERSION}/g" \
-            .github/dockerhub/redis-docs.md \
-            .github/dockerhub/redis-docs-cli.md
+            .github/dockerhub/*.md
 
+          CLI_NOTE=""
           if [ "$OLD_CLI_TAG" != "$NEW_CLI_TAG" ]; then
-            CLI_NOTE=", CLI image $NEW_CLI_TAG"
-          else
-            CLI_NOTE=""
+            CLI_NOTE="$CLI_NOTE, CLI image $NEW_CLI_TAG"
+          fi
+          if [ "$OLD_SEARCH_TAG" != "$NEW_SEARCH_TAG" ]; then
+            CLI_NOTE="$CLI_NOTE, search image $NEW_SEARCH_TAG"
           fi
 
           {

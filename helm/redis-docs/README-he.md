@@ -27,6 +27,8 @@ skopeo copy docker://a0533057932/redis-docs:<hash>-mirror-unprivileged \
             docker://registry.internal.company.com/redis-docs:<hash>-mirror-unprivileged
 skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
             docker://registry.internal.company.com/redis-docs-cli:0.6.0
+skopeo copy docker://a0533057932/redis-docs-search:0.1.0 \
+            docker://registry.internal.company.com/redis-docs-search:0.1.0
 
 # 2. שדרוג
 helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
@@ -37,7 +39,7 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
 
 ארבעה דברים שחשוב לדעת לפני שמריצים:
 
-- **התגים האלה לא קיימים עד שהגרסה הזו נבנית.** ‏`redis-docs-cli:0.6.0` והתגים
+- **התגים האלה לא קיימים עד שהגרסה הזו נבנית.** ‏`redis-docs-cli:0.6.0`, ‏`redis-docs-search:0.1.0` והתגים
   `redis-docs:*-mirror-unprivileged` נוצרים בהרצה הראשונה של ה-workflow לגרסה הזו — כדאי
   לבדוק בסיכום ההרצה, או ב-Docker Hub, לפני שממררים אותם. פריסה מול תג שלא נדחף מסתיימת
   ב-ImagePullBackOff ולא במשהו יותר מסביר.
@@ -156,8 +158,7 @@ kubectl exec deploy/redis-docs-cli -c redis -- redis-cli ACL DRYRUN docsandbox F
 | `search-api` | בונה את האינדקס, ואז מגיש את נקודת הקצה של החיפוש | 8091 |
 | `redis` | מחזיק את האינדקס — מקומי לפוד (localhost) | 6379 |
 
-`search-api` רץ מה-image של `redis-docs-cli`: שירות החיפוש נוסע בתוכו ולא ב-image משלו,
-כך שלפריסת איירגאפ אין image שלישי לבנות, למרר ולהעביר פנימה.
+`search-api` רץ מה-image שלו, `redis-docs-search`, שנבנה מ-`helm/search`.
 
 ה-Redis הזה נפרד מזה של ה-CLI playground בכוונה. `files/sandbox.acl` מעניק לקורא את
 `+ft.dropindex` במפורש, כדי שמדריך שיוצר אינדקס יוכל לבטלו — מה שהיה מאפשר לכל מבקר
@@ -375,7 +376,7 @@ downloads:
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן — אחד מהשניים |
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
-| `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | API החיפוש בדוקס — אותו image ואותו תג, פקודה אחרת. בתג ישן מ-`0.6.0` אין מודול `search` והפוד קורס בעלייה. | לא — רק אם `search.enabled=true` |
+| `a0533057932/redis-docs-search` | `0.1.0` | 8091 | API החיפוש בדוקס | לא — רק אם `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
@@ -583,6 +584,12 @@ docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
+# חיפוש בדוקס (אופציונלי)
+# צריך Redis 8 משלו — מנוע השאילתות שהאינדקס יושב בו. את redis מושכים מהבלוק של ה-CLI
+# playground, אם עוד לא.
+docker pull a0533057932/redis-docs-search:0.1.0
+docker save a0533057932/redis-docs-search:0.1.0 -o redis-docs-search.tar
+
 # הסקשנים הממוררים מ-redis.io (אופציונלי)
 # רק אם רוצים את הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה
 # ודיאגרמות הארכיטקטורה. אותה בנייה של ה-image הראשי למעלה.
@@ -602,9 +609,10 @@ helm package helm/redis-docs/
 העבירו את הקבצים הבאים:
 - `redis-docs-2.0.5.tgz`
 - `redis-docs.tar`
-- `redis-docs-cli.tar` (אופציונלי - CLI וחיפוש)
+- `redis-docs-cli.tar` (אופציונלי - CLI)
+- `redis-docs-search.tar` (אופציונלי - חיפוש)
 - `redis-docs-mirror.tar` (אופציונלי - הסקשנים הממוררים)
-- `redis.tar` (אופציונלי - CLI)
+- `redis.tar` (אופציונלי - CLI וחיפוש)
 
 ### שלב 4: טעינה ל-private registry
 
@@ -622,6 +630,10 @@ docker push REGISTRY/redis-docs:mirror-unprivileged
 docker load -i redis-docs-cli.tar
 docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
 docker push REGISTRY/redis-docs-cli:0.6.0
+
+docker load -i redis-docs-search.tar
+docker tag a0533057932/redis-docs-search:0.1.0 REGISTRY/redis-docs-search:0.1.0
+docker push REGISTRY/redis-docs-search:0.1.0
 
 docker load -i redis.tar
 docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
@@ -731,7 +743,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.securityContext.capabilities.drop` | `[ALL]` | יכולות Linux שמוסרות (CLI) |
 | `cli.image.registry` | `a0533057932` | registry לתמונת CLI proxy |
 | `cli.image.name` | `redis-docs-cli` | שם תמונת CLI proxy |
-| `cli.image.tag` | `0.6.0` | תג תמונת CLI proxy. ה-workflow של airgap-build מעלה אותו בכל שינוי ב-`helm/cli-proxy` |
+| `cli.image.tag` | `0.6.0` | תג תמונת CLI proxy. ה-workflow של airgap-build מעלה אותו בכל שינוי ב-`helm/cli-proxy` או ב-`helm/common` |
 | `cli.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת CLI. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי CLI proxy |
 | `cli.session.idleTtlSeconds` | `1800` | סגירת סשן דפדפן לאחר פרק זמן זה ללא פקודה |
@@ -760,8 +772,8 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (חיפוש) |
 | `search.securityContext.capabilities.drop` | `[ALL]` | הרשאות Linux שמוסרות (חיפוש) |
 | `search.image.registry` | `a0533057932` | registry של image ה-API |
-| `search.image.name` | `redis-docs-cli` | שם ה-image — זה של ה-CLI proxy, שנושא גם את שירות החיפוש |
-| `search.image.tag` | `0.6.0` | תג ה-image. תמיד זהה ל-`cli.image.tag`: זה אותו image |
+| `search.image.name` | `redis-docs-search` | שם ה-image של API החיפוש |
+| `search.image.tag` | `0.1.0` | תג ה-image. ה-workflow של airgap-build מעלה אותו בכל שינוי ב-`helm/search` או ב-`helm/common` |
 | `search.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת ה-image. בטוח כי התג מקובע; מי שמחזיר את התג ל-`latest` צריך `Always` |
 | `search.logLevel` | `INFO` | רמת לוג של שירות החיפוש |
 | `search.replicas` | `1` | כמה פודים של חיפוש. כל אחד בונה ומחזיק עותק משלו של האינדקס |

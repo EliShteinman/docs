@@ -175,8 +175,8 @@ cli:
     capabilities:
       drop:
         - ALL
-  # The airgap-build workflow bumps this tag whenever helm/cli-proxy changes,
-  # and search.image.tag with it: search runs from the same image.
+  # The airgap-build workflow bumps this tag whenever helm/cli-proxy or
+  # helm/common changes.
   image:
     registry: a0533057932
     name: redis-docs-cli
@@ -293,18 +293,16 @@ search:
     capabilities:
       drop:
         - ALL
-  # The CLI proxy image. The search service ships inside it rather than in one
-  # of its own, so there is no third image to build, mirror and carry in.
-  # Always the same tag as cli.image.tag. A tag older than 0.6.0 has no
-  # `search` module and the pod crash-loops.
+  # The airgap-build workflow bumps this tag whenever helm/search or
+  # helm/common changes.
   #
-  # IfNotPresent is safe because the tag is pinned. Moving it back to the
-  # mutable `latest` needs pullPolicy: Always with it, or a node that cached
-  # `latest` before the search service existed keeps serving that copy.
+  # IfNotPresent is safe because the tag is pinned. Moving it to the mutable
+  # `latest` needs pullPolicy: Always with it, or a node keeps serving the
+  # copy it cached first.
   image:
     registry: a0533057932
-    name: redis-docs-cli
-    tag: "0.6.0"
+    name: redis-docs-search
+    tag: "0.1.0"
     pullPolicy: IfNotPresent
   logLevel: INFO
   # Each replica holds its own copy of the index and builds it at startup, so

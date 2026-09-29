@@ -29,6 +29,8 @@ skopeo copy docker://a0533057932/redis-docs:<hash>-mirror-unprivileged \
             docker://registry.internal.company.com/redis-docs:<hash>-mirror-unprivileged
 skopeo copy docker://a0533057932/redis-docs-cli:0.6.0 \
             docker://registry.internal.company.com/redis-docs-cli:0.6.0
+skopeo copy docker://a0533057932/redis-docs-search:0.1.0 \
+            docker://registry.internal.company.com/redis-docs-search:0.1.0
 
 # 2. Upgrade
 helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
@@ -39,8 +41,8 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
 
 Four things to know before you run it:
 
-- **These tags do not exist until this release is built.** `redis-docs-cli:0.6.0` and
-  the `redis-docs:*-mirror-unprivileged` tags are produced by the first run of the
+- **These tags do not exist until this release is built.** `redis-docs-cli:0.6.0`,
+  `redis-docs-search:0.1.0` and the `redis-docs:*-mirror-unprivileged` tags are produced by the first run of the
   build workflow for this version — check the run summary, or Docker Hub, before you
   mirror them. Deploying against a tag that was never pushed is an ImagePullBackOff and
   nothing more informative.
@@ -163,9 +165,7 @@ Created only when `search.enabled=true`.
 | `search-api` | Builds the index, then serves the search endpoint | 8091 |
 | `redis` | Holds the index — local to pod (localhost) | 6379 |
 
-`search-api` runs from the `redis-docs-cli` image: the search service ships inside it
-rather than in an image of its own, so an air-gapped deployment has no third image to
-build, mirror and carry in.
+`search-api` runs from its own image, `redis-docs-search`, built from `helm/search`.
 
 This Redis is separate from the CLI playground's on purpose. `files/sandbox.acl`
 deliberately grants the reader `+ft.dropindex`, so a tutorial that creates an index can
@@ -450,7 +450,7 @@ A limit costs nothing until the container actually runs.
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | Yes — one of the two |
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
-| `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | Docs search API — the same image and tag, different command. A tag older than `0.6.0` has no `search` module and the pod crashes on start. | No — only if `search.enabled=true` |
+| `a0533057932/redis-docs-search` | `0.1.0` | 8091 | Docs search API | No — only if `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis holding the search index | No — only if `search.enabled=true` |
 
 > For Kubernetes/OpenShift use the `unprivileged` or `<HASH>-unprivileged` tag.
@@ -662,8 +662,10 @@ docker pull a0533057932/redis-docs:mirror-unprivileged
 docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
 
 # Docs search (optional)
-# Runs from the CLI image above, and needs its own Redis 8 — the query engine the
-# index lives in. Pull both from the CLI playground block if you have not already.
+# Needs its own Redis 8 — the query engine the index lives in. Pull redis from the
+# CLI playground block if you have not already.
+docker pull a0533057932/redis-docs-search:0.1.0
+docker save a0533057932/redis-docs-search:0.1.0 -o redis-docs-search.tar
 ```
 
 ### Step 2: Package the Helm chart
@@ -678,9 +680,10 @@ helm package helm/redis-docs/
 Transfer the following files:
 - `redis-docs-2.0.5.tgz`
 - `redis-docs.tar`
-- `redis-docs-cli.tar` (optional - CLI and search)
+- `redis-docs-cli.tar` (optional - CLI)
+- `redis-docs-search.tar` (optional - search)
 - `redis-docs-mirror.tar` (optional - the mirrored redis.io sections)
-- `redis.tar` (optional - CLI)
+- `redis.tar` (optional - CLI and search)
 
 ### Step 4: Load into the private registry
 
@@ -698,6 +701,10 @@ docker push REGISTRY/redis-docs:mirror-unprivileged
 docker load -i redis-docs-cli.tar
 docker tag a0533057932/redis-docs-cli:0.6.0 REGISTRY/redis-docs-cli:0.6.0
 docker push REGISTRY/redis-docs-cli:0.6.0
+
+docker load -i redis-docs-search.tar
+docker tag a0533057932/redis-docs-search:0.1.0 REGISTRY/redis-docs-search:0.1.0
+docker push REGISTRY/redis-docs-search:0.1.0
 
 docker load -i redis.tar
 docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
@@ -807,7 +814,7 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (CLI) |
 | `cli.image.registry` | `a0533057932` | CLI proxy image registry |
 | `cli.image.name` | `redis-docs-cli` | CLI proxy image name |
-| `cli.image.tag` | `0.6.0` | CLI proxy image tag. The airgap-build workflow bumps it whenever `helm/cli-proxy` changes |
+| `cli.image.tag` | `0.6.0` | CLI proxy image tag. The airgap-build workflow bumps it whenever `helm/cli-proxy` or `helm/common` changes |
 | `cli.image.pullPolicy` | `IfNotPresent` | CLI image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
 | `cli.resources` | requests: 50m/64Mi, limits: 200m/128Mi | CLI proxy resources |
 | `cli.session.idleTtlSeconds` | `1800` | Close a browser session after this long without a command |
@@ -836,8 +843,8 @@ kubectl port-forward svc/redis-docs 8080:80
 | `search.securityContext.runAsNonRoot` | `true` | Block running as root (search) |
 | `search.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (search) |
 | `search.image.registry` | `a0533057932` | Search API image registry |
-| `search.image.name` | `redis-docs-cli` | Search API image name — the CLI proxy image, which carries the search service too |
-| `search.image.tag` | `0.6.0` | Search API image tag. Always the same as `cli.image.tag`: it is the same image |
+| `search.image.name` | `redis-docs-search` | Search API image name |
+| `search.image.tag` | `0.1.0` | Search API image tag. The airgap-build workflow bumps it whenever `helm/search` or `helm/common` changes |
 | `search.image.pullPolicy` | `IfNotPresent` | Search API image pull policy. Safe because the tag is pinned; set it to `Always` if you move the tag back to `latest` |
 | `search.logLevel` | `INFO` | Log level for the search service |
 | `search.replicas` | `1` | Search pods. Each builds and holds its own copy of the index |
