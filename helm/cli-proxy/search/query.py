@@ -17,6 +17,7 @@ import re
 
 from search import config
 from search.product import ALL_PRODUCTS
+from search.sources import DOCS_SOURCE
 
 HIGHLIGHT_OPEN = "<b>"
 HIGHLIGHT_CLOSE = "</b>"
@@ -239,3 +240,15 @@ def _decode_hierarchy(stored: str | None) -> list[str]:
     except json.JSONDecodeError:
         return []
     return crumbs if isinstance(crumbs, list) else []
+
+
+def documentation_first(results: list[dict]) -> list[dict]:
+    """Put the documentation's results ahead of the mirror's, keeping each in rank order.
+
+    The modal draws its groups in the order their first result arrives, so one
+    blog post that outscores every page of docs puts "Blog" at the top. On
+    redis.io the documentation always heads the list, and the reader of a docs
+    site is looking for docs first. The mirror weight (config.MIRROR_WEIGHT)
+    decides how many mirrored pages make the page; this decides where they go.
+    """
+    return sorted(results, key=lambda result: result.get("source") != DOCS_SOURCE)

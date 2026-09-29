@@ -79,6 +79,13 @@ VERSION_WEIGHT = float(os.environ.get("SEARCH_VERSION_WEIGHT", "0.3"))
 # archived copy of the same page.
 VERSION_NEWEST_WEIGHT = float(os.environ.get("SEARCH_VERSION_NEWEST_WEIGHT", "0.6"))
 
+# How much of its relevance a page mirrored from redis.io's marketing site --
+# a blog post, a tutorial, a customer story -- keeps against the documentation.
+# redis.io's own search puts its documentation first and its blog after it; a
+# multiplier below 1 does the same here without hiding the mirror: a post that
+# matches far better than any page of docs still comes up.
+MIRROR_WEIGHT = float(os.environ.get("SEARCH_MIRROR_WEIGHT", "0.5"))
+
 # The bonus a page gets for carrying the typed words, whole, in its title. See
 # query.py for why a prefix alone ranks a command's own page below the long
 # reference pages that list it. 5 was measured on the real index.

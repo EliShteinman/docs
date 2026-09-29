@@ -94,7 +94,8 @@ def run_search(raw_query: str, product: str, limit: int, offset: int) -> tuple[d
         LOGGER.warning("search rejected for %r: %s", built, reply)
         return {**EMPTY_RESPONSE, "error": "query rejected"}, 200
     total, documents = query.parse_reply(reply)
-    return {"total": total, "results": query.one_per_row(query.to_results(documents))}, 200
+    results = query.documentation_first(query.one_per_row(query.to_results(documents)))
+    return {"total": total, "results": results}, 200
 
 
 def bounded_int(raw: str | None, default: int, lowest: int, highest: int) -> int:

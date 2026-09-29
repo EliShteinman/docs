@@ -17,7 +17,7 @@ from resp import RespConnection, RespError
 from search import config
 from search.hierarchy import BreadcrumbIndex
 from search.paths import version_tree
-from search.sources import Document, group_heading, load_documents
+from search.sources import DOCS_SOURCE, Document, group_heading, load_documents
 import json
 
 LOGGER = logging.getLogger("docs_search.indexer")
@@ -150,6 +150,8 @@ class VersionLadder:
 
     def score_for(self, document: Document) -> str:
         """Return the multiplier to store on `document`, as Redis wants it: a string."""
+        if document.source != DOCS_SOURCE:
+            return str(config.MIRROR_WEIGHT)
         if not self._is_archived(document.version):
             return "1"
         tree = version_tree(document.doc_id, document.version)

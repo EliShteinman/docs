@@ -159,8 +159,8 @@ def test_an_archived_version_keeps_only_part_of_it():
 
 def test_an_untagged_page_is_treated_as_current():
     untagged = Document(
-        doc_id="/blog/post", title="Post", url="/blog/post/", body="b",
-        version="", product="", source="blog",
+        doc_id="/develop/page", title="Page", url="/develop/page/", body="b",
+        version="", product="", source="docs",
     )
     assert _ladder(untagged).score_for(untagged) == "1"
 
@@ -269,3 +269,12 @@ def test_a_documentation_page_still_sits_under_the_docs_root():
     index_documents(connection, [_document()], _crumbs(), "doc:", 500)
     fields = dict(zip(connection.sent[0][2::2], connection.sent[0][3::2]))
     assert json.loads(fields["hierarchy"])[0] == "Welcome to Redis Docs"
+
+
+def test_a_mirrored_page_keeps_the_mirror_weight():
+    post = _mirrored("/blog/a-post", "A post", "blog")
+    assert float(VersionLadder.from_documents([post]).score_for(post)) == config.MIRROR_WEIGHT
+
+
+def test_the_mirror_weight_ranks_the_documentation_first():
+    assert config.MIRROR_WEIGHT < 1
