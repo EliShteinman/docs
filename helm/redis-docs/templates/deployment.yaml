@@ -197,49 +197,34 @@ spec:
               mountPath: /etc/nginx/ssl
               readOnly: true
             {{- end }}
-            {{- if .Values.metrics.enabled }}
-            - name: logs
-              mountPath: /var/log/nginx
-            {{- end }}
-        {{- if .Values.metrics.enabled }}
-        - name: metrics
-          image: "{{ include "redis-docs.metricsImage" . }}"
-          imagePullPolicy: {{ .Values.metrics.image.pullPolicy }}
-          args:
-            - -config-file
-            - /etc/nginxlog-exporter/config.hcl
+        {{- if .Values.mirror.enabled }}
+        # The mirrored redis.io sections: static files and nothing else, served
+        # behind a same-origin Content-Security-Policy by the mirror image's own
+        # nginx on 8081. The site's nginx above routes their paths here over
+        # localhost, so the mirror rides in this pod rather than one of its own.
+        - name: mirror
+          image: {{ include "redis-docs.mirrorImage" . }}
+          imagePullPolicy: {{ .Values.mirror.image.pullPolicy }}
           ports:
-            - name: metrics
-              containerPort: 4040
+            - name: mirror-http
+              containerPort: 8081
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /metrics
-              port: metrics
+              path: /blog/
+              port: mirror-http
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /metrics
-              port: metrics
+              path: /blog/
+              port: mirror-http
             initialDelaySeconds: 3
             periodSeconds: 5
           resources:
-            {{- toYaml .Values.metrics.resources | nindent 12 }}
+            {{- toYaml .Values.mirror.resources | nindent 12 }}
           securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - ALL
-          volumeMounts:
-            - name: logs
-              mountPath: /var/log/nginx
-              readOnly: true
-            - name: metrics-config
-              mountPath: /etc/nginxlog-exporter
-              readOnly: true
+            {{- toYaml .Values.mirror.securityContext | nindent 12 }}
         {{- end }}
       volumes:
         - name: nginx-conf
@@ -270,13 +255,6 @@ spec:
         - name: tls-certs
           secret:
             secretName: {{ include "redis-docs.tlsSecretName" . }}
-        {{- end }}
-        {{- if .Values.metrics.enabled }}
-        - name: logs
-          emptyDir: {}
-        - name: metrics-config
-          configMap:
-            name: {{ include "redis-docs.fullname" . }}-metrics
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

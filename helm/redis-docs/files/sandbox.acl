@@ -12,9 +12,8 @@
 # from the corpus.
 #
 # Scope: this constrains the reader, not the network. `default` stays open
-# because the Jupyter sidecar and the liveness probe both connect without
-# credentials, and the notebook examples are upstream content the fork does not
-# edit. A pod that reaches port 6379 directly is a NetworkPolicy question.
+# because the liveness probe connects without credentials. A pod that reaches
+# port 6379 directly is a NetworkPolicy question.
 
 user default on nopass ~* &* +@all
 

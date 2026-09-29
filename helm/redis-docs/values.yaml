@@ -167,33 +167,6 @@ readinessProbe:
   initialDelaySeconds: 3
   periodSeconds: 5
 
-metrics:
-  enabled: false
-  image:
-    registry: quay.io/martinhelmich
-    name: prometheus-nginxlog-exporter
-    tag: "v1.11.0"
-    pullPolicy: IfNotPresent
-  resources:
-    requests:
-      cpu: 10m
-      memory: 16Mi
-    limits:
-      cpu: 50m
-      memory: 32Mi
-  route:
-    enabled: false
-    annotations: {}
-    host: ""
-    tls:
-      enabled: true
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
-  serviceMonitor:
-    enabled: false
-    interval: 30s
-    labels: {}
-
 cli:
   enabled: false
   securityContext:
@@ -202,8 +175,8 @@ cli:
     capabilities:
       drop:
         - ALL
-  # The airgap-build workflow bumps this tag whenever helm/cli-proxy changes,
-  # and search.image.tag with it: search runs from the same image.
+  # The airgap-build workflow bumps this tag whenever helm/cli-proxy or
+  # helm/common changes.
   image:
     registry: a0533057932
     name: redis-docs-cli
@@ -258,26 +231,6 @@ cli:
       limits:
         cpu: 200m
         memory: 128Mi
-  jupyter:
-    enabled: false
-    securityContext:
-      allowPrivilegeEscalation: false
-      runAsNonRoot: true
-      capabilities:
-        drop:
-          - ALL
-    image:
-      registry: quay.io
-      name: jupyter/minimal-notebook
-      tag: "2026-04-02"
-      pullPolicy: IfNotPresent
-    resources:
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        cpu: 500m
-        memory: 512Mi
 
 # -- The sections mirrored from redis.io: the blog, tutorials, customer
 #    stories, comparisons, solutions, technology pages and architecture
@@ -293,13 +246,9 @@ cli:
 #    /glossary/ section, so they ship with it.
 mirror:
   enabled: false
-  replicas: 1
-  # The port the mirror's own nginx listens on, which follows the image variant:
-  # 8080 for the `-mirror-unprivileged` tags below, 80 for the `-mirror` ones.
-  # A privileged image needs this at 80 AND a securityContext that lets it run
-  # as root -- nginx cannot bind 80 without it. The Service publishes 8080
-  # either way, so nothing outside this block changes.
-  containerPort: 8080
+  # A container in the site's pod, not a pod of its own: its nginx listens on
+  # 8081 in both image variants and the site's nginx reaches it over
+  # localhost. It scales with the site (replicaCount / autoscaling).
   securityContext:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
@@ -307,13 +256,13 @@ mirror:
     capabilities:
       drop:
         - ALL
-  # The same repository as the site image, under its own tags: one build
-  # produces both. `mirror-unprivileged` is the rolling tag; pin the
-  # `<commit>-mirror-unprivileged` form in an air-gapped registry.
+  # Its own repository, tagged like the site image: the same commit builds
+  # both. `unprivileged` is the rolling tag; pin the `<commit>-unprivileged`
+  # form in an air-gapped registry.
   image:
     registry: a0533057932
-    name: redis-docs
-    tag: "mirror-unprivileged"
+    name: redis-docs-mirror
+    tag: "unprivileged"
     pullPolicy: IfNotPresent
   resources:
     requests:
@@ -330,8 +279,8 @@ mirror:
 #    in a Redis of its own, and an nginx route to reach it. The search UI itself
 #    needs no configuration — it is upstream markup and is left untouched.
 #
-#    Off by default, like `cli` above: it is another pod, and a deployment that
-#    does not want it should not pay for it.
+#    Off by default, like `cli` above: two more containers in the services pod,
+#    and a deployment that does not want them should not pay for them.
 search:
   enabled: false
   securityContext:
@@ -340,24 +289,18 @@ search:
     capabilities:
       drop:
         - ALL
-  # The CLI proxy image. The search service ships inside it rather than in one
-  # of its own, so there is no third image to build, mirror and carry in.
-  # Always the same tag as cli.image.tag. A tag older than 0.6.0 has no
-  # `search` module and the pod crash-loops.
+  # The airgap-build workflow bumps this tag whenever helm/search or
+  # helm/common changes.
   #
-  # IfNotPresent is safe because the tag is pinned. Moving it back to the
-  # mutable `latest` needs pullPolicy: Always with it, or a node that cached
-  # `latest` before the search service existed keeps serving that copy.
+  # IfNotPresent is safe because the tag is pinned. Moving it to the mutable
+  # `latest` needs pullPolicy: Always with it, or a node keeps serving the
+  # copy it cached first.
   image:
     registry: a0533057932
-    name: redis-docs-cli
-    tag: "0.6.0"
+    name: redis-docs-search
+    tag: "0.1.0"
     pullPolicy: IfNotPresent
   logLevel: INFO
-  # Each replica holds its own copy of the index and builds it at startup, so
-  # this trades memory for readers served and for surviving a restart: with one
-  # replica, search is gone for as long as a new pod takes to index.
-  replicas: 1
   # gunicorn threads. A search is one round trip to a Redis in the same pod,
   # and the modal fires a request per keystroke, so this is about concurrent
   # readers rather than slow work.

@@ -14,7 +14,7 @@ build/generate_ndjson.py writes, and asks it the questions those claims answer.
 
 Needs docker, like test_acl.py, and uses the same image so a run pulls one:
 
-    pytest helm/cli-proxy/search/test_search_live.py
+    pytest helm/search/search/test_search_live.py
 """
 
 import json

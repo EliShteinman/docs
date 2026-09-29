@@ -69,22 +69,6 @@ route:
     enabled: true
     termination: edge
 
-metrics:
-  enabled: true
-  image:
-    name: prometheus-nginxlog-exporter
-    tag: "v1.11.0"
-    pullPolicy: IfNotPresent
-  resources:
-    requests:
-      cpu: 10m
-      memory: 16Mi
-    limits:
-      cpu: 50m
-      memory: 32Mi
-  route:
-    enabled: true
-
 # Canonical public URL of this deployment.
 #
 # Used at HTTP response time by nginx sub_filter to replace `__DOCS_BASE_URL__`
@@ -155,8 +139,8 @@ mirror:
   enabled: true
   image:
     registry: registry.intranet.company.com
-    name: redis-docs
-    tag: "b00e22ad3-mirror-unprivileged"   # same build as image.tag above
+    name: redis-docs-mirror
+    tag: "b00e22ad3-unprivileged"   # same build as image.tag above
 
 # --- CLI playground (optional) ---
 # An in-page Redis terminal and workbench, served by a second pod holding the
@@ -190,7 +174,3 @@ cli:
     idleTtlSeconds: 1800
     max: 500
     sweepIntervalSeconds: 60
-  # Jupyter kernel server for the notebook examples. Needs a BinderHub or
-  # JupyterHub reachable from the cluster; see aiServices.binder.
-  jupyter:
-    enabled: false

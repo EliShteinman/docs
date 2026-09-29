@@ -1,0 +1,236 @@
+name: Service image (build if changed)
+description: >-
+  Build and push one of the chart's Python service images when its source
+  changed. Every image carries a label with the hash of its source, so the
+  published images themselves say what code they hold and no record of past
+  builds is kept anywhere. Starting from the tag the chart pins, the action
+  walks up the patch numbers: a tag holding this code is reused, a tag holding
+  other code is skipped, and the first free tag is built. A published tag is
+  therefore never overwritten, and a run that pushed an image without
+  publishing the chart leaves nothing to redo: the next run finds that tag and
+  points the chart at it. Expects a checkout of helm/ and .github/dockerhub/
+  and a Docker Hub login.
+
+inputs:
+  id:
+    description: Short name, used in the source-hash label and the summary (cli, search).
+    required: true
+  repo:
+    description: Docker Hub repository, e.g. a0533057932/redis-docs-search.
+    required: true
+  sources:
+    description: Space-separated directories whose tracked files make up the image.
+    required: true
+  dockerfile:
+    description: Dockerfile path; the build context is helm/.
+    required: true
+  tests:
+    description: pytest arguments for the service's own tests.
+    required: true
+  requirements:
+    description: requirements file the tests need.
+    required: true
+  smoke:
+    description: Python the pushed image must run on both platforms (catches a module missing from the Dockerfile's COPY list).
+    required: true
+  tag-override:
+    description: Push under this tag only, leaving the version sequence and latest alone.
+    required: false
+    default: ''
+
+outputs:
+  pinned:
+    description: The tag values.yaml pins.
+    value: ${{ steps.resolve.outputs.pinned }}
+  tag:
+    description: The tag that holds this code, built now or found.
+    value: ${{ steps.resolve.outputs.tag }}
+  build:
+    description: Whether this run built an image.
+    value: ${{ steps.resolve.outputs.build }}
+
+runs:
+  using: composite
+  steps:
+    # The source hash covers every tracked file in the sources except the
+    # tests, which never enter the image: a change to a test alone does not
+    # publish a new image.
+    - name: Resolve the ${{ inputs.id }} image tag
+      id: resolve
+      shell: bash
+      env:
+        ID: ${{ inputs.id }}
+        REPO: ${{ inputs.repo }}
+        SOURCES: ${{ inputs.sources }}
+        INPUT_OVERRIDE: ${{ inputs.tag-override }}
+      run: |
+        set -euo pipefail
+        # shellcheck disable=SC2086
+        SOURCE_HASH=$(git ls-files -s $SOURCES | grep -vE '/test_[^/]*\.py$' \
+          | sha256sum | cut -c1-16)
+
+        NAME=${REPO##*/}
+        PINNED=$(NAME="$NAME" python3 - <<'PYEOF'
+        import os, pathlib, re
+        values = pathlib.Path("helm/redis-docs/values.yaml").read_text()
+        name = re.escape(os.environ["NAME"])
+        tags = set(re.findall(r'^[ \t]+name: ' + name + r'\n[ \t]+tag: "([^"]*)"', values, re.M))
+        print(" ".join(sorted(tags)))
+        PYEOF
+        )
+        if [[ ! "$PINNED" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "::error::values.yaml must pin $NAME to one plain X.Y.Z tag, found '$PINNED'."
+          exit 1
+        fi
+
+        exists() {
+          local code
+          code=$(curl -s --retry 3 -o /dev/null -w '%{http_code}' \
+            "https://hub.docker.com/v2/repositories/$REPO/tags/$1")
+          case "$code" in
+            200) return 0 ;;
+            404) return 1 ;;
+            *) echo "::error::Docker Hub answered $code for $REPO:$1, so it is unknown whether the tag exists. Nothing was built."
+               exit 1 ;;
+          esac
+        }
+        source_hash_of() {
+          docker buildx imagetools inspect "$REPO:$1" --format '{{json .Image}}' \
+            | jq -r --arg label "redis-docs.$ID.source-hash" \
+                '(.["linux/amd64"] // .) | .config.Labels[$label] // ""'
+        }
+
+        TAG=$PINNED
+        BUILD=true
+        while exists "$TAG"; do
+          # Read into a variable, not inside the `if`: there a failed inspect
+          # would compare as a different hash and publish this code under a
+          # new tag instead of failing the job.
+          PUBLISHED_HASH=$(source_hash_of "$TAG")
+          if [ "$PUBLISHED_HASH" = "$SOURCE_HASH" ]; then
+            BUILD=false
+            break
+          fi
+          IFS=. read -r MAJ MIN PATCH <<<"$TAG"
+          TAG="$MAJ.$MIN.$((PATCH + 1))"
+        done
+
+        if [ -n "$INPUT_OVERRIDE" ]; then
+          PUSHED_TAG=$INPUT_OVERRIDE
+          PUSH_TAGS="$REPO:$PUSHED_TAG"
+        else
+          PUSHED_TAG=$TAG
+          PUSH_TAGS="$REPO:$PUSHED_TAG"$'\n'"$REPO:latest"
+        fi
+
+        # The one-line summary of .github/dockerhub/<repo>.md travels inside
+        # the image, so each version keeps the description it was built with.
+        DESCRIPTION=$(sed -nE '1s/^<!-- short: (.*) -->$/\1/p' ".github/dockerhub/$NAME.md")
+        if [ -z "$DESCRIPTION" ]; then
+          echo "::error::.github/dockerhub/$NAME.md must open with <!-- short: ... -->."
+          exit 1
+        fi
+        # build-push-action may split a labels line on commas.
+        if [[ "$DESCRIPTION" == *,* ]]; then
+          echo "::error::The short description in .github/dockerhub/$NAME.md must not contain a comma."
+          exit 1
+        fi
+
+        {
+          echo "source_hash=$SOURCE_HASH"
+          echo "pinned=$PINNED"
+          echo "tag=$TAG"
+          echo "pushed_tag=$PUSHED_TAG"
+          echo "build=$BUILD"
+          echo "description=$DESCRIPTION"
+          echo "push_tags<<EOF"
+          echo "$PUSH_TAGS"
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+
+    - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+      if: steps.resolve.outputs.build == 'true'
+      with:
+        python-version: '3.14'
+
+    - name: Test the ${{ inputs.id }} service
+      if: steps.resolve.outputs.build == 'true'
+      shell: bash
+      env:
+        REQUIREMENTS: ${{ inputs.requirements }}
+        TESTS: ${{ inputs.tests }}
+      run: |
+        python -m pip install --quiet -r "$REQUIREMENTS" pytest==9.1.1
+        # shellcheck disable=SC2086
+        python -m pytest $TESTS -q
+
+    - name: Set up QEMU
+      if: steps.resolve.outputs.build == 'true'
+      uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
+      with:
+        platforms: arm64
+
+    - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd  # v4.0.0
+      if: steps.resolve.outputs.build == 'true'
+
+    # Both platforms whatever the platforms input says: the next run reuses
+    # this tag without rebuilding it, so it has to be complete the first time.
+    - name: Build & push the ${{ inputs.id }} image
+      if: steps.resolve.outputs.build == 'true'
+      uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
+      with:
+        context: helm
+        file: ${{ inputs.dockerfile }}
+        platforms: linux/amd64,linux/arm64
+        labels: |
+          redis-docs.${{ inputs.id }}.source-hash=${{ steps.resolve.outputs.source_hash }}
+          org.opencontainers.image.revision=${{ github.sha }}
+          org.opencontainers.image.version=${{ steps.resolve.outputs.pushed_tag }}
+          org.opencontainers.image.description=${{ steps.resolve.outputs.description }}
+        tags: ${{ steps.resolve.outputs.push_tags }}
+        push: true
+
+    # The Dockerfile copies a named list of files, so a module added to the
+    # source but not to that list builds cleanly and fails on import in the
+    # cluster. The tests above run from the checkout rather than from the image
+    # and cannot see it. Both platforms, which also proves the published
+    # manifest carries them.
+    - name: Check the pushed ${{ inputs.id }} image imports
+      if: steps.resolve.outputs.build == 'true'
+      shell: bash
+      env:
+        IMAGE: ${{ inputs.repo }}:${{ steps.resolve.outputs.pushed_tag }}
+        SMOKE: ${{ inputs.smoke }}
+      run: |
+        set -euo pipefail
+        for platform in linux/amd64 linux/arm64; do
+          docker run --rm --platform "$platform" "$IMAGE" python -c "$SMOKE"
+        done
+
+    - name: Write the ${{ inputs.id }} image summary
+      if: always()
+      shell: bash
+      env:
+        ID: ${{ inputs.id }}
+        REPO: ${{ inputs.repo }}
+        SOURCES: ${{ inputs.sources }}
+        PINNED: ${{ steps.resolve.outputs.pinned }}
+        TAG: ${{ steps.resolve.outputs.tag }}
+        BUILD: ${{ steps.resolve.outputs.build }}
+        PUSH_TAGS: ${{ steps.resolve.outputs.push_tags }}
+      run: |
+        {
+          echo ""
+          echo "## $ID image"
+          echo ""
+          if [ -z "$TAG" ]; then
+            echo "The tag could not be resolved — see the step logs."
+          elif [ "$BUILD" = "true" ]; then
+            echo "$SOURCES changed since \`$PINNED\`. Built and pushed (if the build step succeeded):"
+            echo '```'
+            echo "$PUSH_TAGS"
+            echo '```'
+          else
+            echo "\`$REPO:$TAG\` already holds this code — nothing built."
+          fi
+        } >> "$GITHUB_STEP_SUMMARY"

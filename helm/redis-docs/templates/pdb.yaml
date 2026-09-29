@@ -7,7 +7,11 @@ metadata:
     {{- include "redis-docs.labels" . | nindent 4 }}
 spec:
   maxUnavailable: {{ .Values.podDisruptionBudget.maxUnavailable }}
+  # The site's pods only. Counting the services pod here would put two
+  # workloads in one budget: while it is not ready, indexing, it would use up
+  # maxUnavailable and block draining the node the site runs on.
   selector:
     matchLabels:
       {{- include "redis-docs.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: server
 {{- end }}

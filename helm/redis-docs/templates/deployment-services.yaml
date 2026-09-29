@@ -1,27 +1,37 @@
-{{- if .Values.search.enabled }}
+{{- if or .Values.cli.enabled .Values.search.enabled }}
+{{- /*
+  The chart's services: the CLI playground and docs search, as containers of
+  one pod. Each is on only when its flag is, and the pod exists only when at
+  least one is. One replica, always: the playground holds reader sessions in
+  process memory. Recreate rather than a rolling update, so an upgrade never
+  asks for a second pod beside this one.
+*/}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "redis-docs.fullname" . }}-search
+  name: {{ include "redis-docs.fullname" . }}-services
   labels:
     {{- include "redis-docs.labels" . | nindent 4 }}
-    app.kubernetes.io/component: search
+    app.kubernetes.io/component: services
 spec:
-  replicas: {{ .Values.search.replicas }}
+  replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       {{- include "redis-docs.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: search
+      app.kubernetes.io/component: services
   template:
     metadata:
       labels:
         {{- include "redis-docs.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: search
+        app.kubernetes.io/component: services
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.search.enabled }}
       # The corpus is docs.ndjson, which lives in the docs image, not in this
       # one. Copying it out through an init container running that image is the
       # same move bake-ndjson-gz makes in deployment.yaml, and it keeps the two
@@ -81,19 +91,120 @@ spec:
             - name: corpus
               mountPath: /corpus
         {{- end }}
+      {{- end }}
       containers:
+        {{- if .Values.cli.enabled }}
+        - name: cli-proxy
+          image: {{ include "redis-docs.cliImage" . }}
+          imagePullPolicy: {{ .Values.cli.image.pullPolicy }}
+          ports:
+            - name: cli-http
+              containerPort: 8090
+              protocol: TCP
+          env:
+            - name: REDIS_HOST
+              value: "localhost"
+            - name: REDIS_PORT
+              value: "6379"
+            {{- if .Values.cli.redis.acl.enabled }}
+            - name: REDIS_USERNAME
+              value: {{ .Values.cli.redis.acl.username | quote }}
+            {{- end }}
+            - name: SESSION_IDLE_TTL
+              value: {{ .Values.cli.session.idleTtlSeconds | quote }}
+            - name: SESSION_MAX
+              value: {{ .Values.cli.session.max | quote }}
+            - name: SESSION_SWEEP_INTERVAL
+              value: {{ .Values.cli.session.sweepIntervalSeconds | quote }}
+            - name: NAMESPACE_ENABLED
+              value: {{ .Values.cli.namespace.enabled | quote }}
+            - name: SCAN_MIN_COUNT
+              value: {{ .Values.cli.namespace.scanMinCount | quote }}
+            - name: CLEANUP_ENABLED
+              value: {{ .Values.cli.namespace.cleanup.enabled | quote }}
+            - name: CLEANUP_BATCH
+              value: {{ .Values.cli.namespace.cleanup.batch | quote }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: cli-http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: cli-http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 3
+          resources:
+            {{- toYaml .Values.cli.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.cli.securityContext | nindent 12 }}
+        - name: cli-redis
+          image: {{ include "redis-docs.cliRedisImage" . }}
+          imagePullPolicy: {{ .Values.cli.redis.image.pullPolicy }}
+          ports:
+            - name: cli-redis
+              containerPort: 6379
+              protocol: TCP
+          {{- if .Values.cli.redis.acl.enabled }}
+          args: ["redis-server", "--aclfile", "/etc/redis/sandbox.acl"]
+          lifecycle:
+            postStart:
+              exec:
+                # Redis parses the ACL file before it registers the bundled
+                # modules, so these three cannot be named there — see the file.
+                # Retried because postStart runs alongside the entrypoint, not
+                # after it, so Redis may not be listening on the first attempt.
+                command:
+                  - sh
+                  - -c
+                  - |
+                    for attempt in 1 2 3 4 5 6 7 8 9 10; do
+                      if redis-cli ACL SETUSER {{ .Values.cli.redis.acl.username }} \
+                           +ft._list +ft.dropindex +ft.tagvals >/dev/null 2>&1; then
+                        exit 0
+                      fi
+                      sleep 1
+                    done
+                    echo "could not grant module commands to {{ .Values.cli.redis.acl.username }}" >&2
+          {{- end }}
+          livenessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.cli.redis.resources | nindent 12 }}
+          volumeMounts:
+            - name: cli-redis-data
+              mountPath: /data
+            {{- if .Values.cli.redis.acl.enabled }}
+            - name: cli-acl
+              mountPath: /etc/redis
+              readOnly: true
+            {{- end }}
+        {{- end }}
+        {{- if .Values.search.enabled }}
         - name: search-api
           image: {{ include "redis-docs.searchImage" . }}
           imagePullPolicy: {{ .Values.search.image.pullPolicy }}
           ports:
-            - name: http
+            - name: search-http
               containerPort: 8091
               protocol: TCP
           env:
             - name: SEARCH_REDIS_HOST
               value: "localhost"
             - name: SEARCH_REDIS_PORT
-              value: "6379"
+              value: "6380"
             - name: SEARCH_DOCS_FEED
               value: "/corpus/docs.ndjson"
             {{- if .Values.mirror.enabled }}
@@ -159,20 +270,20 @@ spec:
           startupProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: search-http
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 60
           livenessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: search-http
             periodSeconds: 10
             timeoutSeconds: 3
           readinessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: search-http
             periodSeconds: 5
             timeoutSeconds: 3
           resources:
@@ -183,42 +294,57 @@ spec:
             - name: corpus
               mountPath: /corpus
               readOnly: true
-            - name: tmp
+            - name: search-tmp
               mountPath: /tmp
-        # Its own Redis, not the playground's. files/sandbox.acl deliberately
-        # grants the reader +ft.dropindex so a tutorial that creates an index
-        # can undo it — which would also let any visitor drop this one. Nothing
-        # outside this pod reaches it: the Service publishes 8091 only.
-        - name: redis
+        # Its own Redis, not the playground's, on 6380 beside it. files/sandbox.acl
+        # deliberately grants the reader +ft.dropindex so a tutorial that
+        # creates an index can undo it — which would also let any visitor drop
+        # this one. The playground proxy only ever connects to 6379, and the
+        # reader's ACL user has neither MIGRATE nor REPLICAOF (@dangerous,
+        # @admin) to reach this one from there. Nothing outside this pod reaches
+        # it: the Service publishes 8091 only.
+        - name: search-redis
           image: {{ include "redis-docs.searchRedisImage" . }}
           imagePullPolicy: {{ .Values.search.redis.image.pullPolicy }}
           ports:
-            - name: redis
-              containerPort: 6379
+            - name: search-redis
+              containerPort: 6380
               protocol: TCP
           # The index is rebuilt from the corpus on every start, so there is
           # nothing here worth persisting to disk.
-          args: ["redis-server", "--save", "", "--appendonly", "no"]
+          args: ["redis-server", "--port", "6380", "--save", "", "--appendonly", "no"]
           livenessProbe:
             exec:
-              command: ["redis-cli", "ping"]
+              command: ["redis-cli", "-p", "6380", "ping"]
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             exec:
-              command: ["redis-cli", "ping"]
+              command: ["redis-cli", "-p", "6380", "ping"]
             initialDelaySeconds: 3
             periodSeconds: 5
           resources:
             {{- toYaml .Values.search.redis.resources | nindent 12 }}
           volumeMounts:
-            - name: redis-data
+            - name: search-redis-data
               mountPath: /data
+        {{- end }}
       volumes:
+        {{- if .Values.cli.enabled }}
+        - name: cli-redis-data
+          emptyDir: {}
+        {{- if .Values.cli.redis.acl.enabled }}
+        - name: cli-acl
+          configMap:
+            name: {{ include "redis-docs.fullname" . }}-cli-acl
+        {{- end }}
+        {{- end }}
+        {{- if .Values.search.enabled }}
         - name: corpus
           emptyDir: {}
-        - name: redis-data
+        - name: search-redis-data
           emptyDir: {}
-        - name: tmp
+        - name: search-tmp
           emptyDir: {}
+        {{- end }}
 {{- end }}

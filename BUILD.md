@@ -29,10 +29,9 @@
 | `latest` | privileged (nginx:alpine) | 80 | rolling tag — `docker run` |
 | `<HASH>-unprivileged` | unprivileged (nginx-unprivileged) | 8080 | גרסה מתויגת — Kubernetes / OpenShift |
 | `unprivileged` | unprivileged (nginx-unprivileged) | 8080 | rolling tag — Kubernetes / OpenShift |
-| `<HASH>-mirror` | המירור, privileged | 80 | הסקשנים הממוררים מ-redis.io — פוד נפרד |
-| `mirror` | המירור, privileged | 80 | rolling tag |
-| `<HASH>-mirror-unprivileged` | המירור, unprivileged | 8080 | מה שה-chart פורס כש-`mirror.enabled=true` |
-| `mirror-unprivileged` | המירור, unprivileged | 8080 | rolling tag |
+
+המירור (`a0533057932/redis-docs-mirror`) נבנה מאותו commit ומקבל את אותם ארבעה תגים באותה
+משמעות. ה-chart פורס את `<HASH>-unprivileged` שלו כש-`mirror.enabled=true`.
 
 > `<HASH>` = commit hash בן 9 תווים (`git rev-parse --short=9 HEAD`).
 > ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
@@ -237,7 +236,7 @@ git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
 **ניווט:** `layouts/partials/more-from-redis-menu.html` מוסיף ל-header העליון תפריט נפתח
 "More from Redis" עם כל הסקשנים הממוררים. הסרגל הצדדי (`docs-nav.html`) נשאר זהה ל-upstream.
 ה-partial נפרד וההוספה ל-`header.html` היא **שורה אחת**, כדי לצמצם התנגשות במיזוג upstream.
-בלי ה-pod של ה-mirror, ה-runtime config מסיר את התפריט.
+בלי קונטיינר ה-mirror, ה-runtime config מסיר את התפריט.
 
 **קישורים ישנים בתיעוד (`build/doc_links.json`):** כתובות תיעוד ישנות — ‏`/docs/<מבנה ישן>/`
 ו-`/topics/<עמוד>` — שעברו שתי רה-ארגונים; רק רדיס יודעת לאן, ולכן כל כתובת **נצפית** פעם אחת
@@ -279,47 +278,65 @@ docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivile
 ```
 
 ב-CI זה ה-job ‏`4f. Build & push the mirror image`. הוא לא מחכה לבניית האתר — רק ל-checkout של
-`mirror/site` — ודוחף לאותו repository בתגים `<hash>-mirror` ו-`<hash>-mirror-unprivileged`
-(וגם `mirror` / `mirror-unprivileged`). ב-chart: `mirror.enabled`.
+`mirror/site` — ודוחף ל-repository משלו, `a0533057932/redis-docs-mirror`, בתגים `<hash>` ו-`<hash>-unprivileged`
+(וגם `latest` / `unprivileged`), כמו האתר. ב-chart: `mirror.enabled`.
 
-#### ה-image של ה-CLI (`redis-docs-cli`) — נבנה אוטומטית ב-`airgap-build.yml`
+#### ה-images של ה-CLI ושל החיפוש (`redis-docs-cli`, `redis-docs-search`) — נבנים אוטומטית ב-`airgap-build.yml`
 
-המקור ב-`helm/cli-proxy/`. ה-image נושא **שני** שירותים: ה-proxy של ה-CLI playground
-(`main:app`, פורט 8090) ושירות החיפוש בדוקס (`search.main:app`, פורט 8091). הצ'ארט מריץ כל
-אחד מ-deployment משלו עם `command` משלו, כך שהפעלת אחד לא מפעילה את השני.
+שני images נפרדים, כל אחד לשירות אחד:
 
-ה-job ‏`4b. CLI image` רץ בכל הרצה של `airgap-build.yml`, במקביל לבניית האתר:
+| image | מקור | שירות | פורט |
+|---|---|---|---|
+| `redis-docs-cli` | `helm/cli-proxy/` | ה-proxy של ה-CLI playground (`main:app`) | 8090 |
+| `redis-docs-search` | `helm/search/` | שירות החיפוש בדוקס (`search.main:app`) | 8091 |
 
-1. מחשב hash של כל הקבצים ב-`helm/cli-proxy/` חוץ מקבצי הבדיקות (`test_*.py`), שלא נכנסים
-   ל-image.
-2. מתחיל מהתג שב-`values.yaml` (‏`cli.image.tag`, שחייב להיות זהה ל-`search.image.tag`)
-   ובודק ב-Docker Hub: תג שקיים ומכיל את אותו hash (label ‏`redis-docs.cli.source-hash`)
-   — נשאר, לא בונים. תג שקיים עם קוד אחר — עולים ב-patch (‏`0.6.0 → 0.6.1`) ובודקים שוב.
-   תג פנוי — מריצים את הבדיקות, בונים amd64+arm64 ודוחפים אותו ואת `latest`.
-3. עם `publish_chart`, שלב 5 מעדכן את התג ב-`values.yaml` (בשני המקומות), בדוגמה
+`helm/common/resp.py` — לקוח ה-RESP ששניהם משתמשים בו — יושב פעם אחת ונכנס לשניהם. לכן
+שני ה-`Dockerfile` נבנים מ-`helm/` (‏`-f cli-proxy/Dockerfile` / `-f search/Dockerfile`),
+והבדיקות מוצאות אותו דרך `helm/pytest.ini`.
+
+ה-jobs ‏`4b. CLI image` ו-`4b. Search image` רצים בכל הרצה של `airgap-build.yml`, במקביל לבניית
+האתר. שניהם מריצים את אותה לוגיקה, ב-`.github/actions/service-image`:
+
+1. מחשב hash של כל הקבצים במקור שלו ובתוספת `helm/common/`, חוץ מקבצי הבדיקות
+   (`test_*.py`), שלא נכנסים ל-image.
+2. מתחיל מהתג שב-`values.yaml` (‏`cli.image.tag` / `search.image.tag`) ובודק ב-Docker Hub:
+   תג שקיים ומכיל את אותו hash (label ‏`redis-docs.<cli|search>.source-hash`) — נשאר, לא
+   בונים. תג שקיים עם קוד אחר — עולים ב-patch (‏`0.6.0 → 0.6.1`) ובודקים שוב. תג פנוי —
+   מריצים את הבדיקות, בונים amd64+arm64 ודוחפים אותו ואת `latest`.
+3. עם `publish_chart`, שלב 5 מעדכן כל תג שהשתנה ב-`values.yaml`, בדוגמה
    `values-openshift-airgapped.yaml` וב-README-ים, ומפרסם את הצ'ארט.
 
-אחרי הדחיפה הוא מוודא שה-image באמת עולה: מריץ בתוכו ייבוא של שני השירותים, בשתי
-הארכיטקטורות. זה תופס מודול שנוסף ל-`helm/cli-proxy/` ולא נוסף לרשימת ה-`COPY`
-שב-`Dockerfile` — הבדיקות רצות על הקוד שברפו ולא רואות את זה.
+אחרי הדחיפה כל job מוודא שה-image באמת עולה: מריץ בתוכו ייבוא של השירות, בשתי הארכיטקטורות.
+זה תופס מודול שנוסף למקור ולא נוסף לרשימת ה-`COPY` שב-`Dockerfile` — הבדיקות רצות על הקוד
+שברפו ולא רואות את זה.
+
+כל image נושא גם את התיאור הקצר שלו — השורה הראשונה של `.github/dockerhub/<repository>.md`
+— כ-label ‏`org.opencontainers.image.description`, וגם `org.opencontainers.image.version`. כך
+כל גרסה שומרת את התיאור שהיה בזמן שנבנתה, גם אחרי שעמוד ה-repository ב-Docker Hub מתעדכן:
+
+```bash
+docker buildx imagetools inspect a0533057932/redis-docs-search:0.1.0 \
+  --format '{{json .Image}}' | jq '.["linux/amd64"].config.Labels'
+```
 
 ה-job ‏`4c. Fork tests` רץ במקביל ומריץ את כל בדיקות הפורק (‏`helm/cli-proxy` כולל
-`test_acl.py`, ו-`build/`). הוא לא עוצר את בניית ה-image-ים, אבל בלעדיו שלב 5 לא מפרסם
-chart. שני חריגים: `build/jupyterize` (דורש `nbformat` שאף קובץ requirements ברפו לא מכריז
-עליו) ו-`test_every_product_is_offered` (‏Radar חסר ב-`data/doc_bundles.json` של רדיס
-עצמה, נכשל גם על main שלהם).
+`test_acl.py`, `helm/search` ו-`build/`). הוא לא עוצר את בניית ה-image-ים, אבל בלעדיו שלב 5
+לא מפרסם chart. שלושה חריגים: `build/jupyterize` (דורש `nbformat` שאף קובץ requirements ברפו
+לא מכריז עליו), `test_every_product_is_offered` (‏Radar חסר ב-`data/doc_bundles.json` של רדיס
+עצמה, נכשל גם על main שלהם) ו-`build/test_cmd_tools.py` (‏#4107 של רדיס הסיר את
+`FILTER_PREFIXES` מ-`cmd_tools.py` ולא מהבדיקה, שנכשלת בייבוא גם על main שלהם).
 
 תג שפורסם אף פעם לא נדרס. הרצה שבנתה image בלי `publish_chart` לא משאירה עבודה: ההרצה
 הבאה מוצאת את התג עם אותו hash ומפנה אליו את הצ'ארט. הרצת בדיקה עם `tag_override` דוחפת
-את ה-CLI רק תחת תג ה-override, בלי `latest` ובלי לגעת ברצף הגרסאות.
+כל אחד מהם רק תחת תג ה-override, בלי `latest` ובלי לגעת ברצף הגרסאות.
 
 > **בנייה ידנית — לבדיקה מקומית בלבד.** לא לדחוף ידנית תג גרסה (`X.Y.Z`) או `latest`:
 > image בלי ה-label ייראה ל-CI כקוד אחר, והוא יעלה גרסה סביבו.
 >
 > ```bash
-> cd helm/cli-proxy
-> python3 -m pytest . -q
-> docker buildx build --platform linux/amd64,linux/arm64 -t redis-docs-cli:local .
+> python3 -m pytest helm/cli-proxy helm/search -q
+> docker buildx build --platform linux/amd64,linux/arm64 -f helm/cli-proxy/Dockerfile -t redis-docs-cli:local helm
+> docker buildx build --platform linux/amd64,linux/arm64 -f helm/search/Dockerfile -t redis-docs-search:local helm
 > ```
 >
 > `airgap-multibuild.sh` בונה רק את האתר ולא דוחף כלום, אז אין מה לשקף בו.

@@ -1092,7 +1092,6 @@
         const RESOLVED_BINDER_URL = (function () {
           var rtBinder = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices
                           && window.RUNTIME_CONFIG.aiServices.binder) || {};
-          if (rtBinder.jupyter && rtBinder.jupyter.enabled) return rtBinder.jupyter.url;
           return rtBinder.url || 'https://redis.io/binder/';
         })();
         // Published so it is visible in the console when a launch misbehaves.

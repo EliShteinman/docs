@@ -1,37 +1,32 @@
-<!-- short: CLI playground proxy and docs search API for the air-gapped Redis docs -->
-# CLI playground and docs search
+<!-- short: CLI playground proxy for the air-gapped Redis docs — runs the commands readers type on a page -->
+# CLI playground proxy
 
-Two services for the air-gapped
-[`a0533057932/redis-docs`](https://hub.docker.com/r/a0533057932/redis-docs) site, in
-one image:
+The proxy behind the in-page Redis terminal of the air-gapped
+[`a0533057932/redis-docs`](https://hub.docker.com/r/a0533057932/redis-docs) site. It
+runs the commands a reader types on a documentation page (`main:app`, port 8090).
+Each browser session gets its own slice of the keyspace and its own connection, and
+every command goes through a restricted ACL user, so one reader cannot reach another
+reader's keys or the server itself.
 
-- **CLI playground proxy** (`main:app`, port 8090) runs the commands a reader types
-  into the terminal on a documentation page. Each browser session gets its own slice
-  of the keyspace and its own connection, and every command goes through a
-  restricted ACL user, so one reader cannot reach another reader's keys or the
-  server itself.
-- **Docs search API** (`search.main:app`, port 8091) indexes the `docs.ndjson` feed
-  the site image ships into the Redis 8 query engine, and answers the search box on
-  the site. Without it that search reaches a service on redis.io, which an
-  air-gapped network cannot.
-
-They share an image because they share the same Flask, the same gunicorn and the
-same RESP client, and a third image would be a third thing to carry through the air
-gap. The Helm chart runs each from its own deployment with its own command, so
-enabling one does not enable the other.
+The docs search API used to ship in this image. It has its own now:
+[`a0533057932/redis-docs-search`](https://hub.docker.com/r/a0533057932/redis-docs-search).
 
 ## Tags
 
 `X.Y.Z` — what the chart pins — and `latest`. Every tag is built for `linux/amd64`
-and `linux/arm64`, and a new one is published whenever the source changes. `0.6.0` is
-the first tag carrying the search service; an older tag has no `search` module and
-the search pod crash-loops.
+and `linux/arm64`, and a new one is published whenever the source changes. Each
+image carries its one-line description as the `org.opencontainers.image.description`
+label, so a version keeps the text it was built with:
+
+```bash
+docker buildx imagetools inspect a0533057932/redis-docs-cli:<tag> \
+  --format '{{json .Image}}' | jq '.["linux/amd64"].config.Labels'
+```
 
 ## Use
 
-This image is not meant to be run on its own: both services expect a Redis 8 (the
-query engine is required for search) reachable in the same pod, and the search
-service also expects the site's feed. The Helm chart wires all of that up, and is
+This image is not meant to be run on its own: it expects a Redis reachable next to
+it, holding the ACL user the chart creates. The Helm chart wires that up, and is
 published alongside the site image as an OCI artifact:
 
 ```bash

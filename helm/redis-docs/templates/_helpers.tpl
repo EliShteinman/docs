@@ -80,15 +80,6 @@ Return the TLS secret name.
 {{- end }}
 
 {{/*
-Return the image reference for the metrics sidecar.
-Priority: global.registry > metrics.image.registry
-*/}}
-{{- define "redis-docs.metricsImage" -}}
-{{- $registry := .Values.global.registry | default .Values.metrics.image.registry -}}
-{{- printf "%s/%s:%s" $registry .Values.metrics.image.name .Values.metrics.image.tag -}}
-{{- end }}
-
-{{/*
 Return the image reference for the CLI proxy container.
 Priority: global.registry > cli.image.registry
 */}}
@@ -123,15 +114,6 @@ Priority: global.registry > search.redis.image.registry
 {{- define "redis-docs.searchRedisImage" -}}
 {{- $registry := .Values.global.registry | default .Values.search.redis.image.registry -}}
 {{- printf "%s/%s:%s" $registry .Values.search.redis.image.name .Values.search.redis.image.tag -}}
-{{- end }}
-
-{{/*
-Return the image reference for the Jupyter sidecar.
-Priority: global.registry > cli.jupyter.image.registry
-*/}}
-{{- define "redis-docs.cliJupyterImage" -}}
-{{- $registry := .Values.global.registry | default .Values.cli.jupyter.image.registry -}}
-{{- printf "%s/%s:%s" $registry .Values.cli.jupyter.image.name .Values.cli.jupyter.image.tag -}}
 {{- end }}
 
 {{/*

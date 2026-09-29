@@ -11,8 +11,6 @@ every asset they need is inside the image.
 |-----|------------|------|-----|
 | `latest`, `<commit-sha>` | image, privileged (`nginx:alpine`) | 80 | `docker run`, Docker Compose |
 | `unprivileged`, `<commit-sha>-unprivileged` | image, unprivileged | 8080 | Kubernetes / OpenShift (non-root, read-only root filesystem) |
-| `<commit-sha>-mirror`, `mirror` | image, the mirrored redis.io sections | 80 | Optional second pod (`mirror.enabled`) |
-| `<commit-sha>-mirror-unprivileged`, `mirror-unprivileged` | the same, non-root | 8080 | Kubernetes / OpenShift |
 | `X.Y.Z` | **the Helm chart**, as an OCI artifact | — | `helm pull` (see below) |
 
 Every image tag is built for `linux/amd64` and `linux/arm64`. A plain `X.Y.Z` tag is
@@ -24,8 +22,9 @@ repository.
 - The documentation in full, including each versioned product tree.
 - The glossary, and the documentation's own assets.
 - The other redis.io sections the documentation links out to — blog, tutorials,
-  customer stories, comparisons, solutions — are mirrored too, but ship in the
-  `mirror` tags above rather than here, so a deployment that does not want 1,400
+  customer stories, comparisons, solutions — are mirrored too, but ship in
+  [`a0533057932/redis-docs-mirror`](https://hub.docker.com/r/a0533057932/redis-docs-mirror)
+  rather than here, so a deployment that does not want 1,400
   extra pages and 238 MB of pictures does not carry them.
 - `docs.ndjson`, the feed that the search service and RAG consumers read.
 
@@ -43,13 +42,15 @@ docker run -p 8080:8080 a0533057932/redis-docs:unprivileged
 
 ## Search and the CLI playground
 
-Both are optional and neither lives in this image: they run as their own pods from
-[`a0533057932/redis-docs-cli`](https://hub.docker.com/r/a0533057932/redis-docs-cli),
-and the Helm chart turns them on with `search.enabled` and `cli.enabled`.
+Both are optional and neither lives in this image: search runs from
+[`a0533057932/redis-docs-search`](https://hub.docker.com/r/a0533057932/redis-docs-search)
+and the CLI playground from
+[`a0533057932/redis-docs-cli`](https://hub.docker.com/r/a0533057932/redis-docs-cli).
+The Helm chart turns them on with `search.enabled` and `cli.enabled`.
 
 ## Helm chart
 
-The chart deploys the site, and optionally the search and CLI pods, with metrics,
+The chart deploys the site, and optionally search and the CLI playground, with
 autoscaling, OpenShift Route support and hierarchical control over which external
 links the pages keep. It is published here as an OCI artifact:
 
@@ -70,11 +71,10 @@ for the version you took:
 | Image | Needed for |
 |-------|------------|
 | `a0533057932/redis-docs` | the site itself |
-| `a0533057932/redis-docs-cli` | search (`search.enabled`) and the CLI playground (`cli.enabled`) |
-| `a0533057932/redis-docs` (`mirror-unprivileged`) | the mirrored redis.io sections (`mirror.enabled`) |
+| `a0533057932/redis-docs-search` | search (`search.enabled`) |
+| `a0533057932/redis-docs-cli` | the CLI playground (`cli.enabled`) |
+| `a0533057932/redis-docs-mirror` | the mirrored redis.io sections (`mirror.enabled`) |
 | `redis:8.10.0-alpine` | the Redis behind each of those two — the query engine search indexes into |
-| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | metrics (`metrics.enabled`) |
-| `quay.io/jupyter/minimal-notebook` | the notebook sidecar (`cli.jupyter.enabled`) |
 
 The chart itself travels the same way: `helm pull` it outside, then
 `helm push` the `.tgz` to the internal registry.

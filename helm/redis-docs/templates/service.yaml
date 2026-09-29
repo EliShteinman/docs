@@ -17,12 +17,6 @@ spec:
       protocol: TCP
       name: https
     {{- end }}
-    {{- if .Values.metrics.enabled }}
-    - port: 4040
-      targetPort: metrics
-      protocol: TCP
-      name: metrics
-    {{- end }}
   selector:
     {{- include "redis-docs.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: server
