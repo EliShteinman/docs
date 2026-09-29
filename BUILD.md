@@ -164,7 +164,7 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 
 ```bash
 make mirror          # רק מה שהשתנה
-make mirror-full     # כל העמודים מחדש (~1,700, כ-35 דקות)
+make mirror-full     # כל העמודים מחדש (~1,700, כ-15–35 דקות); תמונות ו-chunks עדיין מהדיסק
 make mirror-check    # מה redis.io מפרסם ועוד לא אצלנו, בלי לכתוב כלום
 git add mirror/site
 ```
@@ -179,6 +179,10 @@ git add mirror/site
 מזהירה, ו-`make mirror-full` מרענן את כל העמודים.
 
 הריצה כותבת לתיקייה זמנית ומחליפה את `mirror/site` רק אם הצליחה (עד 2% עמודים שנכשלו).
+
+**עמוד שעבר מקום:** כתובת ב-sitemap ש-redis.io מפנה לעמוד אחר (למשל מדריכים שהופנו
+ל-`/partners/aws/`) לא נשמרת — הריצה מדווחת עליה כ-moved ולא כותבת את גוף העמוד האחר תחת
+הכתובת הלא נכונה. אותו דבר ל-`.md` שמפנה ל-HTML.
 
 **מה נכלל:** רשימת העמודים היא ה-sitemap של redis.io, מסונן לסקשנים ב-`settings.SECTIONS`.
 לכל עמוד: ה-HTML, ה-Markdown שלו (`<path>.md` — הכפתור "View as Markdown" והחיפוש), כל
@@ -202,9 +206,22 @@ git add mirror/site
 
 **`/glossary/`** הוא המילון של התיעוד; המונחים שמתחתיו (`/glossary/<term>/`) מגיעים מהמירור.
 
-**חיפוש:** `mirror/site/mirror.ndjson` נבנה מה-Markdown, באותו מבנה של הפיד של התיעוד
-(כולל `sections`, שממנו שירות החיפוש מאנדקס). פוסטי בלוג מתויגים `source=blog`, שאר הסקשנים
-`source=site`.
+**רשימות הבלוג** (`feeds.py`): עמוד הבלוג, כל קטגוריה וכל מחבר מציגים 21 פוסטים וטוענים את
+השאר בגלילה מ-`/api/blog/feed`, `/api/blog/category` ו-`/api/blog/author`. כל batch נשמר כקובץ
+ב-`_feed/<רשימה>/<start>.json`, וה-nginx של ה-pod עונה לפי `start`. הן יורדות במקביל, ונלקחות
+מהדיסק כשאף עמוד לא השתנה.
+
+**חיפוש:** `mirror/site/mirror.ndjson`, באותו מבנה של הפיד של התיעוד (כולל `sections`, שממנו
+שירות החיפוש מאנדקס). הטקסט הוא ה-Markdown של העמוד, ובסקשנים ש-redis.io לא מפרסם להם Markdown
+(השוואות, לקוחות, טכנולוגיה, דיאגרמות) — הטקסט מתוך ה-HTML (`page_text.py`: רק `<main>` ובלוקי
+ה-streaming, בלי header ו-footer). עמודי רשימה לא מאונדקסים. בחלון החיפוש: קבוצות **Blog**,
+**Tutorials** ו-**More from Redis**, וה-docs תמיד ראשונים (`search.index.mirrorWeight` קובע כמה
+עמודי מירור נכנסים לתוצאות).
+
+**חיפוש בתוך הבלוג** (`blog_search.py`): תיבת החיפוש של הבלוג שולחת ל-`/blog/search/?s=...`,
+עמוד ש-redis.io בונה בשרת לכל שאילתה. כאן זה עמוד הבלוג בלי ה-scripts של Next.js, ש-
+`runtime/blog-search.js` ממלא משירות החיפוש (`source=blog`) בשורות באותו עיצוב, עם תאריך, קטגוריה
+ומחברים מ-`_mirror/blog-posts.json`. ה-chart מפנה את `/en/...` של redis.io לנתיב בלי הקידומת.
 
 **ניווט:** `layouts/partials/more-from-redis-menu.html` מוסיף ל-header העליון תפריט נפתח
 "More from Redis" עם כל הסקשנים הממוררים. הסרגל הצדדי (`docs-nav.html`) נשאר זהה ל-upstream.
