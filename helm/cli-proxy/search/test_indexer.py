@@ -241,7 +241,27 @@ def test_a_mirrored_section_heads_its_own_group_instead_of_the_docs_root():
     connection = FakeConnection()
     index_documents(connection, [story], crumbs, "doc:", 500)
     fields = dict(zip(connection.sent[0][2::2], connection.sent[0][3::2]))
-    assert json.loads(fields["hierarchy"]) == ["Customer stories", "Acme"]
+    assert json.loads(fields["hierarchy"]) == ["More from Redis", "Customer stories", "Acme"]
+
+
+def _hierarchy_of(document: Document) -> list[str]:
+    crumbs = BreadcrumbIndex.from_documents("Welcome to Redis Docs", [document])
+    connection = FakeConnection()
+    index_documents(connection, [document], crumbs, "doc:", 500)
+    fields = dict(zip(connection.sent[0][2::2], connection.sent[0][3::2]))
+    return json.loads(fields["hierarchy"])
+
+
+def test_a_blog_post_is_filed_under_blog():
+    assert _hierarchy_of(_mirrored("/blog/a-post", "A post", "blog"))[0] == "Blog"
+
+
+def test_a_tutorial_is_filed_under_tutorials():
+    assert _hierarchy_of(_mirrored("/tutorials/a-guide", "A guide", "site"))[0] == "Tutorials"
+
+
+def test_another_mirrored_section_is_filed_under_more_from_redis():
+    assert _hierarchy_of(_mirrored("/compare/elasticache", "vs ElastiCache", "site"))[0] == "More from Redis"
 
 
 def test_a_documentation_page_still_sits_under_the_docs_root():

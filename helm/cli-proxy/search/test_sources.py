@@ -157,14 +157,15 @@ def test_a_mirrored_sections_own_index_is_told_apart_too():
     assert to_document({"url": "/blog/", "title": "Blog"}).source == "blog"
 
 
-def test_a_mirrored_glossary_term_stays_with_the_documentation():
-    """Its terms publish inside the documentation's own /glossary/ section.
-
-    Their heading should be the documentation's, not a heading of their own --
-    unlike every other mirrored section, which lives at a path of its own.
-    """
+def test_a_mirrored_glossary_term_is_filed_with_the_mirror():
+    """The terms are redis.io's marketing glossary, served by the mirror pod."""
     document = to_document({"url": "/glossary/acid-transactions/", "title": "ACID"})
-    assert document.source == "docs"
+    assert document.source == "site"
+
+
+def test_the_documentation_glossary_stays_with_the_documentation():
+    """/glossary itself is the docs' own glossary page, not a mirrored one."""
+    assert to_document({"url": "/glossary/", "title": "Glossary"}).source == "docs"
 
 
 def test_a_path_that_merely_starts_with_a_mirrored_name_is_not_mirrored():

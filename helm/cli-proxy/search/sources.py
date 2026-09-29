@@ -36,9 +36,9 @@ BLOG_PREFIX = "/blog/"
 # it under, and filing a customer story or a product comparison under "Welcome
 # to Redis Docs" tells a reader it is documentation.
 #
-# The glossary is deliberately absent. Its terms publish at /glossary/<term>/,
-# inside the documentation's own glossary section, so the documentation's
-# heading is the right one for them.
+# The glossary is shared. /glossary itself is the documentation's glossary; the
+# terms under it (/glossary/acid-transactions) are mirrored from redis.io. A
+# prefix test would take both, so the terms are matched on their own below.
 MIRRORED_PREFIXES = (
     "/tutorials/",
     "/technology/",
@@ -116,6 +116,29 @@ def _under(path: str, prefix: str) -> bool:
     return path == prefix.rstrip("/") or path.startswith(prefix)
 
 
+# The heading the search modal files a result under is hierarchy[0]. redis.io's
+# own service heads its blog and tutorials "Blog" and "Tutorials" (the modal
+# derives them from the URL, which only matches an absolute redis.io one). The
+# mirror's other sections have no heading there -- redis.io does not index
+# them -- so they share the one the docs header names them by.
+BLOG_HEADING = "Blog"
+TUTORIALS_HEADING = "Tutorials"
+MORE_HEADING = "More from Redis"
+TUTORIALS_PREFIX = "/tutorials/"
+GLOSSARY_TERMS_PREFIX = "/glossary/"
+
+
+def group_heading(document: "Document") -> str | None:
+    """The modal heading for a mirrored page, or None for documentation."""
+    if document.source == DOCS_SOURCE:
+        return None
+    if document.source == BLOG_SOURCE:
+        return BLOG_HEADING
+    if _under(document.doc_id, TUTORIALS_PREFIX):
+        return TUTORIALS_HEADING
+    return MORE_HEADING
+
+
 def source_of(path: str) -> str:
     """Return which body of content a page belongs to, from where it is published.
 
@@ -127,6 +150,8 @@ def source_of(path: str) -> str:
     if _under(path, BLOG_PREFIX):
         return BLOG_SOURCE
     if any(_under(path, prefix) for prefix in MIRRORED_PREFIXES):
+        return SITE_SOURCE
+    if path.startswith(GLOSSARY_TERMS_PREFIX):
         return SITE_SOURCE
     return DOCS_SOURCE
 
