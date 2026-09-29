@@ -42,7 +42,9 @@ RUN python3 -m venv /venv && /venv/bin/pip install -r requirements.txt
 # ============================================================
 FROM deps AS components
 
-COPY . .
+# Everything but mirror/site: 3.4 GB the Hugo build never reads. The mirror
+# stages below copy it straight from the build context.
+COPY --exclude=mirror . .
 
 ENV PATH="/venv/bin:$PATH"
 
