@@ -64,9 +64,14 @@ def _tracking_tag(host: str) -> re.Pattern[str]:
 _TRACKING_TAGS = tuple(_tracking_tag(host) for host in settings.TRACKING_HOSTS)
 
 
+def local_images(text: str) -> str:
+    """Point every Sanity image URL in `text` at this site."""
+    return text.replace(settings.SANITY_CDN + "/", settings.LOCAL_SANITY_PREFIX + "/")
+
+
 def rewrite_page(html: str) -> str:
     """The page as this site serves it."""
-    html = html.replace(settings.SANITY_CDN + "/", settings.LOCAL_SANITY_PREFIX + "/")
+    html = local_images(html)
     for tag in _TRACKING_TAGS:
         html = tag.sub("", html)
     scripts = "".join(

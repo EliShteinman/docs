@@ -28,6 +28,7 @@ from pathlib import Path
 
 from build.marketing_mirror import feed, manifest, pages, rewrite, settings, sitemap
 from build.marketing_mirror.assets import AssetStore
+from build.marketing_mirror.feeds import FeedMirror
 from build.marketing_mirror.fetcher import FetchError, HttpFetcher
 
 LOGGER = logging.getLogger("marketing_mirror")
@@ -100,6 +101,8 @@ def capture(
                 LOGGER.error("page not mirrored: %s", error)
             if done % 100 == 0:
                 LOGGER.info("%d/%d pages", done, len(paths))
+    batches = FeedMirror(fetcher, assets, staging).capture_all(paths)
+    LOGGER.info("%d blog listing batches", batches)
     _verify(paths, failed, assets)
     kept = sorted(set(paths) - set(failed))
     sitemap.write_sitemap(staging, kept)
