@@ -27,18 +27,27 @@ components:
 # and never fetches an asset twice; `mirror-full` refetches every page, for
 # when redis.io changed its header, menus or footer (the run says so).
 # `mirror-check` reports what redis.io lists that is not on disk.
+# Both refreshes rewrite llms.txt afterwards, since it lists what the mirror
+# has on disk.
+# Phony: mirror/ is a directory, so without this `make mirror` finds it up to
+# date and does nothing.
+.PHONY: mirror mirror-full mirror-check llms
+
 mirror:
 	@python3 -m build.marketing_mirror
+	@python3 -m build.llms_txt
 
 mirror-full:
 	@python3 -m build.marketing_mirror --full
+	@python3 -m build.llms_txt
 
 mirror-check:
 	@python3 -m build.marketing_mirror --check
 
 # Rewrite static/llms.txt and static/llms-docs.txt from redis.io's llms.txt,
-# keeping only links this image answers. Reaches the public internet, like
-# `mirror`; run it after `mirror`, since it checks what the mirror has on disk.
+# keeping only links this image answers. `mirror` and `mirror-full` run it too;
+# on its own it refreshes the index without refreshing the mirror. Reaches the
+# public internet, like them.
 llms:
 	@python3 -m build.llms_txt
 
