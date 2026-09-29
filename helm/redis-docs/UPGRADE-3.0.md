@@ -109,8 +109,9 @@ the index is rebuilt on every start, and the CLI's Redis is disposable.
 
 ## Recommended resources per pod
 
-Measured on the full corpus: 8,757 documents, 7,344 documentation and 1,418 mirrored. The
-measurements come from kind and local Docker, not OpenShift.
+Measured per container in kind and local Docker, on the full corpus: 7,554 documents, 6,136
+documentation and 1,418 mirrored. On OpenShift, once indexed, the site pod used 28Mi and the
+services pod 222Mi in all.
 
 | Container | Measured | Default (requests → limits) | Recommendation |
 |---|---|---|---|
