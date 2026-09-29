@@ -10,10 +10,10 @@ spec:
   type: ClusterIP
   ports:
     - port: 8090
-      targetPort: http
+      targetPort: cli-http
       protocol: TCP
       name: http
   selector:
     {{- include "redis-docs.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: cli
+    app.kubernetes.io/component: services
 {{- end }}

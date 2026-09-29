@@ -197,6 +197,35 @@ spec:
               mountPath: /etc/nginx/ssl
               readOnly: true
             {{- end }}
+        {{- if .Values.mirror.enabled }}
+        # The mirrored redis.io sections: static files and nothing else, served
+        # behind a same-origin Content-Security-Policy by the mirror image's own
+        # nginx on 8081. The site's nginx above routes their paths here over
+        # localhost, so the mirror rides in this pod rather than one of its own.
+        - name: mirror
+          image: {{ include "redis-docs.mirrorImage" . }}
+          imagePullPolicy: {{ .Values.mirror.image.pullPolicy }}
+          ports:
+            - name: mirror-http
+              containerPort: 8081
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /blog/
+              port: mirror-http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /blog/
+              port: mirror-http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.mirror.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.mirror.securityContext | nindent 12 }}
+        {{- end }}
       volumes:
         - name: nginx-conf
           configMap:

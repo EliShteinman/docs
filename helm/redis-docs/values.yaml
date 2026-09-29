@@ -246,13 +246,9 @@ cli:
 #    /glossary/ section, so they ship with it.
 mirror:
   enabled: false
-  replicas: 1
-  # The port the mirror's own nginx listens on, which follows the image variant:
-  # 8080 for the `-unprivileged` tags below, 80 for the privileged ones.
-  # A privileged image needs this at 80 AND a securityContext that lets it run
-  # as root -- nginx cannot bind 80 without it. The Service publishes 8080
-  # either way, so nothing outside this block changes.
-  containerPort: 8080
+  # A container in the site's pod, not a pod of its own: its nginx listens on
+  # 8081 in both image variants and the site's nginx reaches it over
+  # localhost. It scales with the site (replicaCount / autoscaling).
   securityContext:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
@@ -283,8 +279,8 @@ mirror:
 #    in a Redis of its own, and an nginx route to reach it. The search UI itself
 #    needs no configuration — it is upstream markup and is left untouched.
 #
-#    Off by default, like `cli` above: it is another pod, and a deployment that
-#    does not want it should not pay for it.
+#    Off by default, like `cli` above: two more containers in the services pod,
+#    and a deployment that does not want them should not pay for them.
 search:
   enabled: false
   securityContext:
@@ -305,10 +301,6 @@ search:
     tag: "0.1.0"
     pullPolicy: IfNotPresent
   logLevel: INFO
-  # Each replica holds its own copy of the index and builds it at startup, so
-  # this trades memory for readers served and for surviving a restart: with one
-  # replica, search is gone for as long as a new pod takes to index.
-  replicas: 1
   # gunicorn threads. A search is one round trip to a Redis in the same pod,
   # and the modal fires a request per keystroke, so this is about concurrent
   # readers rather than slow work.
