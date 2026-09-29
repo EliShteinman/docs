@@ -37,7 +37,7 @@ from build.marketing_mirror import (
 )
 from build.marketing_mirror.assets import AssetStore
 from build.marketing_mirror.feeds import FeedMirror
-from build.marketing_mirror.fetcher import FetchError, HttpFetcher
+from build.marketing_mirror.fetcher import FetchError, HttpFetcher, Moved
 
 LOGGER = logging.getLogger("marketing_mirror")
 
@@ -96,6 +96,7 @@ def capture(
     mirror = pages.PageMirror(fetcher, assets, staging, previous_dir, previous)
     paths = list(dated)
     failed: list[str] = []
+    moved: list[str] = []
     fetched = 0
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {
@@ -104,6 +105,9 @@ def capture(
         for done, future in enumerate(as_completed(futures), start=1):
             try:
                 fetched += future.result()
+            except Moved as error:
+                moved.append(futures[future])
+                LOGGER.info("page not mirrored, redis.io moved it: %s", error)
             except (FetchError, ValueError) as error:
                 failed.append(futures[future])
                 LOGGER.error("page not mirrored: %s", error)
@@ -117,9 +121,9 @@ def capture(
         batches = FeedMirror(fetcher, assets, staging).capture_all(paths)
         LOGGER.info("%d blog listing batches", batches)
     _verify(paths, failed, assets)
-    kept = sorted(set(paths) - set(failed))
+    kept = sorted(set(paths) - set(failed) - set(moved))
     sitemap.write_sitemap(staging, kept)
-    records = feed.write_feed(staging)
+    records = feed.write_feed(staging, dated)
     # The frame the pages on disk carry: the probe's only once every page
     # was fetched again, so the warning above repeats until they are.
     carried = frame if fetched == len(kept) or not previous.frame else previous.frame

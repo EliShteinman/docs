@@ -9,6 +9,7 @@ import urllib.error
 import urllib.request
 from email.message import Message
 from typing import Protocol
+from urllib.parse import urlsplit
 
 from build.marketing_mirror import settings
 
@@ -20,6 +21,19 @@ _RETRYABLE_STATUS = frozenset({429, 500, 502, 503, 504})
 
 class FetchError(RuntimeError):
     """A URL could not be read."""
+
+
+class Moved(FetchError):
+    """The URL redirects to a different page; its body is that page, not this one."""
+
+
+def moved_to(requested: str, final: str) -> str | None:
+    """The path `requested` was redirected to, or None if it answered itself.
+
+    A trailing slash either way is the same page; anything else is not.
+    """
+    asked, got = urlsplit(requested).path, urlsplit(final).path
+    return None if asked.rstrip("/") == got.rstrip("/") else got
 
 
 class Fetcher(Protocol):
@@ -53,6 +67,9 @@ class HttpFetcher:
         for attempt in range(1, self._retries + 1):
             try:
                 with urllib.request.urlopen(request, timeout=self._timeout) as response:
+                    target = moved_to(url, response.geturl())
+                    if target is not None:
+                        raise Moved(f"{url}: moved to {target}")
                     return decode(response.read(), response.headers)
             except urllib.error.HTTPError as error:
                 if error.code not in _RETRYABLE_STATUS or attempt == self._retries:

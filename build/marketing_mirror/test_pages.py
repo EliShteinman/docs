@@ -77,3 +77,18 @@ def test_a_fetched_page_is_written_rewritten(mirror, tmp_path):
         "/sanity/images/p/d/x-1x1.png"
         in html_file(tmp_path / "site", "/blog/b/").read_text()
     )
+
+
+class RedirectingFetcher(FakeFetcher):
+    def get(self, url: str) -> bytes:
+        if url.endswith(".md"):
+            return b"<!DOCTYPE html><html><body>Partners</body></html>"
+        return super().get(url)
+
+
+def test_an_html_page_answering_for_markdown_is_not_saved_as_markdown(tmp_path):
+    site = tmp_path / "site"
+    fetcher = RedirectingFetcher()
+    mirror = PageMirror(fetcher, AssetStore(fetcher, site), site)
+    mirror.capture("/tutorials/moved/", DATE)
+    assert not markdown_file(site, "/tutorials/moved/").exists()

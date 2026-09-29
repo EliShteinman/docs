@@ -63,11 +63,11 @@ def site(tmp_path):
 
 
 def test_write_feed_writes_one_record_per_page_with_markdown(site):
-    assert feed.write_feed(site) == 1
+    assert feed.write_feed(site, {}) == 1
 
 
 def test_write_feed_writes_valid_ndjson(site):
-    feed.write_feed(site)
+    feed.write_feed(site, {})
     lines = (site / "mirror.ndjson").read_text().splitlines()
     assert json.loads(lines[0])["id"] == "blog/fastapi"
 
@@ -109,3 +109,44 @@ def test_sections_carry_an_anchor_style_id(split):
 
 def test_record_carries_the_sections_the_search_service_indexes(entry):
     assert entry["sections"][0]["text"].endswith("Body text.")
+
+
+STREAMED_PAGE = (
+    "<html><head><title>Redis vs ElastiCache | Redis</title></head><body>"
+    "<header><nav>Platform menu</nav></header><main></main><footer>Footer</footer>"
+    '<div hidden id="S:0"><h1>Redis vs ElastiCache</h1><h2>Deployment</h2>'
+    "<p>Any cloud.</p></div><script>swap()</script></body></html>"
+)
+
+
+@pytest.fixture
+def html_site(tmp_path):
+    (tmp_path / "compare" / "elasticache").mkdir(parents=True)
+    (tmp_path / "compare" / "elasticache" / "index.html").write_text(STREAMED_PAGE)
+    (tmp_path / "compare").joinpath("index.html").write_text(STREAMED_PAGE)
+    return tmp_path
+
+
+def test_a_page_without_markdown_gets_a_record_from_its_html(html_site):
+    ids = [entry["id"] for entry in feed.records(html_site, {})]
+    assert ids == ["compare/elasticache"]
+
+
+def test_a_record_from_html_takes_the_page_title(html_site):
+    entry = next(feed.records(html_site, {}))
+    assert entry["title"] == "Redis vs ElastiCache"
+
+
+def test_a_record_from_html_is_split_at_its_headings(html_site):
+    entry = next(feed.records(html_site, {}))
+    assert [section["title"] for section in entry["sections"]][-1] == "Deployment"
+
+
+def test_a_record_from_html_takes_its_date_from_the_sitemap(html_site):
+    entry = next(feed.records(html_site, {"/compare/elasticache/": "2026-09-01"}))
+    assert entry["last_updated"] == "2026-09-01"
+
+
+@pytest.mark.parametrize("path", ["/blog/", "/blog/category/tech/", "/blog/author/a/"])
+def test_a_listing_is_not_indexed(path):
+    assert feed.is_listing(path)

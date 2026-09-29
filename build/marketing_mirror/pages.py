@@ -80,6 +80,11 @@ class PageMirror:
         except FetchError as error:
             LOGGER.debug("no markdown for %s: %s", path, error)
             return
+        if markdown.lstrip()[:15].lower().startswith((b"<!doctype", b"<html")):
+            # redis.io answers a moved page's .md with a redirect to some other
+            # page's HTML; that is not this page's Markdown.
+            LOGGER.debug("no markdown for %s: got an HTML page instead", path)
+            return
         local = markdown.replace(
             (settings.SANITY_CDN + "/").encode(),
             (settings.LOCAL_SANITY_PREFIX + "/").encode(),
