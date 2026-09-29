@@ -158,6 +158,28 @@ data:
             add_header Cache-Control "public, must-revalidate";
         }
 
+        # The index for AI agents, written from redis.io's by build/llms_txt.py.
+        # Two files, because what it may list depends on the mirror: without
+        # it, the one that leaves the mirrored sections out.
+        location = /llms.txt {
+            gzip_static off;
+            default_type text/plain;
+            {{- if .Values.mirror.enabled }}
+            try_files /llms.txt =404;
+            {{- else }}
+            try_files /llms-docs.txt =404;
+            {{- end }}
+            {{- if .Values.canonicalURL }}
+            sub_filter '__DOCS_BASE_URL__' '{{ .Values.canonicalURL | trimSuffix "/" }}';
+            {{- else }}
+            sub_filter '__DOCS_BASE_URL__' '$scheme://$http_host';
+            {{- end }}
+            sub_filter_types text/plain;
+            sub_filter_once off;
+            expires 1h;
+            add_header Cache-Control "public, must-revalidate";
+        }
+
         location = /healthz {
             access_log off;
             return 200 "ok\n";
@@ -236,6 +258,15 @@ data:
         # deployed and must not advertise addresses nothing answers.
         location = /sitemap-mirror.xml {
             proxy_pass http://127.0.0.1:8081/sitemap.xml;
+        }
+
+        # The mirrored pages as one feed, the counterpart of /docs.ndjson. An
+        # exact match, so the .ndjson location above does not look for it in
+        # the site's own files.
+        location = /mirror.ndjson {
+            proxy_pass http://127.0.0.1:8081/mirror.ndjson;
+            proxy_hide_header Content-Type;
+            add_header Content-Type application/x-ndjson;
         }
         {{- end }}
 

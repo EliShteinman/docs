@@ -381,13 +381,15 @@ jobs:
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
           # Point the documentation's blog links at the mirrored blog in this
-          # image (served by the mirror pod, build/marketing_mirror). Mirrors the
-          # same step in airgap-multibuild.sh. Four domains, not one: of the
+          # image (served by the mirror pod, build/marketing_mirror), and its
+          # llms.txt link at the one this image serves (build/llms_txt.py).
+          # Mirrors the same step in airgap-multibuild.sh. Four domains, not one: of the
           # 184 blog links, 83 use the legacy redis.com and 16 use
           # redislabs.com.
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
             -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
-            -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g'
+            -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g' \
+            -e 's#https?://(www\.)?redis\.io/llms\.txt#/llms.txt#g'
           # Short-form command links: the docs link commands both as
           # redis.io/docs/latest/commands/<x> (handled above) and as
           # redis.io/commands/<x>, which that rule does not touch -- 435 links
@@ -599,13 +601,15 @@ jobs:
             -e 's|https://redis.io/docs/latest/|/|g' \
             -e 's|redis\.io/docs/latest/|/|g'
           # Point the documentation's blog links at the mirrored blog in this
-          # image (served by the mirror pod, build/marketing_mirror). Mirrors the
-          # same step in airgap-multibuild.sh. Four domains, not one: of the
+          # image (served by the mirror pod, build/marketing_mirror), and its
+          # llms.txt link at the one this image serves (build/llms_txt.py).
+          # Mirrors the same step in airgap-multibuild.sh. Four domains, not one: of the
           # 184 blog links, 83 use the legacy redis.com and 16 use
           # redislabs.com.
           find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
             -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
-            -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g'
+            -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g' \
+            -e 's#https?://(www\.)?redis\.io/llms\.txt#/llms.txt#g'
           # Short-form command links: the docs link commands both as
           # redis.io/docs/latest/commands/<x> (handled above) and as
           # redis.io/commands/<x>, which that rule does not touch -- 435 links

@@ -174,6 +174,10 @@ The mirrored pages have a sitemap of their own, published at `/sitemap-mirror.xm
 site's own `/sitemap.xml` lists the documentation alone: it is built whether or not the
 mirror is deployed, so it must not advertise addresses nothing answers.
 
+An index for AI agents is published at `/llms.txt`, written from redis.io's with only the
+links this site answers. With the mirror deployed it also lists the mirrored sections and
+`/mirror.ndjson`, the mirrored pages as one feed, beside the documentation's `/docs.ndjson`.
+
 Search follows the same switch. The mirrored pages have a feed of their own, built from
 the Markdown redis.io publishes for each page, and search indexes it from the mirror
 image only when it is deployed, so a search never answers with a page nothing

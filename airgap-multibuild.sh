@@ -92,10 +92,12 @@ find content -type f -name '*.md' -print0 | xargs -0 sed -i \
 #     would leave more than half of them pointing at the internet. Checked
 #     against the corpus: no URL has /blog as a non-boundary prefix, so
 #     /blogging-guide cannot be caught by this.
+# The llms.txt link goes to the one this image serves (build/llms_txt.py).
 echo "airgap: pointing redis.io/redis.com/redislabs.com blog links at /blog/..."
 find content -type f -name '*.md' -print0 | xargs -0 sed -i -E \
   -e 's#https?://(www\.)?(redis\.io|redis\.com|redislabs\.com)(/en)?/blog#/blog#g' \
-  -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g'
+  -e 's#https?://(www\.)?redis\.io/(tutorials|glossary|compare|solutions|customers|technology|resources/architecture-diagrams)#/\2#g' \
+  -e 's#https?://(www\.)?redis\.io/llms\.txt#/llms.txt#g'
 
 # 2c. Point the short-form command links at the local command pages. The docs
 #     link commands both ways: redis.io/docs/latest/commands/<x> (handled by
