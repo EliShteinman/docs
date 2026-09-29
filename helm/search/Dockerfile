@@ -12,8 +12,11 @@ COPY search/search/__init__.py search/search/config.py search/search/paths.py \
      search/search/product.py search/search/sources.py search/search/hierarchy.py \
      search/search/indexer.py search/search/query.py search/search/main.py ./search/
 
-RUN adduser -D appuser
-USER appuser
+# A numeric UID: with a name, a kubelet enforcing runAsNonRoot cannot tell the
+# user is not root and refuses to start the container. OpenShift assigns its
+# own UID from the namespace's range either way.
+RUN adduser -D -u 10001 appuser
+USER 10001
 
 EXPOSE 8091
 
