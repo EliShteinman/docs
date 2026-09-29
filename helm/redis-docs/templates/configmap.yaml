@@ -217,6 +217,13 @@ data:
         }
         {{- end }}
 
+        # The mirrored pages' own navigation adds redis.io's language prefix --
+        # the blog's search box goes to /en/blog/search/. Only English is
+        # mirrored, and it lives at the unprefixed paths.
+        location ^~ /en/ {
+            rewrite ^/en(/.*)$ $1 permanent;
+        }
+
         # The mirrored pages link to the documentation where redis.io keeps it.
         # Here the documentation is the site itself.
         location ^~ /docs/latest/ {

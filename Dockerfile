@@ -165,7 +165,7 @@ RUN sed -i 's/listen 8080;/listen 80;/' /etc/nginx/conf.d/default.conf
 COPY mirror/site/sanity /usr/share/nginx/html/sanity
 COPY mirror/site/_next /usr/share/nginx/html/_next
 COPY --from=mirror-pages /pages /usr/share/nginx/html
-COPY build/marketing_mirror/runtime/marketing-links.js /usr/share/nginx/html/_mirror/marketing-links.js
+COPY build/marketing_mirror/runtime/*.js /usr/share/nginx/html/_mirror/
 
 EXPOSE 80
 
@@ -185,7 +185,7 @@ COPY build/marketing_mirror/runtime/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=nginx:nginx mirror/site/sanity /usr/share/nginx/html/sanity
 COPY --chown=nginx:nginx mirror/site/_next /usr/share/nginx/html/_next
 COPY --from=mirror-pages --chown=nginx:nginx /pages /usr/share/nginx/html
-COPY --chown=nginx:nginx build/marketing_mirror/runtime/marketing-links.js /usr/share/nginx/html/_mirror/marketing-links.js
+COPY --chown=nginx:nginx build/marketing_mirror/runtime/*.js /usr/share/nginx/html/_mirror/
 
 EXPOSE 8080
 

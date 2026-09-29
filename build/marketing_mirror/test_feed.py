@@ -147,6 +147,8 @@ def test_a_record_from_html_takes_its_date_from_the_sitemap(html_site):
     assert entry["last_updated"] == "2026-09-01"
 
 
-@pytest.mark.parametrize("path", ["/blog/", "/blog/category/tech/", "/blog/author/a/"])
+@pytest.mark.parametrize(
+    "path", ["/blog/", "/blog/category/tech/", "/blog/author/a/", "/blog/search/"]
+)
 def test_a_listing_is_not_indexed(path):
     assert feed.is_listing(path)

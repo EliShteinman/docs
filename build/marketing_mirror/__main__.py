@@ -27,6 +27,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from build.marketing_mirror import (
+    blog_search,
     feed,
     feeds,
     manifest,
@@ -114,12 +115,13 @@ def capture(
             if done % 100 == 0:
                 LOGGER.info("%d/%d pages", done, len(paths))
     unchanged = fetched == 0 and not failed and previous.pages == dated
-    if unchanged and previous_dir is not None:
+    if unchanged and previous_dir is not None and feeds.complete(previous_dir):
         batches = feeds.reuse(previous_dir, staging, assets)
         LOGGER.info("%d blog listing batches, from disk", batches)
     else:
         batches = FeedMirror(fetcher, assets, staging).capture_all(paths)
         LOGGER.info("%d blog listing batches", batches)
+    LOGGER.info("blog search page knows %d posts", blog_search.write(staging))
     _verify(paths, failed, assets)
     kept = sorted(set(paths) - set(failed) - set(moved))
     sitemap.write_sitemap(staging, kept)
