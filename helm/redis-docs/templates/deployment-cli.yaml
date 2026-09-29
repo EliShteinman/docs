@@ -120,49 +120,6 @@ spec:
               mountPath: /etc/redis
               readOnly: true
             {{- end }}
-        {{- if .Values.cli.jupyter.enabled }}
-        - name: jupyter
-          image: {{ include "redis-docs.cliJupyterImage" . }}
-          imagePullPolicy: {{ .Values.cli.jupyter.image.pullPolicy }}
-          ports:
-            - name: jupyter
-              containerPort: 8888
-              protocol: TCP
-          env:
-            - name: REDIS_HOST
-              value: "localhost"
-            - name: REDIS_PORT
-              value: "6379"
-          command: ["jupyter"]
-          args:
-            - "notebook"
-            - "--ip=0.0.0.0"
-            - "--port=8888"
-            - "--no-browser"
-            - "--NotebookApp.token=''"
-            - "--NotebookApp.password=''"
-            - "--NotebookApp.allow_origin='*'"
-            - "--NotebookApp.disable_check_xsrf=True"
-          volumeMounts:
-            - name: jupyter-home
-              mountPath: /home/jovyan
-          livenessProbe:
-            httpGet:
-              path: /api/status
-              port: jupyter
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /api/status
-              port: jupyter
-            initialDelaySeconds: 5
-            periodSeconds: 5
-          resources:
-            {{- toYaml .Values.cli.jupyter.resources | nindent 12 }}
-          securityContext:
-            {{- toYaml .Values.cli.jupyter.securityContext | nindent 12 }}
-        {{- end }}
       volumes:
         - name: redis-data
           emptyDir: {}
@@ -170,9 +127,5 @@ spec:
         - name: cli-acl
           configMap:
             name: {{ include "redis-docs.fullname" . }}-cli-acl
-        {{- end }}
-        {{- if .Values.cli.jupyter.enabled }}
-        - name: jupyter-home
-          emptyDir: {}
         {{- end }}
 {{- end }}

@@ -76,7 +76,6 @@ by default and each is its own image, so a deployment carries only what it turns
 
 nginx also serves as a reverse proxy:
 - `/cli` → routed to CLI proxy in the second pod (port 8090)
-- `/jupyter/` → routed to Jupyter in the second pod (port 8888), including WebSocket support
 
 ### Pod 2 — `redis-docs-cli` (CLI playground)
 
@@ -86,7 +85,6 @@ Created only when `cli.enabled=true`.
 |---|---|---|
 | `cli-proxy` | Flask proxy for executing Redis commands | 8090 |
 | `redis` | Redis sidecar — local to pod (localhost) | 6379 |
-| `jupyter` (optional) | Jupyter kernel server for interactive code execution | 8888 |
 
 All containers in this pod communicate over `localhost`. Port 6379 is a container port
 only — no Service exposes it — but any pod that can reach the pod IP can still reach Redis
@@ -457,7 +455,6 @@ A limit costs nothing until the container actually runs.
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | Docs search API — the same image and tag, different command. A tag older than `0.6.0` has no `search` module and the pod crashes on start. | No — only if `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis holding the search index | No — only if `search.enabled=true` |
-| `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server for interactive code execution | No — only if `cli.jupyter.enabled=true` |
 
 > For Kubernetes/OpenShift use the `unprivileged` or `<HASH>-unprivileged` tag.
 > For standard `docker run` use the `latest` or `<HASH>` tag.
@@ -686,10 +683,6 @@ docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
 # Docs search (optional)
 # Runs from the CLI image above, and needs its own Redis 8 — the query engine the
 # index lives in. Pull both from the CLI playground block if you have not already.
-
-# Jupyter kernel server (optional)
-docker pull quay.io/jupyter/minimal-notebook:2026-04-02
-docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 ```
 
 ### Step 2: Package the Helm chart
@@ -708,7 +701,6 @@ Transfer the following files:
 - `redis-docs-cli.tar` (optional - CLI and search)
 - `redis-docs-mirror.tar` (optional - the mirrored redis.io sections)
 - `redis.tar` (optional - CLI)
-- `jupyter.tar` (optional - Jupyter)
 
 ### Step 4: Load into the private registry
 
@@ -735,11 +727,6 @@ docker push REGISTRY/redis-docs-cli:0.6.0
 docker load -i redis.tar
 docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
 docker push REGISTRY/redis:8.10.0-alpine
-
-# Load Jupyter (optional)
-docker load -i jupyter.tar
-docker tag quay.io/jupyter/minimal-notebook:2026-04-02 REGISTRY/jupyter/minimal-notebook:2026-04-02
-docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ```
 
 > Replace `REGISTRY` with your registry address, for example: `registry.internal.company.com`
@@ -895,15 +882,6 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `cli.redis.image.tag` | `8.10.0-alpine` | Redis sidecar image tag |
 | `cli.redis.image.pullPolicy` | `IfNotPresent` | Redis image pull policy |
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | Redis sidecar resources |
-| `cli.jupyter.enabled` | `false` | Enable Jupyter kernel server (additional container in CLI pod) |
-| `cli.jupyter.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (Jupyter) |
-| `cli.jupyter.securityContext.runAsNonRoot` | `true` | Block running as root (Jupyter) |
-| `cli.jupyter.securityContext.capabilities.drop` | `[ALL]` | Linux capabilities dropped (Jupyter) |
-| `cli.jupyter.image.registry` | `quay.io` | Jupyter image registry |
-| `cli.jupyter.image.name` | `jupyter/minimal-notebook` | Jupyter image name |
-| `cli.jupyter.image.tag` | `2026-04-02` | Jupyter image tag |
-| `cli.jupyter.image.pullPolicy` | `IfNotPresent` | Jupyter image pull policy |
-| `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | Jupyter resources |
 | `mirror.enabled` | `false` | Deploy the mirrored redis.io sections (separate pod and image). Off leaves the documentation complete on its own |
 | `mirror.replicas` | `1` | Mirror pods |
 | `mirror.containerPort` | `8080` | The port the mirror's nginx listens on, which follows the image variant: 8080 for `-mirror-unprivileged`, 80 for `-mirror` (which also needs a securityContext that allows root) |

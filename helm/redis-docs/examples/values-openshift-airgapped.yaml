@@ -190,7 +190,3 @@ cli:
     idleTtlSeconds: 1800
     max: 500
     sweepIntervalSeconds: 60
-  # Jupyter kernel server for the notebook examples. Needs a BinderHub or
-  # JupyterHub reachable from the cluster; see aiServices.binder.
-  jupyter:
-    enabled: false

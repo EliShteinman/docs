@@ -156,11 +156,7 @@ data:
           apiKey: "{{ .Values.aiServices.litellm.apiKey }}"
         },
         binder: {
-          url: "{{ .Values.aiServices.binder.url }}",
-          jupyter: {
-            enabled: {{ and .Values.cli.enabled .Values.cli.jupyter.enabled }},
-            url: "/jupyter/"
-          }
+          url: "{{ .Values.aiServices.binder.url }}"
         }
       },
       downloads: {

@@ -194,7 +194,7 @@ def test_the_docs_corpus_still_runs(sandbox):
 
 
 def test_default_user_is_left_open_for_the_probes(sandbox):
-    """The liveness probe and the Jupyter sidecar both connect with no credentials."""
+    """The liveness probe connects with no credentials."""
     assert redis("ACL", "DRYRUN", "default", "PING") == "OK"
 
 

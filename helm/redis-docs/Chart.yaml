@@ -7,8 +7,8 @@ description: |
   substitution for AI/RAG outputs, an optional search service that
   answers the site's own search box from an index of the shipped
   feed, the sections mirrored from redis.io as an image that can be
-  deployed or left out, and optional Prometheus metrics and CLI /
-  Jupyter playground sidecars.
+  deployed or left out, and optional Prometheus metrics and CLI
+  playground sidecars.
 type: application
 version: 2.0.5
 appVersion: "b00e22ad3"

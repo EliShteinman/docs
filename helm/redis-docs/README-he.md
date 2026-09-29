@@ -72,7 +72,6 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
 
 nginx משמש גם כ-reverse proxy:
 - `/cli` → מופנה ל-CLI proxy בפוד השני (פורט 8090)
-- `/jupyter/` → מופנה ל-Jupyter בפוד השני (פורט 8888), כולל תמיכה ב-WebSocket
 
 ### פוד 2 — `redis-docs-cli` (CLI playground)
 
@@ -82,7 +81,6 @@ nginx משמש גם כ-reverse proxy:
 |---|---|---|
 | `cli-proxy` | Flask proxy להרצת פקודות Redis | 8090 |
 | `redis` | Redis sidecar — מקומי ל-pod (localhost) | 6379 |
-| `jupyter` (אופציונלי) | Jupyter kernel server להרצת קוד אינטראקטיבי | 8888 |
 
 כל הקונטיינרים בפוד זה מתקשרים על `localhost`. פורט 6379 הוא containerPort בלבד — אין Service
 שחושף אותו — אבל כל pod שמגיע ל-IP של הפוד עדיין מגיע ל-Redis ישירות, וזו שאלה של NetworkPolicy
@@ -382,7 +380,6 @@ downloads:
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | API החיפוש בדוקס — אותו image ואותו תג, פקודה אחרת. בתג ישן מ-`0.6.0` אין מודול `search` והפוד קורס בעלייה. | לא — רק אם `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
-| `quay.io/jupyter/minimal-notebook` | `2026-04-02` | 8888 | Jupyter kernel server להרצת קוד אינטראקטיבי | לא — רק אם `cli.jupyter.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
 > ל-`docker run` רגיל השתמשו בתג `latest` או `<HASH>`.
@@ -605,15 +602,11 @@ docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
 docker pull redis:8.10.0-alpine
 docker save redis:8.10.0-alpine -o redis.tar
 
-# Jupyter kernel server (אופציונלי)
 # הסקשנים הממוררים מ-redis.io (אופציונלי)
 # רק אם רוצים את הבלוג, המדריכים, סיפורי הלקוחות, ההשוואות, הפתרונות, עמודי הטכנולוגיה
 # ודיאגרמות הארכיטקטורה. אותה בנייה של ה-image הראשי למעלה.
 docker pull a0533057932/redis-docs:mirror-unprivileged
 docker save a0533057932/redis-docs:mirror-unprivileged -o redis-docs-mirror.tar
-
-docker pull quay.io/jupyter/minimal-notebook:2026-04-02
-docker save quay.io/jupyter/minimal-notebook:2026-04-02 -o jupyter.tar
 ```
 
 ### שלב 2: אריזת Helm chart
@@ -632,7 +625,6 @@ helm package helm/redis-docs/
 - `redis-docs-cli.tar` (אופציונלי - CLI וחיפוש)
 - `redis-docs-mirror.tar` (אופציונלי - הסקשנים הממוררים)
 - `redis.tar` (אופציונלי - CLI)
-- `jupyter.tar` (אופציונלי - Jupyter)
 
 ### שלב 4: טעינה ל-private registry
 
@@ -659,11 +651,6 @@ docker push REGISTRY/redis-docs-cli:0.6.0
 docker load -i redis.tar
 docker tag redis:8.10.0-alpine REGISTRY/redis:8.10.0-alpine
 docker push REGISTRY/redis:8.10.0-alpine
-
-# טעינת Jupyter (אופציונלי)
-docker load -i jupyter.tar
-docker tag quay.io/jupyter/minimal-notebook:2026-04-02 REGISTRY/jupyter/minimal-notebook:2026-04-02
-docker push REGISTRY/jupyter/minimal-notebook:2026-04-02
 ```
 
 > החליפו `REGISTRY` בכתובת ה-registry שלכם, לדוגמה: `registry.internal.company.com`
@@ -819,15 +806,6 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.redis.image.tag` | `8.10.0-alpine` | תג תמונת Redis sidecar |
 | `cli.redis.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Redis |
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי Redis sidecar |
-| `cli.jupyter.enabled` | `false` | הפעלת Jupyter kernel server (container נוסף בפוד CLI) |
-| `cli.jupyter.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (Jupyter) |
-| `cli.jupyter.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (Jupyter) |
-| `cli.jupyter.securityContext.capabilities.drop` | `[ALL]` | יכולות Linux שמוסרות (Jupyter) |
-| `cli.jupyter.image.registry` | `quay.io` | registry לתמונת Jupyter |
-| `cli.jupyter.image.name` | `jupyter/minimal-notebook` | שם תמונת Jupyter |
-| `cli.jupyter.image.tag` | `2026-04-02` | תג תמונת Jupyter |
-| `cli.jupyter.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת Jupyter |
-| `cli.jupyter.resources` | requests: 100m/256Mi, limits: 500m/512Mi | משאבי Jupyter |
 | `mirror.enabled` | `false` | פריסת הסקשנים הממוררים (פוד ו-image נפרדים). כבוי משאיר את התיעוד שלם בפני עצמו |
 | `mirror.replicas` | `1` | כמה פודים של מירור |
 | `mirror.containerPort` | `8080` | הפורט שעליו מאזין ה-nginx של המירור, לפי וריאנט ה-image: ‏8080 ל-`-mirror-unprivileged`, ו-80 ל-`-mirror` (שדורש גם securityContext שמתיר root) |

@@ -423,7 +423,7 @@
   // than on a class means a third carrier is picked up too.
   document.addEventListener('DOMContentLoaded', function() {
     var rt = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.binder) || {};
-    var base = (rt.jupyter && rt.jupyter.enabled) ? rt.jupyter.url : rt.url;
+    var base = rt.url;
     if (!base) return;
     document.querySelectorAll('[data-binder-url]').forEach(function(el) {
       var path = el.getAttribute('data-binder-url').split('/binder/')[1];

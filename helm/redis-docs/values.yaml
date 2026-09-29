@@ -258,26 +258,6 @@ cli:
       limits:
         cpu: 200m
         memory: 128Mi
-  jupyter:
-    enabled: false
-    securityContext:
-      allowPrivilegeEscalation: false
-      runAsNonRoot: true
-      capabilities:
-        drop:
-          - ALL
-    image:
-      registry: quay.io
-      name: jupyter/minimal-notebook
-      tag: "2026-04-02"
-      pullPolicy: IfNotPresent
-    resources:
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        cpu: 500m
-        memory: 512Mi
 
 # -- The sections mirrored from redis.io: the blog, tutorials, customer
 #    stories, comparisons, solutions, technology pages and architecture

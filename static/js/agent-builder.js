@@ -961,7 +961,7 @@ public class ${formData.agentName.replace(/\s+/g, '')}
         // Check if we have a specific Binder link for this configuration
         if (formData.programmingLanguage === 'python' && formData.llmModel === 'openai') {
             var rtBinder = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.binder) || {};
-            var binderBase = (rtBinder.jupyter && rtBinder.jupyter.enabled) ? rtBinder.jupyter.url : (rtBinder.url || 'https://staging.learn.redis.com/binder/');
+            var binderBase = rtBinder.url || 'https://staging.learn.redis.com/binder/';
             let binderUrl = null;
 
             if (formData.agentType === 'recommendation') {

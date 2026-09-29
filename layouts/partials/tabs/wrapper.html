@@ -398,7 +398,7 @@ window.updateAllBinderLinks = window.updateAllBinderLinks || function() {
         // Only show the link if the CURRENTLY SELECTED tab has a binderId
         if (binderId) {
             var rtBinder = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.aiServices && window.RUNTIME_CONFIG.aiServices.binder) || {};
-            var binderBase = (rtBinder.jupyter && rtBinder.jupyter.enabled) ? rtBinder.jupyter.url : (rtBinder.url || 'https://redis.io/binder/');
+            var binderBase = rtBinder.url || 'https://redis.io/binder/';
             const binderUrl = binderBase + 'v2/gh/redis/binder-launchers/' +
                             binderId +
                             '?urlpath=%2Fdoc%2Ftree%2Fdemo.ipynb';
