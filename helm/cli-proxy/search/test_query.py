@@ -230,3 +230,11 @@ def test_documentation_results_come_before_mirrored_ones():
 def test_each_source_keeps_its_rank_order():
     ranked = [_sourced("b1", "blog"), _sourced("d1", "docs"), _sourced("b2", "blog"), _sourced("d2", "docs")]
     assert [r["title"] for r in documentation_first(ranked)] == ["d1", "d2", "b1", "b2"]
+
+
+def test_a_source_narrows_the_query_to_it():
+    assert build_query("vector*", "all", "blog").endswith(" @source:{blog}")
+
+
+def test_no_source_searches_every_source():
+    assert "@source" not in build_query("vector*", "all")

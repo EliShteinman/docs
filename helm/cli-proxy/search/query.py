@@ -77,14 +77,21 @@ def _boost_whole_words_in_title(terms: list[str]) -> str:
     )
 
 
-def build_query(raw: str, product: str) -> str:
-    """Return the FT.SEARCH query for `raw`, or "" when there is nothing to search for."""
+def build_query(raw: str, product: str, source: str = "") -> str:
+    """Return the FT.SEARCH query for `raw`, or "" when there is nothing to search for.
+
+    `source` narrows to one body of content -- docs, blog, site -- which is
+    what the mirrored blog's own search page asks for. The modal never sends
+    it, and gets every source as it always has.
+    """
     terms = query_terms(raw)
     if not terms:
         return ""
     query = _boost_whole_words_in_title(terms)
     if product and product != ALL_PRODUCTS:
         query += " @product:{%s}" % _escape(product)
+    if source:
+        query += " @source:{%s}" % _escape(source)
     return query
 
 

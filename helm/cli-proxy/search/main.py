@@ -66,7 +66,9 @@ class ThreadConnection:
 CONNECTIONS = ThreadConnection()
 
 
-def run_search(raw_query: str, product: str, limit: int, offset: int) -> tuple[dict, int]:
+def run_search(
+    raw_query: str, product: str, limit: int, offset: int, source: str = ""
+) -> tuple[dict, int]:
     """Return the response body and HTTP status for one search.
 
     An empty result list is an answer; a service that cannot reach its index is
@@ -74,7 +76,7 @@ def run_search(raw_query: str, product: str, limit: int, offset: int) -> tuple[d
     rows sees "no results" either way, but one deciding whether to trust the
     answer -- or an operator reading a log -- needs the difference.
     """
-    built = query.build_query(raw_query, product)
+    built = query.build_query(raw_query, product, source)
     if not built:
         return dict(EMPTY_RESPONSE), 200
     command = query.search_command(config.INDEX_NAME, built, limit, offset)
@@ -129,6 +131,7 @@ def search():
         request.args.get("p", ""),
         bounded_int(request.args.get("limit"), config.RESULT_LIMIT, 1, config.MAX_RESULT_LIMIT),
         bounded_int(request.args.get("offset"), 0, 0, config.MAX_OFFSET),
+        request.args.get("source", ""),
     )
     return jsonify(body), status
 
