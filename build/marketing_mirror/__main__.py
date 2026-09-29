@@ -26,7 +26,15 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from build.marketing_mirror import feed, manifest, pages, rewrite, settings, sitemap
+from build.marketing_mirror import (
+    feed,
+    feeds,
+    manifest,
+    pages,
+    rewrite,
+    settings,
+    sitemap,
+)
 from build.marketing_mirror.assets import AssetStore
 from build.marketing_mirror.feeds import FeedMirror
 from build.marketing_mirror.fetcher import FetchError, HttpFetcher
@@ -52,7 +60,7 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument(
         "--full",
         action="store_true",
-        help="Refetch every page, reusing nothing from the previous run's pages.",
+        help="Refetch every page; assets already on disk are still reused.",
     )
     parser.add_argument(
         "--check",
@@ -101,14 +109,22 @@ def capture(
                 LOGGER.error("page not mirrored: %s", error)
             if done % 100 == 0:
                 LOGGER.info("%d/%d pages", done, len(paths))
-    batches = FeedMirror(fetcher, assets, staging).capture_all(paths)
-    LOGGER.info("%d blog listing batches", batches)
+    unchanged = fetched == 0 and not failed and previous.pages == dated
+    if unchanged and previous_dir is not None:
+        batches = feeds.reuse(previous_dir, staging, assets)
+        LOGGER.info("%d blog listing batches, from disk", batches)
+    else:
+        batches = FeedMirror(fetcher, assets, staging).capture_all(paths)
+        LOGGER.info("%d blog listing batches", batches)
     _verify(paths, failed, assets)
     kept = sorted(set(paths) - set(failed))
     sitemap.write_sitemap(staging, kept)
     records = feed.write_feed(staging)
+    # The frame the pages on disk carry: the probe's only once every page
+    # was fetched again, so the warning above repeats until they are.
+    carried = frame if fetched == len(kept) or not previous.frame else previous.frame
     captured = manifest.Manifest(
-        pages={path: dated[path] for path in kept}, frame=frame
+        pages={path: dated[path] for path in kept}, frame=carried
     )
     manifest.save(staging, captured)
     LOGGER.info(
@@ -170,9 +186,11 @@ def main(argv: list[str] | None = None) -> int:
         dated = sitemap.page_dates(HttpFetcher())
         if args.limit:
             dated = dict(list(dated.items())[: args.limit])
-        reuse = not args.full and args.output.is_dir()
-        previous_dir = args.output if reuse else None
-        previous = manifest.load(args.output) if reuse else manifest.Manifest()
+        # Assets are reused even by --full: they are named by their content,
+        # so the one on disk is the one redis.io would send. --full only
+        # forgets the page dates, so every page is fetched again.
+        previous_dir = args.output if args.output.is_dir() else None
+        previous = manifest.Manifest() if args.full else manifest.load(args.output)
         LOGGER.info("mirroring %d pages", len(dated))
         staging = args.output.with_name(args.output.name + ".staging")
         shutil.rmtree(staging, ignore_errors=True)

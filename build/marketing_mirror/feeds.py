@@ -12,7 +12,9 @@ mirror pod's nginx answers each request from the file its `start` names
 (runtime/nginx.conf). A listing is walked until a batch comes back empty or
 the total redis.io reports is reached.
 
-The batches are refetched every run: one new post shifts every batch after it.
+One new, removed or edited post shifts every batch after it, so the batches
+are refetched whenever any page is; a run that fetches no page takes them from
+the previous run instead.
 """
 
 from __future__ import annotations
@@ -23,7 +25,7 @@ from pathlib import Path
 from urllib.parse import urlencode
 
 from build.marketing_mirror import rewrite, settings
-from build.marketing_mirror.assets import AssetStore
+from build.marketing_mirror.assets import AssetStore, place
 from build.marketing_mirror.fetcher import Fetcher
 
 LOGGER = logging.getLogger("marketing_mirror")
@@ -43,6 +45,15 @@ def listings(page_paths: list[str]) -> dict[str, dict[str, str]]:
         if path.startswith(CATEGORY_PREFIX) and slug and "/" not in slug:
             found[f"category/{slug}"] = {"pathname": path, "slug": slug}
     return found
+
+
+def reuse(previous_dir: Path, site_dir: Path, assets: AssetStore) -> int:
+    """Take the previous run's batches, and the images they name. Returns how many."""
+    batches = sorted((previous_dir / settings.FEED_DIR).rglob("*.json"))
+    for batch in batches:
+        place(batch, site_dir / batch.relative_to(previous_dir))
+        assets.add_sanity(rewrite.sanity_assets(batch.read_text(encoding="utf-8")))
+    return len(batches)
 
 
 class FeedMirror:

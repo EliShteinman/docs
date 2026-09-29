@@ -93,3 +93,29 @@ def test_capture_points_images_at_this_site(mirror, tmp_path):
 def test_capture_mirrors_the_images_a_batch_names(mirror, assets):
     mirror.capture("blog", {})
     assert "/images/p/d/x-1x1.png" in assets.sanity
+
+
+def test_reuse_takes_every_previous_batch(tmp_path):
+    previous, site = tmp_path / "previous", tmp_path / "site"
+    for listing in ("blog", "category/tech"):
+        feeds.batch_file(previous, listing, 21).parent.mkdir(parents=True)
+        feeds.batch_file(previous, listing, 21).write_text("{}")
+    assert feeds.reuse(previous, site, FakeAssets()) == 2
+
+
+def test_reuse_keeps_each_batch_at_its_path(tmp_path):
+    previous, site = tmp_path / "previous", tmp_path / "site"
+    feeds.batch_file(previous, "category/tech", 42).parent.mkdir(parents=True)
+    feeds.batch_file(previous, "category/tech", 42).write_text('{"posts": []}')
+    feeds.reuse(previous, site, FakeAssets())
+    assert feeds.batch_file(site, "category/tech", 42).read_text() == '{"posts": []}'
+
+
+def test_reuse_keeps_the_images_a_batch_names(tmp_path):
+    previous, site, assets = tmp_path / "previous", tmp_path / "site", FakeAssets()
+    feeds.batch_file(previous, "blog", 21).parent.mkdir(parents=True)
+    feeds.batch_file(previous, "blog", 21).write_text(
+        '{"src": "/sanity/images/p/d/x-1x1.png"}'
+    )
+    feeds.reuse(previous, site, assets)
+    assert assets.sanity == {"/images/p/d/x-1x1.png"}
