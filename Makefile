@@ -36,6 +36,12 @@ mirror-full:
 mirror-check:
 	@python3 -m build.marketing_mirror --check
 
+# Rewrite static/llms.txt and static/llms-docs.txt from redis.io's llms.txt,
+# keeping only links this image answers. Reaches the public internet, like
+# `mirror`; run it after `mirror`, since it checks what the mirror has on disk.
+llms:
+	@python3 -m build.llms_txt
+
 components_local:
 	@python3 build/make.py --stack ./data/components_local/index.json
 

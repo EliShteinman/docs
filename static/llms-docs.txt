@@ -1,0 +1,85 @@
+# Redis Documentation
+
+> Redis: in-memory data platform for caching, real-time apps, search, vectors, streams, pub/sub, and enterprise deployments (Redis Cloud, Redis Software, open source).
+
+## Core Docs
+
+- [Docs homepage](__DOCS_BASE_URL__/): Entry point for Redis documentation—install, develop, operate, APIs, and feature references for developers and operators.
+- [APIs](__DOCS_BASE_URL__/apis/index.html.md): Redis API surfaces and integration entry points for programmatic access and automation.
+- [Quick starts](__DOCS_BASE_URL__/develop/get-started/index.html.md): First-run setup, basic commands, and core data types to bootstrap application development.
+
+## Commands Reference
+
+- [Commands index](__DOCS_BASE_URL__/commands/): Full catalog of Redis commands grouped by category with syntax, parameters, and behavioral notes.
+- [AUTH](__DOCS_BASE_URL__/commands/auth/index.html.md): Client authentication against Redis using passwords, ACL users, and connection security.
+- [DEL](__DOCS_BASE_URL__/commands/del/index.html.md): Deletes one or more keys immediately and reclaims memory for those keys.
+- [EXPIRE](__DOCS_BASE_URL__/commands/expire/index.html.md): Sets a TTL in seconds on a key for time-bound cache and session semantics.
+- [GET](__DOCS_BASE_URL__/commands/get/index.html.md): Reads a string value for a key; returns null when the key is absent.
+- [HSET](__DOCS_BASE_URL__/commands/hset/index.html.md): Writes field–value pairs on a Redis hash, creating the hash when needed.
+- [SET](__DOCS_BASE_URL__/commands/set/index.html.md): Stores a string value with optional NX/XX, expiration, and conditional semantics.
+- [TTL](__DOCS_BASE_URL__/commands/ttl/index.html.md): Returns remaining seconds until key expiry for keys with a timeout.
+
+## Development
+
+- [Develop with Redis](__DOCS_BASE_URL__/develop/index.html.md): Hub for application development topics—clients, data modeling, and runtime behavior.
+- [Understand Redis data types](__DOCS_BASE_URL__/develop/data-types/index.html.md): Strings, hashes, lists, sets, sorted sets, streams, and module-backed types with usage patterns.
+- [Redis Search and query](__DOCS_BASE_URL__/develop/ai/search-and-query/index.html.md): Secondary indexes, full-text search, filtering, and query execution on Redis data.
+- [Vectors](__DOCS_BASE_URL__/develop/ai/search-and-query/vectors/index.html.md): Storing embeddings, vector indexes (HNSW, flat), kNN and hybrid retrieval for AI and search workloads.
+- [Indexing](__DOCS_BASE_URL__/develop/ai/search-and-query/indexing/index.html.md): Defining and maintaining indexes for efficient search and aggregations.
+- [Pub/Sub](__DOCS_BASE_URL__/develop/pubsub/index.html.md): Channel-based publish/subscribe messaging, fan-out patterns, and limitations versus persistent streams.
+- [Streams](__DOCS_BASE_URL__/develop/data-types/streams/index.html.md): Append-only streams, consumer groups, pending entries, and event-sourcing style consumption with XADD, XREADGROUP, and related commands.
+- [Programmability (Lua and functions)](__DOCS_BASE_URL__/develop/programmability/index.html.md): Server-side scripting with EVAL/EVALSHA, function APIs, and atomic multi-key logic on the Redis process.
+- [Key eviction](__DOCS_BASE_URL__/develop/reference/eviction/index.html.md): Eviction policies (allkeys-lru, volatile-ttl, etc.) when memory limits are reached.
+- [Redis CLI](__DOCS_BASE_URL__/develop/tools/cli/index.html.md): Interactive command-line access, scripting, and troubleshooting against Redis instances.
+- [Redis Insight release notes](__DOCS_BASE_URL__/develop/tools/insight/release-notes/index.html.md): Changes and fixes for the Redis Insight desktop and web database UI.
+- [Redis for VS Code](__DOCS_BASE_URL__/develop/tools/redis-for-vscode/index.html.md): VS Code extension for browsing keys, running commands, and building queries from the editor.
+- [Distributed locks](__DOCS_BASE_URL__/develop/clients/patterns/distributed-locks/index.html.md): Safe lock patterns with SET NX EX, fencing tokens, and correctness considerations.
+
+## Client Libraries
+
+- [Connect with Redis client libraries](__DOCS_BASE_URL__/develop/clients/index.html.md): Official guidance and comparison tables for Node.js (node-redis), Java (Jedis, Lettuce), Go (go-redis), .NET (NRedisStack), Python (redis-py), PHP, C, Rust, and related OM libraries.
+- [Node.js (node-redis)](__DOCS_BASE_URL__/develop/clients/nodejs/index.html.md): JavaScript/TypeScript client for Redis—connection, pipelining, RESP3, and stack modules.
+- [Java (Jedis)](__DOCS_BASE_URL__/develop/clients/jedis/index.html.md): Synchronous Java client covering Redis core and enterprise features with straightforward APIs.
+- [Go (go-redis)](__DOCS_BASE_URL__/develop/clients/go/index.html.md): Go client for Redis with connection pooling, cluster, and module usage patterns.
+- [.NET (NRedisStack)](__DOCS_BASE_URL__/develop/clients/dotnet/index.html.md): C# client for Redis Stack capabilities including JSON, search, time series, and probabilistic structures.
+- [Python (redis-py)](__DOCS_BASE_URL__/develop/clients/redis-py/index.html.md): Official Python client—sync and asyncio APIs, connection pooling, pipelines, Pub/Sub, and Redis Cluster routing.
+
+## Integrations
+
+- [Libraries and tools](__DOCS_BASE_URL__/integrate/index.html.md): Ecosystem integrations across languages, frameworks, cloud marketplaces, and data tools.
+- [Prometheus metrics (Redis Enterprise)](__DOCS_BASE_URL__/integrate/prometheus-with-redis-enterprise/prometheus-metrics-definitions/index.html.md): Metric names, types, and scraping guidance for Redis Enterprise observability.
+- [Redis Data Integration (docs)](__DOCS_BASE_URL__/integrate/redis-data-integration/index.html.md): CDC-style sync from relational and operational databases into Redis with declarative pipelines.
+- [Python client (redis-py)](__DOCS_BASE_URL__/integrate/redis-py/index.html.md): Official Python driver—connections, pipelines, Pub/Sub, and cluster usage.
+- [RedisVL](__DOCS_BASE_URL__/integrate/redisvl/index.html.md): Python library for vector embeddings, indexes, and retrieval workflows on Redis.
+- [RIOT](__DOCS_BASE_URL__/integrate/riot/index.html.md): Bulk import/export and live replication tooling between Redis and external systems.
+- [Redis Cloud + Vercel](__DOCS_BASE_URL__/operate/rc/cloud-integrations/vercel/index.html.md): Provisioning Redis Cloud from Vercel and wiring env vars for serverless apps.
+
+## Operations
+
+- [Operate Redis](__DOCS_BASE_URL__/operate/index.html.md): Deployment, scaling, backup, security, and day-2 operations across Redis products.
+- [Redis Enterprise on Kubernetes](__DOCS_BASE_URL__/operate/kubernetes/index.html.md): Operator-based install, upgrades, and lifecycle for Redis Enterprise on K8s.
+- [Install Redis](__DOCS_BASE_URL__/operate/oss_and_stack/install/install-stack/index.html.md): Platform packages, containers, and local install paths for Redis stack components.
+- [Redis configuration](__DOCS_BASE_URL__/operate/oss_and_stack/management/config/index.html.md): redis.conf directives for networking, memory, persistence, security, and modules.
+- [Redis persistence](__DOCS_BASE_URL__/operate/oss_and_stack/management/persistence/index.html.md): RDB snapshots, AOF rewrite, durability tradeoffs, and recovery procedures.
+- [ACL and access control](__DOCS_BASE_URL__/operate/oss_and_stack/management/security/acl/index.html.md): Redis ACL users, command/category permissions, key patterns, and AUTH integration.
+- [Redis Cloud operations](__DOCS_BASE_URL__/operate/rc/index.html.md): Cloud consoles, databases, plans, networking, backups, and metrics for managed Redis.
+- [Back up and export (Redis Cloud)](__DOCS_BASE_URL__/operate/rc/databases/back-up-data/index.html.md): Scheduled and on-demand backups, exports, and retention for cloud databases.
+- [Redis Cloud quick start](__DOCS_BASE_URL__/operate/rc/rc-quickstart/index.html.md): Create a cloud database, connect a client, and validate connectivity quickly.
+- [Install Redis Insight](__DOCS_BASE_URL__/operate/redisinsight/install/index.html.md): Desktop, Docker, and K8s install paths for the Redis Insight GUI.
+- [Redis Enterprise Software](__DOCS_BASE_URL__/operate/rs/index.html.md): On-prem cluster architecture, shards, proxies, and RS-specific administration.
+- [Connect to a database (RS)](__DOCS_BASE_URL__/operate/rs/databases/connect/index.html.md): Connection endpoints, TLS, and application wiring for Redis Software databases.
+- [Test client connectivity (RS)](__DOCS_BASE_URL__/operate/rs/databases/connect/test-client-connectivity/index.html.md): Built-in checks to validate client reachability and ACL/password correctness.
+- [Hardware requirements (RS)](__DOCS_BASE_URL__/operate/rs/installing-upgrading/install/plan-deployment/hardware-requirements/index.html.md): CPU, RAM, disk, and network guidance for production Redis Software clusters.
+- [Product lifecycle (RS)](__DOCS_BASE_URL__/operate/rs/installing-upgrading/product-lifecycle/index.html.md): Supported versions, end-of-life timelines, and upgrade planning for Redis Software.
+- [Network ports (RS)](__DOCS_BASE_URL__/operate/rs/networking/port-configurations/index.html.md): Client, cluster bus, discovery, and management ports for firewall planning.
+- [redis-cli (RS reference)](__DOCS_BASE_URL__/operate/rs/references/cli-utilities/redis-cli/index.html.md): CLI usage tailored to Redis Enterprise Software operations.
+- [REST API (RS)](__DOCS_BASE_URL__/operate/rs/references/rest-api/index.html.md): Automate cluster and database management via Redis Software REST endpoints.
+- [Release notes (RS)](__DOCS_BASE_URL__/operate/rs/release-notes/index.html.md): Version-by-version changes, fixes, and compatibility notes for Redis Software.
+
+## AI
+
+- [Redis for AI and search (docs)](__DOCS_BASE_URL__/develop/ai/index.html.md): Official docs hub for vectors, RAG recipes, LangChain/LlamaIndex notes, benchmarks, and ecosystem links.
+
+## Full-text feeds
+
+- [Documentation feed](__DOCS_BASE_URL__/docs.ndjson): every documentation page as one JSON record per line, Markdown content included.

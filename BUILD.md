@@ -247,6 +247,14 @@ python3 -m build.doc_links --refresh   # דורש אינטרנט; לרענן ו�
 python3 -m build.doc_links             # מה שהבנייה מריצה, בלי רשת
 ```
 
+**‏`/llms.txt` (`static/llms.txt`, `static/llms-docs.txt`):** האינדקס לסוכני AI נכתב מה-llms.txt של
+redis.io, באותה שיטה: `make llms` (דורש אינטרנט) מוריד אותו פעם אחת, משאיר רק קישורים שהאתר הזה
+עונה עליהם, ושומר שני קבצים שנכנסים ל-commit. קישור לעמוד תיעוד שזז נבדק ב-redis.io לאן הוא מפנה,
+ו-alias מוחלף בעמוד שהוא מפנה אליו. `llms.txt` כולל גם את הקטעים הממוררים ואת `/mirror.ndjson`;
+‏`llms-docs.txt` בלעדיהם, ו-nginx מגיש אותו ב-`/llms.txt` כשהמירור כבוי. הקישורים כתובים עם
+‏`__DOCS_BASE_URL__`, ש-nginx ממלא בזמן הבקשה. להריץ אחרי `make mirror`, כי הוא בודק מה יש בדיסק
+של המירור.
+
 **פער מול המקור:** ה-job ‏`4e. Mirror drift report` מריץ `make mirror-check` ומדווח ב-summary,
 בלי להכשיל כלום. הוא **כבוי כברירת מחדל** — הוא פונה ל-redis.io — ורץ רק כשמסמנים את
 `mirror_drift` בהפעלת ה-workflow. **ה-CI אף פעם לא מוריד תוכן מ-redis.io**; זה קורה רק ב-`make mirror`
