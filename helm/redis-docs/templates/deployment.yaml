@@ -197,50 +197,6 @@ spec:
               mountPath: /etc/nginx/ssl
               readOnly: true
             {{- end }}
-            {{- if .Values.metrics.enabled }}
-            - name: logs
-              mountPath: /var/log/nginx
-            {{- end }}
-        {{- if .Values.metrics.enabled }}
-        - name: metrics
-          image: "{{ include "redis-docs.metricsImage" . }}"
-          imagePullPolicy: {{ .Values.metrics.image.pullPolicy }}
-          args:
-            - -config-file
-            - /etc/nginxlog-exporter/config.hcl
-          ports:
-            - name: metrics
-              containerPort: 4040
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /metrics
-              port: metrics
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /metrics
-              port: metrics
-            initialDelaySeconds: 3
-            periodSeconds: 5
-          resources:
-            {{- toYaml .Values.metrics.resources | nindent 12 }}
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - ALL
-          volumeMounts:
-            - name: logs
-              mountPath: /var/log/nginx
-              readOnly: true
-            - name: metrics-config
-              mountPath: /etc/nginxlog-exporter
-              readOnly: true
-        {{- end }}
       volumes:
         - name: nginx-conf
           configMap:
@@ -270,13 +226,6 @@ spec:
         - name: tls-certs
           secret:
             secretName: {{ include "redis-docs.tlsSecretName" . }}
-        {{- end }}
-        {{- if .Values.metrics.enabled }}
-        - name: logs
-          emptyDir: {}
-        - name: metrics-config
-          configMap:
-            name: {{ include "redis-docs.fullname" . }}-metrics
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

@@ -73,7 +73,6 @@ for the version you took:
 | `a0533057932/redis-docs-cli` | search (`search.enabled`) and the CLI playground (`cli.enabled`) |
 | `a0533057932/redis-docs` (`mirror-unprivileged`) | the mirrored redis.io sections (`mirror.enabled`) |
 | `redis:8.10.0-alpine` | the Redis behind each of those two — the query engine search indexes into |
-| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | metrics (`metrics.enabled`) |
 
 The chart itself travels the same way: `helm pull` it outside, then
 `helm push` the `.tgz` to the internal registry.

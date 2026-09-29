@@ -68,7 +68,6 @@ helm upgrade redis-docs oci://registry-1.docker.io/a0533057932/redis-docs \
 | Container | תיאור | פורט |
 |---|---|---|
 | `nginx` | שרת האתר הראשי (unprivileged) | 8080 |
-| `metrics` (אופציונלי) | sidecar — prometheus-nginxlog-exporter | 4040 |
 
 nginx משמש גם כ-reverse proxy:
 - `/cli` → מופנה ל-CLI proxy בפוד השני (פורט 8090)
@@ -219,7 +218,7 @@ Software נעצרים ב-8.0, בעוד 8.2 מתפרסמת רק כ-`latest`.
 
 ### הגדרות Runtime
 
-ארבעה ConfigMaps נושאים תצורת זמן-ריצה; שניים תמיד נוצרים, ושניים תלויים בדגל הפיצ'ר שלהם:
+שלושה ConfigMaps נושאים תצורת זמן-ריצה; שניים תמיד נוצרים, ואחד תלוי בדגל הפיצ'ר שלו:
 
 - **`configmap-runtime.yaml`** — מייצר `runtime-config.js` שנטען בכל עמוד. מכיל:
   - `cli` — האם ה-CLI playground פרוס, ולאיזו כתובת כפתורי ה-Try it נפתחים. עם `cli.enabled=false` הכפתורים מוסתרים במקום להצביע ל-redis.io.
@@ -229,7 +228,6 @@ Software נעצרים ב-8.0, בעוד 8.2 מתפרסמת רק כ-`latest`.
   - `externalLinks` — `enabled`/`url` יעיל לכל לינק חיצוני בקטלוג
   - `gitMirrors` — המראה היעילה לכל כתובת Git בקטלוג
 - **`configmap.yaml`** — קובץ ה-`default.conf` של nginx. משתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה, ומנתב `/cli` לשירות ה-CLI playground, וכאשר `search.enabled=true` גם `/convai/api/search-service` לשירות החיפוש.
-- **`configmap-metrics.yaml`** — תצורת nginxlog-exporter. רק עם `metrics.enabled=true`.
 - **`configmap-cli-acl.yaml`** — קובץ ה-ACL של Redis מתוך `files/sandbox.acl`, מותקן ל-sidecar. רק עם `cli.redis.acl.enabled=true`; ראו [בידוד ה-CLI playground](#בידוד-ה-cli-playground).
 
 ### לינקים חיצוניים (externalLinks)
@@ -375,7 +373,6 @@ downloads:
 |---|---|---|---|---|
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | הרצה רגילה עם `docker run` (privileged) | כן — אחד מהשניים |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | כן — אחד מהשניים |
-| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | מטריקות Prometheus (כולל זמני תגובה) | לא — רק אם `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | לא — רק אם `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | API החיפוש בדוקס — אותו image ואותו תג, פקודה אחרת. בתג ישן מ-`0.6.0` אין מודול `search` והפוד קורס בעלייה. | לא — רק אם `search.enabled=true` |
@@ -410,7 +407,7 @@ helm install redis-docs redis-docs-2.0.5.tgz -f my-values.yaml
 helm install redis-docs ./helm/redis-docs -f helm/redis-docs/examples/values-openshift-airgapped.yaml
 ```
 
-### OpenShift — רשת סגורה עם מטריקות
+### OpenShift — רשת סגורה
 
 ```yaml
 # my-values.yaml
@@ -430,16 +427,6 @@ imagePullSecrets:
 image:
   name: redis-docs
   tag: "b00e22ad3-unprivileged"
-
-# --- מטריקות (דריסת תמונה ותג) ---
-metrics:
-  enabled: true
-  image:
-    name: prometheus-nginxlog-exporter
-    tag: "v1.11.0"
-  route:
-    enabled: true
-    # host ריק = OpenShift מייצר hostname אוטומטי + תעודה אוטומטית
 
 # --- Route (בחרו אחת מ-3 האפשרויות) ---
 
@@ -501,8 +488,6 @@ externalLinks:
 > - **אפשרות א** — OpenShift מייצר hostname ותעודת TLS אוטומטית. הדרך הפשוטה ביותר.
 > - **אפשרות ב** — HTTP בלבד, ללא הצפנה.
 > - **אפשרות ג** — hostname מותאם + תעודה שלכם. דורש הגדרת `tls.certificate` ו-`tls.privateKey`.
->
-> המטריקות מקבלות Route אוטומטי עם TLS של OpenShift תמיד (ללא תלות באפשרות שנבחרה לאתר).
 >
 > `externalLinks` — ניתן לדרוס URL לשירות פנימי חלופי (`url:`) או להסתיר (`enabled: false`).
 
@@ -592,10 +577,6 @@ imagePullSecrets:
 docker pull a0533057932/redis-docs:unprivileged
 docker save a0533057932/redis-docs:unprivileged -o redis-docs.tar
 
-# מטריקות (אופציונלי)
-docker pull quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
-docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-exporter.tar
-
 # CLI playground (אופציונלי)
 docker pull a0533057932/redis-docs-cli:0.6.0
 docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
@@ -621,7 +602,6 @@ helm package helm/redis-docs/
 העבירו את הקבצים הבאים:
 - `redis-docs-2.0.5.tgz`
 - `redis-docs.tar`
-- `nginx-exporter.tar` (אופציונלי - מטריקות)
 - `redis-docs-cli.tar` (אופציונלי - CLI וחיפוש)
 - `redis-docs-mirror.tar` (אופציונלי - הסקשנים הממוררים)
 - `redis.tar` (אופציונלי - CLI)
@@ -633,11 +613,6 @@ helm package helm/redis-docs/
 docker load -i redis-docs.tar
 docker tag a0533057932/redis-docs:unprivileged REGISTRY/redis-docs:unprivileged
 docker push REGISTRY/redis-docs:unprivileged
-
-# טעינת מטריקות (אופציונלי)
-docker load -i nginx-exporter.tar
-docker tag quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 REGISTRY/prometheus-nginxlog-exporter:v1.11.0
-docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # טעינת CLI (אופציונלי)
 docker load -i redis-docs-mirror.tar
@@ -682,25 +657,6 @@ helm upgrade redis-docs redis-docs-2.0.5.tgz -f my-values.yaml \
 kubectl port-forward svc/redis-docs 8080:80
 # פתחו http://localhost:8080
 ```
-
-## דשבורד Grafana
-
-קובץ דשבורד מוכן לייבוא נמצא בנתיב `helm/dashboards/redis-docs-nginx.json`.
-
-### ייבוא הדשבורד
-
-1. פתחו את Grafana ולחצו על **Dashboards** → **Import**
-2. בחרו את הקובץ `redis-docs-nginx.json` או הדביקו את תוכנו
-3. הגדירו את שני ה-inputs הנדרשים:
-
-| Input | סוג | תיאור | דוגמה |
-|---|---|---|---|
-| `DS_PROMETHEUS` | datasource | מקור נתונים מסוג Prometheus | `Prometheus` |
-| `VAL_JOB` | variable | שם ה-job ב-Prometheus | `redis-docs` |
-
-> הדשבורד דורש שה-Prometheus datasource יהיה מוגדר מראש ב-Grafana.
->
-> שם ה-job תלוי באופן שבו ServiceMonitor / scrape config מוגדרים בקלאסטר.
 
 ## ערכים עיקריים
 
@@ -769,20 +725,6 @@ kubectl port-forward svc/redis-docs 8080:80
 | `autoscaling.targetMemoryUtilizationPercentage` | `80` | סף זיכרון להגדלה |
 | `podDisruptionBudget.enabled` | `true` | הגנה בזמן rolling updates |
 | `podDisruptionBudget.maxUnavailable` | `1` | פודים שמותר שיהיו לא זמינים בזמן הפרעה |
-| `metrics.enabled` | `false` | הפעלת Prometheus metrics |
-| `metrics.image.registry` | `quay.io/martinhelmich` | registry לתמונת מטריקות |
-| `metrics.image.name` | `prometheus-nginxlog-exporter` | שם תמונת מטריקות |
-| `metrics.image.tag` | `v1.11.0` | תג תמונת מטריקות |
-| `metrics.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת תמונת מטריקות |
-| `metrics.route.enabled` | `false` | הפעלת Route למטריקות (OpenShift) |
-| `metrics.route.annotations` | `{}` | annotations ל-Route מטריקות |
-| `metrics.route.host` | `""` | hostname ל-Route מטריקות (אוטומטי אם ריק) |
-| `metrics.route.tls.enabled` | `true` | הפעלת TLS ב-Route מטריקות |
-| `metrics.route.tls.termination` | `edge` | סוג TLS termination למטריקות |
-| `metrics.route.tls.insecureEdgeTerminationPolicy` | `Redirect` | מדיניות לתעבורה לא מוצפנת (מטריקות) |
-| `metrics.serviceMonitor.enabled` | `false` | הפעלת ServiceMonitor (דורש Prometheus Operator) |
-| `metrics.serviceMonitor.interval` | `30s` | מרווח scraping |
-| `metrics.serviceMonitor.labels` | `{}` | labels נוספים ל-ServiceMonitor |
 | `cli.enabled` | `false` | הפעלת CLI playground (פוד נפרד עם Flask + Redis) |
 | `cli.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (CLI) |
 | `cli.securityContext.runAsNonRoot` | `true` | חסימת הרצה כ-root (CLI) |

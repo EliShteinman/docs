@@ -80,15 +80,6 @@ Return the TLS secret name.
 {{- end }}
 
 {{/*
-Return the image reference for the metrics sidecar.
-Priority: global.registry > metrics.image.registry
-*/}}
-{{- define "redis-docs.metricsImage" -}}
-{{- $registry := .Values.global.registry | default .Values.metrics.image.registry -}}
-{{- printf "%s/%s:%s" $registry .Values.metrics.image.name .Values.metrics.image.tag -}}
-{{- end }}
-
-{{/*
 Return the image reference for the CLI proxy container.
 Priority: global.registry > cli.image.registry
 */}}

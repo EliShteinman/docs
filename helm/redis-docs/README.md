@@ -72,7 +72,6 @@ by default and each is its own image, so a deployment carries only what it turns
 | Container | Description | Port |
 |---|---|---|
 | `nginx` | Main web server (unprivileged) | 8080 |
-| `metrics` (optional) | sidecar — prometheus-nginxlog-exporter | 4040 |
 
 nginx also serves as a reverse proxy:
 - `/cli` → routed to CLI proxy in the second pod (port 8090)
@@ -231,7 +230,7 @@ office can share one address.
 
 ### Runtime Configuration
 
-Four ConfigMaps carry runtime configuration; two are always rendered, two follow their feature flag:
+Three ConfigMaps carry runtime configuration; two are always rendered, one follows its feature flag:
 
 - **`configmap-runtime.yaml`** — produces `runtime-config.js`, loaded by every page. Holds:
   - `cli` — whether the CLI playground is deployed, and the URL the "Try it" buttons open. With `cli.enabled=false` the buttons are hidden instead of pointing at redis.io.
@@ -241,7 +240,6 @@ Four ConfigMaps carry runtime configuration; two are always rendered, two follow
   - `externalLinks` — the resolved enabled/url for every catalogued external link
   - `gitMirrors` — the resolved mirror host for every catalogued Git URL
 - **`configmap.yaml`** — the nginx `default.conf`. It uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time, and proxies `/cli` to the CLI playground service and, when `search.enabled=true`, `/convai/api/search-service` to the search service.
-- **`configmap-metrics.yaml`** — the nginxlog-exporter configuration. Only with `metrics.enabled=true`.
 - **`configmap-cli-acl.yaml`** — the Redis ACL file from `files/sandbox.acl`, mounted into the Redis sidecar. Only with `cli.redis.acl.enabled=true`; see [CLI playground isolation](#cli-playground-isolation).
 
 ### External Links (externalLinks)
@@ -450,7 +448,6 @@ A limit costs nothing until the container actually runs.
 |---|---|---|---|---|
 | `a0533057932/redis-docs` | `<HASH>` / `latest` | 80 | Standard run with `docker run` (privileged) | Yes — one of the two |
 | `a0533057932/redis-docs` | `<HASH>-unprivileged` / `unprivileged` | 8080 | Kubernetes / OpenShift (non-root) | Yes — one of the two |
-| `quay.io/martinhelmich/prometheus-nginxlog-exporter` | `v1.11.0` | 4040 | Prometheus metrics (including response times) | No — only if `metrics.enabled=true` |
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8090 | CLI playground proxy (Flask) | No — only if `cli.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
 | `a0533057932/redis-docs-cli` | `0.6.0` | 8091 | Docs search API — the same image and tag, different command. A tag older than `0.6.0` has no `search` module and the pod crashes on start. | No — only if `search.enabled=true` |
@@ -485,7 +482,7 @@ Ready-to-use values files are available in the `examples/` directory:
 helm install redis-docs ./helm/redis-docs -f helm/redis-docs/examples/values-openshift-airgapped.yaml
 ```
 
-### OpenShift — air-gapped network with metrics
+### OpenShift — air-gapped network
 
 ```yaml
 # my-values.yaml
@@ -505,16 +502,6 @@ imagePullSecrets:
 image:
   name: redis-docs
   tag: "b00e22ad3-unprivileged"
-
-# --- Metrics (image and tag override) ---
-metrics:
-  enabled: true
-  image:
-    name: prometheus-nginxlog-exporter
-    tag: "v1.11.0"
-  route:
-    enabled: true
-    # empty host = OpenShift generates an automatic hostname + automatic certificate
 
 # --- Route (choose one of the 3 options) ---
 
@@ -575,8 +562,6 @@ externalLinks:
 > - **Option A** — OpenShift generates a hostname and automatic TLS certificate. The simplest approach.
 > - **Option B** — HTTP only, no encryption.
 > - **Option C** — Custom hostname + your own certificate. Requires setting `tls.certificate` and `tls.privateKey`.
->
-> Metrics always get an automatic Route with OpenShift TLS (regardless of the option chosen for the site).
 
 ### TLS Certificate
 
@@ -664,10 +649,6 @@ imagePullSecrets:
 docker pull a0533057932/redis-docs:unprivileged
 docker save a0533057932/redis-docs:unprivileged -o redis-docs.tar
 
-# Metrics (optional)
-docker pull quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0
-docker save quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 -o nginx-exporter.tar
-
 # CLI playground (optional)
 docker pull a0533057932/redis-docs-cli:0.6.0
 docker save a0533057932/redis-docs-cli:0.6.0 -o redis-docs-cli.tar
@@ -697,7 +678,6 @@ helm package helm/redis-docs/
 Transfer the following files:
 - `redis-docs-2.0.5.tgz`
 - `redis-docs.tar`
-- `nginx-exporter.tar` (optional - metrics)
 - `redis-docs-cli.tar` (optional - CLI and search)
 - `redis-docs-mirror.tar` (optional - the mirrored redis.io sections)
 - `redis.tar` (optional - CLI)
@@ -709,11 +689,6 @@ Transfer the following files:
 docker load -i redis-docs.tar
 docker tag a0533057932/redis-docs:unprivileged REGISTRY/redis-docs:unprivileged
 docker push REGISTRY/redis-docs:unprivileged
-
-# Load metrics (optional)
-docker load -i nginx-exporter.tar
-docker tag quay.io/martinhelmich/prometheus-nginxlog-exporter:v1.11.0 REGISTRY/prometheus-nginxlog-exporter:v1.11.0
-docker push REGISTRY/prometheus-nginxlog-exporter:v1.11.0
 
 # Load CLI (optional)
 docker load -i redis-docs-mirror.tar
@@ -758,25 +733,6 @@ After installation:
 kubectl port-forward svc/redis-docs 8080:80
 # Open http://localhost:8080
 ```
-
-## Grafana Dashboard
-
-A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx.json`.
-
-### Importing the Dashboard
-
-1. Open Grafana and click **Dashboards** → **Import**
-2. Select the `redis-docs-nginx.json` file or paste its contents
-3. Configure the two required inputs:
-
-| Input | Type | Description | Example |
-|---|---|---|---|
-| `DS_PROMETHEUS` | datasource | Prometheus data source | `Prometheus` |
-| `VAL_JOB` | variable | Prometheus job name | `redis-docs` |
-
-> The dashboard requires that the Prometheus datasource is pre-configured in Grafana.
->
-> The job name depends on how ServiceMonitor / scrape config are configured in the cluster.
 
 ## Key Values
 
@@ -845,20 +801,6 @@ A ready-to-import dashboard file is located at `helm/dashboards/redis-docs-nginx
 | `autoscaling.targetMemoryUtilizationPercentage` | `80` | Memory threshold for scaling up |
 | `podDisruptionBudget.enabled` | `true` | Protection during rolling updates |
 | `podDisruptionBudget.maxUnavailable` | `1` | Pods that may be unavailable during a disruption |
-| `metrics.enabled` | `false` | Enable Prometheus metrics |
-| `metrics.image.registry` | `quay.io/martinhelmich` | Metrics image registry |
-| `metrics.image.name` | `prometheus-nginxlog-exporter` | Metrics image name |
-| `metrics.image.tag` | `v1.11.0` | Metrics image tag |
-| `metrics.image.pullPolicy` | `IfNotPresent` | Metrics image pull policy |
-| `metrics.route.enabled` | `false` | Enable Route for metrics (OpenShift) |
-| `metrics.route.annotations` | `{}` | Metrics Route annotations |
-| `metrics.route.host` | `""` | Metrics Route hostname (auto-generated if empty) |
-| `metrics.route.tls.enabled` | `true` | Enable TLS on metrics Route |
-| `metrics.route.tls.termination` | `edge` | TLS termination type for metrics |
-| `metrics.route.tls.insecureEdgeTerminationPolicy` | `Redirect` | Policy for unencrypted traffic (metrics) |
-| `metrics.serviceMonitor.enabled` | `false` | Enable ServiceMonitor (requires Prometheus Operator) |
-| `metrics.serviceMonitor.interval` | `30s` | Scraping interval |
-| `metrics.serviceMonitor.labels` | `{}` | Additional ServiceMonitor labels |
 | `cli.enabled` | `false` | Enable CLI playground (separate pod with Flask + Redis) |
 | `cli.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (CLI) |
 | `cli.securityContext.runAsNonRoot` | `true` | Block running as root (CLI) |

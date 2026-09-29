@@ -167,33 +167,6 @@ readinessProbe:
   initialDelaySeconds: 3
   periodSeconds: 5
 
-metrics:
-  enabled: false
-  image:
-    registry: quay.io/martinhelmich
-    name: prometheus-nginxlog-exporter
-    tag: "v1.11.0"
-    pullPolicy: IfNotPresent
-  resources:
-    requests:
-      cpu: 10m
-      memory: 16Mi
-    limits:
-      cpu: 50m
-      memory: 32Mi
-  route:
-    enabled: false
-    annotations: {}
-    host: ""
-    tls:
-      enabled: true
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
-  serviceMonitor:
-    enabled: false
-    interval: 30s
-    labels: {}
-
 cli:
   enabled: false
   securityContext:
