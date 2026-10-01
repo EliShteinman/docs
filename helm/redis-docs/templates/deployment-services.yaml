@@ -149,8 +149,10 @@ spec:
             - name: cli-redis
               containerPort: 6379
               protocol: TCP
+          # Loopback only: cli-proxy beside it is the one client, and without a
+          # bind any pod the namespace's NetworkPolicy admits could reach it.
           {{- if .Values.cli.redis.acl.enabled }}
-          args: ["redis-server", "--aclfile", "/etc/redis/sandbox.acl"]
+          args: ["redis-server", "--aclfile", "/etc/redis/sandbox.acl", "--bind", "127.0.0.1", "-::1"]
           lifecycle:
             postStart:
               exec:
@@ -170,6 +172,8 @@ spec:
                       sleep 1
                     done
                     echo "could not grant module commands to {{ .Values.cli.redis.acl.username }}" >&2
+          {{- else }}
+          args: ["redis-server", "--bind", "127.0.0.1", "-::1"]
           {{- end }}
           livenessProbe:
             exec:
@@ -302,7 +306,7 @@ spec:
         # this one. The playground proxy only ever connects to 6379, and the
         # reader's ACL user has neither MIGRATE nor REPLICAOF (@dangerous,
         # @admin) to reach this one from there. Nothing outside this pod reaches
-        # it: the Service publishes 8091 only.
+        # it: the Service publishes 8091 only, and it listens on loopback.
         - name: search-redis
           image: {{ include "redis-docs.searchRedisImage" . }}
           imagePullPolicy: {{ .Values.search.redis.image.pullPolicy }}
@@ -312,7 +316,7 @@ spec:
               protocol: TCP
           # The index is rebuilt from the corpus on every start, so there is
           # nothing here worth persisting to disk.
-          args: ["redis-server", "--port", "6380", "--save", "", "--appendonly", "no"]
+          args: ["redis-server", "--port", "6380", "--save", "", "--appendonly", "no", "--bind", "127.0.0.1", "-::1"]
           livenessProbe:
             exec:
               command: ["redis-cli", "-p", "6380", "ping"]
