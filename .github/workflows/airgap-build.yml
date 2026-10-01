@@ -22,7 +22,7 @@ name: Airgap Build & Push
 #                      the internet, so off unless the input is checked)
 #   4f. mirror_image   the mirrored sections as an image of their own (input,
 #                      on by default; fetches nothing from redis.io)
-#   5. publish_chart   opt-in: bump and publish the Helm chart
+#   5. publish_chart   on by default: bump and publish the Helm chart
 #
 # Dockerfile and airgap-multibuild.sh are unchanged — local builds still work.
 
@@ -54,8 +54,10 @@ on:
         default: ''
       mirror_image:
         description: >-
-          Build and push the mirror image -- redis.io's marketing site, from the
-          pages committed under mirror/site. Nothing is fetched from redis.io.
+          Mirror image -- redis.io's marketing site, from the pages committed
+          under mirror/site. Built and pushed only when its tag (mirror/site
+          commit + runtime hash) is not on Docker Hub yet; otherwise the
+          existing image is reused. Nothing is fetched from redis.io.
         type: boolean
         default: true
       mirror_drift:
@@ -66,13 +68,13 @@ on:
         default: false
       publish_chart:
         description: >-
-          After the image push, also auto-bump the Helm chart patch version,
-          commit the update back to this branch, and publish the chart as an
-          OCI artifact. Skipped automatically on partial builds -- one variant,
-          one platform, or no mirror image, since the chart's examples name the
-          mirror tag of this build -- and on override tags. For non-patch bumps build the chart manually per BUILD.md.
+          Bump the Helm chart patch version to this build's image tags (the
+          site, the mirror, CLI, search), commit it back to this branch and
+          publish it as an OCI artifact. Skipped when nothing changed, on
+          partial builds (one variant, one platform, or no mirror image) and on
+          override tags. For non-patch bumps build the chart manually per BUILD.md.
         type: boolean
-        default: false
+        default: true
 
 env:
   REPO: a0533057932/redis-docs
@@ -1610,7 +1612,7 @@ jobs:
           done
 
   # =========================================================================
-  # Phase 5: publish_chart — opt-in.
+  # Phase 5: publish_chart — on by default.
   # Order: bump files -> git commit & push -> helm publish to OCI.
   # If helm publish fails the bump is already in git; rerun helm push by hand.
   # Waits for cli_image and search_image as well and takes their tags from
@@ -1620,7 +1622,7 @@ jobs:
   # Skipped on partial builds (variant/platforms != both, or tag_override set).
   # =========================================================================
   publish_chart:
-    name: 5. Publish Helm chart (opt-in)
+    name: 5. Publish Helm chart
     needs: [setup, docker, mirror_image, cli_image, search_image, tests]
     if: >-
       inputs.publish_chart &&

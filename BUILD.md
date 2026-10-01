@@ -265,8 +265,9 @@ redis.io, באותה שיטה: `make llms` (דורש אינטרנט) מוריד 
 **פער מול המקור:** ה-job ‏`4e. Mirror drift report` מריץ `make mirror-check` ומדווח ב-summary,
 בלי להכשיל כלום. הוא **כבוי כברירת מחדל** — הוא פונה ל-redis.io — ורץ רק כשמסמנים את
 `mirror_drift` בהפעלת ה-workflow. **ה-CI אף פעם לא מוריד תוכן מ-redis.io**; זה קורה רק ב-`make mirror`
-ידני. גם בניית ה-image של המירור היא כפתור (`mirror_image`, מסומן כברירת מחדל), ובלעדיה
-`publish_chart` לא רץ, כי ה-chart מפרסם את ה-tag של המירור מאותה בנייה.
+ידני. גם ה-image של המירור הוא כפתור (`mirror_image`, מסומן כברירת מחדל), ובלעדיו
+`publish_chart` לא רץ, כי ה-chart מפרסם את ה-tag של המירור. גם `publish_chart` מסומן כברירת מחדל:
+הרצה בלי לשנות כלום בטופס נותנת מוצר שלם — כל ה-images ו-chart שמצביע עליהם.
 
 #### התיאורים ב-Docker Hub
 
