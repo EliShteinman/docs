@@ -288,6 +288,13 @@ redis.io, באותה שיטה: `make llms` (דורש אינטרנט) מוריד 
 ה-chunks (`_next/`) בשכבות נפרדות מתחת לעמודים, כי הם משתנים לאט יותר. ה-nginx של ה-pod
 (`build/marketing_mirror/runtime/nginx.conf`) מוסיף את ה-CSP ודוחס בזמן אמת.
 
+**העמודים עצמם** (1,705 קבצי HTML, ‏2.5 GB) נכנסים ל-image כארכיון אחד, `mirror-pages.tar.zst`
+(‏zstd ‏`-19 --long=25`, כ-13 MB). gzip לכל קובץ לחוד הגיע ל-650 MB, כי הוא לא רואה את החזרות
+בין העמודים. כשהקונטיינר עולה, `build/marketing_mirror/runtime/05-unpack-mirror-pages.sh` פורס
+אותם ל-`/usr/share/nginx/pages` (פחות משנייה, 37 MB זיכרון) ורק אז nginx עולה. ב-chart זה
+emptyDir בשם `mirror-pages`, כלומר כ-2.5 GB של ephemeral storage לכל pod. כל קובץ שאינו
+עמוד (`mirror.ndjson`, ‏`_feed/`, ‏`manifest.json`) נשאר קובץ רגיל ב-image.
+
 ```bash
 docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivileged \
   -t redis-docs-mirror:local .
