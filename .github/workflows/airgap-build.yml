@@ -1119,7 +1119,7 @@ jobs:
   # Its tag names what is inside it: the mirror/site commit, then a hash of the
   # files this repository adds (Dockerfile.runtime and the mirror's runtime/).
   # A tag already holding every platform this run builds is not built again,
-  # and the 1.4 GB submodule is not even fetched for it.
+  # and the mirror/site submodule (3.4 GB) is not even fetched for it.
   # =========================================================================
   mirror_image:
     name: 4f. Mirror image (build if changed)
