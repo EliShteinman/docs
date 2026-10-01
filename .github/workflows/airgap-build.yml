@@ -1621,7 +1621,7 @@ jobs:
   # =========================================================================
   publish_chart:
     name: 5. Publish Helm chart (opt-in)
-    needs: [setup, docker, cli_image, search_image, tests]
+    needs: [setup, docker, mirror_image, cli_image, search_image, tests]
     if: >-
       inputs.publish_chart &&
       inputs.mirror_image &&
@@ -1641,6 +1641,7 @@ jobs:
         id: bump
         env:
           NEW_HASH: ${{ needs.setup.outputs.hash }}
+          NEW_MIRROR_TAG: ${{ needs.mirror_image.outputs.tag }}
           OLD_CLI_TAG: ${{ needs.cli_image.outputs.pinned }}
           NEW_CLI_TAG: ${{ needs.cli_image.outputs.tag }}
           OLD_SEARCH_TAG: ${{ needs.search_image.outputs.pinned }}
@@ -1654,6 +1655,18 @@ jobs:
           # malformed hash here would corrupt every targeted line.
           if [[ ! "$NEW_HASH" =~ ^[a-f0-9]{9}$ ]]; then
             echo "::error::NEW_HASH '$NEW_HASH' is not 9-char lowercase hex. Setup phase produced an unexpected value."
+            exit 1
+          fi
+
+          # The mirror's own tag, named by its content (mirror_image).
+          if [[ ! "$NEW_MIRROR_TAG" =~ ^[a-f0-9]{9}-[a-f0-9]{8}-unprivileged$ ]]; then
+            echo "::error::NEW_MIRROR_TAG '$NEW_MIRROR_TAG' is not <9 hex>-<8 hex>-unprivileged."
+            exit 1
+          fi
+          EXAMPLE=helm/redis-docs/examples/values-openshift-airgapped.yaml
+          OLD_MIRROR_TAG=$(sed -nE '/^[[:space:]]+name: redis-docs-mirror$/{n;s/^[[:space:]]+tag: "([^"]*)".*/\1/p;}' "$EXAMPLE")
+          if [ -z "$OLD_MIRROR_TAG" ]; then
+            echo "::error::Could not read the mirror tag from $EXAMPLE. Format may have changed."
             exit 1
           fi
 
@@ -1685,13 +1698,14 @@ jobs:
           {
             echo "old_version=$OLD_VERSION"
             echo "old_hash=$OLD_HASH"
+            echo "old_mirror_tag=$OLD_MIRROR_TAG"
             echo "old_cli_tag=$OLD_CLI_TAG"
             echo "old_search_tag=$OLD_SEARCH_TAG"
           } >> "$GITHUB_OUTPUT"
 
-          if [ "$OLD_HASH" = "$NEW_HASH" ] && [ "$OLD_CLI_TAG" = "$NEW_CLI_TAG" ] \
-             && [ "$OLD_SEARCH_TAG" = "$NEW_SEARCH_TAG" ]; then
-            echo "appVersion already $NEW_HASH, CLI image already $NEW_CLI_TAG and search image already $NEW_SEARCH_TAG — nothing to publish."
+          if [ "$OLD_HASH" = "$NEW_HASH" ] && [ "$OLD_MIRROR_TAG" = "$NEW_MIRROR_TAG" ] \
+             && [ "$OLD_CLI_TAG" = "$NEW_CLI_TAG" ] && [ "$OLD_SEARCH_TAG" = "$NEW_SEARCH_TAG" ]; then
+            echo "appVersion already $NEW_HASH, mirror image already $NEW_MIRROR_TAG, CLI image already $NEW_CLI_TAG and search image already $NEW_SEARCH_TAG — nothing to publish."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -1733,12 +1747,51 @@ jobs:
           # lines BUILD.md step 5 lists, so a stray hex string elsewhere in
           # these files (release notes, examples, etc.) can't be corrupted.
           sed -i -E "s/^appVersion:[[:space:]]*\"[a-f0-9]+\"/appVersion: \"${NEW_HASH}\"/" "$CHART"
-          # The site and the mirror share this tag: one commit builds both.
-          sed -i -E "s/[a-f0-9]+-unprivileged/${NEW_HASH}-unprivileged/g" \
-            helm/redis-docs/examples/values-openshift-airgapped.yaml \
+          # The site's tag: exactly nine hex digits standing alone, so the
+          # mirror's <9>-<8>-unprivileged tag is never matched.
+          sed -i -E "s/(^|[^-a-f0-9])[a-f0-9]{9}-unprivileged/\1${NEW_HASH}-unprivileged/g" \
+            "$EXAMPLE" \
             helm/redis-docs/README.md \
             helm/redis-docs/README-he.md
+          # The mirror's tag, on its own line under its name. After the site's,
+          # which a mirror tag in the old <hash>-unprivileged form still matches.
+          python3 - "$EXAMPLE" "$NEW_MIRROR_TAG" <<'PYEOF'
+          import pathlib, re, sys
+          path, new_tag = pathlib.Path(sys.argv[1]), sys.argv[2]
+          text, n = re.subn(r'(^[ \t]+name: redis-docs-mirror\n[ \t]+tag: ")[^"]*',
+                            lambda m: m.group(1) + new_tag, path.read_text(), flags=re.M)
+          assert n == 1, f"{path}: expected 1 mirror tag, found {n}"
+          path.write_text(text)
+          PYEOF
           sed -i "s/^version: .*/version: ${NEW_VERSION}/" "$CHART"
+          # Every image this chart version deploys, pinned, so that
+          # `helm show chart` names what an air-gapped registry must hold.
+          # values.yaml lists them all; the site and the mirror roll there, so
+          # their tags come from this build.
+          python3 - "$CHART" <<'PYEOF'
+          import os, pathlib, re, sys
+          chart = pathlib.Path(sys.argv[1])
+          values = pathlib.Path("helm/redis-docs/values.yaml").read_text()
+          built = {
+              "redis-docs": os.environ["NEW_HASH"] + "-unprivileged",
+              "redis-docs-mirror": os.environ["NEW_MIRROR_TAG"],
+          }
+          images = {}
+          for registry, name, tag in re.findall(
+                  r'^[ \t]+registry: "?([^"\s]+)"?\n[ \t]+name: "?([^"\s]+)"?\n[ \t]+tag: "?([^"\s]+)"?',
+                  values, re.M):
+              images.setdefault(f"{registry}/{name}:{built.get(name, tag)}", name)
+          missing = {"redis-docs", "redis-docs-mirror", "redis-docs-cli", "redis-docs-search"} - set(images.values())
+          assert not missing, f"values.yaml: no image block found for {sorted(missing)}"
+          block = "annotations:\n  artifacthub.io/images: |\n" + "".join(
+              f"    - name: {name}\n      image: {image}\n" for image, name in images.items())
+          text = chart.read_text()
+          text, n = re.subn(r'^annotations:\n(?:[ \t]+.*\n)*', lambda m: block, text, flags=re.M)
+          assert n <= 1, f"{chart}: {n} annotations blocks"
+          if n == 0:
+              text = text.rstrip("\n") + "\n" + block
+          chart.write_text(text)
+          PYEOF
           # The READMEs install from the packaged chart by file name.
           sed -i -E "s/redis-docs-[0-9]+\.[0-9]+\.[0-9]+\.tgz/redis-docs-${NEW_VERSION}.tgz/g" \
             helm/redis-docs/README.md \
@@ -1751,6 +1804,9 @@ jobs:
             .github/dockerhub/*.md
 
           CLI_NOTE=""
+          if [ "$OLD_MIRROR_TAG" != "$NEW_MIRROR_TAG" ]; then
+            CLI_NOTE="$CLI_NOTE, mirror image $NEW_MIRROR_TAG"
+          fi
           if [ "$OLD_CLI_TAG" != "$NEW_CLI_TAG" ]; then
             CLI_NOTE="$CLI_NOTE, CLI image $NEW_CLI_TAG"
           fi
@@ -1761,6 +1817,7 @@ jobs:
           {
             echo "new_version=$NEW_VERSION"
             echo "new_hash=$NEW_HASH"
+            echo "new_mirror_tag=$NEW_MIRROR_TAG"
             echo "new_cli_tag=$NEW_CLI_TAG"
             echo "cli_note=$CLI_NOTE"
             echo "changed=true"
@@ -1797,6 +1854,8 @@ jobs:
           OLD_VERSION: ${{ steps.bump.outputs.old_version }}
           NEW_VERSION: ${{ steps.bump.outputs.new_version }}
           NEW_HASH: ${{ steps.bump.outputs.new_hash }}
+          OLD_MIRROR_TAG: ${{ steps.bump.outputs.old_mirror_tag }}
+          NEW_MIRROR_TAG: ${{ steps.bump.outputs.new_mirror_tag }}
           OLD_CLI_TAG: ${{ steps.bump.outputs.old_cli_tag }}
           NEW_CLI_TAG: ${{ steps.bump.outputs.new_cli_tag }}
           DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
@@ -1810,12 +1869,19 @@ jobs:
               echo "|-------|-------|"
               echo "| version | \`$OLD_VERSION\` → \`$NEW_VERSION\` |"
               echo "| appVersion | \`$NEW_HASH\` |"
+              if [ "$OLD_MIRROR_TAG" != "$NEW_MIRROR_TAG" ]; then
+                echo "| Mirror image | \`$OLD_MIRROR_TAG\` → \`$NEW_MIRROR_TAG\` |"
+              else
+                echo "| Mirror image | \`$NEW_MIRROR_TAG\` (unchanged) |"
+              fi
               if [ "$OLD_CLI_TAG" != "$NEW_CLI_TAG" ]; then
                 echo "| CLI image | \`$OLD_CLI_TAG\` → \`$NEW_CLI_TAG\` |"
               else
                 echo "| CLI image | \`$NEW_CLI_TAG\` (unchanged) |"
               fi
               echo "| OCI ref | \`oci://registry-1.docker.io/$DOCKERHUB_USERNAME/redis-docs:$NEW_VERSION\` |"
+              echo ""
+              echo "Images to pull: \`helm show chart oci://registry-1.docker.io/$DOCKERHUB_USERNAME/redis-docs --version $NEW_VERSION\`"
             elif [ "$STATUS" = "success" ]; then
               echo "Chart appVersion already up to date — nothing pushed."
             elif [ "$CHANGED" = "true" ]; then
