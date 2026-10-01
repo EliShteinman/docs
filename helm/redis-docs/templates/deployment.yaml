@@ -209,6 +209,14 @@ spec:
             - name: mirror-http
               containerPort: 8081
               protocol: TCP
+          # nginx listens only once the pages are unpacked (under a second in
+          # testing); this holds liveness off until then on a slow node.
+          startupProbe:
+            httpGet:
+              path: /blog/
+              port: mirror-http
+            periodSeconds: 2
+            failureThreshold: 60
           livenessProbe:
             httpGet:
               path: /blog/
@@ -225,6 +233,9 @@ spec:
             {{- toYaml .Values.mirror.resources | nindent 12 }}
           securityContext:
             {{- toYaml .Values.mirror.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: mirror-pages
+              mountPath: /usr/share/nginx/pages
         {{- end }}
       volumes:
         - name: nginx-conf
@@ -239,6 +250,12 @@ spec:
         - name: runtime-config
           configMap:
             name: {{ include "redis-docs.fullname" . }}-runtime
+        {{- if .Values.mirror.enabled }}
+        # The mirror's pages, unpacked from the image's one archive when the
+        # container starts: about 2.5 GB of disk, counted as ephemeral storage.
+        - name: mirror-pages
+          emptyDir: {}
+        {{- end }}
         {{- if .Values.canonicalURL }}
         - name: ndjson-gz
           emptyDir: {}
