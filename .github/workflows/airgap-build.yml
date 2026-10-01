@@ -95,8 +95,6 @@ jobs:
       platforms: ${{ steps.meta.outputs.platforms }}
       priv_tags: ${{ steps.meta.outputs.priv_tags }}
       unpriv_tags: ${{ steps.meta.outputs.unpriv_tags }}
-      mirror_priv_tags: ${{ steps.meta.outputs.mirror_priv_tags }}
-      mirror_unpriv_tags: ${{ steps.meta.outputs.mirror_unpriv_tags }}
       matrix: ${{ steps.matrix.outputs.matrix }}
       k8s_versions: ${{ steps.matrix.outputs.k8s }}
       rs_versions: ${{ steps.matrix.outputs.rs }}
@@ -137,24 +135,6 @@ jobs:
             else
               echo "$REPO:$HASH-unprivileged"
               echo "$REPO:unprivileged"
-            fi
-            echo "EOF"
-            # The mirrored sections, in their own repository under the same
-            # tag scheme as the site: the same commit names both.
-            echo "mirror_priv_tags<<EOF"
-            if [ -n "$INPUT_OVERRIDE" ]; then
-              echo "$MIRROR_REPO:$INPUT_OVERRIDE"
-            else
-              echo "$MIRROR_REPO:$HASH"
-              echo "$MIRROR_REPO:latest"
-            fi
-            echo "EOF"
-            echo "mirror_unpriv_tags<<EOF"
-            if [ -n "$INPUT_OVERRIDE" ]; then
-              echo "$MIRROR_REPO:$INPUT_OVERRIDE-unprivileged"
-            else
-              echo "$MIRROR_REPO:$HASH-unprivileged"
-              echo "$MIRROR_REPO:unprivileged"
             fi
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
@@ -1135,16 +1115,160 @@ jobs:
   # capture and wraps it. Its own image, so a deployment can take the
   # documentation without 1,700 mirrored pages; the chart proxies their paths
   # to this pod when mirror.enabled is on, and serves neither when it is off.
+  #
+  # Its tag names what is inside it: the mirror/site commit, then a hash of the
+  # files this repository adds (Dockerfile.runtime and the mirror's runtime/).
+  # A tag already holding every platform this run builds is not built again,
+  # and the 1.4 GB submodule is not even fetched for it.
   # =========================================================================
   mirror_image:
-    name: 4f. Build & push the mirror image
+    name: 4f. Mirror image (build if changed)
     needs: [setup]
     if: inputs.mirror_image
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
     steps:
+      # Without the submodule: its commit is in this repository's tree, which
+      # is all the tag needs.
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          sparse-checkout: |
+            Dockerfile.runtime
+            build/marketing_mirror/runtime
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Resolve the mirror tag
+        id: tag
+        env:
+          INPUT_VARIANT: ${{ inputs.variant }}
+          INPUT_OVERRIDE: ${{ inputs.tag_override }}
+          PLATFORMS: ${{ needs.setup.outputs.platforms }}
+        run: |
+          set -euo pipefail
+          # A failed lookup inside $(...) must fail the job, not read as "missing".
+          shopt -s inherit_errexit
+          PAGES=$(git rev-parse --verify HEAD:mirror/site)
+          RUNTIME_FILES=$(git ls-files -s Dockerfile.runtime build/marketing_mirror/runtime)
+          if ! grep -qE '[[:space:]]build/marketing_mirror/runtime/nginx\.conf$' <<<"$RUNTIME_FILES" \
+             || ! grep -qE '[[:space:]]Dockerfile\.runtime$' <<<"$RUNTIME_FILES"; then
+            echo "::error::Dockerfile.runtime or build/marketing_mirror/runtime/nginx.conf is not tracked; the tag would not name the image."
+            exit 1
+          fi
+          TAG="${PAGES:0:9}-$(sha256sum <<<"$RUNTIME_FILES" | cut -c1-8)"
+
+          hub_digest() {
+            local body code
+            body=$(mktemp)
+            code=$(curl -s --retry 3 -o "$body" -w '%{http_code}' \
+              "https://hub.docker.com/v2/repositories/$MIRROR_REPO/tags/$1")
+            case "$code" in
+              200) jq -r '.digest // ""' "$body" ;;
+              404) echo "" ;;
+              *) echo "::error::Docker Hub answered $code for $MIRROR_REPO:$1, so it is unknown whether the tag exists. Nothing was built." >&2
+                 exit 1 ;;
+            esac
+          }
+          has_every_platform() {
+            local found platform
+            found=$(docker buildx imagetools inspect --raw "$MIRROR_REPO:$1" \
+              | jq -r '.manifests[]?.platform | select(. != null) | "\(.os)/\(.architecture)"')
+            for platform in ${PLATFORMS//,/ }; do
+              if ! grep -qx "$platform" <<<"$found"; then
+                echo false
+                return
+              fi
+            done
+            echo true
+          }
+          # Lookups are read into variables, not inside an `if`: there a failed
+          # one would count as a missing tag instead of failing the job.
+          resolve_variant() {
+            local wanted=$1 tag=$2 rolling=$3 digest rolling_digest complete
+            if [ "$wanted" != true ]; then
+              echo "skip"
+              return
+            fi
+            if [ -n "$INPUT_OVERRIDE" ]; then
+              echo "build"
+              return
+            fi
+            digest=$(hub_digest "$tag")
+            # A tag a partial run left without every platform is built again.
+            complete=false
+            if [ -n "$digest" ]; then
+              complete=$(has_every_platform "$tag")
+            fi
+            rolling_digest=$(hub_digest "$rolling")
+            if [ "$complete" != true ]; then
+              echo "build"
+            elif [ "$rolling_digest" != "$digest" ]; then
+              echo "retag"
+            else
+              echo "current"
+            fi
+          }
+
+          WANT_PRIV=true
+          WANT_UNPRIV=true
+          [ "$INPUT_VARIANT" = unprivileged ] && WANT_PRIV=false
+          [ "$INPUT_VARIANT" = privileged ] && WANT_UNPRIV=false
+          PRIV=$(resolve_variant "$WANT_PRIV" "$TAG" latest)
+          UNPRIV=$(resolve_variant "$WANT_UNPRIV" "$TAG-unprivileged" unprivileged)
+
+          if [ -n "$INPUT_OVERRIDE" ]; then
+            PRIV_TAGS="$MIRROR_REPO:$INPUT_OVERRIDE"
+            UNPRIV_TAGS="$MIRROR_REPO:$INPUT_OVERRIDE-unprivileged"
+          else
+            PRIV_TAGS="$MIRROR_REPO:$TAG"$'\n'"$MIRROR_REPO:latest"
+            UNPRIV_TAGS="$MIRROR_REPO:$TAG-unprivileged"$'\n'"$MIRROR_REPO:unprivileged"
+          fi
+          BUILD=false
+          if [ "$PRIV" = build ] || [ "$UNPRIV" = build ]; then
+            BUILD=true
+          fi
+          echo "Mirror tag $TAG: privileged $PRIV, unprivileged $UNPRIV."
+          {
+            echo "tag=$TAG-unprivileged"
+            echo "base=$TAG"
+            echo "priv=$PRIV"
+            echo "unpriv=$UNPRIV"
+            echo "build=$BUILD"
+            echo "priv_tags<<EOF"
+            echo "$PRIV_TAGS"
+            echo "EOF"
+            echo "unpriv_tags<<EOF"
+            echo "$UNPRIV_TAGS"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      # The rolling tags follow the newest commit even when its content was
+      # already built: a manifest is copied, no layer is pushed.
+      - name: Point the rolling tags at the existing image
+        if: steps.tag.outputs.priv == 'retag' || steps.tag.outputs.unpriv == 'retag'
+        env:
+          BASE: ${{ steps.tag.outputs.base }}
+          PRIV: ${{ steps.tag.outputs.priv }}
+          UNPRIV: ${{ steps.tag.outputs.unpriv }}
+        run: |
+          set -euo pipefail
+          if [ "$PRIV" = retag ]; then
+            docker buildx imagetools create -t "$MIRROR_REPO:latest" "$MIRROR_REPO:$BASE"
+          fi
+          if [ "$UNPRIV" = retag ]; then
+            docker buildx imagetools create -t "$MIRROR_REPO:unprivileged" "$MIRROR_REPO:$BASE-unprivileged"
+          fi
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        if: steps.tag.outputs.build == 'true'
         with:
           # .gitmodules must be in the sparse set. The checkout is a partial
           # clone (blob:none), so a .gitmodules left out is fetched lazily by
@@ -1169,22 +1293,19 @@ jobs:
           token: ${{ secrets.PRIVATE_ACCESS_TOKEN }}
 
       - name: Set up QEMU
-        if: inputs.platforms != 'amd64'
+        if: steps.tag.outputs.build == 'true' && inputs.platforms != 'amd64'
         uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a  # v4.0.0
         with:
           platforms: arm64
 
       - uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd  # v4.0.0
-
-      - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        if: steps.tag.outputs.build == 'true'
 
       # The one-line summary of the Docker Hub page travels inside the image,
       # so each build keeps the description it was built with.
       - name: Read the image description
         id: describe
+        if: steps.tag.outputs.build == 'true'
         env:
           PAGE: .github/dockerhub/redis-docs-mirror.md
         run: |
@@ -1203,7 +1324,7 @@ jobs:
 
       - name: Build & push privileged
         id: push_priv
-        if: inputs.variant != 'unprivileged'
+        if: steps.tag.outputs.priv == 'build'
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
         with:
           context: .
@@ -1215,12 +1336,12 @@ jobs:
             BUILD_DATE=${{ github.event.repository.updated_at }}
           labels: |
             org.opencontainers.image.description=${{ steps.describe.outputs.description }}
-          tags: ${{ needs.setup.outputs.mirror_priv_tags }}
+          tags: ${{ steps.tag.outputs.priv_tags }}
           push: true
 
       - name: Build & push unprivileged
         id: push_unpriv
-        if: inputs.variant != 'privileged'
+        if: steps.tag.outputs.unpriv == 'build'
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7.1.0
         with:
           context: .
@@ -1232,30 +1353,38 @@ jobs:
             BUILD_DATE=${{ github.event.repository.updated_at }}
           labels: |
             org.opencontainers.image.description=${{ steps.describe.outputs.description }}
-          tags: ${{ needs.setup.outputs.mirror_unpriv_tags }}
+          tags: ${{ steps.tag.outputs.unpriv_tags }}
           push: true
 
       - name: Write mirror summary
         if: always()
         env:
           STATUS: ${{ job.status }}
-          PRIV_TAGS: ${{ needs.setup.outputs.mirror_priv_tags }}
-          UNPRIV_TAGS: ${{ needs.setup.outputs.mirror_unpriv_tags }}
+          BASE: ${{ steps.tag.outputs.base }}
+          PRIV: ${{ steps.tag.outputs.priv }}
+          UNPRIV: ${{ steps.tag.outputs.unpriv }}
+          PRIV_TAGS: ${{ steps.tag.outputs.priv_tags }}
+          UNPRIV_TAGS: ${{ steps.tag.outputs.unpriv_tags }}
           PRIV_OUTCOME: ${{ steps.push_priv.outcome }}
           UNPRIV_OUTCOME: ${{ steps.push_unpriv.outcome }}
         run: |
+          describe() {
+            case "$1" in
+              build)   [ "$2" = success ] && printf 'built and pushed:\n%s\n' "$3" || echo "build $2" ;;
+              retag)   echo "unchanged, rolling tag moved to it" ;;
+              current) echo "unchanged, nothing pushed" ;;
+              skip)    echo "not requested" ;;
+              *)       echo "unresolved" ;;
+            esac
+          }
           {
             echo ""
-            echo "## Mirror image: \`$STATUS\`"
+            echo "## Mirror image \`${BASE:-?}\`: \`$STATUS\`"
             echo ""
-            if [ "$PRIV_OUTCOME" = "success" ] || [ "$UNPRIV_OUTCOME" = "success" ]; then
-              echo '```'
-              [ "$PRIV_OUTCOME" = "success" ] && printf '%s\n' "$PRIV_TAGS"
-              [ "$UNPRIV_OUTCOME" = "success" ] && printf '%s\n' "$UNPRIV_TAGS"
-              echo '```'
-            else
-              echo "Nothing pushed — see the step logs."
-            fi
+            echo '```'
+            echo "privileged:   $(describe "$PRIV" "$PRIV_OUTCOME" "$PRIV_TAGS")"
+            echo "unprivileged: $(describe "$UNPRIV" "$UNPRIV_OUTCOME" "$UNPRIV_TAGS")"
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
   # =========================================================================
