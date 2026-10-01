@@ -22,15 +22,16 @@
 
 ```bash
 REG=registry.internal.company.com
-HASH=<hash>          # מסיכום ההרצה של airgap-build, זהה לאתר ולמירור
+HASH=<hash>          # התג של האתר
+MIRROR=<mirror-tag>  # התג של המירור עצמו; משתנה רק כשהמירור משתנה
 
 skopeo copy docker://a0533057932/redis-docs:$HASH-unprivileged        docker://$REG/redis-docs:$HASH-unprivileged
-skopeo copy docker://a0533057932/redis-docs-mirror:$HASH-unprivileged docker://$REG/redis-docs-mirror:$HASH-unprivileged
+skopeo copy docker://a0533057932/redis-docs-mirror:$MIRROR-unprivileged docker://$REG/redis-docs-mirror:$MIRROR-unprivileged
 skopeo copy docker://a0533057932/redis-docs-cli:<cli-tag>             docker://$REG/redis-docs-cli:<cli-tag>
 skopeo copy docker://a0533057932/redis-docs-search:<search-tag>       docker://$REG/redis-docs-search:<search-tag>
 ```
 
-את התגים `<cli-tag>` ו-`<search-tag>` לוקחים מ-`values.yaml` של ה-chart החדש (`helm show values`). ה-image ‏`redis:8.10.0-alpine` לא השתנה.
+את כל התגים לוקחים מ-`helm show chart` של גרסת ה-chart שמתקינים: ה-annotation ‏`artifacthub.io/images` מציג כל image עם התג המקובע שלו. ה-image ‏`redis:8.10.0-alpine` לא השתנה.
 
 **חובה להשתמש ב-image המירור החדש.** ה-image הישן מאזין על 8080, אותו פורט כמו האתר. ב-3.0 שניהם באותו pod, ולכן הקונטיינר נופל עם `nginx: [emerg] still could not bind()`. בבדיקה ה-rolling update השאיר את ה-pod הקודם רץ, כך שהאתר לא נפל, אבל השדרוג לא הושלם.
 

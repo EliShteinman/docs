@@ -30,8 +30,10 @@
 | `<HASH>-unprivileged` | unprivileged (nginx-unprivileged) | 8080 | גרסה מתויגת — Kubernetes / OpenShift |
 | `unprivileged` | unprivileged (nginx-unprivileged) | 8080 | rolling tag — Kubernetes / OpenShift |
 
-המירור (`a0533057932/redis-docs-mirror`) נבנה מאותו commit ומקבל את אותם ארבעה תגים באותה
-משמעות. ה-chart פורס את `<HASH>-unprivileged` שלו כש-`mirror.enabled=true`.
+למירור (`a0533057932/redis-docs-mirror`) יש תג משלו, `<MIRROR>` = ‏`<commit של mirror/site, 9 תווים>-<hash של Dockerfile.runtime ו-build/marketing_mirror/runtime, 8 תווים>`,
+באותן ארבע צורות (`<MIRROR>`, ‏`latest`, ‏`<MIRROR>-unprivileged`, ‏`unprivileged`). הוא נבנה רק כשהתג הזה
+עוד לא קיים עם כל הפלטפורמות. ה-chart פורס את `<MIRROR>-unprivileged` כש-`mirror.enabled=true`,
+ו-`helm show chart` מציג אותו (וכל image אחר של אותה גרסה) תחת `artifacthub.io/images`.
 
 > `<HASH>` = commit hash בן 9 תווים (`git rev-parse --short=9 HEAD`).
 > ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
@@ -291,9 +293,11 @@ docker buildx build --platform linux/amd64,linux/arm64 --target mirror-unprivile
   -t redis-docs-mirror:local .
 ```
 
-ב-CI זה ה-job ‏`4f. Build & push the mirror image`. הוא לא מחכה לבניית האתר — רק ל-checkout של
-`mirror/site` — ודוחף ל-repository משלו, `a0533057932/redis-docs-mirror`, בתגים `<hash>` ו-`<hash>-unprivileged`
-(וגם `latest` / `unprivileged`), כמו האתר. ב-chart: `mirror.enabled`.
+ב-CI זה ה-job ‏`4f. Mirror image (build if changed)`. הוא לא מחכה לבניית האתר. קודם הוא מחשב את התג
+`<MIRROR>` (מה-commit של `mirror/site` בעץ, בלי להוריד את ה-submodule) ובודק ב-Docker Hub אם התג כבר קיים
+עם כל הפלטפורמות. אם כן — לא בונה, ורק מזיז את `latest` / `unprivileged` אליו אם צריך. אם לא — מוריד את
+`mirror/site` ודוחף ל-`a0533057932/redis-docs-mirror` בתגים `<MIRROR>` ו-`<MIRROR>-unprivileged` (וגם
+`latest` / `unprivileged`). ב-chart: `mirror.enabled`.
 
 #### ה-images של ה-CLI ושל החיפוש (`redis-docs-cli`, `redis-docs-search`) — נבנים אוטומטית ב-`airgap-build.yml`
 
@@ -389,10 +393,12 @@ oc get pods,route -n redis-docs
 | **שינוי breaking** (שיניתי `values.yaml` באופן שלא תואם לאחור) | major (`1.x → 2.0.0`) | + הערת migration ב-CHANGELOG |
 
 קבצים לעדכן (4 בכל מקרה):
-- `helm/redis-docs/Chart.yaml` — `version` (לפי הטבלה) ו-`appVersion` (להחליף ל-HASH החדש)
+- `helm/redis-docs/Chart.yaml` — `version` (לפי הטבלה), `appVersion` (להחליף ל-HASH החדש), ורשימת
+  `artifacthub.io/images` תחת `annotations` (כל image עם התג המקובע שלו; למירור — `<MIRROR>-unprivileged`)
 - `helm/redis-docs/README.md` — דוגמת `tag:` ושם הקובץ `redis-docs-X.Y.Z.tgz` בפקודות ההתקנה
 - `helm/redis-docs/README-he.md` — אותו דבר
-- `helm/redis-docs/examples/values-openshift-airgapped.yaml` — `tag:` + ההערה למעלה
+- `helm/redis-docs/examples/values-openshift-airgapped.yaml` — `tag:` + ההערה למעלה, ו-`tag:` של המירור
+  (התג שלו, `<MIRROR>-unprivileged`, לא ה-HASH של האתר)
 
 ```bash
 git add helm/

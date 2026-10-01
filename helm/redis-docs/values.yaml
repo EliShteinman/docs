@@ -256,9 +256,10 @@ mirror:
     capabilities:
       drop:
         - ALL
-  # Its own repository, tagged like the site image: the same commit builds
-  # both. `unprivileged` is the rolling tag; pin the `<commit>-unprivileged`
-  # form in an air-gapped registry.
+  # Its own repository and its own tag, `<mirror commit>-<runtime hash>`, which
+  # changes only when the mirrored pages or their runtime do. `unprivileged` is
+  # the rolling tag; in an air-gapped registry pin the tag `helm show chart`
+  # lists for this chart version.
   image:
     registry: a0533057932
     name: redis-docs-mirror

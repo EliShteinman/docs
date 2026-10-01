@@ -140,7 +140,7 @@ mirror:
   image:
     registry: registry.intranet.company.com
     name: redis-docs-mirror
-    tag: "c39ba43ce-unprivileged"   # same build as image.tag above
+    tag: "c39ba43ce-unprivileged"   # its own tag: `helm show chart` lists it
 
 # --- CLI playground (optional) ---
 # An in-page Redis terminal and workbench, served by a second pod holding the

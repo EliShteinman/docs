@@ -465,11 +465,13 @@ A limit costs nothing until the container actually runs.
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar for CLI playground | No — only if `cli.enabled=true` |
 | `a0533057932/redis-docs-search` | `0.1.0` | 8091 | Docs search API | No — only if `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6380 | Redis holding the search index | No — only if `search.enabled=true` |
-| `a0533057932/redis-docs-mirror` | `<HASH>-unprivileged` / `unprivileged` | 8081 | The mirrored redis.io sections | No — only if `mirror.enabled=true` |
+| `a0533057932/redis-docs-mirror` | `<MIRROR>-unprivileged` / `unprivileged` | 8081 | The mirrored redis.io sections | No — only if `mirror.enabled=true` |
 
 > For Kubernetes/OpenShift use the `unprivileged` or `<HASH>-unprivileged` tag.
 > For standard `docker run` use the `latest` or `<HASH>` tag.
 > In air-gapped networks it is recommended to use a hash-based tag (Artifactory requires a tag other than `latest`).
+> `<MIRROR>` is the mirror's own tag, `<mirror commit>-<runtime hash>`. It changes only when the mirrored pages or their runtime do, so it usually differs from the site's `<HASH>`.
+> The exact images a chart version deploys: `helm show chart oci://registry-1.docker.io/a0533057932/redis-docs --version <version>` (under `artifacthub.io/images`).
 > For image build documentation see `BUILD.md` in the project root.
 
 ## Installation
@@ -847,8 +849,8 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | Redis sidecar resources |
 | `mirror.enabled` | `false` | Deploy the mirrored redis.io sections (separate pod and image). Off leaves the documentation complete on its own |
 | `mirror.image.registry` | `a0533057932` | Mirror image registry |
-| `mirror.image.name` | `redis-docs-mirror` | Mirror image name — its own repository, tagged like the site image |
-| `mirror.image.tag` | `unprivileged` | Mirror image tag. Pin the `<commit>-unprivileged` form in an air-gapped registry |
+| `mirror.image.name` | `redis-docs-mirror` | Mirror image name — its own repository, with its own tag |
+| `mirror.image.tag` | `unprivileged` | Mirror image tag. In an air-gapped registry pin the tag `helm show chart` lists |
 | `mirror.image.pullPolicy` | `IfNotPresent` | Mirror image pull policy |
 | `search.enabled` | `false` | Deploy the docs search service (separate pod: search API + its own Redis). Without it the search button opens an empty modal. Also turns the button back on — see below. |
 | `search.securityContext.allowPrivilegeEscalation` | `false` | Prevent privilege escalation (search) |

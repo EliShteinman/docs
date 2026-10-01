@@ -23,16 +23,18 @@ not deploy search.
 
 ```bash
 REG=registry.internal.company.com
-HASH=<hash>          # from the airgap-build run summary; the site and the mirror share it
+HASH=<hash>          # the site's tag
+MIRROR=<mirror-tag>  # the mirror's own tag; it changes only when the mirror does
 
-skopeo copy docker://a0533057932/redis-docs:$HASH-unprivileged        docker://$REG/redis-docs:$HASH-unprivileged
-skopeo copy docker://a0533057932/redis-docs-mirror:$HASH-unprivileged docker://$REG/redis-docs-mirror:$HASH-unprivileged
+skopeo copy docker://a0533057932/redis-docs:$HASH-unprivileged          docker://$REG/redis-docs:$HASH-unprivileged
+skopeo copy docker://a0533057932/redis-docs-mirror:$MIRROR-unprivileged docker://$REG/redis-docs-mirror:$MIRROR-unprivileged
 skopeo copy docker://a0533057932/redis-docs-cli:<cli-tag>             docker://$REG/redis-docs-cli:<cli-tag>
 skopeo copy docker://a0533057932/redis-docs-search:<search-tag>       docker://$REG/redis-docs-search:<search-tag>
 ```
 
-Take `<cli-tag>` and `<search-tag>` from the new chart's `values.yaml`
-(`helm show values`). `redis:8.10.0-alpine` did not change.
+Take every tag from `helm show chart` for the chart version you install: its
+`artifacthub.io/images` annotation lists each image pinned. `redis:8.10.0-alpine` did
+not change.
 
 **The new mirror image is required.** The old one listens on 8080, the same port as the
 site. In 3.0 both are in one pod, so the container fails with

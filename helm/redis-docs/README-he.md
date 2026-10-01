@@ -387,11 +387,13 @@ downloads:
 | `redis` | `8.10.0-alpine` | 6379 | Redis sidecar ל-CLI playground | לא — רק אם `cli.enabled=true` |
 | `a0533057932/redis-docs-search` | `0.1.0` | 8091 | API החיפוש בדוקס | לא — רק אם `search.enabled=true` |
 | `redis` | `8.10.0-alpine` | 6380 | Redis שמחזיק את אינדקס החיפוש | לא — רק אם `search.enabled=true` |
-| `a0533057932/redis-docs-mirror` | `<HASH>-unprivileged` / `unprivileged` | 8081 | הסקשנים הממוררים מ-redis.io | לא — רק אם `mirror.enabled=true` |
+| `a0533057932/redis-docs-mirror` | `<MIRROR>-unprivileged` / `unprivileged` | 8081 | הסקשנים הממוררים מ-redis.io | לא — רק אם `mirror.enabled=true` |
 
 > ל-Kubernetes/OpenShift השתמשו בתג `unprivileged` או `<HASH>-unprivileged`.
 > ל-`docker run` רגיל השתמשו בתג `latest` או `<HASH>`.
 > ברשת סגורה מומלץ להשתמש בתג עם hash (Artifactory דורש תג שאינו `latest`).
+> ‏`<MIRROR>` הוא התג של המירור עצמו, `<commit של המירור>-<hash של ה-runtime>`. הוא משתנה רק כשהעמודים הממוררים או ה-runtime שלהם משתנים, ולכן בדרך כלל שונה מ-`<HASH>` של האתר.
+> ה-images המדויקים שגרסת chart פורסת: `helm show chart oci://registry-1.docker.io/a0533057932/redis-docs --version <version>` (תחת `artifacthub.io/images`).
 > לתיעוד בניית האימג'ים ראו `BUILD.md` בשורש הפרויקט.
 
 ## התקנה
@@ -772,8 +774,8 @@ kubectl port-forward svc/redis-docs 8080:80
 | `cli.redis.resources` | requests: 50m/64Mi, limits: 200m/128Mi | משאבי Redis sidecar |
 | `mirror.enabled` | `false` | פריסת הסקשנים הממוררים (פוד ו-image נפרדים). כבוי משאיר את התיעוד שלם בפני עצמו |
 | `mirror.image.registry` | `a0533057932` | registry של image המירור |
-| `mirror.image.name` | `redis-docs-mirror` | שם ה-image — repository משלו, מתויג כמו האתר |
-| `mirror.image.tag` | `unprivileged` | תג image המירור. ברשת סגורה לקבע את הצורה `<commit>-unprivileged` |
+| `mirror.image.name` | `redis-docs-mirror` | שם ה-image — repository משלו, עם תג משלו |
+| `mirror.image.tag` | `unprivileged` | תג image המירור. ברשת סגורה לקבע את התג ש-`helm show chart` מציג |
 | `mirror.image.pullPolicy` | `IfNotPresent` | מדיניות משיכת image המירור |
 | `search.enabled` | `false` | פריסת שירות החיפוש (פוד נפרד: API + Redis משלו). בלעדיו כפתור החיפוש פותח חלון ריק. גם מחזיר את הכפתור לתצוגה — ראה למטה. |
 | `search.securityContext.allowPrivilegeEscalation` | `false` | מניעת הסלמת הרשאות (חיפוש) |
