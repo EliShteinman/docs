@@ -7,7 +7,7 @@
 #
 # Before using, replace the following:
 #   registry.internal.company.com  → your private registry address
-#   c39ba43ce-unprivileged         → your Docker image tag
+#   c9b0ca400-unprivileged         → your Docker image tag
 #   regcred                        → your image pull secret name
 #   docs.intranet.company.com      → the public hostname of this deployment
 #   gitlab.internal.company.com    → your internal Git URL
@@ -25,7 +25,7 @@ imagePullSecrets:
 
 image:
   name: redis-docs
-  tag: "c39ba43ce-unprivileged"
+  tag: "c9b0ca400-unprivileged"
   pullPolicy: IfNotPresent
 
 # ephemeral-storage has to hold the packed download bundles (see `downloads`
@@ -140,7 +140,7 @@ mirror:
   image:
     registry: registry.intranet.company.com
     name: redis-docs-mirror
-    tag: "c39ba43ce-unprivileged"   # its own tag: `helm show chart` lists it
+    tag: "9f92980d2-6d623ce2-unprivileged"   # its own tag: `helm show chart` lists it
 
 # --- CLI playground (optional) ---
 # An in-page Redis terminal and workbench, served by a second pod holding the
