@@ -265,13 +265,19 @@ mirror:
     name: redis-docs-mirror
     tag: "unprivileged"
     pullPolicy: IfNotPresent
+  # ephemeral-storage holds the pages, unpacked from the image's archive when
+  # the container starts (about 2.5 GB). Declared here, not left to the site's
+  # limit: with one container limited, the kubelet evicts the pod once all its
+  # containers together pass the sum of their limits.
   resources:
     requests:
       cpu: 50m
       memory: 64Mi
+      ephemeral-storage: 3Gi
     limits:
       cpu: 500m
       memory: 256Mi
+      ephemeral-storage: 4Gi
 
 # -- Docs search. search-modal.html calls /convai/api/search-service, a service
 #    that runs at redis.io; without something answering it here the search
