@@ -1,28 +1,31 @@
-// Puts the documentation's header on a page mirrored from redis.io, in place
-// of redis.io's own.
+// Puts the documentation's header and footer on a page mirrored from
+// redis.io, in place of redis.io's own.
 //
-// Loaded by every mirrored page from <head>, so redis.io's header is hidden
-// before the browser paints it: its menus lead to pages this site does not
-// have. The documentation's header is read from this site's home page and
-// shown in a shadow root, where the documentation's stylesheets cannot reach
-// redis.io's page and redis.io's cannot reach the header. It is kept for the
-// rest of the browser session, so the next page shows it at once.
+// Loaded by every mirrored page from <head>, so redis.io's header and footer
+// are hidden before the browser paints them: their links lead to pages this
+// site does not have. The documentation's are read from this site's home page
+// and shown in shadow roots, where the documentation's stylesheets cannot
+// reach redis.io's page and redis.io's cannot reach them. They are kept for
+// the rest of the browser session, so the next page shows them at once.
 //
-// Its hidden slot keeps its height: redis.io's page is laid out under a 70px
-// sticky header, and the documentation's is the same height on top of it.
-// The host is a child of <html>, outside the <body> React hydrates.
+// Both hosts are children of <html>, outside the <body> React renders into.
+// The header is fixed over the slot redis.io's 70px sticky header keeps (the
+// page is laid out under it); the footer follows <body>, where redis.io's
+// footer was.
 //
-// Without the home page -- an error, or no network -- redis.io's header comes
-// back, and marketing-links.js still hides what leads off the site.
+// Without the home page -- an error, or no network -- redis.io's header and
+// footer come back, and marketing-links.js still hides what leads off the site.
 (function () {
-  var CACHE_KEY = 'mirror:docs-header:v1';
+  var CACHE_KEY = 'mirror:docs-frame:v1';
   var SEARCH_URL = '/#search';
   var REDIS_HEADER = 'body > header[class*="__header"]';
+  var REDIS_FOOTER = 'body > footer[class*="__footer"]';
 
   var hiding = document.createElement('style');
   hiding.textContent =
     REDIS_HEADER + ', ' + REDIS_HEADER + ' * {' +
-    ' visibility: hidden !important; pointer-events: none !important; }';
+    ' visibility: hidden !important; pointer-events: none !important; }\n' +
+    REDIS_FOOTER + ' { display: none !important; }';
   document.head.appendChild(hiding);
 
   function readCache() {
@@ -79,11 +82,13 @@
     return fetchText('/').then(function (html) {
       var doc = new DOMParser().parseFromString(html, 'text/html');
       var header = doc.querySelector('body > header');
-      if (!header) throw new Error('the home page has no header');
+      var footer = doc.querySelector('body > footer');
+      if (!header || !footer) throw new Error('the home page has no header or footer');
       return Promise.all(sameOriginStylesheets(doc).map(fetchText)).then(
         function (sheets) {
           return {
             header: header.outerHTML,
+            footer: footer.outerHTML,
             css: forShadowRoot(sheets.join('\n')),
             fonts: fontFaces(doc)
           };
@@ -110,7 +115,7 @@
 
   // The header's own buttons: the mobile menu opens in place; search opens
   // the documentation's search, which lives on its pages, not on this one.
-  function wireButtons(root) {
+  function wireHeaderButtons(root) {
     var toggle = root.querySelector('[data-menu-toggle]');
     var menu = root.querySelector('[data-menu]');
     if (toggle && menu) {
@@ -127,31 +132,48 @@
     }
   }
 
+  function shadowHost(name, position, parts, markup) {
+    var host = document.createElement('div');
+    host.setAttribute(name, '');
+    host.style.cssText = 'all: initial; display: block; ' + position;
+    var root = host.attachShadow({ mode: 'open' });
+    var style = document.createElement('style');
+    style.textContent = parts.css;
+    root.appendChild(style);
+    var holder = document.createElement('div');
+    holder.innerHTML = markup;
+    while (holder.firstChild) root.appendChild(holder.firstChild);
+    applyExternalLinks(root);
+    return host;
+  }
+
   function mount(parts) {
     if (parts.fonts) {
       var faces = document.createElement('style');
       faces.textContent = parts.fonts;
       document.head.appendChild(faces);
     }
-    var host = document.createElement('div');
-    host.setAttribute('data-docs-header', '');
-    host.style.cssText =
-      'all: initial; position: fixed; top: 0; left: 0; right: 0;' +
-      ' z-index: 2147483000; display: block;';
-    var root = host.attachShadow({ mode: 'open' });
-    var style = document.createElement('style');
-    style.textContent = parts.css;
-    root.appendChild(style);
-    var holder = document.createElement('div');
-    holder.innerHTML = parts.header;
-    while (holder.firstChild) root.appendChild(holder.firstChild);
-    applyExternalLinks(root);
-    wireButtons(root);
-    document.documentElement.appendChild(host);
+    var header = shadowHost(
+      'data-docs-header',
+      'position: fixed; top: 0; left: 0; right: 0; z-index: 2147483000;',
+      parts,
+      parts.header
+    );
+    wireHeaderButtons(header.shadowRoot);
+    var hosts = [header, shadowHost('data-docs-footer', '', parts, parts.footer)];
+    // React owns <html> once it hydrates, and drops the children it did not
+    // render; each is put back as soon as it goes.
+    function attach() {
+      for (var i = 0; i < hosts.length; i++) {
+        if (!hosts[i].isConnected) document.documentElement.appendChild(hosts[i]);
+      }
+    }
+    attach();
+    new MutationObserver(attach).observe(document.documentElement, { childList: true });
   }
 
-  function restoreRedisHeader(error) {
-    if (window.console) console.warn('docs-header:', error);
+  function restoreRedisFrame(error) {
+    if (window.console) console.warn('docs-frame:', error);
     if (hiding.parentNode) hiding.parentNode.removeChild(hiding);
   }
 
@@ -163,5 +185,5 @@
   readHomePage().then(function (parts) {
     writeCache(parts);
     mount(parts);
-  }).catch(restoreRedisHeader);
+  }).catch(restoreRedisFrame);
 })();
