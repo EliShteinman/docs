@@ -127,4 +127,19 @@ JS_PATCHES: tuple[tuple[str, bytes, bytes], ...] = (
         b'children:"This embedded media is hosted outside this network. '
         b'It is not available on this site."}',
     ),
+    (
+        "account API: asks this site, which answers 404, read as not logged in",
+        b'"https://cloud.redis.io/api/v1"',
+        b'"/_mirror/no-cloud-api"',
+    ),
+    (
+        "account API: plan prices, from this site too",
+        b"`https://cloud.redis.io/api/v1/accounts",
+        b"`/_mirror/no-cloud-api/accounts",
+    ),
+    (
+        "visitor IP lookup: an empty answer, without asking ipify",
+        b'fetch("https://api.ipify.org?format=json")',
+        b'Promise.resolve({ok:!0,json:()=>({ip:""})})',
+    ),
 )
