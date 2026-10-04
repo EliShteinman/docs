@@ -61,6 +61,7 @@ TRACKING_HOSTS: tuple[str, ...] = (
     "consent.",
     "segment.com",
     "amplitude.com",
+    "cloudflareinsights.com",
 )
 
 # The scripts every mirrored page loads first: the site's runtime config (the

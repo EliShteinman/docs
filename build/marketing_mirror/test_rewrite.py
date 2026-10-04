@@ -7,6 +7,9 @@ PAGE = (
     '<script src="https://www.googletagmanager.com/gtm.js?id=X"></script>'
     '<link rel="preload" href="https://consent.trustarc.com/notice?x=1" as="script"/>'
     '<link rel="stylesheet" href="/_next/static/immutable/chunks/a1.css"/>'
+    '<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v1"'
+    ' integrity="sha512-x" data-cf-beacon=\'{"version":"2024.11.0","spa":2}\''
+    ' crossorigin="anonymous"></script>'
     "</head><body>"
     '<img src="https://cdn.sanity.io/images/sy1jschh/production/abc-10x10.png?w=64"/>'
     '<script>self.__next_f.push([1,"{\\"_ref\\":\\"image-'
@@ -57,6 +60,10 @@ def test_rewrite_page_removes_the_tag_manager():
 
 def test_rewrite_page_removes_the_consent_banner():
     assert "trustarc" not in rewrite.rewrite_page(PAGE)
+
+
+def test_rewrite_page_removes_the_cloudflare_beacon():
+    assert "cloudflareinsights" not in rewrite.rewrite_page(PAGE)
 
 
 def test_rewrite_page_keeps_the_stylesheet():
