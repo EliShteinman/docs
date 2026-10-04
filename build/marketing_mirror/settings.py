@@ -85,7 +85,7 @@ EMBED_UNAVAILABLE_SOURCE = Path(__file__).with_name("embed-unavailable.html")
 INJECTED_SCRIPTS: tuple[str, ...] = (
     "/js/runtime-config.js",
     "/_mirror/marketing-links.js",
-    "/_mirror/docs-header.js",
+    "/_mirror/docs-frame.js",
 )
 
 # (description, pattern, replacement) applied to every JS chunk.
@@ -104,5 +104,12 @@ JS_PATCHES: tuple[tuple[str, bytes, bytes], ...] = (
         "Sanity image builder: base URL derived from the client's API host",
         b'.replace(/^https:\\/\\/api\\./,"https://cdn.")',
         b'.replace(/^https:\\/\\/api\\.sanity\\.io/,"/sanity")',
+    ),
+    (
+        "video player: a player it cannot show says why, readably",
+        b'{children:"Unsupported video platform or invalid URL"}',
+        b'{style:{color:"#fff",padding:"16px",textAlign:"center",fontFamily:"system-ui,sans-serif"},'
+        b'children:"This embedded media is hosted outside this network. '
+        b'It is not available on this site."}',
     ),
 )

@@ -20,6 +20,9 @@ from build.marketing_mirror.fetcher import FetchError, Fetcher
 LOGGER = logging.getLogger("marketing_mirror")
 
 _REFERENCE = re.compile(r'\b(?:src|href)="([^"]+)"')
+# A file an inline script loads by a path next to the page: the charts fetch
+# their data as './pure-vectors.json'.
+_SCRIPT_REFERENCE = re.compile(r"""['"](\.{1,2}/[^'"\s]+\.\w+)['"]""")
 _CSS_IMPORT = re.compile(r"@import\s*(?:url\()?\s*[\"'][^\"']*[\"']\s*\)?[^;]*;?")
 _NOT_A_FILE = ("#", "data:", "mailto:", "javascript:")
 
@@ -78,7 +81,10 @@ class EmbedMirror:
         if data is None:
             return
         page = data.decode("utf-8", "replace")
-        for reference in sorted(set(_REFERENCE.findall(page))):
+        references = set(_REFERENCE.findall(page)) | set(
+            _SCRIPT_REFERENCE.findall(page)
+        )
+        for reference in sorted(references):
             page = self._capture_reference(page, page_url, local_page, reference)
         self._write(local_page, page.encode("utf-8"))
 

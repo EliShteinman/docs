@@ -24,14 +24,15 @@ components:
 # diagrams -- as redis.io renders it, into mirror/site.
 # Not part of `all`: it reaches the public internet, so it is run deliberately
 # and its output is committed. `mirror` fetches only pages whose date changed
-# and never fetches an asset twice; `mirror-full` refetches every page, for
-# when redis.io changed its header, menus or footer (the run says so).
+# and never fetches an asset twice; `mirror-full` refetches every page.
+# `mirror-rewrite` fetches nothing: it applies today's rewrite rules and JS
+# patches to the pages and chunks already in mirror/site.
 # `mirror-check` reports what redis.io lists that is not on disk.
 # Both refreshes rewrite llms.txt afterwards, since it lists what the mirror
 # has on disk.
 # Phony: mirror/ is a directory, so without this `make mirror` finds it up to
 # date and does nothing.
-.PHONY: mirror mirror-full mirror-check llms
+.PHONY: mirror mirror-full mirror-rewrite mirror-check llms
 
 mirror:
 	@python3 -m build.marketing_mirror
@@ -40,6 +41,9 @@ mirror:
 mirror-full:
 	@python3 -m build.marketing_mirror --full
 	@python3 -m build.llms_txt
+
+mirror-rewrite:
+	@python3 -m build.marketing_mirror --rewrite
 
 mirror-check:
 	@python3 -m build.marketing_mirror --check

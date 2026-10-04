@@ -7,7 +7,7 @@ DATE = "2026-09-24T22:31:58Z"
 
 @pytest.fixture
 def previous() -> manifest.Manifest:
-    return manifest.Manifest(pages={"/blog/a/": DATE}, frame=["/_next/a.js"])
+    return manifest.Manifest(pages={"/blog/a/": DATE})
 
 
 def test_a_page_with_the_same_date_is_current(previous):
@@ -33,15 +33,3 @@ def test_a_manifest_reads_back_as_written(tmp_path, previous):
 
 def test_a_missing_manifest_reads_as_empty(tmp_path):
     assert manifest.load(tmp_path) == manifest.Manifest()
-
-
-def test_a_different_chunk_set_is_a_frame_change(previous):
-    assert manifest.frame_changed(previous, ["/_next/b.js"])
-
-
-def test_the_same_chunk_set_is_no_frame_change(previous):
-    assert not manifest.frame_changed(previous, ["/_next/a.js"])
-
-
-def test_a_first_run_reports_no_frame_change():
-    assert not manifest.frame_changed(manifest.Manifest(), ["/_next/a.js"])

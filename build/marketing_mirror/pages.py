@@ -70,8 +70,12 @@ class PageMirror:
         html = previous_html.read_text(encoding="utf-8")
         self._assets.add_next(rewrite.next_assets(html))
         self._assets.add_sanity(rewrite.sanity_assets(html))
-        self._embeds.add(rewrite.local_embed_pages(html))
-        place(previous_html, html_file(self._site_dir, path))
+        local = rewrite.rewrite_again(html)
+        self._embeds.add(rewrite.local_embed_pages(local))
+        if local == html:
+            place(previous_html, html_file(self._site_dir, path))
+        else:
+            self._write(html_file(self._site_dir, path), local.encode("utf-8"))
         previous_markdown = markdown_file(self._previous_dir, path)
         if previous_markdown.is_file():
             place(previous_markdown, markdown_file(self._site_dir, path))

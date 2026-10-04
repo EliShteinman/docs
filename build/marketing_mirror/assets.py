@@ -32,6 +32,14 @@ def place(source: Path, target: Path) -> None:
         shutil.copyfile(source, target)
 
 
+def replace_file(target: Path, data: bytes) -> None:
+    """Write `target` whole or not at all, and as a file of its own: a file
+    hard-linked from the previous run must not change there too."""
+    staged = target.with_name(target.name + ".tmp")
+    staged.write_bytes(data)
+    staged.replace(target)
+
+
 class AssetStore:
     def __init__(
         self, fetcher: Fetcher, site_dir: Path, previous_dir: Path | None = None
@@ -97,9 +105,12 @@ class AssetStore:
                 if data is None:
                     continue
             if path.endswith(".js"):
-                data, applied = rewrite.patch_chunk(data)
+                patched, applied = rewrite.patch_chunk(data)
                 with self._lock:
                     self.patches_applied |= applied
+                if not fetched and patched != data:
+                    replace_file(self._target(path), patched)
+                data = patched
             if path.endswith((".js", ".css")):
                 text = data.decode("utf-8", "replace")
                 pending.extend(sorted(rewrite.next_assets(text)))

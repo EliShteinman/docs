@@ -115,3 +115,36 @@ def test_a_reused_stylesheet_still_brings_its_fonts(reusing_store, tmp_path):
 def test_reuse_is_counted(reusing_store):
     reusing_store.add_sanity({"/images/p/d/x-1x1.png"})
     assert reusing_store.reused == 1
+
+
+@pytest.fixture
+def previous_run(tmp_path):
+    previous = tmp_path / "previous"
+    chunk = previous / "_next/static/immutable/chunks/lazy.js"
+    chunk.parent.mkdir(parents=True)
+    chunk.write_bytes(LAZY_CHUNK)
+    return previous
+
+
+def test_add_next_patches_a_chunk_taken_from_the_previous_run(
+    fetcher, tmp_path, previous_run
+):
+    site = tmp_path / "site"
+    AssetStore(fetcher, site, previous_run).add_next(
+        {"/_next/static/immutable/chunks/lazy.js"}
+    )
+    assert (
+        b"unoptimized:!0"
+        in (site / "_next/static/immutable/chunks/lazy.js").read_bytes()
+    )
+
+
+def test_add_next_leaves_the_previous_run_s_chunk_as_it_was(
+    fetcher, tmp_path, previous_run
+):
+    AssetStore(fetcher, tmp_path / "site", previous_run).add_next(
+        {"/_next/static/immutable/chunks/lazy.js"}
+    )
+    assert (
+        previous_run / "_next/static/immutable/chunks/lazy.js"
+    ).read_bytes() == LAZY_CHUNK

@@ -1,7 +1,14 @@
 import pytest
 
 from build.marketing_mirror import settings
-from build.marketing_mirror.__main__ import CaptureFailed, _verify, replace
+from build.marketing_mirror import manifest
+from build.marketing_mirror.__main__ import (
+    CaptureFailed,
+    _verify,
+    replace,
+    rewrite_on_disk,
+)
+from build.marketing_mirror.pages import html_file
 from build.marketing_mirror.assets import AssetStore
 
 
@@ -65,3 +72,35 @@ def test_replace_keeps_the_repository_attributes(tmp_path):
     staging.mkdir()
     replace(site, staging)
     assert (site / ".gitattributes").read_text() == "* -diff"
+
+
+@pytest.fixture
+def site_on_disk(tmp_path):
+    site = tmp_path / "site"
+    html_file(site, "/blog/a/").parent.mkdir(parents=True)
+    html_file(site, "/blog/a/").write_text(
+        '<html><head><script src="/js/runtime-config.js"></script></head>'
+        '<body><iframe src="https://www.youtube.com/embed/x"></iframe></body></html>'
+    )
+    manifest.save(site, manifest.Manifest(pages={"/blog/a/": "2026-10-01"}))
+    return site
+
+
+def test_rewrite_on_disk_rewrites_a_page_in_place(site_on_disk):
+    rewrite_on_disk(site_on_disk)
+    page = html_file(site_on_disk, "/blog/a/").read_text()
+    assert settings.EMBED_UNAVAILABLE in page
+
+
+def test_rewrite_on_disk_writes_the_unavailable_page(site_on_disk):
+    rewrite_on_disk(site_on_disk)
+    assert (site_on_disk / settings.EMBED_UNAVAILABLE.lstrip("/")).is_file()
+
+
+def test_rewrite_on_disk_patches_a_chunk_on_disk(site_on_disk):
+    chunk = site_on_disk / "_next/static/immutable/chunks/a.js"
+    chunk.parent.mkdir(parents=True)
+    _, pattern, replacement = settings.JS_PATCHES[0]
+    chunk.write_bytes(pattern)
+    rewrite_on_disk(site_on_disk)
+    assert chunk.read_bytes() == replacement

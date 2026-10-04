@@ -16,6 +16,7 @@ CHART_PAGE = (
     b'<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>'
     b'<script src="./benchmark.js"></script>'
     b'<a href="#top">top</a>'
+    b"<script>let url = './results.json'; fetch(url)</script>"
 )
 STYLESHEET = (
     b'@import"https://fonts.googleapis.com/css?family=Open+Sans";'
@@ -42,6 +43,7 @@ def fetcher() -> FakeFetcher:
             f"{ORIGIN}/blog/chart.html": CHART_PAGE,
             f"{ORIGIN}/blog/main.css": STYLESHEET,
             f"{ORIGIN}/blog/benchmark.js": b"draw()",
+            f"{ORIGIN}/blog/results.json": b"[]",
             "https://cdn.jsdelivr.net/npm/chart.js": b"Chart",
         }
     )
@@ -90,6 +92,10 @@ def test_add_writes_the_cdn_library(site):
 
 def test_add_writes_a_file_next_to_the_page(site):
     assert (site / PREFIX.lstrip("/") / "blog/benchmark.js").read_bytes() == b"draw()"
+
+
+def test_add_writes_the_data_an_inline_script_fetches(site):
+    assert (site / PREFIX.lstrip("/") / "blog/results.json").read_bytes() == b"[]"
 
 
 def test_add_writes_the_stylesheet_without_imports(site):

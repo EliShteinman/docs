@@ -30,6 +30,11 @@ _SANITY_ASSET_ID = re.compile(
     r"image-([0-9a-f]{40})-(\d+x\d+)-(jpg|jpeg|png|webp|gif|svg)"
 )
 _HEAD_OPEN = re.compile(r"<head[^>]*>")
+# The scripts rewrite_page puts first in <head>, whichever list a run used.
+_INJECTED_BLOCK = re.compile(
+    r'(<head[^>]*>)(?:<script src="/(?:js/runtime-config\.js|_mirror/[\w.-]+\.js)">'
+    r"</script>)+"
+)
 # An iframe as the HTML has it and as the Next.js payload does, where `<` is
 # spelled \u003c and every quote is escaped once or more.
 _IFRAME = re.compile(r"(?:<|\\u003c)iframe\b(.*?)(?:>|\\u003e)", re.DOTALL)
@@ -116,6 +121,14 @@ def local_embed_pages(text: str) -> set[str]:
     """The pages under a settings.LOCAL_EMBEDS prefix that the page frames."""
     prefixes = tuple(prefix + "/" for prefix in settings.LOCAL_EMBEDS.values())
     return {url.split("?")[0] for url in framed_urls(text) if url.startswith(prefixes)}
+
+
+def rewrite_again(html: str) -> str:
+    """A page rewritten by an earlier run, rewritten by today's rules. The
+    scripts an earlier run put first in <head> come out, so they are not
+    loaded twice; everything else in rewrite_page leaves a rewritten page as
+    it is."""
+    return rewrite_page(_INJECTED_BLOCK.sub(r"\1", html, count=1))
 
 
 def rewrite_page(html: str) -> str:

@@ -3,6 +3,7 @@ import pytest
 from build.marketing_mirror.assets import AssetStore
 from build.marketing_mirror.embeds import EmbedMirror
 from build.marketing_mirror.manifest import Manifest
+from build.marketing_mirror.assets import replace_file
 from build.marketing_mirror.pages import PageMirror, html_file, markdown_file
 
 DATE = "2026-09-24T22:31:58Z"
@@ -79,6 +80,35 @@ def test_a_fetched_page_is_written_rewritten(mirror, tmp_path):
         "/sanity/images/p/d/x-1x1.png"
         in html_file(tmp_path / "site", "/blog/b/").read_text()
     )
+
+
+def test_an_unchanged_page_gets_today_s_rewrite_rules(mirror, tmp_path):
+    mirror.capture("/blog/a/", DATE)
+    page = html_file(tmp_path / "site", "/blog/a/").read_text()
+    assert page.startswith('<html><head><script src="/js/runtime-config.js">')
+
+
+def test_an_unchanged_page_leaves_the_previous_run_as_it_was(mirror, previous_dir):
+    mirror.capture("/blog/a/", DATE)
+    assert (
+        html_file(previous_dir, "/blog/a/").read_text()
+        == "<html><head></head>old</html>"
+    )
+
+
+def test_replace_file_writes_the_new_content(tmp_path):
+    target = tmp_path / "index.html"
+    target.write_text("old")
+    replace_file(target, b"new")
+    assert target.read_bytes() == b"new"
+
+
+def test_replace_file_leaves_a_hard_link_elsewhere_alone(tmp_path):
+    original, linked = tmp_path / "a.html", tmp_path / "b.html"
+    original.write_text("old")
+    linked.hardlink_to(original)
+    replace_file(linked, b"new")
+    assert original.read_text() == "old"
 
 
 class RedirectingFetcher(FakeFetcher):

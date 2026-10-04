@@ -1,16 +1,16 @@
 """Mirror redis.io's marketing site into mirror/site.
 
-    python -m build.marketing_mirror [--full] [--limit N] [--check]
+    python -m build.marketing_mirror [--full] [--limit N] [--check] [--rewrite]
 
 A run fetches only what changed. redis.io's sitemap dates every page; a page
 whose date has not moved since the last run (manifest.py) is taken from disk,
 and so is every Next.js chunk and image already there, since they are named by
-their content. What is taken from disk is hard-linked, not copied.
+their content. What is taken from disk is hard-linked, not copied, unless
+today's rewrite rules change it.
 
-The header, menus and footer are part of every page, and a date does not move
-when only they change. Each run compares the chunks one probe page loads with
-the last run's and says when they differ; --full then refetches every page, so
-none keeps the old frame.
+--rewrite fetches no page at all: it applies today's rewrite rules to the pages
+already in mirror/site, in place. A change to rewrite.py or settings.py needs
+only this, never a refetch.
 
 The run writes a fresh directory and replaces mirror/site only when it is
 complete. Run by hand, then commit the result: the image build reads
@@ -36,7 +36,7 @@ from build.marketing_mirror import (
     settings,
     sitemap,
 )
-from build.marketing_mirror.assets import AssetStore
+from build.marketing_mirror.assets import AssetStore, replace_file
 from build.marketing_mirror.embeds import EmbedMirror
 from build.marketing_mirror.feeds import FeedMirror
 from build.marketing_mirror.fetcher import FetchError, HttpFetcher, Moved
@@ -69,15 +69,14 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         action="store_true",
         help="Report pages redis.io lists that are not on disk.",
     )
+    parser.add_argument(
+        "--rewrite",
+        action="store_true",
+        help="Apply today's rewrite rules to the pages on disk; fetch no page.",
+    )
     parser.add_argument("--workers", type=int, default=settings.WORKERS)
     parser.add_argument("--log-level", default="INFO")
     return parser.parse_args(argv)
-
-
-def probe_frame(fetcher: HttpFetcher) -> list[str]:
-    """The chunks redis.io's frame loads today, read off one freshly fetched page."""
-    html = fetcher.get(settings.ORIGIN + manifest.FRAME_PROBE).decode("utf-8")
-    return sorted(rewrite.next_assets(html))
 
 
 def capture(
@@ -88,12 +87,6 @@ def capture(
     previous: manifest.Manifest,
 ) -> manifest.Manifest:
     fetcher = HttpFetcher()
-    frame = probe_frame(fetcher)
-    if manifest.frame_changed(previous, frame):
-        LOGGER.warning(
-            "redis.io changed its header, menus or footer since the last run; "
-            "pages taken from disk keep the old ones until `make mirror-full`"
-        )
     assets = AssetStore(fetcher, staging, previous_dir)
     embeds = EmbedMirror(fetcher, staging)
     embeds.write_unavailable_page()
@@ -135,12 +128,7 @@ def capture(
     kept = sorted(set(paths) - set(failed) - set(moved))
     sitemap.write_sitemap(staging, kept)
     records = feed.write_feed(staging, dated)
-    # The frame the pages on disk carry: the probe's only once every page
-    # was fetched again, so the warning above repeats until they are.
-    carried = frame if fetched == len(kept) or not previous.frame else previous.frame
-    captured = manifest.Manifest(
-        pages={path: dated[path] for path in kept}, frame=carried
-    )
+    captured = manifest.Manifest(pages={path: dated[path] for path in kept})
     manifest.save(staging, captured)
     LOGGER.info(
         "%d pages (%d fetched, %d from disk), %d assets (%d from disk), %d search records",
@@ -185,6 +173,49 @@ def replace(site_dir: Path, staging: Path) -> None:
     shutil.rmtree(previous, ignore_errors=True)
 
 
+def _patch_chunks_on_disk(site_dir: Path) -> int:
+    patched = 0
+    applied: set[str] = set()
+    for chunk in sorted((site_dir / "_next").rglob("*.js")):
+        data = chunk.read_bytes()
+        new, found = rewrite.patch_chunk(data)
+        applied |= found
+        if new != data:
+            replace_file(chunk, new)
+            patched += 1
+    missing = {description for description, _, _ in settings.JS_PATCHES} - applied
+    if missing:
+        LOGGER.warning("these JS patches matched no chunk on disk: %s", sorted(missing))
+    return patched
+
+
+def rewrite_on_disk(site_dir: Path) -> None:
+    """Today's rewrite rules on every page mirror/site holds, written in place."""
+    embeds = EmbedMirror(HttpFetcher(), site_dir)
+    embeds.write_unavailable_page()
+    changed = 0
+    for path in manifest.load(site_dir).pages:
+        page = pages.html_file(site_dir, path)
+        if not page.is_file():
+            LOGGER.warning("in the manifest but not on disk: %s", path)
+            continue
+        html = page.read_text(encoding="utf-8")
+        local = rewrite.rewrite_again(html)
+        embeds.add(rewrite.local_embed_pages(local))
+        if local != html:
+            replace_file(page, local.encode("utf-8"))
+            changed += 1
+    patched = _patch_chunks_on_disk(site_dir)
+    LOGGER.info(
+        "%d pages rewritten, %d chunks patched, %d embedded files",
+        changed,
+        patched,
+        embeds.count,
+    )
+    if embeds.failed:
+        LOGGER.warning("%d embedded files could not be mirrored", len(embeds.failed))
+
+
 def check(site_dir: Path) -> int:
     listed = sitemap.page_dates(HttpFetcher())
     missing = [path for path in listed if not pages.html_file(site_dir, path).is_file()]
@@ -205,6 +236,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.check:
             check(args.output)
+            return 0
+        if args.rewrite:
+            rewrite_on_disk(args.output)
             return 0
         dated = sitemap.page_dates(HttpFetcher())
         if args.limit:

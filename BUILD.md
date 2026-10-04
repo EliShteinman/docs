@@ -173,7 +173,8 @@ docker buildx build --platform linux/amd64,linux/arm64 \
 ```bash
 git submodule update --init mirror/site   # פעם אחת, לפני make mirror או בנייה מקומית של ה-image
 make mirror          # רק מה שהשתנה, ואחריו llms.txt
-make mirror-full     # כל העמודים מחדש (~1,700, כ-15–35 דקות); תמונות ו-chunks עדיין מהדיסק. גם הוא כותב llms.txt מחדש
+make mirror-rewrite  # כללי השכתוב של היום על העמודים שבדיסק, בלי להוריד אף עמוד (שניות)
+make mirror-full     # כל העמודים מחדש (~1,700, כ-15–35 דקות); כמעט אף פעם לא נחוץ. תמונות ו-chunks עדיין מהדיסק
 make mirror-check    # מה redis.io מפרסם ועוד לא אצלנו, בלי לכתוב כלום
 make llms            # רק llms.txt, בלי לרענן את המירור
 
@@ -187,9 +188,11 @@ git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
 נלקח מהדיסק. נכסים (chunks של Next.js ותמונות Sanity) נקראים לפי התוכן שלהם, ולכן **נכס שכבר
 בדיסק לא יורד שוב אף פעם**. מה שנלקח מהדיסק מקושר (hard link), לא מועתק.
 
-**השלד של redis.io** — header, תפריטים, footer — חלק מכל עמוד, ותאריך העמוד לא זז כשרק הוא
-משתנה. כל ריצה מורידה עמוד בדיקה אחד ומשווה את ה-chunks שלו לריצה הקודמת; אם השתנו, הריצה
-מזהירה, ו-`make mirror-full` מרענן את כל העמודים.
+**שינוי בכללי השכתוב לא דורש הורדה.** עמוד שנלקח מהדיסק עובר את הכללים של היום (`rewrite_again`), וכך
+גם chunks (`JS_PATCHES`). שינוי ב-`rewrite.py`, `settings.py` או `JS_PATCHES` → `make mirror-rewrite`.
+
+**השלד של redis.io** — header ו-footer — חלק מכל עמוד, אבל לא מוצג: `docs-frame.js` מציג במקומו את
+הכותרת והפוטר של התיעוד. לכן שינוי שלהם אצל redis.io לא מצריך הורדה מחדש.
 
 הריצה כותבת לתיקייה זמנית ומחליפה את `mirror/site` רק אם הצליחה (עד 2% עמודים שנכשלו).
 
@@ -208,8 +211,8 @@ git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
   (YouTube, פודקאסט, מצגת) שהמדיה שלו לא זמינה ברשת סגורה, והוא מציג את
   `/_mirror/embed-unavailable.html` — גם ב-HTML וגם ב-payload של Next.js. ה-CSP מתיר iframe מאותו דומיין בלבד.
 - תגיות GTM, trustarc, Segment ו-Cloudflare Insights מוסרות, ונוספים שלושה סקריפטים: `/js/runtime-config.js` (המתג של
-  Helm), `/_mirror/marketing-links.js` ו-`/_mirror/docs-header.js` — שמסתיר מראש את הכותרת של redis.io
-  ומציג במקומה את הכותרת של התיעוד (נקראת מדף הבית, ב-shadow root). כפתור החיפוש שלה מוביל ל-`/#search`.
+  Helm), `/_mirror/marketing-links.js` ו-`/_mirror/docs-frame.js` — שמסתיר מראש את הכותרת והפוטר של
+  redis.io ומציג במקומם את אלה של התיעוד (נקראים מדף הבית, ב-shadow root). כפתור החיפוש מוביל ל-`/#search`.
 - שלושה תיקונים ב-JS: next/image טוען תמונות ישירות (אין כאן שרת אופטימיזציה), ובונה ה-URL של
   Sanity פונה ל-`/sanity`. **אם redis.io ישנו את ה-JS כך שתיקון לא מתאים לכלום, הריצה נכשלת**
   ולא שומרת עמודים שבורים — וזה המקום לעדכן.

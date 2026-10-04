@@ -166,3 +166,33 @@ def test_local_embed_pages_finds_the_local_chart():
 def test_rewrite_page_shows_the_unavailable_page_for_a_player():
     page = f'<html><head></head><body><iframe src="{VIDEO}"></iframe></body></html>'
     assert f'src="{settings.EMBED_UNAVAILABLE}"' in rewrite.rewrite_page(page)
+
+
+INJECTED = "".join(
+    f'<script src="{src}"></script>' for src in settings.INJECTED_SCRIPTS
+)
+OLD_RUN_PAGE = (
+    '<html><head><script src="/js/runtime-config.js"></script>'
+    '<script src="/_mirror/marketing-links.js"></script>'
+    '<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v1">'
+    "</script></head><body>"
+    f'<iframe src="{VIDEO}"></iframe></body></html>'
+)
+
+
+def test_rewrite_again_loads_each_script_once():
+    again = rewrite.rewrite_again(OLD_RUN_PAGE)
+    assert again.count("/_mirror/marketing-links.js") == 1
+
+
+def test_rewrite_again_loads_today_s_scripts_first():
+    assert rewrite.rewrite_again(OLD_RUN_PAGE).startswith(f"<html><head>{INJECTED}")
+
+
+def test_rewrite_again_applies_a_rule_the_earlier_run_did_not_have():
+    assert "cloudflareinsights" not in rewrite.rewrite_again(OLD_RUN_PAGE)
+
+
+def test_rewrite_again_leaves_a_page_rewritten_today_as_it_is():
+    today = rewrite.rewrite_again(OLD_RUN_PAGE)
+    assert rewrite.rewrite_again(today) == today
