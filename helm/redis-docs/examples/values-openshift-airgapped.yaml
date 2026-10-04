@@ -174,3 +174,17 @@ cli:
     idleTtlSeconds: 1800
     max: 500
     sweepIntervalSeconds: 60
+
+# --- Search (optional) ---
+# The search modal's backend: a service and a Redis sidecar in the second pod,
+# indexing the documentation (and the mirrored sections, with mirror.enabled)
+# when the pod starts. Off by default; without it the modal opens empty.
+# No tag here: the chart's own (`helm show chart` lists it) is the one the
+# chart was built and published with.
+search:
+  enabled: true
+  image:
+    registry: registry.intranet.company.com
+  redis:
+    image:
+      registry: registry.intranet.company.com
