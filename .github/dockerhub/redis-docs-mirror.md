@@ -29,7 +29,7 @@ sends the mirrored paths to it. The chart is published alongside the site image 
 OCI artifact:
 
 ```bash
-helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.6
+helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.7
 ```
 
 Its values are documented in the

@@ -479,7 +479,7 @@ A limit costs nothing until the container actually runs.
 ### Basic usage
 
 ```bash
-helm install redis-docs redis-docs-3.0.6.tgz
+helm install redis-docs redis-docs-3.0.7.tgz
 ```
 
 ### Installation with a values file
@@ -487,7 +487,7 @@ helm install redis-docs redis-docs-3.0.6.tgz
 The recommended approach - a custom `values.yaml` file:
 
 ```bash
-helm install redis-docs redis-docs-3.0.6.tgz -f my-values.yaml
+helm install redis-docs redis-docs-3.0.7.tgz -f my-values.yaml
 ```
 
 Below is an example of a typical deployment scenario.
@@ -517,7 +517,7 @@ imagePullSecrets:
 # --- Main image (specific tag override) ---
 image:
   name: redis-docs
-  tag: "f8374ef69-unprivileged"
+  tag: "afc160cc1-unprivileged"
 
 # --- Route (choose one of the 3 options) ---
 
@@ -688,13 +688,13 @@ docker save a0533057932/redis-docs-search:0.1.0 -o redis-docs-search.tar
 
 ```bash
 helm package helm/redis-docs/
-# Produces: redis-docs-3.0.6.tgz
+# Produces: redis-docs-3.0.7.tgz
 ```
 
 ### Step 3: Transfer files to the air-gapped network
 
 Transfer the following files:
-- `redis-docs-3.0.6.tgz`
+- `redis-docs-3.0.7.tgz`
 - `redis-docs.tar`
 - `redis-docs-cli.tar` (optional - CLI)
 - `redis-docs-search.tar` (optional - search)
@@ -732,13 +732,13 @@ docker push REGISTRY/redis:8.10.0-alpine
 ## Version Upgrade
 
 ```bash
-helm upgrade redis-docs redis-docs-3.0.6.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-3.0.7.tgz -f my-values.yaml
 ```
 
 Or with a single value override:
 
 ```bash
-helm upgrade redis-docs redis-docs-3.0.6.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-3.0.7.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
