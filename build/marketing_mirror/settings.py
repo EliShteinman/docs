@@ -80,10 +80,12 @@ EMBED_UNAVAILABLE = "/_mirror/embed-unavailable.html"
 EMBED_UNAVAILABLE_SOURCE = Path(__file__).with_name("embed-unavailable.html")
 
 # The scripts every mirrored page loads first: the site's runtime config (the
-# external-links switch) and the handler that applies it to the page.
+# external-links switch), the handler that applies it to the page, and the
+# documentation's header in place of redis.io's.
 INJECTED_SCRIPTS: tuple[str, ...] = (
     "/js/runtime-config.js",
     "/_mirror/marketing-links.js",
+    "/_mirror/docs-header.js",
 )
 
 # (description, pattern, replacement) applied to every JS chunk.

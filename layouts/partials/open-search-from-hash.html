@@ -1,0 +1,15 @@
+{{/* Opens the search modal on a page reached at #search.
+
+     The marketing pages mirrored from redis.io show this site's header
+     (build/marketing_mirror/runtime/docs-header.js) but have no search modal of
+     their own, so their Search button comes here. Fork-only: kept in its own
+     partial so the fork's edit to baseof.html stays a single include line.
+*/}}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (location.hash !== '#search') return;
+    history.replaceState(null, '', location.pathname + location.search);
+    var button = document.getElementById('search-button');
+    if (button) button.click();
+  });
+</script>
