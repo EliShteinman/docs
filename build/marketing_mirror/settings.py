@@ -64,6 +64,21 @@ TRACKING_HOSTS: tuple[str, ...] = (
     "cloudflareinsights.com",
 )
 
+# Third parties redis.io's layout renders as React elements in every page's
+# Next.js payload, by key: analytics, consent and ad pixels. They render
+# nothing on the server, so taking them out of the payload changes nothing
+# the page hydrates against, and nothing tries to reach them.
+TRACKING_ELEMENTS: tuple[str, ...] = (
+    "gtm",
+    "segment-analytics",
+    "amplitude-engagement",
+    "trustarc",
+    "fb_script",
+    "qp_script",
+    "twq_script",
+    "spdt",
+)
+
 # Pages redis.io frames from elsewhere that are plain static files: captured
 # with what they load (embeds.py) and served from this site under the prefix.
 LOCAL_EMBEDS: dict[str, str] = {

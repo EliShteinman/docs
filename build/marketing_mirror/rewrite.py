@@ -6,6 +6,7 @@ rewriting a page so it reads nothing from anywhere but this site.
 
 from __future__ import annotations
 
+import json
 import re
 from html import unescape as html_unescape
 
@@ -30,6 +31,21 @@ _SANITY_ASSET_ID = re.compile(
     r"image-([0-9a-f]{40})-(\d+x\d+)-(jpg|jpeg|png|webp|gif|svg)"
 )
 _HEAD_OPEN = re.compile(r"<head[^>]*>")
+# One string of the Next.js payload, as a JSON literal in the page.
+_PAYLOAD_PUSH = re.compile(r'(self\.__next_f\.push\(\[1,)("(?:[^"\\]|\\.)*")(\]\))')
+_TRACKER_ELEMENT = re.compile(
+    r'\["\$","\$L[0-9a-f]+","(?:'
+    + "|".join(map(re.escape, settings.TRACKING_ELEMENTS))
+    + r')",\{'
+)
+# How Next.js escapes a payload string so it cannot end the <script> it is in.
+_NEXT_ESCAPES = (
+    ("&", "\\u0026"),
+    ("<", "\\u003c"),
+    (">", "\\u003e"),
+    ("\u2028", "\\u2028"),
+    ("\u2029", "\\u2029"),
+)
 # The scripts rewrite_page puts first in <head>, whichever list a run used.
 _INJECTED_BLOCK = re.compile(
     r'(<head[^>]*>)(?:<script src="/(?:js/runtime-config\.js|_mirror/[\w.-]+\.js)">'
@@ -123,6 +139,70 @@ def local_embed_pages(text: str) -> set[str]:
     return {url.split("?")[0] for url in framed_urls(text) if url.startswith(prefixes)}
 
 
+def _as_next_writes_it(text: str) -> str:
+    literal = json.dumps(text, ensure_ascii=False)
+    for raw, escaped in _NEXT_ESCAPES:
+        literal = literal.replace(raw, escaped)
+    return literal
+
+
+def _element_end(text: str, start: int) -> int | None:
+    """Where the JSON array opening at `start` closes, or None if this string
+    of the payload ends first."""
+    depth = 0
+    in_string = False
+    escaped = False
+    for index in range(start, len(text)):
+        char = text[index]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+        elif char == '"':
+            in_string = True
+        elif char in "[{":
+            depth += 1
+        elif char in "]}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+    return None
+
+
+def _without_tracker_elements(payload: str) -> str:
+    cursor = 0
+    kept: list[str] = []
+    for match in _TRACKER_ELEMENT.finditer(payload):
+        if match.start() < cursor:
+            continue
+        end = _element_end(payload, match.start())
+        if end is None:
+            continue
+        kept.append(payload[cursor : match.start()] + "null")
+        cursor = end
+    kept.append(payload[cursor:])
+    return "".join(kept)
+
+
+def strip_tracker_elements(html: str) -> str:
+    """The page without settings.TRACKING_ELEMENTS in its Next.js payload. A
+    payload string is touched only when it reads back exactly as Next.js
+    wrote it, so nothing is re-escaped differently."""
+
+    def strip(match: re.Match[str]) -> str:
+        literal = match.group(2)
+        payload = json.loads(literal)
+        stripped = _without_tracker_elements(payload)
+        if stripped == payload or _as_next_writes_it(payload) != literal:
+            return match.group(0)
+        return match.group(1) + _as_next_writes_it(stripped) + match.group(3)
+
+    return _PAYLOAD_PUSH.sub(strip, html)
+
+
 def rewrite_again(html: str) -> str:
     """A page rewritten by an earlier run, rewritten by today's rules. The
     scripts an earlier run put first in <head> come out, so they are not
@@ -137,6 +217,7 @@ def rewrite_page(html: str) -> str:
     html = offline_players(local_embeds(html))
     for tag in _TRACKING_TAGS:
         html = tag.sub("", html)
+    html = strip_tracker_elements(html)
     scripts = "".join(
         f'<script src="{src}"></script>' for src in settings.INJECTED_SCRIPTS
     )

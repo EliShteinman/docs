@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from build.marketing_mirror import rewrite, settings
@@ -196,3 +198,53 @@ def test_rewrite_again_applies_a_rule_the_earlier_run_did_not_have():
 def test_rewrite_again_leaves_a_page_rewritten_today_as_it_is():
     today = rewrite.rewrite_again(OLD_RUN_PAGE)
     assert rewrite.rewrite_again(today) == today
+
+
+def _push(payload: str) -> str:
+    return f"<script>self.__next_f.push([1,{rewrite._as_next_writes_it(payload)}])</script>"
+
+
+TRACKED_PAYLOAD = (
+    '2:["$","body",null,{"children":['
+    '["$","$L1b","gtm",{"gtmId":"GTM-X"}],'
+    '["$","$L1e","fb_script",{"id":"fb_script","dangerouslySetInnerHTML":'
+    '{"__html":"if(a){b([1,{c:\\"]}\\"}])}"}}],'
+    '["$","main",null,{"children":"Hello & <b>"}]]}]\n'
+)
+TRACKED_PAGE = f"<html><head></head><body>{_push(TRACKED_PAYLOAD)}</body></html>"
+
+
+def _payload_of(page: str) -> str:
+    return json.loads(rewrite._PAYLOAD_PUSH.search(page).group(2))
+
+
+def test_strip_tracker_elements_removes_a_tracker_component():
+    assert "GTM-X" not in rewrite.strip_tracker_elements(TRACKED_PAGE)
+
+
+def test_strip_tracker_elements_removes_a_script_whose_code_holds_brackets():
+    assert "fb_script" not in rewrite.strip_tracker_elements(TRACKED_PAGE)
+
+
+def test_strip_tracker_elements_leaves_null_where_each_tracker_was():
+    payload = _payload_of(rewrite.strip_tracker_elements(TRACKED_PAGE))
+    assert json.loads(payload[2:])[3]["children"][:2] == [None, None]
+
+
+def test_strip_tracker_elements_keeps_the_page_content():
+    payload = _payload_of(rewrite.strip_tracker_elements(TRACKED_PAGE))
+    assert '["$","main",null,{"children":"Hello & <b>"}]' in payload
+
+
+def test_strip_tracker_elements_escapes_as_next_does():
+    assert "\\u0026 \\u003cb\\u003e" in rewrite.strip_tracker_elements(TRACKED_PAGE)
+
+
+def test_strip_tracker_elements_leaves_a_string_it_cannot_read_back_exactly():
+    page = TRACKED_PAGE.replace("\\u0026", "&")
+    assert rewrite.strip_tracker_elements(page) == page
+
+
+def test_strip_tracker_elements_leaves_a_tracker_cut_off_by_the_string_end():
+    page = _push('["$","$L1b","gtm",{"gtmId":"GTM-X"')
+    assert rewrite.strip_tracker_elements(page) == page

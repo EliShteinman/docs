@@ -210,7 +210,10 @@ git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
   שהוא טוען, כולל ספרייה מ-CDN, ומוגש מ-`/_mirror/embeds/...` (`embeds.py`). כל iframe אחר הוא נגן
   (YouTube, פודקאסט, מצגת) שהמדיה שלו לא זמינה ברשת סגורה, והוא מציג את
   `/_mirror/embed-unavailable.html` — גם ב-HTML וגם ב-payload של Next.js. ה-CSP מתיר iframe מאותו דומיין בלבד.
-- תגיות GTM, trustarc, Segment ו-Cloudflare Insights מוסרות, ונוספים שלושה סקריפטים: `/js/runtime-config.js` (המתג של
+- תגיות GTM, trustarc, Segment ו-Cloudflare Insights מוסרות, וגם רכיבי המעקב שה-layout של redis.io מרנדר מתוך
+  ה-payload של Next.js (`settings.TRACKING_ELEMENTS`: GTM, Segment, Amplitude, TrustArc ופיקסלים) — כך שהדף לא
+  מנסה לפנות אליהם בכלל. מחרוזת payload משתנה רק אם היא נקראת חזרה בדיוק כפי ש-Next.js כתב אותה.
+  ‏chunks של Next.js מוגשים עם `no-cache` (בדיקה מול השרת, 304), כי `JS_PATCHES` משנה תוכן בלי לשנות שם. ונוספים שלושה סקריפטים: `/js/runtime-config.js` (המתג של
   Helm), `/_mirror/marketing-links.js` ו-`/_mirror/docs-frame.js` — שמסתיר מראש את הכותרת והפוטר של
   redis.io ומציג במקומם את אלה של התיעוד (נקראים מדף הבית, ב-shadow root). כפתור החיפוש מוביל ל-`/#search`.
 - שלושה תיקונים ב-JS: next/image טוען תמונות ישירות (אין כאן שרת אופטימיזציה), ובונה ה-URL של
