@@ -1,6 +1,7 @@
 import pytest
 
 from build.marketing_mirror.assets import AssetStore
+from build.marketing_mirror.embeds import EmbedMirror
 from build.marketing_mirror.manifest import Manifest
 from build.marketing_mirror.pages import PageMirror, html_file, markdown_file
 
@@ -40,7 +41,8 @@ def mirror(fetcher, tmp_path, previous_dir) -> PageMirror:
     site = tmp_path / "site"
     assets = AssetStore(fetcher, site, previous_dir)
     previous = Manifest(pages={"/blog/a/": DATE})
-    return PageMirror(fetcher, assets, site, previous_dir, previous)
+    embeds = EmbedMirror(fetcher, site)
+    return PageMirror(fetcher, assets, embeds, site, previous_dir, previous)
 
 
 def test_an_unchanged_page_is_not_fetched(mirror, fetcher):
@@ -89,6 +91,8 @@ class RedirectingFetcher(FakeFetcher):
 def test_an_html_page_answering_for_markdown_is_not_saved_as_markdown(tmp_path):
     site = tmp_path / "site"
     fetcher = RedirectingFetcher()
-    mirror = PageMirror(fetcher, AssetStore(fetcher, site), site)
+    mirror = PageMirror(
+        fetcher, AssetStore(fetcher, site), EmbedMirror(fetcher, site), site
+    )
     mirror.capture("/tutorials/moved/", DATE)
     assert not markdown_file(site, "/tutorials/moved/").exists()

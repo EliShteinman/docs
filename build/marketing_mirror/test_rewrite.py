@@ -104,3 +104,65 @@ def test_patch_chunk_counts_a_chunk_already_patched(description, pattern, replac
 def test_patch_chunk_leaves_a_chunk_already_patched_unchanged():
     patched = b"".join(replacement for _, _, replacement in settings.JS_PATCHES)
     assert rewrite.patch_chunk(patched)[0] == patched
+
+
+CHART = "https://vecsim-benchmarks-charts.s3.us-east-2.amazonaws.com/blog/chart.html"
+LOCAL_CHART = "/_mirror/embeds/vecsim-benchmarks-charts/blog/chart.html"
+PODCAST = "https://anchor.fm/show/embed/episodes/one"
+VIDEO = "https://www.youtube.com/embed/abc"
+LINK = "https://launchpad.redis.com/?id=project%3Ademo"
+
+FRAMED_PAGE = (
+    f'<iframe loading="lazy" src="{CHART}"></iframe>'
+    f'<iframe src="{PODCAST}"></iframe>'
+    f'<iframe src="https://launchpad.redis.com/"></iframe>'
+    f'<a href="{LINK}">demo</a>'
+    '<script>self.__next_f.push([1,"'
+    f'\\"embed\\":\\"\\u003ciframe src=\\\\\\"{PODCAST}\\\\\\"\\u003e\\",'
+    f'\\"videoUrl\\":\\"{VIDEO}?a=1\\u0026t=2\\"'
+    '"])</script>'
+)
+FRAMED_REWRITTEN = rewrite.offline_players(rewrite.local_embeds(FRAMED_PAGE))
+
+
+def test_local_embeds_points_a_chart_at_this_site():
+    assert f'src="{LOCAL_CHART}"' in rewrite.local_embeds(FRAMED_PAGE)
+
+
+def test_framed_urls_finds_an_iframe_in_the_next_payload():
+    payload_only = FRAMED_PAGE[FRAMED_PAGE.index("<script>") :]
+    assert PODCAST in rewrite.framed_urls(payload_only)
+
+
+def test_framed_urls_finds_a_video_modal_player():
+    assert f"{VIDEO}?a=1" in rewrite.framed_urls(FRAMED_PAGE)
+
+
+def test_offline_players_leaves_no_frame_pointing_away():
+    remote = [url for url in rewrite.framed_urls(FRAMED_REWRITTEN) if "//" in url]
+    assert remote == []
+
+
+def test_offline_players_removes_the_podcast_everywhere():
+    assert "anchor.fm" not in FRAMED_REWRITTEN
+
+
+def test_offline_players_drops_the_rest_of_a_url_cut_at_an_escaped_ampersand():
+    assert "t=2" not in FRAMED_REWRITTEN
+
+
+def test_offline_players_keeps_a_link_that_only_starts_like_a_frame():
+    assert f'href="{LINK}"' in FRAMED_REWRITTEN
+
+
+def test_offline_players_keeps_the_local_chart():
+    assert f'src="{LOCAL_CHART}"' in FRAMED_REWRITTEN
+
+
+def test_local_embed_pages_finds_the_local_chart():
+    assert rewrite.local_embed_pages(FRAMED_REWRITTEN) == {LOCAL_CHART}
+
+
+def test_rewrite_page_shows_the_unavailable_page_for_a_player():
+    page = f'<html><head></head><body><iframe src="{VIDEO}"></iframe></body></html>'
+    assert f'src="{settings.EMBED_UNAVAILABLE}"' in rewrite.rewrite_page(page)

@@ -64,6 +64,21 @@ TRACKING_HOSTS: tuple[str, ...] = (
     "cloudflareinsights.com",
 )
 
+# Pages redis.io frames from elsewhere that are plain static files: captured
+# with what they load (embeds.py) and served from this site under the prefix.
+LOCAL_EMBEDS: dict[str, str] = {
+    "https://vecsim-benchmarks-charts.s3.us-east-2.amazonaws.com": (
+        "/_mirror/embeds/vecsim-benchmarks-charts"
+    ),
+}
+# Where a framed file from anywhere else -- a CDN library -- is kept.
+EMBED_VENDOR_PREFIX = "/_mirror/embeds/_vendor"
+
+# Every other frame is a player (video, podcast, slides) whose media streams
+# from a service this network cannot reach. It shows this page instead.
+EMBED_UNAVAILABLE = "/_mirror/embed-unavailable.html"
+EMBED_UNAVAILABLE_SOURCE = Path(__file__).with_name("embed-unavailable.html")
+
 # The scripts every mirrored page loads first: the site's runtime config (the
 # external-links switch) and the handler that applies it to the page.
 INJECTED_SCRIPTS: tuple[str, ...] = (

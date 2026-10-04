@@ -203,7 +203,11 @@ git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
 
 **מה משתנה בדרך** (`build/marketing_mirror/rewrite.py`, `settings.py`):
 - תמונות מ-`cdn.sanity.io` עוברות ל-`/sanity/...` מקומי.
-- תגיות GTM, trustarc ו-Segment מוסרות, ונוספים שני סקריפטים: `/js/runtime-config.js` (המתג של
+- iframes: גרף סטטי מהוסט שב-`settings.LOCAL_EMBEDS` (גרפי ה-benchmark ב-S3) נשמר יחד עם הקבצים
+  שהוא טוען, כולל ספרייה מ-CDN, ומוגש מ-`/_mirror/embeds/...` (`embeds.py`). כל iframe אחר הוא נגן
+  (YouTube, פודקאסט, מצגת) שהמדיה שלו לא זמינה ברשת סגורה, והוא מציג את
+  `/_mirror/embed-unavailable.html` — גם ב-HTML וגם ב-payload של Next.js. ה-CSP מתיר iframe מאותו דומיין בלבד.
+- תגיות GTM, trustarc, Segment ו-Cloudflare Insights מוסרות, ונוספים שני סקריפטים: `/js/runtime-config.js` (המתג של
   Helm) ו-`/_mirror/marketing-links.js`.
 - שלושה תיקונים ב-JS: next/image טוען תמונות ישירות (אין כאן שרת אופטימיזציה), ובונה ה-URL של
   Sanity פונה ל-`/sanity`. **אם redis.io ישנו את ה-JS כך שתיקון לא מתאים לכלום, הריצה נכשלת**

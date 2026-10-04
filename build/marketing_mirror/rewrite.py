@@ -7,6 +7,7 @@ rewriting a page so it reads nothing from anywhere but this site.
 from __future__ import annotations
 
 import re
+from html import unescape as html_unescape
 
 from build.marketing_mirror import settings
 
@@ -29,6 +30,12 @@ _SANITY_ASSET_ID = re.compile(
     r"image-([0-9a-f]{40})-(\d+x\d+)-(jpg|jpeg|png|webp|gif|svg)"
 )
 _HEAD_OPEN = re.compile(r"<head[^>]*>")
+# An iframe as the HTML has it and as the Next.js payload does, where `<` is
+# spelled \u003c and every quote is escaped once or more.
+_IFRAME = re.compile(r"(?:<|\\u003c)iframe\b(.*?)(?:>|\\u003e)", re.DOTALL)
+_FRAME_SRC = re.compile(r'\bsrc=\\*"([^"\\]+)')
+# A video block opens its player in a modal; the payload names the player.
+_VIDEO_URL = re.compile(r'\bvideoUrl\\*":\\*"([^"\\]+)')
 
 
 def next_assets(text: str) -> set[str]:
@@ -69,9 +76,52 @@ def local_images(text: str) -> str:
     return text.replace(settings.SANITY_CDN + "/", settings.LOCAL_SANITY_PREFIX + "/")
 
 
+def local_embeds(text: str) -> str:
+    """Point every frame in settings.LOCAL_EMBEDS at this site's copy."""
+    for origin, prefix in settings.LOCAL_EMBEDS.items():
+        text = text.replace(origin + "/", prefix + "/")
+        text = text.replace(origin.removeprefix("https:") + "/", prefix + "/")
+    return text
+
+
+def framed_urls(text: str) -> set[str]:
+    """Every URL the page puts in a frame: its iframes, in the HTML and in the
+    Next.js payload that re-renders them, and the video modals' players."""
+    found = set(_VIDEO_URL.findall(text))
+    for attributes in _IFRAME.findall(text):
+        found.update(_FRAME_SRC.findall(attributes))
+    return {html_unescape(url) for url in found}
+
+
+def _is_remote(url: str) -> bool:
+    return url.startswith(("http://", "https://", "//"))
+
+
+def offline_players(text: str) -> str:
+    """Show settings.EMBED_UNAVAILABLE in every frame that still points away
+    from this site; run after local_embeds, so only the players are left."""
+    for url in sorted(filter(_is_remote, framed_urls(text)), key=len, reverse=True):
+        for spelling in {url, url.replace("&", "&amp;")}:
+            text = _whole_url(spelling).sub(settings.EMBED_UNAVAILABLE, text)
+    return text
+
+
+def _whole_url(url: str) -> re.Pattern[str]:
+    """`url` where it is the whole URL, not the start of a longer link. The
+    payload cuts a URL at its first \\u0026, so the rest of it goes too."""
+    return re.compile(re.escape(url) + r"(?:\\u0026[^\"'\s<>\\]*)*(?=[\"'\s<>\\]|$)")
+
+
+def local_embed_pages(text: str) -> set[str]:
+    """The pages under a settings.LOCAL_EMBEDS prefix that the page frames."""
+    prefixes = tuple(prefix + "/" for prefix in settings.LOCAL_EMBEDS.values())
+    return {url.split("?")[0] for url in framed_urls(text) if url.startswith(prefixes)}
+
+
 def rewrite_page(html: str) -> str:
     """The page as this site serves it."""
     html = local_images(html)
+    html = offline_players(local_embeds(html))
     for tag in _TRACKING_TAGS:
         html = tag.sub("", html)
     scripts = "".join(

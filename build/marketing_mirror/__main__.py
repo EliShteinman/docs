@@ -37,6 +37,7 @@ from build.marketing_mirror import (
     sitemap,
 )
 from build.marketing_mirror.assets import AssetStore
+from build.marketing_mirror.embeds import EmbedMirror
 from build.marketing_mirror.feeds import FeedMirror
 from build.marketing_mirror.fetcher import FetchError, HttpFetcher, Moved
 
@@ -94,7 +95,9 @@ def capture(
             "pages taken from disk keep the old ones until `make mirror-full`"
         )
     assets = AssetStore(fetcher, staging, previous_dir)
-    mirror = pages.PageMirror(fetcher, assets, staging, previous_dir, previous)
+    embeds = EmbedMirror(fetcher, staging)
+    embeds.write_unavailable_page()
+    mirror = pages.PageMirror(fetcher, assets, embeds, staging, previous_dir, previous)
     paths = list(dated)
     failed: list[str] = []
     moved: list[str] = []
@@ -126,6 +129,9 @@ def capture(
         LOGGER.info("%d blog listing batches", batches)
     LOGGER.info("blog search page knows %d posts", blog_search.write(staging))
     _verify(paths, failed, assets)
+    LOGGER.info("%d embedded files", embeds.count)
+    if embeds.failed:
+        LOGGER.warning("%d embedded files could not be mirrored", len(embeds.failed))
     kept = sorted(set(paths) - set(failed) - set(moved))
     sitemap.write_sitemap(staging, kept)
     records = feed.write_feed(staging, dated)

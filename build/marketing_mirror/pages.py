@@ -13,6 +13,7 @@ from pathlib import Path
 
 from build.marketing_mirror import rewrite, settings
 from build.marketing_mirror.assets import AssetStore, place
+from build.marketing_mirror.embeds import EmbedMirror
 from build.marketing_mirror.fetcher import FetchError, Fetcher
 from build.marketing_mirror.manifest import Manifest
 
@@ -32,12 +33,14 @@ class PageMirror:
         self,
         fetcher: Fetcher,
         assets: AssetStore,
+        embeds: EmbedMirror,
         site_dir: Path,
         previous_dir: Path | None = None,
         previous: Manifest | None = None,
     ) -> None:
         self._fetcher = fetcher
         self._assets = assets
+        self._embeds = embeds
         self._site_dir = site_dir
         self._previous_dir = previous_dir
         self._previous = previous or Manifest()
@@ -52,9 +55,9 @@ class PageMirror:
         html = self._fetcher.get(settings.ORIGIN + path).decode("utf-8")
         self._assets.add_next(rewrite.next_assets(html))
         self._assets.add_sanity(rewrite.sanity_assets(html))
-        self._write(
-            html_file(self._site_dir, path), rewrite.rewrite_page(html).encode("utf-8")
-        )
+        local = rewrite.rewrite_page(html)
+        self._embeds.add(rewrite.local_embed_pages(local))
+        self._write(html_file(self._site_dir, path), local.encode("utf-8"))
         self._capture_markdown(path)
         return True
 
@@ -67,6 +70,7 @@ class PageMirror:
         html = previous_html.read_text(encoding="utf-8")
         self._assets.add_next(rewrite.next_assets(html))
         self._assets.add_sanity(rewrite.sanity_assets(html))
+        self._embeds.add(rewrite.local_embed_pages(html))
         place(previous_html, html_file(self._site_dir, path))
         previous_markdown = markdown_file(self._previous_dir, path)
         if previous_markdown.is_file():
