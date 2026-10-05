@@ -55,8 +55,8 @@ autoscaling, OpenShift Route support and hierarchical control over which externa
 links the pages keep. It is published here as an OCI artifact:
 
 ```bash
-helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.7
-helm install redis-docs oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.7
+helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.8
+helm install redis-docs oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.8
 ```
 
 Its values, defaults and examples are documented in the

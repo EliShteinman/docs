@@ -30,7 +30,7 @@ engine next to it and the site's feed on disk. The Helm chart wires that up with
 `search.enabled`, and is published alongside the site image as an OCI artifact:
 
 ```bash
-helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.7
+helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.8
 ```
 
 Its values are documented in the
