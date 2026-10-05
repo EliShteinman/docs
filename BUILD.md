@@ -807,12 +807,12 @@ externalLinks:
 ## הזרקת URL קנוני בזמן ריצה (`canonicalURL`)
 
 ### הבעיה
-כש-Hugo מייצר את גרסאות ה-`.md` וה-`.json` של עמודים (שמיועדות לצריכת AI/RAG), ה-shortcodes הפנימיים `{{< relref "..." >}}` ו-`{{< image filename="..." >}}` חייבים להפוך ל-URLs מלאים — אחרת LLM שמקבל את התוכן בלי הקשר של הדפדפן לא יודע מה ה-domain. אבל hardcoding של domain ספציפי (כמו `https://redis.io/docs/latest/`) פוגע בגמישות, ושינוי ל-domain פנימי דורש build נפרד לכל deployment.
+כש-Hugo מייצר את גרסאות ה-`.md` וה-`.json` של עמודים (שמיועדות לצריכת AI/RAG), ההפניות הפנימיות — shortcodes של `{{< relref "..." >}}`, קישורי `](/content/....md)` ותמונות Markdown עם `/images/...` — חייבות להפוך ל-URLs מלאים — אחרת LLM שמקבל את התוכן בלי הקשר של הדפדפן לא יודע מה ה-domain. אבל hardcoding של domain ספציפי (כמו `https://redis.io/docs/latest/`) פוגע בגמישות, ושינוי ל-domain פנימי דורש build נפרד לכל deployment.
 
 ### הפתרון
 **Hugo כותב placeholder, nginx מחליף בזמן ריצה.**
 
-1. **Build time** (`layouts/partials/process-markdown-content.html`): כל `{{< relref >}}` ו-`{{< image >}}` מומר ל-`__DOCS_BASE_URL__/<path>`. הקבצים נשמרים סטטית עם ה-placeholder.
+1. **Build time** (`layouts/partials/process-markdown-content.html`): כל `{{< relref >}}`, קישור `/content/` ותמונת Markdown עם `/images/` מומרים ל-`__DOCS_BASE_URL__/<path>`. הקבצים נשמרים סטטית עם ה-placeholder.
 2. **Helm value** (`values.yaml`): שדה `canonicalURL` (ברירת מחדל ריק).
 3. **Runtime** (`templates/configmap.yaml` של ה-Helm chart): `nginx sub_filter` בלוקיישן של `.md`/`.json` מחליף את ה-placeholder. הערך:
    - אם `canonicalURL` הוגדר ב-`values.yaml` → תמיד אותו URL
@@ -839,7 +839,7 @@ nginx מחליף ושולח:
 - ה-`sub_filter` פעיל **רק על `.md` ו-`.json`** — לא על HTML/CSS/JS. אין סיכון להחלפה לא צפויה ב-content אחר.
 - `gzip_static` כבוי בלוקיישן הזה (כי `sub_filter` לא יכול לפעול על תוכן מכווץ); דחיסה דינמית פעילה במקום זאת.
 - ה-`__DOCS_BASE_URL__` מוטמע **רק במקומות האלה**, וכל אחד מהם מטפל בהפניה פנימית שמצביעה על תוכן באתר. כתובות חיצוניות שמשתמש כתב ידנית ב-MD לא נוגעים בהן.
-  - ‏`process-markdown-content.html`: שתיים ל-`relref`, שלוש ל-`image` (כולל תמונות Markdown מ-DOC-7128), ושלוש לקישורי Markdown בצורה `](/content/....md)` שנוספה ב-DOC-6909.
+  - ‏`process-markdown-content.html`: שתיים ל-`relref`, אחת לתמונות Markdown עם `/images/` (ה-shortcode `image` הוסר אצל Redis ב-DOC-7128), ושלוש לקישורי Markdown בצורה `](/content/....md)` שנוספה ב-DOC-6909.
   - ‏`markdown-command-group.html`: שתיים לטבלאות הפקודות, שנכתבו אצל Redis עם `https://redis.io/commands/`.
   - ‏`static/llms.txt` ו-`static/llms-docs.txt`, שנכתבים עם ה-placeholder (ראו `make llms`). ל-`/llms.txt` יש location משלו עם אותו `sub_filter`.
 - לוגו ה-header וה-footer מצביעים תמיד ל-`/` — לא תלויים ב-`canonicalURL`.

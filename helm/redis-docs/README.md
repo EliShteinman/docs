@@ -375,8 +375,8 @@ Hugo / image change is needed.
 ### Canonical URL substitution (`canonicalURL`)
 
 When Hugo builds the AI / RAG output formats (`.md`, `.json`) it expands
-internal shortcodes like `{{< relref "..." >}}` and `{{< image filename="..." >}}`
-into a placeholder, `__DOCS_BASE_URL__/<path>`. nginx substitutes the
+internal references — `{{< relref "..." >}}` shortcodes, `/content/` links and
+`/images/` Markdown images — into a placeholder, `__DOCS_BASE_URL__/<path>`. nginx substitutes the
 placeholder at response time so consumers that ingest the markdown without
 HTML context still see fully-qualified URLs:
 

@@ -328,7 +328,7 @@ externalLinks:
 
 ### החלפת URL קנוני (`canonicalURL`)
 
-כש-Hugo בונה את פורמטי ה-AI / RAG (`.md`, `.json`), הוא מרחיב shortcodes פנימיים כמו `{{< relref "..." >}}` ו-`{{< image filename="..." >}}` ל-placeholder בצורת `__DOCS_BASE_URL__/<path>`. nginx מחליף את ה-placeholder בזמן ריצה כך שצרכנים שצורכים את ה-Markdown ללא הקשר של HTML עדיין רואים URLs מלאים:
+כש-Hugo בונה את פורמטי ה-AI / RAG (`.md`, `.json`), הוא מרחיב הפניות פנימיות — shortcodes של `{{< relref "..." >}}`, קישורי `/content/` ותמונות Markdown עם `/images/` — ל-placeholder בצורת `__DOCS_BASE_URL__/<path>`. nginx מחליף את ה-placeholder בזמן ריצה כך שצרכנים שצורכים את ה-Markdown ללא הקשר של HTML עדיין רואים URLs מלאים:
 
 ```yaml
 canonicalURL: "https://docs.intranet.example.com"
