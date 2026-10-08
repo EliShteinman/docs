@@ -30,7 +30,7 @@ it, holding the ACL user the chart creates. The Helm chart wires that up, and is
 published alongside the site image as an OCI artifact:
 
 ```bash
-helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.8
+helm pull oci://registry-1.docker.io/a0533057932/redis-docs --version 3.0.9
 ```
 
 Its values are documented in the
