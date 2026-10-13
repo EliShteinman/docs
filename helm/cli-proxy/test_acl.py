@@ -17,7 +17,6 @@ skip unless docker is available. The container is started once per session:
 
 import json
 import os
-import re
 import shlex
 import shutil
 import subprocess
@@ -27,17 +26,18 @@ import time
 import pytest
 
 sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "tools"))
+
+from command_catalog import CommandCatalog  # noqa: E402
+from sandbox_acl import MODULE_GRANTS, PROXY_DENIED, SandboxAcl  # noqa: E402
+from source_tree import WorkingTree  # noqa: E402
+from try_it import DELIBERATELY_BLOCKED, SHORTCODE_NAMES, try_it_lines  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 ACL_FILE = os.path.join(REPO, "helm", "redis-docs", "files", "sandbox.acl")
-CONTENT = os.path.join(REPO, "content")
 IMAGE = "redis:8-alpine"
 CONTAINER = "cli-proxy-acl-test"
 USER = "docsandbox"
-
-# Granted after startup by the deployment's postStart hook, because Redis parses
-# the ACL file before the modules register and rejects any module command in it.
-MODULE_GRANTS = ["+ft._list", "+ft.dropindex", "+ft.tagvals"]
 
 pytestmark = pytest.mark.skipif(
     shutil.which("docker") is None, reason="needs docker to run a real Redis"
@@ -105,52 +105,18 @@ def refuses(command_line: str) -> bool:
     return "no permissions" in redis("ACL", "DRYRUN", USER, *argv).lower()
 
 
-# The two shortcodes that put a "Try it" button on a page: clients-example
-# (unless runnable="false") and redis-cli. Both run the lines that open with a
-# "> " or "redis> " prompt. Commands in a plain code block are text a reader
-# cannot run, so they are not checked here.
-_TRY_IT_BLOCK = re.compile(
-    r"\{\{[<%]\s*(clients-example|redis-cli)\b(.*?)\s*[>%]\}\}(.*?)\{\{[<%]\s*/\1\s*[>%]\}\}",
-    re.DOTALL,
-)
-_PROMPT_LINE = re.compile(r"^ *(?:redis> |> )(.+)$", re.MULTILINE)
+def try_it_commands() -> list[tuple[str, str]]:
+    """Every Try it command line in the docs, with the command it runs."""
+    tree = WorkingTree(REPO)
+    catalog = CommandCatalog.from_pages(list(tree.markdown("content/commands").values()))
+    commands: set[tuple[str, str]] = set()
+    for text in tree.markdown("content", containing=SHORTCODE_NAMES).values():
+        for line in try_it_lines(text):
+            name = catalog.resolve(line)
+            if name:
+                commands.add((line, name))
+    return sorted(commands)
 
-
-def try_it_commands() -> list[str]:
-    """Every command line a reader can run from a Try it button."""
-    real = {name.strip().upper() for name in redis("COMMAND", "LIST").splitlines() if name.strip()}
-
-    found: set[str] = set()
-    for root, _, files in os.walk(CONTENT):
-        for name in files:
-            if not name.endswith(".md"):
-                continue
-            with open(os.path.join(root, name), encoding="utf-8", errors="replace") as handle:
-                text = handle.read()
-            for _, params, body in _TRY_IT_BLOCK.findall(text):
-                if 'runnable="false"' in params:
-                    continue
-                for line in _PROMPT_LINE.findall(body):
-                    words = line.split()
-                    if words and words[0].upper() in real:
-                        found.add(line.strip())
-    return sorted(found)
-
-
-def command_name(command_line: str) -> str:
-    """The command a line runs, with its subcommand when it has one: HOTKEYS START."""
-    words = command_line.upper().split()
-    if len(words) > 1:
-        subcommand = f"{words[0]}|{words[1]}".lower()
-        if subcommand in redis("COMMAND", "INFO", words[0]).lower():
-            return f"{words[0]} {words[1]}"
-    return words[0]
-
-
-# Try it commands the rules block on purpose — the ones redis.io's own sandbox
-# refuses too. HOTKEYS tracking is server-wide: one reader's session would show
-# every other reader's key names, and only one session can run at a time.
-DELIBERATELY_BLOCKED = {"HOTKEYS START", "HOTKEYS GET", "HOTKEYS STOP", "HOTKEYS RESET"}
 
 # What a reader must not be able to reach, and why it matters.
 MUST_DENY = [
@@ -207,9 +173,27 @@ def test_permitted(sandbox, command):
 
 def test_every_try_it_still_runs(sandbox):
     """No Try it command is blocked except the ones redis.io blocks too."""
-    blocked = {command_name(line) for line in try_it_commands() if refuses(line)}
+    blocked = {name for line, name in try_it_commands() if refuses(line)}
 
     assert blocked == DELIBERATELY_BLOCKED
+
+
+def test_the_merge_gate_reads_the_acl_as_redis_does(sandbox):
+    """helm/tools/try_it_gate.py judges the ACL from the docs alone; hold it to Redis.
+
+    PROXY_DENIED is left out: the proxy refuses those, where DRYRUN cannot see.
+    """
+    tree = WorkingTree(REPO)
+    catalog = CommandCatalog.from_pages(list(tree.markdown("content/commands").values()))
+    with open(ACL_FILE, encoding="utf-8") as handle:
+        acl = SandboxAcl.from_acl_file(handle.read(), USER)
+
+    disagreements = {
+        line for line, name in try_it_commands()
+        if name not in PROXY_DENIED and acl.allows(name, catalog.categories(name)) == refuses(line)
+    }
+
+    assert not disagreements
 
 
 def test_default_user_is_left_open_for_the_probes(sandbox):
