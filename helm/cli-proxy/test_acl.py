@@ -2,9 +2,9 @@
 
 Two things can go wrong with an allowlist, and each has its own test here.
 
-It can be too tight, and silently break a documented example: the corpus test
-runs ACL DRYRUN over every real Redis command the docs demonstrate in a runnable
-block, so a rule that blocks one fails here rather than in front of a reader.
+It can be too tight, and break a Try it button: the Try it test runs ACL DRYRUN
+over every command line a reader can run from the docs, so a rule that blocks
+one fails here rather than in front of a reader.
 
 It can be too loose, and let a reader reach past their own session: the deny test
 names the commands that must not get through, with the reason each one matters.
@@ -18,6 +18,7 @@ skip unless docker is available. The container is started once per session:
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -26,7 +27,6 @@ import time
 import pytest
 
 sys.path.insert(0, os.path.dirname(__file__))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "build"))
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 ACL_FILE = os.path.join(REPO, "helm", "redis-docs", "files", "sandbox.acl")
@@ -92,17 +92,32 @@ def permits(command: str) -> bool:
     return verdict == "OK" or "arguments" in verdict.lower()
 
 
-# A `> [!NOTE]` alert and the `>` lines under it. The render-hook migration
-# (DOC-7047 onward) turned every note into one, and the CLI parser takes any
-# line opening with "> " for a prompt, so a warning that starts "Save this key"
-# read as the command SAVE. Across the corpus these blocks hold prose only.
-_ALERT_BLOCKQUOTE = re.compile(r"^[ \t]*> \[!\w+\][^\n]*\n(?:[ \t]*>[^\n]*(?:\n|$))*", re.MULTILINE)
+def refuses(command_line: str) -> bool:
+    """Whether the ACL turns this exact line away.
+
+    Checked with its own arguments: DRYRUN tests arity before permissions, so a
+    bare "HOTKEYS START" answers with an arity complaint and looks allowed.
+    """
+    try:
+        argv = shlex.split(command_line)
+    except ValueError:
+        argv = command_line.split()
+    return "no permissions" in redis("ACL", "DRYRUN", USER, *argv).lower()
 
 
-def demonstrated_commands() -> list[str]:
-    """Every real Redis command the docs show in a runnable CLI example."""
-    from components.cli_parser import extract_cli_commands
+# The two shortcodes that put a "Try it" button on a page: clients-example
+# (unless runnable="false") and redis-cli. Both run the lines that open with a
+# "> " or "redis> " prompt. Commands in a plain code block are text a reader
+# cannot run, so they are not checked here.
+_TRY_IT_BLOCK = re.compile(
+    r"\{\{[<%]\s*(clients-example|redis-cli)\b(.*?)\s*[>%]\}\}(.*?)\{\{[<%]\s*/\1\s*[>%]\}\}",
+    re.DOTALL,
+)
+_PROMPT_LINE = re.compile(r"^ *(?:redis> |> )(.+)$", re.MULTILINE)
 
+
+def try_it_commands() -> list[str]:
+    """Every command line a reader can run from a Try it button."""
     real = {name.strip().upper() for name in redis("COMMAND", "LIST").splitlines() if name.strip()}
 
     found: set[str] = set()
@@ -112,20 +127,30 @@ def demonstrated_commands() -> list[str]:
                 continue
             with open(os.path.join(root, name), encoding="utf-8", errors="replace") as handle:
                 text = handle.read()
-            if "> " not in text:
-                continue
-            for command in extract_cli_commands(_ALERT_BLOCKQUOTE.sub("", text)):
-                if command.split()[0].upper() in real:
-                    found.add(command.upper())
+            for _, params, body in _TRY_IT_BLOCK.findall(text):
+                if 'runnable="false"' in params:
+                    continue
+                for line in _PROMPT_LINE.findall(body):
+                    words = line.split()
+                    if words and words[0].upper() in real:
+                        found.add(line.strip())
     return sorted(found)
 
 
-# Commands the corpus demonstrates that the rules block on purpose. Each one
-# edits or reports on the server itself, which is not a reader's to do.
-DELIBERATELY_BLOCKED = {
-    "ACL LIST", "ACL LOAD", "ACL SAVE", "DEBUG OBJECT", "HOTKEYS RESET", "ROLE",
-    "SLOWLOG RESET",
-}
+def command_name(command_line: str) -> str:
+    """The command a line runs, with its subcommand when it has one: HOTKEYS START."""
+    words = command_line.upper().split()
+    if len(words) > 1:
+        subcommand = f"{words[0]}|{words[1]}".lower()
+        if subcommand in redis("COMMAND", "INFO", words[0]).lower():
+            return f"{words[0]} {words[1]}"
+    return words[0]
+
+
+# Try it commands the rules block on purpose — the ones redis.io's own sandbox
+# refuses too. HOTKEYS tracking is server-wide: one reader's session would show
+# every other reader's key names, and only one session can run at a time.
+DELIBERATELY_BLOCKED = {"HOTKEYS START", "HOTKEYS GET", "HOTKEYS STOP", "HOTKEYS RESET"}
 
 # What a reader must not be able to reach, and why it matters.
 MUST_DENY = [
@@ -158,7 +183,7 @@ MUST_PERMIT = [
     "HSET k f v", "ZADD k 1 m", "XADD k * f v", "EVAL script 0", "PUBLISH ch m",
     "FT.CREATE i SCHEMA n TEXT", "FT.SEARCH i q", "FT._LIST", "FT.DROPINDEX i",
     "JSON.SET k $ 1", "TS.CREATE k", "BF.ADD k v",
-    "COMMAND GETKEYS GET k",
+    "COMMAND GETKEYS GET k", "ROLE",
 ]
 
 
@@ -180,9 +205,9 @@ def test_permitted(sandbox, command):
     assert permits(command), f"{command} is blocked, and the docs rely on it"
 
 
-def test_the_docs_corpus_still_runs(sandbox):
-    """No documented example is blocked except the ones we meant to block."""
-    blocked = {c for c in demonstrated_commands() if not permits(c)}
+def test_every_try_it_still_runs(sandbox):
+    """No Try it command is blocked except the ones redis.io blocks too."""
+    blocked = {command_name(line) for line in try_it_commands() if refuses(line)}
 
     assert blocked == DELIBERATELY_BLOCKED
 

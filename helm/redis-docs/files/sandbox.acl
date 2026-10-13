@@ -4,13 +4,11 @@
 # from the browser reaches Redis as `docsandbox`, so this file — not the proxy —
 # is what stops FLUSHALL wiping the keyspace every other visitor is working in.
 #
-# Derived, not guessed: the rules below were checked with ACL DRYRUN against all
-# 350 real Redis commands the docs demonstrate in a runnable example (extracted
-# with build/components/cli_parser.py). The only demonstrated commands they block
-# are ACL LIST/LOAD/SAVE, DEBUG OBJECT, HOTKEYS RESET, ROLE and SLOWLOG RESET,
-# all deliberately.
-# test_acl.py re-runs that check against a live Redis so the file cannot drift
-# from the corpus.
+# Derived, not guessed: the rules below match what redis.io's own sandbox
+# allows, checked through each page's Try it button. The only Try it commands
+# they block are HOTKEYS START/GET/STOP/RESET, which redis.io refuses as well.
+# test_acl.py re-runs every Try it command against a live Redis with ACL DRYRUN,
+# so the file cannot drift from the docs.
 #
 # Scope: this constrains the reader, not the network. `default` stays open
 # because the liveness probe connects without credentials. A pod that reaches
@@ -31,7 +29,7 @@ user default on nopass ~* &* +@all
 # deployment grants back once the modules are up. Everything else module-side
 # (FT.CREATE, FT.SEARCH, JSON.*, TS.*, BF.*) is untouched by those categories
 # and needs nothing.
-user docsandbox on nopass ~* &* -@all +@all -@admin -@dangerous +info +keys +publish -randomkey -select -swapdb -dump -subscribe -psubscribe -ssubscribe -script|flush -script|kill
+user docsandbox on nopass ~* &* -@all +@all -@admin -@dangerous +info +keys +publish +role -randomkey -select -swapdb -dump -subscribe -psubscribe -ssubscribe -script|flush -script|kill
 
 # Why each carve-out, since none of them is obvious a year from now:
 #
@@ -41,6 +39,9 @@ user docsandbox on nopass ~* &* -@all +@all -@admin -@dangerous +info +keys +pub
 #                    reader's only way to see their own keyspace, and step 04
 #                    rewrites its pattern to the session prefix.
 #   +publish         PUBLISH alone is harmless. The SUBSCRIBE side is not.
+#   +role            @admin and @dangerous, but it only reports the server's
+#                    replication role. redis.io runs it from the ROLE page's
+#                    Try it, so the sandbox has to as well.
 #
 #   -randomkey       Returns a key from the shared keyspace with no way to tell
 #                    whose it is. This is the one redis.io blocks too.
