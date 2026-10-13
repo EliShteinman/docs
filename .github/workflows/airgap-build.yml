@@ -1120,8 +1120,8 @@ jobs:
 
       # These need docker for a real Redis with the bundled modules, which the
       # runner has, and the full content/ tree the checkout above provides.
-      - name: Run the CLI proxy, search and ACL tests
-        run: python -m pytest helm/cli-proxy helm/search -q
+      - name: Run the CLI proxy, search, ACL and Try it gate tests
+        run: python -m pytest helm/cli-proxy helm/search helm/tools -q
 
       # build/jupyterize is left out: it imports nbformat, which no
       # requirements file in this repo declares. test_every_product_is_offered
