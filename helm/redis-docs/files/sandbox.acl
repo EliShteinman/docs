@@ -7,7 +7,8 @@
 # Derived, not guessed: the rules below were checked with ACL DRYRUN against all
 # 350 real Redis commands the docs demonstrate in a runnable example (extracted
 # with build/components/cli_parser.py). The only demonstrated commands they block
-# are ACL LIST/LOAD/SAVE, DEBUG OBJECT, ROLE and SLOWLOG RESET, all deliberately.
+# are ACL LIST/LOAD/SAVE, DEBUG OBJECT, HOTKEYS RESET, ROLE and SLOWLOG RESET,
+# all deliberately.
 # test_acl.py re-runs that check against a live Redis so the file cannot drift
 # from the corpus.
 #

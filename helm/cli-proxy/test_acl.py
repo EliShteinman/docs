@@ -123,7 +123,8 @@ def demonstrated_commands() -> list[str]:
 # Commands the corpus demonstrates that the rules block on purpose. Each one
 # edits or reports on the server itself, which is not a reader's to do.
 DELIBERATELY_BLOCKED = {
-    "ACL LIST", "ACL LOAD", "ACL SAVE", "DEBUG OBJECT", "ROLE", "SLOWLOG RESET",
+    "ACL LIST", "ACL LOAD", "ACL SAVE", "DEBUG OBJECT", "HOTKEYS RESET", "ROLE",
+    "SLOWLOG RESET",
 }
 
 # What a reader must not be able to reach, and why it matters.
