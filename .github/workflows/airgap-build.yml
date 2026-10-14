@@ -93,7 +93,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      actions: write  # for the cancel-on-failure step
     outputs:
       hash: ${{ steps.meta.outputs.hash }}
       platforms: ${{ steps.meta.outputs.platforms }}
@@ -241,18 +240,6 @@ jobs:
               echo '```'
             fi
           } >> "$GITHUB_STEP_SUMMARY"
-
-      # Any failure cancels the whole run, so no other job keeps burning
-      # runner time on a build that can no longer ship. Defined once here and
-      # reused by every job through the YAML alias below.
-      - &cancel_run_on_failure
-        name: Cancel the whole run when this job fails
-        if: failure()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-          RUN_ID: ${{ github.run_id }}
-        run: gh run cancel "$RUN_ID"
 
   # =========================================================================
   # Reusable "build one Hugo target" via a shared composite — we inline the
@@ -477,7 +464,18 @@ jobs:
             echo "- ✅ Stage 2a: latest (built fresh)" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - *cancel_run_on_failure
+      # A failure here cancels the whole run. These jobs run side by side,
+      # and fail-fast only stops the rest of the version matrix, so without
+      # this the others keep building output that can no longer ship.
+      # Reused by build_versions and mirror_image through the YAML alias.
+      - &cancel_run_on_failure
+        name: Cancel the whole run when this job fails
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: gh run cancel "$RUN_ID"
 
   # =========================================================================
   # Phase 2b: build_versions — matrix of N parallel jobs, one per version.
@@ -782,7 +780,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      actions: write  # for the cancel-on-failure step
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
@@ -911,8 +908,6 @@ jobs:
         run: |
           echo "- ✅ Stage 3: Assembled $(find public -type f | wc -l) files ($(du -sh public | cut -f1))" >> "$GITHUB_STEP_SUMMARY"
 
-      - *cancel_run_on_failure
-
   # =========================================================================
   # Phase 4: docker — build minimal nginx images, push to DockerHub
   # =========================================================================
@@ -922,7 +917,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      actions: write  # for the cancel-on-failure step
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
@@ -1089,8 +1083,6 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - *cancel_run_on_failure
-
   # =========================================================================
   # Phase 4c: tests — the fork's own suites, over the whole checkout.
   #
@@ -1107,7 +1099,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      actions: write  # for the cancel-on-failure step
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
@@ -1136,8 +1127,6 @@ jobs:
             --ignore=build/jupyterize \
             --ignore=build/test_cmd_tools.py \
             --deselect build/test_make_doc_bundles.py::test_every_product_is_offered
-
-      - *cancel_run_on_failure
 
   # =========================================================================
   # Phase 4f: mirror_image — redis.io's marketing site, as captured.
@@ -1434,7 +1423,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      actions: write  # for the cancel-on-failure step
     outputs:
       pinned: ${{ steps.image.outputs.pinned }}
       tag: ${{ steps.image.outputs.tag }}
@@ -1466,15 +1454,12 @@ jobs:
           smoke: import main
           tag-override: ${{ inputs.tag_override }}
 
-      - *cancel_run_on_failure
-
   search_image:
     name: 4b. Search image (build if changed)
     needs: tests
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      actions: write  # for the cancel-on-failure step
     outputs:
       pinned: ${{ steps.image.outputs.pinned }}
       tag: ${{ steps.image.outputs.tag }}
@@ -1503,8 +1488,6 @@ jobs:
           smoke: import search.main, search.indexer
           tag-override: ${{ inputs.tag_override }}
 
-      - *cancel_run_on_failure
-
   # =========================================================================
   # Phase 4e: mirror_drift — how far behind redis.io the mirrored sections are.
   #
@@ -1525,7 +1508,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      actions: write  # for the cancel-on-failure step
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
@@ -1546,8 +1528,6 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - *cancel_run_on_failure
-
   # =========================================================================
   # Phase 4d: dockerhub_description — the text on each image's Docker Hub
   # page, kept in .github/dockerhub/.
@@ -1561,9 +1541,8 @@ jobs:
   # description is left alone, and the text only moves when someone edits the
   # file.
   #
-  # Nothing depends on this job, but like every job a failure here cancels the
-  # run — including a publish_chart still in progress. A Docker Hub account
-  # whose token cannot write descriptions fails here first.
+  # Nothing depends on this job. A Docker Hub account whose token cannot write
+  # descriptions fails here and nowhere else.
   # =========================================================================
   dockerhub_description:
     name: 4d. Docker Hub descriptions
@@ -1574,7 +1553,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      actions: write  # for the cancel-on-failure step
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
@@ -1658,8 +1636,6 @@ jobs:
             echo "- updated \`$repo\` from \`$file\`" >> "$GITHUB_STEP_SUMMARY"
           done
 
-      - *cancel_run_on_failure
-
   # =========================================================================
   # Phase 5: publish_chart — on by default.
   # Order: bump files -> git commit & push -> helm publish to OCI.
@@ -1682,7 +1658,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: write
-      actions: write  # for the cancel-on-failure step
     steps:
       # Default ref (github.ref) and persist-credentials (true) are what we
       # need: git-auto-commit-action reuses the auth header to push back to
@@ -1948,5 +1923,3 @@ jobs:
               echo "❌ Bump step failed (validation or sed) — nothing committed, nothing published. See step logs."
             fi
           } >> "$GITHUB_STEP_SUMMARY"
-
-      - *cancel_run_on_failure
