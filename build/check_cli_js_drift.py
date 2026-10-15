@@ -19,7 +19,8 @@ upstream widget changed and the vendored copy must be refreshed and re-reviewed.
 Usage:
     python build/check_cli_js_drift.py [--vendored PATH] [--url URL] [--quiet]
 
-Exit status: 0 if identical, 1 on drift, 2 if the canonical copy can't be fetched
+Exit status: 0 if identical, 1 on drift (or when the vendored copy lost a string
+the chart's nginx rewrites in it), 2 if the canonical copy can't be fetched
 (so CI can tell "changed" apart from "couldn't check"). Stdlib only; run from the
 repo root.
 """
@@ -32,6 +33,12 @@ import urllib.request
 CANONICAL_URL = "https://redis.io/cli/static/js/cli.js"
 VENDORED_PATH = "static/cli-playground/assets/cli.js"
 FETCH_TIMEOUT = 15
+
+# Strings the chart's nginx rewrites in this file as it serves it (the
+# /cli-playground/assets/cli.js location in helm/redis-docs/templates/configmap.yaml).
+# A refreshed copy that no longer contains one leaves that rewrite matching
+# nothing, silently, so the check fails instead.
+NGINX_REWRITTEN_LITERALS = ("https://redis.io/commands",)
 
 # redis.io sits behind Cloudflare, which 403s the default urllib user agent.
 # Present as a normal browser, matching the link checker's .lychee.toml.
@@ -58,6 +65,16 @@ def check_drift(vendored_path: str, url: str, quiet: bool) -> int:
     except OSError as error:
         print(f"ERROR: cannot read vendored copy {vendored_path}: {error}", file=sys.stderr)
         return 2
+
+    missing = [literal for literal in NGINX_REWRITTEN_LITERALS if literal.encode() not in local]
+    if missing:
+        print(
+            f"STALE REWRITE: {vendored_path} no longer contains {', '.join(missing)}, "
+            f"which nginx rewrites in it. Update the /cli-playground/assets/cli.js "
+            f"location in helm/redis-docs/templates/configmap.yaml and NGINX_REWRITTEN_LITERALS.",
+            file=sys.stderr,
+        )
+        return 1
 
     try:
         canonical = _fetch(url)
