@@ -120,6 +120,23 @@ data:
             add_header Cache-Control "no-cache";
         }
 
+        # The vendored redis-cli widget is kept byte-identical to redis.io's so
+        # build/check_cli_js_drift.py can compare it, and its `help` command
+        # opens https://redis.io/commands -- unreachable here. Rewritten on the
+        # way out to the site's own command reference instead of in the file.
+        # gzip_static off for the same reason as the .md rule below: sub_filter
+        # cannot edit a precompressed body. Both JavaScript MIME types, because
+        # nginx's mime.types moved .js from one to the other.
+        location = /cli-playground/assets/cli.js {
+            gzip_static off;
+            sub_filter 'https://redis.io/commands' '/commands/';
+            sub_filter_types application/javascript text/javascript;
+            sub_filter_once off;
+            expires 7d;
+            add_header Cache-Control "public, immutable";
+            access_log off;
+        }
+
         location ~* \.(css|js|woff2?|ttf|eot|svg|png|jpg|jpeg|gif|webp|ico|mp4)$ {
             expires 7d;
             add_header Cache-Control "public, immutable";
