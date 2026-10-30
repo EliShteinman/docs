@@ -1,16 +1,20 @@
 """Tests for pointing redis.io links at the pages this image already serves."""
 
+import ssl
 import sys
+import urllib.error
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from build import doc_links
 from build.doc_links import (
     LEGACY,
     alias_targets,
     apply_to_tree,
     legacy_urls,
     local_path,
+    observe,
     published_paths,
     rewrite_legacy,
 )
@@ -184,3 +188,46 @@ def test_an_alias_maps_to_the_page_that_declares_it(tmp_path):
         "---\ntitle: X\naliases:\n- /develop/interact/pubsub\n---\n", encoding="utf-8"
     )
     assert alias_targets(content) == {"/develop/interact/pubsub/": "/develop/pubsub/"}
+
+
+class _Landed:
+    def __init__(self, url):
+        self._url = url
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def geturl(self):
+        return self._url
+
+
+def _fake_urlopen(failure, landed_url):
+    """An urlopen that fails verified requests with `failure` and lands unverified ones."""
+    calls = []
+
+    def urlopen(request, timeout, context=None):
+        verified = context is None or context.verify_mode == ssl.CERT_REQUIRED
+        calls.append(verified)
+        if verified:
+            raise failure
+        return _Landed(landed_url)
+
+    return urlopen, calls
+
+
+def test_a_server_with_an_incomplete_chain_is_still_observed(monkeypatch):
+    """docs.redislabs.com sends its own certificate twice and no intermediate."""
+    failure = urllib.error.URLError(ssl.SSLCertVerificationError("unable to get local issuer certificate"))
+    urlopen, _ = _fake_urlopen(failure, "https://redis.io/docs/latest/operate/rs/eviction/")
+    monkeypatch.setattr(doc_links.urllib.request, "urlopen", urlopen)
+    assert observe("https://docs.redislabs.com/latest/rs/eviction/", 1.0) == "/operate/rs/eviction/"
+
+
+def test_only_a_certificate_failure_is_retried_unverified(monkeypatch):
+    urlopen, calls = _fake_urlopen(urllib.error.URLError("timed out"), "https://redis.io/docs/latest/x/")
+    monkeypatch.setattr(doc_links.urllib.request, "urlopen", urlopen)
+    observe("https://redis.io/docs/old/", 1.0)
+    assert calls == [True]

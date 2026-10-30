@@ -24,6 +24,7 @@ import argparse
 import json
 import logging
 import re
+import ssl
 import sys
 import urllib.error
 import urllib.request
@@ -73,14 +74,42 @@ def local_path(final_url: str) -> str:
     return path if path.endswith("/") else path + "/"
 
 
+def _landing(request: urllib.request.Request, timeout: float, context: ssl.SSLContext | None = None) -> str:
+    with urllib.request.urlopen(request, timeout=timeout, context=context) as response:
+        return local_path(response.geturl())
+
+
+def _unverified_context() -> ssl.SSLContext:
+    context = ssl.create_default_context()
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+    return context
+
+
 def observe(url: str, timeout: float) -> str:
-    """Follow `url` on redis.io and return the local path it lands on."""
+    """Follow `url` on redis.io and return the local path it lands on.
+
+    A server whose certificate chain cannot be verified -- docs.redislabs.com
+    sends no intermediate certificate -- is followed again unverified. Only
+    where it redirects is read, and a landing is kept only if this site
+    publishes it, so the worst a forged answer can do is a wrong entry in a
+    committed, reviewed map.
+    """
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            return local_path(response.geturl())
-    except (urllib.error.URLError, OSError) as error:
+        return _landing(request, timeout)
+    except urllib.error.URLError as error:
+        if not isinstance(error.reason, ssl.SSLCertVerificationError):
+            LOGGER.warning("could not follow %s: %s", url, error)
+            return ""
+        LOGGER.warning("%s: certificate not verifiable (%s); following it unverified", url, error.reason)
+    except OSError as error:
         LOGGER.warning("could not follow %s: %s", url, error)
+        return ""
+    try:
+        return _landing(request, timeout, _unverified_context())
+    except (urllib.error.URLError, OSError) as error:
+        LOGGER.warning("could not follow %s unverified: %s", url, error)
         return ""
 
 
