@@ -40,8 +40,15 @@ MAP_PATH = Path(__file__).with_name("doc_links.json")
 # Every host the corpus spells redis.io with, including the two it used before.
 _HOSTS = r"(?:www\.)?(?:redis\.io|redis\.com|redislabs\.com)"
 
-# A legacy documentation URL: /docs/<anything but latest> or /topics/<page>.
-LEGACY = re.compile(rf"https?://{_HOSTS}(?:/en)?(/(?:docs|topics)/(?!latest/)[A-Za-z0-9._/-]*)")
+# The documentation's own subdomain before it moved to redis.io: every path on
+# it is legacy, its /latest/ included.
+_OLD_DOCS_HOST = r"docs\.redislabs\.com"
+
+# A legacy documentation URL: /docs/<anything but latest> or /topics/<page>,
+# or any path on the old documentation subdomain.
+LEGACY = re.compile(
+    rf"https?://(?:{_HOSTS}(?:/en)?/(?:docs|topics)/(?!latest/)|{_OLD_DOCS_HOST}/)[A-Za-z0-9._/-]*"
+)
 
 # Where the documentation lives in this image once the build's own rewrites have
 # run: redis.io publishes it under /docs/latest/, this image at the root.

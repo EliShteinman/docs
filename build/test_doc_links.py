@@ -46,6 +46,22 @@ def test_the_legacy_domains_are_recognised_too():
     assert LEGACY.search("https://www.redis.com/docs/getting-started/")
 
 
+def test_the_old_documentation_subdomain_is_recognised_even_under_latest():
+    """docs.redislabs.com was the whole old site, so its /latest/ is legacy too."""
+    assert LEGACY.search(
+        "https://docs.redislabs.com/latest/rs/administering/database-operations/eviction-policy/"
+    )
+
+
+def test_a_bare_subdomain_url_is_rewritten_up_to_the_markup_after_it():
+    """The Kubernetes API reference writes these as text followed by `<br/>`."""
+    text, _ = rewrite_legacy(
+        "see more https://docs.redislabs.com/latest/rs/eviction/<br/>",
+        {"https://docs.redislabs.com/latest/rs/eviction/": "/operate/rs/eviction/"},
+    )
+    assert text == "see more /operate/rs/eviction/<br/>"
+
+
 def test_a_mapped_link_is_pointed_at_the_local_page():
     text, count = rewrite_legacy(
         "see [docs](https://redis.io/docs/interact/search/)",
