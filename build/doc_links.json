@@ -1,6 +1,7 @@
 {
  "http://redis.io/topics/cluster-spec": "/develop/",
  "http://redis.io/topics/protocol": "/develop/",
+ "https://docs.redislabs.com/latest/rs/administering/database-operations/eviction-policy/": "/operate/rs/databases/memory-performance/eviction-policy/",
  "https://redis.io/docs/data-types/hashes/": "/data-types/hashes/",
  "https://redis.io/docs/data-types/json/": "/data-types/json/",
  "https://redis.io/docs/data-types/streams": "/data-types/streams/",
