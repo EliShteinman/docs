@@ -362,6 +362,9 @@ docker buildx imagetools inspect a0533057932/redis-docs-search:0.1.0 \
 לא מכריז עליו), `test_every_product_is_offered` (‏Radar חסר ב-`data/doc_bundles.json` של רדיס
 עצמה, נכשל גם על main שלהם) ו-`build/test_cmd_tools.py` (‏#4107 של רדיס הסיר את
 `FILTER_PREFIXES` מ-`cmd_tools.py` ולא מהבדיקה, שנכשלת בייבוא גם על main שלהם).
+`build/agent_playbook_docs` רץ באותו job בשלבים נפרדים, ב-venv משלו על Python 3.12, כמו
+ב-`check-playbook-docs.yml` של רדיס: ה-requirements שלו מקבעים `PyYAML==6.0.3` מול `6.0.1`
+ב-`requirements.txt`, כך שאי אפשר להתקין את שניהם יחד.
 
 תג שפורסם אף פעם לא נדרס. הרצה שבנתה image בלי `publish_chart` לא משאירה עבודה: ההרצה
 הבאה מוצאת את התג עם אותו hash ומפנה אליו את הצ'ארט. הרצת בדיקה עם `tag_override` דוחפת

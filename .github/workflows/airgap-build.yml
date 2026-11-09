@@ -1121,12 +1121,34 @@ jobs:
       # test_cmd_tools.py is left out because upstream #4107 removed
       # FILTER_PREFIXES from build/cmd_tools.py but not from the test, which
       # now fails on import — on redis/docs main as well.
+      # build/agent_playbook_docs runs in the steps below, in its own venv:
+      # its requirements pin PyYAML 6.0.3 against 6.0.1 in requirements.txt.
       - name: Run the build tooling tests
         run: |
           python -m pytest build -q \
             --ignore=build/jupyterize \
             --ignore=build/test_cmd_tools.py \
+            --ignore=build/agent_playbook_docs \
             --deselect build/test_make_doc_bundles.py::test_every_product_is_offered
+
+      # The Agent Playbooks checks, as upstream's check-playbook-docs.yml runs
+      # them: Python 3.12, their own requirements, the SDK contract check and
+      # the generated examples before pytest.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        id: py312
+        with:
+          python-version: '3.12'
+
+      - name: Install the Agent Playbooks test dependencies
+        run: |
+          "${{ steps.py312.outputs.python-path }}" -m venv /tmp/playbook-venv
+          /tmp/playbook-venv/bin/pip install --quiet -r build/agent_playbook_docs/requirements.txt
+
+      - name: Run the Agent Playbooks tests
+        run: |
+          /tmp/playbook-venv/bin/python build/agent_playbook_docs/check_sdk_source.py
+          /tmp/playbook-venv/bin/python build/agent_playbook_docs/examples.py build/agent_playbook_docs/.generated
+          /tmp/playbook-venv/bin/python -m pytest build/agent_playbook_docs --rootdir . -q
 
   # =========================================================================
   # Phase 4f: mirror_image — redis.io's marketing site, as captured.
