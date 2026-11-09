@@ -716,8 +716,7 @@ externalLinks.enabled                    ← master kill-switch
     │   └── sub-families
     │       ├── main-nav: { Docs }
     │       ├── cta: { Login, Sign up }
-    │       ├── search: { search button }
-    │       └── mobile: { hamburger + drawer }
+    │       └── search: { search button }
     └── footer                            ← פוטר תחתון
         └── sub-families: { social, legal, compare, company,
                             cloud-partners, services }

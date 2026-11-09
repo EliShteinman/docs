@@ -117,14 +117,6 @@ families:
             description: "Search button (desktop and mobile share the same key). Setting search.enabled turns this on by default, since a deployment that answers searches wants the button; an explicit enabled on this override, the header family or the search sub-family still wins."
             enabled: true
 
-      mobile:
-        description: "Mobile-only header elements (hamburger button + slide-down nav drawer)"
-        enabled: true
-        links:
-          nav-mobile-menu:
-            description: "Mobile hamburger button + the entire <nav> drawer it opens"
-            enabled: true
-
   # ───────────────────────────────────────────────────────────────────────
   # footer — bottom site footer (layouts/partials/footer.html), present on every page
   #
