@@ -139,9 +139,4 @@ JS_PATCHES: tuple[tuple[str, bytes, bytes], ...] = (
         b"`https://cloud.redis.io/api/v1/accounts",
         b"`/_mirror/no-cloud-api/accounts",
     ),
-    (
-        "visitor IP lookup: an empty answer, without asking ipify",
-        b'fetch("https://api.ipify.org?format=json")',
-        b'Promise.resolve({ok:!0,json:()=>({ip:""})})',
-    ),
 )
