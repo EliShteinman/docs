@@ -32,7 +32,7 @@
     return path.charAt(path.length - 1) === '/' ? path : path + '/';
   }
 
-  function fillRow(template, url, title, post) {
+  function fillRow(template, authorSample, url, title, post) {
     var row = template.cloneNode(true);
     row.removeAttribute('style');
     var link = part(row, 'linkOverlay');
@@ -41,11 +41,10 @@
     part(row, 'title').textContent = title;
 
     var authors = part(row, 'authorsCol');
-    var sample = part(authors, 'author');
     authors.innerHTML = '';
     ((post && post.authors) || []).forEach(function (author) {
-      if (!sample || !author.image) return;
-      var copy = sample.cloneNode(true);
+      if (!authorSample || !author.image) return;
+      var copy = authorSample.cloneNode(true);
       var img = copy.querySelector('img');
       img.setAttribute('src', author.image);
       img.removeAttribute('srcset');
@@ -90,6 +89,7 @@
     var first = feed && part(feed, 'BlogFeedCard');
     if (!feed || !first) return;
     var template = first.parentElement;
+    var authorSample = part(feed, 'author');
 
     ['featuredPostSection', 'loadingContainer'].forEach(function (name) {
       var el = part(document, name);
@@ -119,7 +119,7 @@
       results.forEach(function (result) {
         var url = withSlash(result.url);
         var title = (result.title || '').replace(/<[^>]+>/g, '');
-        feed.appendChild(fillRow(template, url, title, posts[url]));
+        feed.appendChild(fillRow(template, authorSample, url, title, posts[url]));
       });
     }).catch(function () {
       message(feed, 'Search is not available on this site.');
