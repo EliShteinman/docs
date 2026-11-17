@@ -32,6 +32,7 @@ from build.marketing_mirror import (
     feeds,
     listing_pages,
     manifest,
+    moved_pages,
     pages,
     rewrite,
     settings,
@@ -88,7 +89,7 @@ class PageRun:
         self._workers = workers
         self.fetched = 0
         self.failed: list[str] = []
-        self.moved: list[str] = []
+        self.moved: dict[str, str] = {}
 
     def capture(self, dated: dict[str, str]) -> None:
         with ThreadPoolExecutor(max_workers=self._workers) as pool:
@@ -105,7 +106,7 @@ class PageRun:
         try:
             self.fetched += future.result()
         except Moved as error:
-            self.moved.append(path)
+            self.moved[path] = error.target
             LOGGER.info("page not mirrored, redis.io moved it: %s", error)
         except (FetchError, ValueError) as error:
             self.failed.append(path)
@@ -160,6 +161,8 @@ def capture(
     if embeds.failed:
         LOGGER.warning("%d embedded files could not be mirrored", len(embeds.failed))
     kept = sorted(set(paths) - set(failed) - set(moved))
+    redirects = moved_pages.write(staging, moved, set(kept))
+    LOGGER.info("%d moved pages sent on to their mirrored new address", redirects)
     sitemap.write_sitemap(staging, kept)
     records = feed.write_feed(staging, dated)
     captured = manifest.Manifest(pages={path: dated[path] for path in kept})

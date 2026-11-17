@@ -26,6 +26,10 @@ class FetchError(RuntimeError):
 class Moved(FetchError):
     """The URL redirects to a different page; its body is that page, not this one."""
 
+    def __init__(self, url: str, target: str) -> None:
+        super().__init__(f"{url}: moved to {target}")
+        self.target = target
+
 
 def moved_to(requested: str, final: str) -> str | None:
     """The path `requested` was redirected to, or None if it answered itself.
@@ -69,7 +73,7 @@ class HttpFetcher:
                 with urllib.request.urlopen(request, timeout=self._timeout) as response:
                     target = moved_to(url, response.geturl())
                     if target is not None:
-                        raise Moved(f"{url}: moved to {target}")
+                        raise Moved(url, target)
                     return decode(response.read(), response.headers)
             except urllib.error.HTTPError as error:
                 if error.code not in _RETRYABLE_STATUS or attempt == self._retries:

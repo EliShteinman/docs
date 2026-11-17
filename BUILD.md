@@ -236,6 +236,10 @@ git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
 מ-`/api/blog/author` (`feeds.py`): כל batch נשמר כקובץ ב-`_feed/author/<slug>/<start>.json`,
 וה-nginx של ה-pod עונה לפי `start`. ה-batches נלקחים מהדיסק כשאף עמוד לא השתנה.
 
+**עמודים שעברו מקום** (`moved_pages.py`): עמוד ש-redis.io מפנה לכתובת אחרת לא נשמר. אם הכתובת
+החדשה נמצאת במראה, בכתובת הישנה נכתב עמוד קטן שמפנה אליה (meta refresh), כך שקישורים ישנים
+בתוך המראה לא נותנים 404.
+
 **חיפוש:** `mirror/site/mirror.ndjson`, באותו מבנה של הפיד של התיעוד (כולל `sections`, שממנו
 שירות החיפוש מאנדקס). הטקסט הוא ה-Markdown של העמוד, ובסקשנים ש-redis.io לא מפרסם להם Markdown
 (השוואות, לקוחות, טכנולוגיה, דיאגרמות) — הטקסט מתוך ה-HTML (`page_text.py`: רק `<main>` ובלוקי
