@@ -236,7 +236,7 @@ Software נעצרים ב-8.0, בעוד 8.2 מתפרסמת רק כ-`latest`.
   - `aiServices.binder.url` — כתובת BinderHub / JupyterHub, משמשת גם את כפתורי תאי Jupyter
   - `downloads` — האם לווידג'ט הורדת הדוקומנטציה יש ארכיונים להציע
   - `externalLinks` — `enabled`/`url` יעיל לכל לינק חיצוני בקטלוג
-  - `gitMirrors` — המראה היעילה לכל כתובת Git בקטלוג
+  - `gitMirrors` — המירורים המופעלים: שמות ה-repo של כל אחד וכתובת ה-project שלו ב-GitLab
 - **`configmap.yaml`** — קובץ ה-`default.conf` של nginx. משתמש ב-`canonicalURL` כדי להחליף את ה-placeholder `__DOCS_BASE_URL__` בתוך תגובות `.md` / `.json` בזמן הגשת הבקשה, ומנתב `/cli` לשירות ה-CLI playground, וכאשר `search.enabled=true` גם `/convai/api/search-service` לשירות החיפוש.
 - **`configmap-cli-acl.yaml`** — קובץ ה-ACL של Redis מתוך `files/sandbox.acl`, מותקן ל-sidecar. רק עם `cli.redis.acl.enabled=true`; ראו [בידוד ה-CLI playground](#בידוד-ה-cli-playground).
 
@@ -294,37 +294,48 @@ externalLinks:
 
 ### מירורי Git (`externalLinks.gitMirrors`)
 
-מנגנון נפרד שמשכתב לינקים מסוג `<a href>` בתוך תוכן Markdown (URLs של דשבורדי Grafana, קונפיגי alerts של Prometheus, listings של repositories וכו') מ-host ציבורי במעלה הזרם למירור פנימי.
+המנגנון מפנה קישורים ל-repos ב-GitHub אל העותקים שלהם ב-GitLab פנימי. העותקים עצמם נוצרים ומתעדכנים בעזרת `scripts/airgap-mirrors`. ההסבר המלא נמצא ב-[MIRRORS-SETUP-he.md](../../MIRRORS-SETUP-he.md).
 
-המנגנון **אינו** חלק ממערכת ה-`families` / `overrides` שלמעלה — אלה מתמקדות באלמנטים של ה-layout עם `data-external-link="<key>"` (כרטיסי עמוד הבית, רצועת ההדר, עמודות הפוטר). `gitMirrors` מתאים לפי קידומת URL ב-HTML המרונדר, וזה מה שלינקים מתוך תוכן צריכים.
+זה מנגנון נפרד מ-`families` / `overrides`. אלה מדליקים ומכבים אלמנטים ב-layout שמסומנים ב-`data-external-link="<key>"`, ואילו `gitMirrors` משכתב כל `<a href>` בדף, כולל קישורים בתוך התוכן.
 
-הקטלוג של המירורים הזמינים נמצא ב-`files/external-links.yaml` תחת `git-mirrors:`. לכל entry יש כתובת upstream (`from`) קבועה — הצ'ארט נשלח עם שני entries:
+הקובץ `files/external-links.yaml` מכיל, תחת `git-mirrors:`, את 28 ה-repos שהתיעוד מקשר אליהם הכי הרבה:
+- Redis והמודולים שלו.
+- Redis Insight.
+- ה-operator של Kubernetes.
+- דשבורדי ה-observability.
+- קוד המקור של התיעוד עצמו.
+- ספריות הלקוח.
 
-| שם | upstream | תיעוד מושפע |
-|---|---|---|
-| `observability` | `https://github.com/redis-field-engineering/redis-enterprise-observability` | 36 לינקים מוטמעים ב-`rs-observability.md`, `rs-prometheus-grafana-quickstart.md`, `prometheus-with-redis-cloud/_index.md` |
-| `k8s-docs` | `https://github.com/RedisLabs/redis-enterprise-k8s-docs` | ~179 לינקים מוטמעים ב-~89 קבצים תחת `content/operate/kubernetes/` (releases של ה-operator, ה-API reference, manifests לדוגמה, vault, rack-awareness) |
+לכל entry יש שני שדות:
+- `repo`: השם הנוכחי ב-GitHub, בצורה owner/name.
+- `aliases`: שמות ישנים ש-GitHub עדיין מפנה מהם.
 
-הפעלה פר-deployment היא שני שדות ב-`values.yaml` לכל מירור:
+ההתאמה לא תלויה באותיות גדולות וקטנות, והיא חלה על ה-owner/name כולו. לכן `redis/redis` לא תופס בטעות את `redis/redis-py`.
+
+מפעילים repo בשני שדות:
 
 ```yaml
 externalLinks:
   gitMirrors:
-    observability:
+    redis:
       enabled: true
-      to: "https://gitlab.internal.company.com/redis/group1/group2/observability"
-    k8s-docs:
-      enabled: true
-      to: "https://gitlab.internal.company.com/redis/k8s/redis-enterprise-k8s-docs"
+      to: "https://gitlab.internal.example/redis/mirrors/redis"
 ```
 
-> ה-handler משכתב רק כתובות `<a href>` (קישורים לחיצים). פקודות `curl` / `kubectl apply -f` בתוך code-blocks שמפנות ל-`raw.githubusercontent.com/...` **לא** עוברות שכתוב — הן דורשות החלפה build-time נפרדת אם נדרש.
+repo שלא נמצא בקטלוג אפשר להוסיף ישירות ב-values, עם `repo: <owner>/<name>` ואופציונלית `aliases`. entry בלי שורה בקטלוג ובלי `repo` מכשיל את ה-render, במקום שיתעלמו ממנו בשקט.
 
-ה-URL ב-`to` מטופל כקידומת אטומית — יש לספק את כתובת הפרויקט המלאה, כולל כל נסטינג של GitLab groups. ה-handler ב-runtime מתרגם נתיבי GitHub (`/blob/<ref>/<path>`, `/tree/<ref>/<path>`, `/raw`, `/blame`, `/commits`, `/commit`, `/tags`, `/releases`, `/wiki`, `/issues`) למקבילות שלהם ב-GitLab (`/-/blob/...`, `/-/tree/...`, וכו') באופן אוטומטי.
+הקובץ `files/git-mirrors.js` משכתב את הקישורים בדפדפן, כולל קישורים שנוספים לדף אחר כך:
+- `<repo>`, `/blob/…`, `/tree/…`, `/raw/…`, `/blame/…`, `/commits/…`, `/commit/…`, `/tags`, `/compare/…`, `/branches` הופכים ל-`<to>`, `<to>/-/blob/…` וכן הלאה.
+- `/releases` הופך ל-`<to>/-/releases`.
+- `/releases/tag/<tag>` הופך ל-`<to>/-/tags/<tag>`.
+- `/releases/latest` הופך ל-`<to>/-/releases/permalink/latest`.
+- `/releases/download/<tag>/<file>` הופך ל-`<to>/-/releases/<tag>/downloads/<file>`.
+- `raw.githubusercontent.com/<repo>/<ref>/<path>` הופך ל-`<to>/-/raw/<ref>/<path>`.
+- טווח שורות `#L10-L20` הופך ל-`#L10-20`.
 
-**ההפעלה היא Helm בלבד**: שינוי `values.yaml` מייצר מחדש את ה-ConfigMap של ה-runtime (`runtime-config.js`), וה-annotation `checksum/runtime-config` גורם ל-rolling restart. אין צורך לבנות מחדש את ה-image, ואותה image יכולה להגיש URLs שונים של מירור עבור deployments שונים.
+קישורים ל-pull requests, issues, discussions, security advisories, wiki ו-Actions נשארים ב-GitHub, כי בעותק ב-GitLab אין אותם. פקודות בתוך בלוקי קוד, כמו `git clone` או `kubectl apply -f https://raw...`, הן לא קישורים, ולכן לא משתנות.
 
-**הוספת מירור חדש** (למשל repo נוסף שמוזכר בתיעוד) היא שני שלבים: הוספת entry תחת `git-mirrors:` בקטלוג עם כתובת ה-`from` שלו, ולאחר מכן opt-in פר-deployment עם `enabled: true` ו-`to: <כתובת המירור>` ב-`values.yaml`. אין צורך לשנות template, handler, Hugo, או image.
+שינוי של הערכים האלה יוצר מחדש את `runtime-config.js`, וה-annotation ‏`checksum/runtime-config` מפעיל rolling restart. לא צריך לבנות image מחדש.
 
 ### החלפת URL קנוני (`canonicalURL`)
 

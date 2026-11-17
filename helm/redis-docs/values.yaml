@@ -455,41 +455,32 @@ externalLinks:
   # See `helm/redis-docs/files/external-links.yaml` for the full list of
   # keys, their families/sub-families, and default URLs.
 
-  # gitMirrors: redirect inline `<a href>` links inside docs content
-  # (rendered from markdown) to internal Git mirrors. Catalog of available
-  # mirrors and the upstream URLs they target lives at
-  # `files/external-links.yaml` under `git-mirrors`.
+  # gitMirrors: send links to GitHub repositories to their copies in an
+  # internal GitLab. The repositories, and the old names each still answers
+  # to, are listed in files/external-links.yaml under `git-mirrors`; the copies
+  # themselves are made by scripts/airgap-mirrors (see MIRRORS-SETUP-he.md).
   #
-  # For each mirror name, set:
-  #   enabled: true                   (default false — leave OFF means: keep the original GitHub link)
-  #   to: <full mirror project URL>   (empty by default; required when enabled)
+  # Per repository, by its catalog name:
+  #   enabled: true                    (default false: links stay on GitHub)
+  #   to: <GitLab project URL>         (nested groups are fine)
   #
-  # The `to` URL is treated as an opaque prefix and may include nested
-  # GitLab groups, e.g.
-  #   "https://gitlab.example.com/group/subgroup/redis-observability"
-  # The runtime handler translates GitHub paths (`/blob/<ref>/<path>`,
-  # `/tree/<ref>/<path>`, `/raw`, `/blame`, `/commits`, `/commit`, `/tags`,
-  # `/releases`, `/wiki`, `/issues`) to their GitLab equivalents
-  # (`/-/blob/...`, `/-/tree/...`, etc.) automatically — you only provide
-  # the project URL. GitHub's per-tag release URL `/releases/tag/<X>` is
-  # mapped to GitLab's `/-/tags/<X>` (the closest 1:1 — `/-/releases/<X>`
-  # only exists if a GitLab Release object was explicitly created).
+  # A repository the catalog lacks can be added here with `repo: owner/name`
+  # (and optional `aliases: [old/name]`); without `repo` the render fails.
   #
-  # Activation is purely Helm-driven: changing values here regenerates the
-  # runtime ConfigMap (`runtime-config.js`) and triggers a rolling restart
-  # via the `checksum/runtime-config` annotation on the deployment. No image
-  # rebuild is required.
+  # files/git-mirrors.js rewrites the links in the browser: file, tree,
+  # commit, tag and release pages go to their GitLab equivalents; pull
+  # requests, issues and the wiki, which GitLab copies lack, stay on GitHub.
+  # Changing these values rolls the pods through the checksum/runtime-config
+  # annotation; no image rebuild is needed.
   gitMirrors: {}
-  # Example: redirect inline `<a href>` links pointing to upstream
-  # GitHub repos to an internal GitLab mirror. `to` may include nested
-  # GitLab groups — it is treated as an opaque prefix.
   #   gitMirrors:
-  #     observability:
+  #     redis:
   #       enabled: true
-  #       to: "https://gitlab.internal.company.com/redis/observability/redis-enterprise-observability"
-  #     k8s-docs:
+  #       to: "https://gitlab.internal.example/redis/mirrors/redis"
+  #     my-extra-repo:
   #       enabled: true
-  #       to: "https://gitlab.internal.company.com/redis/k8s/redis-enterprise-k8s-docs"
+  #       to: "https://gitlab.internal.example/redis/mirrors/extra"
+  #       repo: "some-owner/extra"
 
 podDisruptionBudget:
   enabled: true

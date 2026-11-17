@@ -1,271 +1,203 @@
-# הגדרת Mirrors של GitHub ל-GitLab עבור airgap
+# העתקת ה-repos של Redis מ-GitHub ל-GitLab פנימי
 
-## רקע
+## מה זה עושה
 
-האתר מכיל ~3,000 קישורים ל-GitHub. בסביבת airgap הדפדפן לא מגיע ל-`github.com` — הקישורים נשברים.
-המנגנון `gitMirrors` ב-`configmap-runtime.yaml` משכתב אותם בזמן ריצה ל-mirrors פנימיים ב-GitLab,
-בתנאי שהם מסונכרנים ומכילים את כל ה-branches וה-tags המקוריים.
+התיעוד מכיל אלפי קישורים ל-GitHub: לקוד של Redis, לספריות הלקוח, לקבצי התקנה. ברשת סגורה (airgap) הדפדפן לא מגיע ל-GitHub, והקישורים האלה נשברים.
 
-12 repos נדרשים — הם מפורטים בקטלוג `helm/redis-docs/files/external-links.yaml` תחת `git-mirrors:`.
+הפתרון מורכב משני חלקים:
 
----
+1. **העתקה.** הכלי ב-`scripts/airgap-mirrors/` מעתיק את ה-repos מ-GitHub ל-GitLab הפנימי, דרך דיסק און קי.
+2. **הפניה.** ה-Helm chart מחליף בדפדפן כל קישור ל-GitHub בקישור לעותק ב-GitLab.
 
-## ייבוא ראשוני (חד-פעמי)
+## התמונה הכללית
 
-הייבוא הראשוני כבר בוצע. אם יש צורך להוסיף repo חדש בעתיד, ראה [הוספת repo חדש](#הוספת-repo-חדש).
+```
+ מחשב חיצוני (עם אינטרנט)        דיסק און קי          מחשב פנימי (ליד GitLab)
+ ─────────────────────────        ───────────          ────────────────────────
+ 1. export   ──── תיקיית העברה ────────────────────►   2. import  → GitLab
+ 3. confirm  ◄─── receipt.json ─────────────────────   (נכתב אוטומטית ב-import)
+```
 
----
+סבב אחד נראה כך:
 
-## הגדרת הסקריפטים
+1. **export** (במחשב החיצוני): מוריד מ-GitHub רק את מה שהשתנה מאז הסבב הקודם, וכותב אותו לתיקיית ההעברה.
+2. מעתיקים את תיקיית ההעברה לדיסק און קי, ומשם למחשב הפנימי.
+3. **import** (במחשב הפנימי): טוען את התיקייה ל-GitLab, וכותב קובץ קבלה (`receipt.json`) שמפרט מה נטען.
+4. מעתיקים את `receipt.json` חזרה למחשב החיצוני.
+5. **confirm** (במחשב החיצוני): מסמן שהמצב הזה כבר נמצא ב-GitLab, כך שהסבב הבא יעביר רק את מה שבא אחריו.
 
-כל הסקריפטים נמצאים ב-`scripts/airgap-mirrors/`.
+**אם דיסק און קי הלך לאיבוד או ש-confirm לא רץ, לא קורה כלום רע.** ה-export הבא פשוט כולל שוב את כל מה שעוד לא אושר.
 
-### מחשב חיצוני (אונליין)
+## מה עובר ומה לא
+
+**עובר:**
+- כל ה-branches וכל ה-tags.
+- ה-branch הראשי (default branch), בדיוק כמו ב-GitHub.
+- דפי ה-releases: הכותרת וההערות.
+- קבצי ה-releases, לפי מדיניות שנקבעת לכל repo בנפרד.
+
+**לא עובר:**
+- Pull requests, issues, discussions, security advisories, wiki ו-Actions. הם לא חלק מ-git אלא מסד נתונים של GitHub, ולכן קישורים אליהם נשארים מצביעים ל-GitHub.
+
+## איך ה-branch הראשי נשמר (main נשאר main)
+
+ב-GitHub לכל repo יש branch ראשי. ב-`redis` למשל הוא נקרא `unstable`, לא `main`. אם דוחפים repo ל-project ריק ב-GitLab, GitLab בוחר branch ראשי לבד. לכן הכלי לא משאיר לו את הבחירה:
+
+1. ב-export הכלי שואל את GitHub מה ה-branch הראשי, ורושם את התשובה בקובץ ה-manifest שעובר בדיסק און קי.
+2. ב-import הכלי דוחף **קודם רק את ה-branch הראשי**, ומיד מגדיר אותו ב-GitLab כראשי.
+3. רק אחרי זה הוא דוחף את כל שאר ה-branches וה-tags.
+
+זה קורה בכל סבב, לא רק בפעם הראשונה. לכן אם Redis ישנו את ה-branch הראשי ב-GitHub, GitLab יתעדכן בסבב הבא. במקרה כזה הכלי גם מסיר את ההגנה מה-branch הראשי הישן, כדי שאפשר יהיה למחוק אותו כמו ב-GitHub.
+
+## התקנה
+
+הכלי כתוב ב-Python, וצריך Python 3.11 ומעלה, `git`, ושתי ספריות: `pydantic` ו-`pydantic-settings`.
+
+### במחשב החיצוני
 
 ```bash
-cd scripts/airgap-mirrors/
-cp mirrors.external.conf.example mirrors.conf
-# ערוך:
-#   MIRRORS_DIR  — נתיב לתיקיית ה-bare mirrors (לדוגמה: ~/mirrors)
-#   TRANSFER_DIR — תיקייה שממנה תעתיק ל-USB
-# שאר הקובץ (רשימת ה-repos ו-policies) כבר מוגדר נכון
+cd scripts/airgap-mirrors
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
 ```
 
-### מחשב פנימי (airgap)
+באותו מחשב מורידים גם את הספריות בשביל המחשב הפנימי, שאין לו אינטרנט. מתאימים את `--python-version` לגרסה שמותקנת במחשב הפנימי:
 
 ```bash
-cd scripts/airgap-mirrors/
-cp mirrors.internal.conf.example mirrors.conf
-# ערוך:
-#   MIRRORS_DIR  — נתיב לתיקיית ה-bare mirrors
-#   TRANSFER_DIR — תיקייה שאליה תעתיק מה-USB
-#   GITLAB_HOST  — כתובת GitLab הפנימי
-#   כל שורת MIRRORS — החלף "your-group" ב-path האמיתי של כל פרויקט ב-GitLab
+.venv/bin/pip download -r requirements.txt -d wheels \
+  --only-binary=:all: --platform manylinux2014_x86_64 --python-version 3.11
 ```
 
-> **הפרדת מידע:** `mirrors.conf` על המחשב החיצוני לא מכיל שום פרט על הרשת הפנימית.
-> מידע על GitLab (host, paths, token) קיים **רק** על המחשב הפנימי.
+מעבירים את התיקייה `scripts/airgap-mirrors` כולה, כולל `wheels`, למחשב הפנימי.
 
-### פעם אחת לאחר ה-bootstrap הראשוני — הגדרת נקודת ההתחלה
-
-מאחר שהייבוא הראשוני כבר בוצע, יש לסמן לסקריפטים שה-state הנוכחי כבר סונכרן:
+### במחשב הפנימי
 
 ```bash
-# במחשב החיצוני:
-cd ~/mirrors    # או ה-MIRRORS_DIR שלך
-for d in *.git; do
-  ( cd "$d" && git config --local sync.synced "$(git rev-parse HEAD)" )
-done
+cd scripts/airgap-mirrors
+python3 -m venv .venv
+.venv/bin/pip install --no-index --find-links wheels -r requirements.txt
 ```
 
----
+## הגדרה
 
-## זרימה שוטפת — סנכרון Git (תקופתי)
+לכל מחשב יש קובץ הגדרות משלו בתיקייה `config/`. ההפרדה מכוונת: הקובץ של המחשב החיצוני לא מכיל שום פרט על הרשת הפנימית.
 
-```
-מחשב חיצוני                USB                מחשב פנימי
-─────────────               ───                ────────────
-bundle-create.sh  ──────►  bundles/  ──────►  bundle-import.sh
-                                               (push --mirror origin → GitLab)
-bundle-confirm.sh ◄──────  import-success.list
-```
-
-**1. מחשב חיצוני:**
-```bash
-./bundle-create.sh
-# → TRANSFER_DIR/bundles/*.bundle  (delta קטן מאז הסנכרון האחרון)
-```
-
-**2. העתק `$TRANSFER_DIR/bundles/` ל-USB ומשם למחשב הפנימי.**
-
-**3. מחשב פנימי:**
-```bash
-export GITLAB_TOKEN="glpat-xxxxx"
-./bundle-import.sh
-# → מוודא, טוען, דוחף --mirror origin לכל repo
-# → TRANSFER_DIR/import-success.list
-```
-
-**4. העתק `$TRANSFER_DIR/import-success.list` חזרה ל-USB ומשם למחשב החיצוני.**
-
-**5. מחשב חיצוני:**
-```bash
-./bundle-confirm.sh
-# → מקדם sync.synced לריצה הבאה
-```
-
-> **שלב 4–5 חשוב:** `bundle-confirm.sh` מסמן את נקודת ההתחלה לבאנדל הבא.
-> אם הוא לא רץ — הריצה הבאה תייצר bundle גדול יותר (מה שחסר), אבל לא תאבד נתונים.
-
----
-
-## זרימה שוטפת — Releases (כשיש ריליסים חדשים)
-
-כולל: metadata (title + body), binary assets לפי policy.
-
-**Policy של assets מוגדר ב-`mirrors.conf` (שדה שלישי ורביעי בכל שורת MIRRORS):**
-
-| Policy | משמעות |
-|---|---|
-| `all` (ברירת מחדל) | כל ה-assets |
-| `none` | metadata בלבד |
-| `latest:N` | assets של N הריליסים האחרונים בלבד |
-| `since:YYYY-MM-DD` | assets של ריליסים שיצאו מתאריך זה |
-
-שדה רביעי אופציונלי — סינון שמות קבצים (keywords מופרדים בפסיק):
-```
-"RedisInsight|RedisInsight/RedisInsight|all|win,linux"
-# → מוריד כל ה-releases, אך רק קבצי Windows + Linux (ללא macOS .dmg)
-```
-
-גדלים מדודים של RedisInsight (48 ריליסים, win+linux בלבד): **~3.52 GiB ריצה ראשונה**, ~700–815 MiB לכל ריליס חדש מכאן ואילך.
-
-**1. מחשב חיצוני:**
-```bash
-gh auth login   # פעם אחת בלבד
-./releases-export.sh
-# → TRANSFER_DIR/releases/<name>/releases.json
-# → TRANSFER_DIR/releases/<name>/assets/<tag>/*  (לפי policy)
-# קבצים שכבר הורדו בעבר — מדולגים אוטומטית (cache)
-```
-
-**2. העתק `$TRANSFER_DIR/releases/` ל-USB ומשם למחשב הפנימי.**
-
-**3. מחשב פנימי** (לאחר `bundle-import.sh` — tag חייב להיות ב-GitLab קודם):
-```bash
-export GITLAB_TOKEN="glpat-xxxxx"
-./releases-import.sh
-# → idempotent: ריליס קיים ב-GitLab → מדולג
-```
-
----
-
-## דרישות מוקדמות לפני הריצה הראשונה
-
-| דרישה | היכן נדרש | כיצד להכין |
-|---|---|---|
-| **GitLab PAT עם scope `api`** | כל הסקריפטים הפנימיים | GitLab → User Settings → Access Tokens → scope: `api` |
-| **`git push` מאומת על origin** | `bundle-import.sh` | הכנס את הטוקן ישירות ב-URL: `git remote set-url origin https://oauth2:TOKEN@gitlab.../group/repo` — או הגדר SSH key |
-| **Generic Package Registry מופעל** | `releases-import.sh` | Admin → Settings → CI/CD → Package registry (ברירת מחדל: פעיל) |
-| **מגבלת גודל artifacts מספקת** | `releases-import.sh` | Admin → Settings → General → Maximum artifacts size (ברירת מחדל: 1 GiB — מספיק ל-RedisInsight) |
-| **`gh` CLI מאומת** | `releases-export.sh` | `gh auth login` פעם אחת על המחשב החיצוני |
-
-> **אסימון GitLab:** מעבירים כ-env var לפני כל ריצה פנימית:
-> ```bash
-> export GITLAB_TOKEN="glpat-xxxxxxxxxxxxxxxxxxxx"
-> ```
-
----
-
-## הגדרת Default Branch (חד-פעמי)
-
-`git push --mirror` לא מעביר את ה-default branch של ה-project — GitLab קובע אותו בנפרד.
-לדוגמה, `redis/redis` משתמש ב-`unstable` ולא ב-`master`.
+### במחשב החיצוני
 
 ```bash
-# מחשב פנימי, לאחר bundle-import.sh הראשון:
-export GITLAB_TOKEN="glpat-xxxxx"
-./default-branch-set.sh
-# → קורא HEAD מכל bare mirror, מעדכן GitLab project settings
+cp config/external.toml.example config/external.toml
 ```
 
----
+ממלאים שתי תיקיות:
+- `mirrors_dir`: כאן נשמר עותק של כל repo בין סבב לסבב. בזכותו כל העברה כוללת רק את מה שחדש.
+- `transfer_dir`: התיקייה שעוברת בדיסק און קי.
 
-## מגבלות — מה לא מועבר
+אופציונלי, אבל מומלץ: טוקן של GitHub, שמעלה את מגבלת הקריאות מ-60 ל-5,000 בשעה.
 
-| משאב | סיבה | השפעה |
-|---|---|---|
-| **Issues, Pull Requests** | DB של GitHub, לא Git | קישורים יצביעו ל-GitLab אבל התוכן לא שם |
-| **Security Advisories** | DB של GitHub | 16 קישורים — יישארו שבורים |
-| **Wiki** | repo נפרד בגיטהאב | 2 קישורים — דורש mirror נפרד של `<repo>.wiki.git` |
-| **ענפים/תגיות שנמחקו ב-GitHub** | bundle import לא מוחק refs | ישארו ב-GitLab עד bundle מלא הבא |
-| **Release assets היסטוריים** | לפי ה-policy בקונפיג | רק מה שה-policy מגדיר |
-| **`curl`/`kubectl apply -f` ב-code blocks** | JS handler לא נוגע ב-code blocks | קישורים אלה לא משוכתבים בזמן ריצה |
+```bash
+export GITHUB_TOKEN=<token>
+```
 
----
+### במחשב הפנימי
 
-## עדכון `values.yaml`
+```bash
+cp config/internal.toml.example config/internal.toml
+```
 
-לאחר שכל ה-mirrors מוכנים ב-GitLab, מפעילים אותם ב-Helm:
+ממלאים:
+- `mirrors_dir` ו-`transfer_dir`.
+- `gitlab_url`: הכתובת של GitLab.
+- לכל repo, את `gitlab_path`: הנתיב של ה-project ב-GitLab, למשל `redis/mirrors/redis`.
+- `ca_file`: רק אם התעודה של GitLab חתומה על ידי ה-CA של החברה.
+- `git_remote_base`: רק אם רוצים לדחוף ב-SSH במקום ב-HTTPS.
+
+הטוקן של GitLab לא נכתב בקובץ. צריך טוקן עם הרשאת `api`, של משתמש שהוא Maintainer ב-projects, ומגדירים אותו לפני כל ריצה:
+
+```bash
+export GITLAB_TOKEN=<token>
+```
+
+**לפני ה-import הראשון:** כל project צריך להיות קיים ב-GitLab וריק לגמרי, בלי README.
+
+## סבב רגיל
+
+**1. במחשב החיצוני:**
+```bash
+.venv/bin/python -m airgap_mirrors --config config/external.toml export
+```
+
+**2.** מעתיקים את תיקיית ההעברה (`transfer_dir`) לדיסק און קי, ומשם ל-`transfer_dir` של המחשב הפנימי.
+
+**3. במחשב הפנימי:**
+```bash
+export GITLAB_TOKEN=<token>
+.venv/bin/python -m airgap_mirrors --config config/internal.toml import
+```
+
+**4.** מעתיקים את `receipt.json`, שנמצא בתיקיית ההעברה, חזרה ל-`transfer_dir` של המחשב החיצוני.
+
+**5. במחשב החיצוני:**
+```bash
+.venv/bin/python -m airgap_mirrors --config config/external.toml confirm
+```
+
+**6.** מרוקנים את תיקיית ההעברה בשני המחשבים. הסבב הבא ייצור אותה מחדש.
+
+### אפשרויות נוספות
+
+- `--repo <name>`: רק repo אחד. אפשר לחזור על האפשרות כדי לבחור כמה repos.
+- `--skip-releases`: רק git, בלי releases.
+- `--full` (ב-export בלבד): שולח הכול מחדש, ולא רק את מה שהשתנה.
+
+## הורדת קבצי releases
+
+לכל repo ב-`external.toml` אפשר לקבוע אילו releases יורדו עם הקבצים שלהם. ההערות של ה-release עוברות תמיד.
+
+- `assets = "all"`: כל ה-releases. זו ברירת המחדל.
+- `assets = "none"`: בלי קבצים.
+- `assets = "latest:3"`: רק שלושת ה-releases האחרונים.
+- `assets = "since:2026-01-01"`: רק releases מהתאריך הזה והלאה.
+- `asset_filter = ["win", "linux"]`: רק קבצים שהשם שלהם מכיל אחת מהמילים. כך למשל מדלגים על קבצי macOS של Redis Insight.
+
+ב-GitLab, כל קובץ נשמר ב-package registry של ה-project ומקבל כתובת קבועה: `<project>/-/releases/<tag>/downloads/<file>`. לכתובת הזו ה-chart מפנה את קישורי ההורדה בתיעוד.
+
+הגודל המקסימלי של קובץ נקבע בהגדרה `generic_packages_max_file_size` של GitLab, וברירת המחדל שלה היא 5 GB.
+
+## מה עושים כשמשהו נכשל
+
+- **הפקודה מסתיימת בקוד 2:** קובץ ההגדרות שגוי. ההודעה מציינת איזה שדה.
+- **הפקודה מסתיימת בקוד 1:** repo אחד או יותר נכשל. ה-repos האחרים בכל זאת עברו, ושם ה-repo שנכשל מופיע בשורה האחרונה. אפשר להריץ שוב את אותה פקודה: מה שכבר עבר יידלג.
+- **ההודעה "builds on an earlier transfer that never arrived":** סבב קודם לא הגיע ל-GitLab. מעבירים אותו, או מריצים export עם `--full`.
+- **ההודעה "GitLab has no project":** צריך ליצור את ה-project ב-GitLab, ריק.
+- **כדי לראות כל פקודת git וכל קריאת HTTP:** משנים את `level` ל-`"DEBUG"` ב-`config/logging.toml`.
+
+## הפעלת ההפניה ב-Helm
+
+אחרי שה-repos נמצאים ב-GitLab, מפעילים את ההפניה ב-`values.yaml`. השמות זהים לשמות ב-`internal.toml`:
 
 ```yaml
 externalLinks:
   gitMirrors:
-
-    k8s-docs:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/redis-enterprise-k8s-docs
-
-    observability:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/redis-enterprise-observability
-
     redis:
       enabled: true
-      to: https://gitlab.your-company.example/your-group/redis
-
+      to: https://gitlab.<your-company>.example/redis/mirrors/redis
     RediSearch:
       enabled: true
-      to: https://gitlab.your-company.example/your-group/RediSearch
-
-    RedisGraph:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/RedisGraph
-
-    RedisInsight:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/RedisInsight
-
-    RedisTimeSeries:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/RedisTimeSeries
-
-    RedisGears:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/RedisGears
-
-    RedisJSON:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/RedisJSON
-
-    RedisBloom:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/RedisBloom
-
-    redis-py:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/redis-py
-
-    prometheus-operator:
-      enabled: true
-      to: https://gitlab.your-company.example/your-group/prometheus-operator
+      to: https://gitlab.<your-company>.example/redis/mirrors/RediSearch
 ```
 
-```bash
-helm upgrade <release-name> helm/redis-docs/ -f your-values.yaml
-# אין צורך ב-image rebuild — מנגנון ConfigMap בלבד
-```
+לא צריך לבנות image מחדש: השינוי מעדכן ConfigMap בלבד.
 
----
+## הוספת repo
 
-## הוספת repo חדש
+1. מוסיפים entry ב-`helm/redis-docs/files/external-links.yaml`, תחת `git-mirrors:`. ב-`repo` שמים את השם הנוכחי ב-GitHub, וב-`aliases` שמות ישנים שעדיין מפנים אליו.
+2. מוסיפים בלוק `[[repos]]` עם אותו `name` לשני קבצי ה-`.toml.example` ולשני קבצי ה-`.toml` האמיתיים.
+3. יוצרים project ריק ב-GitLab.
 
-```bash
-# מחשב חיצוני:
-git clone --mirror https://github.com/<owner>/<repo> ~/mirrors/<repo>.git
+הבדיקה ב-`helm/tools/test_git_mirrors_catalog.py` מוודאת ששלוש הרשימות זהות.
 
-# העתק ~/mirrors/<repo>.git ל-USB → מחשב פנימי
+## מגבלות
 
-# מחשב פנימי:
-git clone --mirror https://gitlab.your-company.example/your-group/<repo> ~/mirrors/<repo>.git
-cd ~/mirrors/<repo>.git
-git remote add external /path/to/usb/<repo>.git
-git fetch --prune external
-git push --mirror origin
-
-# אתחל state על המחשב החיצוני:
-cd ~/mirrors/<repo>.git
-git config --local sync.synced "$(git rev-parse HEAD)"
-```
-
-הוסף entry ל-`helm/redis-docs/files/external-links.yaml` תחת `git-mirrors:` ועדכן את `values.yaml`.
+- קישורים בתוך בלוקי קוד, כמו `git clone` או `kubectl apply -f https://raw.githubusercontent.com/...`, לא משתנים. ההפניה חלה רק על קישורים לחיצים.
+- אם Redis עושים force push ל-branch הראשי, GitLab ידחה אותו, כי ה-branch הראשי מוגן מפני force push. ה-repo ייכשל בסבב הזה, והשאר ימשיכו.
+- branches של submodules לא מועתקים. הם לא נחוצים בשביל הקישורים, רק בשביל בנייה מקוד מקור.

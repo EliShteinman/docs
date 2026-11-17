@@ -249,7 +249,7 @@ Three ConfigMaps carry runtime configuration; two are always rendered, one follo
   - `aiServices.binder.url` — BinderHub / JupyterHub URL, also used by the Jupyter cell buttons
   - `downloads` — whether the documentation download widget has archives to offer
   - `externalLinks` — the resolved enabled/url for every catalogued external link
-  - `gitMirrors` — the resolved mirror host for every catalogued Git URL
+  - `gitMirrors` — the enabled Git mirrors: each one's repository names and GitLab project URL
 - **`configmap.yaml`** — the nginx `default.conf`. It uses `canonicalURL` to substitute `__DOCS_BASE_URL__` placeholders inside `.md` / `.json` responses at HTTP response time, and proxies `/cli` to the CLI playground service and, when `search.enabled=true`, `/convai/api/search-service` to the search service.
 - **`configmap-cli-acl.yaml`** — the Redis ACL file from `files/sandbox.acl`, mounted into the Redis sidecar. Only with `cli.redis.acl.enabled=true`; see [CLI playground isolation](#cli-playground-isolation).
 
@@ -317,60 +317,58 @@ shown unconditionally and not configurable per deployment.
 
 ### Git mirrors (`externalLinks.gitMirrors`)
 
-A separate mechanism rewrites inline `<a href>` links inside markdown
-content (Grafana dashboard URLs, Prometheus alert configs, repository
-listings, etc.) from the upstream public Git host to an internal mirror.
+Sends links to GitHub repositories to their copies in an internal GitLab. The
+copies are made and kept current by `scripts/airgap-mirrors`; see
+[MIRRORS-SETUP-he.md](../../MIRRORS-SETUP-he.md).
 
-It is **not** part of the `families` / `overrides` system above — those
-target layout elements with `data-external-link="<key>"` attributes
-(home page cards, header strip, footer columns). `gitMirrors` matches by
-URL prefix on the rendered HTML, which is what inline content links need.
+This is separate from the `families` / `overrides` system: those switch layout
+elements marked `data-external-link="<key>"`, while `gitMirrors` rewrites any
+`<a href>` on the page, including links inside content.
 
-Catalog of available mirrors lives at `files/external-links.yaml` under
-`git-mirrors:`. Each entry has a fixed upstream `from` URL — the chart
-ships two entries today:
+`files/external-links.yaml` lists, under `git-mirrors:`, the 28 repositories the
+docs link to most: Redis and its modules, Redis Insight, the Kubernetes operator,
+the observability dashboards, this documentation's own source and the client
+libraries. Each entry has `repo`, its current GitHub owner/name, and `aliases`,
+older names GitHub still redirects. Matching is case-insensitive and on the whole
+owner/name, so `redis/redis` never catches `redis/redis-py`.
 
-| Name | Upstream | Affected docs |
-|---|---|---|
-| `observability` | `https://github.com/redis-field-engineering/redis-enterprise-observability` | 36 inline links across `rs-observability.md`, `rs-prometheus-grafana-quickstart.md`, `prometheus-with-redis-cloud/_index.md` |
-| `k8s-docs` | `https://github.com/RedisLabs/redis-enterprise-k8s-docs` | ~179 inline links across ~89 files under `content/operate/kubernetes/` (operator releases, API reference, manifests, vault, rack-awareness) |
-
-Per-deployment activation is two fields in `values.yaml` per mirror:
+Turn a repository on with two fields per entry:
 
 ```yaml
 externalLinks:
   gitMirrors:
-    observability:
+    redis:
       enabled: true
-      to: "https://gitlab.internal.company.com/redis/group1/group2/observability"
+      to: "https://gitlab.internal.example/redis/mirrors/redis"
     k8s-docs:
       enabled: true
-      to: "https://gitlab.internal.company.com/redis/k8s/redis-enterprise-k8s-docs"
+      to: "https://gitlab.internal.example/redis/mirrors/redis-enterprise-k8s-docs"
 ```
 
-> The handler rewrites only `<a href>` URLs (clickable links). `curl` /
-> `kubectl apply -f` commands inside fenced code blocks that reference
-> `raw.githubusercontent.com/...` are not rewritten — those need a
-> separate build-time substitution if required.
+A repository missing from the catalog can be added in values with
+`repo: <owner>/<name>` (and optional `aliases`); an entry with neither a catalog
+row nor `repo` fails the render rather than being ignored.
 
-The `to` URL is treated as an opaque prefix — provide the full project
-URL including any nested GitLab groups. The runtime handler translates
-GitHub paths (`/blob/<ref>/<path>`, `/tree/<ref>/<path>`, `/raw`,
-`/blame`, `/commits`, `/commit`, `/tags`, `/releases`, `/wiki`,
-`/issues`) to their GitLab equivalents (`/-/blob/...`, `/-/tree/...`,
-etc.) automatically.
+`files/git-mirrors.js` rewrites the links in the browser, including links added
+to the page later:
 
-**Activation is purely Helm-driven**: changing `values.yaml` regenerates
-the runtime ConfigMap (`runtime-config.js`), and the
-`checksum/runtime-config` annotation triggers a rolling restart. No
-image rebuild is required, and the same image can serve different
-mirror URLs per deployment.
+| GitHub | GitLab |
+|---|---|
+| `<repo>`, `/blob/…`, `/tree/…`, `/raw/…`, `/blame/…`, `/commits/…`, `/commit/…`, `/tags`, `/compare/…`, `/branches` | `<to>`, `<to>/-/blob/…` and so on |
+| `/releases` | `<to>/-/releases` |
+| `/releases/tag/<tag>` | `<to>/-/tags/<tag>` |
+| `/releases/latest` | `<to>/-/releases/permalink/latest` |
+| `/releases/download/<tag>/<file>` | `<to>/-/releases/<tag>/downloads/<file>` |
+| `raw.githubusercontent.com/<repo>/<ref>/<path>` | `<to>/-/raw/<ref>/<path>` |
+| `#L10-L20` | `#L10-20` |
 
-**Adding a new mirror** (e.g. another upstream repo referenced from the
-docs) is two steps: add an entry under `git-mirrors:` in the catalog
-with its `from` URL, then opt in per-deployment with `enabled: true`
-and `to: <mirror URL>` in `values.yaml`. No template, handler, or
-Hugo / image change is needed.
+Links to pull requests, issues, discussions, security advisories, the wiki and
+Actions stay on GitHub: a GitLab copy of the repository does not have them.
+Commands inside code blocks (`git clone`, `kubectl apply -f https://raw...`)
+are not links and are not rewritten.
+
+Changing these values regenerates `runtime-config.js` and rolls the pods
+through the `checksum/runtime-config` annotation. No image rebuild is needed.
 
 ### Canonical URL substitution (`canonicalURL`)
 

@@ -28,6 +28,8 @@ dist/
 /scripts/airgap-mirrors/config/external.toml
 /scripts/airgap-mirrors/config/internal.toml
 /scripts/airgap-mirrors/.coverage
+/scripts/airgap-mirrors/.venv/
+/scripts/airgap-mirrors/wheels/
 # Rust docs demos
 /content/develop/use-cases/**/rust/target/
 /content/develop/use-cases/**/rust/Cargo.lock
