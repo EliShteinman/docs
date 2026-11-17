@@ -1,0 +1,17 @@
+# Python logging dictConfig. Set level to "DEBUG" to see every git command and HTTP call.
+version = 1
+disable_existing_loggers = false
+
+[formatters.plain]
+format = "%(asctime)s %(levelname)-8s %(message)s"
+datefmt = "%H:%M:%S"
+
+[handlers.console]
+class = "logging.StreamHandler"
+formatter = "plain"
+stream = "ext://sys.stderr"
+
+[loggers.airgap_mirrors]
+level = "INFO"
+handlers = ["console"]
+propagate = false

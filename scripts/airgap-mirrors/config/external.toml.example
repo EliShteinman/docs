@@ -1,0 +1,135 @@
+# Online machine (the one with internet). Copy to external.toml and edit the two folders.
+# Nothing here may describe the internal network: no GitLab address, no group names, no tokens.
+#
+# A GitHub token is optional but raises GitHub's rate limit from 60 to 5,000 calls an hour:
+#   export GITHUB_TOKEN=<token>        (or: export GITHUB_TOKEN=$(gh auth token))
+
+# A copy of every repository is kept here between runs. It is what makes the next transfer small.
+mirrors_dir = "/home/<user>/airgap/mirrors"
+# The folder that goes on the USB stick.
+transfer_dir = "/home/<user>/airgap/transfer"
+
+github_url = "https://github.com"
+github_api_url = "https://api.github.com"
+http_timeout_seconds = 120
+
+# One block per repository. The names must stay the same as in internal.toml and in
+# helm/redis-docs/files/external-links.yaml (git-mirrors).
+#
+#   assets        which releases get their files downloaded (release notes always come):
+#                 "all" (default), "none", "latest:N", "since:YYYY-MM-DD"
+#   asset_filter  download only files whose name contains one of these words
+
+[[repos]]
+name = "redis"
+github = "redis/redis"
+
+[[repos]]
+name = "RediSearch"
+github = "RediSearch/RediSearch"
+
+[[repos]]
+name = "RedisJSON"
+github = "RedisJSON/RedisJSON"
+
+[[repos]]
+name = "RedisTimeSeries"
+github = "RedisTimeSeries/RedisTimeSeries"
+
+[[repos]]
+name = "RedisBloom"
+github = "RedisBloom/RedisBloom"
+
+[[repos]]
+name = "RedisGears"
+github = "RedisGears/RedisGears"
+
+[[repos]]
+name = "RedisGraph"
+github = "RedisGraph/RedisGraph"
+
+[[repos]]
+name = "RedisInsight"
+github = "redis/RedisInsight"
+assets = "all"
+asset_filter = ["win", "linux"]
+
+[[repos]]
+name = "k8s-docs"
+github = "RedisLabs/redis-enterprise-k8s-docs"
+
+[[repos]]
+name = "observability"
+github = "redis-field-engineering/redis-enterprise-observability"
+
+[[repos]]
+name = "prometheus-operator"
+github = "prometheus-operator/prometheus-operator"
+
+[[repos]]
+name = "docs"
+github = "redis/docs"
+
+[[repos]]
+name = "redis-py"
+github = "redis/redis-py"
+
+[[repos]]
+name = "redis-vl-python"
+github = "redis/redis-vl-python"
+
+[[repos]]
+name = "jedis"
+github = "redis/jedis"
+
+[[repos]]
+name = "lettuce"
+github = "redis/lettuce"
+
+[[repos]]
+name = "node-redis"
+github = "redis/node-redis"
+
+[[repos]]
+name = "ioredis"
+github = "redis/ioredis"
+
+[[repos]]
+name = "go-redis"
+github = "redis/go-redis"
+
+[[repos]]
+name = "rueidis"
+github = "redis/rueidis"
+
+[[repos]]
+name = "NRedisStack"
+github = "redis/NRedisStack"
+
+[[repos]]
+name = "hiredis"
+github = "redis/hiredis"
+
+[[repos]]
+name = "predis"
+github = "predis/predis"
+
+[[repos]]
+name = "redis-om-python"
+github = "redis/redis-om-python"
+
+[[repos]]
+name = "redis-om-node"
+github = "redis/redis-om-node"
+
+[[repos]]
+name = "redis-om-spring"
+github = "redis/redis-om-spring"
+
+[[repos]]
+name = "redis-om-dotnet"
+github = "redis/redis-om-dotnet"
+
+[[repos]]
+name = "memtier_benchmark"
+github = "redis/memtier_benchmark"

@@ -1,0 +1,23 @@
+import logging
+
+from airgap_mirrors.commands.repository_batch import RepositoryBatch
+from airgap_mirrors.external import GitExporter, ReleaseExporter
+from airgap_mirrors.settings import ExternalRepoSpec
+
+logger: logging.Logger = logging.getLogger(__name__)
+
+
+class ExportCommand:
+    def __init__(self, git: GitExporter, releases: ReleaseExporter | None, batch: RepositoryBatch) -> None:
+        self._git: GitExporter = git
+        self._releases: ReleaseExporter | None = releases
+        self._batch: RepositoryBatch = batch
+
+    def run(self, specs: list[ExternalRepoSpec], *, full: bool) -> list[str]:
+        failed: list[str] = self._batch.run("git export", specs, lambda spec: self._git.export(spec, full=full))
+        if self._releases is not None:
+            releases: ReleaseExporter = self._releases
+            failed += self._batch.run("release export", specs, releases.export)
+        if not failed:
+            logger.info("done: copy the transfer folder to the USB stick, then run import on the air-gapped machine")
+        return failed

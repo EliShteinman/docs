@@ -26,6 +26,9 @@ dist/
 # Airgap mirror sync — local config (real values, host names, paths).
 # `mirrors.conf.example` is the tracked template.
 /scripts/airgap-mirrors/mirrors.conf
+/scripts/airgap-mirrors/config/external.toml
+/scripts/airgap-mirrors/config/internal.toml
+/scripts/airgap-mirrors/.coverage
 # Rust docs demos
 /content/develop/use-cases/**/rust/target/
 /content/develop/use-cases/**/rust/Cargo.lock
