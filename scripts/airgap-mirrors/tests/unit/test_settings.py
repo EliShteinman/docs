@@ -4,6 +4,7 @@ import pytest
 
 from airgap_mirrors.exceptions import ConfigurationError
 from airgap_mirrors.settings import (
+    Architecture,
     AssetPolicy,
     AssetPolicyKind,
     ExternalRepoSpec,
@@ -12,6 +13,7 @@ from airgap_mirrors.settings import (
     InternalSettings,
     Platform,
     SettingsLoader,
+    architecture_of,
     pick,
 )
 
@@ -23,6 +25,7 @@ github_api_url = "https://api.github.com"
 http_timeout_seconds = 30
 default_assets = "latest-per-type"
 default_platforms = ["windows", "linux", "redhat"]
+default_architectures = ["x86_64"]
 
 [[repos]]
 name = "redis"
@@ -185,3 +188,37 @@ def test_platform_filter_keeps_wanted_and_neutral_files(file_name: str, wanted: 
 
 def test_no_platforms_keeps_every_file() -> None:
     assert ExternalRepoSpec(name="x", github="o/r", platforms=[]).wants_asset("tool-mac.dmg") is True
+
+
+def test_repository_takes_the_default_architectures(write_config) -> None:
+    settings: ExternalSettings = SettingsLoader().load(write_config(EXTERNAL_TOML), ExternalSettings)
+    assert settings.repos[0].architectures == [Architecture.X86_64]
+
+
+@pytest.mark.parametrize(
+    ("file_name", "architecture"),
+    [
+        ("Redis-Insight-linux-aarch64.rpm", Architecture.ARM64),
+        ("Redis-Insight-linux-amd64.deb", Architecture.X86_64),
+        ("redisctl-x86_64-unknown-linux-musl.tar.xz", Architecture.X86_64),
+        ("tool_bookworm_armhf.deb", Architecture.ARM32),
+        ("tool_bookworm_i386.deb", Architecture.X86_32),
+        ("Redis-Insight-win-installer.exe", None),
+        ("redisctl-installer.sh", None),
+    ],
+)
+def test_architecture_is_read_from_the_file_name(file_name: str, architecture: Architecture | None) -> None:
+    assert architecture_of(file_name) == architecture
+
+
+@pytest.mark.parametrize(
+    ("file_name", "wanted"),
+    [
+        ("Redis-Insight-linux-x86_64.AppImage", True),
+        ("Redis-Insight-linux-arm64.AppImage", False),
+        ("Redis-Insight-win-installer.exe", True),
+    ],
+)
+def test_architecture_filter_keeps_x86_64_and_neutral_files(file_name: str, wanted: bool) -> None:
+    spec: ExternalRepoSpec = ExternalRepoSpec(name="x", github="o/r", architectures=["x86_64"])
+    assert spec.wants_asset(file_name) is wanted

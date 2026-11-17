@@ -3,6 +3,7 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
+_LINE_PREFIX = re.compile(r"^(.*?)v?\d")
 _PRERELEASE_TAG = re.compile(r"(?:^|[.\-_])(?:rc|beta|alpha|preview|m)\d*(?:[.\-_]|$)", re.IGNORECASE)
 
 
@@ -28,6 +29,13 @@ class ReleaseRecord(BaseModel):
     @property
     def title(self) -> str:
         return self.name or self.tag_name
+
+    @property
+    def release_line(self) -> str:
+        """What the tag says before its version number: "redisctl-mcp" for redisctl-mcp-v0.14.0, "" for 8.10.3.
+        One repository can ship several products, each with its own line of releases."""
+        prefix: re.Match[str] | None = _LINE_PREFIX.match(self.tag_name)
+        return (prefix.group(1) if prefix else self.tag_name).rstrip("-_.").lower()
 
     @property
     def is_prerelease(self) -> bool:

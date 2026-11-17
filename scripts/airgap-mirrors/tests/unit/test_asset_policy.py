@@ -64,15 +64,16 @@ def preview(tag: str, published: str, *, flagged: bool = True) -> ReleaseRecord:
 
 
 PER_TYPE: AssetPolicy = AssetPolicy(kind=AssetPolicyKind.LATEST_PER_TYPE)
+DATED: list[ReleaseRecord] = [release for release in RELEASES if release.published_at]
 
 
 def test_per_type_takes_the_newest_stable_and_a_newer_preview() -> None:
-    releases: list[ReleaseRecord] = [*RELEASES, preview("8.12-rc3", "2026-04-01"), preview("8.12-rc2", "2026-03-15")]
+    releases: list[ReleaseRecord] = [*DATED, preview("8.12-rc3", "2026-04-01"), preview("8.12-rc2", "2026-03-15")]
     assert [item.tag_name for item in PER_TYPE.select(releases)] == ["v3", "8.12-rc3"]
 
 
 def test_per_type_drops_a_preview_older_than_the_stable_release() -> None:
-    releases: list[ReleaseRecord] = [*RELEASES, preview("v3-rc1", "2026-02-01")]
+    releases: list[ReleaseRecord] = [*DATED, preview("v3-rc1", "2026-02-01")]
     assert [item.tag_name for item in PER_TYPE.select(releases)] == ["v3"]
 
 
@@ -94,3 +95,26 @@ def test_per_type_takes_the_preview_alone_when_nothing_is_stable() -> None:
 )
 def test_preview_is_recognised_by_its_tag(tag: str, expected: bool) -> None:
     assert preview(tag, "2026-01-01", flagged=False).is_prerelease is expected
+
+
+def test_per_type_keeps_each_release_line_separately() -> None:
+    releases: list[ReleaseRecord] = [
+        preview("redisctl-v0.14.0", "2026-11-09", flagged=False),
+        preview("redisctl-mcp-v0.14.0", "2026-11-09", flagged=False),
+        preview("redisctl-v0.13.0", "2026-10-23", flagged=False),
+        preview("redisctl-mcp-v0.13.0", "2026-10-23", flagged=False),
+    ]
+    assert sorted(item.tag_name for item in PER_TYPE.select(releases)) == ["redisctl-mcp-v0.14.0", "redisctl-v0.14.0"]
+
+
+@pytest.mark.parametrize(
+    ("tag", "line"),
+    [("redisctl-v0.14.0", "redisctl"), ("redisctl-mcp-v0.14.0", "redisctl-mcp"), ("8.12-rc3", ""), ("v0.95.2", "")],
+)
+def test_release_line_is_the_tag_before_its_version(tag: str, line: str) -> None:
+    assert ReleaseRecord(tag_name=tag).release_line == line
+
+
+def test_per_type_treats_a_tag_without_a_version_as_its_own_type() -> None:
+    releases: list[ReleaseRecord] = [*DATED, preview("nightly", "2026-01-15", flagged=False)]
+    assert [item.tag_name for item in PER_TYPE.select(releases)] == ["v3", "nightly"]

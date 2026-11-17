@@ -4,6 +4,7 @@ from typing import Annotated
 from pydantic import AliasChoices, BeforeValidator, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from airgap_mirrors.settings.architecture import Architecture
 from airgap_mirrors.settings.asset_policy import AssetPolicy
 from airgap_mirrors.settings.platform import Platform
 from airgap_mirrors.settings.repo_list import require_unique_names
@@ -23,6 +24,7 @@ class ExternalSettings(BaseSettings):
     github_token: SecretStr | None = Field(default=None, validation_alias=AliasChoices("GITHUB_TOKEN"))
     default_assets: Annotated[AssetPolicy, BeforeValidator(AssetPolicy.from_text)]
     default_platforms: list[Platform] = Field(default_factory=list)
+    default_architectures: list[Architecture] = Field(default_factory=list)
     repos: list[ExternalRepoSpec] = Field(min_length=1)
 
     @field_validator("repos")
@@ -32,7 +34,10 @@ class ExternalSettings(BaseSettings):
 
     @model_validator(mode="after")
     def _apply_defaults(self) -> "ExternalSettings":
-        self.repos = [spec.with_defaults(self.default_assets, self.default_platforms) for spec in self.repos]
+        self.repos = [
+            spec.with_defaults(self.default_assets, self.default_platforms, self.default_architectures)
+            for spec in self.repos
+        ]
         return self
 
     def upstream_url(self, spec: ExternalRepoSpec) -> str:

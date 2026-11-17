@@ -20,7 +20,10 @@ class AssetPolicyKind(StrEnum):
 
 
 class AssetPolicy(BaseModel):
-    """Which releases get their files downloaded. Release notes are always copied."""
+    """Which releases get their files downloaded. Release notes are always copied.
+
+    latest-per-type works per release line (the tag before its version, so redisctl and redisctl-mcp are
+    two lines) and, within a line, per type: the newest stable release and a newer pre-release."""
 
     model_config = ConfigDict(frozen=True)
 
@@ -57,7 +60,7 @@ class AssetPolicy(BaseModel):
         if self.kind is AssetPolicyKind.NONE:
             return []
         if self.kind is AssetPolicyKind.LATEST_PER_TYPE:
-            return _newest_stable_and_newer_prerelease(releases)
+            return [chosen for line in _by_line(releases) for chosen in _newest_stable_and_newer_prerelease(line)]
         if self.kind is AssetPolicyKind.LATEST:
             newest_first: list[ReleaseRecord] = sorted(releases, key=_published, reverse=True)
             return newest_first[: self.count]
@@ -79,3 +82,10 @@ def _newest_stable_and_newer_prerelease(releases: list[ReleaseRecord]) -> list[R
     if newest_preview and (newest_stable is None or _published(newest_preview) > _published(newest_stable)):
         chosen.append(newest_preview)
     return chosen
+
+
+def _by_line(releases: list[ReleaseRecord]) -> list[list[ReleaseRecord]]:
+    lines: dict[str, list[ReleaseRecord]] = {}
+    for release in releases:
+        lines.setdefault(release.release_line, []).append(release)
+    return list(lines.values())

@@ -68,7 +68,10 @@ def machines(
     monkeypatch.setenv("GITLAB_TOKEN", TOKEN)
     github_server.add_release("redis/redis", "7.4.0", "2025-01-01T00:00:00Z", {"redis-7.4.0.tar.gz": b"old"})
     github_server.add_release(
-        "redis/redis", "8.0.0", "2026-01-01T00:00:00Z", {"redis-8.0.0.tar.gz": b"tarball", "redis-8.0.0-mac.dmg": b"m"}
+        "redis/redis",
+        "8.0.0",
+        "2026-01-01T00:00:00Z",
+        {"redis-8.0.0.tar.gz": b"tarball", "redis-8.0.0-mac.dmg": b"m", "redis-8.0.0-linux-arm64.tar.gz": b"a"},
     )
     online: Path = tmp_path / "external.toml"
     online.write_text(
@@ -78,7 +81,8 @@ def machines(
         f'github_api_url = "{github_server.server.url}"\n'
         "http_timeout_seconds = 10\n"
         'default_assets = "latest-per-type"\n'
-        'default_platforms = ["windows", "linux", "redhat"]\n\n'
+        'default_platforms = ["windows", "linux", "redhat"]\n'
+        'default_architectures = ["x86_64"]\n\n'
         '[[repos]]\nname = "redis"\ngithub = "redis/redis"\n'
     )
     airgap: Path = tmp_path / "internal.toml"
@@ -132,6 +136,10 @@ def test_older_release_files_stay_behind(transferred: Machines, project: FakePro
 
 def test_files_for_unwanted_platforms_stay_behind(transferred: Machines, project: FakeProject) -> None:
     assert "release-assets/8.0.0/redis-8.0.0-mac.dmg" not in project.packages
+
+
+def test_files_for_unwanted_architectures_stay_behind(transferred: Machines, project: FakeProject) -> None:
+    assert "release-assets/8.0.0/redis-8.0.0-linux-arm64.tar.gz" not in project.packages
 
 
 def test_older_release_notes_still_come(transferred: Machines, project: FakeProject) -> None:

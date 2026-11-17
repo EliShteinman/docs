@@ -131,3 +131,7 @@ gitlab_path = "<your-group>/redis-om-dotnet"
 [[repos]]
 name = "memtier_benchmark"
 gitlab_path = "<your-group>/memtier_benchmark"
+
+[[repos]]
+name = "redisctl"
+gitlab_path = "<your-group>/redisctl"

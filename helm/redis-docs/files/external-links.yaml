@@ -502,3 +502,10 @@ git-mirrors:
     aliases: ["RedisLabs/memtier_benchmark"]
     enabled: false
     to: ""
+
+  redisctl:
+    description: "Command-line tool for Redis Cloud and Redis Software"
+    repo: "redis/redisctl"
+    aliases: ["joshrotenberg/redisctl", "redis-developer/redisctl"]
+    enabled: false
+    to: ""

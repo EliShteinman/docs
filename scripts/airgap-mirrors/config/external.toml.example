@@ -26,8 +26,14 @@ http_timeout_seconds = 120
 #                      "redhat" (rpm, el8/el9/el10), "amazon", "macos".
 #                      Files that name no platform (source archives, jars, YAML) always come.
 #                      Leave empty for every platform.
+#   default_architectures  which processors' files: "x86_64", "arm64", "arm32", "x86_32".
+#                      Files that name no processor (a Windows installer, a script) always come.
+#
+# "Type" in latest-per-type is the tag's prefix and stable versus pre-release: redis/redisctl ships
+# redisctl-v*, redisctl-mcp-v* and redisctl-core-v*, so each of the three gets its newest release.
 default_assets = "latest-per-type"
 default_platforms = ["windows", "linux", "redhat"]
+default_architectures = ["x86_64"]
 
 # One block per repository. The names must stay the same as in internal.toml and in
 # helm/redis-docs/files/external-links.yaml (git-mirrors).
@@ -145,3 +151,7 @@ github = "redis/redis-om-dotnet"
 [[repos]]
 name = "memtier_benchmark"
 github = "redis/memtier_benchmark"
+
+[[repos]]
+name = "redisctl"
+github = "redis/redisctl"
