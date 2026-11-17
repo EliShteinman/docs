@@ -230,10 +230,11 @@ git add mirror/site && git commit -m "chore(mirror): sync with redis.io"
 
 **`/glossary/`** הוא המילון של התיעוד; המונחים שמתחתיו (`/glossary/<term>/`) מגיעים מהמירור.
 
-**רשימות הבלוג** (`feeds.py`): עמוד הבלוג, כל קטגוריה וכל מחבר מציגים 21 פוסטים וטוענים את
-השאר בגלילה מ-`/api/blog/feed`, `/api/blog/category` ו-`/api/blog/author`. כל batch נשמר כקובץ
-ב-`_feed/<רשימה>/<start>.json`, וה-nginx של ה-pod עונה לפי `start`. הן יורדות במקביל, ונלקחות
-מהדיסק כשאף עמוד לא השתנה.
+**רשימות הבלוג:** עמוד הבלוג וכל קטגוריה מחולקים לעמודים ממוספרים (`/blog/page/<n>/`,
+`/blog/category/<slug>/page/<n>/`). ה-sitemap מפרט רק את הראשון, אז `listing_pages.py` מוצא את
+השאר מקישורי הדפדוף שלו, והם יורדים בכל ריצה. עמוד מחבר מציג 21 פוסטים וטוען את השאר בגלילה
+מ-`/api/blog/author` (`feeds.py`): כל batch נשמר כקובץ ב-`_feed/author/<slug>/<start>.json`,
+וה-nginx של ה-pod עונה לפי `start`. ה-batches נלקחים מהדיסק כשאף עמוד לא השתנה.
 
 **חיפוש:** `mirror/site/mirror.ndjson`, באותו מבנה של הפיד של התיעוד (כולל `sections`, שממנו
 שירות החיפוש מאנדקס). הטקסט הוא ה-Markdown של העמוד, ובסקשנים ש-redis.io לא מפרסם להם Markdown

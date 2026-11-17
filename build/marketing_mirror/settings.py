@@ -35,9 +35,11 @@ EXCLUDED_PAGES: frozenset[str] = frozenset({"/glossary/"})
 OUTPUT_DIR = Path("mirror")
 SITE_DIR = OUTPUT_DIR / "site"
 FEED_NAME = "mirror.ndjson"
-# The blog's listing batches (feeds.py), and how many posts redis.io sends per batch.
+# The author pages' listing batches (feeds.py), and how many posts redis.io sends per batch.
 FEED_DIR = "_feed"
 FEED_BATCH = 21
+# The blog's first listing page; its numbered pages follow it (listing_pages.py).
+BLOG_INDEX = "/blog/"
 SITEMAP_NAME = "sitemap.xml"
 
 SANITY_CDN = "https://cdn.sanity.io"

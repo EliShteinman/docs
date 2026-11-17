@@ -23,13 +23,14 @@ import argparse
 import logging
 import shutil
 import sys
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from build.marketing_mirror import (
     blog_search,
     feed,
     feeds,
+    listing_pages,
     manifest,
     pages,
     rewrite,
@@ -79,6 +80,49 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
+class PageRun:
+    """Pages captured in parallel, and what became of each."""
+
+    def __init__(self, mirror: pages.PageMirror, workers: int) -> None:
+        self._mirror = mirror
+        self._workers = workers
+        self.fetched = 0
+        self.failed: list[str] = []
+        self.moved: list[str] = []
+
+    def capture(self, dated: dict[str, str]) -> None:
+        with ThreadPoolExecutor(max_workers=self._workers) as pool:
+            futures = {
+                pool.submit(self._mirror.capture, path, lastmod): path
+                for path, lastmod in dated.items()
+            }
+            for done, future in enumerate(as_completed(futures), start=1):
+                self._settle(futures[future], future)
+                if done % 100 == 0:
+                    LOGGER.info("%d/%d pages", done, len(dated))
+
+    def _settle(self, path: str, future: Future[bool]) -> None:
+        try:
+            self.fetched += future.result()
+        except Moved as error:
+            self.moved.append(path)
+            LOGGER.info("page not mirrored, redis.io moved it: %s", error)
+        except (FetchError, ValueError) as error:
+            self.failed.append(path)
+            LOGGER.error("page not mirrored: %s", error)
+
+
+def numbered_pages(staging: Path, paths: list[str]) -> dict[str, str]:
+    """Each captured listing's numbered pages, undated so every run fetches them."""
+    found: dict[str, str] = {}
+    for path in filter(listing_pages.is_listing, paths):
+        first = pages.html_file(staging, path)
+        if first.is_file():
+            html = first.read_text(encoding="utf-8")
+            found |= dict.fromkeys(listing_pages.numbered_pages(path, html), "")
+    return found
+
+
 def capture(
     dated: dict[str, str],
     staging: Path,
@@ -91,35 +135,24 @@ def capture(
     embeds = EmbedMirror(fetcher, staging)
     embeds.write_unavailable_page()
     mirror = pages.PageMirror(fetcher, assets, embeds, staging, previous_dir, previous)
+    run = PageRun(mirror, workers)
+    run.capture(dated)
+    numbered = numbered_pages(staging, list(dated))
+    LOGGER.info("%d numbered blog listing pages", len(numbered))
+    run.capture(numbered)
+    dated = dated | numbered
     paths = list(dated)
-    failed: list[str] = []
-    moved: list[str] = []
-    fetched = 0
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        futures = {
-            pool.submit(mirror.capture, path, dated[path]): path for path in paths
-        }
-        for done, future in enumerate(as_completed(futures), start=1):
-            try:
-                fetched += future.result()
-            except Moved as error:
-                moved.append(futures[future])
-                LOGGER.info("page not mirrored, redis.io moved it: %s", error)
-            except (FetchError, ValueError) as error:
-                failed.append(futures[future])
-                LOGGER.error("page not mirrored: %s", error)
-            if done % 100 == 0:
-                LOGGER.info("%d/%d pages", done, len(paths))
+    failed, moved, fetched = run.failed, run.moved, run.fetched
     # Moved pages are in the sitemap but never in a manifest, so the comparison
     # is over the pages this run keeps.
     kept_dates = {path: dated[path] for path in paths if path not in moved}
-    unchanged = fetched == 0 and not failed and previous.pages == kept_dates
+    unchanged = fetched == len(numbered) and not failed and previous.pages == kept_dates
     if unchanged and previous_dir is not None and feeds.complete(previous_dir):
         batches = feeds.reuse(previous_dir, staging, assets)
-        LOGGER.info("%d blog listing batches, from disk", batches)
+        LOGGER.info("%d author listing batches, from disk", batches)
     else:
         batches = FeedMirror(fetcher, assets, staging).capture_all(paths)
-        LOGGER.info("%d blog listing batches", batches)
+        LOGGER.info("%d author listing batches", batches)
     LOGGER.info("blog search page knows %d posts", blog_search.write(staging))
     _verify(paths, failed, assets)
     LOGGER.info("%d embedded files", embeds.count)

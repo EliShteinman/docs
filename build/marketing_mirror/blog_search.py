@@ -10,8 +10,9 @@ one static page instead, answered from this site's own search service:
     reads ?s=, asks the search service for blog posts only, and draws a row
     for each by copying the page's own first row.
   * _mirror/blog-posts.json -- what a row shows beyond a title: date,
-    categories and authors, for every post, taken from the listing batches
-    (feeds.py captures the blog index's from 0, so they hold every post).
+    categories and authors, for every post, read from the Next.js payload of
+    the blog index and its numbered pages (listing_pages.py), which together
+    hold every post.
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ import json
 import re
 from pathlib import Path
 
-from build.marketing_mirror import settings
+from build.marketing_mirror import rewrite, settings
 
 SEARCH_PAGE = Path("blog") / "search" / "index.html"
 POSTS_INDEX = Path("_mirror") / "blog-posts.json"
@@ -29,6 +30,8 @@ SEARCH_SCRIPT = "/_mirror/blog-search.js"
 _SCRIPT_TAG = re.compile(r"<script\b[^>]*>.*?</script>", re.DOTALL)
 _SCRIPT_PRELOAD = re.compile(r'<link\b[^>]*\bas="script"[^>]*/?>')
 _ASSET_ID = re.compile(r"image-([0-9a-f]+)-(\d+x\d+)-(\w+)$")
+# Where a post's object opens in the payload: Sanity sends its keys sorted.
+_POST_OPEN = re.compile(r'\{"_createdAt":')
 
 
 def image_url(asset_id: str) -> str:
@@ -57,11 +60,33 @@ def post_summary(post: dict) -> dict[str, object]:
     }
 
 
+def _listing_pages(site_dir: Path) -> list[Path]:
+    blog = site_dir / "blog"
+    return [blog / "index.html", *sorted((blog / "page").glob("*/index.html"))]
+
+
+def payload_posts(html: str) -> list[dict]:
+    """Every blog post object in a page's Next.js payload."""
+    payload = rewrite.next_payload(html)
+    decoder = json.JSONDecoder()
+    posts: list[dict] = []
+    for match in _POST_OPEN.finditer(payload):
+        try:
+            found, _ = decoder.raw_decode(payload, match.start())
+        except json.JSONDecodeError:
+            continue
+        if "publishDate" in found and "pathname" in found:
+            posts.append(found)
+    return posts
+
+
 def posts_index(site_dir: Path) -> dict[str, dict[str, object]]:
-    """Every blog post the listing batches hold, by its path with a trailing slash."""
+    """Every blog post the listing pages hold, by its path with a trailing slash."""
     posts: dict[str, dict[str, object]] = {}
-    for batch in sorted((site_dir / settings.FEED_DIR / "blog").glob("*.json")):
-        for post in json.loads(batch.read_text(encoding="utf-8")).get("posts") or []:
+    for page in _listing_pages(site_dir):
+        if not page.is_file():
+            continue
+        for post in payload_posts(page.read_text(encoding="utf-8")):
             path = (post.get("pathname") or "").rstrip("/") + "/"
             if path != "/":
                 posts[path] = post_summary(post)

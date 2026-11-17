@@ -187,6 +187,11 @@ def _without_tracker_elements(payload: str) -> str:
     return "".join(kept)
 
 
+def next_payload(html: str) -> str:
+    """The page's Next.js payload, its strings decoded and joined in order."""
+    return "".join(json.loads(match.group(2)) for match in _PAYLOAD_PUSH.finditer(html))
+
+
 def strip_tracker_elements(html: str) -> str:
     """The page without settings.TRACKING_ELEMENTS in its Next.js payload. A
     payload string is touched only when it reads back exactly as Next.js

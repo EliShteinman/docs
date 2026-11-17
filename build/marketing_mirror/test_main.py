@@ -5,6 +5,7 @@ from build.marketing_mirror import manifest
 from build.marketing_mirror.__main__ import (
     CaptureFailed,
     _verify,
+    numbered_pages,
     replace,
     rewrite_on_disk,
 )
@@ -104,3 +105,26 @@ def test_rewrite_on_disk_patches_a_chunk_on_disk(site_on_disk):
     chunk.write_bytes(pattern)
     rewrite_on_disk(site_on_disk)
     assert chunk.read_bytes() == replacement
+
+
+def _first_page(site, path: str, html: str) -> None:
+    html_file(site, path).parent.mkdir(parents=True, exist_ok=True)
+    html_file(site, path).write_text(html)
+
+
+def test_numbered_pages_come_from_each_listings_first_page(tmp_path):
+    _first_page(
+        tmp_path, "/blog/category/news/", '<a href="/blog/category/news/page/2/">'
+    )
+    assert numbered_pages(tmp_path, ["/blog/category/news/"]) == {
+        "/blog/category/news/page/2/": ""
+    }
+
+
+def test_numbered_pages_skip_a_listing_that_was_not_captured(tmp_path):
+    assert numbered_pages(tmp_path, ["/blog/"]) == {}
+
+
+def test_numbered_pages_skip_a_post(tmp_path):
+    _first_page(tmp_path, "/blog/a-post/", '<a href="/blog/a-post/page/2/">')
+    assert numbered_pages(tmp_path, ["/blog/a-post/"]) == {}

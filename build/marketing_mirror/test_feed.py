@@ -148,7 +148,14 @@ def test_a_record_from_html_takes_its_date_from_the_sitemap(html_site):
 
 
 @pytest.mark.parametrize(
-    "path", ["/blog/", "/blog/category/tech/", "/blog/author/a/", "/blog/search/"]
+    "path",
+    [
+        "/blog/",
+        "/blog/category/tech/",
+        "/blog/author/a/",
+        "/blog/search/",
+        "/blog/page/2/",
+    ],
 )
 def test_a_listing_is_not_indexed(path):
     assert feed.is_listing(path)

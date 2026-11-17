@@ -85,7 +85,9 @@ def record(path: str, markdown: str, page_html: str) -> dict[str, object]:
 def is_listing(path: str) -> bool:
     if path in settings.SECTIONS:
         return True
-    return path.startswith(("/blog/category/", "/blog/author/", "/blog/search/"))
+    return path.startswith(
+        ("/blog/category/", "/blog/author/", "/blog/search/", "/blog/page/")
+    )
 
 
 def html_record(path: str, page_html: str, lastmod: str) -> dict[str, object]:

@@ -1,22 +1,17 @@
-"""The blog's listings past their first screen.
+"""The blog's author pages past their first screen.
 
-The blog index, each category page and each author page render their first
-posts and fetch the rest as the reader scrolls, 21 at a time, from redis.io's
-own API:
+An author page renders its first posts and fetches the rest as the reader
+scrolls, 21 at a time, from redis.io's own API:
 
-    /api/blog/feed?start=21&end=42&language=en
-    /api/blog/category?start=21&end=42&language=en&pathname=/blog/category/tech/&slug=tech
     /api/blog/author?start=21&end=42&slug=/<author>/
 
-Nothing answers those here, so every batch is captured as a file --
-_feed/blog/<start>.json, _feed/category/<slug>/<start>.json,
+Nothing answers that here, so every batch is captured as a file --
 _feed/author/<slug>/<start>.json -- and the mirror pod's nginx answers each
 request from the file its `start` names (runtime/nginx.conf). A listing is
 walked until a batch comes back empty or the total redis.io reports is reached.
 
-The blog index is also captured from 0, which the page itself never asks for:
-together its batches hold every post, which is what the blog's search page
-reads its rows from (blog_search.py).
+The blog index and the category pages are numbered pages instead, each one a
+page of its own (listing_pages.py).
 
 One new, removed or edited post shifts every batch after it, so the batches
 are refetched whenever any page is; a run that fetches no page takes them from
@@ -38,7 +33,6 @@ from build.marketing_mirror.fetcher import Fetcher
 
 LOGGER = logging.getLogger("marketing_mirror")
 
-CATEGORY_PREFIX = "/blog/category/"
 AUTHOR_PREFIX = "/blog/author/"
 
 
@@ -47,7 +41,6 @@ class Listing:
     name: str
     endpoint: str
     query: dict[str, str]
-    first_start: int = settings.FEED_BATCH
 
 
 def batch_file(site_dir: Path, listing: str, start: int) -> Path:
@@ -60,31 +53,33 @@ def _slug(path: str, prefix: str) -> str:
 
 
 def listings(page_paths: list[str]) -> list[Listing]:
-    """Each listing to walk: where its files go, and the query redis.io sends for it."""
-    found = [Listing("blog", "feed", {"language": "en"}, first_start=0)]
-    for path in page_paths:
-        if slug := _slug(path, CATEGORY_PREFIX):
-            query = {"language": "en", "pathname": path, "slug": slug}
-            found.append(Listing(f"category/{slug}", "category", query))
-        elif slug := _slug(path, AUTHOR_PREFIX):
-            # The author page sends its slug wrapped in slashes, and the API
-            # answers nothing for the bare one.
-            found.append(Listing(f"author/{slug}", "author", {"slug": f"/{slug}/"}))
-    return found
+    """Each author listing to walk: where its files go, and the query redis.io sends for it."""
+    # The author page sends its slug wrapped in slashes, and the API answers
+    # nothing for the bare one.
+    return [
+        Listing(f"author/{slug}", "author", {"slug": f"/{slug}/"})
+        for path in page_paths
+        if (slug := _slug(path, AUTHOR_PREFIX))
+    ]
+
+
+def _batches(site_dir: Path) -> list[Path]:
+    return sorted((site_dir / settings.FEED_DIR / "author").rglob("*.json"))
 
 
 def complete(site_dir: Path) -> bool:
     """Whether a tree's batches were captured the way this module captures them now.
 
-    The blog index's batch from 0 is the newest part of that layout; a tree
-    without it predates it, and reusing its batches would carry the gap on.
+    A tree with the blog index's batches predates the numbered listing pages;
+    its author batches are refetched rather than carried on.
     """
-    return batch_file(site_dir, "blog", 0).is_file()
+    feed_dir = site_dir / settings.FEED_DIR
+    return (feed_dir / "author").is_dir() and not (feed_dir / "blog").exists()
 
 
 def reuse(previous_dir: Path, site_dir: Path, assets: AssetStore) -> int:
     """Take the previous run's batches, and the images they name. Returns how many."""
-    batches = sorted((previous_dir / settings.FEED_DIR).rglob("*.json"))
+    batches = _batches(previous_dir)
     for batch in batches:
         place(batch, site_dir / batch.relative_to(previous_dir))
         assets.add_sanity(rewrite.sanity_assets(batch.read_text(encoding="utf-8")))
@@ -104,14 +99,14 @@ class FeedMirror:
 
         Returns how many batches were written. A listing's own batches stay in
         order -- each needs the one before it to know where to stop -- but the
-        300 listings do not depend on each other.
+        listings do not depend on each other.
         """
         with ThreadPoolExecutor(max_workers=workers) as pool:
             return sum(pool.map(self.capture, listings(page_paths)))
 
     def capture(self, listing: Listing) -> int:
         written = 0
-        start = listing.first_start
+        start = settings.FEED_BATCH
         while True:
             query = {
                 "start": str(start),

@@ -2,9 +2,10 @@ import json
 
 import pytest
 
-from build.marketing_mirror import blog_search, feeds
+from build.marketing_mirror import blog_search
 
 POST = {
+    "_createdAt": "2026-09-22T10:00:00Z",
     "pathname": "/blog/a-post",
     "title": "A post",
     "publishDate": "2026-09-23",
@@ -25,12 +26,28 @@ INDEX = (
 )
 
 
+def _pushes(*posts: dict) -> str:
+    """A Next.js payload carrying the posts, split over two pushes."""
+    payload = '1:["$","div",null,{"posts":' + json.dumps(list(posts)) + "}]"
+    middle = len(payload) // 2
+    return "".join(
+        f"<script>self.__next_f.push([1,{json.dumps(part)}])</script>"
+        for part in (payload[:middle], payload[middle:])
+    )
+
+
+def _listing_page(*posts: dict) -> str:
+    return f"<html><head></head><body>{_pushes(*posts)}</body></html>"
+
+
+def _write_page(site, path: str, html: str) -> None:
+    (site / path).mkdir(parents=True, exist_ok=True)
+    (site / path / "index.html").write_text(html)
+
+
 @pytest.fixture
 def site(tmp_path):
-    feeds.batch_file(tmp_path, "blog", 0).parent.mkdir(parents=True)
-    feeds.batch_file(tmp_path, "blog", 0).write_text(json.dumps({"posts": [POST]}))
-    (tmp_path / "blog").mkdir()
-    (tmp_path / "blog" / "index.html").write_text(INDEX)
+    _write_page(tmp_path, "blog", INDEX.replace("</body>", _pushes(POST) + "</body>"))
     return tmp_path
 
 
@@ -77,3 +94,18 @@ def test_write_reports_how_many_posts_it_knows(site):
 
 def test_an_id_that_is_not_an_image_has_no_url():
     assert blog_search.image_url("file-abc-pdf") == ""
+
+
+def test_the_posts_index_reads_the_numbered_pages_too(site):
+    second = dict(POST, pathname="/blog/another-post")
+    _write_page(site, "blog/page/2", _listing_page(second))
+    assert "/blog/another-post/" in blog_search.posts_index(site)
+
+
+def test_payload_posts_skip_objects_that_are_not_posts():
+    author = {"_createdAt": "2020-01-01T00:00:00Z", "firstName": "Ada"}
+    assert blog_search.payload_posts(_listing_page(author)) == []
+
+
+def test_payload_posts_read_a_post_split_across_pushes():
+    assert blog_search.payload_posts(_listing_page(POST)) == [POST]
