@@ -1111,8 +1111,19 @@ jobs:
 
       # These need docker for a real Redis with the bundled modules, which the
       # runner has, and the full content/ tree the checkout above provides.
-      - name: Run the CLI proxy, search, ACL and Try it gate tests
+      - name: Run the CLI proxy, search, ACL, Try it gate and git-mirror link tests
         run: python -m pytest helm/cli-proxy helm/search helm/tools -q
+
+      # The GitHub-to-GitLab transfer tool, in its own venv: it pins its own
+      # pytest. Its tests run real git against throwaway local repositories and
+      # stand-in GitHub and GitLab servers on localhost.
+      - name: Run the air-gap Git transfer tool tests
+        working-directory: scripts/airgap-mirrors
+        run: |
+          python -m venv /tmp/airgap-mirrors-venv
+          /tmp/airgap-mirrors-venv/bin/pip install --quiet -r requirements-dev.txt
+          /tmp/airgap-mirrors-venv/bin/ruff check .
+          /tmp/airgap-mirrors-venv/bin/python -m pytest -q --cov
 
       # build/jupyterize is left out: it imports nbformat, which no
       # requirements file in this repo declares. test_every_product_is_offered
