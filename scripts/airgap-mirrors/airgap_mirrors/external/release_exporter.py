@@ -25,7 +25,7 @@ class ReleaseExporter:
         self._store.save(
             self._layout.releases_file(spec.name), ReleaseCatalog(repository=spec.github, releases=releases)
         )
-        downloaded: int = sum(self._download_files(spec, release) for release in spec.assets.select(releases))
+        downloaded: int = sum(self._download_files(spec, release) for release in spec.asset_policy.select(releases))
         logger.info("%s: %d releases, %d files downloaded", spec.name, len(releases), downloaded)
         return downloaded
 

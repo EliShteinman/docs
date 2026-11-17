@@ -1,6 +1,9 @@
+import re
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
+
+_PRERELEASE_TAG = re.compile(r"(?:^|[.\-_])(?:rc|beta|alpha|preview|m)\d*(?:[.\-_]|$)", re.IGNORECASE)
 
 
 class ReleaseAsset(BaseModel):
@@ -25,6 +28,11 @@ class ReleaseRecord(BaseModel):
     @property
     def title(self) -> str:
         return self.name or self.tag_name
+
+    @property
+    def is_prerelease(self) -> bool:
+        """Marked as a pre-release on GitHub, or named like one (8.12-rc3, 2.0.0-beta1, 6.2.0.M1)."""
+        return self.prerelease or bool(_PRERELEASE_TAG.search(self.tag_name))
 
 
 class ReleaseCatalog(BaseModel):

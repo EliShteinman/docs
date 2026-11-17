@@ -66,6 +66,7 @@ def external_settings(tmp_path: Path, github_root: Path) -> Callable[..., Extern
             github_url=github_root.as_uri(),
             github_api_url=github_api_url,
             http_timeout_seconds=10,
+            default_assets="all",
             repos=repos,
         )
 

@@ -15,6 +15,7 @@ class AssetPolicyKind(StrEnum):
     ALL = "all"
     NONE = "none"
     LATEST = "latest"
+    LATEST_PER_TYPE = "latest-per-type"
     SINCE = "since"
 
 
@@ -40,19 +41,23 @@ class AssetPolicy(BaseModel):
         if not isinstance(value, str):
             return value
         text: str = value.strip().lower()
-        if text in (AssetPolicyKind.ALL, AssetPolicyKind.NONE):
+        if text in (AssetPolicyKind.ALL, AssetPolicyKind.NONE, AssetPolicyKind.LATEST_PER_TYPE):
             return cls(kind=AssetPolicyKind(text))
         if latest := _LATEST.match(text):
             return cls(kind=AssetPolicyKind.LATEST, count=int(latest.group(1)))
         if since := _SINCE.match(text):
             return cls(kind=AssetPolicyKind.SINCE, since=date.fromisoformat(since.group(1)))
-        raise ValueError(f"unknown asset policy {value!r}: use all, none, latest:N or since:YYYY-MM-DD")
+        raise ValueError(
+            f"unknown asset policy {value!r}: use all, none, latest-per-type, latest:N or since:YYYY-MM-DD"
+        )
 
     def select(self, releases: list[ReleaseRecord]) -> list[ReleaseRecord]:
         if self.kind is AssetPolicyKind.ALL:
             return list(releases)
         if self.kind is AssetPolicyKind.NONE:
             return []
+        if self.kind is AssetPolicyKind.LATEST_PER_TYPE:
+            return _newest_stable_and_newer_prerelease(releases)
         if self.kind is AssetPolicyKind.LATEST:
             newest_first: list[ReleaseRecord] = sorted(releases, key=_published, reverse=True)
             return newest_first[: self.count]
@@ -61,3 +66,16 @@ class AssetPolicy(BaseModel):
 
 def _published(release: ReleaseRecord) -> datetime:
     return release.published_at or _OLDEST
+
+
+def _newest_stable_and_newer_prerelease(releases: list[ReleaseRecord]) -> list[ReleaseRecord]:
+    """The newest stable release, plus the newest pre-release when it is newer than that stable one.
+    An older pre-release has already turned into a stable release, so its files are not needed."""
+    stable: list[ReleaseRecord] = [release for release in releases if not release.is_prerelease]
+    previews: list[ReleaseRecord] = [release for release in releases if release.is_prerelease]
+    newest_stable: ReleaseRecord | None = max(stable, key=_published, default=None)
+    newest_preview: ReleaseRecord | None = max(previews, key=_published, default=None)
+    chosen: list[ReleaseRecord] = [newest_stable] if newest_stable else []
+    if newest_preview and (newest_stable is None or _published(newest_preview) > _published(newest_stable)):
+        chosen.append(newest_preview)
+    return chosen

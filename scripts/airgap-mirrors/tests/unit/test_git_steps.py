@@ -52,6 +52,7 @@ def exporter(tmp_path: Path, repository: MagicMock) -> GitExporter:
         github_url="https://github.com",
         github_api_url="https://api.github.com",
         http_timeout_seconds=5,
+        default_assets="none",
         repos=[EXTERNAL_SPEC],
     )
     return GitExporter(

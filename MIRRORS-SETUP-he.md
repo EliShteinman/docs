@@ -151,17 +151,36 @@ export GITLAB_TOKEN=<token>
 
 ## הורדת קבצי releases
 
-לכל repo ב-`external.toml` אפשר לקבוע אילו releases יורדו עם הקבצים שלהם. ההערות של ה-release עוברות תמיד.
+הקוד עובר עם כל ההיסטוריה שלו: כל ה-branches וכל ה-tags. ההערות של כל ה-releases עוברות גם הן. רק **הקבצים** של ה-releases מסוננים, כי ההיסטוריה שלהם תופסת הרבה מקום: כל הקבצים של כל ה-releases ביחד שוקלים כ-14 GB.
 
-- `assets = "all"`: כל ה-releases. זו ברירת המחדל.
-- `assets = "none"`: בלי קבצים.
-- `assets = "latest:3"`: רק שלושת ה-releases האחרונים.
-- `assets = "since:2026-01-01"`: רק releases מהתאריך הזה והלאה.
-- `asset_filter = ["win", "linux"]`: רק קבצים שהשם שלהם מכיל אחת מהמילים. כך למשל מדלגים על קבצי macOS של Redis Insight.
+הסינון נקבע פעם אחת, בראש `external.toml`, וחל על כל ה-repos:
 
-ב-GitLab, כל קובץ נשמר ב-package registry של ה-project ומקבל כתובת קבועה: `<project>/-/releases/<tag>/downloads/<file>`. לכתובת הזו ה-chart מפנה את קישורי ההורדה בתיעוד.
+```toml
+default_assets = "latest-per-type"
+default_platforms = ["windows", "linux", "redhat"]
+```
 
-הגודל המקסימלי של קובץ נקבע בהגדרה `generic_packages_max_file_size` של GitLab, וברירת המחדל שלה היא 5 GB.
+**`default_assets`: מאילו releases להוריד קבצים.**
+- `"latest-per-type"`: ה-release היציב האחרון, ובנוסף ה-pre-release האחרון (rc, beta, alpha), אבל רק אם הוא חדש יותר מה-release היציב. pre-release ישן יותר כבר הפך ל-release יציב, ולכן אין צורך בקבצים שלו. ב-`redis`, למשל, יורדים הקבצים של 8.10.3 ושל 8.12-rc3. release נחשב pre-release אם הוא מסומן ככזה ב-GitHub, או אם השם שלו נראה כמו pre-release.
+- `"none"`: בלי קבצים.
+- `"all"`: כל ה-releases.
+- `"latest:3"`: שלושת ה-releases האחרונים.
+- `"since:2026-01-01"`: מהתאריך הזה והלאה.
+
+**`default_platforms`: לאילו פלטפורמות.**
+- `windows`: קבצי ‎`.exe`, ‏`.msi`, ושמות שמכילים `win`.
+- `linux`: קבצי ‎`.deb`, ‏`.AppImage`, ‏`.snap`, ושמות של הפצות כמו Ubuntu ו-Debian.
+- `redhat`: קבצי ‎`.rpm`, ושמות שמכילים `el8`, ‏`el9`, ‏`el10`, ‏`rhel`, ‏`centos` או `rocky`.
+- `amazon`: חבילות של Amazon Linux (`amzn`).
+- `macos`: קבצי ‎`.dmg`, ושמות שמכילים `mac` או `darwin`.
+
+הפלטפורמה מזוהה לפי שם הקובץ. קובץ שלא מציין שום פלטפורמה תמיד עובר, כי הוא מתאים לכולן: קוד מקור, jar, YAML. רשימה ריקה פירושה כל הפלטפורמות.
+
+**repo בודד** יכול לדרוס את ברירות המחדל עם `assets` ו-`platforms` משלו, ולצמצם עוד יותר עם `asset_filter`. במקרה כזה עוברים רק קבצים שהשם שלהם מכיל אחת מהמילים ברשימה.
+
+עם ההגדרות האלה, ההורדה הראשונה של קבצי ה-releases היא כ-1.1 GB, במקום כ-7 GB. רוב הנפח, כ-1 GB, הוא Redis Insight.
+
+ב-GitLab, כל קובץ נשמר ב-package registry של ה-project ומקבל כתובת קבועה: `<project>/-/releases/<tag>/downloads/<file>`. לכתובת הזו ה-chart מפנה את קישורי ההורדה בתיעוד. הגודל המקסימלי של קובץ נקבע בהגדרה `generic_packages_max_file_size` של GitLab, וברירת המחדל שלה היא 5 GB.
 
 ## מה עושים כשמשהו נכשל
 

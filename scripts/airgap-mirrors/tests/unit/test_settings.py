@@ -4,10 +4,13 @@ import pytest
 
 from airgap_mirrors.exceptions import ConfigurationError
 from airgap_mirrors.settings import (
+    AssetPolicy,
+    AssetPolicyKind,
     ExternalRepoSpec,
     ExternalSettings,
     InternalRepoSpec,
     InternalSettings,
+    Platform,
     SettingsLoader,
     pick,
 )
@@ -18,6 +21,8 @@ transfer_dir = "/t"
 github_url = "https://github.com"
 github_api_url = "https://api.github.com"
 http_timeout_seconds = 30
+default_assets = "latest-per-type"
+default_platforms = ["windows", "linux", "redhat"]
 
 [[repos]]
 name = "redis"
@@ -136,3 +141,47 @@ def test_pick_narrows_to_the_named_repositories() -> None:
 def test_pick_refuses_unknown_names() -> None:
     with pytest.raises(ConfigurationError, match="nope"):
         pick([ExternalRepoSpec(name="a", github="o/a")], ["nope"])
+
+
+def test_repository_takes_the_default_policy(write_config) -> None:
+    settings: ExternalSettings = SettingsLoader().load(write_config(EXTERNAL_TOML), ExternalSettings)
+    assert settings.repos[0].asset_policy == AssetPolicy(kind=AssetPolicyKind.LATEST_PER_TYPE)
+
+
+def test_repository_takes_the_default_platforms(write_config) -> None:
+    settings: ExternalSettings = SettingsLoader().load(write_config(EXTERNAL_TOML), ExternalSettings)
+    assert settings.repos[0].platforms == [Platform.WINDOWS, Platform.LINUX, Platform.REDHAT]
+
+
+def test_repository_keeps_its_own_policy(write_config) -> None:
+    text: str = EXTERNAL_TOML + 'assets = "none"\n'
+    settings: ExternalSettings = SettingsLoader().load(write_config(text), ExternalSettings)
+    assert settings.repos[0].asset_policy == AssetPolicy(kind=AssetPolicyKind.NONE)
+
+
+def test_unknown_platform_is_refused(write_config) -> None:
+    text: str = EXTERNAL_TOML.replace('"redhat"]', '"solaris"]')
+    with pytest.raises(ConfigurationError, match="solaris"):
+        SettingsLoader().load(write_config(text), ExternalSettings)
+
+
+@pytest.mark.parametrize(
+    ("file_name", "wanted"),
+    [
+        ("Redis-Insight-win-installer.exe", True),
+        ("Redis-Insight-linux-x86_64.AppImage", True),
+        ("Redis-Insight-linux-x86_64.rpm", True),
+        ("memtier-benchmark-2.6.1-1.el9.x86_64.rpm", True),
+        ("Redis-Insight-mac-arm64.dmg", False),
+        ("memtier-benchmark-2.6.1-1.amzn2023.x86_64.rpm", False),
+        ("redis-full-8.12-rc3.tar.gz", True),
+        ("bundle.yaml", True),
+    ],
+)
+def test_platform_filter_keeps_wanted_and_neutral_files(file_name: str, wanted: bool) -> None:
+    spec: ExternalRepoSpec = ExternalRepoSpec(name="x", github="o/r", platforms=["windows", "linux", "redhat"])
+    assert spec.wants_asset(file_name) is wanted
+
+
+def test_no_platforms_keeps_every_file() -> None:
+    assert ExternalRepoSpec(name="x", github="o/r", platforms=[]).wants_asset("tool-mac.dmg") is True

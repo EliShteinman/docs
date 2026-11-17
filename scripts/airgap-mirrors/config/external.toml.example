@@ -13,12 +13,26 @@ github_url = "https://github.com"
 github_api_url = "https://api.github.com"
 http_timeout_seconds = 120
 
+# Release files. Release notes always come; these decide which files come with them.
+#
+#   default_assets     which releases get their files downloaded:
+#                        "latest-per-type"  the newest stable release, plus the newest pre-release
+#                                           (rc, beta, ...) when it is newer than that stable one
+#                        "none"             no files
+#                        "all"              every release (can be many GB)
+#                        "latest:N"         the N newest releases
+#                        "since:YYYY-MM-DD" releases from that date on
+#   default_platforms  which platforms' files: "windows", "linux" (deb, AppImage, snap),
+#                      "redhat" (rpm, el8/el9/el10), "amazon", "macos".
+#                      Files that name no platform (source archives, jars, YAML) always come.
+#                      Leave empty for every platform.
+default_assets = "latest-per-type"
+default_platforms = ["windows", "linux", "redhat"]
+
 # One block per repository. The names must stay the same as in internal.toml and in
 # helm/redis-docs/files/external-links.yaml (git-mirrors).
-#
-#   assets        which releases get their files downloaded (release notes always come):
-#                 "all" (default), "none", "latest:N", "since:YYYY-MM-DD"
-#   asset_filter  download only files whose name contains one of these words
+# A block may override the defaults with its own `assets` and `platforms`, and narrow further with
+# `asset_filter`: only files whose name contains one of these words.
 
 [[repos]]
 name = "redis"
@@ -51,8 +65,6 @@ github = "RedisGraph/RedisGraph"
 [[repos]]
 name = "RedisInsight"
 github = "redis/RedisInsight"
-assets = "all"
-asset_filter = ["win", "linux"]
 
 [[repos]]
 name = "k8s-docs"
