@@ -195,6 +195,18 @@ data:
       }
     })();
 
+    // The workbench's "Leave feedback" form (redis-workbench-feedback.js) sends
+    // only from redis.io and needs Cloudflare Turnstile, which it fetches from
+    // challenges.cloudflare.com when the form opens. Here it can never send, so
+    // its button is hidden and the form, with its outside request, never opens.
+    // A style rule, because the button is added after the page loads; the
+    // upstream script and partial stay byte-identical.
+    (function () {
+      var style = document.createElement('style');
+      style.textContent = '.rwbf-open, .rwbf-sep { display: none !important; }';
+      document.head.appendChild(style);
+    })();
+
     // The mirrored sections — the blog, the tutorials, the customer stories —
     // are an image of their own, and a deployment may not have deployed it.
     // The header menu into them and the links the documentation makes into
