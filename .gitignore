@@ -24,8 +24,7 @@ dist/
 *.tar
 /redis-docs-*.tgz
 # Airgap mirror sync — local config (real values, host names, paths).
-# `mirrors.conf.example` is the tracked template.
-/scripts/airgap-mirrors/mirrors.conf
+# config/*.toml.example are the tracked templates.
 /scripts/airgap-mirrors/config/external.toml
 /scripts/airgap-mirrors/config/internal.toml
 /scripts/airgap-mirrors/.coverage
