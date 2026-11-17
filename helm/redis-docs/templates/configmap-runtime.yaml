@@ -116,23 +116,33 @@
 {{- end -}}
 
 {{- /*
-  Resolve git-mirrors. Each entry in the catalog has a fixed `from` (the
-  upstream URL prefix — never overridable) and a default `enabled`/`to`
-  pair that values.yaml can override. Only mirrors with both
-  `enabled: true` AND a non-empty `to` make it into the final map; anything
-  else is dropped so the runtime handler skips it without a guard.
+  Resolve git-mirrors into the list files/git-mirrors.js reads. An entry comes
+  from the catalog, from values, or both; values win field by field. Only
+  entries with `enabled: true` and a `to` reach the browser. An entry that
+  values add without a catalog `repo` fails the render instead of being
+  silently ignored.
 */ -}}
-{{- $mirrors := dict -}}
+{{- $mirrors := list -}}
 {{- $catalogMirrors := index $catalog "git-mirrors" | default dict -}}
-{{- range $name, $entry := $catalogMirrors -}}
+{{- $mirrorNames := concat (keys $catalogMirrors) (keys $valMirrors) | uniq | sortAlpha -}}
+{{- range $name := $mirrorNames -}}
+  {{- $entry := index $catalogMirrors $name | default dict -}}
+  {{- $valMirror := index $valMirrors $name | default dict -}}
   {{- $enabled := $entry.enabled | default false -}}
   {{- $to := $entry.to | default "" -}}
-  {{- $valMirror := index $valMirrors $name | default dict -}}
+  {{- $repo := $entry.repo | default "" -}}
+  {{- $aliases := $entry.aliases | default list -}}
   {{- if hasKey $valMirror "enabled" }}{{- $enabled = $valMirror.enabled -}}{{- end -}}
   {{- if hasKey $valMirror "to" }}{{- $to = $valMirror.to -}}{{- end -}}
+  {{- if hasKey $valMirror "repo" }}{{- $repo = $valMirror.repo -}}{{- end -}}
+  {{- if hasKey $valMirror "aliases" }}{{- $aliases = $valMirror.aliases -}}{{- end -}}
   {{- if and $enabled (ne $to "") -}}
-    {{- $resolved := dict "from" $entry.from "to" $to -}}
-    {{- $_ := set $mirrors $name $resolved -}}
+    {{- if eq $repo "" -}}
+      {{- fail (printf "externalLinks.gitMirrors.%s is not in files/external-links.yaml: give it repo: <owner>/<name>" $name) -}}
+    {{- end -}}
+    {{- $repos := list -}}
+    {{- range $r := prepend $aliases $repo -}}{{- $repos = append $repos (lower $r) -}}{{- end -}}
+    {{- $mirrors = append $mirrors (dict "name" $name "repos" $repos "to" (trimSuffix "/" $to)) -}}
   {{- end -}}
 {{- end -}}
 apiVersion: v1
@@ -250,89 +260,4 @@ data:
       }
     })();
 
-    // Git-mirror rewriting: rewrite inline <a href> links that target an
-    // upstream public Git host (e.g. GitHub) to an internal mirror (e.g.
-    // GitLab). Translates GitHub-shaped paths (/blob, /tree, /raw, ...)
-    // to GitLab-shaped paths (/-/blob, /-/tree, ...) on the way out.
-    //
-    // Driven entirely by window.RUNTIME_CONFIG.gitMirrors (populated above
-    // from values.externalLinks.gitMirrors). Each mirror entry that is
-    // both enabled and has a non-empty `to` triggers a prefix match + path
-    // rewrite. Entries are dropped at template time when either condition
-    // is missing, so the runtime loop has no work to do for them.
-    (function () {
-      var mirrors = (window.RUNTIME_CONFIG && window.RUNTIME_CONFIG.gitMirrors) || {};
-      var entries = Object.keys(mirrors).map(function (name) { return mirrors[name]; });
-      if (entries.length === 0) return;
-
-      // GitHub → GitLab path-family rename. The leading slash plus one of
-      // these tokens (followed by `/` or end-of-string) gets `/-/` inserted
-      // before it. Tokens cover the common file/tree views used in docs;
-      // pull → merge_requests is intentionally omitted (different name AND
-      // structure on GitLab — content links should never be PRs anyway).
-      // GitHub `/wiki/` maps to GitLab `/-/wikis/` (plural — GitLab's
-      // convention) so that one family is rewritten via the function
-      // replacer below; all other families keep their original token.
-      var pathRewrite = /^\/(blob|tree|raw|blame|commits|commit|tags|releases|wiki|issues)(\/|$)/;
-      function pathRewriter(_match, family, sep) {
-        return '/-/' + (family === 'wiki' ? 'wikis' : family) + sep;
-      }
-
-      // GitHub's per-tag release URL `/releases/tag/<X>` has no 1:1 path
-      // equivalent on GitLab. Mapping to `/-/tags/<X>` is the safest
-      // choice — it always resolves for any existing tag; `/-/releases/<X>`
-      // only exists when a GitLab Release object was explicitly created.
-      // Must run BEFORE pathRewrite, otherwise the general rule would
-      // produce the broken `/-/releases/tag/<X>` (no `/tag/` segment in
-      // GitLab's path layout — that's a GitHub-only artifact).
-      var releasesTagRewrite = /^\/releases\/tag(\/|$)/;
-
-      function translateHref(href) {
-        // GitHub treats owner/repo case-insensitively (RediSearch/RediSearch
-        // and redisearch/redisearch resolve to the same repo). Match the
-        // catalog `from` prefix case-insensitively so a single entry covers
-        // every variant; keep the original href for slicing so case in the
-        // remaining path (refs, file paths) is preserved verbatim.
-        var hrefLower = href.toLowerCase();
-        for (var i = 0; i < entries.length; i++) {
-          var m = entries[i];
-          if (!m.from || !m.to) continue;
-          var fromLower = m.from.toLowerCase();
-
-          // Standard match: <from>/<family>/<ref>/<path> on the github.com host.
-          if (hrefLower.indexOf(fromLower) === 0) {
-            var rest = href.slice(m.from.length);
-            rest = rest.replace(releasesTagRewrite, '/-/tags$1');
-            rest = rest.replace(pathRewrite, pathRewriter);
-            return m.to + rest;
-          }
-
-          // Raw-host match: GitHub serves file contents at a separate host
-          // (raw.githubusercontent.com/<owner>/<repo>/<ref>/<path>) with no
-          // `/raw/` token in the path — the host itself is the family marker.
-          // Auto-derive the raw prefix from any `from` that targets github.com
-          // and inject `/-/raw` between `to` and the ref+path so the result
-          // lands on the GitLab raw URL (<project>/-/raw/<ref>/<path>).
-          var rawFromLower = fromLower.replace(/^https:\/\/github\.com\//, 'https://raw.githubusercontent.com/');
-          if (rawFromLower !== fromLower && hrefLower.indexOf(rawFromLower) === 0) {
-            return m.to + '/-/raw' + href.slice(rawFromLower.length);
-          }
-        }
-        return null;
-      }
-
-      function rewriteAll(root) {
-        var anchors = (root || document).querySelectorAll('a[href]');
-        for (var i = 0; i < anchors.length; i++) {
-          var a = anchors[i];
-          var newHref = translateHref(a.getAttribute('href'));
-          if (newHref !== null) a.setAttribute('href', newHref);
-        }
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () { rewriteAll(); });
-      } else {
-        rewriteAll();
-      }
-    })();
+{{ .Files.Get "files/git-mirrors.js" | indent 4 }}

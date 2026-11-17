@@ -275,171 +275,230 @@ families:
         enabled: true
 
 # ───────────────────────────────────────────────────────────────────────────
-# git-mirrors — runtime-rewriting of inline `<a href>` URLs in markdown content
+# git-mirrors — send links to GitHub repositories to internal GitLab copies
 #
-# Unlike `families` above (which targets layout elements with
-# `data-external-link="<key>"` attributes), this catalog drives prefix-based
-# rewriting of plain links rendered from markdown into the static HTML.
+# Every entry is one GitHub repository that the docs link to. `repo` is its
+# current owner/name; `aliases` are older names that GitHub still redirects,
+# so a link written with an old name lands on the same copy. Names match
+# case-insensitively and must match the whole owner/name: an entry for
+# redis/redis never catches redis/redis-py.
 #
-# How it works:
-#   1. Browser loads any docs page → baseof.html sources `js/runtime-config.js`
-#      from a ConfigMap (templates/configmap-runtime.yaml) — NO image rebuild.
-#   2. The configmap injects `window.RUNTIME_CONFIG.gitMirrors` plus a
-#      DOMContentLoaded handler that walks every <a href> on the page.
-#   3. For each enabled mirror with a `to` URL set: every href that starts
-#      with `from` is rewritten — its remainder is path-translated from
-#      GitHub layout to GitLab layout, then prepended with `to`.
+# A deployment turns an entry on in values.yaml with `enabled: true` and `to`,
+# the GitLab project URL (nested groups are fine). files/git-mirrors.js then
+# rewrites, in the browser, every <a href> that points at the repository:
 #
-# Path translation (GitHub → GitLab):
-#   /<org>/<repo>/blob/<ref>/<path>     →  /<group>/.../<proj>/-/blob/<ref>/<path>
-#   /<org>/<repo>/tree/<ref>/<path>     →  /<group>/.../<proj>/-/tree/<ref>/<path>
-#   /<org>/<repo>/releases/tag/<X>      →  /<group>/.../<proj>/-/tags/<X>
-#   /<org>/<repo>/                       →  /<group>/.../<proj>/
+#   github.com/<repo>                          → <to>
+#   github.com/<repo>/blob/<ref>/<path>        → <to>/-/blob/<ref>/<path>
+#   (also tree, raw, blame, commits, commit, tags, compare, branches)
+#   github.com/<repo>/releases                 → <to>/-/releases
+#   github.com/<repo>/releases/tag/<tag>       → <to>/-/tags/<tag>
+#   github.com/<repo>/releases/latest          → <to>/-/releases/permalink/latest
+#   github.com/<repo>/releases/download/<tag>/<file>
+#                                              → <to>/-/releases/<tag>/downloads/<file>
+#   raw.githubusercontent.com/<repo>/<ref>/<path> → <to>/-/raw/<ref>/<path>
+#   #L10-L20 (line range)                      → #L10-20
 #
-# The handler inserts `/-/` for the GitLab path families: blob, tree, raw,
-# blame, commits, commit, tags, releases, wiki, issues. GitLab nested groups
-# (`url/group/subgroup/.../project`) are handled transparently because `to`
-# is treated as an opaque prefix string — provide the full project URL.
+# Pull requests, issues, discussions, security advisories, the wiki and
+# Actions are not copied into GitLab, so links to them keep pointing at
+# GitHub rather than at a page that does not exist.
 #
-# Special case: GitHub's per-tag release page `/releases/tag/<X>` is mapped
-# to GitLab's `/-/tags/<X>` (not `/-/releases/<X>`) — `tags/<X>` always
-# resolves for any existing tag, while `releases/<X>` requires a GitLab
-# Release object to have been created explicitly.
-#
-# Precedence (highest wins) for the resolved entry:
-#   1. values.externalLinks.gitMirrors.<name>.enabled / .to
-#   2. catalog default below (enabled: false, to: "")
-#
-# Default state: every mirror is OFF (enabled: false, to: ""). A deployment
-# opts-in by setting both `enabled: true` and a non-empty `to` URL in
-# values.yaml — leaving either unset keeps the original GitHub URL intact.
+# The entry names are also the repository names in the transfer tool,
+# scripts/airgap-mirrors/config/*.toml.example. Keep the two lists the same.
 # ───────────────────────────────────────────────────────────────────────────
 git-mirrors:
 
-  observability:
-    description: |
-      Mirror of redis-field-engineering/redis-enterprise-observability.
-      Affects 36 inline links across:
-        - content/embeds/rs-observability.md
-        - content/embeds/rs-prometheus-grafana-quickstart.md
-        - content/integrate/prometheus-with-redis-cloud/_index.md
-      Set `to` in values.yaml to a GitLab project URL to redirect every
-      occurrence (Grafana dashboards, Prometheus alerts, tests directories)
-      to the internal mirror — including nested-group URLs like
-      `https://gitlab.example.com/group/subgroup/redis-observability`.
-    from: "https://github.com/redis-field-engineering/redis-enterprise-observability"
-    to: ""
-    enabled: false
-
-  k8s-docs:
-    description: |
-      Mirror of RedisLabs/redis-enterprise-k8s-docs — the upstream source
-      for installing the Redis Enterprise operator on Kubernetes /
-      OpenShift. Affects ~179 inline links across ~89 files under
-      `content/operate/kubernetes/` (current and historical versions),
-      including:
-        - operator releases / `RedisEnterpriseCluster` API reference
-        - example manifests under `examples/`, `crds/`, `openshift/`
-        - rack-awareness, vault, log-collector docs
-      The runtime handler rewrites only `<a href>` URLs (clickable links).
-      `curl` / `kubectl apply -f` commands inside fenced code blocks that
-      reference `raw.githubusercontent.com/...` are NOT rewritten — those
-      need a separate build-time substitution if required.
-    from: "https://github.com/RedisLabs/redis-enterprise-k8s-docs"
-    to: ""
-    enabled: false
-
   redis:
-    description: |
-      Mirror of redis/redis — the upstream Redis source. Affects ~706
-      inline links across the docs:
-        - command reference pages linking to source / module sources
-        - per-version `redis.conf` / `redis-full.conf` raw downloads
-          (raw.githubusercontent.com auto-derived from this `from`)
-        - release notes (`00-RELEASENOTES`)
-      Case variants in the wild (`redis/redis` vs `Redis/Redis`) are all
-      covered by a single entry — the handler matches case-insensitively.
-    from: "https://github.com/redis/redis"
-    to: ""
+    description: "Redis itself: source files, redis.conf per version, release notes"
+    repo: "redis/redis"
+    aliases: []
     enabled: false
+    to: ""
 
   RediSearch:
-    description: |
-      Mirror of RediSearch/RediSearch (the search/query module).
-      ~1,067 inline links — the most-referenced module repo. Catches both
-      `RediSearch/RediSearch` and `redisearch/redisearch` casings via the
-      handler's case-insensitive prefix match.
-    from: "https://github.com/RediSearch/RediSearch"
-    to: ""
+    description: "Search and query module: the most-linked repository in the docs"
+    repo: "RediSearch/RediSearch"
+    aliases: ["RedisLabsModules/RediSearch"]
     enabled: false
-
-  RedisGraph:
-    description: |
-      Mirror of RedisGraph/RedisGraph (graph database module). ~578
-      inline links. Catches both `RedisGraph/RedisGraph` and
-      `redisgraph/redisgraph` casings.
-    from: "https://github.com/RedisGraph/RedisGraph"
     to: ""
-    enabled: false
-
-  RedisInsight:
-    description: |
-      Mirror of RedisInsight/RedisInsight (the GUI client). ~430 inline
-      links. Catches both `RedisInsight/RedisInsight` and the
-      `redis/RedisInsight` redirect path.
-    from: "https://github.com/RedisInsight/RedisInsight"
-    to: ""
-    enabled: false
-
-  RedisTimeSeries:
-    description: |
-      Mirror of RedisTimeSeries/RedisTimeSeries (time-series module).
-      ~221 inline links. Catches both `RedisTimeSeries/RedisTimeSeries`
-      and `redistimeseries/redistimeseries` casings.
-    from: "https://github.com/RedisTimeSeries/RedisTimeSeries"
-    to: ""
-    enabled: false
-
-  RedisGears:
-    description: |
-      Mirror of RedisGears/RedisGears (server-side scripting module).
-      ~152 inline links.
-    from: "https://github.com/RedisGears/RedisGears"
-    to: ""
-    enabled: false
 
   RedisJSON:
-    description: |
-      Mirror of RedisJSON/RedisJSON (JSON document module). ~187 inline
-      links. Catches both `RedisJSON/RedisJSON` and `redisjson/redisjson`
-      casings.
-    from: "https://github.com/RedisJSON/RedisJSON"
-    to: ""
+    description: "JSON module"
+    repo: "RedisJSON/RedisJSON"
+    aliases: ["RedisLabsModules/RedisJSON"]
     enabled: false
+    to: ""
+
+  RedisTimeSeries:
+    description: "Time series module"
+    repo: "RedisTimeSeries/RedisTimeSeries"
+    aliases: ["RedisLabsModules/RedisTimeSeries"]
+    enabled: false
+    to: ""
 
   RedisBloom:
-    description: |
-      Mirror of RedisBloom/RedisBloom (probabilistic data structures
-      module). ~164 inline links. Catches both `RedisBloom/RedisBloom`
-      and `redisbloom/redisbloom` casings.
-    from: "https://github.com/RedisBloom/RedisBloom"
-    to: ""
+    description: "Probabilistic data structures module"
+    repo: "RedisBloom/RedisBloom"
+    aliases: ["RedisLabsModules/RedisBloom"]
     enabled: false
+    to: ""
 
-  redis-py:
-    description: |
-      Mirror of redis/redis-py (official Python client). ~100 inline
-      links — the most-referenced single client library, used in many
-      RedisVL and RAG examples.
-    from: "https://github.com/redis/redis-py"
-    to: ""
+  RedisGears:
+    description: "Server-side scripting module"
+    repo: "RedisGears/RedisGears"
+    aliases: ["RedisLabsModules/RedisGears"]
     enabled: false
+    to: ""
+
+  RedisGraph:
+    description: "Graph module (end of life, still linked from many pages)"
+    repo: "RedisGraph/RedisGraph"
+    aliases: ["RedisLabsModules/RedisGraph"]
+    enabled: false
+    to: ""
+
+  RedisInsight:
+    description: "Redis Insight, the desktop GUI"
+    repo: "redis/RedisInsight"
+    aliases: ["RedisInsight/RedisInsight"]
+    enabled: false
+    to: ""
+
+  k8s-docs:
+    description: "Redis Enterprise operator for Kubernetes: releases, manifests, API reference"
+    repo: "RedisLabs/redis-enterprise-k8s-docs"
+    aliases: []
+    enabled: false
+    to: ""
+
+  observability:
+    description: "Grafana dashboards and Prometheus alerts for Redis Software"
+    repo: "redis-field-engineering/redis-enterprise-observability"
+    aliases: []
+    enabled: false
+    to: ""
 
   prometheus-operator:
-    description: |
-      Mirror of prometheus-operator/prometheus-operator (third-party
-      dependency). ~44 inline links — referenced from the Kubernetes
-      observability docs (ServiceMonitor, PodMonitor, alert rules).
-    from: "https://github.com/prometheus-operator/prometheus-operator"
-    to: ""
+    description: "Prometheus operator (third party), linked from the Kubernetes monitoring docs"
+    repo: "prometheus-operator/prometheus-operator"
+    aliases: []
     enabled: false
+    to: ""
+
+  docs:
+    description: "This documentation's own source: example code and page sources"
+    repo: "redis/docs"
+    aliases: []
+    enabled: false
+    to: ""
+
+  redis-py:
+    description: "Python client"
+    repo: "redis/redis-py"
+    aliases: ["andymccurdy/redis-py"]
+    enabled: false
+    to: ""
+
+  redis-vl-python:
+    description: "RedisVL, the Python vector library"
+    repo: "redis/redis-vl-python"
+    aliases: []
+    enabled: false
+    to: ""
+
+  jedis:
+    description: "Java client"
+    repo: "redis/jedis"
+    aliases: ["xetorthio/jedis"]
+    enabled: false
+    to: ""
+
+  lettuce:
+    description: "Java client (asynchronous)"
+    repo: "redis/lettuce"
+    aliases: ["lettuce-io/lettuce-core"]
+    enabled: false
+    to: ""
+
+  node-redis:
+    description: "Node.js client"
+    repo: "redis/node-redis"
+    aliases: ["NodeRedis/node-redis"]
+    enabled: false
+    to: ""
+
+  ioredis:
+    description: "Node.js client"
+    repo: "redis/ioredis"
+    aliases: ["luin/ioredis"]
+    enabled: false
+    to: ""
+
+  go-redis:
+    description: "Go client"
+    repo: "redis/go-redis"
+    aliases: ["go-redis/redis"]
+    enabled: false
+    to: ""
+
+  rueidis:
+    description: "Go client"
+    repo: "redis/rueidis"
+    aliases: ["rueian/rueidis"]
+    enabled: false
+    to: ""
+
+  NRedisStack:
+    description: ".NET client"
+    repo: "redis/NRedisStack"
+    aliases: []
+    enabled: false
+    to: ""
+
+  hiredis:
+    description: "C client"
+    repo: "redis/hiredis"
+    aliases: []
+    enabled: false
+    to: ""
+
+  predis:
+    description: "PHP client"
+    repo: "predis/predis"
+    aliases: []
+    enabled: false
+    to: ""
+
+  redis-om-python:
+    description: "Redis OM for Python"
+    repo: "redis/redis-om-python"
+    aliases: ["redis-developer/redis-om-python"]
+    enabled: false
+    to: ""
+
+  redis-om-node:
+    description: "Redis OM for Node.js"
+    repo: "redis/redis-om-node"
+    aliases: ["redis-developer/redis-om-node"]
+    enabled: false
+    to: ""
+
+  redis-om-spring:
+    description: "Redis OM for Spring"
+    repo: "redis/redis-om-spring"
+    aliases: ["redis-developer/redis-om-spring"]
+    enabled: false
+    to: ""
+
+  redis-om-dotnet:
+    description: "Redis OM for .NET"
+    repo: "redis/redis-om-dotnet"
+    aliases: ["redis-developer/redis-om-dotnet"]
+    enabled: false
+    to: ""
+
+  memtier_benchmark:
+    description: "Benchmark tool"
+    repo: "redis/memtier_benchmark"
+    aliases: ["RedisLabs/memtier_benchmark"]
+    enabled: false
+    to: ""
