@@ -186,7 +186,7 @@ default_architectures = ["x86_64"]
 
 **repo בודד** יכול לדרוס את ברירות המחדל עם `assets` ו-`platforms` משלו, ולצמצם עוד יותר עם `asset_filter`. במקרה כזה עוברים רק קבצים שהשם שלהם מכיל אחת מהמילים ברשימה.
 
-עם ההגדרות האלה, ההורדה הראשונה של קבצי ה-releases היא כ-770 MB, במקום כ-7 GB. רוב הנפח, כ-650 MB, הוא Redis Insight.
+עם ההגדרות האלה, ההורדה הראשונה של קבצי ה-releases היא כ-880 MB, במקום כ-7 GB. רוב הנפח, כ-650 MB, הוא Redis Insight.
 
 ב-GitLab, כל קובץ נשמר ב-package registry של ה-project ומקבל כתובת קבועה: `<project>/-/releases/<tag>/downloads/<file>`. לכתובת הזו ה-chart מפנה את קישורי ההורדה בתיעוד. הגודל המקסימלי של קובץ נקבע בהגדרה `generic_packages_max_file_size` של GitLab, וברירת המחדל שלה היא 5 GB.
 

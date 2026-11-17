@@ -135,3 +135,15 @@ gitlab_path = "<your-group>/memtier_benchmark"
 [[repos]]
 name = "redisctl"
 gitlab_path = "<your-group>/redisctl"
+
+[[repos]]
+name = "redis-apache-arrow-flight"
+gitlab_path = "<your-group>/redis-apache-arrow-flight"
+
+[[repos]]
+name = "redis-adbc-driver"
+gitlab_path = "<your-group>/redis-adbc-driver"
+
+[[repos]]
+name = "redisinsight-tutorials"
+gitlab_path = "<your-group>/redisinsight-tutorials"

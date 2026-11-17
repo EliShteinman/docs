@@ -509,3 +509,24 @@ git-mirrors:
     aliases: ["joshrotenberg/redisctl", "redis-developer/redisctl"]
     enabled: false
     to: ""
+
+  redis-apache-arrow-flight:
+    description: "Apache Arrow Flight server for Redis"
+    repo: "redis/redis-apache-arrow-flight"
+    aliases: []
+    enabled: false
+    to: ""
+
+  redis-adbc-driver:
+    description: "ADBC driver for Redis"
+    repo: "redis/redis-adbc-driver"
+    aliases: []
+    enabled: false
+    to: ""
+
+  redisinsight-tutorials:
+    description: "Redis Insight tutorials and their sample data"
+    repo: "redis/Tutorials"
+    aliases: ["RedisInsight/Tutorials"]
+    enabled: false
+    to: ""

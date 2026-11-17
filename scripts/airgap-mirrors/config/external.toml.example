@@ -155,3 +155,15 @@ github = "redis/memtier_benchmark"
 [[repos]]
 name = "redisctl"
 github = "redis/redisctl"
+
+[[repos]]
+name = "redis-apache-arrow-flight"
+github = "redis/redis-apache-arrow-flight"
+
+[[repos]]
+name = "redis-adbc-driver"
+github = "redis/redis-adbc-driver"
+
+[[repos]]
+name = "redisinsight-tutorials"
+github = "redis/Tutorials"
