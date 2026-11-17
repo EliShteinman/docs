@@ -36,3 +36,13 @@ def test_a_listing_without_pagination_has_no_numbered_pages():
 def test_numbered_pages_ignore_another_listings_links():
     html = _links("/blog/category/product/", 2, 9)
     assert listing_pages.numbered_pages("/blog/", html) == []
+
+
+def test_undated_takes_a_listings_date_away():
+    assert listing_pages.undated({"/blog/": "2025-03-05"}) == {"/blog/": ""}
+
+
+def test_undated_keeps_a_posts_date():
+    assert listing_pages.undated({"/blog/a-post/": "2025-03-05"}) == {
+        "/blog/a-post/": "2025-03-05"
+    }

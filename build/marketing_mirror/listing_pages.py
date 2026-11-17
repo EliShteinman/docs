@@ -6,7 +6,8 @@ only the first page, so the rest are found from its links: the highest number
 a first page links to is how many pages its listing has.
 
 Every new post shifts every page after it, and the sitemap dates none of them,
-so they are fetched on every run.
+so they are fetched on every run. So is each first page: the date the sitemap
+gives it does not move when a post is added.
 """
 
 from __future__ import annotations
@@ -29,3 +30,10 @@ def numbered_pages(listing: str, html: str) -> list[str]:
     numbers = [int(number) for number in link.findall(html)]
     last = max(numbers, default=1)
     return [f"{listing}page/{number}/" for number in range(2, last + 1)]
+
+
+def undated(dated: dict[str, str]) -> dict[str, str]:
+    """The pages with each listing's date taken away, so it is always fetched."""
+    return {
+        path: "" if is_listing(path) else lastmod for path, lastmod in dated.items()
+    }

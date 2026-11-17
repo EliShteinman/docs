@@ -136,6 +136,7 @@ def capture(
     embeds.write_unavailable_page()
     mirror = pages.PageMirror(fetcher, assets, embeds, staging, previous_dir, previous)
     run = PageRun(mirror, workers)
+    dated = listing_pages.undated(dated)
     run.capture(dated)
     numbered = numbered_pages(staging, list(dated))
     LOGGER.info("%d numbered blog listing pages", len(numbered))
