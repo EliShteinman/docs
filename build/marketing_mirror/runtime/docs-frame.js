@@ -18,8 +18,8 @@
 (function () {
   var CACHE_KEY = 'mirror:docs-frame:v1';
   var SEARCH_URL = '/#search';
-  var REDIS_HEADER = 'body > header[class*="__header"]';
-  var REDIS_FOOTER = 'body > footer[class*="__footer"]';
+  var REDIS_HEADER = 'body > header[class*="_header"]';
+  var REDIS_FOOTER = 'body > footer[class*="_footer"]';
 
   var hiding = document.createElement('style');
   hiding.textContent =

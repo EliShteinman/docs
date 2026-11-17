@@ -10,11 +10,11 @@
   var LIMIT = 100;
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  // A CSS-module class ends in "__<name>"; matching that exactly keeps
+  // A CSS-module class ends in "_<name>"; matching that exactly keeps
   // "title" from finding "titleCol" and "author" from finding "authorsCol".
   function part(root, name) {
-    var exact = new RegExp('__' + name + '(\\s|$)');
-    var candidates = root.querySelectorAll('[class*="__' + name + '"]');
+    var exact = new RegExp('_' + name + '(\\s|$)');
+    var candidates = root.querySelectorAll('[class*="_' + name + '"]');
     for (var i = 0; i < candidates.length; i++) {
       if (exact.test(candidates[i].className)) return candidates[i];
     }

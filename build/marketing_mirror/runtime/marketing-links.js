@@ -25,12 +25,12 @@
   // language selector, and footer columns left with nothing on this site.
   // Matched on the stable part of redis.io's CSS-module class names.
   var OUTWARD = [
-    '*:has(> [class*="__shareTitle"])',
-    '[class*="__aiPromptButtons"]',
-    'body > [class*="__wrapper"]:has(a[class*="__button"])',
-    '[class*="__sitemapGroup"]:not(:has(a[data-marketing-link="local"]))',
-    '[class*="__cookiePreferencesButton"]',
-    '[class*="__languageSelector"]'
+    '*:has(> [class*="_shareTitle"])',
+    '[class*="_aiPromptButtons"]',
+    'body > [class*="_wrapper"]:has(a[class*="_button"])',
+    '[class*="_sitemapGroup"]:not(:has(a[data-marketing-link="local"]))',
+    '[class*="_cookiePreferencesButton"]',
+    '[class*="_languageSelector"]'
   ];
 
   if (!offsiteEnabled) {
@@ -59,7 +59,7 @@
 
   function isFrame(link) {
     if (link.closest('p, td, blockquote, figcaption')) return false;
-    if (/__button\b/.test(link.className || '')) return true;
+    if (/_button\b/.test(link.className || '')) return true;
     return !!link.closest('header, footer, nav, [role="dialog"]');
   }
 
