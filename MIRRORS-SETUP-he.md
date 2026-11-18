@@ -75,9 +75,15 @@ python3 -m venv .venv
 
 ### במחשב הפנימי
 
+אם ברשת הפנימית יש mirror של PyPI, כמו Nexus או Artifactory, מתקינים ממנו כרגיל. כל גרסה 2.x של pydantic ושל pydantic-settings מתאימה:
 ```bash
 cd scripts/airgap-mirrors
 python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+```
+
+אחרת, מתקינים מה-wheels שהובאו מהמחשב החיצוני:
+```bash
 .venv/bin/pip install --no-index --find-links wheels -r requirements.txt
 ```
 
