@@ -3,7 +3,6 @@
 import os
 import tomllib
 
-import pytest
 import yaml
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -21,9 +20,8 @@ def transfer_config_names(file_name: str) -> set[str]:
         return {repo["name"] for repo in tomllib.load(config)["repos"]}
 
 
-@pytest.mark.parametrize("file_name", ["external.toml.example", "internal.toml.example"])
-def test_transfer_tool_carries_the_catalog_repositories(file_name: str) -> None:
-    assert transfer_config_names(file_name) == catalog_names()
+def test_transfer_tool_carries_the_catalog_repositories() -> None:
+    assert transfer_config_names("external.toml.example") == catalog_names()
 
 
 def test_transfer_tool_fetches_each_catalog_repo_from_its_github_name() -> None:

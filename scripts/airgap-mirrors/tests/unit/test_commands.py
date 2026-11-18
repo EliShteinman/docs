@@ -3,14 +3,15 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
+from pydantic import SecretStr
 from pytest_mock import MockerFixture
 
 from airgap_mirrors.commands import ConfirmCommand, ExportCommand, ImportCommand, RepositoryBatch
-from airgap_mirrors.exceptions import GitCommandError, TransferError
+from airgap_mirrors.exceptions import ConfigurationError, GitCommandError, TransferError
 from airgap_mirrors.external import GitExporter, ReceiptConfirmer, ReleaseExporter
-from airgap_mirrors.internal import GitImporter, ReleaseImporter
+from airgap_mirrors.internal import GitImporter, HelmValuesWriter, ImportResult, ReleaseImporter
 from airgap_mirrors.models import ExportLedger, ImportedState, ImportReceipt, RepositoryState
-from airgap_mirrors.settings import ExternalRepoSpec, InternalRepoSpec
+from airgap_mirrors.settings import ExternalRepoSpec, InternalRepoSpec, InternalSettings
 from airgap_mirrors.storage import JsonModelStore, LedgerLocator
 from airgap_mirrors.transfer import TransferLayout
 
@@ -43,17 +44,65 @@ def test_export_runs_releases_after_git(mocker: MockerFixture) -> None:
     assert (git.export.call_args.kwargs, releases.export.call_args.args) == ({"full": True}, (spec,))
 
 
+def imported(spec: InternalRepoSpec) -> ImportResult:
+    return ImportResult(state_ids=[f"{spec.name}-state"], project_url=f"https://gl/{spec.gitlab_path}")
+
+
 @pytest.fixture
 def import_parts(mocker: MockerFixture, tmp_path: Path) -> tuple[MagicMock, MagicMock, TransferLayout]:
     git: MagicMock = mocker.create_autospec(GitImporter, instance=True)
-    git.import_repository.side_effect = lambda spec: [f"{spec.name}-state"]
+    git.import_repository.side_effect = imported
     releases: MagicMock = mocker.create_autospec(ReleaseImporter, instance=True)
-    return git, releases, TransferLayout(tmp_path)
+    layout: TransferLayout = TransferLayout(tmp_path / "t")
+    for name in ("a", "b"):
+        layout.git_dir(name).mkdir(parents=True)
+    return git, releases, layout
 
 
-def run_import(parts: tuple[MagicMock, MagicMock, TransferLayout]) -> list[str]:
+def run_import(parts: tuple[MagicMock, MagicMock, TransferLayout], wanted: list[str] | None = None) -> list[str]:
     git, releases, layout = parts
-    return ImportCommand(git, releases, RepositoryBatch(), layout, JsonModelStore(), FixedClock()).run([A, B])
+    settings: InternalSettings = InternalSettings(
+        mirrors_dir=layout.root.parent / "m",
+        transfer_dir=layout.root,
+        gitlab_url="https://gl",
+        gitlab_group="g",
+        release_package_name="p",
+        http_timeout_seconds=5,
+        GITLAB_TOKEN=SecretStr("x"),
+    )
+    ledgers: LedgerLocator = LedgerLocator(settings.mirrors_dir)
+    helm: HelmValuesWriter = HelmValuesWriter(ledgers.published_projects, ledgers.helm_values, JsonModelStore())
+    command: ImportCommand = ImportCommand(
+        settings, git, releases, helm, RepositoryBatch(), layout, JsonModelStore(), FixedClock()
+    )
+    return command.run(wanted or [])
+
+
+def test_import_finds_the_repositories_in_the_transfer_folder(
+    import_parts: tuple[MagicMock, MagicMock, TransferLayout],
+) -> None:
+    run_import(import_parts)
+    assert [item.args[0].gitlab_path for item in import_parts[0].import_repository.call_args_list] == ["g/a", "g/b"]
+
+
+def test_import_can_be_narrowed_to_one_repository(import_parts: tuple[MagicMock, MagicMock, TransferLayout]) -> None:
+    run_import(import_parts, ["b"])
+    assert [item.args[0].name for item in import_parts[0].import_repository.call_args_list] == ["b"]
+
+
+def test_import_refuses_a_repository_the_folder_lacks(
+    import_parts: tuple[MagicMock, MagicMock, TransferLayout],
+) -> None:
+    with pytest.raises(ConfigurationError, match="nope"):
+        run_import(import_parts, ["nope"])
+
+
+def test_import_writes_helm_values_for_the_imported_projects(
+    import_parts: tuple[MagicMock, MagicMock, TransferLayout],
+) -> None:
+    run_import(import_parts)
+    values: str = (import_parts[2].root.parent / "m" / "helm-values-git-mirrors.yaml").read_text()
+    assert '    "b":\n      enabled: true\n      to: "https://gl/g/b"' in values
 
 
 def test_import_writes_a_receipt_of_every_applied_state(
@@ -68,7 +117,7 @@ def test_import_skips_releases_of_a_repository_whose_git_failed(
     import_parts: tuple[MagicMock, MagicMock, TransferLayout],
 ) -> None:
     git, releases, _ = import_parts
-    git.import_repository.side_effect = [TransferError("bad"), ["b-state"]]
+    git.import_repository.side_effect = [TransferError("bad"), ImportResult(state_ids=["b-state"])]
     run_import(import_parts)
     assert [item.args[0].name for item in releases.import_repository.call_args_list] == ["b"]
 

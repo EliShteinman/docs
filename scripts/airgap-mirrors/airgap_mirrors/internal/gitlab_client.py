@@ -16,6 +16,24 @@ class GitLabProject(BaseModel):
     id: int
     path_with_namespace: str
     default_branch: str | None = None
+    web_url: str | None = None
+
+
+class GitLabGroup(BaseModel):
+    model_config = ConfigDict(extra="ignore", frozen=True)
+
+    id: int
+    full_path: str
+
+
+READ_ONLY_COPY: dict[str, object] = {
+    "initialize_with_readme": False,
+    "issues_access_level": "disabled",
+    "merge_requests_access_level": "disabled",
+    "wiki_access_level": "disabled",
+    "snippets_access_level": "disabled",
+    "package_registry_access_level": "enabled",
+}
 
 
 class GitLabClient:
@@ -27,6 +45,28 @@ class GitLabClient:
     def project(self, project_path: str) -> GitLabProject | None:
         response: HttpResponse | None = self._http.get_or_none(_project(project_path))
         return GitLabProject.model_validate(response.json()) if response else None
+
+    def group(self, group_path: str) -> GitLabGroup | None:
+        response: HttpResponse | None = self._http.get_or_none(f"groups/{_segment(group_path)}")
+        return GitLabGroup.model_validate(response.json()) if response else None
+
+    def create_group(self, name: str, parent_id: int, visibility: str | None) -> GitLabGroup:
+        payload: dict[str, object] = {"name": name, "path": name, "parent_id": parent_id}
+        if visibility:
+            payload["visibility"] = visibility
+        return GitLabGroup.model_validate(self._http.send_json("POST", "groups", payload).json())
+
+    def create_project(self, namespace_id: int, name: str, description: str, visibility: str | None) -> GitLabProject:
+        payload: dict[str, object] = {
+            "name": name,
+            "path": name,
+            "namespace_id": namespace_id,
+            "description": description,
+            **READ_ONLY_COPY,
+        }
+        if visibility:
+            payload["visibility"] = visibility
+        return GitLabProject.model_validate(self._http.send_json("POST", "projects", payload).json())
 
     def set_default_branch(self, project_path: str, branch: str) -> None:
         self._http.send_json("PUT", _project(project_path), {"default_branch": branch})

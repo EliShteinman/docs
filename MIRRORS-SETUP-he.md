@@ -104,20 +104,30 @@ export GITHUB_TOKEN=<token>
 cp config/internal.toml.example config/internal.toml
 ```
 
-ממלאים:
-- `mirrors_dir` ו-`transfer_dir`.
+ממלאים רק שני שדות:
 - `gitlab_url`: הכתובת של GitLab.
-- לכל repo, את `gitlab_path`: הנתיב של ה-project ב-GitLab, למשל `redis/mirrors/redis`.
-- `ca_file`: רק אם התעודה של GitLab חתומה על ידי ה-CA של החברה.
-- `git_remote_base`: רק אם רוצים לדחוף ב-SSH במקום ב-HTTPS.
+- `gitlab_group`: הקבוצה שאליה ייכנסו כל העותקים, למשל `redis/mirrors`. כל repo יהיה project בשם `<gitlab_group>/<name>`, למשל `redis/mirrors/redis`.
 
-הטוקן של GitLab לא נכתב בקובץ. צריך טוקן עם הרשאת `api`, של משתמש שהוא Maintainer ב-projects, ומגדירים אותו לפני כל ריצה:
+אין רשימת repos לתחזק. הכלי קורא מתיקיית ההעברה מה הגיע.
 
+**מה הכלי עושה לבד ב-import הראשון:**
+- **יוצר את ה-projects.** כל project נוצר ריק, בלי README, ובלי issues, merge requests, wiki ו-snippets, כי הכול מגיע מ-GitHub.
+- **יוצר תתי-קבוצות חסרות.** למשל, את `mirrors` בתוך `redis`.
+- **קובע בכל project את ה-branch הראשי** לפי GitHub.
+
+הקבוצה העליונה (`redis` בדוגמה) חייבת להתקיים מראש, כי ליצור קבוצה עליונה זו החלטה של מנהל ה-GitLab.
+
+**שדות אופציונליים:**
+- `project_visibility`: ‏`"private"`, ‏`"internal"` או `"public"`. בלי השדה הזה GitLab קובע לפי ברירת המחדל שלו.
+- `ca_file`: אם התעודה של GitLab חתומה על ידי ה-CA של החברה.
+- `git_remote_base`: כדי לדחוף ב-SSH במקום ב-HTTPS.
+- בלוק `[[repos]]`: רק אם רוצים ש-repo מסוים יישב במקום אחר.
+
+**הטוקן:** הטוקן של GitLab לא נכתב בקובץ. מגדירים אותו לפני כל ריצה:
 ```bash
 export GITLAB_TOKEN=<token>
 ```
-
-**לפני ה-import הראשון:** כל project צריך להיות קיים ב-GitLab וריק לגמרי, בלי README.
+צריך טוקן עם scope ‏`api` ותפקיד Maintainer על הקבוצה. מומלץ Group Access Token, שלא משויך לאף משתמש.
 
 ## סבב רגיל
 
@@ -133,6 +143,8 @@ export GITLAB_TOKEN=<token>
 export GITLAB_TOKEN=<token>
 .venv/bin/python -m airgap_mirrors --config config/internal.toml import
 ```
+
+בסוף ה-import נכתב הקובץ `~/airgap/mirrors/helm-values-git-mirrors.yaml`. זה קובץ values מוכן ל-Helm, עם כתובת לכל repo שהגיע ל-GitLab (ראו [הפעלת ההפניה ב-Helm](#הפעלת-ההפניה-ב-helm)).
 
 **4.** מעתיקים את `receipt.json`, שנמצא בתיקיית ההעברה, חזרה ל-`transfer_dir` של המחשב החיצוני.
 
@@ -233,22 +245,26 @@ default_architectures = ["x86_64"]
 - **הפקודה מסתיימת בקוד 2:** קובץ ההגדרות שגוי. ההודעה מציינת איזה שדה.
 - **הפקודה מסתיימת בקוד 1:** repo אחד או יותר נכשל. ה-repos האחרים בכל זאת עברו, ושם ה-repo שנכשל מופיע בשורה האחרונה. אפשר להריץ שוב את אותה פקודה: מה שכבר עבר יידלג.
 - **ההודעה "builds on an earlier transfer that never arrived":** סבב קודם לא הגיע ל-GitLab. מעבירים אותו, או מריצים export עם `--full`.
-- **ההודעה "GitLab has no project":** צריך ליצור את ה-project ב-GitLab, ריק.
+- **ההודעה "GitLab has no group":** הקבוצה העליונה שב-`gitlab_group` לא קיימת. יוצרים אותה, או מבקשים ממנהל ה-GitLab, ומריצים שוב.
+- **שגיאת HTTP ‏403 ביצירת project:** לטוקן אין הרשאה ליצור projects בקבוצה. צריך תפקיד Maintainer.
 - **כדי לראות כל פקודת git וכל קריאת HTTP:** משנים את `level` ל-`"DEBUG"` ב-`config/logging.toml`.
 
 ## הפעלת ההפניה ב-Helm
 
-אחרי שה-repos נמצאים ב-GitLab, מפעילים את ההפניה ב-`values.yaml`. השמות זהים לשמות ב-`internal.toml`:
+ה-import כותב את הקובץ `~/airgap/mirrors/helm-values-git-mirrors.yaml`, ובו כל ה-repos שכבר נמצאים ב-GitLab, עם הכתובת של כל אחד:
 
 ```yaml
 externalLinks:
   gitMirrors:
-    redis:
+    "redis":
       enabled: true
-      to: https://gitlab.<your-company>.example/redis/mirrors/redis
-    RediSearch:
-      enabled: true
-      to: https://gitlab.<your-company>.example/redis/mirrors/RediSearch
+      to: "https://gitlab.<your-company>.example/redis/mirrors/redis"
+```
+
+מוסיפים את הקובץ להתקנה של ה-chart עם `-f`:
+
+```bash
+helm install <release> <chart> -f your-values.yaml -f ~/airgap/mirrors/helm-values-git-mirrors.yaml
 ```
 
 לא צריך לבנות image מחדש: השינוי מעדכן ConfigMap בלבד.
@@ -256,10 +272,9 @@ externalLinks:
 ## הוספת repo
 
 1. מוסיפים entry ב-`helm/redis-docs/files/external-links.yaml`, תחת `git-mirrors:`. ב-`repo` שמים את השם הנוכחי ב-GitHub, וב-`aliases` שמות ישנים שעדיין מפנים אליו.
-2. מוסיפים בלוק `[[repos]]` עם אותו `name` לשני קבצי ה-`.toml.example` ולשני קבצי ה-`.toml` האמיתיים.
-3. יוצרים project ריק ב-GitLab.
+2. מוסיפים בלוק `[[repos]]` עם אותו `name` ל-`config/external.toml.example`, ול-`external.toml` אם יצרתם עותק.
 
-הבדיקה ב-`helm/tools/test_git_mirrors_catalog.py` מוודאת ששלוש הרשימות זהות.
+זה הכול: ה-project ב-GitLab ייווצר ב-import הבא. הבדיקה ב-`helm/tools/test_git_mirrors_catalog.py` מוודאת שהרשימה בכלי ובקטלוג זהות.
 
 ## מגבלות
 

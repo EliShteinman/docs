@@ -41,9 +41,9 @@ def make_upstream(github_root: Path) -> Callable[..., UpstreamRepository]:
 
 
 @pytest.fixture
-def gitlab_server() -> Iterator[FakeGitLab]:
+def gitlab_server(gitlab_repositories: Path) -> Iterator[FakeGitLab]:
     with FakeServer() as server:
-        yield FakeGitLab(server)
+        yield FakeGitLab(server, gitlab_repositories)
 
 
 @pytest.fixture
@@ -79,15 +79,16 @@ def internal_settings(
 ) -> Callable[..., InternalSettings]:
     monkeypatch.setenv("GITLAB_TOKEN", TOKEN)
 
-    def build(repos: list[InternalRepoSpec]) -> InternalSettings:
+    def build(repos: list[InternalRepoSpec] | None = None, group: str = "mirrors") -> InternalSettings:
         return InternalSettings(
             mirrors_dir=tmp_path / "airgap-mirrors",
             transfer_dir=tmp_path / "transfer",
             gitlab_url=gitlab_server.server.url,
+            gitlab_group=group,
             git_remote_base=gitlab_repositories.as_uri(),
             release_package_name="release-assets",
             http_timeout_seconds=10,
-            repos=repos,
+            repos=repos or [],
         )
 
     return build

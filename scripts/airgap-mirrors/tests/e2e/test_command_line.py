@@ -49,11 +49,6 @@ def upstream(make_upstream: Callable[..., UpstreamRepository]) -> UpstreamReposi
 
 
 @pytest.fixture
-def project(gitlab_server: FakeGitLab, gitlab_repositories: Path) -> FakeProject:
-    return gitlab_server.add_project(GITLAB_PATH, gitlab_repositories / f"{GITLAB_PATH}.git")
-
-
-@pytest.fixture
 def machines(
     tmp_path: Path,
     github_root: Path,
@@ -61,11 +56,11 @@ def machines(
     gitlab_server: FakeGitLab,
     github_server: FakeGitHub,
     upstream: UpstreamRepository,
-    project: FakeProject,
     clock: SteppingClock,
     monkeypatch: pytest.MonkeyPatch,
 ) -> Machines:
     monkeypatch.setenv("GITLAB_TOKEN", TOKEN)
+    gitlab_server.add_group("mirrors")
     github_server.add_release("redis/redis", "7.4.0", "2025-01-01T00:00:00Z", {"redis-7.4.0.tar.gz": b"old"})
     github_server.add_release(
         "redis/redis",
@@ -92,8 +87,8 @@ def machines(
         f'gitlab_url = "{gitlab_server.server.url}"\n'
         f'git_remote_base = "{gitlab_repositories.as_uri()}"\n'
         'release_package_name = "release-assets"\n'
-        "http_timeout_seconds = 10\n\n"
-        f'[[repos]]\nname = "redis"\ngitlab_path = "{GITLAB_PATH}"\n'
+        'gitlab_group = "mirrors"\n'
+        "http_timeout_seconds = 10\n"
     )
     return Machines(online, airgap, clock)
 
@@ -104,6 +99,11 @@ def transferred(machines: Machines) -> Machines:
     assert machines.import_() == EXIT_OK
     assert machines.confirm() == EXIT_OK
     return machines
+
+
+@pytest.fixture
+def project(transferred: Machines, gitlab_server: FakeGitLab) -> FakeProject:
+    return gitlab_server.projects[GITLAB_PATH]
 
 
 def gitlab_refs(project: FakeProject) -> set[str]:
@@ -159,11 +159,20 @@ def test_unknown_repository_name_exits_with_config_error(machines: Machines) -> 
     assert machines.export("--repo", "nope") == EXIT_BAD_CONFIG
 
 
-def test_missing_gitlab_project_exits_with_failure(machines: Machines, gitlab_server: FakeGitLab) -> None:
-    gitlab_server.projects.clear()
+def test_missing_gitlab_group_exits_with_failure(machines: Machines, gitlab_server: FakeGitLab) -> None:
+    gitlab_server.groups.clear()
     machines.export("--skip-releases")
     assert machines.import_("--skip-releases") == EXIT_SOME_FAILED
 
 
 def test_confirm_without_receipt_exits_with_failure(machines: Machines) -> None:
     assert machines.confirm() == EXIT_SOME_FAILED
+
+
+def test_helm_values_point_each_repository_at_its_project(transferred: Machines, tmp_path: Path) -> None:
+    values: str = (tmp_path / "airgap" / "helm-values-git-mirrors.yaml").read_text()
+    assert '    "redis":\n      enabled: true\n      to: "https://gitlab.test/mirrors/redis"' in values
+
+
+def test_import_of_a_repository_not_in_the_folder_exits_with_config_error(transferred: Machines) -> None:
+    assert transferred.import_("--repo", "nope") == EXIT_BAD_CONFIG

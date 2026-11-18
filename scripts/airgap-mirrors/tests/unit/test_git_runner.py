@@ -59,6 +59,7 @@ def internal(tmp_path: Path) -> InternalSettings:
         mirrors_dir=tmp_path,
         transfer_dir=tmp_path,
         gitlab_url="https://gitlab.example",
+        gitlab_group="g",
         release_package_name="p",
         http_timeout_seconds=5,
         GITLAB_TOKEN=SecretStr("glpat-x"),

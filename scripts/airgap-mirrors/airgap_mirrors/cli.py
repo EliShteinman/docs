@@ -59,7 +59,7 @@ def _dispatch(arguments: argparse.Namespace, builder: Composition, loader: Setti
     if arguments.command == "import":
         internal: InternalSettings = loader.load(arguments.config, InternalSettings)
         command = builder.import_command(internal, with_releases=not arguments.skip_releases)
-        return command.run(pick(internal.repos, arguments.repo))
+        return command.run(arguments.repo)
     external: ExternalSettings = loader.load(arguments.config, ExternalSettings)
     if arguments.command == "confirm":
         return builder.confirm_command(external).run()

@@ -2,16 +2,26 @@ import logging
 from collections.abc import Callable
 from pathlib import Path
 
-from airgap_mirrors.exceptions import ConfigurationError, GitCommandError, MissingObjectsError, TransferError
+from pydantic import BaseModel, ConfigDict, Field
+
+from airgap_mirrors.exceptions import GitCommandError, MissingObjectsError, TransferError
 from airgap_mirrors.git import BareRepository
 from airgap_mirrors.git.bare_repository import BRANCHES_AND_TAGS
 from airgap_mirrors.internal.gitlab_client import GitLabClient, GitLabProject
+from airgap_mirrors.internal.project_provisioner import ProjectProvisioner
 from airgap_mirrors.models import ImportLedger, RepositoryState, TransferManifest
 from airgap_mirrors.settings import InternalRepoSpec, InternalSettings
 from airgap_mirrors.storage import JsonModelStore, LedgerLocator
 from airgap_mirrors.transfer import TransferLayout
 
 logger: logging.Logger = logging.getLogger(__name__)
+
+
+class ImportResult(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    state_ids: list[str] = Field(default_factory=list)
+    project_url: str | None = None
 
 
 class GitImporter:
@@ -33,6 +43,7 @@ class GitImporter:
         ledgers: LedgerLocator,
         store: JsonModelStore,
         gitlab: GitLabClient,
+        provisioner: ProjectProvisioner,
     ) -> None:
         self._settings: InternalSettings = settings
         self._repository_factory: Callable[[Path], BareRepository] = repository_factory
@@ -40,19 +51,23 @@ class GitImporter:
         self._ledgers: LedgerLocator = ledgers
         self._store: JsonModelStore = store
         self._gitlab: GitLabClient = gitlab
+        self._provisioner: ProjectProvisioner = provisioner
 
-    def import_repository(self, spec: InternalRepoSpec) -> list[str]:
+    def import_repository(self, spec: InternalRepoSpec) -> ImportResult:
         manifests: list[TransferManifest] = self._manifests(spec)
         if not manifests:
-            logger.info("%s: no transfer in the folder", spec.name)
-            return []
-        project: GitLabProject = self._project(spec)
+            logger.info("%s: no git transfer in the folder", spec.name)
+            return ImportResult()
+        project: GitLabProject = self._provisioner.ensure_project(spec, manifests[-1].upstream_url)
         repository: BareRepository = self._local_copy(spec)
         for manifest in manifests:
             self._apply(spec, repository, manifest)
         final: RepositoryState = manifests[-1].state
         self._publish(spec, repository, project, final)
-        return [manifest.state.state_id for manifest in manifests]
+        return ImportResult(
+            state_ids=[manifest.state.state_id for manifest in manifests],
+            project_url=project.web_url or f"{self._settings.gitlab_url.rstrip('/')}/{spec.gitlab_path}",
+        )
 
     def _manifests(self, spec: InternalRepoSpec) -> list[TransferManifest]:
         loaded: list[TransferManifest] = []
@@ -61,12 +76,6 @@ class GitImporter:
             if manifest is not None:
                 loaded.append(manifest)
         return sorted(loaded, key=lambda manifest: manifest.created_at)
-
-    def _project(self, spec: InternalRepoSpec) -> GitLabProject:
-        project: GitLabProject | None = self._gitlab.project(spec.gitlab_path)
-        if project is None:
-            raise ConfigurationError(f"{spec.name}: GitLab has no project {spec.gitlab_path}; create it first")
-        return project
 
     def _local_copy(self, spec: InternalRepoSpec) -> BareRepository:
         repository: BareRepository = self._repository_factory(self._ledgers.repository_path(spec.name))

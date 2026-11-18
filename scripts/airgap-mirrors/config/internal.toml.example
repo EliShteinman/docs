@@ -1,8 +1,8 @@
-# Air-gapped machine (the one next to GitLab). Copy to internal.toml and edit.
+# Air-gapped machine (the one next to GitLab). Copy to internal.toml and set gitlab_url and gitlab_group.
 # The only place that describes the internal network.
 #
 # The GitLab token is never written here. Before each run:
-#   export GITLAB_TOKEN=<personal access token with the api scope>
+#   export GITLAB_TOKEN=<access token with the api scope, Maintainer of gitlab_group>
 
 # The local copy of every repository is kept here between runs.
 mirrors_dir = "~/airgap/mirrors"
@@ -10,148 +10,26 @@ mirrors_dir = "~/airgap/mirrors"
 transfer_dir = "~/airgap/transfer"
 
 gitlab_url = "https://gitlab.<your-company>.example"
-# Leave out to push over HTTPS with the token. Set to push over SSH instead, e.g. "ssh://git@gitlab.<your-company>.example".
+
+# The group every copy goes into: <gitlab_group>/<repository name>, e.g. redis/mirrors/redis.
+# The group must exist; missing subgroups inside it and every project are created on the first import.
+# Which repositories to import is read from the transfer folder, so there is no list to keep here.
+gitlab_group = "<your-group>/mirrors"
+
+# Visibility of the projects (and subgroups) this tool creates: "private", "internal" or "public".
+# Leave out to use GitLab's default. It cannot be wider than the group's own visibility.
+# project_visibility = "internal"
+
+# Leave out to push over HTTPS with the token. Set to push over SSH instead.
 # git_remote_base = "ssh://git@gitlab.<your-company>.example"
+
 # Your company's certificate authority, if GitLab's certificate is not trusted by default.
 # ca_file = "/etc/pki/tls/certs/company-ca.pem"
+
 release_package_name = "release-assets"
 http_timeout_seconds = 600
 
-# One block per repository: the GitLab project it goes to (group/subgroup/project).
-# The project must exist and be empty (no README) before the first import.
-
-[[repos]]
-name = "redis"
-gitlab_path = "<your-group>/redis"
-
-[[repos]]
-name = "RediSearch"
-gitlab_path = "<your-group>/RediSearch"
-
-[[repos]]
-name = "RedisJSON"
-gitlab_path = "<your-group>/RedisJSON"
-
-[[repos]]
-name = "RedisTimeSeries"
-gitlab_path = "<your-group>/RedisTimeSeries"
-
-[[repos]]
-name = "RedisBloom"
-gitlab_path = "<your-group>/RedisBloom"
-
-[[repos]]
-name = "RedisGears"
-gitlab_path = "<your-group>/RedisGears"
-
-[[repos]]
-name = "RedisGraph"
-gitlab_path = "<your-group>/RedisGraph"
-
-[[repos]]
-name = "RedisInsight"
-gitlab_path = "<your-group>/RedisInsight"
-
-[[repos]]
-name = "k8s-docs"
-gitlab_path = "<your-group>/k8s-docs"
-
-[[repos]]
-name = "observability"
-gitlab_path = "<your-group>/observability"
-
-[[repos]]
-name = "prometheus-operator"
-gitlab_path = "<your-group>/prometheus-operator"
-
-[[repos]]
-name = "docs"
-gitlab_path = "<your-group>/docs"
-
-[[repos]]
-name = "redis-py"
-gitlab_path = "<your-group>/redis-py"
-
-[[repos]]
-name = "redis-vl-python"
-gitlab_path = "<your-group>/redis-vl-python"
-
-[[repos]]
-name = "jedis"
-gitlab_path = "<your-group>/jedis"
-
-[[repos]]
-name = "lettuce"
-gitlab_path = "<your-group>/lettuce"
-
-[[repos]]
-name = "node-redis"
-gitlab_path = "<your-group>/node-redis"
-
-[[repos]]
-name = "ioredis"
-gitlab_path = "<your-group>/ioredis"
-
-[[repos]]
-name = "go-redis"
-gitlab_path = "<your-group>/go-redis"
-
-[[repos]]
-name = "rueidis"
-gitlab_path = "<your-group>/rueidis"
-
-[[repos]]
-name = "NRedisStack"
-gitlab_path = "<your-group>/NRedisStack"
-
-[[repos]]
-name = "hiredis"
-gitlab_path = "<your-group>/hiredis"
-
-[[repos]]
-name = "predis"
-gitlab_path = "<your-group>/predis"
-
-[[repos]]
-name = "redis-om-python"
-gitlab_path = "<your-group>/redis-om-python"
-
-[[repos]]
-name = "redis-om-node"
-gitlab_path = "<your-group>/redis-om-node"
-
-[[repos]]
-name = "redis-om-spring"
-gitlab_path = "<your-group>/redis-om-spring"
-
-[[repos]]
-name = "redis-om-dotnet"
-gitlab_path = "<your-group>/redis-om-dotnet"
-
-[[repos]]
-name = "memtier_benchmark"
-gitlab_path = "<your-group>/memtier_benchmark"
-
-[[repos]]
-name = "redisctl"
-gitlab_path = "<your-group>/redisctl"
-
-[[repos]]
-name = "redis-apache-arrow-flight"
-gitlab_path = "<your-group>/redis-apache-arrow-flight"
-
-[[repos]]
-name = "redis-adbc-driver"
-gitlab_path = "<your-group>/redis-adbc-driver"
-
-[[repos]]
-name = "redisinsight-tutorials"
-gitlab_path = "<your-group>/redisinsight-tutorials"
-
-[[repos]]
-name = "riotx"
-gitlab_path = "<your-group>/riotx"
-
-[[repos]]
-name = "grafana-redis-datasource"
-gitlab_path = "<your-group>/grafana-redis-datasource"
+# Only to put one repository somewhere other than <gitlab_group>/<name>:
+# [[repos]]
+# name = "redis"
+# gitlab_path = "other-group/redis-server"

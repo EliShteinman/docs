@@ -33,6 +33,15 @@ class TransferLayout:
             return []
         return sorted(directory.glob(f"*{MANIFEST_SUFFIX}"))
 
+    def repository_names(self) -> list[str]:
+        """Every repository the transfer folder carries something for."""
+        found: set[str] = set()
+        for kind in ("git", "releases"):
+            directory: Path = self.root / kind
+            if directory.is_dir():
+                found.update(child.name for child in directory.iterdir() if child.is_dir())
+        return sorted(found)
+
     def releases_file(self, repository: str) -> Path:
         return self.root / "releases" / repository / "releases.json"
 

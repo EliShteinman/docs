@@ -6,10 +6,10 @@ import pytest
 from pydantic import SecretStr
 from pytest_mock import MockerFixture
 
-from airgap_mirrors.exceptions import ConfigurationError, MissingObjectsError
+from airgap_mirrors.exceptions import MissingObjectsError
 from airgap_mirrors.external import ExportOutcome, GitExporter
 from airgap_mirrors.git import BareRepository
-from airgap_mirrors.internal import GitImporter, GitLabClient, GitLabProject
+from airgap_mirrors.internal import GitImporter, GitLabClient, GitLabProject, ProjectProvisioner
 from airgap_mirrors.models import ExportLedger, ImportLedger, RepositoryState, TransferManifest
 from airgap_mirrors.settings import ExternalRepoSpec, ExternalSettings, InternalRepoSpec, InternalSettings
 from airgap_mirrors.storage import JsonModelStore, LedgerLocator
@@ -147,18 +147,34 @@ def staged_layout(tmp_path: Path) -> TransferLayout:
 
 
 @pytest.fixture
-def importer(tmp_path: Path, repository: MagicMock, gitlab: MagicMock, staged_layout: TransferLayout) -> GitImporter:
+def provisioner(mocker: MockerFixture, gitlab: MagicMock) -> MagicMock:
+    mock: MagicMock = mocker.create_autospec(ProjectProvisioner, instance=True)
+    mock.ensure_project.side_effect = lambda spec, _url: gitlab.project(spec.gitlab_path)
+    return mock
+
+
+@pytest.fixture
+def importer(
+    tmp_path: Path, repository: MagicMock, gitlab: MagicMock, provisioner: MagicMock, staged_layout: TransferLayout
+) -> GitImporter:
     settings: InternalSettings = InternalSettings(
         mirrors_dir=tmp_path / "m",
         transfer_dir=tmp_path / "t",
         gitlab_url="https://gl",
+        gitlab_group="g",
         release_package_name="p",
         http_timeout_seconds=5,
         GITLAB_TOKEN=SecretStr("x"),
         repos=[INTERNAL_SPEC],
     )
     return GitImporter(
-        settings, lambda _: repository, staged_layout, LedgerLocator(tmp_path / "m"), JsonModelStore(), gitlab
+        settings,
+        lambda _: repository,
+        staged_layout,
+        LedgerLocator(tmp_path / "m"),
+        JsonModelStore(),
+        gitlab,
+        provisioner,
     )
 
 
@@ -169,10 +185,18 @@ def test_import_without_transfers_touches_nothing(importer: GitImporter, gitlab:
     gitlab.project.assert_not_called()
 
 
-def test_import_needs_the_gitlab_project(importer: GitImporter, gitlab: MagicMock) -> None:
-    gitlab.project.return_value = None
-    with pytest.raises(ConfigurationError, match="create it first"):
-        importer.import_repository(INTERNAL_SPEC)
+def test_import_makes_sure_the_project_exists(importer: GitImporter, provisioner: MagicMock) -> None:
+    importer.import_repository(INTERNAL_SPEC)
+    provisioner.ensure_project.assert_called_once_with(INTERNAL_SPEC, "u")
+
+
+def test_import_reports_the_project_address(importer: GitImporter, gitlab: MagicMock) -> None:
+    gitlab.project.return_value = GitLabProject(id=1, path_with_namespace="g/redis", web_url="https://gl/g/redis")
+    assert importer.import_repository(INTERNAL_SPEC).project_url == "https://gl/g/redis"
+
+
+def test_import_builds_the_address_when_gitlab_gives_none(importer: GitImporter) -> None:
+    assert importer.import_repository(INTERNAL_SPEC).project_url == "https://gl/g/redis"
 
 
 def test_import_pushes_the_default_branch_first_then_everything(importer: GitImporter, repository: MagicMock) -> None:
@@ -210,7 +234,7 @@ def test_import_skips_a_transfer_already_applied(importer: GitImporter, reposito
 
 
 def test_import_returns_the_applied_states(importer: GitImporter) -> None:
-    assert importer.import_repository(INTERNAL_SPEC) == [STATE.state_id]
+    assert importer.import_repository(INTERNAL_SPEC).state_ids == [STATE.state_id]
 
 
 def test_import_unprotects_an_old_default_gone_upstream(importer: GitImporter, gitlab: MagicMock) -> None:

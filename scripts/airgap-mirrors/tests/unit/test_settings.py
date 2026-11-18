@@ -36,12 +36,9 @@ INTERNAL_TOML: str = """
 mirrors_dir = "/m"
 transfer_dir = "/t"
 gitlab_url = "https://gitlab.example"
+gitlab_group = "group/sub"
 release_package_name = "release-assets"
 http_timeout_seconds = 30
-
-[[repos]]
-name = "redis"
-gitlab_path = "group/sub/redis"
 """
 
 
@@ -75,14 +72,14 @@ def test_internal_config_needs_the_gitlab_token(write_config, monkeypatch: pytes
 def test_push_url_defaults_to_the_gitlab_address(write_config, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("GITLAB_TOKEN", "t")
     settings: InternalSettings = SettingsLoader().load(write_config(INTERNAL_TOML), InternalSettings)
-    assert settings.push_url(settings.repos[0]) == "https://gitlab.example/group/sub/redis.git"
+    assert settings.push_url(settings.spec_for("redis")) == "https://gitlab.example/group/sub/redis.git"
 
 
 def test_push_url_uses_the_ssh_base_when_set(write_config, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("GITLAB_TOKEN", "t")
-    text: str = INTERNAL_TOML.replace("[[repos]]", 'git_remote_base = "ssh://git@gitlab.example"\n\n[[repos]]', 1)
+    text: str = INTERNAL_TOML + 'git_remote_base = "ssh://git@gitlab.example"\n'
     settings: InternalSettings = SettingsLoader().load(write_config(text), InternalSettings)
-    assert settings.push_url(settings.repos[0]) == "ssh://git@gitlab.example/group/sub/redis.git"
+    assert settings.push_url(settings.spec_for("redis")) == "ssh://git@gitlab.example/group/sub/redis.git"
 
 
 def test_missing_config_file_is_reported(tmp_path: Path) -> None:
@@ -230,7 +227,14 @@ def test_home_folder_in_paths_is_expanded(write_config) -> None:
     assert settings.mirrors_dir == Path.home() / "airgap" / "mirrors"
 
 
-def test_example_configs_load_as_they_are(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("GITLAB_TOKEN", "t")
+def test_external_example_config_loads_as_it_is() -> None:
     loaded: ExternalSettings = SettingsLoader().load(Path("config/external.toml.example"), ExternalSettings)
     assert len(loaded.repos) == 34
+
+
+def test_internal_example_config_needs_only_the_group_filled_in(monkeypatch: pytest.MonkeyPatch, write_config) -> None:
+    monkeypatch.setenv("GITLAB_TOKEN", "t")
+    text: str = Path("config/internal.toml.example").read_text().replace("<your-group>", "redis")
+    text = text.replace("gitlab.<your-company>.example", "gitlab.example")
+    loaded: InternalSettings = SettingsLoader().load(write_config(text), InternalSettings)
+    assert loaded.spec_for("redis").gitlab_path == "redis/mirrors/redis"

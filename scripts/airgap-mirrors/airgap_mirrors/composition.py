@@ -6,7 +6,14 @@ from airgap_mirrors.exceptions import GitHubApiError, GitLabApiError
 from airgap_mirrors.external import GitExporter, GitHubClient, ReceiptConfirmer, ReleaseExporter
 from airgap_mirrors.git import BareRepository, GitRunner
 from airgap_mirrors.http import HttpClient
-from airgap_mirrors.internal import GitImporter, GitLabClient, ReleaseImporter, gitlab_git_config
+from airgap_mirrors.internal import (
+    GitImporter,
+    GitLabClient,
+    HelmValuesWriter,
+    ProjectProvisioner,
+    ReleaseImporter,
+    gitlab_git_config,
+)
 from airgap_mirrors.settings import ExternalSettings, InternalSettings
 from airgap_mirrors.storage import JsonModelStore, LedgerLocator
 from airgap_mirrors.transfer import Clock, SystemClock, TransferLayout
@@ -44,13 +51,15 @@ class Composition:
 
     def git_importer(self, settings: InternalSettings) -> GitImporter:
         git: GitRunner = GitRunner(config=gitlab_git_config(settings))
+        gitlab: GitLabClient = GitLabClient(self._gitlab_http(settings))
         return GitImporter(
             settings,
             lambda path: BareRepository(path, git),
             TransferLayout(settings.transfer_dir),
             LedgerLocator(settings.mirrors_dir),
             self._store,
-            GitLabClient(self._gitlab_http(settings)),
+            gitlab,
+            ProjectProvisioner(gitlab, settings.project_visibility),
         )
 
     def import_command(self, settings: InternalSettings, *, with_releases: bool) -> ImportCommand:
@@ -59,7 +68,18 @@ class Composition:
         if with_releases:
             gitlab: GitLabClient = GitLabClient(self._gitlab_http(settings))
             releases = ReleaseImporter(gitlab, layout, self._store, settings.release_package_name)
-        return ImportCommand(self.git_importer(settings), releases, RepositoryBatch(), layout, self._store, self._clock)
+        ledgers: LedgerLocator = LedgerLocator(settings.mirrors_dir)
+        helm_values: HelmValuesWriter = HelmValuesWriter(ledgers.published_projects, ledgers.helm_values, self._store)
+        return ImportCommand(
+            settings,
+            self.git_importer(settings),
+            releases,
+            helm_values,
+            RepositoryBatch(),
+            layout,
+            self._store,
+            self._clock,
+        )
 
     @staticmethod
     def _github_http(settings: ExternalSettings) -> HttpClient:

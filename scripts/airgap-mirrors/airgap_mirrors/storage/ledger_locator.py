@@ -15,3 +15,11 @@ class LedgerLocator:
 
     def import_ledger(self, repository: str) -> Path:
         return self._mirrors_dir / f"{repository}.import-ledger.json"
+
+    @property
+    def published_projects(self) -> Path:
+        return self._mirrors_dir / "published-projects.json"
+
+    @property
+    def helm_values(self) -> Path:
+        return self._mirrors_dir / "helm-values-git-mirrors.yaml"

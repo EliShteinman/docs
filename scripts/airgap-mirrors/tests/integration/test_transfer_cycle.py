@@ -1,12 +1,11 @@
 import shutil
 from collections.abc import Callable
-from pathlib import Path
 
 import pytest
 
 from airgap_mirrors.commands import ConfirmCommand, ExportCommand, ImportCommand
 from airgap_mirrors.composition import Composition
-from airgap_mirrors.exceptions import MissingObjectsError, TransferError
+from airgap_mirrors.exceptions import ConfigurationError, MissingObjectsError, TransferError
 from airgap_mirrors.external import ExportOutcome, GitExporter
 from airgap_mirrors.internal import GitImporter
 from airgap_mirrors.settings import ExternalRepoSpec, ExternalSettings, InternalRepoSpec, InternalSettings
@@ -33,7 +32,7 @@ class Cycle:
 
     def import_(self) -> list[str]:
         command: ImportCommand = self._composition.import_command(self.airgap, with_releases=False)
-        return command.run(self.airgap.repos)
+        return command.run([])
 
     def confirm(self) -> list[str]:
         command: ConfirmCommand = self._composition.confirm_command(self.online)
@@ -64,8 +63,8 @@ def upstream(make_upstream: Callable[..., UpstreamRepository]) -> UpstreamReposi
 
 
 @pytest.fixture
-def project(gitlab_server: FakeGitLab, gitlab_repositories: Path) -> FakeProject:
-    return gitlab_server.add_project(GITLAB_PATH, gitlab_repositories / f"{GITLAB_PATH}.git")
+def project(gitlab_server: FakeGitLab) -> FakeProject:
+    return gitlab_server.add_project(GITLAB_PATH)
 
 
 @pytest.fixture
@@ -201,7 +200,7 @@ def test_delta_bundle_without_its_base_is_refused(cycle: Cycle, upstream: Upstre
     cycle.export()
     forget_the_airgap_copy(cycle)
     with pytest.raises(TransferError, match="earlier transfer"):
-        cycle.importer().import_repository(cycle.airgap.repos[0])
+        cycle.importer().import_repository(cycle.airgap.spec_for("widget"))
 
 
 def test_refs_only_transfer_without_its_base_is_refused(cycle: Cycle, upstream: UpstreamRepository) -> None:
@@ -211,4 +210,76 @@ def test_refs_only_transfer_without_its_base_is_refused(cycle: Cycle, upstream: 
     cycle.export()
     forget_the_airgap_copy(cycle)
     with pytest.raises(MissingObjectsError):
-        cycle.importer().import_repository(cycle.airgap.repos[0])
+        cycle.importer().import_repository(cycle.airgap.spec_for("widget"))
+
+
+@pytest.fixture
+def fresh_cycle(
+    clock: SteppingClock,
+    upstream: UpstreamRepository,
+    gitlab_server: FakeGitLab,
+    external_settings: Callable[..., ExternalSettings],
+    internal_settings: Callable[..., InternalSettings],
+) -> Cycle:
+    gitlab_server.add_group("redis")
+    online: ExternalSettings = external_settings([ExternalRepoSpec(name="widget", github="acme/widget")])
+    return Cycle(Composition(clock=clock), online, internal_settings(group="redis/mirrors"))
+
+
+def test_missing_project_is_created_in_the_group(fresh_cycle: Cycle, gitlab_server: FakeGitLab) -> None:
+    fresh_cycle.round_trip()
+    assert "redis/mirrors/widget" in gitlab_server.projects
+
+
+def test_missing_subgroup_is_created_on_the_way(fresh_cycle: Cycle, gitlab_server: FakeGitLab) -> None:
+    fresh_cycle.round_trip()
+    assert "redis/mirrors" in gitlab_server.groups
+
+
+def test_created_project_gets_the_upstream_default_branch(fresh_cycle: Cycle, gitlab_server: FakeGitLab) -> None:
+    fresh_cycle.round_trip()
+    assert gitlab_server.projects["redis/mirrors/widget"].default_branch == "unstable"
+
+
+def test_created_project_carries_everything_upstream_has(
+    fresh_cycle: Cycle, gitlab_server: FakeGitLab, upstream: UpstreamRepository
+) -> None:
+    fresh_cycle.round_trip()
+    assert gitlab_refs(gitlab_server.projects["redis/mirrors/widget"]) == upstream.refs()
+
+
+@pytest.mark.parametrize(
+    "setting",
+    ["issues_access_level", "merge_requests_access_level", "wiki_access_level", "snippets_access_level"],
+)
+def test_created_project_is_a_plain_copy(fresh_cycle: Cycle, gitlab_server: FakeGitLab, setting: str) -> None:
+    fresh_cycle.round_trip()
+    assert gitlab_server.projects["redis/mirrors/widget"].created_with[setting] == "disabled"
+
+
+def test_created_project_starts_empty(fresh_cycle: Cycle, gitlab_server: FakeGitLab) -> None:
+    fresh_cycle.round_trip()
+    assert gitlab_server.projects["redis/mirrors/widget"].created_with["initialize_with_readme"] is False
+
+
+def test_second_import_reuses_the_project(
+    fresh_cycle: Cycle, gitlab_server: FakeGitLab, upstream: UpstreamRepository
+) -> None:
+    fresh_cycle.round_trip()
+    fresh_cycle.clear_usb()
+    upstream.commit("unstable", "more.txt", "more")
+    fresh_cycle.round_trip()
+    assert len(gitlab_server.projects) == 1
+
+
+def test_missing_top_group_fails_with_a_clear_message(
+    clock: SteppingClock,
+    upstream: UpstreamRepository,
+    external_settings: Callable[..., ExternalSettings],
+    internal_settings: Callable[..., InternalSettings],
+) -> None:
+    online: ExternalSettings = external_settings([ExternalRepoSpec(name="widget", github="acme/widget")])
+    cycle: Cycle = Cycle(Composition(clock=clock), online, internal_settings(group="nowhere"))
+    cycle.export()
+    with pytest.raises(ConfigurationError, match="no group 'nowhere'"):
+        cycle.importer().import_repository(cycle.airgap.spec_for("widget"))

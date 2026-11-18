@@ -77,15 +77,22 @@ class FakeProject:
     links: dict[str, list[dict[str, str]]] = field(default_factory=dict)
     packages: dict[str, bytes] = field(default_factory=dict)
     protected: set[str] = field(default_factory=set)
+    created_with: dict[str, object] = field(default_factory=dict)
 
 
 class FakeGitLab:
     """Answers the GitLab REST calls the import makes. Tags are read from the project's real bare repository,
     the way GitLab reads them from the pushed repository."""
 
-    def __init__(self, server: FakeServer) -> None:
+    def __init__(self, server: FakeServer, repositories_root: Path) -> None:
         self.server: FakeServer = server
+        self.repositories_root: Path = repositories_root
         self.projects: dict[str, FakeProject] = {}
+        self.groups: dict[str, int] = {}
+        self.group_requests: list[dict[str, object]] = []
+        server.route("GET", r"/api/v4/groups/([^/]+)", self._get_group)
+        server.route("POST", r"/api/v4/groups", self._post_group)
+        server.route("POST", r"/api/v4/projects", self._post_project)
         project: str = r"/api/v4/projects/([^/]+)"
         server.route("GET", project, self._get_project)
         server.route("PUT", project, self._put_project)
@@ -97,11 +104,47 @@ class FakeGitLab:
         server.route("POST", project + r"/releases/([^/]+)/assets/links", self._post_link)
         server.route("PUT", project + r"/packages/generic/([^/]+)/([^/]+)/([^/]+)", self._put_package)
 
-    def add_project(self, path: str, repository: Path) -> FakeProject:
+    def add_group(self, path: str) -> int:
+        self.groups[path] = 1000 + len(self.groups)
+        return self.groups[path]
+
+    def add_project(self, path: str) -> FakeProject:
+        repository: Path = self.repositories_root / f"{path}.git"
+        repository.parent.mkdir(parents=True, exist_ok=True)
         subprocess.run(["git", "init", "--bare", "--quiet", str(repository)], check=True)
         created: FakeProject = FakeProject(id=len(self.projects) + 1, path=path, repository=repository)
         self.projects[path] = created
         return created
+
+    def _group_path(self, group_id: int) -> str:
+        return next(path for path, known in self.groups.items() if known == group_id)
+
+    def _get_group(self, encoded: str, **_: object) -> tuple[int, object, dict[str, str]]:
+        path: str = urllib.parse.unquote(encoded)
+        if path not in self.groups:
+            return 404, {"message": "404 Group Not Found"}, {}
+        return 200, {"id": self.groups[path], "full_path": path}, {}
+
+    def _post_group(self, body: bytes, **_: object) -> tuple[int, object, dict[str, str]]:
+        request: dict[str, object] = json.loads(body)
+        self.group_requests.append(request)
+        path: str = f"{self._group_path(int(request['parent_id']))}/{request['path']}"  # type: ignore[call-overload]
+        return 201, {"id": self.add_group(path), "full_path": path}, {}
+
+    def _post_project(self, body: bytes, **_: object) -> tuple[int, object, dict[str, str]]:
+        request: dict[str, object] = json.loads(body)
+        path: str = f"{self._group_path(int(request['namespace_id']))}/{request['path']}"  # type: ignore[call-overload]
+        project: FakeProject = self.add_project(path)
+        project.created_with = request
+        return 201, self._describe(project), {}
+
+    def _describe(self, project: FakeProject) -> dict[str, object]:
+        return {
+            "id": project.id,
+            "path_with_namespace": project.path,
+            "default_branch": project.default_branch,
+            "web_url": f"https://gitlab.test/{project.path}",
+        }
 
     def _project(self, encoded: str) -> FakeProject | None:
         return self.projects.get(urllib.parse.unquote(encoded))
@@ -122,11 +165,7 @@ class FakeGitLab:
             )
             if has_branch:
                 project.default_branch = head.removeprefix("refs/heads/")
-        return (
-            200,
-            {"id": project.id, "path_with_namespace": project.path, "default_branch": project.default_branch},
-            {},
-        )
+        return 200, self._describe(project), {}
 
     def _put_project(self, encoded: str, body: bytes, **_: object) -> tuple[int, object, dict[str, str]]:
         project: FakeProject = self.projects[urllib.parse.unquote(encoded)]

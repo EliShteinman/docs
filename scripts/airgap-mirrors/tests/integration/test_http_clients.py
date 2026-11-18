@@ -62,8 +62,8 @@ def test_unreachable_server_is_an_api_error(tmp_path: Path) -> None:
 
 
 @pytest.fixture
-def project(gitlab_server: FakeGitLab, tmp_path: Path) -> FakeProject:
-    return gitlab_server.add_project(NESTED_PATH, tmp_path / "project.git")
+def project(gitlab_server: FakeGitLab) -> FakeProject:
+    return gitlab_server.add_project(NESTED_PATH)
 
 
 def test_project_is_found_by_its_nested_path(gitlab_server: FakeGitLab, project: FakeProject) -> None:
@@ -104,3 +104,31 @@ def test_package_upload_sends_the_file(gitlab_server: FakeGitLab, project: FakeP
     (tmp_path / "tool.tgz").write_bytes(b"payload")
     gitlab_client(gitlab_server.server).upload_package_file(NESTED_PATH, "pkg", "v1", tmp_path / "tool.tgz")
     assert project.packages["pkg/v1/tool.tgz"] == b"payload"
+
+
+def test_group_is_found_by_its_nested_path(gitlab_server: FakeGitLab) -> None:
+    group_id: int = gitlab_server.add_group("redis/mirrors")
+    found = gitlab_client(gitlab_server.server).group("redis/mirrors")
+    assert (found.id if found else None) == group_id
+
+
+def test_unknown_group_is_none(gitlab_server: FakeGitLab) -> None:
+    assert gitlab_client(gitlab_server.server).group("no/such") is None
+
+
+def test_subgroup_is_created_under_its_parent(gitlab_server: FakeGitLab) -> None:
+    parent: int = gitlab_server.add_group("redis")
+    created = gitlab_client(gitlab_server.server).create_group("mirrors", parent, None)
+    assert created.full_path == "redis/mirrors"
+
+
+def test_project_is_created_with_the_requested_visibility(gitlab_server: FakeGitLab) -> None:
+    group: int = gitlab_server.add_group("redis")
+    gitlab_client(gitlab_server.server).create_project(group, "tool", "copy", "internal")
+    assert gitlab_server.projects["redis/tool"].created_with["visibility"] == "internal"
+
+
+def test_project_without_visibility_leaves_it_to_gitlab(gitlab_server: FakeGitLab) -> None:
+    group: int = gitlab_server.add_group("redis")
+    gitlab_client(gitlab_server.server).create_project(group, "tool", "copy", None)
+    assert "visibility" not in gitlab_server.projects["redis/tool"].created_with
