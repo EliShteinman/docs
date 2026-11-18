@@ -8,6 +8,7 @@ from airgap_mirrors.composition import Composition
 from airgap_mirrors.exceptions import ConfigurationError, MissingObjectsError, TransferError
 from airgap_mirrors.external import ExportOutcome, GitExporter
 from airgap_mirrors.internal import GitImporter
+from airgap_mirrors.models import TransferManifest
 from airgap_mirrors.settings import ExternalRepoSpec, ExternalSettings, InternalRepoSpec, InternalSettings
 from tests.conftest import SteppingClock
 from tests.support.fake_servers import FakeGitLab, FakeProject
@@ -296,3 +297,35 @@ def test_export_again_after_the_folder_was_emptied_writes_it_again(cycle: Cycle)
     cycle.clear_usb()
     cycle.export()
     assert len(list(cycle.online.transfer_dir.rglob("*.bundle"))) == 1
+
+
+def test_export_again_after_upstream_moved_carries_only_the_new_part(
+    cycle: Cycle, upstream: UpstreamRepository
+) -> None:
+    cycle.export()
+    upstream.commit("unstable", "later.txt", "later")
+    cycle.export()
+    manifests = sorted(cycle.online.transfer_dir.rglob("*.manifest.json"))
+    first, second = (TransferManifest.model_validate_json(path.read_text()) for path in manifests)
+    assert second.base_state_id == first.state.state_id
+
+
+def test_two_waiting_transfers_import_together(
+    cycle: Cycle, upstream: UpstreamRepository, project: FakeProject
+) -> None:
+    cycle.export()
+    upstream.commit("unstable", "later.txt", "later")
+    cycle.export()
+    cycle.import_()
+    assert gitlab_refs(project) == upstream.refs()
+
+
+def test_confirming_the_newer_waiting_transfer_leaves_nothing_to_send(
+    cycle: Cycle, upstream: UpstreamRepository
+) -> None:
+    cycle.export()
+    upstream.commit("unstable", "later.txt", "later")
+    cycle.round_trip()
+    cycle.clear_usb()
+    cycle.export()
+    assert not list(cycle.online.transfer_dir.rglob("*.manifest.json"))
