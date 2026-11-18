@@ -8,7 +8,7 @@ from airgap_mirrors.external import GitHubClient, ReleaseExporter
 from airgap_mirrors.internal import GitLabClient, ReleaseImporter, package_version
 from airgap_mirrors.models import ReleaseAsset, ReleaseCatalog, ReleaseRecord
 from airgap_mirrors.settings import ExternalRepoSpec, InternalRepoSpec
-from airgap_mirrors.storage import JsonModelStore
+from airgap_mirrors.storage import JsonModelStore, LedgerLocator
 from airgap_mirrors.transfer import TransferLayout
 
 RELEASE: ReleaseRecord = ReleaseRecord(
@@ -25,6 +25,10 @@ def layout(tmp_path: Path) -> TransferLayout:
     return TransferLayout(tmp_path)
 
 
+def exporter(github: MagicMock, layout: TransferLayout) -> ReleaseExporter:
+    return ReleaseExporter(github, layout, LedgerLocator(layout.root / "ledgers"), JsonModelStore())
+
+
 @pytest.fixture
 def github(mocker: MockerFixture) -> MagicMock:
     client: MagicMock = mocker.create_autospec(GitHubClient, instance=True)
@@ -37,24 +41,20 @@ def github(mocker: MockerFixture) -> MagicMock:
 
 
 def test_exporter_writes_the_release_notes(github: MagicMock, layout: TransferLayout) -> None:
-    ReleaseExporter(github, layout, JsonModelStore()).export(
-        ExternalRepoSpec(name="tool", github="o/tool", assets="none")
-    )
+    exporter(github, layout).export(ExternalRepoSpec(name="tool", github="o/tool", assets="none"))
     assert JsonModelStore().load(layout.releases_file("tool"), ReleaseCatalog) == ReleaseCatalog(
         repository="o/tool", releases=[RELEASE]
     )
 
 
 def test_exporter_downloads_nothing_under_policy_none(github: MagicMock, layout: TransferLayout) -> None:
-    ReleaseExporter(github, layout, JsonModelStore()).export(
-        ExternalRepoSpec(name="tool", github="o/tool", assets="none")
-    )
+    exporter(github, layout).export(ExternalRepoSpec(name="tool", github="o/tool", assets="none"))
     github.download.assert_not_called()
 
 
 def test_exporter_downloads_only_filtered_files(github: MagicMock, layout: TransferLayout) -> None:
     spec: ExternalRepoSpec = ExternalRepoSpec(name="tool", github="o/tool", asset_filter=["linux"])
-    ReleaseExporter(github, layout, JsonModelStore()).export(spec)
+    exporter(github, layout).export(spec)
     github.download.assert_called_once_with("https://dl/linux", layout.asset_dir("tool", "v1.0") / "tool-linux.tar.gz")
 
 
@@ -63,7 +63,7 @@ def test_exporter_skips_a_file_already_downloaded(github: MagicMock, layout: Tra
     target: Path = layout.asset_dir("tool", "v1.0") / "tool-linux.tar.gz"
     target.parent.mkdir(parents=True)
     target.write_bytes(b"abc")
-    assert ReleaseExporter(github, layout, JsonModelStore()).export(spec) == 0
+    assert exporter(github, layout).export(spec) == 0
 
 
 def test_exporter_downloads_again_when_the_size_is_wrong(github: MagicMock, layout: TransferLayout) -> None:
@@ -71,7 +71,23 @@ def test_exporter_downloads_again_when_the_size_is_wrong(github: MagicMock, layo
     target: Path = layout.asset_dir("tool", "v1.0") / "tool-linux.tar.gz"
     target.parent.mkdir(parents=True)
     target.write_bytes(b"a")
-    assert ReleaseExporter(github, layout, JsonModelStore()).export(spec) == 1
+    assert exporter(github, layout).export(spec) == 1
+
+
+def test_exporter_does_not_send_a_file_twice(github: MagicMock, layout: TransferLayout) -> None:
+    spec: ExternalRepoSpec = ExternalRepoSpec(name="tool", github="o/tool", asset_filter=["linux"])
+    exporter(github, layout).export(spec)
+    for leftover in layout.asset_dir("tool", "v1.0").iterdir():
+        leftover.unlink()
+    assert exporter(github, layout).export(spec) == 0
+
+
+def test_full_export_sends_a_file_again(github: MagicMock, layout: TransferLayout) -> None:
+    spec: ExternalRepoSpec = ExternalRepoSpec(name="tool", github="o/tool", asset_filter=["linux"])
+    exporter(github, layout).export(spec)
+    for leftover in layout.asset_dir("tool", "v1.0").iterdir():
+        leftover.unlink()
+    assert exporter(github, layout).export(spec, full=True) == 1
 
 
 SPEC: InternalRepoSpec = InternalRepoSpec(name="tool", gitlab_path="g/tool")

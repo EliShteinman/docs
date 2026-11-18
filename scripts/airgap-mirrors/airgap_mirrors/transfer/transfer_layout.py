@@ -12,7 +12,6 @@ class TransferLayout:
     <transfer>/git/<repo>/<stamp>.bundle          the new commits (absent when only refs moved)
     <transfer>/releases/<repo>/releases.json      release notes
     <transfer>/releases/<repo>/assets/<tag>/...   release files
-    <transfer>/receipt.json                       written by import, read by confirm
     """
 
     def __init__(self, root: Path) -> None:
@@ -47,10 +46,6 @@ class TransferLayout:
 
     def asset_dir(self, repository: str, tag: str) -> Path:
         return self.root / "releases" / repository / "assets" / tag
-
-    @property
-    def receipt_path(self) -> Path:
-        return self.root / "receipt.json"
 
 
 def _stamp(moment: datetime) -> str:

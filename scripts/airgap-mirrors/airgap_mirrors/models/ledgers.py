@@ -1,24 +1,29 @@
-from datetime import datetime
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from airgap_mirrors.models.repository_state import RepositoryState
 
 
 class ExportLedger(BaseModel):
-    """Online side: the state GitLab is known to have, and states sent but not yet confirmed."""
+    """Online side: the state the last export sent. Nothing comes back from the air-gapped side, so what was
+    sent is taken as delivered, and the next export carries only what came after it."""
 
     model_config = ConfigDict(frozen=True)
 
-    confirmed: RepositoryState | None = None
-    pending: dict[str, RepositoryState] = Field(default_factory=dict)
+    sent: RepositoryState | None = None
 
-    def with_pending(self, state: RepositoryState) -> "ExportLedger":
-        return self.model_copy(update={"pending": {**self.pending, state.state_id: state}})
+    def with_sent(self, state: RepositoryState) -> "ExportLedger":
+        return self.model_copy(update={"sent": state})
 
-    def with_confirmed(self, state_id: str) -> "ExportLedger":
-        remaining: dict[str, RepositoryState] = {key: value for key, value in self.pending.items() if key != state_id}
-        return self.model_copy(update={"confirmed": self.pending[state_id], "pending": remaining})
+
+class SentAssets(BaseModel):
+    """Online side: the release files already sent, as "<tag>/<file name>", so no export sends one twice."""
+
+    model_config = ConfigDict(frozen=True)
+
+    files: set[str] = Field(default_factory=set)
+
+    def with_file(self, key: str) -> "SentAssets":
+        return self.model_copy(update={"files": self.files | {key}})
 
 
 class ImportLedger(BaseModel):
@@ -32,19 +37,3 @@ class ImportLedger(BaseModel):
         if state_id in self.applied_state_ids:
             return self
         return self.model_copy(update={"applied_state_ids": [*self.applied_state_ids, state_id]})
-
-
-class ImportedState(BaseModel):
-    model_config = ConfigDict(frozen=True)
-
-    name: str
-    state_id: str
-
-
-class ImportReceipt(BaseModel):
-    """Carried back to the online side: which states now live in GitLab, in the order they were applied."""
-
-    model_config = ConfigDict(frozen=True)
-
-    imported_at: datetime
-    entries: list[ImportedState] = Field(default_factory=list)

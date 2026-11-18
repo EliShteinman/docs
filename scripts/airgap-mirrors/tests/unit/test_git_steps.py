@@ -66,8 +66,8 @@ def exporter(tmp_path: Path, repository: MagicMock) -> GitExporter:
     )
 
 
-def confirm(tmp_path: Path, state: RepositoryState) -> None:
-    JsonModelStore().save(LedgerLocator(tmp_path / "m").export_ledger("redis"), ExportLedger(confirmed=state))
+def already_sent(tmp_path: Path, state: RepositoryState) -> None:
+    JsonModelStore().save(LedgerLocator(tmp_path / "m").export_ledger("redis"), ExportLedger(sent=state))
 
 
 def test_first_export_bundles_every_ref(exporter: GitExporter, repository: MagicMock) -> None:
@@ -87,17 +87,17 @@ def test_head_follows_the_upstream_default(exporter: GitExporter, repository: Ma
 
 
 def test_export_is_skipped_when_nothing_changed(exporter: GitExporter, tmp_path: Path) -> None:
-    confirm(tmp_path, STATE)
+    already_sent(tmp_path, STATE)
     assert exporter.export(EXTERNAL_SPEC) is ExportOutcome.UNCHANGED
 
 
 def test_default_branch_change_alone_is_exported(exporter: GitExporter, repository: MagicMock, tmp_path: Path) -> None:
-    confirm(tmp_path, STATE.model_copy(update={"default_branch": "main"}))
+    already_sent(tmp_path, STATE.model_copy(update={"default_branch": "main"}))
     assert exporter.export(EXTERNAL_SPEC) is ExportOutcome.REFS_ONLY
 
 
 def test_delta_excludes_what_gitlab_already_has(exporter: GitExporter, repository: MagicMock, tmp_path: Path) -> None:
-    confirm(
+    already_sent(
         tmp_path, RepositoryState(default_branch="unstable", refs={"refs/heads/unstable": "c1", "refs/tags/v1": "t1"})
     )
     exporter.export(EXTERNAL_SPEC)
@@ -105,22 +105,22 @@ def test_delta_excludes_what_gitlab_already_has(exporter: GitExporter, repositor
 
 
 def test_refs_without_new_objects_write_no_bundle(exporter: GitExporter, repository: MagicMock, tmp_path: Path) -> None:
-    confirm(tmp_path, RepositoryState(default_branch="unstable", refs={"refs/heads/unstable": "c2"}))
+    already_sent(tmp_path, RepositoryState(default_branch="unstable", refs={"refs/heads/unstable": "c2"}))
     repository.has_objects_beyond.return_value = False
     assert exporter.export(EXTERNAL_SPEC) is ExportOutcome.REFS_ONLY
 
 
-def test_full_export_ignores_the_confirmed_state(exporter: GitExporter, tmp_path: Path) -> None:
-    confirm(tmp_path, STATE)
+def test_full_export_ignores_what_was_sent(exporter: GitExporter, tmp_path: Path) -> None:
+    already_sent(tmp_path, STATE)
     assert exporter.export(EXTERNAL_SPEC, full=True) is ExportOutcome.BUNDLED
 
 
-def test_export_leaves_the_state_pending(exporter: GitExporter, tmp_path: Path) -> None:
+def test_export_records_what_it_sent(exporter: GitExporter, tmp_path: Path) -> None:
     exporter.export(EXTERNAL_SPEC)
     ledger: ExportLedger | None = JsonModelStore().load(
         LedgerLocator(tmp_path / "m").export_ledger("redis"), ExportLedger
     )
-    assert STATE.state_id in (ledger.pending if ledger else {})
+    assert (ledger.sent if ledger else None) == STATE
 
 
 def test_manifest_names_its_bundle(exporter: GitExporter, tmp_path: Path) -> None:

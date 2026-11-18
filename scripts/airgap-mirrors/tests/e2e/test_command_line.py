@@ -34,9 +34,6 @@ class Machines:
     def import_(self, *arguments: str) -> int:
         return self.run(self.airgap_config, "import", *arguments)
 
-    def confirm(self) -> int:
-        return self.run(self.online_config, "confirm")
-
 
 @pytest.fixture
 def upstream(make_upstream: Callable[..., UpstreamRepository]) -> UpstreamRepository:
@@ -98,7 +95,6 @@ def machines(
 def transferred(machines: Machines) -> Machines:
     assert machines.export() == EXIT_OK
     assert machines.import_() == EXIT_OK
-    assert machines.confirm() == EXIT_OK
     return machines
 
 
@@ -166,10 +162,6 @@ def test_missing_gitlab_group_exits_with_failure(machines: Machines, gitlab_serv
     assert machines.import_("--skip-releases") == EXIT_SOME_FAILED
 
 
-def test_confirm_without_receipt_exits_with_failure(machines: Machines) -> None:
-    assert machines.confirm() == EXIT_SOME_FAILED
-
-
 def test_helm_values_point_each_repository_at_its_project(transferred: Machines, tmp_path: Path) -> None:
     values: str = (tmp_path / "airgap" / "helm-values-git-mirrors.yaml").read_text()
     assert '    "redis":\n      enabled: true\n      to: "https://gitlab.test/mirrors/redis"' in values
@@ -177,3 +169,10 @@ def test_helm_values_point_each_repository_at_its_project(transferred: Machines,
 
 def test_import_of_a_repository_not_in_the_folder_exits_with_config_error(transferred: Machines) -> None:
     assert transferred.import_("--repo", "nope") == EXIT_BAD_CONFIG
+
+
+def test_second_export_sends_no_release_file_twice(transferred: Machines, tmp_path: Path) -> None:
+    for leftover in sorted((tmp_path / "usb").rglob("*"), reverse=True):
+        leftover.unlink() if leftover.is_file() else leftover.rmdir()
+    transferred.export()
+    assert not list((tmp_path / "usb").rglob("*.tar.gz"))

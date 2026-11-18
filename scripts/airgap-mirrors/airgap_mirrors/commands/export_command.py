@@ -17,7 +17,7 @@ class ExportCommand:
         failed: list[str] = self._batch.run("git export", specs, lambda spec: self._git.export(spec, full=full))
         if self._releases is not None:
             releases: ReleaseExporter = self._releases
-            failed += self._batch.run("release export", specs, releases.export)
+            failed += self._batch.run("release export", specs, lambda spec: releases.export(spec, full=full))
         if not failed:
-            logger.info("done: copy the transfer folder to the USB stick, then run import on the air-gapped machine")
+            logger.info("done: copy the transfer folder to the USB stick, then empty it; run import on the other side")
         return failed

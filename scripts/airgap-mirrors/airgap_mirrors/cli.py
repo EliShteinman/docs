@@ -21,7 +21,7 @@ EXIT_BAD_CONFIG: int = 2
 def build_parser() -> argparse.ArgumentParser:
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         prog="python -m airgap_mirrors",
-        description="Copy GitHub repositories to an air-gapped GitLab over a USB stick.",
+        description="Copy GitHub repositories to an air-gapped GitLab over a USB stick, one way.",
     )
     parser.add_argument("--config", type=Path, required=True, help="this machine's TOML config")
     parser.add_argument("--logging-config", type=Path, default=DEFAULT_LOGGING_CONFIG)
@@ -31,8 +31,6 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--repo", action="append", default=[], help="only this repository (repeatable)")
     export.add_argument("--skip-releases", action="store_true", help="git only, no release notes or files")
     export.add_argument("--full", action="store_true", help="send everything again, not just what is new")
-
-    commands.add_parser("confirm", help="online machine: read the receipt the import wrote")
 
     imported = commands.add_parser("import", help="air-gapped machine: load the transfer folder into GitLab")
     imported.add_argument("--repo", action="append", default=[], help="only this repository (repeatable)")
@@ -61,7 +59,5 @@ def _dispatch(arguments: argparse.Namespace, builder: Composition, loader: Setti
         command = builder.import_command(internal, with_releases=not arguments.skip_releases)
         return command.run(arguments.repo)
     external: ExternalSettings = loader.load(arguments.config, ExternalSettings)
-    if arguments.command == "confirm":
-        return builder.confirm_command(external).run()
     export = builder.export_command(external, with_releases=not arguments.skip_releases)
     return export.run(pick(external.repos, arguments.repo), full=arguments.full)

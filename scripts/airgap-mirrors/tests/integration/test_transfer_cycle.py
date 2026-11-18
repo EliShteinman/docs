@@ -3,7 +3,7 @@ from collections.abc import Callable
 
 import pytest
 
-from airgap_mirrors.commands import ConfirmCommand, ExportCommand, ImportCommand
+from airgap_mirrors.commands import ExportCommand, ImportCommand
 from airgap_mirrors.composition import Composition
 from airgap_mirrors.exceptions import ConfigurationError, MissingObjectsError, TransferError
 from airgap_mirrors.external import ExportOutcome, GitExporter
@@ -35,10 +35,6 @@ class Cycle:
         command: ImportCommand = self._composition.import_command(self.airgap, with_releases=False)
         return command.run([])
 
-    def confirm(self) -> list[str]:
-        command: ConfirmCommand = self._composition.confirm_command(self.online)
-        return command.run()
-
     def exporter(self) -> GitExporter:
         return self._composition.git_exporter(self.online)
 
@@ -48,7 +44,6 @@ class Cycle:
     def round_trip(self) -> None:
         assert self.export() == []
         assert self.import_() == []
-        assert self.confirm() == []
 
     def clear_usb(self) -> None:
         for path in sorted(self.online.transfer_dir.rglob("*"), reverse=True):
@@ -159,17 +154,6 @@ def test_old_default_loses_its_gitlab_protection_when_renamed_upstream(
     assert "unstable" not in project.protected
 
 
-def test_unconfirmed_transfers_are_repeated_in_the_next_one(
-    cycle: Cycle, upstream: UpstreamRepository, project: FakeProject
-) -> None:
-    cycle.export()
-    cycle.clear_usb()
-    upstream.commit("unstable", "later.txt", "later")
-    cycle.export()
-    cycle.import_()
-    assert gitlab_refs(project) == upstream.refs()
-
-
 def test_refs_only_transfer_has_no_bundle(cycle: Cycle, upstream: UpstreamRepository) -> None:
     cycle.round_trip()
     cycle.clear_usb()
@@ -178,16 +162,11 @@ def test_refs_only_transfer_has_no_bundle(cycle: Cycle, upstream: UpstreamReposi
     assert not list(cycle.online.transfer_dir.rglob("*.bundle"))
 
 
-def test_full_export_ignores_the_confirmed_state(cycle: Cycle) -> None:
+def test_full_export_ignores_what_was_sent(cycle: Cycle) -> None:
     cycle.round_trip()
     cycle.clear_usb()
     cycle.export(full=True)
     assert list(cycle.online.transfer_dir.rglob("*.bundle"))
-
-
-def test_export_outcome_is_unchanged_after_confirm(cycle: Cycle) -> None:
-    cycle.round_trip()
-    assert cycle.exporter().export(cycle.online.repos[0]) is ExportOutcome.UNCHANGED
 
 
 def forget_the_airgap_copy(cycle: Cycle) -> None:
@@ -292,25 +271,34 @@ def test_export_again_before_the_transfer_writes_nothing_new(cycle: Cycle) -> No
     assert len(list(cycle.online.transfer_dir.rglob("*.bundle"))) == 1
 
 
-def test_export_again_after_the_folder_was_emptied_writes_it_again(cycle: Cycle) -> None:
-    cycle.export()
+def test_export_with_nothing_new_writes_nothing(cycle: Cycle) -> None:
+    cycle.round_trip()
     cycle.clear_usb()
-    cycle.export()
-    assert len(list(cycle.online.transfer_dir.rglob("*.bundle"))) == 1
+    assert cycle.exporter().export(cycle.online.repos[0]) is ExportOutcome.UNCHANGED
 
 
-def test_export_again_after_upstream_moved_carries_only_the_new_part(
-    cycle: Cycle, upstream: UpstreamRepository
-) -> None:
+def test_each_export_carries_only_what_came_after_the_previous_one(cycle: Cycle, upstream: UpstreamRepository) -> None:
     cycle.export()
     upstream.commit("unstable", "later.txt", "later")
     cycle.export()
-    manifests = sorted(cycle.online.transfer_dir.rglob("*.manifest.json"))
-    first, second = (TransferManifest.model_validate_json(path.read_text()) for path in manifests)
+    first, second = (
+        TransferManifest.model_validate_json(path.read_text())
+        for path in sorted(cycle.online.transfer_dir.rglob("*.manifest.json"))
+    )
     assert second.base_state_id == first.state.state_id
 
 
-def test_two_waiting_transfers_import_together(
+def test_transfers_imported_one_by_one_arrive_whole(
+    cycle: Cycle, upstream: UpstreamRepository, project: FakeProject
+) -> None:
+    cycle.round_trip()
+    cycle.clear_usb()
+    upstream.commit("unstable", "later.txt", "later")
+    cycle.round_trip()
+    assert gitlab_refs(project) == upstream.refs()
+
+
+def test_transfers_imported_together_arrive_whole(
     cycle: Cycle, upstream: UpstreamRepository, project: FakeProject
 ) -> None:
     cycle.export()
@@ -320,12 +308,26 @@ def test_two_waiting_transfers_import_together(
     assert gitlab_refs(project) == upstream.refs()
 
 
-def test_confirming_the_newer_waiting_transfer_leaves_nothing_to_send(
-    cycle: Cycle, upstream: UpstreamRepository
-) -> None:
-    cycle.export()
-    upstream.commit("unstable", "later.txt", "later")
+def test_lost_transfer_is_reported_by_the_next_import(cycle: Cycle, upstream: UpstreamRepository) -> None:
     cycle.round_trip()
     cycle.clear_usb()
+    upstream.commit("unstable", "lost.txt", "lost")
     cycle.export()
-    assert not list(cycle.online.transfer_dir.rglob("*.manifest.json"))
+    cycle.clear_usb()
+    upstream.commit("unstable", "next.txt", "next")
+    cycle.export()
+    with pytest.raises(TransferError, match="--full"):
+        cycle.importer().import_repository(cycle.airgap.spec_for("widget"))
+
+
+def test_full_export_recovers_from_a_lost_transfer(
+    cycle: Cycle, upstream: UpstreamRepository, project: FakeProject
+) -> None:
+    cycle.round_trip()
+    cycle.clear_usb()
+    upstream.commit("unstable", "lost.txt", "lost")
+    cycle.export()
+    cycle.clear_usb()
+    cycle.export(full=True)
+    cycle.import_()
+    assert gitlab_refs(project) == upstream.refs()

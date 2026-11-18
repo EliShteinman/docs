@@ -20,11 +20,11 @@ class ExportOutcome(StrEnum):
 
 
 class GitExporter:
-    """Online side. Brings the local copy up to date with GitHub and writes what GitLab is missing.
+    """Online side. Brings the local copy up to date with GitHub and writes what came after the last export.
 
-    "What GitLab is missing" is measured from the newest state still waiting in the transfer folder, or else
-    from the last *confirmed* state: the one an import reported back. Emptying the folder without a confirm
-    makes the next export repeat everything since that confirmed state, so a lost USB stick costs nothing.
+    The transfer goes one way only: nothing tells this side what the air-gapped side received. So each
+    export carries only the changes since the previous one, and the import applies them in order. If one
+    goes missing, the import refuses the next one and says so; export --full then sends everything again.
     """
 
     def __init__(
@@ -52,31 +52,13 @@ class GitExporter:
         repository.point_head_at(state.default_branch)
         ledger_path: Path = self._ledgers.export_ledger(spec.name)
         ledger: ExportLedger = self._store.load(ledger_path, ExportLedger) or ExportLedger()
-        waiting: RepositoryState | None = None if full else self._newest_waiting_in_folder(spec, ledger)
-        if waiting is not None and waiting.state_id == state.state_id:
-            logger.info("%s: this exact state is already in the transfer folder", spec.name)
-            return ExportOutcome.UNCHANGED
-        base: RepositoryState | None = None if full else (waiting or ledger.confirmed)
+        base: RepositoryState | None = None if full else ledger.sent
         if base is not None and base.state_id == state.state_id:
-            logger.info("%s: nothing new since the last confirmed transfer", spec.name)
+            logger.info("%s: nothing new since the last export", spec.name)
             return ExportOutcome.UNCHANGED
         outcome: ExportOutcome = self._write_transfer(spec, repository, state, base)
-        self._store.save(ledger_path, ledger.with_pending(state))
+        self._store.save(ledger_path, ledger.with_sent(state))
         return outcome
-
-    def _newest_waiting_in_folder(self, spec: ExternalRepoSpec, ledger: ExportLedger) -> RepositoryState | None:
-        """The newest not-yet-confirmed state whose files are still in the transfer folder. Import applies the
-        folder's transfers in order, so a new transfer can carry only what came after it."""
-        newest: TransferManifest | None = None
-        for path in self._layout.manifest_paths(spec.name):
-            manifest: TransferManifest | None = self._store.load(path, TransferManifest)
-            if manifest is None or manifest.state.state_id not in ledger.pending:
-                continue
-            if manifest.bundle_file is not None and not (path.parent / manifest.bundle_file).is_file():
-                continue
-            if newest is None or manifest.created_at > newest.created_at:
-                newest = manifest
-        return newest.state if newest else None
 
     def _updated_repository(self, spec: ExternalRepoSpec) -> BareRepository:
         repository: BareRepository = self._repository_factory(self._ledgers.repository_path(spec.name))

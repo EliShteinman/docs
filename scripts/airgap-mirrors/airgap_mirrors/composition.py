@@ -1,9 +1,9 @@
 import ssl
 from pathlib import Path
 
-from airgap_mirrors.commands import ConfirmCommand, ExportCommand, ImportCommand, RepositoryBatch
+from airgap_mirrors.commands import ExportCommand, ImportCommand, RepositoryBatch
 from airgap_mirrors.exceptions import GitHubApiError, GitLabApiError
-from airgap_mirrors.external import GitExporter, GitHubClient, ReceiptConfirmer, ReleaseExporter
+from airgap_mirrors.external import GitExporter, GitHubClient, ReleaseExporter
 from airgap_mirrors.git import BareRepository, GitRunner
 from airgap_mirrors.http import HttpClient
 from airgap_mirrors.internal import (
@@ -41,13 +41,10 @@ class Composition:
         releases: ReleaseExporter | None = None
         if with_releases:
             github: GitHubClient = GitHubClient(self._github_http(settings))
-            releases = ReleaseExporter(github, TransferLayout(settings.transfer_dir), self._store)
+            releases = ReleaseExporter(
+                github, TransferLayout(settings.transfer_dir), LedgerLocator(settings.mirrors_dir), self._store
+            )
         return ExportCommand(self.git_exporter(settings), releases, RepositoryBatch())
-
-    def confirm_command(self, settings: ExternalSettings) -> ConfirmCommand:
-        return ConfirmCommand(
-            ReceiptConfirmer(LedgerLocator(settings.mirrors_dir), TransferLayout(settings.transfer_dir), self._store)
-        )
 
     def git_importer(self, settings: InternalSettings) -> GitImporter:
         git: GitRunner = GitRunner(config=gitlab_git_config(settings))
@@ -77,8 +74,6 @@ class Composition:
             helm_values,
             RepositoryBatch(),
             layout,
-            self._store,
-            self._clock,
         )
 
     @staticmethod

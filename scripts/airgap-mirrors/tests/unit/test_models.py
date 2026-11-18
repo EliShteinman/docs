@@ -1,6 +1,6 @@
 import pytest
 
-from airgap_mirrors.models import ExportLedger, ImportLedger, RepositoryState
+from airgap_mirrors.models import ExportLedger, ImportLedger, RepositoryState, SentAssets
 
 
 @pytest.fixture
@@ -31,16 +31,12 @@ def test_object_ids_are_the_ref_tips(state: RepositoryState) -> None:
     assert state.object_ids() == {"a1", "b2"}
 
 
-def test_pending_state_is_recorded(state: RepositoryState) -> None:
-    assert ExportLedger().with_pending(state).pending == {state.state_id: state}
+def test_sent_state_is_recorded(state: RepositoryState) -> None:
+    assert ExportLedger().with_sent(state).sent == state
 
 
-def test_confirming_promotes_the_pending_state(state: RepositoryState) -> None:
-    assert ExportLedger().with_pending(state).with_confirmed(state.state_id).confirmed == state
-
-
-def test_confirming_clears_that_pending_entry(state: RepositoryState) -> None:
-    assert ExportLedger().with_pending(state).with_confirmed(state.state_id).pending == {}
+def test_sent_file_is_recorded() -> None:
+    assert SentAssets().with_file("v1/tool.tgz").files == {"v1/tool.tgz"}
 
 
 def test_applying_twice_records_once() -> None:

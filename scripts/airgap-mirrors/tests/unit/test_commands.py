@@ -6,11 +6,10 @@ import pytest
 from pydantic import SecretStr
 from pytest_mock import MockerFixture
 
-from airgap_mirrors.commands import ConfirmCommand, ExportCommand, ImportCommand, RepositoryBatch
+from airgap_mirrors.commands import ExportCommand, ImportCommand, RepositoryBatch
 from airgap_mirrors.exceptions import ConfigurationError, GitCommandError, TransferError
-from airgap_mirrors.external import GitExporter, ReceiptConfirmer, ReleaseExporter
+from airgap_mirrors.external import GitExporter, ReleaseExporter
 from airgap_mirrors.internal import GitImporter, HelmValuesWriter, ImportResult, ReleaseImporter
-from airgap_mirrors.models import ExportLedger, ImportedState, ImportReceipt, RepositoryState
 from airgap_mirrors.settings import ExternalRepoSpec, InternalRepoSpec, InternalSettings
 from airgap_mirrors.storage import JsonModelStore, LedgerLocator
 from airgap_mirrors.transfer import TransferLayout
@@ -41,7 +40,7 @@ def test_export_runs_releases_after_git(mocker: MockerFixture) -> None:
     releases: MagicMock = mocker.create_autospec(ReleaseExporter, instance=True)
     spec: ExternalRepoSpec = ExternalRepoSpec(name="a", github="o/a")
     ExportCommand(git, releases, RepositoryBatch()).run([spec], full=True)
-    assert (git.export.call_args.kwargs, releases.export.call_args.args) == ({"full": True}, (spec,))
+    assert (git.export.call_args.kwargs, releases.export.call_args.kwargs) == ({"full": True}, {"full": True})
 
 
 def imported(spec: InternalRepoSpec) -> ImportResult:
@@ -72,9 +71,7 @@ def run_import(parts: tuple[MagicMock, MagicMock, TransferLayout], wanted: list[
     )
     ledgers: LedgerLocator = LedgerLocator(settings.mirrors_dir)
     helm: HelmValuesWriter = HelmValuesWriter(ledgers.published_projects, ledgers.helm_values, JsonModelStore())
-    command: ImportCommand = ImportCommand(
-        settings, git, releases, helm, RepositoryBatch(), layout, JsonModelStore(), FixedClock()
-    )
+    command: ImportCommand = ImportCommand(settings, git, releases, helm, RepositoryBatch(), layout)
     return command.run(wanted or [])
 
 
@@ -105,14 +102,6 @@ def test_import_writes_helm_values_for_the_imported_projects(
     assert '    "b":\n      enabled: true\n      to: "https://gl/g/b"' in values
 
 
-def test_import_writes_a_receipt_of_every_applied_state(
-    import_parts: tuple[MagicMock, MagicMock, TransferLayout],
-) -> None:
-    run_import(import_parts)
-    receipt: ImportReceipt | None = JsonModelStore().load(import_parts[2].receipt_path, ImportReceipt)
-    assert [entry.state_id for entry in (receipt.entries if receipt else [])] == ["a-state", "b-state"]
-
-
 def test_import_skips_releases_of_a_repository_whose_git_failed(
     import_parts: tuple[MagicMock, MagicMock, TransferLayout],
 ) -> None:
@@ -120,54 +109,3 @@ def test_import_skips_releases_of_a_repository_whose_git_failed(
     git.import_repository.side_effect = [TransferError("bad"), ImportResult(state_ids=["b-state"])]
     run_import(import_parts)
     assert [item.args[0].name for item in releases.import_repository.call_args_list] == ["b"]
-
-
-@pytest.fixture
-def confirmer_parts(tmp_path: Path) -> tuple[ReceiptConfirmer, LedgerLocator, TransferLayout]:
-    ledgers: LedgerLocator = LedgerLocator(tmp_path / "m")
-    layout: TransferLayout = TransferLayout(tmp_path / "t")
-    return ReceiptConfirmer(ledgers, layout, JsonModelStore()), ledgers, layout
-
-
-STATE: RepositoryState = RepositoryState(default_branch="main", refs={"refs/heads/main": "c1"})
-
-
-def test_confirm_promotes_the_received_state(
-    confirmer_parts: tuple[ReceiptConfirmer, LedgerLocator, TransferLayout],
-) -> None:
-    confirmer, ledgers, layout = confirmer_parts
-    JsonModelStore().save(ledgers.export_ledger("a"), ExportLedger().with_pending(STATE))
-    JsonModelStore().save(
-        layout.receipt_path,
-        ImportReceipt(imported_at=MOMENT, entries=[ImportedState(name="a", state_id=STATE.state_id)]),
-    )
-    confirmer.confirm()
-    ledger: ExportLedger | None = JsonModelStore().load(ledgers.export_ledger("a"), ExportLedger)
-    assert (ledger.confirmed if ledger else None) == STATE
-
-
-def test_confirm_ignores_a_state_it_never_sent(
-    confirmer_parts: tuple[ReceiptConfirmer, LedgerLocator, TransferLayout],
-) -> None:
-    confirmer, _, layout = confirmer_parts
-    JsonModelStore().save(
-        layout.receipt_path, ImportReceipt(imported_at=MOMENT, entries=[ImportedState(name="a", state_id="x")])
-    )
-    assert confirmer.confirm() == 0
-
-
-def test_confirm_twice_counts_once(confirmer_parts: tuple[ReceiptConfirmer, LedgerLocator, TransferLayout]) -> None:
-    confirmer, ledgers, layout = confirmer_parts
-    JsonModelStore().save(ledgers.export_ledger("a"), ExportLedger().with_pending(STATE))
-    JsonModelStore().save(
-        layout.receipt_path,
-        ImportReceipt(imported_at=MOMENT, entries=[ImportedState(name="a", state_id=STATE.state_id)]),
-    )
-    confirmer.confirm()
-    assert confirmer.confirm() == 0
-
-
-def test_confirm_without_a_receipt_fails_clearly(
-    confirmer_parts: tuple[ReceiptConfirmer, LedgerLocator, TransferLayout],
-) -> None:
-    assert ConfirmCommand(confirmer_parts[0]).run() == ["confirm"]
