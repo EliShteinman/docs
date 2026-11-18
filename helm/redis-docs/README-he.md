@@ -412,7 +412,7 @@ downloads:
 ### שימוש בסיסי
 
 ```bash
-helm install redis-docs redis-docs-3.2.0.tgz
+helm install redis-docs redis-docs-3.2.1.tgz
 ```
 
 ### התקנה עם קובץ values
@@ -420,7 +420,7 @@ helm install redis-docs redis-docs-3.2.0.tgz
 הדרך המומלצת - קובץ `values.yaml` מותאם:
 
 ```bash
-helm install redis-docs redis-docs-3.2.0.tgz -f my-values.yaml
+helm install redis-docs redis-docs-3.2.1.tgz -f my-values.yaml
 ```
 
 להלן דוגמה לתרחיש פריסה טיפוסי.
@@ -450,7 +450,7 @@ imagePullSecrets:
 # --- תמונה ראשית (דריסת תג ספציפי) ---
 image:
   name: redis-docs
-  tag: "c5e5dbb81-unprivileged"
+  tag: "fa01ef646-unprivileged"
 
 # --- Route (בחרו אחת מ-3 האפשרויות) ---
 
@@ -624,13 +624,13 @@ docker save a0533057932/redis-docs-mirror:unprivileged -o redis-docs-mirror.tar
 
 ```bash
 helm package helm/redis-docs/
-# ייצור: redis-docs-3.2.0.tgz
+# ייצור: redis-docs-3.2.1.tgz
 ```
 
 ### שלב 3: העברת קבצים לרשת הסגורה
 
 העבירו את הקבצים הבאים:
-- `redis-docs-3.2.0.tgz`
+- `redis-docs-3.2.1.tgz`
 - `redis-docs.tar`
 - `redis-docs-cli.tar` (אופציונלי - CLI)
 - `redis-docs-search.tar` (אופציונלי - חיפוש)
@@ -668,13 +668,13 @@ docker push REGISTRY/redis:8.10.0-alpine
 ## עדכון גרסה
 
 ```bash
-helm upgrade redis-docs redis-docs-3.2.0.tgz -f my-values.yaml
+helm upgrade redis-docs redis-docs-3.2.1.tgz -f my-values.yaml
 ```
 
 או עם דריסת ערך בודד:
 
 ```bash
-helm upgrade redis-docs redis-docs-3.2.0.tgz -f my-values.yaml \
+helm upgrade redis-docs redis-docs-3.2.1.tgz -f my-values.yaml \
   --set image.tag=NEW_TAG
 ```
 
