@@ -283,3 +283,16 @@ def test_missing_top_group_fails_with_a_clear_message(
     cycle.export()
     with pytest.raises(ConfigurationError, match="no group 'nowhere'"):
         cycle.importer().import_repository(cycle.airgap.spec_for("widget"))
+
+
+def test_export_again_before_the_transfer_writes_nothing_new(cycle: Cycle) -> None:
+    cycle.export()
+    cycle.export()
+    assert len(list(cycle.online.transfer_dir.rglob("*.bundle"))) == 1
+
+
+def test_export_again_after_the_folder_was_emptied_writes_it_again(cycle: Cycle) -> None:
+    cycle.export()
+    cycle.clear_usb()
+    cycle.export()
+    assert len(list(cycle.online.transfer_dir.rglob("*.bundle"))) == 1

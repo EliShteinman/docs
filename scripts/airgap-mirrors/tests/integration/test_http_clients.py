@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 
 import pytest
@@ -132,3 +133,46 @@ def test_project_without_visibility_leaves_it_to_gitlab(gitlab_server: FakeGitLa
     group: int = gitlab_server.add_group("redis")
     gitlab_client(gitlab_server.server).create_project(group, "tool", "copy", None)
     assert "visibility" not in gitlab_server.projects["redis/tool"].created_with
+
+
+def test_stalled_download_becomes_an_api_error_not_a_crash(tmp_path: Path) -> None:
+    with FakeServer() as server:
+        server.route("GET", r"/slow", lambda **_: (time.sleep(2), (200, b"late", {}))[1])
+        client: HttpClient = HttpClient(server.url, {}, GitHubApiError, 0.5)
+        with pytest.raises(GitHubApiError, match="timed out"):
+            client.download(f"{server.url}/slow", tmp_path / "file")
+
+
+def test_download_is_retried_after_a_server_error(tmp_path: Path) -> None:
+    answers: list[tuple[int, object, dict[str, str]]] = [(503, b"busy", {}), (200, b"data", {})]
+    with FakeServer() as server:
+        server.route("GET", r"/flaky", lambda **_: answers.pop(0))
+        HttpClient(server.url, {}, GitHubApiError, 5, download_attempts=2).download(
+            f"{server.url}/flaky", tmp_path / "f"
+        )
+    assert (tmp_path / "f").read_bytes() == b"data"
+
+
+def test_download_gives_up_after_its_attempts(tmp_path: Path) -> None:
+    with FakeServer() as server:
+        server.route("GET", r"/down", lambda **_: (503, b"busy", {}))
+        with pytest.raises(GitHubApiError, match="503"):
+            HttpClient(server.url, {}, GitHubApiError, 5, download_attempts=3).download(
+                f"{server.url}/down", tmp_path / "f"
+            )
+        assert len(server.requests) == 3
+
+
+def test_missing_file_is_not_retried(tmp_path: Path) -> None:
+    with FakeServer() as server:
+        with pytest.raises(GitHubApiError, match="404"):
+            HttpClient(server.url, {}, GitHubApiError, 5, download_attempts=3).download(
+                f"{server.url}/none", tmp_path / "f"
+            )
+        assert len(server.requests) == 1
+
+
+def test_downloaded_file_is_readable_by_others(github_server: FakeGitHub, tmp_path: Path) -> None:
+    github_server.add_release("acme/tool", "v1", "2026-01-01T00:00:00Z", {"tool.tgz": b"payload"})
+    github_client(github_server.server).download(f"{github_server.server.url}/files/v1/tool.tgz", tmp_path / "t.tgz")
+    assert (tmp_path / "t.tgz").stat().st_mode & 0o777 == 0o644

@@ -16,6 +16,10 @@ from airgap_mirrors.exceptions import ApiError
 logger: logging.Logger = logging.getLogger(__name__)
 
 NOT_FOUND: int = 404
+TOO_MANY_REQUESTS: int = 429
+SERVER_ERRORS_FROM: int = 500
+NETWORK_FAILURE: int = 0
+FILE_MODE: int = 0o644
 CHUNK_BYTES: int = 1024 * 1024
 
 
@@ -39,12 +43,14 @@ class HttpClient:
         error_type: type[ApiError],
         timeout_seconds: float,
         ssl_context: ssl.SSLContext | None = None,
+        download_attempts: int = 1,
     ) -> None:
         self._base_url: str = base_url.rstrip("/")
         self._headers: dict[str, str] = dict(headers)
         self._error_type: type[ApiError] = error_type
         self._timeout: float = timeout_seconds
         self._ssl_context: ssl.SSLContext | None = ssl_context
+        self._download_attempts: int = download_attempts
 
     def url(self, path: str, query: Mapping[str, str | int] | None = None) -> str:
         absolute: str = path if path.startswith(("http://", "https://")) else f"{self._base_url}/{path.lstrip('/')}"
@@ -90,20 +96,40 @@ class HttpClient:
             return self._send(request)
 
     def download(self, url: str, target: Path) -> None:
+        """Saves url to target. A dropped connection, a timeout or a server error is retried;
+        a partial file never takes target's place."""
+        for attempt in range(1, self._download_attempts + 1):
+            try:
+                self._download_once(url, target)
+                return
+            except self._error_type as failure:
+                if attempt == self._download_attempts or not _worth_retrying(failure):
+                    raise
+                logger.warning(
+                    "%s: %s; retrying (%d of %d)", target.name, failure, attempt + 1, self._download_attempts
+                )
+
+    def _download_once(self, url: str, target: Path) -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         request: urllib.request.Request = self._authorized(urllib.request.Request(url, method="GET"))
         descriptor, temporary = tempfile.mkstemp(dir=target.parent, prefix=f".{target.name}.")
         try:
             with self._open(request) as response, os.fdopen(descriptor, "wb") as handle:
                 shutil.copyfileobj(response, handle, CHUNK_BYTES)
+            os.chmod(temporary, FILE_MODE)
             os.replace(temporary, target)
+        except OSError as broken:
+            raise self._error_type(NETWORK_FAILURE, url, f"download interrupted: {broken}") from broken
         finally:
             if os.path.exists(temporary):
                 os.unlink(temporary)
 
     def _send(self, request: urllib.request.Request) -> HttpResponse:
-        with self._open(self._authorized(request)) as response:
-            return HttpResponse(response.status, response.read(), response.headers)
+        try:
+            with self._open(self._authorized(request)) as response:
+                return HttpResponse(response.status, response.read(), response.headers)
+        except OSError as broken:
+            raise self._error_type(NETWORK_FAILURE, request.full_url, f"connection broke: {broken}") from broken
 
     def _authorized(self, request: urllib.request.Request) -> urllib.request.Request:
         for name, value in self._headers.items():
@@ -118,4 +144,10 @@ class HttpClient:
             body: str = failure.read().decode(errors="replace")
             raise self._error_type(failure.code, request.full_url, body) from failure
         except URLError as unreachable:
-            raise self._error_type(0, request.full_url, str(unreachable.reason)) from unreachable
+            raise self._error_type(NETWORK_FAILURE, request.full_url, str(unreachable.reason)) from unreachable
+        except OSError as broken:
+            raise self._error_type(NETWORK_FAILURE, request.full_url, str(broken)) from broken
+
+
+def _worth_retrying(failure: ApiError) -> bool:
+    return failure.status in (NETWORK_FAILURE, TOO_MANY_REQUESTS) or failure.status >= SERVER_ERRORS_FROM

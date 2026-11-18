@@ -86,7 +86,13 @@ class Composition:
         headers: dict[str, str] = {"Accept": "application/vnd.github+json"}
         if settings.github_token is not None:
             headers["Authorization"] = f"Bearer {settings.github_token.get_secret_value()}"
-        return HttpClient(settings.github_api_url, headers, GitHubApiError, settings.http_timeout_seconds)
+        return HttpClient(
+            settings.github_api_url,
+            headers,
+            GitHubApiError,
+            settings.http_timeout_seconds,
+            download_attempts=settings.download_attempts,
+        )
 
     @staticmethod
     def _gitlab_http(settings: InternalSettings) -> HttpClient:

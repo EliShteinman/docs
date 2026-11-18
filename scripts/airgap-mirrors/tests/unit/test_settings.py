@@ -23,6 +23,7 @@ transfer_dir = "/t"
 github_url = "https://github.com"
 github_api_url = "https://api.github.com"
 http_timeout_seconds = 30
+download_attempts = 3
 default_assets = "latest-per-type"
 default_platforms = ["windows", "linux", "redhat"]
 default_architectures = ["x86_64"]

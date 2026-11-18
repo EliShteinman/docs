@@ -55,9 +55,22 @@ class GitExporter:
         if base is not None and base.state_id == state.state_id:
             logger.info("%s: nothing new since the last confirmed transfer", spec.name)
             return ExportOutcome.UNCHANGED
+        if not full and self._already_in_transfer_folder(spec, state):
+            logger.info("%s: this exact state is already in the transfer folder", spec.name)
+            return ExportOutcome.UNCHANGED
         outcome: ExportOutcome = self._write_transfer(spec, repository, state, base)
         self._store.save(ledger_path, ledger.with_pending(state))
         return outcome
+
+    def _already_in_transfer_folder(self, spec: ExternalRepoSpec, state: RepositoryState) -> bool:
+        for path in self._layout.manifest_paths(spec.name):
+            manifest: TransferManifest | None = self._store.load(path, TransferManifest)
+            if manifest is None or manifest.state.state_id != state.state_id:
+                continue
+            bundle_present: bool = manifest.bundle_file is None or (path.parent / manifest.bundle_file).is_file()
+            if bundle_present:
+                return True
+        return False
 
     def _updated_repository(self, spec: ExternalRepoSpec) -> BareRepository:
         repository: BareRepository = self._repository_factory(self._ledgers.repository_path(spec.name))

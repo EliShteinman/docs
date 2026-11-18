@@ -21,6 +21,7 @@ class ExternalSettings(BaseSettings):
     github_url: str = Field(pattern=r"^(https?|file)://")
     github_api_url: str = Field(pattern=r"^https?://")
     http_timeout_seconds: float = Field(gt=0)
+    download_attempts: int = Field(ge=1)
     github_token: SecretStr | None = Field(default=None, validation_alias=AliasChoices("GITHUB_TOKEN"))
     default_assets: Annotated[AssetPolicy, BeforeValidator(AssetPolicy.from_text)]
     default_platforms: list[Platform] = Field(default_factory=list)

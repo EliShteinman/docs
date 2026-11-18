@@ -11,7 +11,10 @@ transfer_dir = "~/airgap/transfer"
 
 github_url = "https://github.com"
 github_api_url = "https://api.github.com"
+# A request that sends nothing for this long is dropped. A dropped download is tried again,
+# up to download_attempts times in all.
 http_timeout_seconds = 120
+download_attempts = 4
 
 # Release files. Release notes always come; these decide which files come with them.
 #

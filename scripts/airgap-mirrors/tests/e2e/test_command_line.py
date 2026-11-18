@@ -75,6 +75,7 @@ def machines(
         f'github_url = "{github_root.as_uri()}"\n'
         f'github_api_url = "{github_server.server.url}"\n'
         "http_timeout_seconds = 10\n"
+        "download_attempts = 2\n"
         'default_assets = "latest-per-type"\n'
         'default_platforms = ["windows", "linux", "redhat"]\n'
         'default_architectures = ["x86_64"]\n\n'
