@@ -25,6 +25,7 @@ RELEASES: list[ReleaseRecord] = [
         ("all", AssetPolicy(kind=AssetPolicyKind.ALL)),
         ("NONE", AssetPolicy(kind=AssetPolicyKind.NONE)),
         ("latest-per-type", AssetPolicy(kind=AssetPolicyKind.LATEST_PER_TYPE)),
+        ("latest-stable", AssetPolicy(kind=AssetPolicyKind.LATEST_STABLE)),
         ("latest:2", AssetPolicy(kind=AssetPolicyKind.LATEST, count=2)),
         ("since:2025-06-01", AssetPolicy(kind=AssetPolicyKind.SINCE, since=date(2025, 6, 1))),
     ],
@@ -118,3 +119,9 @@ def test_release_line_is_the_tag_before_its_version(tag: str, line: str) -> None
 def test_per_type_treats_a_tag_without_a_version_as_its_own_type() -> None:
     releases: list[ReleaseRecord] = [*DATED, preview("nightly", "2026-01-15", flagged=False)]
     assert [item.tag_name for item in PER_TYPE.select(releases)] == ["v3", "nightly"]
+
+
+def test_latest_stable_leaves_out_a_newer_preview() -> None:
+    releases: list[ReleaseRecord] = [*DATED, preview("early-access", "2026-11-17")]
+    stable_only: AssetPolicy = AssetPolicy(kind=AssetPolicyKind.LATEST_STABLE)
+    assert [item.tag_name for item in stable_only.select(releases)] == ["v3"]

@@ -16,6 +16,7 @@ class AssetPolicyKind(StrEnum):
     NONE = "none"
     LATEST = "latest"
     LATEST_PER_TYPE = "latest-per-type"
+    LATEST_STABLE = "latest-stable"
     SINCE = "since"
 
 
@@ -44,14 +45,20 @@ class AssetPolicy(BaseModel):
         if not isinstance(value, str):
             return value
         text: str = value.strip().lower()
-        if text in (AssetPolicyKind.ALL, AssetPolicyKind.NONE, AssetPolicyKind.LATEST_PER_TYPE):
+        if text in (
+            AssetPolicyKind.ALL,
+            AssetPolicyKind.NONE,
+            AssetPolicyKind.LATEST_PER_TYPE,
+            AssetPolicyKind.LATEST_STABLE,
+        ):
             return cls(kind=AssetPolicyKind(text))
         if latest := _LATEST.match(text):
             return cls(kind=AssetPolicyKind.LATEST, count=int(latest.group(1)))
         if since := _SINCE.match(text):
             return cls(kind=AssetPolicyKind.SINCE, since=date.fromisoformat(since.group(1)))
         raise ValueError(
-            f"unknown asset policy {value!r}: use all, none, latest-per-type, latest:N or since:YYYY-MM-DD"
+            f"unknown asset policy {value!r}: use all, none, latest-per-type, latest-stable, "
+            "latest:N or since:YYYY-MM-DD"
         )
 
     def select(self, releases: list[ReleaseRecord]) -> list[ReleaseRecord]:
@@ -61,6 +68,8 @@ class AssetPolicy(BaseModel):
             return []
         if self.kind is AssetPolicyKind.LATEST_PER_TYPE:
             return [chosen for line in _by_line(releases) for chosen in _newest_stable_and_newer_prerelease(line)]
+        if self.kind is AssetPolicyKind.LATEST_STABLE:
+            return [chosen for line in _by_line(releases) for chosen in _newest_stable(line)]
         if self.kind is AssetPolicyKind.LATEST:
             newest_first: list[ReleaseRecord] = sorted(releases, key=_published, reverse=True)
             return newest_first[: self.count]
@@ -89,3 +98,10 @@ def _by_line(releases: list[ReleaseRecord]) -> list[list[ReleaseRecord]]:
     for release in releases:
         lines.setdefault(release.release_line, []).append(release)
     return list(lines.values())
+
+
+def _newest_stable(releases: list[ReleaseRecord]) -> list[ReleaseRecord]:
+    newest: ReleaseRecord | None = max(
+        (release for release in releases if not release.is_prerelease), key=_published, default=None
+    )
+    return [newest] if newest else []

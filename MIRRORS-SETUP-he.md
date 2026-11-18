@@ -88,7 +88,7 @@ python3 -m venv .venv
 cp config/external.toml.example config/external.toml
 ```
 
-ממלאים שתי תיקיות:
+הקובץ מוכן לשימוש כמו שהוא: רשימת ה-repos מלאה, והתיקיות מוגדרות ב-`~/airgap`. משנים רק אם רוצים מיקום אחר:
 - `mirrors_dir`: כאן נשמר עותק של כל repo בין סבב לסבב. בזכותו כל העברה כוללת רק את מה שחדש.
 - `transfer_dir`: התיקייה שעוברת בדיסק און קי.
 
@@ -165,6 +165,7 @@ default_architectures = ["x86_64"]
 - `"latest-per-type"`: האחרון מכל סוג שחרור. "סוג" נקבע לפי שני דברים:
   - **הקידומת של ה-tag.** ‏repo אחד יכול להפיץ כמה מוצרים. ב-`redisctl`, למשל, יש `redisctl-v0.14.0`, ‏`redisctl-mcp-v0.14.0` ו-`redisctl-core-v0.14.0`, וכל אחד מהם הוא סוג נפרד.
   - **יציב או pre-release.** יורד ה-release היציב האחרון, ובנוסף ה-pre-release האחרון (rc, beta, alpha), אבל רק אם הוא חדש יותר מה-release היציב. ב-`redis`, למשל, יורדים הקבצים של 8.10.3 ושל 8.12-rc3. release נחשב pre-release אם הוא מסומן ככזה ב-GitHub, או אם השם שלו נראה כמו pre-release.
+- `"latest-stable"`: רק ה-release היציב האחרון מכל קידומת, בלי pre-releases.
 - `"none"`: בלי קבצים.
 - `"all"`: כל ה-releases.
 - `"latest:3"`: שלושת ה-releases האחרונים.
@@ -186,9 +187,46 @@ default_architectures = ["x86_64"]
 
 **repo בודד** יכול לדרוס את ברירות המחדל עם `assets` ו-`platforms` משלו, ולצמצם עוד יותר עם `asset_filter`. במקרה כזה עוברים רק קבצים שהשם שלהם מכיל אחת מהמילים ברשימה.
 
-עם ההגדרות האלה, ההורדה הראשונה של קבצי ה-releases היא כ-880 MB, במקום כ-7 GB. רוב הנפח, כ-650 MB, הוא Redis Insight.
+עם ההגדרות האלה, ההורדה הראשונה של קבצי ה-releases היא כ-1.7 GB. בלי הסינון היא הייתה כ-14 GB. רוב הנפח מגיע משני repos:
+- **RIOT-X:** כ-780 MB. כל קובץ שלו שוקל כ-390 MB, כי Java ארוזה בתוכו. לכן ב-config הוא מוגדר להוריד רק את ה-release היציב האחרון (`latest-stable`), ורק את הגרסה העצמאית ל-Linux x86_64 ול-Windows.
+- **Redis Insight:** כ-650 MB.
 
 ב-GitLab, כל קובץ נשמר ב-package registry של ה-project ומקבל כתובת קבועה: `<project>/-/releases/<tag>/downloads/<file>`. לכתובת הזו ה-chart מפנה את קישורי ההורדה בתיעוד. הגודל המקסימלי של קובץ נקבע בהגדרה `generic_packages_max_file_size` של GitLab, וברירת המחדל שלה היא 5 GB.
+
+## אילו repos מועתקים
+
+34 repos, שנבחרו מתוך 222 ה-repos שהתיעוד מקשר אליהם. נבחר כל repo של Redis שיש אליו קישורים רבים, וכל מוצר שהתיעוד שולח להוריד מ-GitHub. הרשימה המלאה נמצאת ב-`config/external.toml.example`.
+
+**Redis והמודולים:** `redis`, ‏`RediSearch`, ‏`RedisJSON`, ‏`RedisTimeSeries`, ‏`RedisBloom`, ‏`RedisGears`, ‏`RedisGraph`.
+
+**מוצרים וכלים להורדה:**
+- `RedisInsight`
+- `redisctl`
+- `riotx`
+- `memtier_benchmark`
+- `redis-apache-arrow-flight`
+- `redis-adbc-driver`
+- `redisinsight-tutorials`
+- `grafana-redis-datasource`
+
+**Kubernetes וניטור:** `k8s-docs` (ה-operator), ‏`prometheus-operator`, ‏`observability`.
+
+**קוד מקור וספריות לקוח:**
+- `docs`
+- `redis-py`, ‏`redis-vl-python`
+- `jedis`, ‏`lettuce`
+- `node-redis`, ‏`ioredis`
+- `go-redis`, ‏`rueidis`
+- `NRedisStack`
+- `hiredis`
+- `predis`
+- `redis-om-python`, ‏`redis-om-node`, ‏`redis-om-spring`, ‏`redis-om-dotnet`
+
+**לא נכללו:**
+- **כלים של צד שלישי**, כמו node_exporter, ingress-nginx ו-Reloader. בסביבה סגורה מביאים אותם בערוצים שלהם.
+- **repos שיש אליהם קישור בודד**, בלי מוצר להורדה.
+
+מתוך כ-5,600 הקישורים לכל ה-repos האלה, כ-2,200 עוברים ל-GitLab. השאר הם קישורים ל-pull requests ול-issues ב-release notes של המודולים, ולכן נשארים ב-GitHub.
 
 ## מה עושים כשמשהו נכשל
 

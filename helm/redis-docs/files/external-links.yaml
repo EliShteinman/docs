@@ -530,3 +530,17 @@ git-mirrors:
     aliases: ["RedisInsight/Tutorials"]
     enabled: false
     to: ""
+
+  riotx:
+    description: "RIOT-X, the data migration and replication tool (downloads)"
+    repo: "redis/riotx-dist"
+    aliases: ["redis-field-engineering/riotx-dist"]
+    enabled: false
+    to: ""
+
+  grafana-redis-datasource:
+    description: "Redis data source plugin for Grafana"
+    repo: "RedisGrafana/grafana-redis-datasource"
+    aliases: ["RedisTimeSeries/grafana-redis-datasource"]
+    enabled: false
+    to: ""

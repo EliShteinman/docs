@@ -222,3 +222,15 @@ def test_architecture_is_read_from_the_file_name(file_name: str, architecture: A
 def test_architecture_filter_keeps_x86_64_and_neutral_files(file_name: str, wanted: bool) -> None:
     spec: ExternalRepoSpec = ExternalRepoSpec(name="x", github="o/r", architectures=["x86_64"])
     assert spec.wants_asset(file_name) is wanted
+
+
+def test_home_folder_in_paths_is_expanded(write_config) -> None:
+    text: str = EXTERNAL_TOML.replace('mirrors_dir = "/m"', 'mirrors_dir = "~/airgap/mirrors"')
+    settings: ExternalSettings = SettingsLoader().load(write_config(text), ExternalSettings)
+    assert settings.mirrors_dir == Path.home() / "airgap" / "mirrors"
+
+
+def test_example_configs_load_as_they_are(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GITLAB_TOKEN", "t")
+    loaded: ExternalSettings = SettingsLoader().load(Path("config/external.toml.example"), ExternalSettings)
+    assert len(loaded.repos) == 34

@@ -27,6 +27,11 @@ class ExternalSettings(BaseSettings):
     default_architectures: list[Architecture] = Field(default_factory=list)
     repos: list[ExternalRepoSpec] = Field(min_length=1)
 
+    @field_validator("mirrors_dir", "transfer_dir")
+    @classmethod
+    def _expand_home(cls, path: Path) -> Path:
+        return path.expanduser()
+
     @field_validator("repos")
     @classmethod
     def _unique(cls, repos: list[ExternalRepoSpec]) -> list[ExternalRepoSpec]:

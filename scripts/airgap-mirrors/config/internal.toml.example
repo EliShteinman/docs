@@ -5,9 +5,9 @@
 #   export GITLAB_TOKEN=<personal access token with the api scope>
 
 # The local copy of every repository is kept here between runs.
-mirrors_dir = "/home/<user>/airgap/mirrors"
+mirrors_dir = "~/airgap/mirrors"
 # Where the USB stick's transfer folder was copied to.
-transfer_dir = "/home/<user>/airgap/transfer"
+transfer_dir = "~/airgap/transfer"
 
 gitlab_url = "https://gitlab.<your-company>.example"
 # Leave out to push over HTTPS with the token. Set to push over SSH instead, e.g. "ssh://git@gitlab.<your-company>.example".
@@ -147,3 +147,11 @@ gitlab_path = "<your-group>/redis-adbc-driver"
 [[repos]]
 name = "redisinsight-tutorials"
 gitlab_path = "<your-group>/redisinsight-tutorials"
+
+[[repos]]
+name = "riotx"
+gitlab_path = "<your-group>/riotx"
+
+[[repos]]
+name = "grafana-redis-datasource"
+gitlab_path = "<your-group>/grafana-redis-datasource"
