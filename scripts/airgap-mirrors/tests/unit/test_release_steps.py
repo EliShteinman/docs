@@ -58,6 +58,16 @@ def test_exporter_downloads_only_filtered_files(github: MagicMock, layout: Trans
     github.download.assert_called_once_with("https://dl/linux", layout.asset_dir("tool", "v1.0") / "tool-linux.tar.gz")
 
 
+def test_exporter_never_downloads_an_excluded_suffix(github: MagicMock, layout: TransferLayout) -> None:
+    signed: ReleaseRecord = RELEASE.model_copy(
+        update={"assets": [ReleaseAsset(name="tool.zip.asc", size=3, browser_download_url="https://dl/asc")]}
+    )
+    github.published_releases.return_value = [signed]
+    spec: ExternalRepoSpec = ExternalRepoSpec(name="tool", github="o/tool", excluded_suffixes=[".asc"])
+    exporter(github, layout).export(spec)
+    github.download.assert_not_called()
+
+
 def test_exporter_skips_a_file_already_downloaded(github: MagicMock, layout: TransferLayout) -> None:
     spec: ExternalRepoSpec = ExternalRepoSpec(name="tool", github="o/tool", asset_filter=["linux"])
     target: Path = layout.asset_dir("tool", "v1.0") / "tool-linux.tar.gz"

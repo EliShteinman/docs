@@ -27,6 +27,7 @@ download_attempts = 3
 default_assets = "latest-per-type"
 default_platforms = ["windows", "linux", "redhat"]
 default_architectures = ["x86_64"]
+excluded_asset_suffixes = [".asc", ".sig"]
 
 [[repos]]
 name = "redis"
@@ -219,6 +220,26 @@ def test_architecture_is_read_from_the_file_name(file_name: str, architecture: A
 )
 def test_architecture_filter_keeps_x86_64_and_neutral_files(file_name: str, wanted: bool) -> None:
     spec: ExternalRepoSpec = ExternalRepoSpec(name="x", github="o/r", architectures=["x86_64"])
+    assert spec.wants_asset(file_name) is wanted
+
+
+def test_repository_takes_the_excluded_suffixes(write_config) -> None:
+    settings: ExternalSettings = SettingsLoader().load(write_config(EXTERNAL_TOML), ExternalSettings)
+    assert settings.repos[0].excluded_suffixes == [".asc", ".sig"]
+
+
+@pytest.mark.parametrize(
+    ("file_name", "wanted"),
+    [
+        ("riotx-standalone-1.15.4-linux-x86_64.zip.asc", False),
+        ("tool-linux-x86_64.tar.gz.SIG", False),
+        ("riotx-standalone-1.15.4-linux-x86_64.zip", True),
+        ("tool-linux-x86_64.tar.gz.sha256", True),
+        ("ascii-tool-linux-x86_64.zip", True),
+    ],
+)
+def test_excluded_suffix_drops_the_file(file_name: str, wanted: bool) -> None:
+    spec: ExternalRepoSpec = ExternalRepoSpec(name="x", github="o/r", excluded_suffixes=[".asc", ".sig"])
     assert spec.wants_asset(file_name) is wanted
 
 

@@ -38,6 +38,9 @@ download_attempts = 4
 default_assets = "latest-per-type"
 default_platforms = ["windows", "linux", "redhat"]
 default_architectures = ["x86_64"]
+# Files never downloaded, by the end of their name. The internal network's intake refuses
+# signature files (PGP and similar) as encrypted, so they stay out of every repository.
+excluded_asset_suffixes = [".asc", ".sig", ".gpg", ".pgp", ".p7s", ".minisig"]
 
 # One block per repository. The names must stay the same as in internal.toml and in
 # helm/redis-docs/files/external-links.yaml (git-mirrors).

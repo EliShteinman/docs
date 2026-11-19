@@ -18,15 +18,21 @@ class ExternalRepoSpec(BaseModel):
     platforms: list[Platform] | None = None
     architectures: list[Architecture] | None = None
     asset_filter: list[str] = Field(default_factory=list)
+    excluded_suffixes: list[str] = Field(default_factory=list)
 
     def with_defaults(
-        self, assets: AssetPolicy, platforms: list[Platform], architectures: list[Architecture]
+        self,
+        assets: AssetPolicy,
+        platforms: list[Platform],
+        architectures: list[Architecture],
+        excluded_suffixes: list[str],
     ) -> "ExternalRepoSpec":
         return self.model_copy(
             update={
                 "assets": self.assets if self.assets is not None else assets,
                 "platforms": self.platforms if self.platforms is not None else platforms,
                 "architectures": self.architectures if self.architectures is not None else architectures,
+                "excluded_suffixes": excluded_suffixes,
             }
         )
 
@@ -36,10 +42,15 @@ class ExternalRepoSpec(BaseModel):
 
     def wants_asset(self, file_name: str) -> bool:
         return (
-            self._platform_wanted(file_name)
+            self._suffix_allowed(file_name)
+            and self._platform_wanted(file_name)
             and self._architecture_wanted(file_name)
             and self._keyword_wanted(file_name)
         )
+
+    def _suffix_allowed(self, file_name: str) -> bool:
+        lowered: str = file_name.lower()
+        return not any(lowered.endswith(suffix.lower()) for suffix in self.excluded_suffixes)
 
     def _platform_wanted(self, file_name: str) -> bool:
         if not self.platforms:

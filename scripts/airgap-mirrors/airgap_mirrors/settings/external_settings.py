@@ -26,6 +26,7 @@ class ExternalSettings(BaseSettings):
     default_assets: Annotated[AssetPolicy, BeforeValidator(AssetPolicy.from_text)]
     default_platforms: list[Platform] = Field(default_factory=list)
     default_architectures: list[Architecture] = Field(default_factory=list)
+    excluded_asset_suffixes: list[str] = Field(default_factory=list)
     repos: list[ExternalRepoSpec] = Field(min_length=1)
 
     @field_validator("mirrors_dir", "transfer_dir")
@@ -41,7 +42,9 @@ class ExternalSettings(BaseSettings):
     @model_validator(mode="after")
     def _apply_defaults(self) -> "ExternalSettings":
         self.repos = [
-            spec.with_defaults(self.default_assets, self.default_platforms, self.default_architectures)
+            spec.with_defaults(
+                self.default_assets, self.default_platforms, self.default_architectures, self.excluded_asset_suffixes
+            )
             for spec in self.repos
         ]
         return self
