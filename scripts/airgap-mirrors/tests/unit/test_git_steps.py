@@ -142,7 +142,14 @@ def staged_layout(tmp_path: Path) -> TransferLayout:
     layout: TransferLayout = TransferLayout(tmp_path / "t")
     JsonModelStore().save(
         layout.manifest_path("redis", MOMENT),
-        TransferManifest(name="redis", upstream_url="u", state=STATE, bundle_file="b.bundle", created_at=MOMENT),
+        TransferManifest(
+            name="redis",
+            upstream_url="u",
+            state=STATE,
+            base_state_id="earlier",
+            bundle_file="b.bundle",
+            created_at=MOMENT,
+        ),
     )
     return layout
 
@@ -269,5 +276,19 @@ def test_fresh_machine_fetches_nothing_from_an_empty_project(
 
 
 def test_existing_local_copy_is_not_refetched(importer: GitImporter, repository: MagicMock) -> None:
+    importer.import_repository(INTERNAL_SPEC)
+    repository.seed_tips_from.assert_not_called()
+
+
+def test_fresh_machine_takes_nothing_from_gitlab_for_a_full_transfer(
+    importer: GitImporter, repository: MagicMock, gitlab: MagicMock, tmp_path: Path
+) -> None:
+    layout: TransferLayout = TransferLayout(tmp_path / "t")
+    full: TransferManifest = TransferManifest(
+        name="redis", upstream_url="u", state=STATE, bundle_file="b.bundle", created_at=MOMENT
+    )
+    JsonModelStore().save(layout.manifest_path("redis", MOMENT), full)
+    repository.exists.return_value = False
+    gitlab.project.return_value = GitLabProject(id=1, path_with_namespace="g/redis", default_branch="unstable")
     importer.import_repository(INTERNAL_SPEC)
     repository.seed_tips_from.assert_not_called()

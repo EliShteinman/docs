@@ -59,7 +59,7 @@ class GitImporter:
             logger.info("%s: no git transfer in the folder", spec.name)
             return ImportResult()
         project: GitLabProject = self._provisioner.ensure_project(spec, manifests[-1].upstream_url)
-        repository: BareRepository = self._local_copy(spec, project)
+        repository: BareRepository = self._local_copy(spec, project, manifests[0])
         for manifest in manifests:
             self._apply(spec, repository, manifest)
         final: RepositoryState = manifests[-1].state
@@ -77,14 +77,15 @@ class GitImporter:
                 loaded.append(manifest)
         return sorted(loaded, key=lambda manifest: manifest.created_at)
 
-    def _local_copy(self, spec: InternalRepoSpec, project: GitLabProject) -> BareRepository:
+    def _local_copy(self, spec: InternalRepoSpec, project: GitLabProject, first: TransferManifest) -> BareRepository:
         """A machine without a local copy starts from the commits GitLab already holds, so a transfer that builds
-        on earlier ones still applies on a fresh machine. Only the newest commits come, not the whole history."""
+        on earlier ones still applies on a fresh machine. Only the newest commits come, not the whole history.
+        A full transfer builds on nothing, so it takes nothing from GitLab, even from a damaged project."""
         repository: BareRepository = self._repository_factory(self._ledgers.repository_path(spec.name))
         if repository.exists():
             return repository
         repository.create()
-        if project.default_branch is not None:
+        if first.base_state_id is not None and project.default_branch is not None:
             logger.info("%s: no local copy here; taking the latest commits GitLab holds, without files", spec.name)
             repository.seed_tips_from(self._settings.push_url(spec))
         return repository
