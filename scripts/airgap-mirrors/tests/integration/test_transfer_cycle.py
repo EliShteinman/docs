@@ -5,7 +5,7 @@ import pytest
 
 from airgap_mirrors.commands import ExportCommand, ImportCommand
 from airgap_mirrors.composition import Composition
-from airgap_mirrors.exceptions import ConfigurationError, MissingObjectsError, TransferError
+from airgap_mirrors.exceptions import ConfigurationError, TransferError
 from airgap_mirrors.external import ExportOutcome, GitExporter
 from airgap_mirrors.internal import GitImporter
 from airgap_mirrors.models import TransferManifest
@@ -173,24 +173,28 @@ def forget_the_airgap_copy(cycle: Cycle) -> None:
     shutil.rmtree(cycle.airgap.mirrors_dir)
 
 
-def test_delta_bundle_without_its_base_is_refused(cycle: Cycle, upstream: UpstreamRepository) -> None:
+def test_fresh_machine_applies_a_delta_bundle_on_what_gitlab_holds(
+    cycle: Cycle, upstream: UpstreamRepository, project: FakeProject
+) -> None:
     cycle.round_trip()
     cycle.clear_usb()
     upstream.commit("unstable", "x.txt", "x")
     cycle.export()
     forget_the_airgap_copy(cycle)
-    with pytest.raises(TransferError, match="earlier transfer"):
-        cycle.importer().import_repository(cycle.airgap.spec_for("widget"))
+    cycle.import_()
+    assert gitlab_refs(project) == upstream.refs()
 
 
-def test_refs_only_transfer_without_its_base_is_refused(cycle: Cycle, upstream: UpstreamRepository) -> None:
+def test_fresh_machine_applies_a_refs_only_transfer_on_what_gitlab_holds(
+    cycle: Cycle, upstream: UpstreamRepository, project: FakeProject
+) -> None:
     cycle.round_trip()
     cycle.clear_usb()
     upstream.tag("light", annotated=False)
     cycle.export()
     forget_the_airgap_copy(cycle)
-    with pytest.raises(MissingObjectsError):
-        cycle.importer().import_repository(cycle.airgap.spec_for("widget"))
+    cycle.import_()
+    assert gitlab_refs(project) == upstream.refs()
 
 
 @pytest.fixture
@@ -330,4 +334,19 @@ def test_full_export_recovers_from_a_lost_transfer(
     cycle.clear_usb()
     cycle.export(full=True)
     cycle.import_()
+    assert gitlab_refs(project) == upstream.refs()
+
+
+def test_fresh_machine_keeps_applying_later_transfers(
+    cycle: Cycle, upstream: UpstreamRepository, project: FakeProject
+) -> None:
+    cycle.round_trip()
+    cycle.clear_usb()
+    upstream.commit("unstable", "x.txt", "x")
+    cycle.export()
+    forget_the_airgap_copy(cycle)
+    cycle.import_()
+    cycle.clear_usb()
+    upstream.commit("unstable", "y.txt", "y")
+    cycle.round_trip()
     assert gitlab_refs(project) == upstream.refs()

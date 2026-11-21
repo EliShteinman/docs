@@ -248,3 +248,26 @@ def test_import_unprotects_nothing_for_a_new_project(importer: GitImporter, gitl
     gitlab.project.return_value = GitLabProject(id=1, path_with_namespace="g/redis", default_branch=None)
     importer.import_repository(INTERNAL_SPEC)
     gitlab.unprotect_branch.assert_not_called()
+
+
+def test_fresh_machine_takes_the_history_gitlab_already_has(
+    importer: GitImporter, repository: MagicMock, gitlab: MagicMock
+) -> None:
+    repository.exists.return_value = False
+    gitlab.project.return_value = GitLabProject(id=1, path_with_namespace="g/redis", default_branch="unstable")
+    importer.import_repository(INTERNAL_SPEC)
+    repository.seed_tips_from.assert_called_once_with("https://gl/g/redis.git")
+
+
+def test_fresh_machine_fetches_nothing_from_an_empty_project(
+    importer: GitImporter, repository: MagicMock, gitlab: MagicMock
+) -> None:
+    repository.exists.return_value = False
+    gitlab.project.return_value = GitLabProject(id=1, path_with_namespace="g/redis", default_branch=None)
+    importer.import_repository(INTERNAL_SPEC)
+    repository.seed_tips_from.assert_not_called()
+
+
+def test_existing_local_copy_is_not_refetched(importer: GitImporter, repository: MagicMock) -> None:
+    importer.import_repository(INTERNAL_SPEC)
+    repository.seed_tips_from.assert_not_called()

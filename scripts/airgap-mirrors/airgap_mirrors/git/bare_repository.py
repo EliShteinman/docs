@@ -9,6 +9,7 @@ logger: logging.Logger = logging.getLogger(__name__)
 BRANCHES: str = "refs/heads/"
 TAGS: str = "refs/tags/"
 INCOMING: str = "refs/airgap-incoming/"
+SEED_REMOTE: str = "gitlab"
 BRANCHES_AND_TAGS: list[str] = ["+refs/heads/*:refs/heads/*", "+refs/tags/*:refs/tags/*"]
 
 
@@ -36,6 +37,15 @@ class BareRepository:
         for refspec in BRANCHES_AND_TAGS:
             self._run(["config", "--add", "remote.origin.fetch", refspec])
         self._run(["config", "remote.origin.tagOpt", "--no-tags"])
+
+    def seed_tips_from(self, url: str) -> None:
+        """Takes only the newest commit of each branch and tag, without file contents: enough for a bundle that
+        builds on them to apply. Anything else a later step needs, git fetches from this remote on demand."""
+        self._run(["remote", "add", SEED_REMOTE, url])
+        for refspec in BRANCHES_AND_TAGS:
+            self._run(["config", "--add", f"remote.{SEED_REMOTE}.fetch", refspec])
+        self._run(["config", f"remote.{SEED_REMOTE}.tagOpt", "--no-tags"])
+        self._run(["fetch", "--quiet", "--depth=1", "--filter=blob:none", SEED_REMOTE])
 
     def fetch_upstream(self) -> None:
         self._run(["fetch", "--prune", "--quiet", "origin"])
