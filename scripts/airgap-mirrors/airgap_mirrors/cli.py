@@ -29,12 +29,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     export = commands.add_parser("export", help="online machine: fetch from GitHub and write the transfer folder")
     export.add_argument("--repo", action="append", default=[], help="only this repository (repeatable)")
-    export.add_argument("--skip-releases", action="store_true", help="git only, no release notes or files")
+    export.add_argument("--skip-releases", action="store_true", help="no release notes or release files")
     export.add_argument("--full", action="store_true", help="send everything again, not just what is new")
 
     imported = commands.add_parser("import", help="air-gapped machine: load the transfer folder into GitLab")
     imported.add_argument("--repo", action="append", default=[], help="only this repository (repeatable)")
-    imported.add_argument("--skip-releases", action="store_true", help="git only, no releases")
+    imported.add_argument("--skip-releases", action="store_true", help="no releases")
     return parser
 
 

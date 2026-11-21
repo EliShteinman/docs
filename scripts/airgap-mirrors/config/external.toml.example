@@ -46,6 +46,8 @@ excluded_asset_suffixes = [".asc", ".sig", ".gpg", ".pgp", ".p7s", ".minisig"]
 # helm/redis-docs/files/external-links.yaml (git-mirrors).
 # A block may override the defaults with its own `assets` and `platforms`, and narrow further with
 # `asset_filter`: only files whose name contains one of these words.
+# `extra_files`: files the repository needs but does not keep in git (a model its build downloads, say).
+# Each one is downloaded to <transfer>/extra/<name>/<path>, sent once, and sent again when its url changes.
 
 [[repos]]
 name = "redis"
@@ -154,6 +156,14 @@ github = "redis/redis-om-spring"
 [[repos]]
 name = "redis-om-dotnet"
 github = "redis/redis-om-dotnet"
+# The Vectorizers projects embed these models, but git holds none of them: upstream downloads them with
+# fetch-models.sh. Without them the two Vectorizers projects do not build.
+extra_files = [
+  { url = "https://storage.googleapis.com/slorello/model.onnx", path = "src/Redis.OM.Vectorizers.AllMiniLML6V2/Resources/model.onnx" },
+  { url = "https://storage.googleapis.com/slorello/vocab.txt", path = "src/Redis.OM.Vectorizers.AllMiniLML6V2/Resources/vocab.txt" },
+  { url = "https://storage.googleapis.com/slorello/ResNet18.onnx", path = "src/Redis.OM.Vectorizers.Resnet18/Resources/ResNet18Onnx/ResNet18.onnx" },
+  { url = "https://storage.googleapis.com/slorello/ResNetPreprocess.onnx", path = "src/Redis.OM.Vectorizers.Resnet18/Resources/ResNetPrepOnnx/ResNetPreprocess.onnx" },
+]
 
 [[repos]]
 name = "memtier_benchmark"

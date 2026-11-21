@@ -2,11 +2,12 @@ import ssl
 from pathlib import Path
 
 from airgap_mirrors.commands import ExportCommand, ImportCommand, RepositoryBatch
-from airgap_mirrors.exceptions import GitHubApiError, GitLabApiError
-from airgap_mirrors.external import GitExporter, GitHubClient, ReleaseExporter
+from airgap_mirrors.exceptions import ExtraFileDownloadError, GitHubApiError, GitLabApiError
+from airgap_mirrors.external import ExtraFileExporter, GitExporter, GitHubClient, ReleaseExporter
 from airgap_mirrors.git import BareRepository, GitRunner
 from airgap_mirrors.http import HttpClient
 from airgap_mirrors.internal import (
+    ExtraFileImporter,
     GitImporter,
     GitLabClient,
     HelmValuesWriter,
@@ -44,7 +45,13 @@ class Composition:
             releases = ReleaseExporter(
                 github, TransferLayout(settings.transfer_dir), LedgerLocator(settings.mirrors_dir), self._store
             )
-        return ExportCommand(self.git_exporter(settings), releases, RepositoryBatch())
+        extra_files: ExtraFileExporter = ExtraFileExporter(
+            self._plain_http(settings),
+            TransferLayout(settings.transfer_dir),
+            LedgerLocator(settings.mirrors_dir),
+            self._store,
+        )
+        return ExportCommand(self.git_exporter(settings), releases, extra_files, RepositoryBatch())
 
     def git_importer(self, settings: InternalSettings) -> GitImporter:
         git: GitRunner = GitRunner(config=gitlab_git_config(settings))
@@ -61,16 +68,25 @@ class Composition:
 
     def import_command(self, settings: InternalSettings, *, with_releases: bool) -> ImportCommand:
         layout: TransferLayout = TransferLayout(settings.transfer_dir)
+        gitlab: GitLabClient = GitLabClient(self._gitlab_http(settings))
         releases: ReleaseImporter | None = None
         if with_releases:
-            gitlab: GitLabClient = GitLabClient(self._gitlab_http(settings))
             releases = ReleaseImporter(gitlab, layout, self._store, settings.release_package_name)
         ledgers: LedgerLocator = LedgerLocator(settings.mirrors_dir)
+        extra_files: ExtraFileImporter = ExtraFileImporter(
+            gitlab,
+            layout,
+            ledgers,
+            self._store,
+            settings.extra_files_package_name,
+            settings.extra_files_package_version,
+        )
         helm_values: HelmValuesWriter = HelmValuesWriter(ledgers.published_projects, ledgers.helm_values, self._store)
         return ImportCommand(
             settings,
             self.git_importer(settings),
             releases,
+            extra_files,
             helm_values,
             RepositoryBatch(),
             layout,
@@ -85,6 +101,16 @@ class Composition:
             settings.github_api_url,
             headers,
             GitHubApiError,
+            settings.http_timeout_seconds,
+            download_attempts=settings.download_attempts,
+        )
+
+    @staticmethod
+    def _plain_http(settings: ExternalSettings) -> HttpClient:
+        return HttpClient(
+            "",
+            {},
+            ExtraFileDownloadError,
             settings.http_timeout_seconds,
             download_attempts=settings.download_attempts,
         )

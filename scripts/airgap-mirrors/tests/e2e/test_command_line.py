@@ -12,6 +12,8 @@ from tests.support.upstream import UpstreamRepository, git
 pytestmark = pytest.mark.e2e
 
 GITLAB_PATH: str = "mirrors/redis"
+GITHUB_TOKEN: str = "ghp-test-token"
+MODEL_PATH: str = "src/Resources/model.onnx"
 LOGGING: Path = Path(__file__).resolve().parents[2] / "config" / "logging.toml"
 
 
@@ -57,7 +59,9 @@ def machines(
     monkeypatch: pytest.MonkeyPatch,
 ) -> Machines:
     monkeypatch.setenv("GITLAB_TOKEN", TOKEN)
+    monkeypatch.setenv("GITHUB_TOKEN", GITHUB_TOKEN)
     gitlab_server.add_group("mirrors")
+    github_server.files["models/model.onnx"] = b"weights"
     github_server.add_release("redis/redis", "7.4.0", "2025-01-01T00:00:00Z", {"redis-7.4.0.tar.gz": b"old"})
     github_server.add_release(
         "redis/redis",
@@ -77,6 +81,7 @@ def machines(
         'default_platforms = ["windows", "linux", "redhat"]\n'
         'default_architectures = ["x86_64"]\n\n'
         '[[repos]]\nname = "redis"\ngithub = "redis/redis"\n'
+        f'extra_files = [{{ url = "{github_server.server.url}/files/models/model.onnx", path = "{MODEL_PATH}" }}]\n'
     )
     airgap: Path = tmp_path / "internal.toml"
     airgap.write_text(
@@ -176,3 +181,21 @@ def test_second_export_sends_no_release_file_twice(transferred: Machines, tmp_pa
         leftover.unlink() if leftover.is_file() else leftover.rmdir()
     transferred.export()
     assert not list((tmp_path / "usb").rglob("*.tar.gz"))
+
+
+def test_gitlab_gets_the_extra_file(transferred: Machines, project: FakeProject) -> None:
+    assert project.packages["extra-files/latest/model.onnx"] == b"weights"
+
+
+def test_extra_file_download_carries_no_github_token(transferred: Machines, github_server: FakeGitHub) -> None:
+    model_requests: list[dict[str, str]] = [
+        headers for _, path, headers in github_server.server.requests if path.endswith("model.onnx")
+    ]
+    assert [headers.get("Authorization") for headers in model_requests] == [None]
+
+
+def test_second_export_sends_no_extra_file_twice(transferred: Machines, tmp_path: Path) -> None:
+    for leftover in sorted((tmp_path / "usb").rglob("*"), reverse=True):
+        leftover.unlink() if leftover.is_file() else leftover.rmdir()
+    transferred.export()
+    assert not (tmp_path / "usb" / "extra").exists()

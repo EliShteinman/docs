@@ -30,6 +30,8 @@ class InternalSettings(BaseSettings):
     git_remote_base: str | None = None
     ca_file: Path | None = None
     release_package_name: str = Field(pattern=r"^[A-Za-z0-9._-]+$")
+    extra_files_package_name: str = Field(default="extra-files", pattern=r"^[A-Za-z0-9._-]+$")
+    extra_files_package_version: str = Field(default="latest", pattern=r"^[A-Za-z0-9._+-]+$")
     http_timeout_seconds: float = Field(gt=0)
     gitlab_token: SecretStr = Field(validation_alias=AliasChoices("GITLAB_TOKEN"))
     repos: list[InternalRepoSpec] = Field(default_factory=list)

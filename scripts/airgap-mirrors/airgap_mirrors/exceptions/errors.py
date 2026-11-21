@@ -42,3 +42,7 @@ class GitHubApiError(ApiError):
 
 class GitLabApiError(ApiError):
     pass
+
+
+class ExtraFileDownloadError(ApiError):
+    pass

@@ -27,6 +27,10 @@ gitlab_group = "<your-group>/mirrors"
 # ca_file = "/etc/pki/tls/certs/company-ca.pem"
 
 release_package_name = "release-assets"
+# Files a repository needs but does not keep in git go to its package registry, at
+# <gitlab_url>/api/v4/projects/<project>/packages/generic/<name>/<version>/<file name>.
+extra_files_package_name = "extra-files"
+extra_files_package_version = "latest"
 http_timeout_seconds = 600
 
 # Only to put one repository somewhere other than <gitlab_group>/<name>:

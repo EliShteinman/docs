@@ -1,6 +1,7 @@
 from airgap_mirrors.settings.architecture import Architecture, architecture_of
 from airgap_mirrors.settings.asset_policy import AssetPolicy, AssetPolicyKind
 from airgap_mirrors.settings.external_settings import ExternalSettings
+from airgap_mirrors.settings.extra_file import ExtraFile
 from airgap_mirrors.settings.internal_settings import InternalSettings, ProjectVisibility
 from airgap_mirrors.settings.platform import Platform, platform_of
 from airgap_mirrors.settings.repo_list import pick
@@ -13,6 +14,7 @@ __all__ = [
     "AssetPolicyKind",
     "ExternalRepoSpec",
     "ExternalSettings",
+    "ExtraFile",
     "InternalRepoSpec",
     "InternalSettings",
     "Platform",

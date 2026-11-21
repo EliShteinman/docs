@@ -1,9 +1,10 @@
 from typing import Annotated
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, Field
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, field_validator
 
 from airgap_mirrors.settings.architecture import Architecture, architecture_of
 from airgap_mirrors.settings.asset_policy import AssetPolicy
+from airgap_mirrors.settings.extra_file import ExtraFile
 from airgap_mirrors.settings.platform import Platform, platform_of
 
 RepositoryName = Annotated[str, Field(pattern=r"^[A-Za-z0-9._-]+$")]
@@ -19,6 +20,16 @@ class ExternalRepoSpec(BaseModel):
     architectures: list[Architecture] | None = None
     asset_filter: list[str] = Field(default_factory=list)
     excluded_suffixes: list[str] = Field(default_factory=list)
+    extra_files: list[ExtraFile] = Field(default_factory=list)
+
+    @field_validator("extra_files")
+    @classmethod
+    def _unique_file_names(cls, extra_files: list[ExtraFile]) -> list[ExtraFile]:
+        names: list[str] = [extra.file_name for extra in extra_files]
+        repeated: set[str] = {name for name in names if names.count(name) > 1}
+        if repeated:
+            raise ValueError(f"extra files share a file name, which GitLab keeps only once: {sorted(repeated)}")
+        return extra_files
 
     def with_defaults(
         self,

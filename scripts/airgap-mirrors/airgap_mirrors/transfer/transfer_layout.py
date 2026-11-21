@@ -12,6 +12,7 @@ class TransferLayout:
     <transfer>/git/<repo>/<stamp>.bundle          the new commits (absent when only refs moved)
     <transfer>/releases/<repo>/releases.json      release notes
     <transfer>/releases/<repo>/assets/<tag>/...   release files
+    <transfer>/extra/<repo>/<path in the repo>    files the repository needs but does not keep in git
     """
 
     def __init__(self, root: Path) -> None:
@@ -35,7 +36,7 @@ class TransferLayout:
     def repository_names(self) -> list[str]:
         """Every repository the transfer folder carries something for."""
         found: set[str] = set()
-        for kind in ("git", "releases"):
+        for kind in ("git", "releases", "extra"):
             directory: Path = self.root / kind
             if directory.is_dir():
                 found.update(child.name for child in directory.iterdir() if child.is_dir())
@@ -46,6 +47,12 @@ class TransferLayout:
 
     def asset_dir(self, repository: str, tag: str) -> Path:
         return self.root / "releases" / repository / "assets" / tag
+
+    def extra_dir(self, repository: str) -> Path:
+        return self.root / "extra" / repository
+
+    def extra_file(self, repository: str, path: str) -> Path:
+        return self.extra_dir(repository) / path
 
 
 def _stamp(moment: datetime) -> str:

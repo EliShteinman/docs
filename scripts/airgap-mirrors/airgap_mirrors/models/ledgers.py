@@ -16,7 +16,8 @@ class ExportLedger(BaseModel):
 
 
 class SentAssets(BaseModel):
-    """Online side: the release files already sent, as "<tag>/<file name>", so no export sends one twice."""
+    """Online side: the files already sent, so no export sends one twice. A release file is "<tag>/<file name>",
+    an extra file is "<path> <- <url>"."""
 
     model_config = ConfigDict(frozen=True)
 
@@ -24,6 +25,17 @@ class SentAssets(BaseModel):
 
     def with_file(self, key: str) -> "SentAssets":
         return self.model_copy(update={"files": self.files | {key}})
+
+
+class UploadedExtraFiles(BaseModel):
+    """Air-gapped side: the SHA-256 of each extra file already uploaded to GitLab, by its path in the repository."""
+
+    model_config = ConfigDict(frozen=True)
+
+    digests: dict[str, str] = Field(default_factory=dict)
+
+    def with_upload(self, path: str, digest: str) -> "UploadedExtraFiles":
+        return self.model_copy(update={"digests": {**self.digests, path: digest}})
 
 
 class ImportLedger(BaseModel):

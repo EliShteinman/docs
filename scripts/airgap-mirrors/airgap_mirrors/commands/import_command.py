@@ -1,7 +1,7 @@
 import logging
 
 from airgap_mirrors.commands.repository_batch import RepositoryBatch
-from airgap_mirrors.internal import GitImporter, HelmValuesWriter, ImportResult, ReleaseImporter
+from airgap_mirrors.internal import ExtraFileImporter, GitImporter, HelmValuesWriter, ImportResult, ReleaseImporter
 from airgap_mirrors.settings import InternalRepoSpec, InternalSettings, pick
 from airgap_mirrors.transfer import TransferLayout
 
@@ -14,6 +14,7 @@ class ImportCommand:
         settings: InternalSettings,
         git: GitImporter,
         releases: ReleaseImporter | None,
+        extra_files: ExtraFileImporter,
         helm_values: HelmValuesWriter,
         batch: RepositoryBatch,
         layout: TransferLayout,
@@ -22,6 +23,7 @@ class ImportCommand:
         self._git: GitImporter = git
         self._helm_values: HelmValuesWriter = helm_values
         self._releases: ReleaseImporter | None = releases
+        self._extra_files: ExtraFileImporter = extra_files
         self._batch: RepositoryBatch = batch
         self._layout: TransferLayout = layout
 
@@ -35,11 +37,10 @@ class ImportCommand:
                 projects[spec.name] = result.project_url
 
         failed: list[str] = self._batch.run("git import", specs, import_git)
+        imported: list[InternalRepoSpec] = [spec for spec in specs if spec.name not in failed]
         if self._releases is not None:
-            releases: ReleaseImporter = self._releases
-            failed += self._batch.run(
-                "release import", [spec for spec in specs if spec.name not in failed], releases.import_repository
-            )
+            failed += self._batch.run("release import", imported, self._releases.import_repository)
+        failed += self._batch.run("extra files import", imported, self._extra_files.import_repository)
         if projects:
             self._helm_values.record(projects)
         return failed

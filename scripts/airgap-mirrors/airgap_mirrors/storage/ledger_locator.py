@@ -16,6 +16,12 @@ class LedgerLocator:
     def sent_assets(self, repository: str) -> Path:
         return self._mirrors_dir / f"{repository}.sent-assets.json"
 
+    def sent_extra_files(self, repository: str) -> Path:
+        return self._mirrors_dir / f"{repository}.sent-extra-files.json"
+
+    def uploaded_extra_files(self, repository: str) -> Path:
+        return self._mirrors_dir / f"{repository}.uploaded-extra-files.json"
+
     def import_ledger(self, repository: str) -> Path:
         return self._mirrors_dir / f"{repository}.import-ledger.json"
 
