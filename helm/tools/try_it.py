@@ -22,7 +22,17 @@ SHORTCODE_NAMES = "clients-example|redis-cli"
 # refuses them too. Each one was seen answering "no permissions" from the Try it
 # button on its redis.io page; helm/tools/try_it_gate.py says how to check a new
 # one before it is added.
-DELIBERATELY_BLOCKED = frozenset({"HOTKEYS START", "HOTKEYS GET", "HOTKEYS STOP", "HOTKEYS RESET"})
+DELIBERATELY_BLOCKED = frozenset(
+    {
+        "HOTKEYS START",
+        "HOTKEYS GET",
+        "HOTKEYS STOP",
+        "HOTKEYS RESET",
+        "BLESS SET",
+        "BLESS CLEAR",
+        "CONFIG SET",
+    }
+)
 
 
 def try_it_lines(markdown: str) -> list[str]:

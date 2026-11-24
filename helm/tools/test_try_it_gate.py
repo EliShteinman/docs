@@ -28,15 +28,21 @@ HOTKEYS_PAGE = """{{< clients-example set="h" step="h" >}}
 {{< /clients-example >}}"""
 ROLE_PAGE = "{{% redis-cli %}}\nredis> ROLE\n{{% /redis-cli %}}"
 GET_PAGE = "{{% redis-cli %}}\nredis> GET k\n{{% /redis-cli %}}"
+HOTKEYS_BLOCKED = frozenset({"HOTKEYS START", "HOTKEYS GET", "HOTKEYS STOP", "HOTKEYS RESET"})
 
 
-def test_a_command_redis_io_refuses_too_is_not_reported():
+@pytest.fixture
+def hotkeys_blocked(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(try_it_gate, "DELIBERATELY_BLOCKED", HOTKEYS_BLOCKED)
+
+
+def test_a_command_redis_io_refuses_too_is_not_reported(hotkeys_blocked: None) -> None:
     report = try_it_gate.evaluate({"content/commands/hotkeys.md": HOTKEYS_PAGE}, CATALOG, ACL)
 
     assert report.clean
 
 
-def test_an_unchecked_refused_command_is_reported_with_its_page():
+def test_an_unchecked_refused_command_is_reported_with_its_page(hotkeys_blocked: None) -> None:
     pages = {"content/commands/hotkeys.md": HOTKEYS_PAGE, "content/commands/role.md": ROLE_PAGE}
 
     report = try_it_gate.evaluate(pages, CATALOG, ACL)
@@ -44,10 +50,10 @@ def test_an_unchecked_refused_command_is_reported_with_its_page():
     assert report.newly_refused == {"ROLE": {"content/commands/role.md"}}
 
 
-def test_a_blocked_entry_no_page_runs_is_reported_as_stale():
+def test_a_blocked_entry_no_page_runs_is_reported_as_stale(hotkeys_blocked: None) -> None:
     report = try_it_gate.evaluate({"content/commands/get.md": GET_PAGE}, CATALOG, ACL)
 
-    assert report.stale == {"HOTKEYS START", "HOTKEYS GET", "HOTKEYS STOP", "HOTKEYS RESET"}
+    assert report.stale == HOTKEYS_BLOCKED
 
 
 @pytest.mark.parametrize(
